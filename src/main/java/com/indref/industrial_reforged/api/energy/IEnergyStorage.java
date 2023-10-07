@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.api.energy;
 
-import com.indref.industrial_reforged.api.capabilities.EnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageCapability;
 
 public interface IEnergyStorage {
-    EnergyStorage getEnergyStorage();
-
+    EnergyStorageCapability getEnergyStorage();
 
     // These are just wrappers for energy storage methods
     default void increaseCurEnergy(long value) {
@@ -15,4 +14,11 @@ public interface IEnergyStorage {
         getEnergyStorage().decreaseCurEnergy(value);
     }
 
+    default long getCurEnergy() {
+        return getEnergyStorage().getCurEnergy();
+    }
+
+    default long getMaxEnergy() {
+        return getEnergyStorage().getMaxEnergy();
+    }
 }

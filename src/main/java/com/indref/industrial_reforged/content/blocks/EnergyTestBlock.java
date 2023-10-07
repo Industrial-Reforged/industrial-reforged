@@ -30,8 +30,8 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(blockPos);
             if (entity instanceof EnergyTestBE energyEntity) {
-                energyEntity.increaseCurEnergy(10);
-                player.sendSystemMessage(Component.literal("Energy Storage: "+((EnergyTestBE) entity).getEnergyStorage().toString()));
+                energyEntity.getEnergyStorage().increaseCurEnergy(100);
+                player.sendSystemMessage(Component.literal("Energy Storage: "+energyEntity.getEnergyStorage().toString()));
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
