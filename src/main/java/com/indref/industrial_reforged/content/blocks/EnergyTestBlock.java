@@ -1,0 +1,42 @@
+package com.indref.industrial_reforged.content.blocks;
+
+import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
+
+public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
+    public EnergyTestBlock(Properties p_49795_) {
+        super(p_49795_);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new EnergyTestBE(blockPos, blockState);
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(blockPos);
+            if (entity instanceof EnergyTestBE energyEntity) {
+                energyEntity.increaseCurEnergy(10);
+                player.sendSystemMessage(Component.literal("Energy Storage: "+((EnergyTestBE) entity).getEnergyStorage().toString()));
+            } else {
+                throw new IllegalStateException("Our Container provider is missing!");
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+}
