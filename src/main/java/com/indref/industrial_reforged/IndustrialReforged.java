@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
@@ -9,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -1,6 +1,9 @@
 package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorageExposed;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,9 +32,8 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(blockPos);
-            if (entity instanceof EnergyTestBE energyEntity) {
-                energyEntity.getEnergyStorage().increaseCurEnergy(100);
-                player.sendSystemMessage(Component.literal("Energy Storage: "+energyEntity.getEnergyStorage().toString()));
+            if (entity instanceof IEnergyStorageExposed energyEntity) {
+                entity.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(1008));
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
