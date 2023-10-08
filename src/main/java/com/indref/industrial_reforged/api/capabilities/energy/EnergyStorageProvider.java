@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -16,6 +17,13 @@ import org.jetbrains.annotations.Nullable;
  * Exposes the energy capability for use with items and blocks
  */
 public class EnergyStorageProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+    public EnergyStorageProvider() {
+    }
+
+    public EnergyStorageProvider(ItemStack itemStack) {
+        this.energyStorage = new EnergyStorage(itemStack);
+    }
+
     public EnergyStorage energyStorage = new EnergyStorage();
     public static final ResourceLocation IDENTIFIER = new ResourceLocation(IndustrialReforged.MODID, "energy");
 

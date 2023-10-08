@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.Level;
 // TODO: 10/8/2023 Fix bar fullnes bug
 
 public class ToolboxItem extends BundleItem {
+    public static final int SLOT_CAPACITY = 8;
 
     public ToolboxItem(Item.Properties p_150726_) {
         super(p_150726_);
@@ -45,7 +47,7 @@ public class ToolboxItem extends BundleItem {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
             } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.getItem() instanceof ToolItem) {
-                int i = (16 - getContentWeight(toolbox));
+                int i = (SLOT_CAPACITY - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
                     this.playInsertSound(player);
@@ -90,7 +92,7 @@ public class ToolboxItem extends BundleItem {
 
     @Override
     public int getBarWidth(ItemStack itemStack) {
-        return Math.min(1 + 12 * getContentWeight(itemStack) / 16, 13);
+        return Math.min(1 + 12 * getContentWeight(itemStack) / SLOT_CAPACITY, 13);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class ToolboxItem extends BundleItem {
             }
 
             int i = getContentWeight(toolboxItemStack);
-            int k = Math.min(newItemStack.getCount(), 16 - i);
+            int k = Math.min(newItemStack.getCount(), SLOT_CAPACITY - i);
             if (k == 0) {
                 return 0;
             } else {
@@ -142,7 +144,7 @@ public class ToolboxItem extends BundleItem {
     }
 
     private static Optional<CompoundTag> getMatchingItem(ItemStack p_150757_, ListTag p_150758_) {
-        return p_150757_.is(Items.BUNDLE) ? Optional.empty() : p_150758_.stream().filter(CompoundTag.class::isInstance).map(CompoundTag.class::cast).filter((p_186350_) -> {
+        return p_150757_.is(IRItems.TOOLBOX.get()) ? Optional.empty() : p_150758_.stream().filter(CompoundTag.class::isInstance).map(CompoundTag.class::cast).filter((p_186350_) -> {
             return ItemStack.isSameItemSameTags(ItemStack.of(p_186350_), p_150757_);
         }).findFirst();
     }
@@ -192,7 +194,7 @@ public class ToolboxItem extends BundleItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, Level level, List<Component> components, TooltipFlag tooltipFlag) {
-        components.add(Component.translatable("item.minecraft.bundle.fullness", getContentWeight(itemStack), 16).withStyle(ChatFormatting.GRAY));
+        components.add(Component.translatable("item.minecraft.bundle.fullness", getContentWeight(itemStack), SLOT_CAPACITY).withStyle(ChatFormatting.GRAY));
     }
 
     public void onDestroyed(ItemEntity p_150728_) {

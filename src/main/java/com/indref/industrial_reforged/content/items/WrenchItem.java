@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 
-// TODO: 10/8/2023 add sounds for pickup
+// TODO: 10/8/2023 add sounds for pickup make picked up blocks keep their nbt
 
 public class WrenchItem extends ToolItem {
     public WrenchItem(Properties properties) {

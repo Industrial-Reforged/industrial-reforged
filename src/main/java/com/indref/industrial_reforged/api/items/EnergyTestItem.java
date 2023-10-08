@@ -28,9 +28,14 @@ public class EnergyTestItem extends Item implements IEnergyItem {
         IndustrialReforged.LOGGER.info("UseItem: " + useItemStack.getItem());
         if (!level.isClientSide()) {
             useItemStack.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(energyStorage.getEnergyStored()+100));
-            player.sendSystemMessage(Component.literal(String.valueOf(getEnergyStorage(useItemStack).getEnergyStored())));
+            player.sendSystemMessage(Component.literal(String.valueOf(this.getEnergyStorage().getEnergyStored())));
             return InteractionResultHolder.success(useItemStack);
         }
         return InteractionResultHolder.fail(useItemStack);
+    }
+
+    @Override
+    public void setStoredEnergy(int value) {
+        IEnergyItem.super.setStoredEnergy(this.getDefaultInstance(), value);
     }
 }
