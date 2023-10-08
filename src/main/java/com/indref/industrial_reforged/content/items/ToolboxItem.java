@@ -13,6 +13,9 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -42,7 +45,7 @@ public class ToolboxItem extends BundleItem {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
             } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.getItem() instanceof ToolItem) {
-                int i = (64 - getContentWeight(toolbox)) / getWeight();
+                int i = (16 - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
                     this.playInsertSound(player);
@@ -53,6 +56,44 @@ public class ToolboxItem extends BundleItem {
         }
     }
 
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        ItemStack itemstack = player.getItemInHand(interactionHand);
+        if (dropContents(itemstack, player)) {
+            this.playDropContentsSound(player);
+            player.awardStat(Stats.ITEM_USED.get(this));
+            return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+        } else {
+            return InteractionResultHolder.fail(itemstack);
+        }
+    }
+
+    private static boolean dropContents(ItemStack itemStack, Player player) {
+        CompoundTag compoundtag = itemStack.getOrCreateTag();
+        if (!compoundtag.contains("Items")) {
+            return false;
+        } else {
+            if (player instanceof ServerPlayer) {
+                ListTag listtag = compoundtag.getList("Items", 10);
+
+                for (int i = 0; i < listtag.size(); ++i) {
+                    CompoundTag compoundtag1 = listtag.getCompound(i);
+                    ItemStack itemstack = ItemStack.of(compoundtag1);
+                    player.drop(itemstack, true);
+                }
+            }
+
+            itemStack.removeTagKey("Items");
+            return true;
+        }
+    }
+
+    @Override
+    public int getBarWidth(ItemStack itemStack) {
+        return Math.min(1 + 12 * getContentWeight(itemStack) / 16, 13);
+    }
+
+    @Override
     public boolean overrideOtherStackedOnMe(ItemStack toolbox, ItemStack itemStack, Slot p_150744_, ClickAction p_150745_, Player p_150746_, SlotAccess p_150747_) {
         if (toolbox.getCount() != 1) return false;
         if (p_150745_ == ClickAction.SECONDARY && p_150744_.allowModification(p_150746_)) {
@@ -75,35 +116,24 @@ public class ToolboxItem extends BundleItem {
         }
     }
 
-    private static int add(ItemStack boundleItemStack, ItemStack newItemStack) {
+    private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
         if (!newItemStack.isEmpty() && newItemStack.getItem().canFitInsideContainerItems() && newItemStack.getItem() instanceof ToolItem) {
-            CompoundTag compoundtag = boundleItemStack.getOrCreateTag();
+            CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {
                 compoundtag.put("Items", new ListTag());
             }
 
-            int i = getContentWeight(boundleItemStack);
-            int j = getWeight();
-            int k = Math.min(newItemStack.getCount(), (64 - i) / j);
+            int i = getContentWeight(toolboxItemStack);
+            int k = Math.min(newItemStack.getCount(), 16 - i);
             if (k == 0) {
                 return 0;
             } else {
                 ListTag listtag = compoundtag.getList("Items", 10);
                 Optional<CompoundTag> optional = getMatchingItem(newItemStack, listtag);
-                if (optional.isPresent()) {
-                    CompoundTag compoundtag1 = optional.get();
-                    ItemStack itemstack = ItemStack.of(compoundtag1);
-                    itemstack.grow(k);
-                    itemstack.save(compoundtag1);
-                    listtag.remove(compoundtag1);
-                    listtag.add(0, (Tag) compoundtag1);
-                } else {
-                    ItemStack itemstack1 = newItemStack.copyWithCount(k);
-                    CompoundTag compoundtag2 = new CompoundTag();
-                    itemstack1.save(compoundtag2);
-                    listtag.add(0, (Tag) compoundtag2);
-                }
-
+                ItemStack itemstack1 = newItemStack.copyWithCount(k);
+                CompoundTag compoundtag2 = new CompoundTag();
+                itemstack1.save(compoundtag2);
+                listtag.add(0, (Tag) compoundtag2);
                 return k;
             }
         } else {
@@ -117,15 +147,8 @@ public class ToolboxItem extends BundleItem {
         }).findFirst();
     }
 
-    private static int getWeight() {
-        // Always returns 4 because all tools have weight
-        return 4;
-    }
-
-    private static int getContentWeight(ItemStack p_150779_) {
-        return getContents(p_150779_).mapToInt((p_186356_) -> {
-            return getWeight() * p_186356_.getCount();
-        }).sum();
+    private static int getContentWeight(ItemStack itemStack) {
+        return getContents(itemStack).mapToInt(ItemStack::getCount).sum();
     }
 
     private static Optional<ItemStack> removeOne(ItemStack p_150781_) {
@@ -150,28 +173,8 @@ public class ToolboxItem extends BundleItem {
         }
     }
 
-    private static boolean dropContents(ItemStack p_150730_, Player p_150731_) {
-        CompoundTag compoundtag = p_150730_.getOrCreateTag();
-        if (!compoundtag.contains("Items")) {
-            return false;
-        } else {
-            if (p_150731_ instanceof ServerPlayer) {
-                ListTag listtag = compoundtag.getList("Items", 10);
-
-                for (int i = 0; i < listtag.size(); ++i) {
-                    CompoundTag compoundtag1 = listtag.getCompound(i);
-                    ItemStack itemstack = ItemStack.of(compoundtag1);
-                    p_150731_.drop(itemstack, true);
-                }
-            }
-
-            p_150730_.removeTagKey("Items");
-            return true;
-        }
-    }
-
-    private static Stream<ItemStack> getContents(ItemStack p_150783_) {
-        CompoundTag compoundtag = p_150783_.getTag();
+    private static Stream<ItemStack> getContents(ItemStack itemStack) {
+        CompoundTag compoundtag = itemStack.getTag();
         if (compoundtag == null) {
             return Stream.empty();
         } else {
@@ -180,14 +183,16 @@ public class ToolboxItem extends BundleItem {
         }
     }
 
-    public Optional<TooltipComponent> getTooltipImage(ItemStack p_150775_) {
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
         NonNullList<ItemStack> nonnulllist = NonNullList.create();
-        getContents(p_150775_).forEach(nonnulllist::add);
-        return Optional.of(new BundleTooltip(nonnulllist, getContentWeight(p_150775_)));
+        getContents(itemStack).forEach(nonnulllist::add);
+        return Optional.of(new BundleTooltip(nonnulllist, getContentWeight(itemStack)));
     }
 
-    public void appendHoverText(ItemStack p_150749_, Level p_150750_, List<Component> p_150751_, TooltipFlag p_150752_) {
-        p_150751_.add(Component.translatable("item.minecraft.bundle.fullness", getContentWeight(p_150749_), 64).withStyle(ChatFormatting.GRAY));
+    @Override
+    public void appendHoverText(ItemStack itemStack, Level level, List<Component> components, TooltipFlag tooltipFlag) {
+        components.add(Component.translatable("item.minecraft.bundle.fullness", getContentWeight(itemStack), 16).withStyle(ChatFormatting.GRAY));
     }
 
     public void onDestroyed(ItemEntity p_150728_) {
