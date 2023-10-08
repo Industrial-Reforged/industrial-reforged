@@ -2,8 +2,6 @@ package com.indref.industrial_reforged.api.items;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
-import com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock;
 import com.indref.industrial_reforged.api.energy.items.IEnergyItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -29,14 +27,10 @@ public class EnergyTestItem extends Item implements IEnergyItem {
         }
         IndustrialReforged.LOGGER.info("UseItem: " + useItemStack.getItem());
         if (!level.isClientSide()) {
-            useItemStack.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(69420));
+            useItemStack.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(energyStorage.getEnergyStored()+100));
+            player.sendSystemMessage(Component.literal(String.valueOf(getEnergyStorage(useItemStack).getEnergyStored())));
             return InteractionResultHolder.success(useItemStack);
         }
         return InteractionResultHolder.fail(useItemStack);
-    }
-
-    @Override
-    public EnergyStorageProvider getEnergyStorage() {
-        return new EnergyStorageProvider();
     }
 }
