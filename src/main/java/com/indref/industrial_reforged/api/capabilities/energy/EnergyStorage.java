@@ -3,6 +3,10 @@ package com.indref.industrial_reforged.api.capabilities.energy;
 import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.nbt.CompoundTag;
 
+/**
+ * Main file for handling storing and
+ * modifying data of the energy capability
+ */
 public class EnergyStorage implements IEnergyStorage {
     public int stored;
     public int capacity;

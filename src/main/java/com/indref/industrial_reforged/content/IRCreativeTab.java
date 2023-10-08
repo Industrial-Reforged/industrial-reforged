@@ -10,7 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 public class IRCreativeTab {
-    public static Item icon = IRItems.TEST.get();
+    public static Item icon = IRItems.WRENCH.get();
 
     /**
      * Variable used for registering and storing all item groups under the "indref" mod-id
@@ -24,7 +24,7 @@ public class IRCreativeTab {
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> icon.getDefaultInstance())
             .displayItems((parameters, output) -> {
-                addItem(output, IRItems.TEST);
+                addItem(output, IRItems.WRENCH);
                 addBlock(output, IRBlocks.TEST_BLOCK);
             }).build());
 

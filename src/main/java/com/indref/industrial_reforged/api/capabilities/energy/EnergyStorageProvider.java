@@ -12,6 +12,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Exposes the energy capability for use with items and blocks
+ */
 public class EnergyStorageProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public EnergyStorage energyStorage = new EnergyStorage();
     public static final ResourceLocation IDENTIFIER = new ResourceLocation(IndustrialReforged.MODID, "energy");

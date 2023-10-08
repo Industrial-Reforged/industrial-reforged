@@ -1,6 +1,9 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.items.EnergyTestItem;
+import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.content.items.ToolboxItem;
 import com.indref.industrial_reforged.content.items.WrenchItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,8 +18,10 @@ public class IRItems {
      */
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IndustrialReforged.MODID);
 
-    public static final RegistryObject<Item> TEST = registerItem("test", () -> new WrenchItem(new Item.Properties()));
-
+    public static final RegistryObject<Item> WRENCH = registerItem("wrench", () -> new WrenchItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAMMER = registerItem("hammer", () -> new ToolItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> TOOLBOX = registerItem("toolbox", () -> new ToolboxItem(new Item.Properties()));
+    public static final RegistryObject<Item> ENERGY_TEST_ITEM = registerItem("energy_test", () -> new EnergyTestItem(new Item.Properties()));
     /**
      * Registers a new item
      *
