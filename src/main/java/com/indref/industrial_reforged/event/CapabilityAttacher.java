@@ -25,7 +25,7 @@ public class CapabilityAttacher {
     public static void onCapabilityAttachItemStack(AttachCapabilitiesEvent<ItemStack> event) {
         if (event.getObject().getItem() instanceof IEnergyItem energyItem) {
             event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider(event.getObject()));
-            IndustrialReforged.LOGGER.info("Attaching capabilities to itemstack");
+            event.getObject().addTagElement();
         }
     }
 }

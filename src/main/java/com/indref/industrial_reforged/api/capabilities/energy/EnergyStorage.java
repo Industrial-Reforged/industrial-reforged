@@ -19,14 +19,12 @@ import net.minecraftforge.network.NetworkHooks;
  * Or use the {@link EnergyStorageProvider} and subscribe to the right {@link net.minecraftforge.event.AttachCapabilitiesEvent}
  */
 public class EnergyStorage implements IEnergyStorage {
-    ItemStack itemStack = ItemStack.EMPTY;
     public EnergyStorage() {
     }
 
     public EnergyStorage(ItemStack itemStack) {
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {
             this.capacity = energyItem.getMaxEnergy();
-            this.itemStack = itemStack;
         }
     }
 
@@ -48,9 +46,6 @@ public class EnergyStorage implements IEnergyStorage {
 
     @Override
     public void setEnergyStored(int value) {
-        if (!this.itemStack.equals(ItemStack.EMPTY)) {
-            IRPackets.sendToClients(new S2CEnergyItem(getEnergyStored(), this.itemStack));
-        }
         this.stored = value;
     }
 

@@ -24,4 +24,6 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     public boolean isBarVisible(ItemStack p_150899_) {
         return true;
     }
+
+
 }
