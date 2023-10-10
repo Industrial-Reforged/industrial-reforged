@@ -12,35 +12,53 @@ import net.minecraftforge.common.util.LazyOptional;
  * Interface for implementing Items that store EU
  */
 public interface IEnergyItem {
-    default IEnergyStorage getEnergyStorage() {
-        if (this instanceof Item item) {
-            LazyOptional<IEnergyStorage> cap = item.getDefaultInstance().getCapability(IRCapabilities.ENERGY);
-            if (cap.isPresent())
-                return cap.orElseThrow(NullPointerException::new);
-        }
+    default IEnergyStorage getEnergyStorage(ItemStack itemStack) {
+        LazyOptional<IEnergyStorage> cap = itemStack.getCapability(IRCapabilities.ENERGY);
+        if (cap.isPresent())
+            return cap.orElseThrow(NullPointerException::new);
+
         return null;
     }
 
     default void setStoredEnergy(ItemStack itemStack, int value) {
-        if (this instanceof Item) {
-            IndustrialReforged.LOGGER.info("I am an item!!!"+this);
-        }
-        getEnergyStorage().setEnergyStored(value);
+        getEnergyStorage(itemStack).setEnergyStored(value);
+    }
+
+    default void setMaxEnergy(ItemStack itemStack) {
+        getEnergyStorage(itemStack).setMaxEnergy(getMaxEnergy());
+    }
+
+    int getMaxEnergy();
+
+    default int getStoredEnergy(ItemStack itemStack) {
+        return getEnergyStorage(itemStack).getEnergyStored();
     }
 
     /**
-     * This needs to be overridden to give it functionality
-     * Might want to change this, so it's not as confusing
+     * Try draining energy from an item
+     * @param itemStack the itemstack you want to drain the energy from
+     * @param value the amount of energy you want drain
+     * @return whether the draining was successful (true) or not (false)
      */
-    default void setStoredEnergy(int value) {
-
+    default boolean tryDrainEnergy(ItemStack itemStack, int value) {
+        if (getStoredEnergy(itemStack)+value > 0) {
+            setStoredEnergy(itemStack, getStoredEnergy(itemStack)-value);
+            return true;
+        }
+        return false;
     }
 
-    default void tryDrainEnergy(int value) {
-
-    }
-
-    default void tryFillEnergy(int value) {
-
+    /**
+     * Try filling energy of an item
+     * @param itemStack the itemstack you want to fill the energy to
+     * @param value the amount of energy you want fill
+     * @return whether the filling was successful (true) or not (false)
+     */
+    default boolean tryFillEnergy(ItemStack itemStack, int value) {
+        if (getStoredEnergy(itemStack)+value < getMaxEnergy()) {
+            setStoredEnergy(itemStack, getStoredEnergy(itemStack)+value);
+            return true;
+        }
+        return false;
     }
 }

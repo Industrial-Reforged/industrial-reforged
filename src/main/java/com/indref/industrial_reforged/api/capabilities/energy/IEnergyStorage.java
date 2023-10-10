@@ -13,4 +13,6 @@ public interface IEnergyStorage {
     int getMaxEnergy();
 
     void setEnergyStored(int value);
+
+    void setMaxEnergy(int value);
 }

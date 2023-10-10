@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
+public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable, IEnergyBlock {
     public EnergyTestBlock(Properties p_49795_) {
         super(p_49795_);
     }
@@ -39,5 +40,10 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    public EnergyStorageProvider getEnergyStorage() {
+        return new EnergyStorageProvider();
     }
 }

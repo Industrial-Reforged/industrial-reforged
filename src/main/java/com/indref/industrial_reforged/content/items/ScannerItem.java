@@ -7,4 +7,9 @@ public class ScannerItem extends ToolItem implements IEnergyItem {
     public ScannerItem(Properties p_41383_) {
         super(p_41383_);
     }
+
+    @Override
+    public int getMaxEnergy() {
+        return 10000;
+    }
 }

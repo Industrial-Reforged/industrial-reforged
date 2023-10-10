@@ -1,15 +1,17 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import io.netty.util.IllegalReferenceCountException;
+import com.indref.industrial_reforged.api.energy.items.IEnergyItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * Main file for handling storing and
  * modifying data of the energy capability
+ * For the api look at
+ * {@link com.indref.industrial_reforged.api.energy.items.IEnergyItem} and
+ * {@link com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock}
+ * <p>
+ * Or use the {@link EnergyStorageProvider} and subscribe to the right {@link net.minecraftforge.event.AttachCapabilitiesEvent}
  */
 public class EnergyStorage implements IEnergyStorage {
     public EnergyStorage() {
@@ -17,6 +19,9 @@ public class EnergyStorage implements IEnergyStorage {
 
     public EnergyStorage(ItemStack itemStack) {
         itemStack.serializeNBT().putInt(NBT_KEY_ENERGY_STORED, this.stored);
+        if (itemStack.getItem() instanceof IEnergyItem energyItem) {
+            this.capacity = energyItem.getMaxEnergy();
+        }
     }
 
     public int stored;
@@ -38,6 +43,11 @@ public class EnergyStorage implements IEnergyStorage {
     @Override
     public void setEnergyStored(int value) {
         this.stored = value;
+    }
+
+    @Override
+    public void setMaxEnergy(int value) {
+        this.capacity = value;
     }
 
     public CompoundTag serializeNBT() {

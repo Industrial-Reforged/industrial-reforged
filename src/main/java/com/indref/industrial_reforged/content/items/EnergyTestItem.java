@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.content.items;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -28,14 +28,14 @@ public class EnergyTestItem extends Item implements IEnergyItem {
         IndustrialReforged.LOGGER.info("UseItem: " + useItemStack.getItem());
         if (!level.isClientSide()) {
             useItemStack.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(energyStorage.getEnergyStored()+100));
-            player.sendSystemMessage(Component.literal(String.valueOf(this.getEnergyStorage().getEnergyStored())));
+            player.sendSystemMessage(Component.literal(String.valueOf(this.getEnergyStorage(useItemStack).getEnergyStored())));
             return InteractionResultHolder.success(useItemStack);
         }
         return InteractionResultHolder.fail(useItemStack);
     }
 
     @Override
-    public void setStoredEnergy(int value) {
-        IEnergyItem.super.setStoredEnergy(this.getDefaultInstance(), value);
+    public int getMaxEnergy() {
+        return 100000;
     }
 }

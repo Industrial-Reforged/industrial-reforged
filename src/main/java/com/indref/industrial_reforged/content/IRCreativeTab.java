@@ -2,9 +2,11 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,8 +23,9 @@ public class IRCreativeTab {
      * Default Item Group for all indref items
      */
     public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
+            .title(Component.literal("Industrial Reforged"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> icon.getDefaultInstance())
+            .icon(() -> new ItemStack(IRItems.WRENCH.get()))
             .displayItems((parameters, output) -> {
                 addItem(output, IRItems.WRENCH);
                 addBlock(output, IRBlocks.TEST_BLOCK);

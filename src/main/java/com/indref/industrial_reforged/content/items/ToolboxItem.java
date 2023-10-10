@@ -12,11 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -59,38 +55,6 @@ public class ToolboxItem extends BundleItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        ItemStack itemstack = player.getItemInHand(interactionHand);
-        if (dropContents(itemstack, player)) {
-            this.playDropContentsSound(player);
-            player.awardStat(Stats.ITEM_USED.get(this));
-            return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
-        } else {
-            return InteractionResultHolder.fail(itemstack);
-        }
-    }
-
-    private static boolean dropContents(ItemStack itemStack, Player player) {
-        CompoundTag compoundtag = itemStack.getOrCreateTag();
-        if (!compoundtag.contains("Items")) {
-            return false;
-        } else {
-            if (player instanceof ServerPlayer) {
-                ListTag listtag = compoundtag.getList("Items", 10);
-
-                for (int i = 0; i < listtag.size(); ++i) {
-                    CompoundTag compoundtag1 = listtag.getCompound(i);
-                    ItemStack itemstack = ItemStack.of(compoundtag1);
-                    player.drop(itemstack, true);
-                }
-            }
-
-            itemStack.removeTagKey("Items");
-            return true;
-        }
-    }
-
-    @Override
     public int getBarWidth(ItemStack itemStack) {
         return Math.min(1 + 12 * getContentWeight(itemStack) / SLOT_CAPACITY, 13);
     }
@@ -113,9 +77,8 @@ public class ToolboxItem extends BundleItem {
             }
 
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
@@ -138,9 +101,8 @@ public class ToolboxItem extends BundleItem {
                 listtag.add(0, (Tag) compoundtag2);
                 return k;
             }
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     private static Optional<CompoundTag> getMatchingItem(ItemStack p_150757_, ListTag p_150758_) {
@@ -207,9 +169,5 @@ public class ToolboxItem extends BundleItem {
 
     private void playInsertSound(Entity p_186352_) {
         p_186352_.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + p_186352_.level().getRandom().nextFloat() * 0.4F);
-    }
-
-    private void playDropContentsSound(Entity p_186354_) {
-        p_186354_.playSound(SoundEvents.BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + p_186354_.level().getRandom().nextFloat() * 0.4F);
     }
 }
