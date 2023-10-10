@@ -1,8 +1,13 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.energy.items.IEnergyItem;
+import com.indref.industrial_reforged.networking.IRPackets;
+import com.indref.industrial_reforged.networking.packets.S2CEnergyItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Main file for handling storing and
@@ -14,13 +19,14 @@ import net.minecraft.world.item.ItemStack;
  * Or use the {@link EnergyStorageProvider} and subscribe to the right {@link net.minecraftforge.event.AttachCapabilitiesEvent}
  */
 public class EnergyStorage implements IEnergyStorage {
+    ItemStack itemStack = ItemStack.EMPTY;
     public EnergyStorage() {
     }
 
     public EnergyStorage(ItemStack itemStack) {
-        itemStack.serializeNBT().putInt(NBT_KEY_ENERGY_STORED, this.stored);
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {
             this.capacity = energyItem.getMaxEnergy();
+            this.itemStack = itemStack;
         }
     }
 
@@ -42,6 +48,9 @@ public class EnergyStorage implements IEnergyStorage {
 
     @Override
     public void setEnergyStored(int value) {
+        if (!this.itemStack.equals(ItemStack.EMPTY)) {
+            IRPackets.sendToClients(new S2CEnergyItem(getEnergyStored(), this.itemStack));
+        }
         this.stored = value;
     }
 

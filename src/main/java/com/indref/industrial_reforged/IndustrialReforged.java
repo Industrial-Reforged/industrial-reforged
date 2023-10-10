@@ -3,6 +3,7 @@ package com.indref.industrial_reforged;
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
+import com.indref.industrial_reforged.networking.IRPackets;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Blocks;
@@ -36,6 +37,8 @@ public class IndustrialReforged {
         IRBlocks.BLOCKS.register(modEventBus);
 
         IRBlockEntityTypes.BLOCK_ENTITIES.register(modEventBus);
+
+        IRPackets.register();
 
         MinecraftForge.EVENT_BUS.register(this);
 
