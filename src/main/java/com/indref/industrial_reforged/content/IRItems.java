@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.content.items.*;
 import com.indref.industrial_reforged.materials.IRArmorMaterials;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,7 +27,10 @@ public class IRItems {
     public static final RegistryObject<Item> ENERGY_TEST_ITEM = registerItem("energy_test", () -> new EnergyTestItem(new Item.Properties()));
     public static final RegistryObject<Item> SEED_POUCH = registerItem("seed_pouch", () -> new SeedPouchItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> RUBBER_SHEET = registerItem("rubber_sheet", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> RUBBER_BOOTS = registerItem("rubber_boots", () -> new HazmatSuiteItem(IRArmorMaterials.RUBBER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> CORN_SEEDS = ITEMS.register("corn_seeds",
+            () -> new ItemNameBlockItem(IRBlocks.CORN_CROP.get(), new Item.Properties()));
+    public static final RegistryObject<Item> RUBBER_BOOTS = registerItem("rubber_boots",
+            () -> new HazmatSuiteItem(IRArmorMaterials.RUBBER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
 
     /**
      * Registers a new item

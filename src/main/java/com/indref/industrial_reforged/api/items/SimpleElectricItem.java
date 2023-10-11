@@ -25,5 +25,4 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
         return true;
     }
 
-
 }

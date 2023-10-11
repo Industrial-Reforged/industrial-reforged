@@ -25,7 +25,6 @@ public class CapabilityAttacher {
     public static void onCapabilityAttachItemStack(AttachCapabilitiesEvent<ItemStack> event) {
         if (event.getObject().getItem() instanceof IEnergyItem energyItem) {
             event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider(event.getObject()));
-            event.getObject().addTagElement();
         }
     }
 }
