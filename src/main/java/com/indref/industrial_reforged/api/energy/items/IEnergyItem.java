@@ -9,7 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
 /**
- * Interface for implementing Items that store EU
+ * Interface for implementing Items that store EU.
+ * IMPORTANT! When implementing this manually for an item,
+ * you need to override the getUseDuration() function and make it return 1
  */
 public interface IEnergyItem {
     default IEnergyStorage getEnergyStorage(ItemStack itemStack) {

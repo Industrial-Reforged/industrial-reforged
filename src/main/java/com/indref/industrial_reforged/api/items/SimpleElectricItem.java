@@ -25,4 +25,9 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
         return true;
     }
 
+    @Override
+    public int getUseDuration(ItemStack p41454) {
+        return 1;
+    }
+
 }

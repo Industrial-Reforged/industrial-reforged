@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.content.items;
 
-import com.indref.industrial_reforged.api.energy.items.IEnergyItem;
-import com.indref.industrial_reforged.api.items.ToolItem;
-import net.minecraft.world.item.ItemStack;
+import com.indref.industrial_reforged.api.items.IToolItem;
+import com.indref.industrial_reforged.api.items.SimpleElectricItem;
 
-public class ScannerItem extends ToolItem implements IEnergyItem {
+public class ScannerItem extends SimpleElectricItem implements IToolItem {
     public ScannerItem(Properties p_41383_) {
         super(p_41383_);
     }
