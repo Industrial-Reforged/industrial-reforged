@@ -30,7 +30,6 @@ public class EnergyTestItem extends SimpleElectricItem {
             case MAIN_HAND -> useItemStack = player.getMainHandItem();
             case OFF_HAND -> useItemStack = player.getOffhandItem();
         }
-        IndustrialReforged.LOGGER.info("UseItem: " + useItemStack.getItem());
         if (!level.isClientSide()) {
             useItemStack.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(energyStorage.getEnergyStored()+100));
             player.sendSystemMessage(Component.literal(String.valueOf(this.getEnergyStorage(useItemStack).getEnergyStored())));

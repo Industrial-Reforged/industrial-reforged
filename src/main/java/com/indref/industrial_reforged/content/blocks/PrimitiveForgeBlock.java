@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
-import com.indref.industrial_reforged.api.items.ToolItem;
-import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.impl.PrimitiveForgeBE;
 import net.minecraft.core.BlockPos;

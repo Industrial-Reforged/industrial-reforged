@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blocks.CornCropBlock;
 import com.indref.industrial_reforged.content.blocks.EnergyTestBlock;
 import com.indref.industrial_reforged.content.blocks.PrimitiveForgeBlock;
+import com.indref.industrial_reforged.content.blocks.TestMultiblockControllerBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -21,8 +22,12 @@ public class IRBlocks {
      */
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IndustrialReforged.MODID);
 
-    public static final RegistryObject<Block> TEST_BLOCK = registerBlockAndItem("test_block", () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
-    public static final RegistryObject<Block> PRIMITIVE_FORGE = registerBlockAndItem("primitive_forge", () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> TEST_BLOCK = registerBlockAndItem("test_block",
+            () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> PRIMITIVE_FORGE = registerBlockAndItem("primitive_forge",
+            () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> TEST_CONTROLLER = registerBlockAndItem("test_controller",
+            () -> new TestMultiblockControllerBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> CORN_CROP = registerBlock("corn_crop",
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
 

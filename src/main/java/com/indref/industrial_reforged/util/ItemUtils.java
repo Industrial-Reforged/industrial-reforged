@@ -11,9 +11,6 @@ public class ItemUtils {
     // The corresponding rgb value: rgb(77,166,255)
     public static final int ENERGY_BAR_COLOR = 0x4DA6FF;
     public static int energyForDurabilityBar(ItemStack itemStack) {
-        IndustrialReforged.LOGGER.info("Energy bar value: "+ Math.round(13.0F - ((1 - getChargeRatio(itemStack)) * 13.0F)));
-        IndustrialReforged.LOGGER.info("Charge ratio: "+ getChargeRatio(itemStack));
-        itemStack.getCapability(IRCapabilities.ENERGY).ifPresent(energyStorage -> IndustrialReforged.LOGGER.info("Stored energy: "+energyStorage.getEnergyStored()));
         return Math.round(13.0F - ((1 - getChargeRatio(itemStack)) * 13.0F));
     }
 
@@ -25,6 +22,7 @@ public class ItemUtils {
     }
 
     public static float getChargeRatio(ItemStack stack) {
+        // TODO: 10/13/2023 use getEnergyItem for this 
         IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         return (float) energyStorage.getEnergyStored() / energyStorage.getMaxEnergy();
     }

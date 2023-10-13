@@ -24,10 +24,8 @@ public class ScannerInfoOverlay {
         if (hitResultType == HitResult.Type.BLOCK && (minecraft.player.getMainHandItem().getItem() instanceof ScannerItem || minecraft.player.getOffhandItem().getItem() instanceof ScannerItem)) {
             BlockPos hitResultBlockPos = ((BlockHitResult) minecraft.hitResult).getBlockPos();
             BlockState blockstate = minecraft.level.getBlockState(hitResultBlockPos);
-            IndustrialReforged.LOGGER.info("hovering over"+blockstate);
             if (blockstate.is(IRBlocks.TEST_BLOCK.get())) {
                 if (blockstate.getBlock() instanceof IScannable iScannable) {
-                    IndustrialReforged.LOGGER.info("instance of scannable");
                     minecraft.player.sendSystemMessage(blockstate.getBlock().getName());
                     minecraft.player.sendSystemMessage(Component.literal("BlockState"));
                     guiGraphics.drawCenteredString(Minecraft.getInstance().font,

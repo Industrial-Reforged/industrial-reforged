@@ -26,10 +26,6 @@ public interface IEnergyItem {
         getEnergyStorage(itemStack).setEnergyStored(value);
     }
 
-    default void setMaxEnergy(ItemStack itemStack) {
-        getEnergyStorage(itemStack).setMaxEnergy(getMaxEnergy());
-    }
-
     int getMaxEnergy();
 
     default int getStoredEnergy(ItemStack itemStack) {
