@@ -1,24 +1,22 @@
 package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.content.IRBlocks;
+import com.indref.industrial_reforged.content.IRCreativeTab;
 import com.indref.industrial_reforged.content.IRItems;
-import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.networking.IRPackets;
+import com.indref.industrial_reforged.screen.IRMenuTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 @Mod(IndustrialReforged.MODID)
@@ -37,6 +35,10 @@ public class IndustrialReforged {
         IRBlocks.BLOCKS.register(modEventBus);
 
         IRBlockEntityTypes.BLOCK_ENTITIES.register(modEventBus);
+
+        IRMenuTypes.MENUS.register(modEventBus);
+
+        IRCreativeTab.CREATIVE_TABS.register(modEventBus);
 
         IRPackets.register();
 

@@ -1,13 +1,8 @@
 package com.indref.industrial_reforged.content.items;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.items.ToolItem;
-import com.indref.industrial_reforged.api.multiblock.IMultiblock;
-import com.indref.industrial_reforged.api.multiblock.IMultiblockController;
-import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,10 +39,11 @@ public class WrenchItem extends ToolItem {
         BlockPos clickPos = useOnContext.getClickedPos();
         Block wrenchableBlock = level.getBlockState(clickPos).getBlock();
         ItemStack itemInHand = useOnContext.getItemInHand();
+
         // only on the server side
         if (!level.isClientSide) {
             // check if block can be wrenched
-            if (wrenchableBlock instanceof IWrenchable iWrenchableBlock && player.isShiftKeyDown()) {
+            if (wrenchableBlock instanceof IWrenchable iWrenchableBlock && player.isCrouching()) {
                 // Drop the block itself instead of custom drop
                 if (iWrenchableBlock.getDropItem() == null) {
                     ItemStack dropItem = wrenchableBlock.asItem().getDefaultInstance();
@@ -65,20 +61,7 @@ public class WrenchItem extends ToolItem {
                 }
                 level.removeBlock(clickPos, false);
                 return InteractionResult.SUCCESS;
-            } else if (wrenchableBlock instanceof IMultiblockController multiblockController) {
-                IMultiblock multiblock = multiblockController.getMultiblock();
-                MultiblockHelper multiblockHelper = new MultiblockHelper(multiblockController);
-
-                int controllerID = multiblockHelper.getIdByBlock(multiblock.getController());
-                String multiblockName = multiblock.getDefinition().get(controllerID).getName().getString();
-
-                player.sendSystemMessage(Component.literal(multiblockName));
-
-                multiblockHelper.isValid(clickPos, player);
-
-                multiblockHelper.form();
-                return InteractionResult.SUCCESS;
-            } // Implement rotating of blocks in next else block
+            }
         }
         return InteractionResult.FAIL;
     }

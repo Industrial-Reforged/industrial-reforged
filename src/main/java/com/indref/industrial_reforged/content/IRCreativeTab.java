@@ -12,8 +12,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 public class IRCreativeTab {
-    public static Item icon = IRItems.WRENCH.get();
-
     /**
      * Variable used for registering and storing all item groups under the "indref" mod-id
      */
@@ -23,12 +21,29 @@ public class IRCreativeTab {
      * Default Item Group for all indref items
      */
     public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
-            .title(Component.literal("Industrial Reforged"))
+            .title(Component.translatable("creative_tab.indref"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(() -> new ItemStack(IRItems.WRENCH.get()))
             .displayItems((parameters, output) -> {
+                // Tools
                 addItem(output, IRItems.WRENCH);
-                addBlock(output, IRBlocks.TEST_BLOCK);
+                addItem(output, IRItems.HAMMER);
+                addItem(output, IRItems.SCANNER);
+
+                // Storage items
+                addItem(output, IRItems.TOOLBOX);
+                addItem(output, IRItems.SEED_POUCH);
+
+                // armor
+                addItem(output, IRItems.RUBBER_BOOTS);
+
+                // misc and crafting items
+                addItem(output, IRItems.RUBBER_SHEET);
+                addItem(output, IRItems.CORN_SEEDS);
+
+                // test objects
+                addItem(output, IRItems.ENERGY_TEST_ITEM);
+                addBlock(output, IRBlocks.TEST_BLOCK_ENERGY);
             }).build());
 
     /**

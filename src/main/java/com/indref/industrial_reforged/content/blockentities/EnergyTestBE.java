@@ -1,8 +1,8 @@
-package com.indref.industrial_reforged.content.blockentities.impl;
+package com.indref.industrial_reforged.content.blockentities;
 
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock;
-import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

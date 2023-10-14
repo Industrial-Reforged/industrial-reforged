@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
@@ -29,8 +30,8 @@ import net.minecraft.world.level.Level;
 public class ToolboxItem extends BundleItem {
     public static final int SLOT_CAPACITY = 8;
 
-    public ToolboxItem(Item.Properties p_150726_) {
-        super(p_150726_);
+    public ToolboxItem(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class ToolboxItem extends BundleItem {
             if (itemstack.isEmpty()) {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
-            } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.getItem() instanceof ToolItem) {
+            } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.getItem() instanceof IToolItem) {
                 int i = (SLOT_CAPACITY - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
@@ -68,7 +69,7 @@ public class ToolboxItem extends BundleItem {
                     this.playRemoveOneSound(p_150746_);
                     p_150747_.set(p_186347_);
                 });
-            } else if (itemStack.getItem() instanceof ToolItem) {
+            } else if (itemStack.getItem() instanceof IToolItem) {
                 int i = add(toolbox, itemStack);
                 if (i > 0) {
                     this.playInsertSound(p_150746_);
@@ -82,7 +83,7 @@ public class ToolboxItem extends BundleItem {
     }
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
-        if (!newItemStack.isEmpty() && newItemStack.getItem().canFitInsideContainerItems() && newItemStack.getItem() instanceof ToolItem) {
+        if (!newItemStack.isEmpty() && newItemStack.getItem().canFitInsideContainerItems() && newItemStack.getItem() instanceof IToolItem) {
             CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {
                 compoundtag.put("Items", new ListTag());

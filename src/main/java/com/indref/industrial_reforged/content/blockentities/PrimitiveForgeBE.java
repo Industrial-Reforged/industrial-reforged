@@ -1,12 +1,10 @@
-package com.indref.industrial_reforged.content.blockentities.impl;
+package com.indref.industrial_reforged.content.blockentities;
 
-import com.indref.industrial_reforged.content.IRItems;
-import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
@@ -18,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;

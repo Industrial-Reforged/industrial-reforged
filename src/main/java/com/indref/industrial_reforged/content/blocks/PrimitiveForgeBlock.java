@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
-import com.indref.industrial_reforged.content.blockentities.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.blockentities.impl.PrimitiveForgeBE;
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
+import com.indref.industrial_reforged.content.blockentities.PrimitiveForgeBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
