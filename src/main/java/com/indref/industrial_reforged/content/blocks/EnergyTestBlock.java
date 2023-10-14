@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.content.blocks;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
-import com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock;
+import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

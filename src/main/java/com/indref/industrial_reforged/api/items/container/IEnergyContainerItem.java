@@ -1,10 +1,8 @@
-package com.indref.industrial_reforged.api.energy.items;
+package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import net.minecraft.world.item.Item;
+import com.indref.industrial_reforged.api.items.container.IContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -13,7 +11,7 @@ import net.minecraftforge.common.util.LazyOptional;
  * IMPORTANT! When implementing this manually for an item,
  * you need to override the getUseDuration() function and make it return 1
  */
-public interface IEnergyItem {
+public interface IEnergyContainerItem extends IContainerItem {
     default IEnergyStorage getEnergyStorage(ItemStack itemStack) {
         LazyOptional<IEnergyStorage> cap = itemStack.getCapability(IRCapabilities.ENERGY);
         if (cap.isPresent())
@@ -22,13 +20,11 @@ public interface IEnergyItem {
         return null;
     }
 
-    default void setStoredEnergy(ItemStack itemStack, int value) {
+    default void setStored(ItemStack itemStack, int value) {
         getEnergyStorage(itemStack).setEnergyStored(value);
     }
 
-    int getMaxEnergy();
-
-    default int getStoredEnergy(ItemStack itemStack) {
+    default int getStored(ItemStack itemStack) {
         return getEnergyStorage(itemStack).getEnergyStored();
     }
 
@@ -39,8 +35,8 @@ public interface IEnergyItem {
      * @return whether the draining was successful (true) or not (false)
      */
     default boolean tryDrainEnergy(ItemStack itemStack, int value) {
-        if (getStoredEnergy(itemStack)+value > 0) {
-            setStoredEnergy(itemStack, getStoredEnergy(itemStack)-value);
+        if (getStored(itemStack)+value > 0) {
+            setStored(itemStack, getStored(itemStack)-value);
             return true;
         }
         return false;
@@ -53,8 +49,8 @@ public interface IEnergyItem {
      * @return whether the filling was successful (true) or not (false)
      */
     default boolean tryFillEnergy(ItemStack itemStack, int value) {
-        if (getStoredEnergy(itemStack)+value < getMaxEnergy()) {
-            setStoredEnergy(itemStack, getStoredEnergy(itemStack)+value);
+        if (getStored(itemStack)+value < getCapacity(itemStack)) {
+            setStored(itemStack, getStored(itemStack)+value);
             return true;
         }
         return false;

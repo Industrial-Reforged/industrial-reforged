@@ -1,0 +1,19 @@
+{
+  "creative_tab.indref": "Industrial Reforged",
+
+  "item.indref.hammer": "Hammer",
+  "item.indref.wrench": "Wrench",
+  "item.indref.scanner": "Scanner",
+
+  "item.indref.seed_pouch": "Seed Pouch",
+  "item.indref.toolbox": "Toolbox",
+
+  "item.indref.hazmat_helmet": "Hazmat Helmet",
+  "item.indref.hazmat_chestplate": "Hazmat Chestplate",
+  "item.indref.hazmat_leggings": "Hazmat Leggings",
+  "item.indref.hazmat_boots": "Hazmat Boots",
+
+  "block.indref.test_block_energy": "Test Block Energy",
+
+  "scanner_info.energy_block.energy_ratio": "Energy stored: "
+}

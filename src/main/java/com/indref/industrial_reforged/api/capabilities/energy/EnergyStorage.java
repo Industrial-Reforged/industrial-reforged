@@ -1,20 +1,16 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.api.energy.items.IEnergyItem;
-import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.networking.packets.S2CEnergyItem;
-import net.minecraft.client.Minecraft;
+import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
+import com.indref.industrial_reforged.api.items.container.IEnergyContainerItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Main file for handling storing and
  * modifying data of the energy capability
  * For the api look at
- * {@link com.indref.industrial_reforged.api.energy.items.IEnergyItem} and
- * {@link com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock}
+ * {@link IEnergyContainerItem} and
+ * {@link IEnergyBlock}
  * <p>
  * Or use the {@link EnergyStorageProvider} and subscribe to the right {@link net.minecraftforge.event.AttachCapabilitiesEvent}
  */
@@ -23,8 +19,8 @@ public class EnergyStorage implements IEnergyStorage {
     }
 
     public EnergyStorage(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof IEnergyItem energyItem) {
-            this.capacity = energyItem.getMaxEnergy();
+        if (itemStack.getItem() instanceof IEnergyContainerItem energyItem) {
+            this.capacity = energyItem.getCapacity(itemStack);
         }
     }
 
@@ -40,7 +36,7 @@ public class EnergyStorage implements IEnergyStorage {
     }
 
     @Override
-    public int getMaxEnergy() {
+    public int getEnergyCapacity() {
         return this.capacity;
     }
 
@@ -50,7 +46,7 @@ public class EnergyStorage implements IEnergyStorage {
     }
 
     @Override
-    public void setMaxEnergy(int value) {
+    public void setEnergyCapacity(int value) {
         this.capacity = value;
     }
 

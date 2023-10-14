@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.event;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
-import com.indref.industrial_reforged.api.energy.blocks.IEnergyBlock;
-import com.indref.industrial_reforged.api.energy.items.IEnergyItem;
+import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
+import com.indref.industrial_reforged.api.items.container.IEnergyContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -23,7 +22,7 @@ public class CapabilityAttacher {
 
     @SubscribeEvent
     public static void onCapabilityAttachItemStack(AttachCapabilitiesEvent<ItemStack> event) {
-        if (event.getObject().getItem() instanceof IEnergyItem energyItem) {
+        if (event.getObject().getItem() instanceof IEnergyContainerItem) {
             event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider(event.getObject()));
         }
     }

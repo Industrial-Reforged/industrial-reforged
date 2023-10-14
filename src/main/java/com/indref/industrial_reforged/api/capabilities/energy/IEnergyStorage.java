@@ -10,9 +10,9 @@ import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 public interface IEnergyStorage {
     int getEnergyStored();
 
-    int getMaxEnergy();
+    int getEnergyCapacity();
 
     void setEnergyStored(int value);
 
-    void setMaxEnergy(int value);
+    void setEnergyCapacity(int value);
 }

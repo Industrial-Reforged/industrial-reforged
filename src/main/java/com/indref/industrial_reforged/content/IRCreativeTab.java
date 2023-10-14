@@ -35,7 +35,7 @@ public class IRCreativeTab {
                 addItem(output, IRItems.SEED_POUCH);
 
                 // armor
-                addItem(output, IRItems.RUBBER_BOOTS);
+                addItem(output, IRItems.HAZMAT_BOOTS);
 
                 // misc and crafting items
                 addItem(output, IRItems.RUBBER_SHEET);

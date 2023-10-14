@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.content.items;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
@@ -39,7 +38,7 @@ public class EnergyTestItem extends SimpleElectricItem {
     }
 
     @Override
-    public int getMaxEnergy() {
+    public int getCapacity(ItemStack itemStack) {
         return 10000;
     }
 
@@ -49,7 +48,7 @@ public class EnergyTestItem extends SimpleElectricItem {
         Optional<IEnergyStorage> capability = stack.getCapability(IRCapabilities.ENERGY).resolve();
         if (capability.isPresent()) {
             IEnergyStorage storage = capability.get();
-            tooltip.add(Component.literal(String.format("%s / %s", storage.getEnergyStored(), storage.getMaxEnergy())).withStyle(ChatFormatting.AQUA));
+            tooltip.add(Component.literal(String.format("%s / %s", storage.getEnergyStored(), storage.getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
         } else {
             tooltip.add(Component.literal("0 / 0"));
         }

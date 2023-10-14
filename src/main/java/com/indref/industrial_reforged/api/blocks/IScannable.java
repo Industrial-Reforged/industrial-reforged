@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.api.blocks;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -15,8 +17,10 @@ public interface IScannable {
      * This method will display hover scanner information for the specific block.
      * Note: The lists in the list stand for the lines, so if you want to have
      * a translatable component and a normal on a single line put both of them in one list
-     * @param blockState gives you info about the blockstate the scanner is hovering over
+     * @param scannedBlock gives you info about the blockstate the scanner is hovering over
+     * @param scannedBlockPos gives you info about the blockpos of the block the scanner is hovering over
+     * @param level gives you info about the level of the block the scanner is hovering over
      * @return the text that should be displayed
      */
-    List<List<Component>> displayText(BlockState blockState);
+    List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level);
 }

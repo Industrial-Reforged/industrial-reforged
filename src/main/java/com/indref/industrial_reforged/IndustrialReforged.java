@@ -4,7 +4,6 @@ import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRCreativeTab;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
-import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.screen.IRMenuTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -39,8 +38,6 @@ public class IndustrialReforged {
         IRMenuTypes.MENUS.register(modEventBus);
 
         IRCreativeTab.CREATIVE_TABS.register(modEventBus);
-
-        IRPackets.register();
 
         MinecraftForge.EVENT_BUS.register(this);
     }
