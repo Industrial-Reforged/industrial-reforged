@@ -1,0 +1,12 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:fluid_container",
+  "textures": {
+    "base": "indref:item/fluid_cell",
+    "fluid": "indref:item/fluid_cell_overlay",
+    "particle": "indref:item/fluid_cell_overlay"
+  },
+  "flip_gas": true,
+  "apply_tint": true,
+  "fluid": "minecraft:empty"
+}
