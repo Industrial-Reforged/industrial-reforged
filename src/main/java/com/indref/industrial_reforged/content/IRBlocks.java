@@ -30,6 +30,14 @@ public class IRBlocks {
     public static final RegistryObject<Block> CORN_CROP = registerBlock("corn_crop",
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
 
+    public static final RegistryObject<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",
+            () -> new RubberTreeLogBlock());
+    public static final RegistryObject<Block> RUBBER_TREE_LEAVES = registerBlockAndItem("rubber_tree_leaves",
+            () -> new RubberTreeLeavesBlock());
+    public static final RegistryObject<Block> RUBBER_TREE_SAPLING = registerBlockAndItem("rubber_tree_sapling",
+            () -> new RubberTreeSaplingBlock());
+    public static final RegistryObject<Block> RUBBER_TREE_RESIN_HOLE = registerBlockAndItem("rubber_tree_resin_hole",
+            () -> new RubberTreeResinHoleBlock());
 
     /**
      * Registers a new block and item

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "indref:block/tree/rubber_tree_resin_hole_full",
+    "side": "indref:block/tree/rubber_tree_log",
+    "top": "indref:block/tree/rubber_tree_log_top"
+  }
+}

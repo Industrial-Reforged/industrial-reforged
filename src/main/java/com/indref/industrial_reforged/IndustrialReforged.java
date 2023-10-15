@@ -2,6 +2,7 @@ package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRCreativeTab;
+import com.indref.industrial_reforged.content.IRPlacerTypes;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.screen.IRMenuTypes;
@@ -38,6 +39,9 @@ public class IndustrialReforged {
         IRMenuTypes.MENUS.register(modEventBus);
 
         IRCreativeTab.CREATIVE_TABS.register(modEventBus);
+
+        IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
+        IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

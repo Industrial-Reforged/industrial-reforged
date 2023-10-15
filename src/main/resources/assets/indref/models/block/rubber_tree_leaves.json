@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "indref:block/tree/rubber_tree_leaves"
+  }
+}

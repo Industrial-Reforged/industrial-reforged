@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#forge:is_plains",
+  "features": "indref:rubber_tree",
+  "step": "vegetal_decoration"
+}
