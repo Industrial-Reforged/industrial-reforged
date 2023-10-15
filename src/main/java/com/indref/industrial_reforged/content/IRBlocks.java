@@ -1,10 +1,7 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blocks.CornCropBlock;
-import com.indref.industrial_reforged.content.blocks.EnergyTestBlock;
-import com.indref.industrial_reforged.content.blocks.PrimitiveForgeBlock;
-import com.indref.industrial_reforged.content.blocks.SimplePressBlock;
+import com.indref.industrial_reforged.content.blocks.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +21,8 @@ public class IRBlocks {
 
     public static final RegistryObject<Block> TEST_BLOCK_ENERGY = registerBlockAndItem("test_block_energy",
             () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",
+            () -> new MachineFrameBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> PRIMITIVE_FORGE = registerBlockAndItem("primitive_forge",
             () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> SIMPLE_PRESS = registerBlockAndItem("simple_press",

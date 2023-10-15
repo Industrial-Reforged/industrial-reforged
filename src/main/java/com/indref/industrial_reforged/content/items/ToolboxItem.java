@@ -25,8 +25,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-// TODO: 10/8/2023 Fix bar fullnes bug
-
 public class ToolboxItem extends BundleItem {
     public static final int SLOT_CAPACITY = 8;
 

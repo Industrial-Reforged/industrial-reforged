@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.items.container.IContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -31,7 +30,14 @@ public interface IFluidContainerItem extends IContainerItem {
      * @return true if was able to fill, false if wasn't able to do so
      */
     default boolean tryFill(int amount, ItemStack itemStack) {
-        FluidStack fluidStack = new FluidStack(getFluid(), getStored(itemStack)+amount);
+        return tryFill(getFluid(), amount, itemStack);
+    }
+
+    /**
+     * @return true if was able to fill, false if wasn't able to do so
+     */
+    default boolean tryFill(Fluid fluid, int amount, ItemStack itemStack) {
+        FluidStack fluidStack = new FluidStack(fluid, getStored(itemStack)+amount);
         IFluidHandlerItem fluidHandlerItem = getFluidHandler(itemStack);
         if (fluidHandlerItem.isFluidValid(0, fluidStack) && fluidHandlerItem.getFluidInTank(0).getAmount()+amount<=fluidHandlerItem.getTankCapacity(0)) {
             fluidHandlerItem.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
@@ -44,7 +50,14 @@ public interface IFluidContainerItem extends IContainerItem {
      * @return true if was able to fill, false if wasn't able to do so
      */
     default boolean tryDrain(int amount, ItemStack itemStack) {
-        FluidStack fluidStack = new FluidStack(getFluid(), getStored(itemStack)-amount);
+        return tryDrain(getFluid(), amount, itemStack);
+    }
+
+    /**
+     * @return true if was able to fill, false if wasn't able to do so
+     */
+    default boolean tryDrain(Fluid fluid, int amount, ItemStack itemStack) {
+        FluidStack fluidStack = new FluidStack(fluid, getStored(itemStack)-amount);
         IFluidHandlerItem fluidHandlerItem = getFluidHandler(itemStack);
         if (fluidHandlerItem.isFluidValid(0, fluidStack) && fluidHandlerItem.getFluidInTank(0).getAmount()-amount>=0) {
             fluidHandlerItem.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
