@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blocks.*;
-import com.indref.industrial_reforged.content.worldgen.RubberTreeGrower;
 
+import com.indref.industrial_reforged.worldgen.RubberTreeGrower;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -30,8 +30,6 @@ public class IRBlocks {
             () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> SIMPLE_PRESS = registerBlockAndItem("simple_press",
             () -> new SimplePressBlock(BlockBehaviour.Properties.of()));
-    public static final RegistryObject<Block> CRATE = registerBlockAndItem("crate",
-            () -> new CrateBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> CORN_CROP = registerBlock("corn_crop",
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
 
