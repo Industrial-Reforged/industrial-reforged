@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.items.container.IEnergyContainerItem;
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidContainerItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -11,7 +11,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
@@ -73,7 +72,7 @@ public class IRCreativeTab {
         // Add base item
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
-        if (item.get() instanceof IEnergyContainerItem energyContainerItem)
+        if (item.get() instanceof IEnergyItem energyContainerItem)
             energyContainerItem.setStored(stack, energyContainerItem.getCapacity(stack));
         output.accept(stack);
     }

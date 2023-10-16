@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.api.items;
 
-import com.indref.industrial_reforged.api.items.container.IEnergyContainerItem;
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public abstract class SimpleElectricItem extends Item implements IEnergyContainerItem {
+public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     public SimpleElectricItem(Properties properties) {
         super(properties);
     }

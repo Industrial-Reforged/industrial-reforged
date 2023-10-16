@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.EnergyTestItem;
-import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.content.items.ToolItem;
 import com.indref.industrial_reforged.content.items.*;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -29,6 +29,8 @@ public class IRItems {
             () -> new ScannerItem(new Item.Properties()));
     public static final RegistryObject<Item> ENERGY_TEST_ITEM = registerItem("energy_test",
             () -> new EnergyTestItem(new Item.Properties()));
+    public static final RegistryObject<Item> HEAT_TEST_ITEM = registerItem("heat_test",
+            () -> new HeatTestItem(new Item.Properties()));
     public static final RegistryObject<Item> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
     public static final RegistryObject<Item> SEED_POUCH = registerItem("seed_pouch",

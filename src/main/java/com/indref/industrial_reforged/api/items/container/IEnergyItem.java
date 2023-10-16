@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.items.container.IContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -11,7 +10,7 @@ import net.minecraftforge.common.util.LazyOptional;
  * IMPORTANT! When implementing this manually for an item,
  * you need to override the getUseDuration() function and make it return 1
  */
-public interface IEnergyContainerItem extends IContainerItem {
+public interface IEnergyItem extends IContainerItem {
     default IEnergyStorage getEnergyStorage(ItemStack itemStack) {
         LazyOptional<IEnergyStorage> cap = itemStack.getCapability(IRCapabilities.ENERGY);
         if (cap.isPresent())

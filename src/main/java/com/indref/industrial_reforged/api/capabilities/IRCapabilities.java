@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.api.capabilities;
 
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -11,5 +13,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
  */
 public class IRCapabilities {
     public static final Capability<IEnergyStorage> ENERGY = CapabilityManager.get(new CapabilityToken<>() {
+    });
+    public static final Capability<IHeatStorage> HEAT = CapabilityManager.get(new CapabilityToken<>() {
     });
 }

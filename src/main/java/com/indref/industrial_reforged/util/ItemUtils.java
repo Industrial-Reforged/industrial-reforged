@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.items.container.IEnergyContainerItem;
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -32,15 +32,15 @@ public class ItemUtils {
         return Math.round(13.0F - ((1 - getChargeRatio(itemStack)) * 13.0F));
     }
 
-    public static IEnergyContainerItem getEnergyItem(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof IEnergyContainerItem energyItem) {
+    public static IEnergyItem getEnergyItem(ItemStack itemStack) {
+        if (itemStack.getItem() instanceof IEnergyItem energyItem) {
             return energyItem;
         }
         return null;
     }
 
     public static float getChargeRatio(ItemStack stack) {
-        IEnergyContainerItem energyItem = getEnergyItem(stack);
+        IEnergyItem energyItem = getEnergyItem(stack);
         return (float) energyItem.getStored(stack) / energyItem.getCapacity(stack);
     }
 

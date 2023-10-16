@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
-import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;

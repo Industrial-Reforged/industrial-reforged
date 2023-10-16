@@ -1,5 +1,6 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.content.items;
 
+import com.indref.industrial_reforged.api.items.IToolItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 

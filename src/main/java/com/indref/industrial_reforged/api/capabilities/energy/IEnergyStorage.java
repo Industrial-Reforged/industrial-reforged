@@ -13,6 +13,4 @@ public interface IEnergyStorage {
     int getEnergyCapacity();
 
     void setEnergyStored(int value);
-
-    void setEnergyCapacity(int value);
 }
