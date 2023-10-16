@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.content.blocks;
 
-import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -16,12 +16,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
-public class RubberTreeResinHoleBlock extends Block implements ITappable {
+public class RubberTreeResinHoleBlock extends Block {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty RESIN = BooleanProperty.create("resin");
 
 	public RubberTreeResinHoleBlock() {
-		super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava());
+		super(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava().randomTicks());
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
@@ -31,6 +31,15 @@ public class RubberTreeResinHoleBlock extends Block implements ITappable {
 
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, RESIN);
+	}
+
+	@Override
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (!state.getValue(RESIN)) {
+			if (random.nextInt(2) == 1) {
+				level.setBlockAndUpdate(pos, state.setValue(RESIN, true));
+			}
+		}
 	}
 
 	@Override
@@ -46,10 +55,5 @@ public class RubberTreeResinHoleBlock extends Block implements ITappable {
 	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return 5;
-	}
-
-	@Override
-	public ItemStack getDropItem() {
-		return new ItemStack(IRItems.RUBBER_SHEET.get());
 	}
 }

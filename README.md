@@ -2,6 +2,8 @@
 
 A modern re-imagination of the Industrial Craft mod
 
+[Discord](https://discord.gg/Jw2eM6xYyC)
+
 # Contributors
 
 [Thepigcat76](https://github.com/Thepigcat76)
