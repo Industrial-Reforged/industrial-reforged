@@ -26,11 +26,9 @@ public abstract class SimpleFluidItem extends ItemFluidContainer implements IFlu
         public int getColor(@NotNull ItemStack stack, int tintIndex) {
             if (tintIndex != 1) return 0xFFFFFFFF;
             IFluidHandlerItem cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
-            if (cap != null) {
-                FluidStack fluidStack = cap.getFluidInTank(1);
-                if (fluidStack.getFluid() != Fluids.EMPTY) {
-                    return IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);
-                }
+            FluidStack fluidStack = cap.getFluidInTank(1);
+            if (fluidStack.getFluid() != Fluids.EMPTY) {
+                return IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);
             }
             return 0xFFFFFFFF;
         }

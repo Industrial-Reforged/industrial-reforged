@@ -27,6 +27,8 @@ public class IRBlocks {
             () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> SIMPLE_PRESS = registerBlockAndItem("simple_press",
             () -> new SimplePressBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> CRATE = registerBlockAndItem("crate",
+            () -> new CrateBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> CORN_CROP = registerBlock("corn_crop",
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
 

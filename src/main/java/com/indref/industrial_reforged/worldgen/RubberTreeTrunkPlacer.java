@@ -1,11 +1,10 @@
-package com.indref.industrial_reforged.content.worldgen;
+package com.indref.industrial_reforged.worldgen;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.content.IRBlocks;
-import com.indref.industrial_reforged.content.IRPlacerTypes;
 import com.indref.industrial_reforged.content.blocks.RubberTreeResinHoleBlock;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

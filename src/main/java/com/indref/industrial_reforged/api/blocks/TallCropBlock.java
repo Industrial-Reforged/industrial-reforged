@@ -21,9 +21,9 @@ import org.jetbrains.annotations.NotNull;
 import static net.minecraftforge.common.ForgeHooks.onCropsGrowPost;
 
 public class TallCropBlock extends CropBlock {
-    public static final int FIRST_STAGE_MAX_AGE = 7;
+    public static final int FIRST_STAGE_MAX_AGE = 6;
     public static final int SECOND_STAGE_MAX_AGE = 1;
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 8);
+    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 7);
 
     public TallCropBlock(Properties properties) {
         super(properties);

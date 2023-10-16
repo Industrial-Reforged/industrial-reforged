@@ -1,8 +1,8 @@
-package com.indref.industrial_reforged.content;
+package com.indref.industrial_reforged.worldgen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.worldgen.RubberTreeFoliagePlacer;
-import com.indref.industrial_reforged.content.worldgen.RubberTreeTrunkPlacer;
+import com.indref.industrial_reforged.worldgen.RubberTreeFoliagePlacer;
+import com.indref.industrial_reforged.worldgen.RubberTreeTrunkPlacer;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;

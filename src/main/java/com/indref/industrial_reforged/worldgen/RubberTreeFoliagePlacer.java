@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.content.worldgen;
+package com.indref.industrial_reforged.worldgen;
 
-import com.indref.industrial_reforged.content.IRPlacerTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 

@@ -2,9 +2,10 @@ package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRCreativeTab;
-import com.indref.industrial_reforged.content.IRPlacerTypes;
+import com.indref.industrial_reforged.worldgen.IRPlacerTypes;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
+import com.indref.industrial_reforged.event.IREvents;
 import com.indref.industrial_reforged.screen.IRMenuTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -47,6 +48,7 @@ public class IndustrialReforged {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(IREvents::setup);
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
     }

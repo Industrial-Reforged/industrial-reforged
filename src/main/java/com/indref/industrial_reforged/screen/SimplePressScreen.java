@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class SimplePressScreen extends AbstractContainerScreen<SimplePressMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/");
+            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/simple_press.png");
 
     public SimplePressScreen(SimplePressMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

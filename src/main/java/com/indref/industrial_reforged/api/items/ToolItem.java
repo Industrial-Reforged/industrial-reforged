@@ -12,6 +12,6 @@ public class ToolItem extends Item implements IToolItem {
 
     @Override
     public int getUseDuration(ItemStack p_41454_) {
-        return 1000000;
+        return 1;
     }
 }

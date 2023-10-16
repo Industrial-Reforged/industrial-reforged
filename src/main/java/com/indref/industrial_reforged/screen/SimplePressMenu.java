@@ -15,7 +15,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class SimplePressMenu extends AbstractContainerMenu {
-    public final BlockEntity blockEntity;
+    public final SimplePressBE blockEntity;
     private final Level level;
     private final ContainerData data;
 
@@ -25,7 +25,7 @@ public class SimplePressMenu extends AbstractContainerMenu {
 
     public SimplePressMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(IRMenuTypes.SIMPLE_PRESS_MENU.get(), pContainerId);
-        checkContainerSize(inv, 2);
+        checkContainerSize(inv, 3);
         blockEntity = ((SimplePressBE) entity);
         this.level = inv.player.level();
         this.data = data;
@@ -34,8 +34,9 @@ public class SimplePressMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 11));
-            this.addSlot(new SlotItemHandler(iItemHandler, 1, 80, 59));
+            this.addSlot(new SlotItemHandler(iItemHandler, 0, 56, 35));
+            this.addSlot(new SlotItemHandler(iItemHandler, 1, 116, 35));
+            this.addSlot(new SlotItemHandler(iItemHandler, 2, 8, 44));
         });
 
         addDataSlots(data);

@@ -23,6 +23,11 @@ public class IRBlockEntityTypes {
                     BlockEntityType.Builder.of(PrimitiveForgeBE::new,
                             IRBlocks.PRIMITIVE_FORGE.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<CrateBE>> CRATE =
+            BLOCK_ENTITIES.register("crate", () ->
+                    BlockEntityType.Builder.of(CrateBE::new,
+                            IRBlocks.PRIMITIVE_FORGE.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<SimplePressBE>> SIMPLE_PRESS =
             BLOCK_ENTITIES.register("simple_press", () ->
                     BlockEntityType.Builder.of(SimplePressBE::new,

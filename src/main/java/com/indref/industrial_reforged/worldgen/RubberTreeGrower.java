@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.worldgen;
+package com.indref.industrial_reforged.worldgen;
 
 import javax.annotation.Nullable;
 

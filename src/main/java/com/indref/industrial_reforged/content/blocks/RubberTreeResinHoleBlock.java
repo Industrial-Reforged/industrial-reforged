@@ -1,7 +1,9 @@
 package com.indref.industrial_reforged.content.blocks;
 
+import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -14,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
-public class RubberTreeResinHoleBlock extends Block {
+public class RubberTreeResinHoleBlock extends Block implements ITappable {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty RESIN = BooleanProperty.create("resin");
 
@@ -44,5 +46,10 @@ public class RubberTreeResinHoleBlock extends Block {
 	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return 5;
+	}
+
+	@Override
+	public ItemStack getDropItem() {
+		return new ItemStack(IRItems.RUBBER_SHEET.get());
 	}
 }

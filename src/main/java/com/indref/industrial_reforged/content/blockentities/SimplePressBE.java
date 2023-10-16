@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.blockentities;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.screen.SimplePressMenu;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SimplePressBE extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
+        @Override
+        public int getSlots() {
+            return 3;
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -40,6 +46,7 @@ public class SimplePressBE extends BlockEntity implements MenuProvider {
 
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
+    private static final int FUEL_SLOT = 2;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
@@ -68,7 +75,7 @@ public class SimplePressBE extends BlockEntity implements MenuProvider {
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
     }
@@ -117,7 +124,7 @@ public class SimplePressBE extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());
-        pTag.putInt("gem_polishing_station.progress", progress);
+        pTag.putInt("progress", progress);
 
         super.saveAdditional(pTag);
     }
@@ -126,10 +133,11 @@ public class SimplePressBE extends BlockEntity implements MenuProvider {
     public void load(CompoundTag pTag) {
         super.load(pTag);
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
-        progress = pTag.getInt("gem_polishing_station.progress");
+        progress = pTag.getInt("progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+        IndustrialReforged.LOGGER.info("Ticking be");
         if(hasRecipe()) {
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);

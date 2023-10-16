@@ -1,15 +1,25 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.items.container.IEnergyContainerItem;
+import com.indref.industrial_reforged.api.items.container.IFluidContainerItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Map;
+import java.util.Set;
 
 public class IRCreativeTab {
     /**
@@ -28,11 +38,12 @@ public class IRCreativeTab {
                 // Tools
                 addItem(output, IRItems.WRENCH);
                 addItem(output, IRItems.HAMMER);
-                addItem(output, IRItems.SCANNER);
+                addPoweredItem(output, IRItems.SCANNER);
 
                 // Storage items
                 addItem(output, IRItems.TOOLBOX);
                 addItem(output, IRItems.SEED_POUCH);
+                addVariantForAllFluids(output, IRItems.FLUID_CELL);
 
                 // armor
                 addItem(output, IRItems.HAZMAT_BOOTS);
@@ -41,8 +52,11 @@ public class IRCreativeTab {
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.CORN_SEEDS);
 
+                // Machines
+                addBlock(output, IRBlocks.SIMPLE_PRESS);
+
                 // test objects
-                addItem(output, IRItems.ENERGY_TEST_ITEM);
+                addPoweredItem(output, IRItems.ENERGY_TEST_ITEM);
                 addBlock(output, IRBlocks.TEST_BLOCK_ENERGY);
             }).build());
 
@@ -53,6 +67,30 @@ public class IRCreativeTab {
      */
     private static void addItem(CreativeModeTab.Output output, RegistryObject<Item> item) {
         output.accept(item.get());
+    }
+
+    public static void addPoweredItem(CreativeModeTab.Output output, RegistryObject<Item> item) {
+        // Add base item
+        output.accept(item.get());
+        ItemStack stack = new ItemStack(item.get());
+        if (item.get() instanceof IEnergyContainerItem energyContainerItem)
+            energyContainerItem.setStored(stack, energyContainerItem.getCapacity(stack));
+        output.accept(stack);
+    }
+
+    public static void addVariantForAllFluids(CreativeModeTab.Output output, RegistryObject<Item> item) {
+        // Add base item
+        output.accept(item.get());
+        Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = ForgeRegistries.FLUIDS.getEntries();
+        IndustrialReforged.LOGGER.info(fluids.toString());
+        for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
+            ItemStack stack = new ItemStack(item.get());
+            if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
+                if (item.get() instanceof IFluidContainerItem fluidContainerItem)
+                    fluidContainerItem.tryFill(fluid.getValue(), 1000, stack);
+                output.accept(stack);
+            }
+        }
     }
 
     /**
