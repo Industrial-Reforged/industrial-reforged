@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -24,9 +25,10 @@ public class ScannerInfoOverlay {
         Font font = Minecraft.getInstance().font;
         if (hitResultType == HitResult.Type.BLOCK && (minecraft.player.getMainHandItem().getItem() instanceof ScannerItem || minecraft.player.getOffhandItem().getItem() instanceof ScannerItem)) {
             BlockPos hitResultBlockPos = ((BlockHitResult) minecraft.hitResult).getBlockPos();
+            BlockEntity blockEntity = level.getBlockEntity(hitResultBlockPos);
             BlockState blockstate = minecraft.level.getBlockState(hitResultBlockPos);
             if (blockstate.is(IRBlocks.TEST_BLOCK_ENERGY.get())) {
-                if (blockstate.getBlock() instanceof IScannable iScannable) {
+                if (blockEntity instanceof IScannable iScannable) {
                     guiGraphics.drawCenteredString(font,
                             iScannable.displayText(blockstate, hitResultBlockPos, level).get(0), x, y, 256);
                     guiGraphics.drawCenteredString(font,

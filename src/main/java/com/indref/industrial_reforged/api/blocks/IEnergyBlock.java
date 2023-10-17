@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.api.blocks;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.networking.IRPackets;
+import com.indref.industrial_reforged.networking.packets.S2CEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.level.Level;
@@ -16,6 +18,15 @@ import java.util.List;
  */
 public interface IEnergyBlock extends IScannable {
     EnergyStorageProvider getEnergyStorage();
+
+    default void onEnergyChanged() {
+    }
+
+    default void setEnergyStored(BlockEntity blockEntity, int value) {
+        IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
+        energyStorage.setEnergyStored(value);
+        onEnergyChanged();
+    }
 
     default int getEnergyStored(BlockEntity blockEntity) {
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);

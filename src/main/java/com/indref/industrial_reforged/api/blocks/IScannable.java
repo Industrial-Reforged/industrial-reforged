@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 /**
- * Implementing this interface for your block
+ * Implement this interface for your block entity
  * to display a custom info message when the
  * player hovers over the block with a scanner
  */

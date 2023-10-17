@@ -2,6 +2,7 @@ package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRCreativeTab;
+import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.worldgen.IRPlacerTypes;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
@@ -49,6 +50,7 @@ public class IndustrialReforged {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(IREvents::setup);
+        event.enqueueWork(IRPackets::register);
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
     }

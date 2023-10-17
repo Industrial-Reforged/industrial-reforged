@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.content.blocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
+import com.indref.industrial_reforged.networking.IRPackets;
+import com.indref.industrial_reforged.networking.packets.S2CEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,7 +20,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable, IEnergyBlock {
+public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
     public EnergyTestBlock(Properties p_49795_) {
         super(p_49795_);
     }
@@ -32,18 +35,15 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable, IEn
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(blockPos);
-            if (entity instanceof IEnergyBlock) {
-                entity.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(1008));
+            if (entity instanceof IEnergyBlock energyBlock) {
+                energyBlock.setEnergyStored(entity, energyBlock.getEnergyStored(entity)+100);
+                IRPackets.sendToClients(new S2CEnergyStorage(energyBlock.getEnergyStored(entity), blockPos));
+                IndustrialReforged.LOGGER.info("Right-click");
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
-    }
-
-    @Override
-    public EnergyStorageProvider getEnergyStorage() {
-        return new EnergyStorageProvider();
     }
 }
