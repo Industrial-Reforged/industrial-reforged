@@ -1,6 +1,6 @@
 # industrial-reforged
 
-A modern re-imagination of the Industrial Craft mod
+A modern re-imagination and rewrite of the Industrial Craft mod
 
 [Discord](https://discord.gg/Jw2eM6xYyC)
 
