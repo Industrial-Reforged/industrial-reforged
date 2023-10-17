@@ -3,8 +3,7 @@ package com.indref.industrial_reforged.api.blocks;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.networking.packets.S2CEnergyStorage;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.level.Level;
@@ -33,10 +32,7 @@ public interface IEnergyBlock extends IScannable {
         return energyStorage.getEnergyStored();
     }
 
-    default int getEnergyCapacity(BlockEntity blockEntity) {
-        IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
-        return energyStorage.getEnergyCapacity();
-    }
+    int getEnergyCapacity();
 
     @Override
     default List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
@@ -46,12 +42,11 @@ public interface IEnergyBlock extends IScannable {
             energyBlock = energyBlock1;
 
         return List.of(
-                scannedBlock.getBlock().getName(),
-                MutableComponent.create(ComponentContents.EMPTY)
+                scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE),
+                MutableComponent.create(ComponentContents.EMPTY).withStyle(ChatFormatting.WHITE)
                         .append(Component.translatable("scanner_info.energy_block.energy_ratio"))
-                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity(blockEntity))))
-                        .append(Component.literal(",")),
-                Component.literal(String.valueOf(energyBlock.getEnergyStored(blockEntity)))
+                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity())))
+                        .append(Component.literal(","))
         );
     }
 }

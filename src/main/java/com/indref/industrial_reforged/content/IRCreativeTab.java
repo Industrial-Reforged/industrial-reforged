@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.items.container.IFluidContainerItem;
+import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -85,7 +85,7 @@ public class IRCreativeTab {
         for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
             ItemStack stack = new ItemStack(item.get());
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
-                if (item.get() instanceof IFluidContainerItem fluidContainerItem)
+                if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFill(fluid.getValue(), 1000, stack);
                 output.accept(stack);
             }

@@ -9,16 +9,16 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class S2CEnergyStorage {
+public class S2CEnergySync {
     private final int energy;
     private final BlockPos pos;
 
-    public S2CEnergyStorage(int energy, BlockPos pos) {
+    public S2CEnergySync(int energy, BlockPos pos) {
         this.energy = energy;
         this.pos = pos;
     }
 
-    public S2CEnergyStorage(FriendlyByteBuf buf) {
+    public S2CEnergySync(FriendlyByteBuf buf) {
         this.energy = buf.readInt();
         this.pos = buf.readBlockPos();
     }

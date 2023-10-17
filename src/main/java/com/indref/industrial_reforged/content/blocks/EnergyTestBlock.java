@@ -2,12 +2,10 @@ package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.networking.packets.S2CEnergyStorage;
+import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +35,7 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
             BlockEntity entity = level.getBlockEntity(blockPos);
             if (entity instanceof IEnergyBlock energyBlock) {
                 energyBlock.setEnergyStored(entity, energyBlock.getEnergyStored(entity)+100);
-                IRPackets.sendToClients(new S2CEnergyStorage(energyBlock.getEnergyStored(entity), blockPos));
+                IRPackets.sendToClients(new S2CEnergySync(energyBlock.getEnergyStored(entity), blockPos));
                 IndustrialReforged.LOGGER.info("Right-click");
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");

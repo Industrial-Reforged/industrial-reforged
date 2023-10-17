@@ -1,7 +1,8 @@
 package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.networking.packets.S2CEnergyStorage;
+import com.indref.industrial_reforged.networking.packets.C2SEnergySync;
+import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -26,13 +27,23 @@ public class IRPackets {
 
         INSTANCE = net;
 
-        net.messageBuilder(S2CEnergyStorage.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(S2CEnergyStorage::new)
-                .encoder(S2CEnergyStorage::toBytes)
-                .consumerMainThread(S2CEnergyStorage::handle)
+        net.messageBuilder(S2CEnergySync.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CEnergySync::new)
+                .encoder(S2CEnergySync::toBytes)
+                .consumerMainThread(S2CEnergySync::handle)
+                .add();
+
+        net.messageBuilder(C2SEnergySync.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(C2SEnergySync::new)
+                .encoder(C2SEnergySync::toBytes)
+                .consumerMainThread(C2SEnergySync::handle)
                 .add();
 
         IndustrialReforged.LOGGER.info("registering packets");
+    }
+
+    public static <MSG> void sendToServer(MSG message) {
+        INSTANCE.sendToServer(message);
     }
 
     public static <MSG> void sendToClients(MSG message) {

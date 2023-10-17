@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-public interface IFluidContainerItem extends IContainerItem {
+public interface IFluidItem extends IContainerItem {
     Fluid getFluid();
 
     default IFluidHandlerItem getFluidHandler(ItemStack itemStack) {

@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.items;
 
-import com.indref.industrial_reforged.api.items.container.IFluidContainerItem;
+import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class SimpleFluidItem extends ItemFluidContainer implements IFluidContainerItem {
+public abstract class SimpleFluidItem extends ItemFluidContainer implements IFluidItem {
     public SimpleFluidItem(Properties properties, int capacity) {
         super(properties, capacity);
     }
