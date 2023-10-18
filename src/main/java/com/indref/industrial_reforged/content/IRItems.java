@@ -37,6 +37,8 @@ public class IRItems {
             () -> new SeedPouchItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> RUBBER_SHEET = registerItem("rubber_sheet",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> LUNCHBOX = registerItem("lunchbox",
+            () -> new LunchBoxItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> CORN_SEEDS = ITEMS.register("corn_seeds",
             () -> new ItemNameBlockItem(IRBlocks.CORN_CROP.get(), new Item.Properties()));
     public static final RegistryObject<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",

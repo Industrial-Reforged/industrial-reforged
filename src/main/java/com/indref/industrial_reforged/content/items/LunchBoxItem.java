@@ -1,9 +1,5 @@
 package com.indref.industrial_reforged.content.items;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
@@ -13,6 +9,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -24,10 +21,15 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-public class ToolboxItem extends BundleItem {
-    public static final int SLOT_CAPACITY = 8;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-    public ToolboxItem(Properties properties) {
+public class LunchBoxItem extends BundleItem {
+    public static final int SLOT_CAPACITY = 128;
+
+    public LunchBoxItem(Properties properties) {
         super(properties);
     }
 
@@ -40,7 +42,7 @@ public class ToolboxItem extends BundleItem {
             if (itemstack.isEmpty()) {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
-            } else if (itemstack.getItem().canFitInsideContainerItems() && (itemstack.getItem() instanceof IToolItem || itemstack.getItem() instanceof PickaxeItem || itemstack.getItem() instanceof AxeItem || itemstack.getItem() instanceof ShovelItem )) {
+            } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.getTags().collect(Collectors.toList()).contains(ItemTags.FOX_FOOD )) {
                 int i = (SLOT_CAPACITY - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
@@ -66,7 +68,7 @@ public class ToolboxItem extends BundleItem {
                     this.playRemoveOneSound(p_150746_);
                     p_150747_.set(p_186347_);
                 });
-            } else if (itemStack.getItem() instanceof IToolItem || itemStack.getItem() instanceof PickaxeItem || itemStack.getItem() instanceof AxeItem || itemStack.getItem() instanceof ShovelItem ) {
+            } else if (itemStack.getTags().collect(Collectors.toList()).contains(ItemTags.FOX_FOOD )) {
                 int i = add(toolbox, itemStack);
                 if (i > 0) {
                     this.playInsertSound(p_150746_);
@@ -80,7 +82,7 @@ public class ToolboxItem extends BundleItem {
     }
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
-        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && (newItemStack.getItem() instanceof IToolItem || newItemStack.getItem()  instanceof PickaxeItem || newItemStack.getItem() instanceof AxeItem || newItemStack.getItem() instanceof ShovelItem ))) {
+        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && newItemStack.getTags().collect(Collectors.toList()).contains(ItemTags.FOX_FOOD )  )) {
             CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {
                 compoundtag.put("Items", new ListTag());
