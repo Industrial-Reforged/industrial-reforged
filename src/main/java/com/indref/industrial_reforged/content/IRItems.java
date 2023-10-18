@@ -29,7 +29,7 @@ public class IRItems {
             () -> new ToolItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
-    // Itemstorages
+    // Item storages
     public static final RegistryObject<Item> LUNCHBOX = registerItem("lunchbox",
             () -> new LunchBoxItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> FLUID_CELL = registerItem("fluid_cell",
@@ -38,7 +38,7 @@ public class IRItems {
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SEED_POUCH = registerItem("seed_pouch",
             () -> new SeedPouchItem(new Item.Properties().stacksTo(1)));
-    // Canneditems
+    // Canned items
     public static final RegistryObject<Item> EMPTY_CAN = registerItem("empty_can",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> NUKA_COLA = registerItem("nuka_cola",
@@ -61,7 +61,7 @@ public class IRItems {
 
     public static final RegistryObject<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",
             () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
-    //testitems
+    //test items
     public static final RegistryObject<Item> ENERGY_TEST_ITEM = registerItem("energy_test",
             () -> new EnergyTestItem(new Item.Properties()));
     public static final RegistryObject<Item> HEAT_TEST_ITEM = registerItem("heat_test",
