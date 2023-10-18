@@ -41,16 +41,4 @@ public class EnergyTestItem extends SimpleElectricItem {
     public int getCapacity(ItemStack itemStack) {
         return 10000;
     }
-
-    @Override
-    public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
-        super.appendHoverText(stack, p41422, tooltip, p41424);
-        Optional<IEnergyStorage> capability = stack.getCapability(IRCapabilities.ENERGY).resolve();
-        if (capability.isPresent()) {
-            IEnergyStorage storage = capability.get();
-            tooltip.add(Component.literal(String.format("%s / %s", storage.getEnergyStored(), storage.getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
-        } else {
-            tooltip.add(Component.literal("0 / 0"));
-        }
-    }
 }

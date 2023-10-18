@@ -98,8 +98,10 @@ public class FluidCellItem extends SimpleFluidItem {
             } else {
                 if (!(state.getBlock() instanceof LiquidBlock) && !cap.getFluidInTank(0).getFluid().getFluidType().isVaporizedOnPlacement(level, pos, cap.getFluidInTank(0))) {
                     level.setBlock(pos1, cap.getFluidInTank(0).getFluid().defaultFluidState().createLegacyBlock(), 11);
-                    stack.shrink(1);
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(IRItems.FLUID_CELL.get()));
+                    if (!player.isCreative()) {
+                        stack.shrink(1);
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(IRItems.FLUID_CELL.get()));
+                    }
                     return InteractionResultHolder.success(stack);
                 }
             }
