@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_side",
+  "textures": {
+    "texture": "indref:block/tree/rubber_tree_planks"
+  }
+}

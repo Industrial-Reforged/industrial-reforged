@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "indref:block/rubber_tree_slab"
+    },
+    "type=double": {
+      "model": "indref:block/rubber_tree_planks"
+    },
+    "type=top": {
+      "model": "indref:block/rubber_tree_slab_top"
+    }
+  }
+}

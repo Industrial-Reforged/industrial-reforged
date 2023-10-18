@@ -24,8 +24,8 @@ public class RubberTreeTrunkPlacer extends TrunkPlacer {
 		return trunkPlacerParts(instance).apply(instance, RubberTreeTrunkPlacer::new);
 	});
 
-	public RubberTreeTrunkPlacer(int p_70248_, int p_70249_, int p_70250_) {
-		super(p_70248_, p_70249_, p_70250_);
+	public RubberTreeTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
+		super(baseHeight, heightRandA, heightRandB);
 	}
 
 	protected TrunkPlacerType<?> type() {
