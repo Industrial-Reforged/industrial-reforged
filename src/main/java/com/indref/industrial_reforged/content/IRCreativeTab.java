@@ -48,6 +48,11 @@ public class IRCreativeTab {
                 // armor
                 addItem(output, IRItems.HAZMAT_BOOTS);
 
+                //food
+                addItem(output, IRItems.EMPTY_CAN);
+                addItem(output, IRItems.NUKA_COLA);
+                addItem(output, IRItems.ENERGY_DRINK);
+
                 // misc and crafting items
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.CORN_SEEDS);
