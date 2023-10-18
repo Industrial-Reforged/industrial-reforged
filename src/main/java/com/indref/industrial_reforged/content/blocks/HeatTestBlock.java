@@ -3,7 +3,8 @@ package com.indref.industrial_reforged.content.blocks;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
+import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
+import com.indref.industrial_reforged.content.blockentities.HeatTestBE;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
 import net.minecraft.core.BlockPos;
@@ -18,24 +19,24 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
-    public EnergyTestBlock(Properties p_49795_) {
-        super(p_49795_);
+public class HeatTestBlock extends BaseEntityBlock implements IWrenchable {
+    public HeatTestBlock(Properties properties) {
+        super(properties);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new EnergyTestBE(blockPos, blockState);
+        return new HeatTestBE(blockPos, blockState);
     }
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(blockPos);
-            if (entity instanceof IEnergyBlock energyBlock) {
-                energyBlock.setStored(entity, energyBlock.getStored(entity)+100);
-                IRPackets.sendToClients(new S2CEnergySync(energyBlock.getStored(entity), blockPos));
+            if (entity instanceof IHeatBlock heatBlock) {
+                heatBlock.setStored(entity, heatBlock.getStored(entity)+100);
+                IRPackets.sendToClients(new S2CEnergySync(heatBlock.getStored(entity), blockPos));
                 IndustrialReforged.LOGGER.info("Right-click");
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
