@@ -14,11 +14,31 @@ public interface IHeatItem extends IContainerItem {
         return null;
     }
 
+    @Override
     default void setStored(ItemStack itemStack, int value) {
         getHeatStorage(itemStack).setHeatStored(value);
     }
 
+    @Override
     default int getStored(ItemStack itemStack) {
         return getHeatStorage(itemStack).getHeatCapacity();
+    }
+
+    /**
+     * Does nothing!
+     */
+    @Override
+    @Deprecated
+    default boolean tryFill(ItemStack itemStack, int amount) {
+        return false;
+    }
+
+    /**
+     * Does nothing!
+     */
+    @Override
+    @Deprecated
+    default boolean tryDrain(ItemStack itemStack, int amount) {
+        return false;
     }
 }

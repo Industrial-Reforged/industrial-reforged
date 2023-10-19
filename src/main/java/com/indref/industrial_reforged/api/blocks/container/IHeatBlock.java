@@ -37,6 +37,24 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
     }
 
     @Override
+    default boolean tryDrain(BlockEntity blockEntity, int value) {
+        if (getStored(blockEntity)+value > 0) {
+            setStored(blockEntity, getStored(blockEntity)-value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    default boolean tryFill(BlockEntity blockEntity, int value) {
+        if (getStored(blockEntity)+value < getCapacity(blockEntity)) {
+            setStored(blockEntity, getStored(blockEntity)+value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     default List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
         IHeatBlock heatBlock = null;
         BlockEntity blockEntity = level.getBlockEntity(scannedBlockPos);

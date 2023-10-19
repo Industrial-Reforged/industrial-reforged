@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +34,24 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
     default int getStored(BlockEntity blockEntity) {
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         return energyStorage.getEnergyStored();
+    }
+
+    @Override
+    default boolean tryDrain(BlockEntity blockEntity, int value) {
+        if (getStored(blockEntity)+value > 0) {
+            setStored(blockEntity, getStored(blockEntity)-value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    default boolean tryFill(BlockEntity blockEntity, int value) {
+        if (getStored(blockEntity)+value < getCapacity(blockEntity)) {
+            setStored(blockEntity, getStored(blockEntity)+value);
+            return true;
+        }
+        return false;
     }
 
     @Override
