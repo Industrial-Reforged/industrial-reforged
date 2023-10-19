@@ -34,13 +34,13 @@ public class IRBlocks {
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
 
     public static final RegistryObject<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",
-            () -> new RubberTreeLogBlock());
+            RubberTreeLogBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_LEAVES = registerBlockAndItem("rubber_tree_leaves",
-            () -> new RubberTreeLeavesBlock());
+            RubberTreeLeavesBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_SAPLING = registerBlockAndItem("rubber_tree_sapling",
             () -> new SaplingBlock(new RubberTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> RUBBER_TREE_RESIN_HOLE = registerBlockAndItem("rubber_tree_resin_hole",
-            () -> new RubberTreeResinHoleBlock());
+            RubberTreeResinHoleBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_PLANKS = registerBlockAndItem("rubber_tree_planks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     /**

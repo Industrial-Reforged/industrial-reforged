@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.networking;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.networking.packets.C2SEnergySync;
 import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
+import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -37,6 +38,12 @@ public class IRPackets {
                 .decoder(C2SEnergySync::new)
                 .encoder(C2SEnergySync::toBytes)
                 .consumerMainThread(C2SEnergySync::handle)
+                .add();
+
+        net.messageBuilder(S2CFluidSync.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(S2CFluidSync::new)
+                .encoder(S2CFluidSync::toBytes)
+                .consumerMainThread(S2CFluidSync::handle)
                 .add();
 
         IndustrialReforged.LOGGER.info("registering packets");

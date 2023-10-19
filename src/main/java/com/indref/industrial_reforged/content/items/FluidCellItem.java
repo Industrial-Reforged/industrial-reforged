@@ -1,10 +1,12 @@
 package com.indref.industrial_reforged.content.items;
 
 import com.indref.industrial_reforged.api.items.SimpleFluidItem;
+import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -33,6 +36,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class FluidCellItem extends SimpleFluidItem {
     private int capacity;
@@ -122,4 +128,8 @@ public class FluidCellItem extends SimpleFluidItem {
         return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer) blockstate.getBlock()).canPlaceLiquid(worldIn, posIn, blockstate, this.fluid);
     }
 
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag tooltipFlag) {
+        tooltip.add(Component.literal(((IFluidItem) itemStack.getItem()).getFluid().toString()));
+    }
 }

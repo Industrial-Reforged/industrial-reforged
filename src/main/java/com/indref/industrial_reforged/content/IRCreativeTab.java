@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.content;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import com.indref.industrial_reforged.networking.IRPackets;
+import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -32,7 +34,7 @@ public class IRCreativeTab {
     public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> new ItemStack(IRItems.WRENCH.get()))
+            .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {
                 // Tools
                 addItem(output, IRItems.WRENCH);
@@ -93,6 +95,8 @@ public class IRCreativeTab {
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFill(fluid.getValue(), 1000, stack);
+                IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
+                IndustrialReforged.LOGGER.info("Registering fluid cell: "+fluid.getValue());
                 output.accept(stack);
             }
         }
