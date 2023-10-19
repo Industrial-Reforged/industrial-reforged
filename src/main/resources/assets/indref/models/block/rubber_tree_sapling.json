@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cross",
+  "render_type": "cutout",
   "textures": {
     "cross": "indref:block/tree/rubber_tree_sapling"
   }

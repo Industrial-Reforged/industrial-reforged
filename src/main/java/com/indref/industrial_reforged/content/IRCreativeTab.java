@@ -65,6 +65,23 @@ public class IRCreativeTab {
                 // test objects
                 addPoweredItem(output, IRItems.ENERGY_TEST_ITEM);
                 addBlock(output, IRBlocks.TEST_BLOCK_ENERGY);
+                
+                // Rubber Tree
+                addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
+                addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
+                addBlock(output, IRBlocks.RUBBER_TREE_FENCE);
+                addBlock(output, IRBlocks.RUBBER_TREE_FENCE_GATE);
+                addBlock(output, IRBlocks.RUBBER_TREE_LEAVES);
+                addBlock(output, IRBlocks.RUBBER_TREE_LOG);
+                addBlock(output, IRBlocks.RUBBER_TREE_PLANKS);
+                addBlock(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE);
+                addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
+                addBlock(output, IRBlocks.RUBBER_TREE_SLAB);
+                addBlock(output, IRBlocks.RUBBER_TREE_STAIRS);
+                addBlock(output, IRBlocks.RUBBER_TREE_TRAPDOOR);
+                addBlock(output, IRBlocks.RUBBER_TREE_WOOD);
+                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_LOG);
+                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
             }).build());
 
     /**

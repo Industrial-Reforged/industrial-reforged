@@ -6,10 +6,11 @@ import com.indref.industrial_reforged.content.blocks.*;
 import com.indref.industrial_reforged.worldgen.RubberTreeGrower;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -20,6 +21,8 @@ public class IRBlocks {
     /**
      * Variable used for registering and storing all blocks under the "indref" mod-id
      */
+	public static final BlockSetType RUBBER_SET_TYPE = BlockSetType.register(new BlockSetType(IndustrialReforged.MODID + ":rubber"));
+	public static final WoodType RUBBER_WOOD_TYPE = WoodType.register(new WoodType(IndustrialReforged.MODID + ":rubber", RUBBER_SET_TYPE));
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IndustrialReforged.MODID);
 
     public static final RegistryObject<Block> TEST_BLOCK_ENERGY = registerBlockAndItem("test_block_energy",
@@ -34,15 +37,39 @@ public class IRBlocks {
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
 
     public static final RegistryObject<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",
-            RubberTreeLogBlock::new);
+            () -> new RubberTreeLogBlock());
+    public static final RegistryObject<Block> STRIPPED_RUBBER_TREE_LOG = registerBlockAndItem("stripped_rubber_tree_log",
+    		() -> new RubberTreeLogBlock());
+    public static final RegistryObject<Block> RUBBER_TREE_WOOD = registerBlockAndItem("rubber_tree_wood",
+    		() -> new RubberTreeLogBlock());
+    public static final RegistryObject<Block> STRIPPED_RUBBER_TREE_WOOD = registerBlockAndItem("stripped_rubber_tree_wood",
+    		() -> new RubberTreeLogBlock());
     public static final RegistryObject<Block> RUBBER_TREE_LEAVES = registerBlockAndItem("rubber_tree_leaves",
-            RubberTreeLeavesBlock::new);
+            () -> new RubberTreeLeavesBlock());
     public static final RegistryObject<Block> RUBBER_TREE_SAPLING = registerBlockAndItem("rubber_tree_sapling",
             () -> new SaplingBlock(new RubberTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> RUBBER_TREE_RESIN_HOLE = registerBlockAndItem("rubber_tree_resin_hole",
-            RubberTreeResinHoleBlock::new);
+            () -> new RubberTreeResinHoleBlock());
     public static final RegistryObject<Block> RUBBER_TREE_PLANKS = registerBlockAndItem("rubber_tree_planks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    @SuppressWarnings("deprecation")
+	public static final RegistryObject<Block> RUBBER_TREE_STAIRS = registerBlockAndItem("rubber_tree_stairs",
+    		() -> new StairBlock(RUBBER_TREE_PLANKS.get().defaultBlockState(),BlockBehaviour.Properties.copy(Blocks.OAK_STAIRS)));
+    public static final RegistryObject<Block> RUBBER_TREE_DOOR = registerBlockAndItem("rubber_tree_door",
+    		() -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR), RUBBER_SET_TYPE));
+    public static final RegistryObject<Block> RUBBER_TREE_PRESSURE_PLATE = registerBlockAndItem("rubber_tree_pressure_plate",
+    		() -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(Blocks.OAK_PRESSURE_PLATE), RUBBER_SET_TYPE));
+    public static final RegistryObject<Block> RUBBER_TREE_FENCE = registerBlockAndItem("rubber_tree_fence",
+    		() -> new FenceBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)));
+    public static final RegistryObject<Block> RUBBER_TREE_TRAPDOOR = registerBlockAndItem("rubber_tree_trapdoor",
+    		() -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR), RUBBER_SET_TYPE));
+    public static final RegistryObject<Block> RUBBER_TREE_FENCE_GATE = registerBlockAndItem("rubber_tree_fence_gate",
+    		() -> new FenceGateBlock(BlockBehaviour.Properties.copy(Blocks.OAK_FENCE_GATE), RUBBER_WOOD_TYPE));
+    public static final RegistryObject<Block> RUBBER_TREE_BUTTON = registerBlockAndItem("rubber_tree_button",
+    		() -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON), RUBBER_SET_TYPE, 30, true));
+    public static final RegistryObject<Block> RUBBER_TREE_SLAB = registerBlockAndItem("rubber_tree_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SLAB)));
+
     /**
      * Registers a new block and item
      *

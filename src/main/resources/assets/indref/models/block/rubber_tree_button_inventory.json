@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button_inventory",
+  "textures": {
+    "texture": "indref:block/tree/rubber_tree_planks"
+  }
+}
