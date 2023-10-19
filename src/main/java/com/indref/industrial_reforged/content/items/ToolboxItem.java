@@ -13,6 +13,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -81,6 +82,7 @@ public class ToolboxItem extends BundleItem {
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
         if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && (newItemStack.getItem() instanceof IToolItem || newItemStack.getItem()  instanceof PickaxeItem || newItemStack.getItem() instanceof AxeItem || newItemStack.getItem() instanceof ShovelItem ))) {
+
             CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {
                 compoundtag.put("Items", new ListTag());

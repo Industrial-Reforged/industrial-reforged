@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
