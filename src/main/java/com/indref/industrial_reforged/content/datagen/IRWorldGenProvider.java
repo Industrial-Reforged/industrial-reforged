@@ -64,8 +64,8 @@ public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
 				new RubberTreeFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1)),
 				new TwoLayersFeatureSize(2, 0, 2)).build()));
 			List<OreConfiguration.TargetBlockState> uranium_config = List.of(
-				OreConfiguration.target(STONE_ORE_REPLACEABLES, IRBlocks.URANIUM_ORE.get().defaultBlockState()),
-				OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, IRBlocks.DEEPSLATE_URANIUM_ORE.get().defaultBlockState()));
+				OreConfiguration.target(STONE_ORE_REPLACEABLES, IRBlocks.RUBBER_TREE_BUTTON.get().defaultBlockState()),
+				OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, IRBlocks.RUBBER_TREE_BUTTON.get().defaultBlockState()));
 			context.register(URANIUM_ORE_KEY, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(uranium_config, 4)));
 		})
 		.add(Registries.PLACED_FEATURE, context -> {

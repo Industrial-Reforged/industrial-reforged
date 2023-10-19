@@ -1,7 +1,10 @@
 package com.indref.industrial_reforged.content.items;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +41,7 @@ public class WrenchItem extends ToolItem {
         BlockPos clickPos = useOnContext.getClickedPos();
         Block wrenchableBlock = level.getBlockState(clickPos).getBlock();
         ItemStack itemInHand = useOnContext.getItemInHand();
+        assert player != null;
 
         // only on the server side
         if (!level.isClientSide) {
@@ -60,6 +64,8 @@ public class WrenchItem extends ToolItem {
                 }
                 level.removeBlock(clickPos, false);
                 return InteractionResult.SUCCESS;
+            } else if (wrenchableBlock instanceof IMultiBlockController && !player.isCrouching()) {
+                player.sendSystemMessage(Component.literal("attempt forming multi"));
             }
         }
         return InteractionResult.FAIL;
