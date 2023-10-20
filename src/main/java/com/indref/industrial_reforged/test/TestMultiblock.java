@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.content.IRBlocks;
-import com.indref.industrial_reforged.util.Util;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
@@ -32,14 +31,6 @@ public class TestMultiblock implements IMultiblock {
         def.put(0, IRBlocks.TEST_PART.get());
         def.put(1, IRBlocks.TEST_CONTROLLER.get());
         return def;
-    }
-
-    @Override
-    public boolean isValid() {
-        if (getLayout().get(0).get(4).equals(Util.reverseMap(getDefinition()).get(getController()))) {
-            return true;
-        }
-        return false;
     }
 
 }

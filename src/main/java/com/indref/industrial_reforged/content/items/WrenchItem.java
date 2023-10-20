@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.items;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -64,7 +65,8 @@ public class WrenchItem extends ToolItem {
                 }
                 level.removeBlock(clickPos, false);
                 return InteractionResult.SUCCESS;
-            } else if (wrenchableBlock instanceof IMultiBlockController && !player.isCrouching()) {
+            } else if (wrenchableBlock instanceof IMultiBlockController controller && !player.isCrouching()) {
+                MultiblockHelper.form(controller, clickPos, level, player);
                 player.sendSystemMessage(Component.literal("attempt forming multi"));
             }
         }
