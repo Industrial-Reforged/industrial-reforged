@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.worldgen;
 
 import javax.annotation.Nullable;
 
-import com.indref.industrial_reforged.content.datagen.IRWorldGenProvider;
+import com.indref.industrial_reforged.datagen.IRWorldGenProvider;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;

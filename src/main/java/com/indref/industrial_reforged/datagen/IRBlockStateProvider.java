@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.datagen;
+package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.IRBlocks;
