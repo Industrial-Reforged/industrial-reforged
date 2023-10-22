@@ -22,5 +22,6 @@
   "block.indref.rubber_tree_sapling": "Rubber Tree Sapling",
   "block.indref.rubber_tree_planks": "Rubber Tree Planks",
 
-  "scanner_info.energy_block.energy_ratio": "Energy stored: "
+  "scanner_info.energy_block.energy_ratio": "Energy stored: ",
+  "tape_measure.block_difference": "Distance measured:"
 }

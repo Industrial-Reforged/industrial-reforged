@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.content.items;
 
-import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
@@ -18,7 +17,10 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.BundleTooltip;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BundleItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 import java.util.List;

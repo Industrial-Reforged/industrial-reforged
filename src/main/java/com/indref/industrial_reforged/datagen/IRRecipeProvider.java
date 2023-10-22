@@ -1,15 +1,10 @@
 package com.indref.industrial_reforged.datagen;
 
-import java.util.function.Consumer;
-
 import com.indref.industrial_reforged.content.IRBlocks;
-
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.*;
+
+import java.util.function.Consumer;
 
 public class IRRecipeProvider extends RecipeProvider {
 

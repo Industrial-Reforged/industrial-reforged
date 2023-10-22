@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.content.items;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.util.MultiblockHelper;

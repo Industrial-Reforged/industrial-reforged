@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.materials;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;

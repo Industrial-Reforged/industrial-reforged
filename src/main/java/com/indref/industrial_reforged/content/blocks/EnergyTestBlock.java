@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.blocks.IEnergyBlock;
+import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CEnergySync;

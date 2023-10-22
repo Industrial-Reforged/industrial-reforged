@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blocks.*;
-
 import com.indref.industrial_reforged.test.TestMultiblockController;
 import com.indref.industrial_reforged.test.TestMultiblockPart;
 import com.indref.industrial_reforged.worldgen.RubberTreeGrower;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
