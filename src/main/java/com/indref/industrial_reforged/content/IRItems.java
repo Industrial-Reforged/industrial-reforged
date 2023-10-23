@@ -1,10 +1,18 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.items.EnergyTestItem;
-import com.indref.industrial_reforged.content.items.ToolItem;
-import com.indref.industrial_reforged.content.items.*;
-import net.minecraft.world.effect.MobEffect;
+import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
+import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
+import com.indref.industrial_reforged.content.items.storage.LunchBoxItem;
+import com.indref.industrial_reforged.content.items.storage.SeedPouchItem;
+import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
+import com.indref.industrial_reforged.content.items.tools.ScannerItem;
+import com.indref.industrial_reforged.content.items.tools.TreeTapItem;
+import com.indref.industrial_reforged.test.EnergyTestItem;
+import com.indref.industrial_reforged.content.items.tools.ToolItem;
+import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
+import com.indref.industrial_reforged.content.items.tools.WrenchItem;
+import com.indref.industrial_reforged.test.HeatTestItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -27,6 +35,8 @@ public class IRItems {
             () -> new WrenchItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> HAMMER = registerItem("hammer",
             () -> new ToolItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> TREE_TAP = registerItem("tree_tap",
+            () -> new TreeTapItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
     // Item storages

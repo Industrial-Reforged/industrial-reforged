@@ -1,10 +1,11 @@
 package com.indref.industrial_reforged.api.blocks;
 
+import com.indref.industrial_reforged.content.items.tools.WrenchItem;
 import net.minecraft.world.item.Item;
 
 /**
  * Implement this if you want your block to be able to be picked up by a
- * variant (inheritor) of the {@link com.indref.industrial_reforged.content.items.WrenchItem} class
+ * variant (inheritor) of the {@link WrenchItem} class
  */
 public interface IWrenchable {
     /**

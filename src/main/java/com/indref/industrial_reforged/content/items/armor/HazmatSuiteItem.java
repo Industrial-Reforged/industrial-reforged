@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.armor;
 
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;

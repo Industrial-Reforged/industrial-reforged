@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.storage;
 
 import net.minecraft.world.item.BundleItem;
 

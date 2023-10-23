@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.client.hud;
 
 import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.content.items.ScannerItem;
+import com.indref.industrial_reforged.content.items.tools.ScannerItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.C2SEnergySync;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.storage;
 
 import com.indref.industrial_reforged.api.items.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;

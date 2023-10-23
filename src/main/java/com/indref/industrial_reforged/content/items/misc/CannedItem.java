@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.misc;
 
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.world.entity.LivingEntity;

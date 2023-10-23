@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.items.SimpleHeatItem;
 import net.minecraft.world.item.ItemStack;

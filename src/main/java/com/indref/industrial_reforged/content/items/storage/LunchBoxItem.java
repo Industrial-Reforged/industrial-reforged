@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.storage;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.content.IRItems;
