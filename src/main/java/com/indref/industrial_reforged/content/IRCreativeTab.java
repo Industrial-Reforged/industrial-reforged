@@ -40,6 +40,7 @@ public class IRCreativeTab {
                 // Tools
                 addItem(output, IRItems.WRENCH);
                 addItem(output, IRItems.HAMMER);
+                addItem(output, IRItems.TREE_TAP);
                 addPoweredItem(output, IRItems.SCANNER);
 
                 // Storage items

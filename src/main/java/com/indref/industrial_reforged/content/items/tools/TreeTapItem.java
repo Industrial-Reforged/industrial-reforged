@@ -25,8 +25,7 @@ public class TreeTapItem extends ToolItem {
         Level level = useOnContext.getLevel();
         BlockPos blockPos = useOnContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) &&
-                blockState.getValue(RESIN)) {
+        if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
             level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
             ItemStack resinDrop = new ItemStack(IRItems.RUBBER_SHEET.get());
             Random random = new Random();
