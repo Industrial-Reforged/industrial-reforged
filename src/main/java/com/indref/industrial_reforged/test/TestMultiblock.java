@@ -2,10 +2,8 @@ package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.content.IRBlocks;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.level.block.Block;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,26 +23,6 @@ public class TestMultiblock implements IMultiblock {
                 ),
                 List.of(
                         0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0
-                ),
-                List.of(
-                        0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0
-                ),
-                List.of(
-                        0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0
-                ),
-                List.of(
-                        0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0
-                ),
-                List.of(
-                        0, 0, 0,
                         0, 1, 0,
                         0, 0, 0
                 )
@@ -53,10 +31,10 @@ public class TestMultiblock implements IMultiblock {
 
     @Override
     public Map<Integer, Block> getDefinition() {
-        Map<Integer, Block> def = new HashMap<>();
         // Giving the numbers from the layout a purpose
-        def.put(0, IRBlocks.BASIC_MACHINE_FRAME.get());
-        def.put(1, IRBlocks.TEST_CONTROLLER.get());
-        return def;
+        return Map.of(
+                0, IRBlocks.BASIC_MACHINE_FRAME.get(),
+                1, IRBlocks.TEST_CONTROLLER.get()
+        );
     }
 }

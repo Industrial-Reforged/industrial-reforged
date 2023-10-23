@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// TODO: 10/23/2023 Allow rotating the multi (currently only works for south)
 public interface IMultiblock {
     // Returns the block that is the controller
     Block getController();
