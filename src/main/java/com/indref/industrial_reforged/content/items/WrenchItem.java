@@ -65,8 +65,8 @@ public class WrenchItem extends ToolItem {
                 level.removeBlock(clickPos, false);
                 return InteractionResult.SUCCESS;
             } else if (wrenchableBlock instanceof IMultiBlockController controller && !player.isCrouching()) {
+                // Try forming the multiblock
                 MultiblockHelper.form(controller, clickPos, level, player);
-                player.sendSystemMessage(Component.literal("attempt forming multi"));
             }
         }
         return InteractionResult.FAIL;

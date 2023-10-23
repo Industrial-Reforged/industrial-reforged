@@ -1,16 +1,20 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import com.indref.industrial_reforged.util.Util.XZCoordinates;
+import com.indref.industrial_reforged.util.Util.Coordinates;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,60 +23,59 @@ public class MultiblockHelper {
         IMultiblock multiblock = controller.getMultiblock();
         Map<Integer, Block> def = multiblock.getDefinition();
         Map<Block, Integer> reverseDef = Util.reverseMap(multiblock.getDefinition());
-        List<Integer> layout = multiblock.getLayout().get(0);
-        Pair<Integer, Integer> relativeControllerPos = getControllerRelativePos(controller);
+        List<List<Integer>> layout = multiblock.getLayout();
+        Coordinates relativeControllerPos = getControllerRelativePos(controller);
         int index = 0;
+        int yIndex = 0;
+        List<Integer> testBlockIndexList = new ArrayList<>();
         if (relativeControllerPos == null) {
             throw new NullPointerException("Relative controller pos is not available. May be caused due to a multiblock layout without a controller");
         }
 
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-        int firstBlockPosX = controllerPos.getX() - relativeControllerPos.getSecond();
-        int blockPosY = controllerPos.getY();
+        int firstBlockPosX = controllerPos.getX() + relativeControllerPos.getThird();
+        int blockPosY = controllerPos.getY() - relativeControllerPos.getSecond();
         int firstBlockPosZ = controllerPos.getZ() + relativeControllerPos.getFirst();
-        for (int blockIndex : layout) {
-            // Increase index
-            index++;
+        for (List<Integer> layer : layout) {
+            for (int blockIndex : layer) {
+                // Increase index
+                index++;
 
-            // Define position-related variables
-            Pair<Integer, Integer> relativePosPair = getRelativePos(controller, index);
-            int modZ = relativePosPair.getFirst();
-            int modX = relativePosPair.getSecond();
-            BlockPos curBlockPos = new BlockPos(firstBlockPosX + modX, blockPosY, firstBlockPosZ - modZ);
+                // Define position-related variables
+                XZCoordinates relativePos = getRelativePos(controller, index, yIndex);
+                int modZ = relativePos.getFirst();
+                int modX = relativePos.getSecond();
+                BlockPos curBlockPos = new BlockPos(firstBlockPosX - modX, blockPosY + yIndex, firstBlockPosZ - modZ);
 
-            // Check if block is correct
-            if (level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
-                player.sendSystemMessage(Component.literal("Success").withStyle(ChatFormatting.GREEN));
-                player.sendSystemMessage(Component.literal("| Block: "+level.getBlockState(curBlockPos)).withStyle(ChatFormatting.GRAY));
-                player.sendSystemMessage(Component.literal("| Coordinates: "+curBlockPos).withStyle(ChatFormatting.GRAY));
-            } else {
-                player.sendSystemMessage(Component.literal("Failure").withStyle(ChatFormatting.RED));
-                player.sendSystemMessage(Component.literal("| Block: " + level.getBlockState(curBlockPos)).withStyle(ChatFormatting.DARK_GRAY));
-                player.sendSystemMessage(Component.literal("| Expected: " + def.get(blockIndex)).withStyle(ChatFormatting.DARK_GRAY));
-                player.sendSystemMessage(Component.literal("| Coordinates: " + curBlockPos).withStyle(ChatFormatting.DARK_GRAY));
+                // Check if block is correct
+                if (!level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
+                    sendFailureMsg(player, level, curBlockPos, def, blockIndex);
+                }
+                testBlockIndexList.add(reverseDef.get(level.getBlockState(curBlockPos).getBlock()));
             }
-
+            player.sendSystemMessage(Component.literal("Index: "+index));
+            index = 0;
+            yIndex++;
         }
-        IndustrialReforged.LOGGER.info(reverseDef.toString());
-        player.sendSystemMessage(Component.literal("Controller index: "+
-                reverseDef.get(controller.getMultiblock().getController())));
-        player.sendSystemMessage(Component.literal("First block coordinates: x: " + firstBlockPosX + " z: " + firstBlockPosZ));
-        player.sendSystemMessage(Component.literal("Controller rel pos: " + relativeControllerPos));
+        player.sendSystemMessage(Component.literal("First blockpos: " + Coordinates.of(firstBlockPosX, blockPosY, firstBlockPosZ)));
+        player.sendSystemMessage(Component.literal("ControllerPos: " + relativeControllerPos));
+        player.sendSystemMessage(Component.literal("Reconstructed index list: " + testBlockIndexList));
         return false;
     }
 
     // TODO: 10/21/2023 move this to the main for loop 
-    public static Pair<Integer, Integer> getRelativePos(IMultiBlockController controller, int index) {
-        List<Integer> layout = controller.getMultiblock().getLayout().get(0);
+    public static XZCoordinates getRelativePos(IMultiBlockController controller, int index, int yLevel) {
+        List<Integer> layout = controller.getMultiblock().getLayout().get(yLevel);
         int x = 0;
         int z = 0;
         int indexCopy = 0;
-        for (int blockIndex : layout) {
+        int width = controller.getMultiblock().getWidths().get(yLevel).getFirst();
+        for (int ignored : layout) {
             indexCopy++;
             if (indexCopy >= index) {
-                return Pair.of(x, z);
+                return XZCoordinates.of(x, z);
             }
-            if (x + 1 < controller.getMultiblock().getWidths().get(0)) {
+            if (x + 1 < width) {
                 x++;
             } else {
                 x = 0;
@@ -85,23 +88,74 @@ public class MultiblockHelper {
     /**
      * @return x, z
      */
-    public static Pair<Integer, Integer> getControllerRelativePos(IMultiBlockController controller) {
+    public static Coordinates getControllerRelativePos(IMultiBlockController controller) {
         Map<Block, Integer> reverseDef = Util.reverseMap(controller.getMultiblock().getDefinition());
-        List<Integer> layout = controller.getMultiblock().getLayout().get(0);
+        List<List<Integer>> layout = controller.getMultiblock().getLayout();
         int x = 0;
+        int y = 0;
         int z = 0;
-        for (int blockIndex : layout) {
-            if (blockIndex == reverseDef.get(controller.getMultiblock().getController())) {
-                return Pair.of(x, z);
+        for (List<Integer> layer : layout) {
+            int width = controller.getMultiblock().getWidths().get(y).getFirst();
+            for (int blockIndex : layer) {
+                if (blockIndex == reverseDef.get(controller.getMultiblock().getController())) {
+                    return Coordinates.of(x, y, z);
+                }
+                if (x + 1 < width) {
+                    x++;
+                } else {
+                    x = 0;
+                    z++;
+                }
             }
-            if (x + 1 < controller.getMultiblock().getWidths().get(0)) {
-                x++;
-            } else {
-                x = 0;
-                z++;
-            }
+            x = 0;
+            z = 0;
+            y++;
         }
         return null;
+    }
+
+    private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
+        player.sendSystemMessage(Component.translatable("multiblock.info.failed_to_construct").withStyle(ChatFormatting.RED));
+        player.sendSystemMessage(MutableComponent.create(ComponentContents.EMPTY)
+                .append(Component.literal("| ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.translatable("multiblock.info.actual_block")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(": ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(level.getBlockState(curBlockPos).getBlock().getName().getString())
+                        .withStyle(ChatFormatting.DARK_GRAY))
+        );
+        player.sendSystemMessage(MutableComponent.create(ComponentContents.EMPTY)
+                .append(Component.literal("| ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.translatable("multiblock.info.expected_block")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(": ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(def.get(blockIndex).getName().getString())
+                        .withStyle(ChatFormatting.DARK_GRAY))
+        );
+        player.sendSystemMessage(MutableComponent.create(ComponentContents.EMPTY)
+                .append(Component.literal("| ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.translatable("multiblock.info.block_pos")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(": ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(String.valueOf(curBlockPos.getX()))
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(", ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(String.valueOf(curBlockPos.getY()))
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(", ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(String.valueOf(curBlockPos.getZ()))
+                        .withStyle(ChatFormatting.DARK_GRAY))
+                .append(Component.literal(", ")
+                        .withStyle(ChatFormatting.DARK_GRAY))
+        );
     }
 
     public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {

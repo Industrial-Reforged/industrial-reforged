@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-// TODO: 10/22/2023 Implement highlight for the first block pos 
+// TODO: 10/22/2023 Implement highlight for the first block pos
 public class TapeMeasureItem extends ToolItem {
     public TapeMeasureItem(Properties properties) {
         super(properties);

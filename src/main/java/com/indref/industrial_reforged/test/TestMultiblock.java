@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.content.IRBlocks;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
@@ -18,9 +19,34 @@ public class TestMultiblock implements IMultiblock {
     public List<List<Integer>> getLayout() {
         return List.of(
                 List.of(
-                        0, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 2, 0, 0
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                ),
+                List.of(
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                ),
+                List.of(
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                ),
+                List.of(
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                ),
+                List.of(
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0
+                ),
+                List.of(
+                        0, 0, 0,
+                        0, 1, 0,
+                        0, 0, 0
                 )
         );
     }
@@ -29,14 +55,8 @@ public class TestMultiblock implements IMultiblock {
     public Map<Integer, Block> getDefinition() {
         Map<Integer, Block> def = new HashMap<>();
         // Giving the numbers from the layout a purpose
-        def.put(0, IRBlocks.TEST_PART.get());
+        def.put(0, IRBlocks.BASIC_MACHINE_FRAME.get());
         def.put(1, IRBlocks.TEST_CONTROLLER.get());
-        def.put(2, IRBlocks.BASIC_MACHINE_FRAME.get());
         return def;
-    }
-
-    @Override
-    public List<Integer> getWidths() {
-        return List.of(4);
     }
 }
