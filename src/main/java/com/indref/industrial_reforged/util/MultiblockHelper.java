@@ -4,8 +4,10 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockDirections;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,15 +38,34 @@ public class MultiblockHelper {
         return true;
     }
 
+    public static MultiblockDirections convDirectionToMultiblockDirection(Direction direction) {
+        return switch (direction) {
+            case EAST -> MultiblockDirections.EAST;
+            case SOUTH -> MultiblockDirections.SOUTH;
+            case WEST -> MultiblockDirections.WEST;
+            default -> MultiblockDirections.NORTH;
+        };
+    }
+
     public static boolean isValid(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
+        Direction direction = player.getDirection();
+        player.sendSystemMessage(Component.literal(direction.toString()));
         IMultiblock multiblock = controller.getMultiblock();
-        Map<Integer, Block> def = multiblock.getDefinition();
-        Map<Block, Integer> reverseDef = Util.reverseMap(multiblock.getDefinition());
         List<List<Integer>> layout = multiblock.getLayout();
         Coordinates relativeControllerPos = getControllerRelativePos(controller);
+
+        // Block definition of the multi
+        Map<Integer, Block> def = multiblock.getDefinition();
+        Map<Block, Integer> reverseDef = Util.reverseMap(multiblock.getDefinition());
+
+        // Indexing (Positions)
         int index = 0;
         int yIndex = 0;
+
+        // Debugging
         List<Integer> testBlockIndexList = new ArrayList<>();
+
+        // Check if controller exists
         if (relativeControllerPos == null) {
             throw new NullPointerException("Relative controller pos is not available. May be caused due to a multiblock layout without a controller");
         }
