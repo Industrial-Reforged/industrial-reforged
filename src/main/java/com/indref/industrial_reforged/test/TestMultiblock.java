@@ -33,7 +33,7 @@ public class TestMultiblock implements IMultiblock {
     public Map<Integer, Block> getDefinition() {
         // Giving the numbers from the layout a purpose
         return Map.of(
-                0, IRBlocks.BASIC_MACHINE_FRAME.get(),
+                0, IRBlocks.TEST_PART.get(),
                 1, IRBlocks.TEST_CONTROLLER.get()
         );
     }

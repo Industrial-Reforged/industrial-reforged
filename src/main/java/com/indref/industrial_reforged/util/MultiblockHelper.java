@@ -1,8 +1,9 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
+import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,22 @@ import java.util.List;
 import java.util.Map;
 
 public class MultiblockHelper {
+    public static boolean isOnlyParts(IMultiBlockController controller, Player player) {
+        IndustrialReforged.LOGGER.info("Checking parts");
+        for (var block : controller.getMultiblock().getDefinition().values()) {
+            IndustrialReforged.LOGGER.info(block.toString());
+            if (!(block instanceof IMultiBlockPart || block instanceof IMultiBlockController)) {
+                // TODO: 10/24/2023 Consider making this an error message that prevents the game from starting?
+                player.sendSystemMessage(
+                        Component.literal("ERROR: Report this to the creator/maintainer of the mod. One of the multiblock's blocks does not implement the IMultiblockPart interface")
+                                .withStyle(ChatFormatting.RED)
+                );
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean isValid(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
         IMultiblock multiblock = controller.getMultiblock();
         Map<Integer, Block> def = multiblock.getDefinition();
@@ -50,17 +67,18 @@ public class MultiblockHelper {
                 // Check if block is correct
                 if (!level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
                     sendFailureMsg(player, level, curBlockPos, def, blockIndex);
+                    return false;
                 }
                 testBlockIndexList.add(reverseDef.get(level.getBlockState(curBlockPos).getBlock()));
             }
-            player.sendSystemMessage(Component.literal("Index: "+index));
+            player.sendSystemMessage(Component.literal("Index: " + index));
             index = 0;
             yIndex++;
         }
         player.sendSystemMessage(Component.literal("First blockpos: " + Coordinates.of(firstBlockPosX, blockPosY, firstBlockPosZ)));
         player.sendSystemMessage(Component.literal("ControllerPos: " + relativeControllerPos));
         player.sendSystemMessage(Component.literal("Reconstructed index list: " + testBlockIndexList));
-        return false;
+        return true;
     }
 
     // TODO: 10/21/2023 move this to the main for loop 
@@ -159,7 +177,7 @@ public class MultiblockHelper {
     }
 
     public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
-        if (isValid(controller, controllerPos, level, player)) {
+        if (isOnlyParts(controller, player) && isValid(controller, controllerPos, level, player)) {
             player.sendSystemMessage(Component.literal("Simulating forming"));
         }
     }
