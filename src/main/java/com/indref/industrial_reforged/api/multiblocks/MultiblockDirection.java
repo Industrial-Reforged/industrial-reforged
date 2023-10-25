@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.multiblocks;
 
-public enum MultiblockDirections {
+public enum MultiblockDirection {
     NORTH,
     EAST,
     SOUTH,
