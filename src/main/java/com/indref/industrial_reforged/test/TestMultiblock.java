@@ -19,9 +19,11 @@ public class TestMultiblock implements IMultiblock {
                 List.of(
                         0, 0, 0,
                         0, 0, 0,
+                        0, 0, 0,
                         0, 0, 0
                 ),
                 List.of(
+                        0, 0, 0,
                         0, 0, 0,
                         0, 1, 0,
                         0, 0, 0
