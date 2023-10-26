@@ -65,7 +65,7 @@ public class MultiblockHelper {
         int yIndex = 0;
 
         // Debugging
-        List<Integer> testBlockIndexList = new ArrayList<>();
+        List<Boolean> testBlockIndexList = new ArrayList<>();
 
         // Check if controller exists
         if (relativeControllerPos == null) {
@@ -104,11 +104,13 @@ public class MultiblockHelper {
                     };
 
                     // Check if block is correct
-                    if (!level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
+                    if (level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
+                        testBlockIndexList.add(true);
                         // sendFailureMsg(player, level, curBlockPos, def, blockIndex);
+                    } else {
+                        testBlockIndexList.add(false);
                     }
                     player.sendSystemMessage(Component.literal(curBlockPos.toShortString()));
-                    testBlockIndexList.add(reverseDef.get(level.getBlockState(curBlockPos).getBlock()));
                 }
                 player.sendSystemMessage(Component.literal("Index: " + index));
                 index = 0;
@@ -118,11 +120,14 @@ public class MultiblockHelper {
             player.sendSystemMessage(Component.literal("ControllerPos: " + relativeControllerPos));
             player.sendSystemMessage(Component.literal("Reconstructed index list: " + testBlockIndexList));
             player.sendSystemMessage(Component.literal(mDirection.toString()));
+            if (!testBlockIndexList.contains(false)) {
+                return true;
+            }
             testBlockIndexList = new ArrayList<>();
             yIndex = 0;
         }
 
-        return true;
+        return false;
     }
 
     // TODO: 10/21/2023 move this to the main for loop 
@@ -222,7 +227,7 @@ public class MultiblockHelper {
 
     public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
         if (isOnlyParts(controller, player) && isValid(controller, controllerPos, level, player)) {
-            player.sendSystemMessage(Component.literal("Simulating forming"));
+            player.sendSystemMessage(Component.literal("Simulating forming").withStyle(ChatFormatting.GREEN));
         }
     }
 }
