@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.LazyOptional;
  * IMPORTANT! When implementing this manually for an item,
  * you need to override the getUseDuration() function and make it return 1
  */
+
+// TODO: 10/26/2023 make drain methods static
 public interface IEnergyItem extends IContainerItem {
     default IEnergyStorage getEnergyStorage(ItemStack itemStack) {
         LazyOptional<IEnergyStorage> cap = itemStack.getCapability(IRCapabilities.ENERGY);
