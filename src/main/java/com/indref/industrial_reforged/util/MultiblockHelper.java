@@ -273,6 +273,7 @@ public class MultiblockHelper {
     public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
         if (isOnlyParts(controller, player) && isValid(controller, controllerPos, level, player)) {
             player.sendSystemMessage(Component.literal("Simulating forming").withStyle(ChatFormatting.GREEN));
+            controller.getMultiblock().formBlock(level, controllerPos, 0, 0);
         }
     }
 }

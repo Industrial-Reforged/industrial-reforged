@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.api.multiblocks;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
@@ -44,4 +46,6 @@ public interface IMultiblock {
         }
         return widths;
     }
+
+    void formBlock(Level level, BlockPos blockPos, int index, int indexY);
 }
