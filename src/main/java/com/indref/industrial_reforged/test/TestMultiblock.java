@@ -47,8 +47,7 @@ public class TestMultiblock implements IMultiblock {
 
     @Override
     public void formBlock(Level level, BlockPos blockPos, int index, int indexY) {
-        BlockState blockState = level.getBlockState(blockPos);
-        level.setBlockAndUpdate(blockPos, blockState.setValue(TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(index, indexY)));
+        level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(index, indexY)));
     }
 
     public enum PartIndex implements StringRepresentable {
@@ -70,7 +69,7 @@ public class TestMultiblock implements IMultiblock {
                     return part;
                 }
             }
-            return UNFORMED;
+            throw new IllegalStateException("SUS error form enum indexing");
         }
 
         @Override

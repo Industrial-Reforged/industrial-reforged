@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.test.TestMultiblock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import com.indref.industrial_reforged.util.Util.XZCoordinates;
 import com.indref.industrial_reforged.util.Util.Coordinates;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -47,15 +50,15 @@ public class MultiblockHelper {
         };
     }
 
-    public static boolean isValid(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
+    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
         MultiblockDirection direction = convDirectionToMultiblockDirection(player.getDirection());
         Set<MultiblockDirection> directions = new HashSet<>();
         directions.add(direction);
         directions.addAll(List.of(MultiblockDirection.values()));
-        IndustrialReforged.LOGGER.info(directions.toString());
+
         IMultiblock multiblock = controller.getMultiblock();
         List<List<Integer>> layout = multiblock.getLayout();
-        Coordinates relativeControllerPos = getControllerRelativePos(controller);
+        Coordinates relativeControllerPos = getRelativeControllerPos(controller);
 
         // Block definition of the multi
         Map<Integer, Block> def = multiblock.getDefinition();
@@ -75,6 +78,8 @@ public class MultiblockHelper {
 
         Pair<List<Boolean>, MultiblockDirection> prioritizedDirectionLayout = Pair.of(List.of(), MultiblockDirection.NORTH);
 
+        // Check if multi is valid
+        // iterate through all possible directions
         for (MultiblockDirection mDirection : directions) {
             // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
             Coordinates firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
@@ -91,10 +96,14 @@ public class MultiblockHelper {
                     int modZ = relativePos.getSecond();
                     int modX = relativePos.getFirst();
                     BlockPos curBlockPos = switch (mDirection) {
-                        case NORTH -> new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
-                        case EAST -> new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
-                        case SOUTH -> new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
-                        case WEST -> new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
+                        case NORTH ->
+                                new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
+                        case EAST ->
+                                new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
+                        case SOUTH ->
+                                new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
+                        case WEST ->
+                                new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
                     };
 
                     // Check if block is correct
@@ -109,7 +118,7 @@ public class MultiblockHelper {
                 yIndex++;
             }
             if (!testBlockIndexList.contains(false)) {
-                return true;
+                return Pair.of(true, mDirection);
             }
             for (int i = testBlockIndexList.size() - 1; i >= 0; i--) {
                 if (testBlockIndexList.get(i).equals(false)) {
@@ -148,14 +157,14 @@ public class MultiblockHelper {
                 // Check if block is correct
                 if (!level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
                     sendFailureMsg(player, level, curBlockPos, def, blockIndex);
-                    return false;
+                    return Pair.of(false, null);
                 }
             }
             index = 0;
             yIndex++;
         }
 
-        return false;
+        return Pair.of(false, null);
     }
 
     private static Coordinates getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Coordinates relativeControllerPos) {
@@ -200,7 +209,7 @@ public class MultiblockHelper {
     /**
      * @return x, z
      */
-    public static Coordinates getControllerRelativePos(IMultiBlockController controller) {
+    public static Coordinates getRelativeControllerPos(IMultiBlockController controller) {
         Map<Block, Integer> reverseDef = Util.reverseMap(controller.getMultiblock().getDefinition());
         List<List<Integer>> layout = controller.getMultiblock().getLayout();
         int x = 0;
@@ -271,9 +280,55 @@ public class MultiblockHelper {
     }
 
     public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
-        if (isOnlyParts(controller, player) && isValid(controller, controllerPos, level, player)) {
+        Pair<Boolean, MultiblockDirection> valid = isValid(controller, controllerPos, level, player);
+        MultiblockDirection direction = valid.getSecond();
+        if (isOnlyParts(controller, player) && valid.getFirst()) {
+            formBlocks(controller, direction, controllerPos, level);
             player.sendSystemMessage(Component.literal("Simulating forming").withStyle(ChatFormatting.GREEN));
-            controller.getMultiblock().formBlock(level, controllerPos, 0, 0);
         }
+    }
+
+    private static void formBlocks(IMultiBlockController controller, MultiblockDirection direction, BlockPos controllerPos, Level level) {
+        Coordinates relativeControllerPos = getRelativeControllerPos(controller);
+        // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
+        Coordinates firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        int firstBlockPosX = firstBlockPos.getFirst();
+        int firstBlockPosY = firstBlockPos.getSecond();
+        int firstBlockPosZ = firstBlockPos.getThird();
+        List<List<Integer>> layout = controller.getMultiblock().getLayout();
+
+        int index = 0;
+        int yIndex = 0;
+        for (List<Integer> layer : layout) {
+            for (int blockIndex : layer) {
+                // Increase index
+                index++;
+
+                // Define position-related variables
+                XZCoordinates relativePos = getRelativePos(controller, index, yIndex);
+                int modZ = relativePos.getSecond();
+                int modX = relativePos.getFirst();
+                BlockPos curBlockPos = switch (direction) {
+                    case NORTH ->
+                            new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
+                    case EAST ->
+                            new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
+                    case SOUTH ->
+                            new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
+                    case WEST ->
+                            new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
+                };
+
+                setAndUpdate(level, curBlockPos, level.getBlockState(curBlockPos), level.getBlockState(curBlockPos)
+                        .setValue(TestMultiblock.TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(0, 0)));
+            }
+            index = 0;
+            yIndex++;
+        }
+    }
+
+    private static void setAndUpdate(Level level, BlockPos blockPos, BlockState oldState, BlockState newState) {
+        level.setBlock(blockPos, newState, 2);
+        level.sendBlockUpdated(blockPos, oldState, newState, 11);
     }
 }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "test_part=unformed": {
+      "model": "indref:block/rubber_tree_planks"
+    },
+    "test_part=formed": {
+      "model": "indref:block/basic_machine_frame"
+    }
+  }
+}
