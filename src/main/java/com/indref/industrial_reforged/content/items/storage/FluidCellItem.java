@@ -128,6 +128,11 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
+    public int getCapacity(ItemStack itemStack) {
+        return this.capacity;
+    }
+
+    @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag tooltipFlag) {
         itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(
                 (fluidHandlerItem) -> {
@@ -141,7 +146,7 @@ public class FluidCellItem extends SimpleFluidItem {
                                 .append(Component.literal(String.format("%d/%d",
                                         fluidHandlerItem.getFluidInTank(0).getAmount(),
                                         com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
-                                .getCapacity(itemStack))).withStyle(ChatFormatting.AQUA));
+                                                .getCapacity(itemStack))).withStyle(ChatFormatting.AQUA));
                         tooltip.add(descriptionType);
                         tooltip.add(descriptionAmount);
                     }
