@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.items;
 
 import com.indref.industrial_reforged.content.IRItems;
+import com.indref.industrial_reforged.content.items.tools.ToolItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

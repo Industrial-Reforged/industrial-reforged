@@ -1,5 +1,6 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.food;
 
+import com.indref.industrial_reforged.content.items.misc.CannedItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 

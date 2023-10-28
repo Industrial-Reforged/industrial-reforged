@@ -21,10 +21,12 @@ public interface IEnergyItem extends IContainerItem {
         return null;
     }
 
+    @Override
     default void setStored(ItemStack itemStack, int value) {
         getEnergyStorage(itemStack).setEnergyStored(value);
     }
 
+    @Override
     default int getStored(ItemStack itemStack) {
         return getEnergyStorage(itemStack).getEnergyStored();
     }
@@ -35,7 +37,8 @@ public interface IEnergyItem extends IContainerItem {
      * @param value the amount of energy you want drain
      * @return whether the draining was successful (true) or not (false)
      */
-    default boolean tryDrainEnergy(ItemStack itemStack, int value) {
+    @Override
+    default boolean tryDrain(ItemStack itemStack, int value) {
         if (getStored(itemStack)+value > 0) {
             setStored(itemStack, getStored(itemStack)-value);
             return true;
@@ -49,7 +52,8 @@ public interface IEnergyItem extends IContainerItem {
      * @param value the amount of energy you want fill
      * @return whether the filling was successful (true) or not (false)
      */
-    default boolean tryFillEnergy(ItemStack itemStack, int value) {
+    @Override
+    default boolean tryFill(ItemStack itemStack, int value) {
         if (getStored(itemStack)+value < getCapacity(itemStack)) {
             setStored(itemStack, getStored(itemStack)+value);
             return true;

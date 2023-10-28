@@ -2,6 +2,18 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.*;
+import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
+import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
+import com.indref.industrial_reforged.content.items.storage.LunchBoxItem;
+import com.indref.industrial_reforged.content.items.storage.SeedPouchItem;
+import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
+import com.indref.industrial_reforged.content.items.tools.ScannerItem;
+import com.indref.industrial_reforged.content.items.tools.TreeTapItem;
+import com.indref.industrial_reforged.test.EnergyTestItem;
+import com.indref.industrial_reforged.content.items.tools.ToolItem;
+import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
+import com.indref.industrial_reforged.content.items.tools.WrenchItem;
+import com.indref.industrial_reforged.test.HeatTestItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -24,6 +36,8 @@ public class IRItems {
             () -> new WrenchItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> HAMMER = registerItem("hammer",
             () -> new ToolItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> TREE_TAP = registerItem("tree_tap",
+            () -> new TreeTapItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
     public static final RegistryObject<Item> TAPE_MEASURE = registerItem("tape_measure",
@@ -57,10 +71,17 @@ public class IRItems {
                     .fast()
                     .build()
             )));
-//amor
+    // armor
 
     public static final RegistryObject<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",
             () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
+            () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAZMAT_CHESTPLATE = registerItem("hazmat_chestplate",
+            () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAZMAT_HELMET = registerItem("hazmat_helmet",
+            () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
     //test items
     public static final RegistryObject<Item> ENERGY_TEST_ITEM = registerItem("energy_test",
             () -> new EnergyTestItem(new Item.Properties()));

@@ -1,5 +1,6 @@
-package com.indref.industrial_reforged.api.blocks;
+package com.indref.industrial_reforged.api.blocks.container;
 
+import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -17,24 +18,42 @@ import java.util.List;
 /**
  * Interface for implementing Blocks that store EU
  */
-public interface IEnergyBlock extends IScannable {
+public interface IEnergyBlock extends IContainerBlock, IScannable {
     EnergyStorageProvider getEnergyStorage();
 
     default void onEnergyChanged() {
     }
 
-    default void setEnergyStored(BlockEntity blockEntity, int value) {
+    @Override
+    default void setStored(BlockEntity blockEntity, int value) {
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         energyStorage.setEnergyStored(value);
         onEnergyChanged();
     }
 
-    default int getEnergyStored(BlockEntity blockEntity) {
+    @Override
+    default int getStored(BlockEntity blockEntity) {
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         return energyStorage.getEnergyStored();
     }
 
-    int getEnergyCapacity();
+    @Override
+    default boolean tryDrain(BlockEntity blockEntity, int value) {
+        if (getStored(blockEntity)+value > 0) {
+            setStored(blockEntity, getStored(blockEntity)-value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    default boolean tryFill(BlockEntity blockEntity, int value) {
+        if (getStored(blockEntity)+value < getCapacity(blockEntity)) {
+            setStored(blockEntity, getStored(blockEntity)+value);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     default List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
@@ -47,7 +66,7 @@ public interface IEnergyBlock extends IScannable {
                 scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE),
                 MutableComponent.create(ComponentContents.EMPTY).withStyle(ChatFormatting.WHITE)
                         .append(Component.translatable("scanner_info.energy_block.energy_ratio"))
-                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity())))
+                        .append(Component.literal(String.format("%d/%d", energyBlock.getStored(blockEntity), energyBlock.getCapacity(blockEntity))))
                         .append(Component.literal(","))
         );
     }

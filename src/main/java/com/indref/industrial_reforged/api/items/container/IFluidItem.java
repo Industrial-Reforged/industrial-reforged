@@ -14,6 +14,14 @@ public interface IFluidItem extends IContainerItem {
         return itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
     }
 
+    /**
+     * Does nothing!
+     */
+    @Override
+    @Deprecated
+    default void setStored(ItemStack itemStack, int value) {
+    }
+
     @Override
     default int getStored(ItemStack itemStack) {
         IFluidHandlerItem fluidHandlerItem = getFluidHandler(itemStack);
@@ -29,7 +37,9 @@ public interface IFluidItem extends IContainerItem {
     /**
      * @return true if was able to fill, false if wasn't able to do so
      */
-    default boolean tryFill(int amount, ItemStack itemStack) {
+
+    @Override
+    default boolean tryFill(ItemStack itemStack, int amount) {
         return tryFill(getFluid(), amount, itemStack);
     }
 
@@ -49,7 +59,8 @@ public interface IFluidItem extends IContainerItem {
     /**
      * @return true if was able to fill, false if wasn't able to do so
      */
-    default boolean tryDrain(int amount, ItemStack itemStack) {
+    @Override
+    default boolean tryDrain(ItemStack itemStack, int amount) {
         return tryDrain(getFluid(), amount, itemStack);
     }
 

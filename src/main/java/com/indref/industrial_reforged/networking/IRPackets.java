@@ -51,6 +51,7 @@ public class IRPackets {
 
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);
+        IndustrialReforged.LOGGER.info("sending to server");
     }
 
     public static <MSG> void sendToClients(MSG message) {

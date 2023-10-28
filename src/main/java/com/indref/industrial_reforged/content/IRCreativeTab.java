@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
+import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -39,6 +40,7 @@ public class IRCreativeTab {
                 // Tools
                 addItem(output, IRItems.WRENCH);
                 addItem(output, IRItems.HAMMER);
+                addItem(output, IRItems.TREE_TAP);
                 addPoweredItem(output, IRItems.SCANNER);
 
                 // Storage items
@@ -49,6 +51,9 @@ public class IRCreativeTab {
 
                 // armor
                 addItem(output, IRItems.HAZMAT_BOOTS);
+                addItem(output, IRItems.HAZMAT_LEGGINGS);
+                addItem(output, IRItems.HAZMAT_CHESTPLATE);
+                addItem(output, IRItems.HAZMAT_HELMET);
 
                 //food
                 addItem(output, IRItems.EMPTY_CAN);
@@ -98,8 +103,12 @@ public class IRCreativeTab {
         // Add base item
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
-        if (item.get() instanceof IEnergyItem energyContainerItem)
-            energyContainerItem.setStored(stack, energyContainerItem.getCapacity(stack));
+        if (item.get() instanceof IEnergyItem energyItem)
+            energyItem.setStored(stack, energyItem.getCapacity(stack));
+
+        if (item.get() instanceof IHeatItem heatItem)
+            heatItem.setStored(stack, heatItem.getCapacity(stack));
+
         output.accept(stack);
     }
 

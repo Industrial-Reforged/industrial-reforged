@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
