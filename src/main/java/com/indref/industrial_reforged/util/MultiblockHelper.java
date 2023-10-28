@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
-import com.indref.industrial_reforged.test.TestMultiblock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -23,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+// TODO: 10/28/2023 Improve performance by reducing amount of for loops
 public class MultiblockHelper {
     public static boolean isOnlyParts(IMultiBlockController controller, Player player) {
         IndustrialReforged.LOGGER.info("Checking parts");
@@ -319,15 +319,14 @@ public class MultiblockHelper {
                             new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
                 };
 
-                setAndUpdate(level, curBlockPos, level.getBlockState(curBlockPos), level.getBlockState(curBlockPos)
-                        .setValue(TestMultiblock.TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(0, 0)));
+                controller.getMultiblock().formBlock(level, curBlockPos, 0, 0);
             }
             index = 0;
             yIndex++;
         }
     }
 
-    private static void setAndUpdate(Level level, BlockPos blockPos, BlockState oldState, BlockState newState) {
+    public static void setAndUpdate(Level level, BlockPos blockPos, BlockState oldState, BlockState newState) {
         level.setBlock(blockPos, newState, 2);
         level.sendBlockUpdated(blockPos, oldState, newState, 11);
     }

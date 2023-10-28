@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.content.IRBlocks;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
@@ -47,7 +48,8 @@ public class TestMultiblock implements IMultiblock {
 
     @Override
     public void formBlock(Level level, BlockPos blockPos, int index, int indexY) {
-        level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(index, indexY)));
+        MultiblockHelper.setAndUpdate(level, blockPos, level.getBlockState(blockPos), level.getBlockState(blockPos)
+                .setValue(TestMultiblock.TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(0, 0)));
     }
 
     public enum PartIndex implements StringRepresentable {
