@@ -51,6 +51,9 @@ public class IRCreativeTab {
 
                 // armor
                 addItem(output, IRItems.HAZMAT_BOOTS);
+                addItem(output, IRItems.HAZMAT_LEGGINGS);
+                addItem(output, IRItems.HAZMAT_CHESTPLATE);
+                addItem(output, IRItems.HAZMAT_HELMET);
 
                 //food
                 addItem(output, IRItems.EMPTY_CAN);

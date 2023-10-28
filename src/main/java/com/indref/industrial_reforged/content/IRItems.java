@@ -67,10 +67,17 @@ public class IRItems {
                     .fast()
                     .build()
             )));
-//amor
+    // armor
 
     public static final RegistryObject<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",
             () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
+            () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAZMAT_CHESTPLATE = registerItem("hazmat_chestplate",
+            () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HAZMAT_HELMET = registerItem("hazmat_helmet",
+            () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
     //test items
     public static final RegistryObject<Item> ENERGY_TEST_ITEM = registerItem("energy_test",
             () -> new EnergyTestItem(new Item.Properties()));

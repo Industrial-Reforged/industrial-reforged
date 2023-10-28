@@ -7,6 +7,9 @@
   "item.indref.scanner": "Scanner",
   "item.indref.nuka_cola": "Nuka Cola",
   "item.indref.empty_can": "Empty Can",
+  "item.indref.fluid_cell": "Fluid Cell",
+  "item.indref.fluid_cell.desc.stored": "Stored Fluid: ",
+  "item.indref.fluid_cell.desc.amount": "Stored Amount: ",
   "item.indref.energy_drink": "Energy Drink",
 
   "item.indref.seed_pouch": "Seed Pouch",
