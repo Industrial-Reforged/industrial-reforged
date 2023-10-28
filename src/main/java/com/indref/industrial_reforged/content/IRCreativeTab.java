@@ -34,7 +34,7 @@ public class IRCreativeTab {
      */
     public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref"))
-            .withTabsBefore(CreativeModeTabs.COMBAT)
+            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {
                 // Tools
@@ -65,6 +65,7 @@ public class IRCreativeTab {
                 addItem(output, IRItems.CORN_SEEDS);
 
                 // Machines
+                addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
                 addBlock(output, IRBlocks.SIMPLE_PRESS);
 
                 // test objects

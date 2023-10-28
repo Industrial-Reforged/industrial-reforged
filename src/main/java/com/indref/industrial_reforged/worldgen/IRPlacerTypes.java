@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.worldgen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;

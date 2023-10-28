@@ -1,9 +1,5 @@
 package com.indref.industrial_reforged.content.items.storage;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
@@ -24,6 +20,10 @@ import net.minecraft.world.inventory.tooltip.BundleTooltip;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class ToolboxItem extends BundleItem {
     public static final int SLOT_CAPACITY = 8;

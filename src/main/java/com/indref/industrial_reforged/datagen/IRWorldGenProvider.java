@@ -1,14 +1,9 @@
-package com.indref.industrial_reforged.content.datagen;
-
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
+package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.worldgen.RubberTreeFoliagePlacer;
 import com.indref.industrial_reforged.worldgen.RubberTreeTrunkPlacer;
-
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -34,6 +29,10 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> RUBBER_TREE_KEY = registerConfigKey("rubber_tree");

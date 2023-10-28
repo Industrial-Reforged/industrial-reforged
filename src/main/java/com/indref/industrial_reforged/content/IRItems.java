@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.items.*;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.LunchBoxItem;
@@ -39,6 +40,9 @@ public class IRItems {
             () -> new TreeTapItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
+    public static final RegistryObject<Item> TAPE_MEASURE = registerItem("tape_measure",
+            () -> new TapeMeasureItem(new Item.Properties()));
+
     // Item storages
     public static final RegistryObject<Item> LUNCHBOX = registerItem("lunchbox",
             () -> new LunchBoxItem(new Item.Properties().stacksTo(1)));

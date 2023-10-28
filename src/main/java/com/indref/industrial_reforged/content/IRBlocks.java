@@ -2,7 +2,8 @@ package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blocks.*;
-
+import com.indref.industrial_reforged.test.TestMultiblockController;
+import com.indref.industrial_reforged.test.TestMultiblockPart;
 import com.indref.industrial_reforged.worldgen.RubberTreeGrower;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -39,7 +39,12 @@ public class IRBlocks {
             () -> new SimplePressBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> CORN_CROP = registerBlock("corn_crop",
             () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
+    public static final RegistryObject<Block> TEST_CONTROLLER = registerBlockAndItem("test_controller",
+            () -> new TestMultiblockController(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> TEST_PART = registerBlockAndItem("test_part",
+            () -> new TestMultiblockPart(BlockBehaviour.Properties.of()));
 
+    // Rubber
     public static final RegistryObject<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",
             () -> new RubberTreeLogBlock());
     public static final RegistryObject<Block> STRIPPED_RUBBER_TREE_LOG = registerBlockAndItem("stripped_rubber_tree_log",

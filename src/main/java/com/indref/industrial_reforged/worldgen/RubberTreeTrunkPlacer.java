@@ -1,14 +1,10 @@
 package com.indref.industrial_reforged.worldgen;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.blocks.RubberTreeResinHoleBlock;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -18,6 +14,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+
+import java.util.List;
+import java.util.function.BiConsumer;
 
 public class RubberTreeTrunkPlacer extends TrunkPlacer {
 	public static final Codec<RubberTreeTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {

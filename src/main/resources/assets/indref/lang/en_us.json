@@ -21,13 +21,22 @@
   "item.indref.hazmat_boots": "Hazmat Boots",
 
   "block.indref.test_block_energy": "Test Block Energy",
+  "block.indref.test_part": "Test Part",
+  "block.indref.test_controller": "Test Controller",
   "block.indref.basic_machine_frame": "Basic Machine Frame",
   "block.indref.refactory_brick": "Refactory Brick",
+
   "block.indref.rubber_tree_log": "Rubber Tree",
   "block.indref.rubber_tree_leaves": "Rubber Tree Leaves",
   "block.indref.rubber_tree_sapling": "Rubber Tree Sapling",
   "block.indref.rubber_tree_planks": "Rubber Tree Planks",
 
   "scanner_info.energy_block.energy_ratio": "Energy stored: ",
+  "tape_measure.block_difference": "Distance measured:",
+
+  "multiblock.info.failed_to_construct": "Missing or invalid block:",
+  "multiblock.info.actual_block": "Block",
+  "multiblock.info.expected_block": "Expected",
+  "multiblock.info.block_pos": "Coords",
   "scanner_info.heat_block.heat_ratio": "Heat stored: "
 }

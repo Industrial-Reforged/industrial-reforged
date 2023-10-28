@@ -1,18 +1,15 @@
-package com.indref.industrial_reforged.event;
+package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.SimpleFluidItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.content.IRItems;
+import com.indref.industrial_reforged.content.items.TapeMeasureItem;
 import com.indref.industrial_reforged.screen.IRMenuTypes;
-import com.indref.industrial_reforged.screen.SimplePressMenu;
 import com.indref.industrial_reforged.screen.SimplePressScreen;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -37,4 +34,10 @@ public class IRClientEvents {
         event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
     }
 
+    @SubscribeEvent
+    public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"), (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
+        });
+    }
 }

@@ -1,13 +1,13 @@
 package com.indref.industrial_reforged;
 
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.IRBlocks;
 import com.indref.industrial_reforged.content.IRCreativeTab;
-import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.worldgen.IRPlacerTypes;
 import com.indref.industrial_reforged.content.IRItems;
-import com.indref.industrial_reforged.content.IRBlockEntityTypes;
-import com.indref.industrial_reforged.event.IREvents;
+import com.indref.industrial_reforged.events.IREvents;
+import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.screen.IRMenuTypes;
+import com.indref.industrial_reforged.worldgen.IRPlacerTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;

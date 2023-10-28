@@ -7,5 +7,5 @@ public class MachineFrameBlock extends Block {
         super(properties);
     }
 
-    // TODO: 10/15/2023 Add energy tier 
+    // TODO: 10/15/2023 Add energy tier
 }
