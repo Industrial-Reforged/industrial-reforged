@@ -42,11 +42,12 @@ public class IRCreativeTab {
                 addItem(output, IRItems.HAMMER);
                 addItem(output, IRItems.TREE_TAP);
                 addPoweredItem(output, IRItems.SCANNER);
+                addItem(output, IRItems.TAPE_MEASURE);
 
                 // Storage items
                 addItem(output, IRItems.TOOLBOX);
                 addItem(output, IRItems.SEED_POUCH);
-                addItem(output, IRItems.LUNCHBOX);
+                addItem(output, IRItems.LUNCH_BAG);
                 addVariantForAllFluids(output, IRItems.FLUID_CELL);
 
                 // armor
@@ -62,15 +63,23 @@ public class IRCreativeTab {
 
                 // misc and crafting items
                 addItem(output, IRItems.RUBBER_SHEET);
+                addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CORN_SEEDS);
 
-                // Machines
+                // misc blocks
                 addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
+                addBlock(output, IRBlocks.REFACTORY_BRICK);
+                addBlock(output, IRBlocks.COIL);
+
+                // Machines
                 addBlock(output, IRBlocks.SIMPLE_PRESS);
 
                 // test objects
                 addPoweredItem(output, IRItems.ENERGY_TEST_ITEM);
+                addPoweredItem(output, IRItems.HEAT_TEST_ITEM);
                 addBlock(output, IRBlocks.TEST_BLOCK_ENERGY);
+                addBlock(output, IRBlocks.TEST_CONTROLLER);
+                addBlock(output, IRBlocks.TEST_PART);
                 
                 // Rubber Tree
                 addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);

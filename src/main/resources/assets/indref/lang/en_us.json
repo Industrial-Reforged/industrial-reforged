@@ -14,6 +14,10 @@
 
   "item.indref.seed_pouch": "Seed Pouch",
   "item.indref.toolbox": "Toolbox",
+  "item.indref.lunch_bag": "Lunch Bag",
+
+  "item.indref.sticky_resin": "Sticky Resin",
+  "item.indref.rubber_sheet": "Rubber Sheet",
 
   "item.indref.hazmat_helmet": "Hazmat Helmet",
   "item.indref.hazmat_chestplate": "Hazmat Chestplate",
@@ -23,8 +27,10 @@
   "block.indref.test_block_energy": "Test Block Energy",
   "block.indref.test_part": "Test Part",
   "block.indref.test_controller": "Test Controller",
+
   "block.indref.basic_machine_frame": "Basic Machine Frame",
   "block.indref.refactory_brick": "Refactory Brick",
+  "block.indref.coil": "Coil",
 
   "block.indref.rubber_tree_log": "Rubber Tree",
   "block.indref.rubber_tree_leaves": "Rubber Tree Leaves",

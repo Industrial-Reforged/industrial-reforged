@@ -29,6 +29,8 @@ public class IRBlocks {
             () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> REFACTORY_BRICK = registerBlockAndItem("refactory_brick",
             () -> new RefactoryBrickBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> COIL = registerBlockAndItem("coil",
+            () -> new CoilBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> TEST_BLOCK_HEAT = registerBlockAndItem("test_block_heat",
             () -> new HeatTestBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",

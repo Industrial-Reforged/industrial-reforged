@@ -1,18 +1,14 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.items.*;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.LunchBoxItem;
 import com.indref.industrial_reforged.content.items.storage.SeedPouchItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
-import com.indref.industrial_reforged.content.items.tools.ScannerItem;
-import com.indref.industrial_reforged.content.items.tools.TreeTapItem;
+import com.indref.industrial_reforged.content.items.tools.*;
 import com.indref.industrial_reforged.test.EnergyTestItem;
-import com.indref.industrial_reforged.content.items.tools.ToolItem;
 import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
-import com.indref.industrial_reforged.content.items.tools.WrenchItem;
 import com.indref.industrial_reforged.test.HeatTestItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -44,7 +40,7 @@ public class IRItems {
             () -> new TapeMeasureItem(new Item.Properties()));
 
     // Item storages
-    public static final RegistryObject<Item> LUNCHBOX = registerItem("lunchbox",
+    public static final RegistryObject<Item> LUNCH_BAG = registerItem("lunch_bag",
             () -> new LunchBoxItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
@@ -90,6 +86,8 @@ public class IRItems {
 
     //misc
     public static final RegistryObject<Item> RUBBER_SHEET = registerItem("rubber_sheet",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> STICKY_RESIN = registerItem("sticky_resin",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> CORN_SEEDS = ITEMS.register("corn_seeds",

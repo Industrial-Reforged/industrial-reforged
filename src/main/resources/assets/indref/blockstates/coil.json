@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "firebox_part=unformed": {
+      "model": "indref:block/coil"
+    },
+    "firebox_part=middle_middle": {
+      "model": "indref:block/multiblock/firebox/middle_middle"
+    }
+  }
+}

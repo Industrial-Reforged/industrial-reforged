@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,4 +49,8 @@ public interface IMultiblock {
     }
 
     void formBlock(Level level, BlockPos blockPos, int index, int indexY);
+
+    default @Nullable MultiblockDirection getFixedDirection() {
+        return null;
+    }
 }

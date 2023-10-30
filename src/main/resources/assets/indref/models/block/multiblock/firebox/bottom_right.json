@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "indref:block/machines/crucible/formed/top_bottom_right",
+    "side": "indref:block/refactory_brick"
+  }
+}

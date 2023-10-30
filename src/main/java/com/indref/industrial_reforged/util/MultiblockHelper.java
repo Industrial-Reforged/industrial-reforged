@@ -282,13 +282,16 @@ public class MultiblockHelper {
     public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
         Pair<Boolean, MultiblockDirection> valid = isValid(controller, controllerPos, level, player);
         MultiblockDirection direction = valid.getSecond();
+        if (controller.getMultiblock().getFixedDirection() != null) {
+            direction = controller.getMultiblock().getFixedDirection();
+        }
         if (isOnlyParts(controller, player) && valid.getFirst()) {
-            formBlocks(controller, direction, controllerPos, level);
+            formBlocks(controller, direction, controllerPos, level, player);
             player.sendSystemMessage(Component.literal("Simulating forming").withStyle(ChatFormatting.GREEN));
         }
     }
 
-    private static void formBlocks(IMultiBlockController controller, MultiblockDirection direction, BlockPos controllerPos, Level level) {
+    private static void formBlocks(IMultiBlockController controller, MultiblockDirection direction, BlockPos controllerPos, Level level, Player player) {
         Coordinates relativeControllerPos = getRelativeControllerPos(controller);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         Coordinates firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
@@ -309,17 +312,15 @@ public class MultiblockHelper {
                 int modZ = relativePos.getSecond();
                 int modX = relativePos.getFirst();
                 BlockPos curBlockPos = switch (direction) {
-                    case NORTH ->
-                            new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
-                    case EAST ->
-                            new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
-                    case SOUTH ->
-                            new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
-                    case WEST ->
-                            new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
+                    case NORTH -> new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
+                    case EAST -> new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
+                    case SOUTH -> new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
+                    case WEST -> new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
                 };
 
-                controller.getMultiblock().formBlock(level, curBlockPos, 0, 0);
+                controller.getMultiblock().formBlock(level, curBlockPos, index-1, yIndex);
+                player.sendSystemMessage(Component.literal("index: "+(index-1)+", yIndex: "+yIndex+", blockpos: "+curBlockPos+", modX: "+modX));
+                player.sendSystemMessage(Component.literal("Direction: "+direction));
             }
             index = 0;
             yIndex++;
