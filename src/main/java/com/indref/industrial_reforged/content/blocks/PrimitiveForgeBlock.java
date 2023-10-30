@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
 public class PrimitiveForgeBlock extends BaseEntityBlock {
@@ -47,7 +47,7 @@ public class PrimitiveForgeBlock extends BaseEntityBlock {
                 return InteractionResult.SUCCESS;
             }
         } else if (!player.getMainHandItem().equals(ItemStack.EMPTY)) {
-            entity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> itemHandler.insertItem(0, player.getMainHandItem().copy(), false));
+            entity.getCapability(Capabilities.ITEM_HANDLER).ifPresent(itemHandler -> itemHandler.insertItem(0, player.getMainHandItem().copy(), false));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

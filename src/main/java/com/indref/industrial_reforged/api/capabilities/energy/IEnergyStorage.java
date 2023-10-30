@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
-import net.minecraftforge.common.capabilities.AutoRegisterCapability;
+import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
 
 /**
  * Basic Capability Interface used for handling

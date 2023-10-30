@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -28,9 +28,8 @@ public class S2CEnergySync {
         buf.writeBlockPos(pos);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+    public boolean handle(NetworkEvent.Context supplier) {
+        supplier.enqueueWork(() -> {
             BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(pos);
             if (entity instanceof IEnergyBlock blockEntity) {
                 blockEntity.setStored(entity, energy);

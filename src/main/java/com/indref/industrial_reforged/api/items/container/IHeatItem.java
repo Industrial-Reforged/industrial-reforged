@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.api.items.container;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.util.LazyOptional;
 
 public interface IHeatItem extends IContainerItem {
     default IHeatStorage getHeatStorage(ItemStack itemStack) {

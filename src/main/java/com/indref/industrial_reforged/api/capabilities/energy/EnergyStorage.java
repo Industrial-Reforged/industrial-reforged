@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
  * {@link IEnergyItem} and
  * {@link IEnergyBlock}
  * <p>
- * Or use the {@link EnergyStorageProvider} and subscribe to the right {@link net.minecraftforge.event.AttachCapabilitiesEvent}
+ * Or use the {@link EnergyStorageProvider} and subscribe to the right {{@link net.neoforged.neoforge.event.AttachCapabilitiesEvent}}
  */
 public class EnergyStorage implements IEnergyStorage {
     public EnergyStorage() {

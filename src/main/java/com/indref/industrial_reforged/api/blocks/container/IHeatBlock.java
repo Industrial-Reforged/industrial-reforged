@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.core.BlockPos;

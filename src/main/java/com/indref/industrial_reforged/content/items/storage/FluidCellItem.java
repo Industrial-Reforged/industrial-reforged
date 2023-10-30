@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.items.storage;
 
 import com.indref.industrial_reforged.api.items.SimpleFluidItem;
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.content.IRItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -19,29 +18,27 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.SoundAction;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.SoundAction;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static net.neoforged.neoforge.event.EventHooks.onBucketUse;
 
 public class FluidCellItem extends SimpleFluidItem {
     private int capacity;
@@ -56,7 +53,7 @@ public class FluidCellItem extends SimpleFluidItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         BlockHitResult hit = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
-        InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(player, level, stack, hit);
+        InteractionResultHolder<ItemStack> ret = onBucketUse(player, level, stack, hit);
 
         if (ret != null) {
             return ret;
@@ -74,7 +71,7 @@ public class FluidCellItem extends SimpleFluidItem {
 
         if (level.mayInteract(player, pos) && player.mayUseItemAt(pos1, direction, stack)) {
             BlockState state = level.getBlockState(pos);
-            IFluidHandlerItem cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
+            IFluidHandlerItem cap = stack.getCapability(Capabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
             if (cap.getFluidInTank(0).isEmpty()) {
                 if (state.getBlock() instanceof LiquidBlock liquidBlock) {
                     if (state.getValue(BlockStateProperties.LEVEL) == 0) {
@@ -93,8 +90,8 @@ public class FluidCellItem extends SimpleFluidItem {
                         player.playSound(soundevent, 1F, 1F);
 
                         ItemStack newStack = new ItemStack(this);
-                        IFluidHandlerItem newCap = newStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
-                        newCap.fill(new FluidStack(fluid, 1000), IFluidHandler.FluidAction.EXECUTE);
+                        IFluidHandlerItem newCap = newStack.getCapability(Capabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
+                        newCap.fill(new FluidStack(fluid, 1000), IFluidHandlerItem.FluidAction.EXECUTE);
                         this.fluid = fluid;
 
                         if (!level.isClientSide()) {
@@ -134,7 +131,7 @@ public class FluidCellItem extends SimpleFluidItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(
+        itemStack.getCapability(Capabilities.FLUID_HANDLER_ITEM).ifPresent(
                 (fluidHandlerItem) -> {
                     if (!fluidHandlerItem.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
                         Component descriptionType = MutableComponent.create(ComponentContents.EMPTY)
