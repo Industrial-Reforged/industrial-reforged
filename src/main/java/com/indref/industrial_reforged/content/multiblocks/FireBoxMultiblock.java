@@ -38,7 +38,7 @@ public class FireBoxMultiblock implements IMultiblock {
     @Override
     public Map<Integer, Block> getDefinition() {
         return Map.of(
-                0, IRBlocks.REFACTORY_BRICK.get(),
+                0, IRBlocks.REFRACTORY_BRICK.get(),
                 1, getController()
         );
     }

@@ -6,8 +6,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
-public class RefactoryBrickBlock extends Block implements IMultiBlockPart {
-    public RefactoryBrickBlock(Properties properties) {
+public class RefractoryBrickBlock extends Block implements IMultiBlockPart {
+    public RefractoryBrickBlock(Properties properties) {
         super(properties);
     }
 

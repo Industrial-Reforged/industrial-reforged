@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.content;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
-import com.indref.industrial_reforged.content.items.storage.LunchBoxItem;
+import com.indref.industrial_reforged.content.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.content.items.storage.SeedPouchItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
@@ -41,7 +41,7 @@ public class IRItems {
 
     // Item storages
     public static final RegistryObject<Item> LUNCH_BAG = registerItem("lunch_bag",
-            () -> new LunchBoxItem(new Item.Properties().stacksTo(1)));
+            () -> new LunchBagItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
     public static final RegistryObject<Item> TOOLBOX = registerItem("toolbox",

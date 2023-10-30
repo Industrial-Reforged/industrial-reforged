@@ -68,7 +68,7 @@ public class IRCreativeTab {
 
                 // misc blocks
                 addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
-                addBlock(output, IRBlocks.REFACTORY_BRICK);
+                addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.COIL);
 
                 // Machines

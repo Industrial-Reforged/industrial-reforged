@@ -8,7 +8,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -25,13 +24,12 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LunchBoxItem extends BundleItem {
+public class LunchBagItem extends BundleItem {
     public static final int SLOT_CAPACITY = 128;
 
-    public LunchBoxItem(Properties properties) {
+    public LunchBagItem(Properties properties) {
         super(properties);
     }
 
@@ -44,7 +42,7 @@ public class LunchBoxItem extends BundleItem {
             if (itemstack.isEmpty()) {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
-            } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.getTags().collect(Collectors.toList()).contains(ItemTags.FOX_FOOD )) {
+            } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.isEdible()) {
                 int i = (SLOT_CAPACITY - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
@@ -70,7 +68,7 @@ public class LunchBoxItem extends BundleItem {
                     this.playRemoveOneSound(p_150746_);
                     p_150747_.set(p_186347_);
                 });
-            } else if (itemStack.getTags().collect(Collectors.toList()).contains(ItemTags.FOX_FOOD )) {
+            } else if (itemStack.isEdible()) {
                 int i = add(toolbox, itemStack);
                 if (i > 0) {
                     this.playInsertSound(p_150746_);
@@ -84,7 +82,7 @@ public class LunchBoxItem extends BundleItem {
     }
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
-        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && newItemStack.getTags().collect(Collectors.toList()).contains(ItemTags.FOX_FOOD )  )) {
+        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && newItemStack.isEdible())) {
             CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {
                 compoundtag.put("Items", new ListTag());
@@ -97,20 +95,19 @@ public class LunchBoxItem extends BundleItem {
             } else {
                 ListTag listtag = compoundtag.getList("Items", 10);
                 Optional<CompoundTag> optional = getMatchingItem(newItemStack, listtag);
-                ItemStack itemstack1 = newItemStack.copyWithCount(k);
-                CompoundTag compoundtag2 = new CompoundTag();
-                itemstack1.save(compoundtag2);
-                listtag.add(0, (Tag) compoundtag2);
+                ItemStack itemStack1 = newItemStack.copyWithCount(k);
+                CompoundTag compoundTag2 = new CompoundTag();
+                itemStack1.save(compoundTag2);
+                listtag.add(0, (Tag) compoundTag2);
                 return k;
             }
         }
         return 0;
     }
 
-    private static Optional<CompoundTag> getMatchingItem(ItemStack p_150757_, ListTag p_150758_) {
-        return p_150757_.is(IRItems.TOOLBOX.get()) ? Optional.empty() : p_150758_.stream().filter(CompoundTag.class::isInstance).map(CompoundTag.class::cast).filter((p_186350_) -> {
-            return ItemStack.isSameItemSameTags(ItemStack.of(p_186350_), p_150757_);
-        }).findFirst();
+    private static Optional<CompoundTag> getMatchingItem(ItemStack itemStack, ListTag listTag) {
+        return itemStack.is(IRItems.TOOLBOX.get()) ? Optional.empty() : listTag.stream().filter(CompoundTag.class::isInstance).map(CompoundTag.class::cast)
+                .filter((compoundTag) -> ItemStack.isSameItemSameTags(ItemStack.of(compoundTag), itemStack)).findFirst();
     }
 
     private static int getContentWeight(ItemStack itemStack) {
