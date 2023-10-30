@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -31,9 +31,8 @@ public class S2CFluidSync {
         buf.writeItem(itemStack);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+    public boolean handle(NetworkEvent.Context supplier) {
+        supplier.enqueueWork(() -> {
             if (itemStack.getItem() instanceof IFluidItem fluidItem) {
                 fluidItem.tryFill(this.fluid, this.fluidAmount, this.itemStack);
             }

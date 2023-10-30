@@ -7,8 +7,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class CannedItem extends Item {
-    public CannedItem(Properties properties) {
+public class CannedFoodItem extends Item {
+    public CannedFoodItem(Properties properties) {
         super(properties);
     }
 

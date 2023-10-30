@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;

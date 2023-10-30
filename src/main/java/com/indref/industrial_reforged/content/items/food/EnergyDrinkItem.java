@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.content.items.food;
 
-import com.indref.industrial_reforged.content.items.misc.CannedItem;
+import com.indref.industrial_reforged.content.items.misc.CannedFoodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 
-public class EnergyDrinkItem extends CannedItem {
+public class EnergyDrinkItem extends CannedFoodItem {
     public EnergyDrinkItem(Properties properties) {
         super(properties);
     }

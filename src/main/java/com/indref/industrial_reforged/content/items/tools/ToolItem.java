@@ -12,7 +12,7 @@ public class ToolItem extends Item implements IToolItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack p_41454_) {
+    public int getUseDuration(ItemStack itemStack) {
         return 1;
     }
 }

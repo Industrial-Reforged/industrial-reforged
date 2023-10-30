@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.content.blockentities.HeatTestBE;
 import com.indref.industrial_reforged.networking.IRPackets;

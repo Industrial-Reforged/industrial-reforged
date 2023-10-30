@@ -15,10 +15,11 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraftforge.common.IPlantable;
+import net.neoforged.neoforge.common.IPlantable;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraftforge.common.ForgeHooks.onCropsGrowPost;
+import static net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost;
+import static net.neoforged.neoforge.common.CommonHooks.onCropsGrowPre;
 
 public class TallCropBlock extends CropBlock {
     public static final int FIRST_STAGE_MAX_AGE = 6;
@@ -46,7 +47,7 @@ public class TallCropBlock extends CropBlock {
             if (currentAge < this.getMaxAge()) {
                 float growthSpeed = getGrowthSpeed(this, level, blockPos);
 
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, blockPos, blockState, randomSource.nextInt((int)(25.0F / growthSpeed) + 1) == 0)) {
+                if (onCropsGrowPre(level, blockPos, blockState, randomSource.nextInt((int)(25.0F / growthSpeed) + 1) == 0)) {
                     if(currentAge == getFirstStageMaxAge()) {
                         if(level.getBlockState(blockPos.above(1)).is(Blocks.AIR)) {
                             level.setBlock(blockPos.above(1), this.getStateForAge(currentAge + 1), 2);
