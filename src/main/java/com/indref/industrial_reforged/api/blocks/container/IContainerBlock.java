@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IContainerBlock {
     void setStored(BlockEntity blockEntity, int value);
+    void setCapacity(BlockEntity blockEntity, int value);
     int getStored(BlockEntity blockEntity);
     int getCapacity(BlockEntity blockEntity);
 

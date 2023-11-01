@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blocks.*;
 import com.indref.industrial_reforged.test.TestMultiblockController;
 import com.indref.industrial_reforged.test.TestMultiblockPart;
+import com.indref.industrial_reforged.test.energy.TestGeneratorBlock;
 import com.indref.industrial_reforged.worldgen.RubberTreeGrower;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -27,6 +28,8 @@ public class IRBlocks {
 
     public static final RegistryObject<Block> TEST_BLOCK_ENERGY = registerBlockAndItem("test_block_energy",
             () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
+    public static final RegistryObject<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
+            () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",
             () -> new RefractoryBrickBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> COIL = registerBlockAndItem("coil",
@@ -48,19 +51,19 @@ public class IRBlocks {
 
     // Rubber
     public static final RegistryObject<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",
-            () -> new RubberTreeLogBlock());
+            RubberTreeLogBlock::new);
     public static final RegistryObject<Block> STRIPPED_RUBBER_TREE_LOG = registerBlockAndItem("stripped_rubber_tree_log",
-    		() -> new RubberTreeLogBlock());
+            RubberTreeLogBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_WOOD = registerBlockAndItem("rubber_tree_wood",
-    		() -> new RubberTreeLogBlock());
+            RubberTreeLogBlock::new);
     public static final RegistryObject<Block> STRIPPED_RUBBER_TREE_WOOD = registerBlockAndItem("stripped_rubber_tree_wood",
-    		() -> new RubberTreeLogBlock());
+            RubberTreeLogBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_LEAVES = registerBlockAndItem("rubber_tree_leaves",
-            () -> new RubberTreeLeavesBlock());
+            RubberTreeLeavesBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_SAPLING = registerBlockAndItem("rubber_tree_sapling",
             () -> new SaplingBlock(new RubberTreeGrower(), BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     public static final RegistryObject<Block> RUBBER_TREE_RESIN_HOLE = registerBlockAndItem("rubber_tree_resin_hole",
-            () -> new RubberTreeResinHoleBlock());
+            RubberTreeResinHoleBlock::new);
     public static final RegistryObject<Block> RUBBER_TREE_PLANKS = registerBlockAndItem("rubber_tree_planks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     @SuppressWarnings("deprecation")

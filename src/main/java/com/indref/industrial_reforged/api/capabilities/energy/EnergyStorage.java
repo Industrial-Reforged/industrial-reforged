@@ -47,6 +47,11 @@ public class EnergyStorage implements IEnergyStorage {
         this.stored = value;
     }
 
+    @Override
+    public void setEnergyCapacity(int value) {
+        this.capacity = value;
+    }
+
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
         tag.putInt(NBT_KEY_STORED_ENERGY, this.stored);

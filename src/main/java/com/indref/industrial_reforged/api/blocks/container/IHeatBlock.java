@@ -36,6 +36,12 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
     }
 
     @Override
+    default void setCapacity(BlockEntity blockEntity, int value) {
+        IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
+        heatStorage.setHeatCapacity(value);
+    }
+
+    @Override
     default boolean tryDrain(BlockEntity blockEntity, int value) {
         if (getStored(blockEntity)+value > 0) {
             setStored(blockEntity, getStored(blockEntity)-value);

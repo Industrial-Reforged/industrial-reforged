@@ -10,7 +10,8 @@ import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
 public interface IEnergyStorage {
     int getEnergyStored();
 
+    // TODO: 11/2/23 Correct capacity handling! 
     int getEnergyCapacity();
-
     void setEnergyStored(int value);
+    void setEnergyCapacity(int value);
 }

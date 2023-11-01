@@ -32,6 +32,13 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
     }
 
     @Override
+    default void setCapacity(BlockEntity blockEntity, int value) {
+        IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
+        energyStorage.setEnergyCapacity(value);
+        onEnergyChanged();
+    }
+
+    @Override
     default int getStored(BlockEntity blockEntity) {
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         return energyStorage.getEnergyStored();
@@ -39,7 +46,7 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value > 0) {
+        if (getStored(blockEntity)+value >= 0) {
             setStored(blockEntity, getStored(blockEntity)-value);
             return true;
         }
@@ -48,7 +55,7 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value < getCapacity(blockEntity)) {
+        if (getStored(blockEntity)+value <= getCapacity(blockEntity)) {
             setStored(blockEntity, getStored(blockEntity)+value);
             return true;
         }

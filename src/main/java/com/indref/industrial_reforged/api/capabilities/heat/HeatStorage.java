@@ -37,6 +37,11 @@ public class HeatStorage implements IHeatStorage {
         this.stored = value;
     }
 
+    @Override
+    public void setHeatCapacity(int value) {
+        this.capacity = value;
+    }
+
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
         tag.putInt(NBT_KEY_HEAT_STORED, this.stored);

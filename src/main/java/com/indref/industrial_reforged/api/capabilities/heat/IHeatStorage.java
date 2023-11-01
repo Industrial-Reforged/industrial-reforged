@@ -9,4 +9,5 @@ public interface IHeatStorage {
     int getHeatCapacity();
 
     void setHeatStored(int value);
+    void setHeatCapacity(int value);
 }
