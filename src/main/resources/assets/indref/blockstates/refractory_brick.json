@@ -1,7 +1,7 @@
 {
   "variants": {
     "firebox_part=unformed": {
-      "model": "indref:block/refactory_brick"
+      "model": "indref:block/refractory_brick"
     },
     "firebox_part=top_left": {
       "model": "indref:block/multiblock/firebox/top_left"

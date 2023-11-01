@@ -41,7 +41,7 @@ import java.util.List;
 import static net.neoforged.neoforge.event.EventHooks.onBucketUse;
 
 public class FluidCellItem extends SimpleFluidItem {
-    private int capacity;
+    private final int capacity;
     private Fluid fluid = Fluids.EMPTY;
 
     public FluidCellItem(Properties properties, int capacity) {
@@ -103,7 +103,7 @@ public class FluidCellItem extends SimpleFluidItem {
                 }
 
             } else {
-                if (!(state.getBlock() instanceof LiquidBlock) && !cap.getFluidInTank(0).getFluid().getFluidType().isVaporizedOnPlacement(level, pos, cap.getFluidInTank(0))) {
+                if (!(state.getBlock() instanceof LiquidBlock) && !cap.getFluidInTank(0).getFluid().getFluidType().isVaporizedOnPlacement(level, pos, cap.getFluidInTank(0)) && state.canBeReplaced(fluid)) {
                     level.setBlock(pos1, cap.getFluidInTank(0).getFluid().defaultFluidState().createLegacyBlock(), 11);
                     if (!player.isCreative()) {
                         this.fluid = Fluids.EMPTY;

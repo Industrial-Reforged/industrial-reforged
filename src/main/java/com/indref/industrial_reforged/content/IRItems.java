@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
+import com.indref.industrial_reforged.content.items.misc.Debugger;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.content.items.storage.SeedPouchItem;
@@ -83,6 +84,9 @@ public class IRItems {
             () -> new EnergyTestItem(new Item.Properties()));
     public static final RegistryObject<Item> HEAT_TEST_ITEM = registerItem("heat_test",
             () -> new HeatTestItem(new Item.Properties()));
+    public static final RegistryObject<Item> DEBUGGER = registerItem("debugger",
+            () -> new Debugger(new Item.Properties()));
+
 
     //misc
     public static final RegistryObject<Item> RUBBER_SHEET = registerItem("rubber_sheet",

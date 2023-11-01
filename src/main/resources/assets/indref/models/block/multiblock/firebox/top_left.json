@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column",
   "textures": {
     "end": "indref:block/machines/crucible/formed/top_top_left",
-    "side": "indref:block/refactory_brick"
+    "side": "indref:block/refractory_brick"
   }
 }

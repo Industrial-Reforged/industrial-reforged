@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "indref:block/refactory_brick",
-    "east": "indref:block/refactory_brick",
-    "north": "indref:block/refactory_brick",
-    "particle": "indref:block/refactory_brick",
-    "south": "indref:block/refactory_brick",
+    "down": "indref:block/refractory_brick",
+    "east": "indref:block/refractory_brick",
+    "north": "indref:block/refractory_brick",
+    "particle": "indref:block/refractory_brick",
+    "south": "indref:block/refractory_brick",
     "up": "indref:block/machines/crucible/formed/top_middle_middle",
-    "west": "indref:block/refactory_brick"
+    "west": "indref:block/refractory_brick"
   }
 }
