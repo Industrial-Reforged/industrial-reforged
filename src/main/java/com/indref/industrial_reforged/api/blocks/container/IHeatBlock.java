@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -15,8 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public interface IHeatBlock extends IContainerBlock, IScannable {
-    HeatStorageProvider getHeatStorage();
-
     @Override
     default int getStored(BlockEntity blockEntity) {
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
@@ -31,14 +28,12 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
 
     @Override
     default void setStored(BlockEntity blockEntity, int value) {
+        int prev = getStored(blockEntity);
+        if (prev == value) return;
+
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
         heatStorage.setHeatStored(value);
-    }
-
-    @Override
-    default void setCapacity(BlockEntity blockEntity, int value) {
-        IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
-        heatStorage.setHeatCapacity(value);
+        onChanged();
     }
 
     @Override

@@ -18,7 +18,7 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    public void onEnergyChanged() {
+    public void onChanged() {
         IndustrialReforged.LOGGER.info("Energy Changed!");
     }
 

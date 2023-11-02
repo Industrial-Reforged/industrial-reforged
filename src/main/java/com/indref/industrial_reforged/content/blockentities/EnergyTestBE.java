@@ -24,9 +24,4 @@ public class EnergyTestBE extends BlockEntity implements IEnergyBlock {
     public int getCapacity(BlockEntity blockEntity) {
         return 10000;
     }
-
-    @Override
-    public EnergyStorageProvider getEnergyStorage() {
-        return new EnergyStorageProvider();
-    }
 }

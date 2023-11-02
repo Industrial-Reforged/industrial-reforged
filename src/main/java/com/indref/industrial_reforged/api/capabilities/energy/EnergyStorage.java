@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Main file for handling storing and
@@ -15,22 +16,9 @@ import net.minecraft.world.item.ItemStack;
  * Or use the {@link EnergyStorageProvider} and subscribe to the right {{@link net.neoforged.neoforge.event.AttachCapabilitiesEvent}}
  */
 public class EnergyStorage implements IEnergyStorage {
-    public EnergyStorage() {
-    }
-
-    public EnergyStorage(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof IEnergyItem energyItem) {
-            this.capacity = energyItem.getCapacity(itemStack);
-        }
-    }
-
     public int stored;
-    public int capacity;
 
     private static final String NBT_KEY_STORED_ENERGY = "energyStored";
-
-    // TODO: 10/16/2023 consider removing this
-    private static final String NBT_KEY_ENERGY_CAPACITY = "energyCapacity";
 
     @Override
     public int getEnergyStored() {
@@ -38,18 +26,8 @@ public class EnergyStorage implements IEnergyStorage {
     }
 
     @Override
-    public int getEnergyCapacity() {
-        return this.capacity;
-    }
-
-    @Override
     public void setEnergyStored(int value) {
         this.stored = value;
-    }
-
-    @Override
-    public void setEnergyCapacity(int value) {
-        this.capacity = value;
     }
 
     public CompoundTag serializeNBT() {

@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -18,25 +17,16 @@ import java.util.List;
 /**
  * Interface for implementing Blocks that store EU
  */
-// TODO: 11/2/23 make methods static 
 public interface IEnergyBlock extends IContainerBlock, IScannable {
-    EnergyStorageProvider getEnergyStorage();
-
-    default void onEnergyChanged() {
-    }
 
     @Override
     default void setStored(BlockEntity blockEntity, int value) {
+        int prev = getStored(blockEntity);
+        if (prev == value) return;
+
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         energyStorage.setEnergyStored(value);
-        onEnergyChanged();
-    }
-
-    @Override
-    default void setCapacity(BlockEntity blockEntity, int value) {
-        IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
-        energyStorage.setEnergyCapacity(value);
-        onEnergyChanged();
+        onChanged();
     }
 
     @Override
@@ -47,8 +37,8 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)-value >= 0) {
-            setStored(blockEntity, getStored(blockEntity)-value);
+        if (getStored(blockEntity) - value >= 0) {
+            setStored(blockEntity, getStored(blockEntity) - value);
             return true;
         }
         return false;
@@ -56,9 +46,12 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value <= getCapacity(blockEntity)) {
-            setStored(blockEntity, getStored(blockEntity)+value);
+        if (getStored(blockEntity) + value <= getCapacity(blockEntity)) {
+            setStored(blockEntity, getStored(blockEntity) + value);
             return true;
+        } else {
+            // TODO: 11/3/23 Test if functions as intended
+            setStored(blockEntity, getCapacity(blockEntity));
         }
         return false;
     }

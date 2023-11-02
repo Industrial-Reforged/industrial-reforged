@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -14,13 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HeatStorageProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public HeatStorageProvider() {
-    }
-
-    public HeatStorageProvider(ItemStack itemStack) {
-        this.heatStorage = new HeatStorage(itemStack);
-    }
-
     public HeatStorage heatStorage = new HeatStorage();
     public static final ResourceLocation IDENTIFIER = new ResourceLocation(IndustrialReforged.MODID, "heat");
 

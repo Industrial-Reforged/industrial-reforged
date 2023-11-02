@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import net.minecraft.world.item.ItemStack;
@@ -18,12 +19,12 @@ public class CapabilityAttacher {
     @SubscribeEvent
     public static void onCapabilityAttachBlockEntity(AttachCapabilitiesEvent<BlockEntity> event) {
         if (event.getObject() instanceof IEnergyBlock iEnergyBlock) {
-            event.addCapability(EnergyStorageProvider.IDENTIFIER, iEnergyBlock.getEnergyStorage());
+            event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider());
             IndustrialReforged.LOGGER.info("Attaching energy capability to block entity");
         }
 
         if (event.getObject() instanceof IHeatBlock heatBlock) {
-            event.addCapability(com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider.IDENTIFIER, heatBlock.getHeatStorage());
+            event.addCapability(HeatStorageProvider.IDENTIFIER, new HeatStorageProvider());
             IndustrialReforged.LOGGER.info("Attaching heat capability to block entity");
         }
     }
@@ -31,11 +32,13 @@ public class CapabilityAttacher {
     @SubscribeEvent
     public static void onCapabilityAttachItemStack(AttachCapabilitiesEvent<ItemStack> event) {
         if (event.getObject().getItem() instanceof IEnergyItem) {
-            event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider(event.getObject()));
+            event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider());
+            IndustrialReforged.LOGGER.info("Attaching energy capability to itemStack");
         }
 
         if (event.getObject().getItem() instanceof IHeatItem) {
-            event.addCapability(com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider.IDENTIFIER, new com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider(event.getObject()));
+            event.addCapability(HeatStorageProvider.IDENTIFIER, new HeatStorageProvider());
+            IndustrialReforged.LOGGER.info("Attaching heat capability to itemStack");
         }
     }
 }

@@ -13,11 +13,6 @@ public class HeatTestBE extends BlockEntity implements IHeatBlock {
     }
 
     @Override
-    public HeatStorageProvider getHeatStorage() {
-        return new HeatStorageProvider();
-    }
-
-    @Override
     public int getCapacity(BlockEntity blockEntity) {
         return 10000;
     }

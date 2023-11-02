@@ -18,11 +18,6 @@ public class TestGeneratorBE extends GeneratorBlockEntity {
     }
 
     @Override
-    public EnergyStorageProvider getEnergyStorage() {
-        return new EnergyStorageProvider();
-    }
-
-    @Override
     public int getGenerationAmount() {
         return 10;
     }
