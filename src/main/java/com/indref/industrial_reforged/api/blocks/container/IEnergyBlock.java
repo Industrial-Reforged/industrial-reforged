@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Interface for implementing Blocks that store EU
  */
+// TODO: 11/2/23 make methods static 
 public interface IEnergyBlock extends IContainerBlock, IScannable {
     EnergyStorageProvider getEnergyStorage();
 
@@ -46,7 +47,7 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value >= 0) {
+        if (getStored(blockEntity)-value >= 0) {
             setStored(blockEntity, getStored(blockEntity)-value);
             return true;
         }

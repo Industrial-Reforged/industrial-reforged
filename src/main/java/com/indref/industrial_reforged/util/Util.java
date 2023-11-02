@@ -1,16 +1,27 @@
 package com.indref.industrial_reforged.util;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.Direction;
 
 import java.util.HashMap;
 import java.util.Map;
 
-// class for general and non-minecraft related helper methods
 public class Util {
     public static <K, V> Map<V, K> reverseMap(Map<K, V> map) {
         Map<V, K> returnMap = new HashMap<>();
         map.forEach((key, value) -> returnMap.put(value, key));
         return returnMap;
+    }
+
+    public static Direction oppositeDirection(Direction originalDirection) {
+        return switch (originalDirection) {
+            case DOWN -> Direction.UP;
+            case UP -> Direction.DOWN;
+            case NORTH -> Direction.SOUTH;
+            case SOUTH -> Direction.NORTH;
+            case WEST -> Direction.EAST;
+            case EAST -> Direction.WEST;
+        };
     }
 
     public static final class Coordinates extends Triple<Integer, Integer, Integer> {

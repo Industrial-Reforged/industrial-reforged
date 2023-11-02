@@ -1,5 +1,8 @@
 package com.indref.industrial_reforged.content.items.misc;
 
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
+import com.indref.industrial_reforged.content.IRBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +34,9 @@ public class Debugger extends Item {
         BlockState blockState = useOnContext.getLevel().getBlockState(useOnContext.getClickedPos());
         player.sendSystemMessage(Component.literal("Blockstate: "+blockState.getProperties()));
         player.sendSystemMessage(Component.literal("BlockPos: "+useOnContext.getClickedPos()));
+        if (useOnContext.getLevel().getBlockEntity(useOnContext.getClickedPos()) instanceof IEnergyBlock energyBlock) {
+               energyBlock.tryFill(useOnContext.getLevel().getBlockEntity(useOnContext.getClickedPos()), 1000);
+        }
         return InteractionResult.SUCCESS;
     }
 }

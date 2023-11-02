@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
@@ -13,6 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
@@ -30,18 +33,10 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(blockPos);
-            if (entity instanceof IEnergyBlock energyBlock) {
-                energyBlock.setStored(entity, energyBlock.getStored(entity)+100);
-                IRPackets.sendToClients(new S2CEnergySync(energyBlock.getStored(entity), blockPos));
-                IndustrialReforged.LOGGER.info("Right-click");
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
-            }
-        }
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (level.isClientSide()) return null;
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return createTickerHelper(blockEntityType, IRBlockEntityTypes.ENERGY_TEST.get(),
+                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
     }
 }
