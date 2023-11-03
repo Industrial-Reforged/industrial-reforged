@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
+import com.indref.industrial_reforged.api.blocks.transfer.CableBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import com.indref.industrial_reforged.content.blockentities.HeatTestBE;
 import com.indref.industrial_reforged.content.blockentities.PrimitiveForgeBE;
@@ -39,5 +41,8 @@ public class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("test_generator", () ->
                     BlockEntityType.Builder.of(TestGeneratorBE::new,
                             IRBlocks.TEST_GENERATOR.get()).build(null));
-
+    public static final RegistryObject<BlockEntityType<CableBlockEntity>> CABLE =
+            BLOCK_ENTITIES.register("cable", () ->
+                    BlockEntityType.Builder.of(CableBlockEntity::new,
+                            IRBlocks.TIN_CABLE.get()).build(null));
 }

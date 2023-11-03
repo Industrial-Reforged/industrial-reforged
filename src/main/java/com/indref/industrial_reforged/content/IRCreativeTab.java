@@ -113,10 +113,10 @@ public class IRCreativeTab {
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
         if (item.get() instanceof IEnergyItem energyItem)
-            energyItem.setStored(stack, energyItem.getCapacity(stack));
+            energyItem.setStored(stack, energyItem.getCapacity());
 
         if (item.get() instanceof IHeatItem heatItem)
-            heatItem.setStored(stack, heatItem.getCapacity(stack));
+            heatItem.setStored(stack, heatItem.getCapacity());
 
         output.accept(stack);
     }

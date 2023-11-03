@@ -13,7 +13,7 @@ public interface IContainerBlock {
 
     int getStored(BlockEntity blockEntity);
 
-    int getCapacity(BlockEntity blockEntity);
+    int getCapacity();
 
     boolean tryDrain(BlockEntity blockEntity, int amount);
 

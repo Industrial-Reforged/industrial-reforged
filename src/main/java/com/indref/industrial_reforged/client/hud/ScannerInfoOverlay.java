@@ -39,6 +39,7 @@ public class ScannerInfoOverlay {
                     lineOffset += font.lineHeight + 3;
                 }
                 mainHandEnergyItem.setStored(mainHandStack, mainHandEnergyItem.getStored(mainHandStack) - 1);
+                // TODO: Why is this C2S???
                 IRPackets.sendToServer(new C2SEnergySync());
             }
         }

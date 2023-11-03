@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -21,7 +20,7 @@ public class EnergyTestBE extends BlockEntity implements IEnergyBlock {
     }
 
     @Override
-    public int getCapacity(BlockEntity blockEntity) {
+    public int getCapacity() {
         return 10000;
     }
 }

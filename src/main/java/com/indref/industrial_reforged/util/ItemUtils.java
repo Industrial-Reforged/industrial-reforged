@@ -61,7 +61,7 @@ public class ItemUtils {
             case ENERGY -> containerItem = getEnergyItem(stack);
         }
         assert containerItem != null;
-        return (float) containerItem.getStored(stack) / containerItem.getCapacity(stack);
+        return (float) containerItem.getStored(stack) / containerItem.getCapacity();
     }
 
     public static ItemStack itemStackFromInteractionHand(InteractionHand interactionHand, Player player) {

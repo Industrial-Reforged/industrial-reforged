@@ -1,10 +1,8 @@
-package com.indref.industrial_reforged.api.capabilities.energy;
+package com.indref.industrial_reforged.capabilities.energy.storage;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Main file for handling storing and
@@ -33,7 +31,6 @@ public class EnergyStorage implements IEnergyStorage {
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
         tag.putInt(NBT_KEY_STORED_ENERGY, this.stored);
-        tag.putInt(NBT_KEY_ENERGY_CAPACITY, this.capacity);
         return tag;
     }
 

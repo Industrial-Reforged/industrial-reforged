@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
+import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.content.blocks.*;
 import com.indref.industrial_reforged.test.TestMultiblockController;
 import com.indref.industrial_reforged.test.TestMultiblockPart;
@@ -26,6 +28,8 @@ public class IRBlocks {
 	public static final WoodType RUBBER_WOOD_TYPE = WoodType.register(new WoodType(IndustrialReforged.MODID + ":rubber", RUBBER_SET_TYPE));
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IndustrialReforged.MODID);
 
+    public static final RegistryObject<Block> TIN_CABLE = registerBlockAndItem("tin_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.of(), EnergyTiers.LOW));
     public static final RegistryObject<Block> TEST_BLOCK_ENERGY = registerBlockAndItem("test_block_energy",
             () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",

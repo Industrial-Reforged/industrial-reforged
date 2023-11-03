@@ -1,7 +1,11 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.energy.network.EnergyNetsProvider;
+import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +26,10 @@ public class Util {
             case WEST -> Direction.EAST;
             case EAST -> Direction.WEST;
         };
+    }
+
+    public static IEnergyNets getEnergyNets(Level level) {
+        return level.getCapability(IRCapabilities.ENERGY_NETWORKS).orElseThrow(() -> new NullPointerException("Missing energy networks on level"));
     }
 
     public static final class Coordinates extends Triple<Integer, Integer, Integer> {

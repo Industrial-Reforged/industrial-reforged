@@ -1,7 +1,7 @@
-package com.indref.industrial_reforged.api.capabilities.heat;
+package com.indref.industrial_reforged.capabilities.heat;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

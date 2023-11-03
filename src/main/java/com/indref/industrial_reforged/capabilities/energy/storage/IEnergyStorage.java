@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.capabilities.energy;
+package com.indref.industrial_reforged.capabilities.energy.storage;
 
 import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
 

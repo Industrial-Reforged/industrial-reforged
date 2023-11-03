@@ -28,12 +28,6 @@ public interface IFluidItem extends IContainerItem {
         return fluidHandlerItem.getFluidInTank(0).getAmount();
     }
 
-    @Override
-    default int getCapacity(ItemStack itemStack) {
-        IFluidHandlerItem fluidHandlerItem = getFluidHandler(itemStack);
-        return fluidHandlerItem.getTankCapacity(0);
-    }
-
     /**
      * @return true if was able to fill, false if wasn't able to do so
      */

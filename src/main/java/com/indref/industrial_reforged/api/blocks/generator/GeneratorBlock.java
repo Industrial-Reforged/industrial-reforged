@@ -37,10 +37,9 @@ public abstract class GeneratorBlock extends BaseEntityBlock {
         if (level.isClientSide()) return null;
 
         return createTickerHelper(blockEntityType, getBlockEntity(),
-                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1, this.suppliesTo));
+                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Block previousBlock, @NotNull BlockPos neighborPos, boolean bool) {
         Minecraft.getInstance().player.sendSystemMessage(

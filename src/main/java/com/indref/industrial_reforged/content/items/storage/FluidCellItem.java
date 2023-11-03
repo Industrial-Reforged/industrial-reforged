@@ -125,7 +125,7 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
-    public int getCapacity(ItemStack itemStack) {
+    public int getCapacity() {
         return this.capacity;
     }
 
@@ -143,7 +143,7 @@ public class FluidCellItem extends SimpleFluidItem {
                                 .append(Component.literal(String.format("%d/%d",
                                         fluidHandlerItem.getFluidInTank(0).getAmount(),
                                         com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
-                                                .getCapacity(itemStack))).withStyle(ChatFormatting.AQUA));
+                                                .getCapacity())).withStyle(ChatFormatting.AQUA));
                         tooltip.add(descriptionType);
                         tooltip.add(descriptionAmount);
                     }

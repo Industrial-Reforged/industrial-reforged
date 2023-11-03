@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.blocks.IScannable;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.heat.IHeatStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
@@ -18,12 +18,6 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
     default int getStored(BlockEntity blockEntity) {
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
         return heatStorage.getHeatStored();
-    }
-
-    @Override
-    default int getCapacity(BlockEntity blockEntity) {
-        IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
-        return heatStorage.getHeatCapacity();
     }
 
     @Override
@@ -47,7 +41,7 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value < getCapacity(blockEntity)) {
+        if (getStored(blockEntity)+value < getCapacity()) {
             setStored(blockEntity, getStored(blockEntity)+value);
             return true;
         }
@@ -65,7 +59,7 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
                 scannedBlock.getBlock().getName(),
                 MutableComponent.create(ComponentContents.EMPTY)
                         .append(Component.translatable("scanner_info.heat_block.heat_ratio"))
-                        .append(Component.literal(String.format("%d/%d", heatBlock.getStored(blockEntity), heatBlock.getCapacity(blockEntity))))
+                        .append(Component.literal(String.format("%d/%d", heatBlock.getStored(blockEntity), heatBlock.getCapacity())))
                         .append(Component.literal(",")),
                 Component.literal(String.valueOf(heatBlock.getStored(blockEntity)))
         );

@@ -2,15 +2,13 @@ package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.List;
-import java.util.Objects;
 
 public abstract class GeneratorBlockEntity extends BlockEntity implements IEnergyBlock {
     public GeneratorBlockEntity(BlockEntityType<?> blockEntityType, BlockPos p_155229_, BlockState p_155230_) {
@@ -22,21 +20,10 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
         IndustrialReforged.LOGGER.info("Energy Changed!");
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState, List<BlockPos> suppliesTo) {
-        /*
+    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
         energyBlock.tryFill(blockEntity, getGenerationAmount());
-
-        // filling blocks next to generator
-        for (BlockPos pos : suppliesTo) {
-            BlockEntity blockEntity1 = level.getBlockEntity(pos);
-            if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
-                energyBlock1.tryFill(blockEntity1, 10);
-            }
-        }
-        IndustrialReforged.LOGGER.info("Supplies To"+suppliesTo);
-         */
 
         Vec3i[] neighbors = {
                 new Vec3i(1, 0, 0),
@@ -48,9 +35,12 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
         };
 
         for (Vec3i pos : neighbors) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos.offset(pos));
-            if (blockEntity instanceof IEnergyBlock energyBlock) {
-                energyBlock.tryFill(blockEntity, 10);
+            BlockEntity blockEntity1 = level.getBlockEntity(blockPos.offset(pos));
+            BlockState block = level.getBlockState(blockPos);
+            if (block.getBlock() instanceof CableBlock cableBlock) {
+
+            } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
+
             }
         }
     }

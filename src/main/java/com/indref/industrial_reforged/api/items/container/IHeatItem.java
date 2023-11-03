@@ -1,12 +1,12 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.heat.IHeatStorage;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.LazyOptional;
 
 public interface IHeatItem extends IContainerItem {
-    default IHeatStorage getHeatStorage(ItemStack itemStack) {
+    static IHeatStorage getHeatStorage(ItemStack itemStack) {
         LazyOptional<IHeatStorage> cap = itemStack.getCapability(IRCapabilities.HEAT);
         if (cap.isPresent())
             return cap.orElseThrow(NullPointerException::new);
@@ -16,12 +16,19 @@ public interface IHeatItem extends IContainerItem {
 
     @Override
     default void setStored(ItemStack itemStack, int value) {
-        getHeatStorage(itemStack).setHeatStored(value);
+        IHeatStorage heatStorage = getHeatStorage(itemStack);
+        if (heatStorage != null) {
+            heatStorage.setHeatStored(value);
+        }
     }
 
     @Override
     default int getStored(ItemStack itemStack) {
-        return getHeatStorage(itemStack).getHeatCapacity();
+        IHeatStorage heatStorage = getHeatStorage(itemStack);
+        if (heatStorage != null) {
+            return heatStorage.getHeatStored();
+        }
+        return -1;
     }
 
     /**

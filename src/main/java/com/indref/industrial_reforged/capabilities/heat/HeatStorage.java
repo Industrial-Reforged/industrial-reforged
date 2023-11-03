@@ -1,8 +1,6 @@
-package com.indref.industrial_reforged.api.capabilities.heat;
+package com.indref.industrial_reforged.capabilities.heat;
 
-import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
 
 public class HeatStorage implements IHeatStorage {
 

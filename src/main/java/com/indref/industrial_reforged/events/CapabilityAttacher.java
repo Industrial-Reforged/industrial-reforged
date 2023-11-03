@@ -3,12 +3,13 @@ package com.indref.industrial_reforged.events;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorageProvider;
-import com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider;
+import com.indref.industrial_reforged.capabilities.energy.network.EnergyNetsProvider;
+import com.indref.industrial_reforged.capabilities.energy.storage.EnergyStorageProvider;
+import com.indref.industrial_reforged.capabilities.heat.HeatStorageProvider;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -27,6 +28,12 @@ public class CapabilityAttacher {
             event.addCapability(HeatStorageProvider.IDENTIFIER, new HeatStorageProvider());
             IndustrialReforged.LOGGER.info("Attaching heat capability to block entity");
         }
+    }
+
+    @SubscribeEvent
+    public static void onCapabilityAttachLevel(AttachCapabilitiesEvent<Level> event) {
+        event.addCapability(EnergyNetsProvider.IDENTIFIER, new EnergyNetsProvider(event.getObject()));
+        IndustrialReforged.LOGGER.info("Attaching energy networks to level");
     }
 
     @SubscribeEvent

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.networking.packets;
 
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -21,8 +22,10 @@ public class C2SEnergySync {
     public boolean handle(NetworkEvent.Context supplier) {
         supplier.enqueueWork(() -> {
             ServerPlayer player = supplier.getSender();
+            assert player != null;
             ItemStack mainHandItem = player.getMainHandItem();
-            IEnergyItem mainHandEnergyItem = (IEnergyItem) mainHandItem.getItem();
+            IEnergyItem mainHandEnergyItem = ItemUtils.getEnergyItem(mainHandItem);
+            assert mainHandEnergyItem != null;
             mainHandEnergyItem.setStored(mainHandItem, mainHandEnergyItem.getStored(mainHandItem)-1);
         });
         return true;

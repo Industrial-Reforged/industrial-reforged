@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 public interface IContainerItem {
     void setStored(ItemStack itemStack, int value);
     int getStored(ItemStack itemStack);
-    int getCapacity(ItemStack itemStack);
+    int getCapacity();
 
     boolean tryDrain(ItemStack blockEntity, int amount);
 
