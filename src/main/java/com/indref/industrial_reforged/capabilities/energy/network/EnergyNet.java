@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import net.minecraft.core.BlockPos;
@@ -13,18 +12,26 @@ import java.util.List;
 
 public class EnergyNet {
     private final EnergyTier energyTier;
-    private Set<BlockPos> blocks;
-    private static final String NBT_KEY_BLOCKS = "blocks";
+    private Set<BlockPos> transmitters;
+    private Set<BlockPos> producers;
+    private Set<BlockPos> consumers;
+    private static final String NBT_KEY_CABLES = "cables";
+    private static final String NBT_KEY_PRODUCERS = "producers";
+    private static final String NBT_KEY_CONSUMERS = "consumers";
     public static final String NBT_KEY_ENERGY_TIER = "energyTier";
 
     public EnergyNet() {
-        this.blocks = new HashSet<>();
+        this.transmitters = new HashSet<>();
+        this.producers = new HashSet<>();
+        this.consumers = new HashSet<>();
         this.energyTier = EnergyTiers.CREATIVE;
     }
 
     private EnergyNet(BlockPos blockPos) {
-        this.blocks = new HashSet<>();
-        blocks.add(blockPos);
+        this.transmitters = new HashSet<>();
+        this.producers = new HashSet<>();
+        this.consumers = new HashSet<>();
+        transmitters.add(blockPos);
         this.energyTier = EnergyTiers.CREATIVE;
     }
 
@@ -32,39 +39,62 @@ public class EnergyNet {
         return new EnergyNet(blockPos);
     }
 
-    public EnergyTier getTier() {
+    public void add(BlockPos blockPos, EnergyTypes energyType) {
+        switch (energyType) {
+            case CONSUMER -> consumers.add(blockPos);
+            case PRODUCER -> producers.add(blockPos);
+            case TRANSMITTER -> transmitters.add(blockPos);
+        }
+    }
+
+    public EnergyTier getEnergyTier() {
         return this.energyTier;
     }
 
-    public Set<BlockPos> getBlocks() {
-        return blocks;
+    public Set<BlockPos> getTransmitters() {
+        return transmitters;
+    }
+
+    public Set<BlockPos> getConsumers() {
+        return consumers;
+    }
+
+    public Set<BlockPos> getProducers() {
+        return producers;
     }
 
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
         List<Long> positions = new ArrayList<>();
-        for (BlockPos pos : blocks) {
+        for (BlockPos pos : transmitters) {
             positions.add(pos.asLong());
         }
-        tag.putLongArray(NBT_KEY_BLOCKS, positions);
-        tag.putString(NBT_KEY_ENERGY_TIER, getTier().getName());
+        tag.putLongArray(NBT_KEY_CABLES, positions);
+        tag.putString(NBT_KEY_ENERGY_TIER, getEnergyTier().getName());
         return tag;
     }
 
     public void deserializeNBT(CompoundTag nbt) {
         Set<BlockPos> positions = new HashSet<>();
-        for (long pos : nbt.getLongArray(NBT_KEY_BLOCKS)) {
+        for (long pos : nbt.getLongArray(NBT_KEY_CABLES)) {
             positions.add(BlockPos.of(pos));
         }
-        IndustrialReforged.LOGGER.info("Deserialized positions: "+positions);
-        blocks = positions;
+        transmitters = positions;
     }
 
     @Override
     public String toString() {
         return "EnergyNet{" +
                 "energyTier=" + energyTier +
-                ", blocks=" + blocks +
+                ", transmitters=" + transmitters +
+                ", producers=" + producers +
+                ", consumers=" + consumers +
                 '}';
+    }
+
+    public enum EnergyTypes {
+        CONSUMER,
+        PRODUCER,
+        TRANSMITTER,
     }
 }

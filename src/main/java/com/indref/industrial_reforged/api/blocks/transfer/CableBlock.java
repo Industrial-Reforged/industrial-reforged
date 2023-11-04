@@ -1,8 +1,10 @@
 package com.indref.industrial_reforged.api.blocks.transfer;
 
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -29,9 +31,13 @@ public class CableBlock extends PipeBlock {
     @Override
     public void onPlace(BlockState p_60566_, Level level, BlockPos blockPos, BlockState p_60569_, boolean p_60570_) {
         IEnergyNets nets = Util.getEnergyNets(level);
-        nets.getOrCreateNetwork(blockPos);
-        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Energy Net!"));
-        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Wth is this block?: "+p_60569_.getBlock()));
+        EnergyNet net = nets.getOrCreateNetwork(blockPos);
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+            if (level.getBlockEntity(pos) instanceof IEnergyBlock && !(level.getBlockEntity(pos) instanceof CableBlockEntity)) {
+                net.add(pos, EnergyNet.EnergyTypes.CONSUMER);
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Found electric block: "+pos));
+            }
+        }
     }
 
     @Override

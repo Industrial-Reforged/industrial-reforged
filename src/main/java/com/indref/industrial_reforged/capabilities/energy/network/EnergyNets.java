@@ -6,7 +6,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class EnergyNets implements IEnergyNets {
@@ -32,7 +31,7 @@ public class EnergyNets implements IEnergyNets {
     @Nullable
     public EnergyNet getNetwork(BlockPos blockPos) {
         for (EnergyNet enet : getNetworks()) {
-            if (enet.getBlocks().contains(blockPos))
+            if (enet.getTransmitters().contains(blockPos))
                 return enet;
         }
         return null;
