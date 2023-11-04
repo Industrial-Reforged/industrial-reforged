@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import net.minecraft.core.BlockPos;
@@ -15,13 +16,20 @@ public class EnergyNet {
     private Set<BlockPos> blocks;
     private static final String NBT_KEY_BLOCKS = "blocks";
     public static final String NBT_KEY_ENERGY_TIER = "energyTier";
+
     public EnergyNet() {
         this.blocks = new HashSet<>();
-        this.energyTier = EnergyTiers.LOW;
+        this.energyTier = EnergyTiers.CREATIVE;
     }
 
-    public void createNetwork() {
+    private EnergyNet(BlockPos blockPos) {
+        this.blocks = new HashSet<>();
+        blocks.add(blockPos);
+        this.energyTier = EnergyTiers.CREATIVE;
+    }
 
+    public static EnergyNet createNetworkAt(BlockPos blockPos) {
+        return new EnergyNet(blockPos);
     }
 
     public EnergyTier getTier() {
@@ -45,9 +53,18 @@ public class EnergyNet {
 
     public void deserializeNBT(CompoundTag nbt) {
         Set<BlockPos> positions = new HashSet<>();
-        for (long pos : nbt.getIntArray(NBT_KEY_BLOCKS)) {
+        for (long pos : nbt.getLongArray(NBT_KEY_BLOCKS)) {
             positions.add(BlockPos.of(pos));
         }
+        IndustrialReforged.LOGGER.info("Deserialized positions: "+positions);
         blocks = positions;
+    }
+
+    @Override
+    public String toString() {
+        return "EnergyNet{" +
+                "energyTier=" + energyTier +
+                ", blocks=" + blocks +
+                '}';
     }
 }

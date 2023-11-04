@@ -3,8 +3,10 @@ package com.indref.industrial_reforged.capabilities.energy.network;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class EnergyNets implements IEnergyNets {
@@ -23,11 +25,16 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     public List<EnergyNet> getNetworks() {
-        return null;
+        return this.enets;
     }
 
     @Override
+    @Nullable
     public EnergyNet getNetwork(BlockPos blockPos) {
+        for (EnergyNet enet : getNetworks()) {
+            if (enet.getBlocks().contains(blockPos))
+                return enet;
+        }
         return null;
     }
 
@@ -36,7 +43,28 @@ public class EnergyNets implements IEnergyNets {
         if (getNetwork(pos) != null) {
             return getNetwork(pos);
         }
-        enets.add(new EnergyNet());
+        EnergyNet newNet = EnergyNet.createNetworkAt(pos);
+        enets.add(newNet);
+        return newNet;
+    }
+
+    @Override
+    public void removeNetwork(BlockPos pos) {
+        if (getNetwork(pos) != null) {
+            enets.remove(getNetwork(pos));
+        }
+    }
+
+    @Override
+    public void removeNetwork(int index) {
+        if (getNetworks().get(index) != null) {
+            enets.remove(getNetworks().get(index));
+        }
+    }
+
+    @Override
+    public void resetNets() {
+        this.enets = new ArrayList<>();
     }
 
     public CompoundTag serializeNBT() {
@@ -55,5 +83,13 @@ public class EnergyNets implements IEnergyNets {
             net.deserializeNBT(nbtNetwork);
             enets.add(net);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "EnergyNets{" +
+                "enets=" + enets +
+                ", level=" + level +
+                '}';
     }
 }

@@ -13,4 +13,7 @@ public interface IEnergyNets {
     @Nullable EnergyNet getNetwork(BlockPos blockPos);
 
     EnergyNet getOrCreateNetwork(BlockPos pos);
+    void removeNetwork(BlockPos pos);
+    void removeNetwork(int index);
+    void resetNets();
 }

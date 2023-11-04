@@ -29,7 +29,6 @@ public class IndustrialReforged {
     public IndustrialReforged() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
         IRItems.ITEMS.register(modEventBus);
@@ -51,14 +50,11 @@ public class IndustrialReforged {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(IREvents::setup);
         event.enqueueWork(IRPackets::register);
-        // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
 
