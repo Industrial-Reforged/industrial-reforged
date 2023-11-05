@@ -15,6 +15,8 @@ public class IRMenuTypes {
 
     public static final RegistryObject<MenuType<SimplePressMenu>> SIMPLE_PRESS_MENU =
             registerMenuType("simple_press_menu", SimplePressMenu::new);
+    public static final RegistryObject<MenuType<FireBoxMenu>> FIREBOX_MENU =
+            registerMenuType("firebox_menu", FireBoxMenu::new);
 
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {

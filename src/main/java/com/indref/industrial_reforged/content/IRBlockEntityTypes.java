@@ -3,10 +3,7 @@ package com.indref.industrial_reforged.content;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
 import com.indref.industrial_reforged.api.blocks.transfer.CableBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
-import com.indref.industrial_reforged.content.blockentities.HeatTestBE;
-import com.indref.industrial_reforged.content.blockentities.PrimitiveForgeBE;
-import com.indref.industrial_reforged.content.blockentities.SimplePressBE;
+import com.indref.industrial_reforged.content.blockentities.*;
 import com.indref.industrial_reforged.test.energy.TestGeneratorBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -45,4 +42,8 @@ public class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("cable", () ->
                     BlockEntityType.Builder.of(CableBlockEntity::new,
                             IRBlocks.TIN_CABLE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<FireboxBlockEntity>> FIREBOX =
+            BLOCK_ENTITIES.register("firebox", () ->
+                    BlockEntityType.Builder.of(FireboxBlockEntity::new,
+                            IRBlocks.COIL.get()).build(null));
 }

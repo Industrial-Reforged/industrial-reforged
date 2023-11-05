@@ -2,14 +2,47 @@ package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
+import com.indref.industrial_reforged.content.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.FireBoxMultiblock;
+import com.indref.industrial_reforged.util.BlockUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.network.NetworkHooks;
 
 public class RefractoryBrickBlock extends Block implements IMultiBlockPart, IWrenchable {
     public RefractoryBrickBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (!level.isClientSide()) {
+            if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
+                player.sendSystemMessage(Component.literal("success"));
+                for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
+                    player.sendSystemMessage(Component.literal("success2"));
+                    BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
+                    if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
+                        player.sendSystemMessage(Component.literal("success3"));
+                        NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, pos);
+                        break;
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.FAIL;
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
