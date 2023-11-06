@@ -39,7 +39,7 @@ public interface IEnergyItem extends IContainerItem {
      */
     @Override
     default boolean tryDrain(ItemStack itemStack, int value) {
-        if (getStored(itemStack)+value > 0) {
+        if (getStored(itemStack)-value >= 0) {
             setStored(itemStack, getStored(itemStack)-value);
             return true;
         }
@@ -54,7 +54,7 @@ public interface IEnergyItem extends IContainerItem {
      */
     @Override
     default boolean tryFill(ItemStack itemStack, int value) {
-        if (getStored(itemStack)+value < getCapacity()) {
+        if (getStored(itemStack)+value <= getCapacity()) {
             setStored(itemStack, getStored(itemStack)+value);
             return true;
         }

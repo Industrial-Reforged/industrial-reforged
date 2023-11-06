@@ -6,7 +6,6 @@ import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
 import com.indref.industrial_reforged.content.items.misc.Debugger;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.LunchBagItem;
-import com.indref.industrial_reforged.content.items.storage.SeedPouchItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
 import com.indref.industrial_reforged.test.EnergyTestItem;
@@ -47,8 +46,6 @@ public class IRItems {
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
     public static final RegistryObject<Item> TOOLBOX = registerItem("toolbox",
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> SEED_POUCH = registerItem("seed_pouch",
-            () -> new SeedPouchItem(new Item.Properties().stacksTo(1)));
     // Canned items
     public static final RegistryObject<Item> EMPTY_CAN = registerItem("empty_can",
             () -> new Item(new Item.Properties()));

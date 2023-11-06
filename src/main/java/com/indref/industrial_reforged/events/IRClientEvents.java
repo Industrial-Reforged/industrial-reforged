@@ -42,8 +42,6 @@ public class IRClientEvents {
         event.enqueueWork(() -> {
             ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"),
                     (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
-            ItemProperties.register(IRItems.SEED_POUCH.get(), new ResourceLocation(IndustrialReforged.MODID, "full"), ((stack, level, entity, seed) ->
-                    BundleItem.getFullnessDisplay(stack)));
         });
     }
 }

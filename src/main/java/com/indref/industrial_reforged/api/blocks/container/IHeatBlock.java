@@ -32,7 +32,7 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value > 0) {
+        if (getStored(blockEntity)-value >= 0) {
             setStored(blockEntity, getStored(blockEntity)-value);
             return true;
         }
@@ -41,7 +41,7 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value < getCapacity()) {
+        if (getStored(blockEntity)+value <= getCapacity()) {
             setStored(blockEntity, getStored(blockEntity)+value);
             return true;
         }

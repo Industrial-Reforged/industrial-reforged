@@ -16,11 +16,9 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.BundleTooltip;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.BundleItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CakeBlock;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +40,7 @@ public class LunchBagItem extends BundleItem {
             if (itemstack.isEmpty()) {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
-            } else if (itemstack.getItem().canFitInsideContainerItems() && itemstack.isEdible()) {
+            } else if (itemstack.getItem().canFitInsideContainerItems() && (itemstack.isEdible() || itemstack.is(Items.CAKE.asItem()))) {
                 int i = (SLOT_CAPACITY - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
@@ -68,7 +66,7 @@ public class LunchBagItem extends BundleItem {
                     this.playRemoveOneSound(p_150746_);
                     p_150747_.set(p_186347_);
                 });
-            } else if (itemStack.isEdible()) {
+            } else if (itemStack.isEdible() && (itemStack.isEdible() || itemStack.is(Items.CAKE.asItem()))) {
                 int i = add(toolbox, itemStack);
                 if (i > 0) {
                     this.playInsertSound(p_150746_);
@@ -82,7 +80,7 @@ public class LunchBagItem extends BundleItem {
     }
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
-        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && newItemStack.isEdible())) {
+        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && (newItemStack.isEdible() || newItemStack.is(Items.CAKE.asItem())))) {
             CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {
                 compoundtag.put("Items", new ListTag());
@@ -98,7 +96,7 @@ public class LunchBagItem extends BundleItem {
                 ItemStack itemStack1 = newItemStack.copyWithCount(k);
                 CompoundTag compoundTag2 = new CompoundTag();
                 itemStack1.save(compoundTag2);
-                listtag.add(0, (Tag) compoundTag2);
+                listtag.add(0, compoundTag2);
                 return k;
             }
         }

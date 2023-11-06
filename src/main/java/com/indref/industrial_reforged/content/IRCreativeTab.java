@@ -46,7 +46,6 @@ public class IRCreativeTab {
 
                 // Storage items
                 addItem(output, IRItems.TOOLBOX);
-                addItem(output, IRItems.SEED_POUCH);
                 addItem(output, IRItems.LUNCH_BAG);
                 addVariantForAllFluids(output, IRItems.FLUID_CELL);
 

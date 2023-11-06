@@ -23,9 +23,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScannerInfoOverlay {
     // TODO: 10/17/2023 implement off-hand
-    AtomicInteger counter = new AtomicInteger(0);
+    static AtomicInteger counter = new AtomicInteger(0);
 
     public static final IGuiOverlay HUD_SCANNER_INFO = (gui, guiGraphics, partialTick, width, height) -> {
+        int value = counter.getAndIncrement();
         int lineOffset = 0;
         int x = width / 2;
         int y = height / 2;
