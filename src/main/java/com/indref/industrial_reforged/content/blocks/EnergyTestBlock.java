@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.EnergyTestBE;
 import com.indref.industrial_reforged.networking.IRPackets;
@@ -38,5 +39,22 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
 
         return createTickerHelper(blockEntityType, IRBlockEntityTypes.ENERGY_TEST.get(),
                 (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
+    }
+
+    @Override
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(blockPos);
+            if (entity instanceof IEnergyBlock energyBlock) {
+                energyBlock.setStored(entity, energyBlock.getStored(entity)+10000);
+                // todo: try moving this to scanner overlay
+                IRPackets.sendToClients(new S2CEnergySync(energyBlock.getStored(entity), blockPos));
+                IndustrialReforged.LOGGER.info("Right-click");
+            } else {
+                throw new IllegalStateException("Our Container provider is missing!");
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

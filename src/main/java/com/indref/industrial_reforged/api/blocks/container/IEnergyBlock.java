@@ -50,7 +50,6 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
             setStored(blockEntity, getStored(blockEntity) + value);
             return true;
         } else {
-            // TODO: 11/3/23 Test if functions as intended
             setStored(blockEntity, getCapacity());
         }
         return false;

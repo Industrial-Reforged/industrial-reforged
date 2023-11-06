@@ -5,11 +5,17 @@
   "item.indref.tree_tap": "Tree Tap",
   "item.indref.wrench": "Wrench",
   "item.indref.scanner": "Scanner",
+  "item.indref.tape_measure": "Tape Measure",
+  "tape_measure.desc.info1": "Measure distance between blocks",
+  "tape_measure.desc.info2": "Press",
+  "tape_measure.desc.info3": "to set start and final position",
+
+  "item.indref.fluid_cell": "Fluid Cell",
+  "fluid_cell.desc.stored": "Stored Fluid: ",
+  "fluid_cell.desc.amount": "Stored Amount: ",
+
   "item.indref.nuka_cola": "Nuka Cola",
   "item.indref.empty_can": "Empty Can",
-  "item.indref.fluid_cell": "Fluid Cell",
-  "item.indref.fluid_cell.desc.stored": "Stored Fluid: ",
-  "item.indref.fluid_cell.desc.amount": "Stored Amount: ",
   "item.indref.energy_drink": "Energy Drink",
 
   "item.indref.seed_pouch": "Seed Pouch",

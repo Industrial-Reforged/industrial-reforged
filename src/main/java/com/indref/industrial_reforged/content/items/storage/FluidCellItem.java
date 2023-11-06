@@ -135,11 +135,11 @@ public class FluidCellItem extends SimpleFluidItem {
                 (fluidHandlerItem) -> {
                     if (!fluidHandlerItem.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
                         Component descriptionType = MutableComponent.create(ComponentContents.EMPTY)
-                                .append(Component.translatable("item.indref.fluid_cell.desc.stored")
+                                .append(Component.translatable("fluid_cell.desc.stored")
                                         .append(Component.literal(fluidHandlerItem.getFluidInTank(0).getDisplayName().getString())
                                                 .withStyle(ChatFormatting.AQUA)));
                         Component descriptionAmount = MutableComponent.create(ComponentContents.EMPTY)
-                                .append(Component.translatable("item.indref.fluid_cell.desc.amount"))
+                                .append(Component.translatable("fluid_cell.desc.amount"))
                                 .append(Component.literal(String.format("%d/%d",
                                         fluidHandlerItem.getFluidInTank(0).getAmount(),
                                         com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
