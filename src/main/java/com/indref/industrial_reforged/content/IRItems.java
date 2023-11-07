@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
 import com.indref.industrial_reforged.content.items.misc.Debugger;
+import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
@@ -90,6 +91,8 @@ public class IRItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> STICKY_RESIN = registerItem("sticky_resin",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> FERTILIZER = registerItem("fertilizer",
+            () -> new FertilizerItem(new Item.Properties()));
 
     public static final RegistryObject<Item> CORN_SEEDS = ITEMS.register("corn_seeds",
             () -> new ItemNameBlockItem(IRBlocks.CORN_CROP.get(), new Item.Properties()));
