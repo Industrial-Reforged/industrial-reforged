@@ -61,6 +61,7 @@ public class IRCreativeTab {
                 addItem(output, IRItems.ENERGY_DRINK);
 
                 // misc and crafting items
+                addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CORN_SEEDS);

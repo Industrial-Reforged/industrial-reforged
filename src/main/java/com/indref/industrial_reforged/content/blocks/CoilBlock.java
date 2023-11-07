@@ -52,13 +52,10 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         BlockEntity fireBoxBlockEntity = level.getBlockEntity(blockPos);
-        if (!level.isClientSide()) {
-            if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-                NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, blockPos);
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.FAIL;
+        if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
+            NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, blockPos);
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.FAIL;
     }
 }
