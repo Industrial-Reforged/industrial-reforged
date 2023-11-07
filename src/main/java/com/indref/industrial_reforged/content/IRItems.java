@@ -97,6 +97,21 @@ public class IRItems {
     public static final RegistryObject<Item> CORN_SEEDS = ITEMS.register("corn_seeds",
             () -> new ItemNameBlockItem(IRBlocks.CORN_CROP.get(), new Item.Properties()));
 
+    //ores
+    public static final RegistryObject<Item> RAW_BAUXITE = registerItem("raw_bauxite",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_CHROMIUM = registerItem("raw_chromium",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_IRIDIUM = registerItem("raw_iridium",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_LEAD = registerItem("raw_lead",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_NICKEL = registerItem("raw_nickel",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_TIN = registerItem("raw_tin",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_URANIUM = registerItem("raw_uranium",
+            () -> new Item(new Item.Properties()));
 
     /**
      * Registers a new item

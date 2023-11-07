@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "indref:bauxite_ore",
+    "indref:deepslate_bauxite_ore",
+    "indref:chromium_ore",
+    "indref:deepslate_chromium_ore",
+    "indref:iridium_ore",
+    "indref:deepslate_iridium_ore",
+    "indref:lead_ore",
+    "indref:deepslate_lead_ore",
+    "indref:nickel_ore",
+    "indref:deepslate_nickel_ore",
+    "indref:tin_ore",
+    "indref:deepslate_tin_ore",
+    "indref:uranium_ore",
+    "indref:deepslate_uranium_ore"
+  ]
+}

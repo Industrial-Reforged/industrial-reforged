@@ -10,7 +10,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.RegistryObject;
@@ -81,6 +83,36 @@ public class IRBlocks {
     public static final RegistryObject<Block> RUBBER_TREE_SLAB = registerBlockAndItem("rubber_tree_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SLAB)));
 
+    // Ores
+    public static final RegistryObject<Block> BAUXITE_ORE = registerBlockAndItem("bauxite_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_BAUXITE_ORE = registerBlockAndItem("deepslate_bauxite_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+    public static final RegistryObject<Block> CHROMIUM_ORE = registerBlockAndItem("chromium_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_CHROMIUM_ORE = registerBlockAndItem("deepslate_chromium_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+    public static final RegistryObject<Block> IRIDIUM_ORE = registerBlockAndItem("iridium_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_IRIDIUM_ORE = registerBlockAndItem("deepslate_iridium_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+    public static final RegistryObject<Block> LEAD_ORE = registerBlockAndItem("lead_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_LEAD_ORE = registerBlockAndItem("deepslate_lead_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+    public static final RegistryObject<Block> NICKEL_ORE = registerBlockAndItem("nickel_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_NICKEL_ORE = registerBlockAndItem("deepslate_nickel_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+    public static final RegistryObject<Block> TIN_ORE = registerBlockAndItem("tin_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_TIN_ORE = registerBlockAndItem("deepslate_tin_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+    public static final RegistryObject<Block> URANIUM_ORE = registerBlockAndItem("uranium_ore",
+            () -> new DropExperienceBlock(oreSettings(false)));
+    public static final RegistryObject<Block> DEEPSLATE_URANIUM_ORE = registerBlockAndItem("deepslate_uranium_ore",
+            () -> new DropExperienceBlock(oreSettings(true)));
+
     /**
      * Registers a new block and item
      *
@@ -100,5 +132,14 @@ public class IRBlocks {
 
     private static <T extends Block> void registerItemFromBlock(String name, RegistryObject<T> block) {
         IRItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
+    private static BlockBehaviour.Properties oreSettings(boolean deepslate) {
+        if (deepslate) {
+            return BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM);
+        }
+        return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F, 3.0F)
+                .requiresCorrectToolForDrops().instrument(NoteBlockInstrument.BASEDRUM);
     }
 }

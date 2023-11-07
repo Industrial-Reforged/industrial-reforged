@@ -97,6 +97,30 @@ public class IRCreativeTab {
                 addBlock(output, IRBlocks.RUBBER_TREE_WOOD);
                 addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_LOG);
                 addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
+
+                // Ores
+                addBlock(output, IRBlocks.BAUXITE_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_BAUXITE_ORE);
+                addBlock(output, IRBlocks.CHROMIUM_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_CHROMIUM_ORE);
+                addBlock(output, IRBlocks.IRIDIUM_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_IRIDIUM_ORE);
+                addBlock(output, IRBlocks.LEAD_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_LEAD_ORE);
+                addBlock(output, IRBlocks.NICKEL_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_NICKEL_ORE);
+                addBlock(output, IRBlocks.TIN_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_TIN_ORE);
+                addBlock(output, IRBlocks.URANIUM_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_URANIUM_ORE);
+
+                addItem(output, IRItems.RAW_BAUXITE);
+                addItem(output, IRItems.RAW_CHROMIUM);
+                addItem(output, IRItems.RAW_IRIDIUM);
+                addItem(output, IRItems.RAW_LEAD);
+                addItem(output, IRItems.RAW_NICKEL);
+                addItem(output, IRItems.RAW_TIN);
+                addItem(output, IRItems.RAW_URANIUM);
             }).build());
 
     /**

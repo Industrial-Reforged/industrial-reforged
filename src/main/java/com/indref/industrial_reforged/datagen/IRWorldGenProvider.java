@@ -22,10 +22,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
@@ -63,8 +60,8 @@ public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
 				new RubberTreeFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1)),
 				new TwoLayersFeatureSize(2, 0, 2)).build()));
 			List<OreConfiguration.TargetBlockState> uranium_config = List.of(
-				OreConfiguration.target(STONE_ORE_REPLACEABLES, IRBlocks.BASIC_MACHINE_FRAME.get().defaultBlockState()),
-				OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, IRBlocks.BASIC_MACHINE_FRAME.get().defaultBlockState()));
+				OreConfiguration.target(STONE_ORE_REPLACEABLES, IRBlocks.URANIUM_ORE.get().defaultBlockState()),
+				OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, IRBlocks.DEEPSLATE_URANIUM_ORE.get().defaultBlockState()));
 			context.register(URANIUM_ORE_KEY, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(uranium_config, 4)));
 		})
 		.add(Registries.PLACED_FEATURE, context -> {
@@ -72,6 +69,6 @@ public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
 			context.register(RUBBER_TREE_PLACE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(RUBBER_TREE_KEY),
 				VegetationPlacements.treePlacement(PlacementUtils.countExtra(3, 0.1f, 2), IRBlocks.RUBBER_TREE_SAPLING.get())));
 			context.register(URANIUM_ORE_PLACE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(URANIUM_ORE_KEY),
-				List.of(HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-64), VerticalAnchor.absolute(80)), InSquarePlacement.spread(), BiomeFilter.biome())));
+				List.of(CountPlacement.of(40), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0)), BiomeFilter.biome())));
 		});
 }

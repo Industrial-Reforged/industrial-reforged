@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "indref:bauxite_ore",
+    "indref:deepslate_bauxite_ore",
+    "indref:tin_ore",
+    "indref:deepslate_tin_ore"
+  ]
+}
