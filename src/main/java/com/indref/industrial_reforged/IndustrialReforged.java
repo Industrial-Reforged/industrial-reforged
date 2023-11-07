@@ -51,11 +51,6 @@ public class IndustrialReforged {
         event.enqueueWork(IREvents::setup);
         event.enqueueWork(IRPackets::register);
         LOGGER.info("HELLO FROM COMMON SETUP");
-        test("");
-    }
-
-    void test(String sus) {
-
     }
 
     @SubscribeEvent

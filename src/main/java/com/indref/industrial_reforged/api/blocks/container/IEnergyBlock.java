@@ -3,9 +3,6 @@ package com.indref.industrial_reforged.api.blocks.container;
 import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.capabilities.energy.storage.IEnergyStorage;
-import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -14,8 +11,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.simple.SimpleChannel;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
