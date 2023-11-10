@@ -26,23 +26,17 @@ public class RefractoryBrickBlock extends Block implements IMultiBlockPart, IWre
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide()) {
-            if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-                player.sendSystemMessage(Component.literal("success"));
+        if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
                 for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
-                    player.sendSystemMessage(Component.literal("success2"));
                     BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
                     if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
-                        player.sendSystemMessage(Component.literal("success3"));
                         NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, pos);
                         break;
                     }
                 }
                 return InteractionResult.SUCCESS;
             }
-            return InteractionResult.FAIL;
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.FAIL;
     }
 
     @Override

@@ -5,12 +5,11 @@ import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
-import com.indref.industrial_reforged.util.Util.Coordinates;
-import com.indref.industrial_reforged.util.Util.XZCoordinates;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
@@ -24,12 +23,13 @@ import java.util.*;
 
 // TODO: 10/28/2023 Improve performance by reducing amount of for loops
 public class MultiblockHelper {
+    /**
+     * Check if one of the multi's parts does not implement the {@link IMultiBlockPart} or {@link IMultiBlockController} interface.
+     */
     public static boolean isOnlyParts(IMultiBlockController controller, Player player) {
-        IndustrialReforged.LOGGER.info("Checking parts");
-        for (var block : controller.getMultiblock().getDefinition().values()) {
+        for (Block block : controller.getMultiblock().getDefinition().values()) {
             IndustrialReforged.LOGGER.info(block.toString());
             if (!(block instanceof IMultiBlockPart || block instanceof IMultiBlockController)) {
-                // TODO: 10/24/2023 Consider making this an error message that prevents the game from starting?
                 player.sendSystemMessage(
                         Component.literal("ERROR: Report this to the creator/maintainer of the mod. " +
                                         "One of the multiblock's blocks does not implement the IMultiblockPart interface")
@@ -41,6 +41,10 @@ public class MultiblockHelper {
         return true;
     }
 
+    /**
+     * Converts a default minecraft direction to a multiblock direction.
+     * Up and down will just return the default value (North)
+     */
     public static MultiblockDirection convDirectionToMultiblockDirection(Direction direction) {
         return switch (direction) {
             case EAST -> MultiblockDirection.EAST;
@@ -50,23 +54,29 @@ public class MultiblockHelper {
         };
     }
 
+    /**
+     * Check if all multiblock parts are placed correctly
+     * @param controller multiblock's controller (multiblock to check)
+     * @param controllerPos blockpos of the multiblock controller
+     * @param level level of the controller block
+     * @param player player that is trying to form the multi
+     * @return first: isValid? second: Direction that multi is valid
+     */
     public static Pair<Boolean, @Nullable MultiblockDirection> isValid(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
+        IMultiblock multiblock = controller.getMultiblock();
+        List<List<Integer>> layout = multiblock.getLayout();
+        Map<Integer, Block> def = multiblock.getDefinition();
+        Vec3i relativeControllerPos = getRelativeControllerPos(controller);
         MultiblockDirection direction = convDirectionToMultiblockDirection(player.getDirection());
+
+        // Make player direction first entry of Set to prioritize
         Set<MultiblockDirection> directions = new HashSet<>();
         directions.add(direction);
         directions.addAll(List.of(MultiblockDirection.values()));
 
-        IMultiblock multiblock = controller.getMultiblock();
-        List<List<Integer>> layout = multiblock.getLayout();
-        Coordinates relativeControllerPos = getRelativeControllerPos(controller);
-
-        // Block definition of the multi
-        Map<Integer, Block> def = multiblock.getDefinition();
-        Map<Block, Integer> reverseDef = Util.reverseMap(multiblock.getDefinition());
-
         // Indexing (Positions)
         int index = 0;
-        int yIndex = 0;
+        int y = 0;
 
         // Debugging
         List<Boolean> testBlockIndexList = new ArrayList<>();
@@ -82,28 +92,28 @@ public class MultiblockHelper {
         // iterate through all possible directions
         for (MultiblockDirection mDirection : directions) {
             // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-            Coordinates firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
-            int firstBlockPosX = firstBlockPos.getFirst();
-            int firstBlockPosY = firstBlockPos.getSecond();
-            int firstBlockPosZ = firstBlockPos.getThird();
+            Vec3i firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
+            int firstBlockPosX = firstBlockPos.getX();
+            int firstBlockPosY = firstBlockPos.getY();
+            int firstBlockPosZ = firstBlockPos.getZ();
             for (List<Integer> layer : layout) {
                 for (int blockIndex : layer) {
                     // Increase index
                     index++;
 
                     // Define position-related variables
-                    XZCoordinates relativePos = getRelativePos(controller, index, yIndex);
-                    int modZ = relativePos.getSecond();
-                    int modX = relativePos.getFirst();
+                    Vec3i relativePos = getRelativePos(controller, index, y);
+                    int modZ = relativePos.getZ();
+                    int modX = relativePos.getX();
                     BlockPos curBlockPos = switch (mDirection) {
                         case NORTH ->
-                                new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
+                                new BlockPos(firstBlockPosX + modX, firstBlockPosY + y, firstBlockPosZ + modZ);
                         case EAST ->
-                                new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
+                                new BlockPos(firstBlockPosX - modZ, firstBlockPosY + y, firstBlockPosZ + modX);
                         case SOUTH ->
-                                new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
+                                new BlockPos(firstBlockPosX - modX, firstBlockPosY + y, firstBlockPosZ - modZ);
                         case WEST ->
-                                new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
+                                new BlockPos(firstBlockPosX + modZ, firstBlockPosY + y, firstBlockPosZ - modX);
                     };
 
                     // Check if block is correct
@@ -115,7 +125,7 @@ public class MultiblockHelper {
                     }
                 }
                 index = 0;
-                yIndex++;
+                y++;
             }
             if (!testBlockIndexList.contains(false)) {
                 return Pair.of(true, mDirection);
@@ -129,29 +139,29 @@ public class MultiblockHelper {
                 prioritizedDirectionLayout = Pair.of(testBlockIndexList, mDirection);
             }
             testBlockIndexList = new ArrayList<>();
-            yIndex = 0;
+            y = 0;
         }
 
         MultiblockDirection prioritizedDirection = prioritizedDirectionLayout.getSecond();
 
-        Coordinates firstBlockPos = getFirstBlockPos(prioritizedDirection, controllerPos, relativeControllerPos);
-        int firstBlockPosX = firstBlockPos.getFirst();
-        int firstBlockPosY = firstBlockPos.getSecond();
-        int firstBlockPosZ = firstBlockPos.getThird();
+        Vec3i firstBlockPos = getFirstBlockPos(prioritizedDirection, controllerPos, relativeControllerPos);
+        int firstBlockPosX = firstBlockPos.getX();
+        int firstBlockPosY = firstBlockPos.getY();
+        int firstBlockPosZ = firstBlockPos.getZ();
         for (List<Integer> layer : layout) {
             for (int blockIndex : layer) {
                 // Increase index
                 index++;
 
                 // Define position-related variables
-                XZCoordinates relativePos = getRelativePos(controller, index, yIndex);
-                int modZ = relativePos.getSecond();
-                int modX = relativePos.getFirst();
+                Vec3i relativePos = getRelativePos(controller, index, y);
+                int modZ = relativePos.getZ();
+                int modX = relativePos.getX();
                 BlockPos curBlockPos = switch (prioritizedDirection) {
-                    case NORTH -> new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
-                    case EAST -> new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
-                    case SOUTH -> new BlockPos(firstBlockPosX - modX, firstBlockPosY + yIndex, firstBlockPosZ - modZ);
-                    case WEST -> new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
+                    case NORTH -> new BlockPos(firstBlockPosX + modX, firstBlockPosY + y, firstBlockPosZ + modZ);
+                    case EAST -> new BlockPos(firstBlockPosX - modZ, firstBlockPosY + y, firstBlockPosZ + modX);
+                    case SOUTH -> new BlockPos(firstBlockPosX - modX, firstBlockPosY + y, firstBlockPosZ - modZ);
+                    case WEST -> new BlockPos(firstBlockPosX + modZ, firstBlockPosY + y, firstBlockPosZ - modX);
                 };
 
                 // Check if block is correct
@@ -161,31 +171,31 @@ public class MultiblockHelper {
                 }
             }
             index = 0;
-            yIndex++;
+            y++;
         }
 
         return Pair.of(false, null);
     }
 
-    private static Coordinates getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Coordinates relativeControllerPos) {
+    private static Vec3i getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
         int firstBlockPosX = switch (direction) {
-            case NORTH -> controllerPos.getX() - relativeControllerPos.getFirst();
-            case EAST -> controllerPos.getX() + relativeControllerPos.getThird();
-            case SOUTH -> controllerPos.getX() + relativeControllerPos.getFirst();
-            case WEST -> controllerPos.getX() - relativeControllerPos.getThird();
+            case NORTH -> controllerPos.getX() - relativeControllerPos.getX();
+            case EAST -> controllerPos.getX() + relativeControllerPos.getZ();
+            case SOUTH -> controllerPos.getX() + relativeControllerPos.getX();
+            case WEST -> controllerPos.getX() - relativeControllerPos.getZ();
         };
-        int firstBlockPosY = controllerPos.getY() - relativeControllerPos.getSecond();
+        int firstBlockPosY = controllerPos.getY() - relativeControllerPos.getY();
         int firstBlockPosZ = switch (direction) {
-            case NORTH -> controllerPos.getZ() - relativeControllerPos.getThird();
-            case EAST -> controllerPos.getZ() - relativeControllerPos.getFirst();
-            case SOUTH -> controllerPos.getZ() + relativeControllerPos.getThird();
-            case WEST -> controllerPos.getZ() + relativeControllerPos.getFirst();
+            case NORTH -> controllerPos.getZ() - relativeControllerPos.getZ();
+            case EAST -> controllerPos.getZ() - relativeControllerPos.getX();
+            case SOUTH -> controllerPos.getZ() + relativeControllerPos.getZ();
+            case WEST -> controllerPos.getZ() + relativeControllerPos.getX();
         };
-        return Coordinates.of(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
+        return new Vec3i(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
     }
 
     // TODO: 10/21/2023 move this to the main for loop 
-    public static XZCoordinates getRelativePos(IMultiBlockController controller, int index, int yLevel) {
+    public static Vec3i getRelativePos(IMultiBlockController controller, int index, int yLevel) {
         List<Integer> layout = controller.getMultiblock().getLayout().get(yLevel);
         int x = 0;
         int z = 0;
@@ -194,7 +204,7 @@ public class MultiblockHelper {
         for (int ignored : layout) {
             indexCopy++;
             if (indexCopy >= index) {
-                return XZCoordinates.of(x, z);
+                return new Vec3i(x, yLevel, z);
             }
             if (x + 1 < width) {
                 x++;
@@ -209,7 +219,7 @@ public class MultiblockHelper {
     /**
      * @return x, z
      */
-    public static Coordinates getRelativeControllerPos(IMultiBlockController controller) {
+    public static Vec3i getRelativeControllerPos(IMultiBlockController controller) {
         Map<Block, Integer> reverseDef = Util.reverseMap(controller.getMultiblock().getDefinition());
         List<List<Integer>> layout = controller.getMultiblock().getLayout();
         int x = 0;
@@ -219,7 +229,7 @@ public class MultiblockHelper {
             int width = controller.getMultiblock().getWidths().get(y).getFirst();
             for (int blockIndex : layer) {
                 if (blockIndex == reverseDef.get(controller.getMultiblock().getController())) {
-                    return Coordinates.of(x, y, z);
+                    return new Vec3i(x, y, z);
                 }
                 if (x + 1 < width) {
                     x++;
@@ -292,12 +302,12 @@ public class MultiblockHelper {
     }
 
     private static void formBlocks(IMultiBlockController controller, MultiblockDirection direction, BlockPos controllerPos, Level level, Player player) {
-        Coordinates relativeControllerPos = getRelativeControllerPos(controller);
+        Vec3i relativeControllerPos = getRelativeControllerPos(controller);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-        Coordinates firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
-        int firstBlockPosX = firstBlockPos.getFirst();
-        int firstBlockPosY = firstBlockPos.getSecond();
-        int firstBlockPosZ = firstBlockPos.getThird();
+        Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        int firstBlockPosX = firstBlockPos.getX();
+        int firstBlockPosY = firstBlockPos.getY();
+        int firstBlockPosZ = firstBlockPos.getZ();
         List<List<Integer>> layout = controller.getMultiblock().getLayout();
 
         int index = 0;
@@ -308,9 +318,9 @@ public class MultiblockHelper {
                 index++;
 
                 // Define position-related variables
-                XZCoordinates relativePos = getRelativePos(controller, index, yIndex);
-                int modZ = relativePos.getSecond();
-                int modX = relativePos.getFirst();
+                Vec3i relativePos = getRelativePos(controller, index, yIndex);
+                int modZ = relativePos.getZ();
+                int modX = relativePos.getX();
                 BlockPos curBlockPos = switch (direction) {
                     case NORTH -> new BlockPos(firstBlockPosX + modX, firstBlockPosY + yIndex, firstBlockPosZ + modZ);
                     case EAST -> new BlockPos(firstBlockPosX - modZ, firstBlockPosY + yIndex, firstBlockPosZ + modX);
@@ -318,9 +328,9 @@ public class MultiblockHelper {
                     case WEST -> new BlockPos(firstBlockPosX + modZ, firstBlockPosY + yIndex, firstBlockPosZ - modX);
                 };
 
-                controller.getMultiblock().formBlock(level, curBlockPos, index-1, yIndex);
-                player.sendSystemMessage(Component.literal("index: "+(index-1)+", yIndex: "+yIndex+", blockpos: "+curBlockPos+", modX: "+modX));
-                player.sendSystemMessage(Component.literal("Direction: "+direction));
+                controller.getMultiblock().formBlock(level, curBlockPos, index - 1, yIndex);
+                player.sendSystemMessage(Component.literal("index: " + (index - 1) + ", yIndex: " + yIndex + ", blockpos: " + curBlockPos + ", modX: " + modX));
+                player.sendSystemMessage(Component.literal("Direction: " + direction));
             }
             index = 0;
             yIndex++;
