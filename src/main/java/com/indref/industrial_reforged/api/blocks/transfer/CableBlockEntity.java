@@ -1,10 +1,7 @@
 package com.indref.industrial_reforged.api.blocks.transfer;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
-import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.core.BlockPos;

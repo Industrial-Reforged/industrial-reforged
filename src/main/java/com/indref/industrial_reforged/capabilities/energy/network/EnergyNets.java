@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
+import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -29,22 +30,62 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     @Nullable
-    public EnergyNet getNetwork(BlockPos blockPos) {
+    public EnergyNet getNetworkRaw(BlockPos blockPos) {
         for (EnergyNet enet : getNetworks()) {
-            if (enet.getTransmitters().contains(blockPos))
+            if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(blockPos))
                 return enet;
         }
         return null;
     }
 
     @Override
-    public EnergyNet getOrCreateNetwork(BlockPos pos) {
-        if (getNetwork(pos) != null) {
-            return getNetwork(pos);
+    @Nullable
+    public EnergyNet getNetwork(BlockPos blockPos) {
+        EnergyNet rawNet = getNetworkRaw(blockPos);
+
+        if (rawNet != null) return rawNet;
+
+        for (EnergyNet enet : getNetworks()) {
+            for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+                if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(pos))
+                    return enet;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public EnergyNet getOrCreateNetAndPush(BlockPos pos) {
+        // create a scope to prevent using net variable
+        {
+            EnergyNet net = getNetwork(pos);
+            if (net != null) {
+                net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
+                return getNetwork(pos);
+            }
         }
         EnergyNet newNet = EnergyNet.createNetworkAt(pos);
         enets.add(newNet);
         return newNet;
+    }
+
+    /**
+     * merges two energy nets into one
+     * (the one that is supplied first as an argument)
+     * @param originNet the main net that the other net will be merged into
+     * @param toMergeNet the net that will get merged into originNet
+     * @return true if successful (energy tier matches)
+     */
+    @Override
+    public boolean mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
+        if (originNet.getEnergyTier() == toMergeNet.getEnergyTier()) {
+            originNet.get(EnergyNet.EnergyTypes.PRODUCERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.PRODUCERS));
+            originNet.get(EnergyNet.EnergyTypes.CONSUMERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.CONSUMERS));
+            originNet.get(EnergyNet.EnergyTypes.TRANSMITTERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.TRANSMITTERS));
+            enets.remove(toMergeNet);
+            return true;
+        }
+        return false;
     }
 
     @Override

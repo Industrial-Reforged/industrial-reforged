@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged.api.blocks.transfer;
 
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -19,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.MalformedInputException;
-
 public class CableBlock extends PipeBlock {
     private final EnergyTier energyTier;
     public CableBlock(Properties properties, EnergyTier energyTier) {
@@ -31,11 +28,13 @@ public class CableBlock extends PipeBlock {
     @Override
     public void onPlace(BlockState p_60566_, Level level, BlockPos blockPos, BlockState p_60569_, boolean p_60570_) {
         IEnergyNets nets = Util.getEnergyNets(level);
-        EnergyNet net = nets.getOrCreateNetwork(blockPos);
+        EnergyNet net = nets.getOrCreateNetAndPush(blockPos);
         for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
-            if (level.getBlockEntity(pos) instanceof IEnergyBlock && !(level.getBlockEntity(pos) instanceof CableBlockEntity)) {
-                net.add(pos, EnergyNet.EnergyTypes.CONSUMER);
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Found electric block: "+pos));
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof CableBlockEntity) {
+                if (nets.getNetwork(pos) != net){
+                    nets.mergeNets(net, nets.getNetwork(pos));
+                }
             }
         }
     }
@@ -43,7 +42,19 @@ public class CableBlock extends PipeBlock {
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState p_60518_, boolean p_60519_) {
         IEnergyNets nets = Util.getEnergyNets(level);
-        nets.removeNetwork(blockPos);
+        EnergyNet net = nets.getNetwork(blockPos);
+        // throws null pointer exception
+        assert net != null;
+        if (net.get(EnergyNet.EnergyTypes.TRANSMITTERS).size() > 1) {
+            net.remove(blockPos, EnergyNet.EnergyTypes.TRANSMITTERS);
+        } else {
+            nets.removeNetwork(blockPos);
+        }
+    }
+
+    @Override
+    public void neighborChanged(BlockState p_60509_, Level p_60510_, BlockPos p_60511_, Block p_60512_, BlockPos p_60513_, boolean p_60514_) {
+        IndustrialReforged.LOGGER.info("Neighbor changed");
     }
 
     @Override

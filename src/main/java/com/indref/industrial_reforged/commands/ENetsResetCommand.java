@@ -1,9 +1,7 @@
 package com.indref.industrial_reforged.commands;
 
-import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.util.Util;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;

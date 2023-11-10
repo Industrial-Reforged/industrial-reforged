@@ -15,7 +15,7 @@ public class EnergyNet {
     private Set<BlockPos> transmitters;
     private Set<BlockPos> producers;
     private Set<BlockPos> consumers;
-    private static final String NBT_KEY_CABLES = "cables";
+    private static final String NBT_KEY_TRANSMITTERS = "cables";
     private static final String NBT_KEY_PRODUCERS = "producers";
     private static final String NBT_KEY_CONSUMERS = "consumers";
     public static final String NBT_KEY_ENERGY_TIER = "energyTier";
@@ -39,47 +39,71 @@ public class EnergyNet {
         return new EnergyNet(blockPos);
     }
 
-    public void add(BlockPos blockPos, EnergyTypes energyType) {
-        switch (energyType) {
-            case CONSUMER -> consumers.add(blockPos);
-            case PRODUCER -> producers.add(blockPos);
-            case TRANSMITTER -> transmitters.add(blockPos);
-        }
-    }
-
     public EnergyTier getEnergyTier() {
         return this.energyTier;
     }
 
-    public Set<BlockPos> getTransmitters() {
-        return transmitters;
+    public void add(BlockPos blockPos, EnergyTypes energyType) {
+        switch (energyType) {
+            case CONSUMERS -> consumers.add(blockPos);
+            case PRODUCERS -> producers.add(blockPos);
+            case TRANSMITTERS -> transmitters.add(blockPos);
+        }
     }
 
-    public Set<BlockPos> getConsumers() {
-        return consumers;
+    public Set<BlockPos> get(EnergyTypes energyType) {
+        return switch (energyType) {
+            case CONSUMERS -> consumers;
+            case PRODUCERS -> producers;
+            case TRANSMITTERS -> transmitters;
+        };
     }
 
-    public Set<BlockPos> getProducers() {
-        return producers;
+    public void remove(BlockPos blockPos, EnergyTypes energyTypes) {
+        switch (energyTypes) {
+            case CONSUMERS -> consumers.remove(blockPos);
+            case PRODUCERS -> producers.remove(blockPos);
+            case TRANSMITTERS -> transmitters.remove(blockPos);
+        }
     }
 
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
-        List<Long> positions = new ArrayList<>();
+        List<Long> tPositions = new ArrayList<>();
+        List<Long> cPositions = new ArrayList<>();
+        List<Long> pPositions = new ArrayList<>();
         for (BlockPos pos : transmitters) {
-            positions.add(pos.asLong());
+            tPositions.add(pos.asLong());
         }
-        tag.putLongArray(NBT_KEY_CABLES, positions);
+        for (BlockPos pos : producers) {
+            pPositions.add(pos.asLong());
+        }
+        for (BlockPos pos : consumers) {
+            cPositions.add(pos.asLong());
+        }
+        tag.putLongArray(NBT_KEY_TRANSMITTERS, tPositions);
+        tag.putLongArray(NBT_KEY_CONSUMERS, cPositions);
+        tag.putLongArray(NBT_KEY_PRODUCERS, pPositions);
         tag.putString(NBT_KEY_ENERGY_TIER, getEnergyTier().getName());
         return tag;
     }
 
     public void deserializeNBT(CompoundTag nbt) {
-        Set<BlockPos> positions = new HashSet<>();
-        for (long pos : nbt.getLongArray(NBT_KEY_CABLES)) {
-            positions.add(BlockPos.of(pos));
+        Set<BlockPos> tPositions = new HashSet<>();
+        Set<BlockPos> cPositions = new HashSet<>();
+        Set<BlockPos> pPositions = new HashSet<>();
+        for (long pos : nbt.getLongArray(NBT_KEY_TRANSMITTERS)) {
+            tPositions.add(BlockPos.of(pos));
         }
-        transmitters = positions;
+        for (long pos : nbt.getLongArray(NBT_KEY_CONSUMERS)) {
+            cPositions.add(BlockPos.of(pos));
+        }
+        for (long pos : nbt.getLongArray(NBT_KEY_PRODUCERS)) {
+            pPositions.add(BlockPos.of(pos));
+        }
+        transmitters = tPositions;
+        producers = pPositions;
+        consumers = cPositions;
     }
 
     @Override
@@ -93,8 +117,8 @@ public class EnergyNet {
     }
 
     public enum EnergyTypes {
-        CONSUMER,
-        PRODUCER,
-        TRANSMITTER,
+        CONSUMERS,
+        PRODUCERS,
+        TRANSMITTERS,
     }
 }
