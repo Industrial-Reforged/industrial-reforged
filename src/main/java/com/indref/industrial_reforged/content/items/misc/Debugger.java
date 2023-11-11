@@ -1,5 +1,8 @@
 package com.indref.industrial_reforged.content.items.misc;
 
+import com.indref.industrial_reforged.api.blocks.transfer.CableBlockEntity;
+import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
+import com.indref.industrial_reforged.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -8,7 +11,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +33,10 @@ public class Debugger extends Item {
         BlockState blockState = useOnContext.getLevel().getBlockState(useOnContext.getClickedPos());
         player.sendSystemMessage(Component.literal("Blockstate: "+blockState.getProperties()));
         player.sendSystemMessage(Component.literal("BlockPos: "+useOnContext.getClickedPos()));
+        if (useOnContext.getLevel().getBlockEntity(useOnContext.getClickedPos()) instanceof CableBlockEntity cableBlock) {
+            IEnergyNets enets = Util.getEnergyNets(useOnContext.getLevel());
+            player.sendSystemMessage(Component.literal("Network: "+enets.getNetwork(useOnContext.getClickedPos())));
+        }
         return InteractionResult.SUCCESS;
     }
 }

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.capabilities.energy;
+package com.indref.industrial_reforged.capabilities.energy.storage;
 
 import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
 
@@ -9,8 +9,5 @@ import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
 @AutoRegisterCapability
 public interface IEnergyStorage {
     int getEnergyStored();
-
-    int getEnergyCapacity();
-
     void setEnergyStored(int value);
 }

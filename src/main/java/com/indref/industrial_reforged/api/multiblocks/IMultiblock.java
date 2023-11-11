@@ -49,6 +49,7 @@ public interface IMultiblock {
     }
 
     void formBlock(Level level, BlockPos blockPos, int index, int indexY);
+    void unformBlock(Level level, BlockPos blockPos);
 
     default @Nullable MultiblockDirection getFixedDirection() {
         return null;

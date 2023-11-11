@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.items.SimpleFluidItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.content.IRItems;
 import com.indref.industrial_reforged.content.items.tools.TapeMeasureItem;
+import com.indref.industrial_reforged.screen.FireBoxScreen;
 import com.indref.industrial_reforged.screen.IRMenuTypes;
 import com.indref.industrial_reforged.screen.SimplePressScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -28,6 +29,7 @@ public class IRClientEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(IRMenuTypes.SIMPLE_PRESS_MENU.get(), SimplePressScreen::new);
+        MenuScreens.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
     }
 
     @SubscribeEvent
@@ -40,8 +42,6 @@ public class IRClientEvents {
         event.enqueueWork(() -> {
             ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"),
                     (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
-            ItemProperties.register(IRItems.SEED_POUCH.get(), new ResourceLocation(IndustrialReforged.MODID, "full"), ((stack, level, entity, seed) ->
-                    BundleItem.getFullnessDisplay(stack)));
         });
     }
 }

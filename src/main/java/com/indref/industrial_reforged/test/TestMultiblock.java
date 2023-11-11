@@ -50,6 +50,12 @@ public class TestMultiblock implements IMultiblock {
                 .setValue(TestMultiblock.TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(0, 0)));
     }
 
+    @Override
+    public void unformBlock(Level level, BlockPos blockPos) {
+        MultiblockHelper.setAndUpdate(level, blockPos, level.getBlockState(blockPos), level.getBlockState(blockPos)
+                .setValue(TestMultiblock.TEST_PART, PartIndex.UNFORMED));
+    }
+
     public enum PartIndex implements StringRepresentable {
         UNFORMED("unformed", -1, -1),
         FORMED("formed", 0, 0);

@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.blocks.IScannable;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.HeatStorageProvider;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.heat.IHeatStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
@@ -15,8 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public interface IHeatBlock extends IContainerBlock, IScannable {
-    HeatStorageProvider getHeatStorage();
-
     @Override
     default int getStored(BlockEntity blockEntity) {
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
@@ -24,20 +21,18 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
     }
 
     @Override
-    default int getCapacity(BlockEntity blockEntity) {
-        IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
-        return heatStorage.getHeatCapacity();
-    }
-
-    @Override
     default void setStored(BlockEntity blockEntity, int value) {
+        int prev = getStored(blockEntity);
+        if (prev == value) return;
+
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
         heatStorage.setHeatStored(value);
+        onChanged();
     }
 
     @Override
     default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value > 0) {
+        if (getStored(blockEntity)-value >= 0) {
             setStored(blockEntity, getStored(blockEntity)-value);
             return true;
         }
@@ -46,7 +41,7 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
 
     @Override
     default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value < getCapacity(blockEntity)) {
+        if (getStored(blockEntity)+value <= getCapacity()) {
             setStored(blockEntity, getStored(blockEntity)+value);
             return true;
         }
@@ -64,7 +59,7 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
                 scannedBlock.getBlock().getName(),
                 MutableComponent.create(ComponentContents.EMPTY)
                         .append(Component.translatable("scanner_info.heat_block.heat_ratio"))
-                        .append(Component.literal(String.format("%d/%d", heatBlock.getStored(blockEntity), heatBlock.getCapacity(blockEntity))))
+                        .append(Component.literal(String.format("%d/%d", heatBlock.getStored(blockEntity), heatBlock.getCapacity())))
                         .append(Component.literal(",")),
                 Component.literal(String.valueOf(heatBlock.getStored(blockEntity)))
         );

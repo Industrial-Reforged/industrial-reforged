@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.test;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -32,7 +32,7 @@ public class EnergyTestItem extends SimpleElectricItem {
     }
 
     @Override
-    public int getCapacity(ItemStack itemStack) {
+    public int getCapacity() {
         return 10000;
     }
 }

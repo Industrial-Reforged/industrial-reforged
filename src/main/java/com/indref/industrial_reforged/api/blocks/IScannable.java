@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
+// todo: pass List<Component> as an arg instead of returning
+
 /**
  * Implement this interface for your block entity
  * to display a custom info message when the

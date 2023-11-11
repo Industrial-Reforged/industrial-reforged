@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilities.energy.storage.IEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.LazyOptional;
 
@@ -39,7 +39,7 @@ public interface IEnergyItem extends IContainerItem {
      */
     @Override
     default boolean tryDrain(ItemStack itemStack, int value) {
-        if (getStored(itemStack)+value > 0) {
+        if (getStored(itemStack)-value >= 0) {
             setStored(itemStack, getStored(itemStack)-value);
             return true;
         }
@@ -54,7 +54,7 @@ public interface IEnergyItem extends IContainerItem {
      */
     @Override
     default boolean tryFill(ItemStack itemStack, int value) {
-        if (getStored(itemStack)+value < getCapacity(itemStack)) {
+        if (getStored(itemStack)+value <= getCapacity()) {
             setStored(itemStack, getStored(itemStack)+value);
             return true;
         }

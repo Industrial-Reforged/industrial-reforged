@@ -9,7 +9,7 @@ public class HeatTestItem extends SimpleHeatItem {
     }
 
     @Override
-    public int getCapacity(ItemStack itemStack) {
+    public int getCapacity() {
         return 10000;
     }
 }

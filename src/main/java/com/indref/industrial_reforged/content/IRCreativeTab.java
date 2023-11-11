@@ -46,7 +46,6 @@ public class IRCreativeTab {
 
                 // Storage items
                 addItem(output, IRItems.TOOLBOX);
-                addItem(output, IRItems.SEED_POUCH);
                 addItem(output, IRItems.LUNCH_BAG);
                 addVariantForAllFluids(output, IRItems.FLUID_CELL);
 
@@ -62,6 +61,7 @@ public class IRCreativeTab {
                 addItem(output, IRItems.ENERGY_DRINK);
 
                 // misc and crafting items
+                addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CORN_SEEDS);
@@ -137,10 +137,10 @@ public class IRCreativeTab {
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
         if (item.get() instanceof IEnergyItem energyItem)
-            energyItem.setStored(stack, energyItem.getCapacity(stack));
+            energyItem.setStored(stack, energyItem.getCapacity());
 
         if (item.get() instanceof IHeatItem heatItem)
-            heatItem.setStored(stack, heatItem.getCapacity(stack));
+            heatItem.setStored(stack, heatItem.getCapacity());
 
         output.accept(stack);
     }
