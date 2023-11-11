@@ -88,27 +88,40 @@ public class MultiblockHelper {
         }
 
         Pair<List<Boolean>, MultiblockDirection> prioritizedDirectionLayout = Pair.of(List.of(), MultiblockDirection.NORTH);
+        // Direction, blockPos, blockDefinitionIndex
+        Map<MultiblockDirection, Pair<BlockPos, Integer>> firstMissingBlockPoses = new HashMap<>();
 
         // Check if multi is valid
         // iterate through all possible directions
         for (MultiblockDirection mDirection : directions) {
             // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
             Vec3i firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
+            // Iterate over layers (Y)
             for (List<Integer> layer : layout) {
+                // Iterate over blocks in a layer (X, Z)
+                int x = 0;
+                int z = 0;
+                int width = multiblock.getWidths().get(y).getFirst();
                 for (int blockIndex : layer) {
                     // Increase index
                     index++;
 
                     // Define position-related variables
-                    Vec3i relativePos = getRelativePos(controller, index, y);
-                    BlockPos curBlockPos = getCurPos(firstBlockPos, relativePos, mDirection);
+                    BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y, z), mDirection);
 
                     // Check if block is correct
                     if (level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
                         multiblockIndexList.add(true);
                         // sendFailureMsg(player, level, curBlockPos, def, blockIndex);
                     } else {
+                        firstMissingBlockPoses.putIfAbsent(mDirection, Pair.of(curBlockPos, blockIndex));
                         multiblockIndexList.add(false);
+                    }
+                    if (x + 1 < width) {
+                        x++;
+                    } else {
+                        x = 0;
+                        z++;
                     }
                 }
                 index = 0;
@@ -131,26 +144,7 @@ public class MultiblockHelper {
 
         MultiblockDirection prioritizedDirection = prioritizedDirectionLayout.getSecond();
 
-        Vec3i firstBlockPos = getFirstBlockPos(prioritizedDirection, controllerPos, relativeControllerPos);
-        for (List<Integer> layer : layout) {
-            for (int blockIndex : layer) {
-                // Increase index
-                index++;
-
-                // Define position-related variables
-                Vec3i relativePos = getRelativePos(controller, index, y);
-
-                BlockPos curBlockPos = getCurPos(firstBlockPos, relativePos, prioritizedDirection);
-
-                // Check if block is correct
-                if (!level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
-                    sendFailureMsg(player, level, curBlockPos, def, blockIndex);
-                    return Pair.of(false, null);
-                }
-            }
-            index = 0;
-            y++;
-        }
+        sendFailureMsg(player, level, firstMissingBlockPoses.get(prioritizedDirection).getFirst(), def, firstMissingBlockPoses.get(prioritizedDirection).getSecond());
 
         return Pair.of(false, null);
     }
@@ -185,28 +179,6 @@ public class MultiblockHelper {
             case WEST -> controllerPos.getZ() + relativeControllerPos.getX();
         };
         return new Vec3i(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
-    }
-
-    // TODO: 10/21/2023 move this to the main for loop
-    public static Vec3i getRelativePos(IMultiBlockController controller, int index, int yLevel) {
-        List<Integer> layout = controller.getMultiblock().getLayout().get(yLevel);
-        int x = 0;
-        int z = 0;
-        int indexCopy = 0;
-        int width = controller.getMultiblock().getWidths().get(yLevel).getFirst();
-        for (int ignored : layout) {
-            indexCopy++;
-            if (indexCopy >= index) {
-                return new Vec3i(x, yLevel, z);
-            }
-            if (x + 1 < width) {
-                x++;
-            } else {
-                x = 0;
-                z++;
-            }
-        }
-        return null;
     }
 
     /**
@@ -302,15 +274,23 @@ public class MultiblockHelper {
         int index = 0;
         int yIndex = 0;
         for (List<Integer> layer : layout) {
+            int x = 0;
+            int width = controller.getMultiblock().getWidths().get(yIndex).getFirst();
+            int z = 0;
             for (int ignored : layer) {
                 // Increase index
                 index++;
 
-                // Define position-related variables
-                Vec3i relativePos = getRelativePos(controller, index, yIndex);
-                BlockPos curBlockPos = getCurPos(firstBlockPos, relativePos, direction);
+                BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 controller.getMultiblock().formBlock(level, curBlockPos, index - 1, yIndex);
+
+                if (x + 1 < width) {
+                    x++;
+                } else {
+                    x = 0;
+                    z++;
+                }
             }
             index = 0;
             yIndex++;
