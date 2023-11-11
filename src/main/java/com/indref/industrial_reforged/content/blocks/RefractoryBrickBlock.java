@@ -5,8 +5,8 @@ import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.content.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,17 +25,24 @@ public class RefractoryBrickBlock extends Block implements IMultiBlockPart, IWre
     }
 
     @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState ignored, boolean p_60519_) {
+        if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
+            MultiblockHelper.unform(FireBoxMultiblock.INSTANCE, blockPos, level);
+        }
+    }
+
+    @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-                for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
-                    BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
-                    if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
-                        NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, pos);
-                        break;
-                    }
+            for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
+                BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
+                if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
+                    NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, pos);
+                    break;
                 }
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
+        }
         return InteractionResult.FAIL;
     }
 

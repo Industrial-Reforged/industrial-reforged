@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.util;
 
 import net.minecraft.core.BlockPos;
 
-public class BlockUtils {
+public final class BlockUtils {
     public static BlockPos[] getBlocksAroundSelf(BlockPos selfPos) {
         return new BlockPos[] {
                 selfPos.offset(1, 0, 0),

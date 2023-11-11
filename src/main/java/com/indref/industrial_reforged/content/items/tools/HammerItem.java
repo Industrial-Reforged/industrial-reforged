@@ -12,9 +12,9 @@ public class HammerItem extends ToolItem {
 
     @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
-        if (!useOnContext.getLevel().isClientSide){
+        if (!useOnContext.getLevel().isClientSide() && !useOnContext.getPlayer().isCrouching()){
             if (useOnContext.getLevel().getBlockState(useOnContext.getClickedPos()).getBlock() instanceof IMultiBlockController controller) {
-                MultiblockHelper.form(controller, useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer());
+                MultiblockHelper.form(controller.getMultiblock(), useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer());
                 return InteractionResult.SUCCESS;
             }
         }

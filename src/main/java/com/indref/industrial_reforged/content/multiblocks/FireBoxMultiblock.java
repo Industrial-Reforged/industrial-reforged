@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FireBoxMultiblock implements IMultiblock {
+    public static final FireBoxMultiblock INSTANCE = new FireBoxMultiblock();
     public static final EnumProperty<FireBoxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireBoxMultiblock.PartIndex.class);
 
     @Override
@@ -53,6 +54,13 @@ public class FireBoxMultiblock implements IMultiblock {
         BlockState currentBlock = level.getBlockState(blockPos);
         MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 FireBoxMultiblock.PartIndex.getPartIndexByIndices(index, indexY)));
+    }
+
+    @Override
+    public void unformBlock(Level level, BlockPos blockPos) {
+        BlockState currentBlock = level.getBlockState(blockPos);
+        MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
+                PartIndex.UNFORMED));
     }
 
     public enum PartIndex implements StringRepresentable {

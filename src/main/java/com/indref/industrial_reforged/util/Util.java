@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Util {
+public final class Util {
     public static final int[] EMPTY_ARRAY = new int[0];
     public static <K, V> Map<V, K> reverseMap(Map<K, V> map) {
         Map<V, K> returnMap = new HashMap<>();

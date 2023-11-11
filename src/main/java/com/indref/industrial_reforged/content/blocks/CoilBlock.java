@@ -1,13 +1,13 @@
 package com.indref.industrial_reforged.content.blocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.content.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.FireBoxMultiblock;
-import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,6 +29,13 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     }
 
     @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState p_60518_, boolean p_60519_) {
+        if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
+            MultiblockHelper.unform(FireBoxMultiblock.INSTANCE, blockPos, level);
+        }
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
@@ -40,7 +47,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
 
     @Override
     public IMultiblock getMultiblock() {
-        return new FireBoxMultiblock();
+        return FireBoxMultiblock.INSTANCE;
     }
 
     @Nullable

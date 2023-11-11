@@ -21,13 +21,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-// TODO: 10/28/2023 Improve performance by reducing amount of for loops
-public class MultiblockHelper {
+public final class MultiblockHelper {
     /**
      * Check if one of the multi's parts does not implement the {@link IMultiBlockPart} or {@link IMultiBlockController} interface.
      */
-    public static boolean isOnlyParts(IMultiBlockController controller, Player player) {
-        for (Block block : controller.getMultiblock().getDefinition().values()) {
+    public static boolean isOnlyParts(IMultiblock multiBlock, Player player) {
+        for (Block block : multiBlock.getDefinition().values()) {
             IndustrialReforged.LOGGER.info(block.toString());
             if (!(block instanceof IMultiBlockPart || block instanceof IMultiBlockController)) {
                 player.sendSystemMessage(
@@ -57,17 +56,16 @@ public class MultiblockHelper {
     /**
      * Check if all multiblock parts are placed correctly
      *
-     * @param controller    multiblock's controller (multiblock to check)
+     * @param multiblock    multiblock's controller (multiblock to check)
      * @param controllerPos blockpos of the multiblock controller
      * @param level         level of the controller block
      * @param player        player that is trying to form the multi
      * @return first: isValid? second: Direction that multi is valid
      */
-    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
-        IMultiblock multiblock = controller.getMultiblock();
+    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(IMultiblock multiblock, BlockPos controllerPos, Level level, Player player) {
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
-        Vec3i relativeControllerPos = getRelativeControllerPos(controller);
+        Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         MultiblockDirection direction = convDirectionToMultiblockDirection(player.getDirection());
 
         // Make player direction first entry of Set to prioritize
@@ -182,16 +180,16 @@ public class MultiblockHelper {
      * @return x, y, z
      */
     @Nullable
-    public static Vec3i getRelativeControllerPos(IMultiBlockController controller) {
-        Map<Block, Integer> reverseDef = Util.reverseMap(controller.getMultiblock().getDefinition());
-        List<List<Integer>> layout = controller.getMultiblock().getLayout();
+    public static Vec3i getRelativeControllerPos(IMultiblock multiblock) {
+        Map<Block, Integer> reverseDef = Util.reverseMap(multiblock.getDefinition());
+        List<List<Integer>> layout = multiblock.getLayout();
         int y = 0;
         for (List<Integer> layer : layout) {
             int x = 0;
             int z = 0;
-            int width = controller.getMultiblock().getWidths().get(y).getFirst();
+            int width = multiblock.getWidths().get(y).getFirst();
             for (int blockIndex : layer) {
-                if (blockIndex == reverseDef.get(controller.getMultiblock().getController())) {
+                if (blockIndex == reverseDef.get(multiblock.getController())) {
                     return new Vec3i(x, y, z);
                 }
                 if (x + 1 < width) {
@@ -250,28 +248,69 @@ public class MultiblockHelper {
         );
     }
 
-    public static void form(IMultiBlockController controller, BlockPos controllerPos, Level level, Player player) {
-        Pair<Boolean, MultiblockDirection> valid = isValid(controller, controllerPos, level, player);
+    public static void form(IMultiblock multiblock, BlockPos controllerPos, Level level, Player player) {
+        Pair<Boolean, MultiblockDirection> valid = isValid(multiblock, controllerPos, level, player);
         MultiblockDirection direction = valid.getSecond();
-        if (controller.getMultiblock().getFixedDirection() != null) {
-            direction = controller.getMultiblock().getFixedDirection();
+        if (multiblock.getFixedDirection() != null) {
+            direction = multiblock.getFixedDirection();
         }
-        if (isOnlyParts(controller, player) && valid.getFirst()) {
-            formBlocks(controller, direction, controllerPos, level);
+        if (isOnlyParts(multiblock, player) && valid.getFirst()) {
+            formBlocks(multiblock, direction, controllerPos, level);
         }
     }
 
-    private static void formBlocks(IMultiBlockController controller, MultiblockDirection direction, BlockPos controllerPos, Level level) {
-        Vec3i relativeControllerPos = getRelativeControllerPos(controller);
+    public static void unform(IMultiblock multiblock, BlockPos controllerPos, Level level) {
+        for (MultiblockDirection direction1 : MultiblockDirection.values()) {
+            if (multiblock.getFixedDirection() != null) {
+                try {
+                    unformBlocks(multiblock, direction1, controllerPos, level);
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
+    private static void unformBlocks(IMultiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
+        Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
-        List<List<Integer>> layout = controller.getMultiblock().getLayout();
+        List<List<Integer>> layout = multiblock.getLayout();
+
+        int yIndex = 0;
+        for (List<Integer> layer : layout) {
+            int x = 0;
+            int width = multiblock.getWidths().get(yIndex).getFirst();
+            int z = 0;
+            for (int ignored : layer) {
+                // Increase index
+                BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
+
+                if (multiblock.getDefinition().containsValue(level.getBlockState(curBlockPos).getBlock())) {
+                    multiblock.unformBlock(level, curBlockPos);
+                }
+
+                if (x + 1 < width) {
+                    x++;
+                } else {
+                    x = 0;
+                    z++;
+                }
+            }
+            yIndex++;
+        }
+    }
+
+    private static void formBlocks(IMultiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
+        Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
+        // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
+        Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        List<List<Integer>> layout = multiblock.getLayout();
 
         int index = 0;
         int yIndex = 0;
         for (List<Integer> layer : layout) {
             int x = 0;
-            int width = controller.getMultiblock().getWidths().get(yIndex).getFirst();
+            int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
             for (int ignored : layer) {
                 // Increase index
@@ -279,7 +318,7 @@ public class MultiblockHelper {
 
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
-                controller.getMultiblock().formBlock(level, curBlockPos, index - 1, yIndex);
+                multiblock.formBlock(level, curBlockPos, index - 1, yIndex);
 
                 if (x + 1 < width) {
                     x++;

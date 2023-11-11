@@ -8,7 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemUtils {
+public final class ItemUtils {
     // The corresponding rgb value: rgb(77,166,255)
     public static final int ENERGY_BAR_COLOR = 0x4DA6FF;
     public static final int HEAT_BAR_COLOR = 0xFF8000;
