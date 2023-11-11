@@ -30,11 +30,11 @@ public class IRItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IndustrialReforged.MODID);
     //tools
     public static final RegistryObject<Item> WRENCH = registerItem("wrench",
-            () -> new WrenchItem(new Item.Properties().stacksTo(1)));
+            () -> new WrenchItem(new Item.Properties()));
     public static final RegistryObject<Item> HAMMER = registerItem("hammer",
-            () -> new ToolItem(new Item.Properties().stacksTo(1)));
+            () -> new HammerItem(new Item.Properties()));
     public static final RegistryObject<Item> TREE_TAP = registerItem("tree_tap",
-            () -> new TreeTapItem(new Item.Properties().stacksTo(1)));
+            () -> new TreeTapItem(new Item.Properties()));
     public static final RegistryObject<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
     public static final RegistryObject<Item> TAPE_MEASURE = registerItem("tape_measure",

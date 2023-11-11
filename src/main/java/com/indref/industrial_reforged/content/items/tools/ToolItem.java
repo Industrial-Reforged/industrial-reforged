@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ToolItem extends Item implements IToolItem {
     public ToolItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     @Override

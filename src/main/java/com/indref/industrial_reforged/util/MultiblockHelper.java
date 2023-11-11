@@ -76,7 +76,6 @@ public class MultiblockHelper {
         directions.addAll(List.of(MultiblockDirection.values()));
 
         // Indexing (Positions)
-        int index = 0;
         int y = 0;
 
         // Debugging
@@ -104,7 +103,6 @@ public class MultiblockHelper {
                 int width = multiblock.getWidths().get(y).getFirst();
                 for (int blockIndex : layer) {
                     // Increase index
-                    index++;
 
                     // Define position-related variables
                     BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y, z), mDirection);
@@ -124,7 +122,6 @@ public class MultiblockHelper {
                         z++;
                     }
                 }
-                index = 0;
                 y++;
             }
             if (!multiblockIndexList.contains(false)) {
@@ -182,15 +179,16 @@ public class MultiblockHelper {
     }
 
     /**
-     * @return x, z
+     * @return x, y, z
      */
+    @Nullable
     public static Vec3i getRelativeControllerPos(IMultiBlockController controller) {
         Map<Block, Integer> reverseDef = Util.reverseMap(controller.getMultiblock().getDefinition());
         List<List<Integer>> layout = controller.getMultiblock().getLayout();
-        int x = 0;
         int y = 0;
-        int z = 0;
         for (List<Integer> layer : layout) {
+            int x = 0;
+            int z = 0;
             int width = controller.getMultiblock().getWidths().get(y).getFirst();
             for (int blockIndex : layer) {
                 if (blockIndex == reverseDef.get(controller.getMultiblock().getController())) {
@@ -203,8 +201,6 @@ public class MultiblockHelper {
                     z++;
                 }
             }
-            x = 0;
-            z = 0;
             y++;
         }
         return null;
