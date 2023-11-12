@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
-import com.indref.industrial_reforged.api.blocks.transfer.CableBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.*;
 import com.indref.industrial_reforged.test.energy.TestGeneratorBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,7 +31,7 @@ public class IRBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<SimplePressBE>> SIMPLE_PRESS =
             BLOCK_ENTITIES.register("simple_press", () ->
                     BlockEntityType.Builder.of(SimplePressBE::new,
-                            IRBlocks.PRIMITIVE_FORGE.get()).build(null));
+                            IRBlocks.SIMPLE_PRESS.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TestGeneratorBE>> TEST_GENERATOR =
             BLOCK_ENTITIES.register("test_generator", () ->

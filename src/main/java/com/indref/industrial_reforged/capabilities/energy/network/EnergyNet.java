@@ -1,9 +1,11 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
+import com.indref.industrial_reforged.content.blocks.CableBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,32 +13,35 @@ import java.util.Set;
 import java.util.List;
 
 public class EnergyNet {
-    private final EnergyTier energyTier;
+    private EnergyTier energyTier;
     private Set<BlockPos> transmitters;
     private Set<BlockPos> producers;
     private Set<BlockPos> consumers;
+    private final Level level;
     private static final String NBT_KEY_TRANSMITTERS = "cables";
     private static final String NBT_KEY_PRODUCERS = "producers";
     private static final String NBT_KEY_CONSUMERS = "consumers";
     public static final String NBT_KEY_ENERGY_TIER = "energyTier";
 
-    public EnergyNet() {
+    public EnergyNet(Level level) {
         this.transmitters = new HashSet<>();
         this.producers = new HashSet<>();
         this.consumers = new HashSet<>();
         this.energyTier = EnergyTiers.CREATIVE;
+        this.level = level;
     }
 
-    private EnergyNet(BlockPos blockPos) {
+    private EnergyNet(BlockPos blockPos, Level level) {
         this.transmitters = new HashSet<>();
         this.producers = new HashSet<>();
         this.consumers = new HashSet<>();
         transmitters.add(blockPos);
         this.energyTier = EnergyTiers.CREATIVE;
+        this.level = level;
     }
 
-    public static EnergyNet createNetworkAt(BlockPos blockPos) {
-        return new EnergyNet(blockPos);
+    public static EnergyNet createNetworkAt(BlockPos blockPos, Level level) {
+        return new EnergyNet(blockPos, level);
     }
 
     public EnergyTier getEnergyTier() {
@@ -84,7 +89,6 @@ public class EnergyNet {
         tag.putLongArray(NBT_KEY_TRANSMITTERS, tPositions);
         tag.putLongArray(NBT_KEY_CONSUMERS, cPositions);
         tag.putLongArray(NBT_KEY_PRODUCERS, pPositions);
-        tag.putString(NBT_KEY_ENERGY_TIER, getEnergyTier().getName());
         return tag;
     }
 
@@ -104,6 +108,7 @@ public class EnergyNet {
         transmitters = tPositions;
         producers = pPositions;
         consumers = cPositions;
+        energyTier = ((CableBlock) level.getBlockState(transmitters.stream().toList().get(0)).getBlock()).getEnergyTier();
     }
 
     @Override

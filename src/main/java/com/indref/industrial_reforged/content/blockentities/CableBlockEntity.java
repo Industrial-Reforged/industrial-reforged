@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.blocks.transfer;
+package com.indref.industrial_reforged.content.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;

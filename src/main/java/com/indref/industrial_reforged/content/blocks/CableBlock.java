@@ -1,6 +1,10 @@
-package com.indref.industrial_reforged.api.blocks.transfer;
+package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.container.IContainerBlock;
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;
+import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
@@ -17,6 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class CableBlock extends PipeBlock {
     private final EnergyTier energyTier;
@@ -74,5 +80,15 @@ public class CableBlock extends PipeBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new CableBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public boolean canConnectToPipe(Block connectTo) {
+        return connectTo instanceof CableBlock;
+    }
+
+    @Override
+    public boolean canConnectTo(BlockEntity connectTo) {
+        return connectTo instanceof IEnergyBlock && !(connectTo instanceof CableBlockEntity);
     }
 }

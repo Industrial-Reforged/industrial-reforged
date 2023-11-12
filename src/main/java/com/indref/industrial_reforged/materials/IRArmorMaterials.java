@@ -14,9 +14,7 @@ import java.util.function.Supplier;
 public enum IRArmorMaterials implements ArmorMaterial {
     HAZMAT("hazmat", 5, Util.make(new EnumMap<>(ArmorItem.Type.class), (protection) -> {
         protection.put(ArmorItem.Type.BOOTS, 1);
-    }), 15, 0.0F, 0.0F, () -> {
-        return Ingredient.of(IRItems.RUBBER_SHEET.get());
-    });
+    }), 15, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER_SHEET.get()));
 
     private final String name;
     private final int durabilityMultiplier;

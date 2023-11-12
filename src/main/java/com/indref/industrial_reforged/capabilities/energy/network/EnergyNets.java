@@ -64,7 +64,7 @@ public class EnergyNets implements IEnergyNets {
                 return getNetwork(pos);
             }
         }
-        EnergyNet newNet = EnergyNet.createNetworkAt(pos);
+        EnergyNet newNet = EnergyNet.createNetworkAt(pos, this.level);
         enets.add(newNet);
         return newNet;
     }
@@ -119,7 +119,7 @@ public class EnergyNets implements IEnergyNets {
     public void deserializeNBT(CompoundTag nbt) {
         for (String key : nbt.getAllKeys()) {
             CompoundTag nbtNetwork = nbt.getCompound(key);
-            EnergyNet net = new EnergyNet();
+            EnergyNet net = new EnergyNet(level);
             net.deserializeNBT(nbtNetwork);
             enets.add(net);
         }

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
+import com.indref.industrial_reforged.content.blocks.CableBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.content.blocks.*;
 import com.indref.industrial_reforged.test.TestMultiblockController;

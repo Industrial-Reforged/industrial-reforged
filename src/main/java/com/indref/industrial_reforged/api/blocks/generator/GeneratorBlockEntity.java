@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.blocks.transfer.CableBlock;
+import com.indref.industrial_reforged.content.blocks.CableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;

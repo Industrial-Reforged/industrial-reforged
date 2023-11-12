@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.items.misc;
 
-import com.indref.industrial_reforged.api.blocks.transfer.CableBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.client.Minecraft;
