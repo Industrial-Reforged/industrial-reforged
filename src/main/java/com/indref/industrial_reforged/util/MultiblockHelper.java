@@ -27,14 +27,16 @@ public final class MultiblockHelper {
      */
     public static boolean isOnlyParts(IMultiblock multiBlock, Player player) {
         for (Block block : multiBlock.getDefinition().values()) {
-            IndustrialReforged.LOGGER.info(block.toString());
-            if (!(block instanceof IMultiBlockPart || block instanceof IMultiBlockController)) {
-                player.sendSystemMessage(
-                        Component.literal("ERROR: Report this to the creator/maintainer of the mod. " +
-                                        "One of the multiblock's blocks does not implement the IMultiblockPart interface")
-                                .withStyle(ChatFormatting.RED)
-                );
-                return false;
+            if (block != null) {
+                IndustrialReforged.LOGGER.info(block.toString());
+                if (!(block instanceof IMultiBlockPart || block instanceof IMultiBlockController)) {
+                    player.sendSystemMessage(
+                            Component.literal("ERROR: Report this to the creator/maintainer of the mod. " +
+                                            "One of the multiblock's blocks does not implement the IMultiblockPart interface")
+                                    .withStyle(ChatFormatting.RED)
+                    );
+                    return false;
+                }
             }
         }
         return true;
@@ -106,9 +108,8 @@ public final class MultiblockHelper {
                     BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y, z), mDirection);
 
                     // Check if block is correct
-                    if (level.getBlockState(curBlockPos).is(def.get(blockIndex))) {
+                    if ((def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) || def.get(blockIndex) == null)) {
                         multiblockIndexList.add(true);
-                        // sendFailureMsg(player, level, curBlockPos, def, blockIndex);
                     } else {
                         firstMissingBlockPoses.putIfAbsent(mDirection, Pair.of(curBlockPos, blockIndex));
                         multiblockIndexList.add(false);
@@ -305,6 +306,7 @@ public final class MultiblockHelper {
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
+        Map<Integer, Block> def = multiblock.getDefinition();
 
         int index = 0;
         int yIndex = 0;
@@ -312,13 +314,15 @@ public final class MultiblockHelper {
             int x = 0;
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
-            for (int ignored : layer) {
+            for (int blockIndex : layer) {
                 // Increase index
                 index++;
 
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
-                multiblock.formBlock(level, curBlockPos, index - 1, yIndex);
+                if (def.get(blockIndex) != null) {
+                    multiblock.formBlock(level, curBlockPos, index - 1, yIndex);
+                }
 
                 if (x + 1 < width) {
                     x++;

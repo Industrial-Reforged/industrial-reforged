@@ -25,8 +25,10 @@ public interface IMultiblock {
 
     /**
      * Use this method to assign the numbers from getLayout() to a block
+     * <br> <br>
+     * Use null if you don't want to check a block
      */
-    Map<Integer, Block> getDefinition();
+    Map<Integer, @Nullable Block> getDefinition();
 
     /**
      * !!! IMPORTANT: override this if your
