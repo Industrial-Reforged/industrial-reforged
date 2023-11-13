@@ -7,8 +7,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class TestMultiblock implements IMultiblock {
         return List.of(
                 List.of(
                         0, 0, 0,
-                        0, 0, 0,
+                        0, 2, 0,
                         0, 0, 0
                 ),
                 List.of(
@@ -38,10 +40,11 @@ public class TestMultiblock implements IMultiblock {
     @Override
     public Map<Integer, Block> getDefinition() {
         // Giving the numbers from the layout a purpose
-        return Map.of(
-                0, IRBlocks.TEST_PART.get(),
-                1, IRBlocks.TEST_CONTROLLER.get()
-        );
+        Map<Integer, Block> map = new HashMap<>();
+        map.put(0, IRBlocks.TEST_PART.get());
+        map.put(1, IRBlocks.TEST_CONTROLLER.get());
+        map.put(2, null);
+        return map;
     }
 
     @Override
