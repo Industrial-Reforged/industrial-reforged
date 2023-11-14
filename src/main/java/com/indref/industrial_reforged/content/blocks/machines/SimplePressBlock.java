@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.blocks;
+package com.indref.industrial_reforged.content.blocks.machines;
 
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.SimplePressBE;

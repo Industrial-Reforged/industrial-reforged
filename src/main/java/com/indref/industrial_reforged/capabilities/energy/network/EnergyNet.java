@@ -72,6 +72,10 @@ public class EnergyNet {
         }
     }
 
+    public void distributeEnergy() {
+
+    }
+
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
         List<Long> tPositions = new ArrayList<>();

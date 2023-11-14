@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.blocks;
+package com.indref.industrial_reforged.content.blocks.machines;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.content.IRBlockEntityTypes;

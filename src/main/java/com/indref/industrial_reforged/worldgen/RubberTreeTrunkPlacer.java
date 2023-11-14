@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.worldgen;
 
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.content.IRBlocks;
-import com.indref.industrial_reforged.content.blocks.RubberTreeResinHoleBlock;
+import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;

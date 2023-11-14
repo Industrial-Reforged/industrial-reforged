@@ -12,7 +12,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.Random;
 
-import static com.indref.industrial_reforged.content.blocks.RubberTreeResinHoleBlock.RESIN;
+import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class TreeTapItem extends ToolItem {
     public TreeTapItem(Properties properties) {

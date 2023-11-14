@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.blocks;
+package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;

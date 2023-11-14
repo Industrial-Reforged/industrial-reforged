@@ -70,6 +70,8 @@ public class IRCreativeTab {
                 addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.COIL);
+                addBlock(output, IRBlocks.TIN_CABLE);
+                addItem(output, IRItems.MINING_PIPE);
 
                 // Machines
                 addBlock(output, IRBlocks.SIMPLE_PRESS);

@@ -4,6 +4,14 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blocks.CableBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.content.blocks.*;
+import com.indref.industrial_reforged.content.blocks.machines.PrimitiveForgeBlock;
+import com.indref.industrial_reforged.content.blocks.machines.SimplePressBlock;
+import com.indref.industrial_reforged.content.blocks.misc.MiningPipeBlock;
+import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLeavesBlock;
+import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLogBlock;
+import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
+import com.indref.industrial_reforged.test.EnergyTestBlock;
+import com.indref.industrial_reforged.test.HeatTestBlock;
 import com.indref.industrial_reforged.test.TestMultiblockController;
 import com.indref.industrial_reforged.test.TestMultiblockPart;
 import com.indref.industrial_reforged.test.energy.TestGeneratorBlock;
@@ -32,6 +40,8 @@ public class IRBlocks {
 
     public static final RegistryObject<Block> TIN_CABLE = registerBlockAndItem("tin_cable",
             () -> new CableBlock(BlockBehaviour.Properties.of(), EnergyTiers.LOW));
+    public static final RegistryObject<Block> MINING_PIPE = registerBlock("mining_pipe",
+            () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final RegistryObject<Block> TEST_BLOCK_ENERGY = registerBlockAndItem("test_block_energy",
             () -> new EnergyTestBlock(BlockBehaviour.Properties.of()));
     public static final RegistryObject<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",

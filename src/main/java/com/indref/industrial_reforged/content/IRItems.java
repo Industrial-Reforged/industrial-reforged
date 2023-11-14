@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.food.EnergyDrinkItem;
 import com.indref.industrial_reforged.content.items.misc.Debugger;
 import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
+import com.indref.industrial_reforged.content.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
@@ -96,6 +97,10 @@ public class IRItems {
 
     public static final RegistryObject<Item> CORN_SEEDS = ITEMS.register("corn_seeds",
             () -> new ItemNameBlockItem(IRBlocks.CORN_CROP.get(), new Item.Properties()));
+
+    // Needs to be registered manual for custom placement
+    public static final RegistryObject<Item> MINING_PIPE = registerItem("mining_pipe",
+            () -> new MiningPipeBlockItem(new Item.Properties()));
 
     //ores
     public static final RegistryObject<Item> RAW_BAUXITE = registerItem("raw_bauxite",

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.blocks.container.IContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;

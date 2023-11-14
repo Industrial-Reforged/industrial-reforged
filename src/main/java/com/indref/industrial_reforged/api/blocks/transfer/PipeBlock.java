@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blocks.transfer;
 
+import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class PipeBlock extends BaseEntityBlock {
+public abstract class PipeBlock extends BaseEntityBlock implements IWrenchable {
     public static final BooleanProperty[] CONNECTION = new BooleanProperty[6];
 
     static {
@@ -77,7 +78,7 @@ public abstract class PipeBlock extends BaseEntityBlock {
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_49232_) {
+    public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
 
