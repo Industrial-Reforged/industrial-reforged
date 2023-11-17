@@ -29,8 +29,8 @@ import java.util.List;
 
 public class CableBlock extends PipeBlock {
     private final EnergyTier energyTier;
-    public CableBlock(Properties properties, EnergyTier energyTier) {
-        super(properties);
+    public CableBlock(Properties properties, int width, EnergyTier energyTier) {
+        super(properties, width);
         this.energyTier = energyTier;
     }
 
