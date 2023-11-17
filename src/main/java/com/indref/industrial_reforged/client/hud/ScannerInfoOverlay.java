@@ -1,12 +1,10 @@
 package com.indref.industrial_reforged.client.hud;
 
-import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.content.items.tools.ScannerItem;
+import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.C2SEnergySync;
-import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;

@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.blocks;
 
-import com.indref.industrial_reforged.content.IRItems;
+import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.commands.ENetsResetCommand;
-import com.indref.industrial_reforged.commands.EnetsInfoCommand;
+import com.indref.industrial_reforged.registries.commands.ENetsResetCommand;
+import com.indref.industrial_reforged.registries.commands.EnetsInfoCommand;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;

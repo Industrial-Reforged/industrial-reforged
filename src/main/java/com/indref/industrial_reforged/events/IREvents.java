@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.IRItems;
+import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

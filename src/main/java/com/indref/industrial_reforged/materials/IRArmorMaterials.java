@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.materials;
 
-import com.indref.industrial_reforged.content.IRItems;
+import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.LazyLoadedValue;

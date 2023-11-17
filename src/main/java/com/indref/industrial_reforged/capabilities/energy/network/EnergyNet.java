@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
-import com.indref.industrial_reforged.content.blocks.CableBlock;
+import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import net.minecraft.core.BlockPos;
