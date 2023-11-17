@@ -44,14 +44,7 @@ public abstract class PipeBlock extends BaseEntityBlock implements IWrenchable {
     // Check for newly added blocks
     @Override
     public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
-        Minecraft.getInstance().player.sendSystemMessage(Component.literal("Updated"));
-        int connectionIndex = facingDirection.ordinal();
-        if (canConnectToPipe(facingBlockState.getBlock()) || canConnectTo(level.getBlockEntity(facingBlockPos))) {
-            return blockState.setValue(CONNECTION[connectionIndex], true);
-        } else if (facingBlockState.is(Blocks.AIR)) {
-            return blockState.setValue(CONNECTION[connectionIndex], false);
-        }
-        return blockState;
+        return blockState.setValue(CONNECTION[facingDirection.ordinal()], true);
     }
 
     // Check for blocks that are already there when placing the cable
@@ -88,5 +81,6 @@ public abstract class PipeBlock extends BaseEntityBlock implements IWrenchable {
     }
 
     public abstract boolean canConnectToPipe(Block connectTo);
+
     public abstract boolean canConnectTo(@Nullable BlockEntity connectTo);
 }

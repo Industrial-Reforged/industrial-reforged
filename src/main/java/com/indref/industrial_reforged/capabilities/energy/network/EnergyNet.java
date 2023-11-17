@@ -56,12 +56,28 @@ public class EnergyNet {
         }
     }
 
+    public void addAll(Set<BlockPos> blockPoses, EnergyTypes energyType) {
+        switch (energyType) {
+            case CONSUMERS -> consumers.addAll(blockPoses);
+            case PRODUCERS -> producers.addAll(blockPoses);
+            case TRANSMITTERS -> transmitters.addAll(blockPoses);
+        }
+    }
+
     public Set<BlockPos> get(EnergyTypes energyType) {
         return switch (energyType) {
             case CONSUMERS -> consumers;
             case PRODUCERS -> producers;
             case TRANSMITTERS -> transmitters;
         };
+    }
+
+    public Set<BlockPos> getAll() {
+        Set<BlockPos> all = new HashSet<>();
+        all.addAll(transmitters);
+        all.addAll(consumers);
+        all.addAll(producers);
+        return all;
     }
 
     public void remove(BlockPos blockPos, EnergyTypes energyTypes) {

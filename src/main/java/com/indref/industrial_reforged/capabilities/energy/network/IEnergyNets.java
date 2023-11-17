@@ -32,4 +32,6 @@ public interface IEnergyNets {
      * @return true if successful (energy tier matches)
      */
     boolean mergeNets(EnergyNet originNet, EnergyNet toMergeNet);
+
+    EnergyNet recheckConnected(BlockPos checkPos);
 }

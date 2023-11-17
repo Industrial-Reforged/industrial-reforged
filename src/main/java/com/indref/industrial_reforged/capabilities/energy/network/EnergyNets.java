@@ -1,13 +1,20 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
+import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class EnergyNets implements IEnergyNets {
     private List<EnergyNet> enets;
@@ -56,13 +63,10 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     public EnergyNet getOrCreateNetAndPush(BlockPos pos) {
-        // create a scope to prevent using net variable
-        {
-            EnergyNet net = getNetwork(pos);
-            if (net != null) {
-                net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
-                return getNetwork(pos);
-            }
+        EnergyNet net = getNetwork(pos);
+        if (net != null) {
+            net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
+            return getNetwork(pos);
         }
         EnergyNet newNet = EnergyNet.createNetworkAt(pos, this.level);
         enets.add(newNet);
@@ -72,7 +76,8 @@ public class EnergyNets implements IEnergyNets {
     /**
      * merges two energy nets into one
      * (the one that is supplied first as an argument)
-     * @param originNet the main net that the other net will be merged into
+     *
+     * @param originNet  the main net that the other net will be merged into
      * @param toMergeNet the net that will get merged into originNet
      * @return true if successful (energy tier matches)
      */
@@ -86,6 +91,17 @@ public class EnergyNets implements IEnergyNets {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public EnergyNet recheckConnected(BlockPos checkPos) {
+        Player player = Minecraft.getInstance().player;
+        for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkPos)) {
+            if (level.getBlockState(offSetPos).getBlock() instanceof CableBlock) {
+                player.sendSystemMessage(Component.literal("Position: "+offSetPos));
+            }
+        }
+        return null;
     }
 
     @Override
