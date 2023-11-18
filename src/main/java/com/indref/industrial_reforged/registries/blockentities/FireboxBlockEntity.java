@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
@@ -14,8 +15,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -25,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuProvider {
+    private int burnTime;
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         public int getSlots() {
@@ -34,6 +40,8 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            burnTime = CommonHooks.getBurnTime(itemHandler.getStackInSlot(slot), RecipeType.SMELTING);
+            IndustrialReforged.LOGGER.info("Contents changed");
             if(!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
@@ -96,6 +104,22 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
+        ItemStack itemStack = itemHandler.getStackInSlot(INPUT_SLOT);
+        BlockEntity self = level.getBlockEntity(blockPos);
+        IHeatBlock heatBlock = (IHeatBlock) self;
+        // Check if item is a fuel item
+        if (CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING) > 0) {
+            if (burnTime <= 0) {
+                burnTime = CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING);
+                itemStack.shrink(1);
+            }
+            burnTime--;
+            heatBlock.tryFill(self, 1);
+            IndustrialReforged.LOGGER.info("Burntime: "+burnTime);
+        }
+    }
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
@@ -105,7 +129,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());
-
+        pTag.putInt("burnTime", burnTime);
         super.saveAdditional(pTag);
     }
 
@@ -113,8 +137,10 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
     public void load(CompoundTag pTag) {
         super.load(pTag);
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
+        burnTime = pTag.getInt("burnTime");
     }
 
+    // Heat capacity
     @Override
     public int getCapacity() {
         return 4000;
