@@ -27,11 +27,11 @@ public interface IEnergyNets {
     /**
      * merges two energy nets into one
      * (the one that is supplied first as an argument)
-     * @param originNet the main net that the other net will be merged into
+     *
+     * @param originNet  the main net that the other net will be merged into
      * @param toMergeNet the net that will get merged into originNet
-     * @return true if successful (energy tier matches)
      */
-    boolean mergeNets(EnergyNet originNet, EnergyNet toMergeNet);
+    void mergeNets(EnergyNet originNet, EnergyNet toMergeNet);
 
-    EnergyNet recheckConnected(BlockPos checkPos);
+    void splitNets(BlockPos removedPos);
 }

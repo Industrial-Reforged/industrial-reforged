@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blocks.CableBlock;
+import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -79,29 +79,40 @@ public class EnergyNets implements IEnergyNets {
      *
      * @param originNet  the main net that the other net will be merged into
      * @param toMergeNet the net that will get merged into originNet
-     * @return true if successful (energy tier matches)
      */
     @Override
-    public boolean mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
+    public void mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
         if (originNet.getEnergyTier() == toMergeNet.getEnergyTier()) {
             originNet.get(EnergyNet.EnergyTypes.PRODUCERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.PRODUCERS));
             originNet.get(EnergyNet.EnergyTypes.CONSUMERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.CONSUMERS));
             originNet.get(EnergyNet.EnergyTypes.TRANSMITTERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.TRANSMITTERS));
             enets.remove(toMergeNet);
-            return true;
         }
-        return false;
     }
 
     @Override
-    public EnergyNet recheckConnected(BlockPos checkPos) {
-        Player player = Minecraft.getInstance().player;
-        for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkPos)) {
-            if (level.getBlockState(offSetPos).getBlock() instanceof CableBlock) {
-                player.sendSystemMessage(Component.literal("Position: "+offSetPos));
+    public void splitNets(BlockPos removedBlockPos) {
+        for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
+            if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity) {
+                Set<BlockPos> transmitters = new HashSet<>();
+                transmitters.add(removedBlockPos);
+                recheckConnections(offsetPos, transmitters);
+                transmitters.remove(removedBlockPos);
+                IndustrialReforged.LOGGER.info("After remove, Offset pos: {} Transmitters test: {}", offsetPos, transmitters);
             }
         }
-        return null;
+    }
+
+    private void recheckConnections(BlockPos checkFrom, Set<BlockPos> transmitters) {
+        transmitters.add(checkFrom);
+        for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkFrom)) {
+            if (!transmitters.contains(offSetPos)) {
+                if (level.getBlockEntity(offSetPos) instanceof CableBlockEntity) {
+                    transmitters.add(offSetPos);
+                    recheckConnections(offSetPos, transmitters);
+                }
+            }
+        }
     }
 
     @Override

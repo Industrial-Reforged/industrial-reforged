@@ -55,6 +55,8 @@ public class CableBlock extends PipeBlock {
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         // perform this check to ensure that block is actually removed and not just block states updating
         if (newState.is(Blocks.AIR)) {
+            super.onRemove(blockState, level, blockPos, newState, p_60519_);
+            Player player = Minecraft.getInstance().player;
             IEnergyNets nets = Util.getEnergyNets(level);
             EnergyNet net = nets.getNetwork(blockPos);
 
@@ -67,6 +69,8 @@ public class CableBlock extends PipeBlock {
             } else {
                 IndustrialReforged.LOGGER.error("net at: {} is null", blockPos);
             }
+
+            nets.splitNets(blockPos);
         }
     }
 
