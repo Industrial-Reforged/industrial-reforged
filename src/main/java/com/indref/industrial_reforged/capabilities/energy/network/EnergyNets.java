@@ -1,20 +1,15 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class EnergyNets implements IEnergyNets {
     private List<EnergyNet> enets;
@@ -92,25 +87,31 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     public void splitNets(BlockPos removedBlockPos) {
+        Set<BlockPos> alreadyChecked = new HashSet<>();
+        Set<BlockPos>[] transmitters = new HashSet[6];
+        int index = 0;
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
-            if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity) {
-                Set<BlockPos> transmitters = new HashSet<>();
-                transmitters.add(removedBlockPos);
-                recheckConnections(offsetPos, transmitters);
-                transmitters.remove(removedBlockPos);
-                IndustrialReforged.LOGGER.info("After remove, Offset pos: {} Transmitters test: {}", offsetPos, transmitters);
+            if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity && !alreadyChecked.contains(offsetPos)) {
+                transmitters[index] = new HashSet<>();
+                transmitters[index].add(removedBlockPos);
+                recheckConnections(offsetPos, transmitters[index], alreadyChecked);
+                transmitters[index].remove(removedBlockPos);
+                IndustrialReforged.LOGGER.info("Offset pos: {} Transmitters test: {}", offsetPos, transmitters[index]);
             }
+            index++;
         }
     }
 
-    private void recheckConnections(BlockPos checkFrom, Set<BlockPos> transmitters) {
-        transmitters.add(checkFrom);
+    private void recheckConnections(BlockPos checkFrom, Set<BlockPos> transmitters, Set<BlockPos> alreadyCheckedTracker) {
+        if (!alreadyCheckedTracker.contains(checkFrom)) {
+            transmitters.add(checkFrom);
+            alreadyCheckedTracker.add(checkFrom);
+        } else {
+            return;
+        }
         for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkFrom)) {
-            if (!transmitters.contains(offSetPos)) {
-                if (level.getBlockEntity(offSetPos) instanceof CableBlockEntity) {
-                    transmitters.add(offSetPos);
-                    recheckConnections(offSetPos, transmitters);
-                }
+            if (!transmitters.contains(offSetPos) && level.getBlockEntity(offSetPos) instanceof CableBlockEntity) {
+                recheckConnections(offSetPos, transmitters, alreadyCheckedTracker);
             }
         }
     }

@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
-import com.indref.industrial_reforged.content.blocks.CableBlock;
+import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
