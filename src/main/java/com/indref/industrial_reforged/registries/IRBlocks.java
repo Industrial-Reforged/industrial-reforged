@@ -31,15 +31,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class IRBlocks {
-    /**
-     * Variable used for registering and storing all blocks under the "indref" mod-id
-     */
 	public static final BlockSetType RUBBER_SET_TYPE = BlockSetType.register(new BlockSetType(IndustrialReforged.MODID + ":rubber"));
 	public static final WoodType RUBBER_WOOD_TYPE = WoodType.register(new WoodType(IndustrialReforged.MODID + ":rubber", RUBBER_SET_TYPE));
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, IndustrialReforged.MODID);
 
     public static final Supplier<Block> TIN_CABLE = registerBlockAndItem("tin_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.of(), EnergyTiers.LOW));
+            () -> new CableBlock(BlockBehaviour.Properties.of(), 6, EnergyTiers.LOW));
     public static final Supplier<Block> MINING_PIPE = registerBlock("mining_pipe",
             () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> TEST_BLOCK_ENERGY = registerBlockAndItem("test_block_energy",

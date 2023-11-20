@@ -1,13 +1,20 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
+import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EnergyNets implements IEnergyNets {
     private List<EnergyNet> enets;
@@ -56,13 +63,10 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     public EnergyNet getOrCreateNetAndPush(BlockPos pos) {
-        // create a scope to prevent using net variable
-        {
-            EnergyNet net = getNetwork(pos);
-            if (net != null) {
-                net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
-                return getNetwork(pos);
-            }
+        EnergyNet net = getNetwork(pos);
+        if (net != null) {
+            net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
+            return getNetwork(pos);
         }
         EnergyNet newNet = EnergyNet.createNetworkAt(pos, this.level);
         enets.add(newNet);
@@ -72,20 +76,43 @@ public class EnergyNets implements IEnergyNets {
     /**
      * merges two energy nets into one
      * (the one that is supplied first as an argument)
-     * @param originNet the main net that the other net will be merged into
+     *
+     * @param originNet  the main net that the other net will be merged into
      * @param toMergeNet the net that will get merged into originNet
-     * @return true if successful (energy tier matches)
      */
     @Override
-    public boolean mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
+    public void mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
         if (originNet.getEnergyTier() == toMergeNet.getEnergyTier()) {
             originNet.get(EnergyNet.EnergyTypes.PRODUCERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.PRODUCERS));
             originNet.get(EnergyNet.EnergyTypes.CONSUMERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.CONSUMERS));
             originNet.get(EnergyNet.EnergyTypes.TRANSMITTERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.TRANSMITTERS));
             enets.remove(toMergeNet);
-            return true;
         }
-        return false;
+    }
+
+    @Override
+    public void splitNets(BlockPos removedBlockPos) {
+        for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
+            if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity) {
+                Set<BlockPos> transmitters = new HashSet<>();
+                transmitters.add(removedBlockPos);
+                recheckConnections(offsetPos, transmitters);
+                transmitters.remove(removedBlockPos);
+                IndustrialReforged.LOGGER.info("After remove, Offset pos: {} Transmitters test: {}", offsetPos, transmitters);
+            }
+        }
+    }
+
+    private void recheckConnections(BlockPos checkFrom, Set<BlockPos> transmitters) {
+        transmitters.add(checkFrom);
+        for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkFrom)) {
+            if (!transmitters.contains(offSetPos)) {
+                if (level.getBlockEntity(offSetPos) instanceof CableBlockEntity) {
+                    transmitters.add(offSetPos);
+                    recheckConnections(offSetPos, transmitters);
+                }
+            }
+        }
     }
 
     @Override
