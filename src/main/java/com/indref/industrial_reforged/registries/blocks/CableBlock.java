@@ -55,18 +55,8 @@ public class CableBlock extends PipeBlock {
             Player player = Minecraft.getInstance().player;
             IEnergyNets nets = Util.getEnergyNets(level);
             EnergyNet net = nets.getNetwork(blockPos);
-
-            if (net != null) {
-                if (net.get(EnergyNet.EnergyTypes.TRANSMITTERS).size() > 1) {
-                    net.remove(blockPos, EnergyNet.EnergyTypes.TRANSMITTERS);
-                } else {
-                    nets.removeNetwork(blockPos);
-                }
-            } else {
-                IndustrialReforged.LOGGER.error("net at: {} is null", blockPos);
-            }
-
             nets.splitNets(blockPos);
+            nets.removeNetwork(blockPos);
         }
     }
 

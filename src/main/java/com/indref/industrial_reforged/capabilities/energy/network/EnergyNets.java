@@ -1,12 +1,12 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
-import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -14,8 +14,6 @@ import java.util.*;
 public class EnergyNets implements IEnergyNets {
     private List<EnergyNet> enets;
     private final Level level;
-
-    private final String NBT_KEY_NETWORKS = "energyNetworks";
 
     /**
      * Initializes energy networks of the world
@@ -87,32 +85,46 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     public void splitNets(BlockPos removedBlockPos) {
+        // These are all transmitters that have been checked
         Set<BlockPos> alreadyChecked = new HashSet<>();
-        Set<BlockPos>[] transmitters = new HashSet[6];
+        // Every array entry represents the energy network created from checking each side.
+        // Some of these might be empty due to there not being an exclusive enet on one side of the 'removedBlockPos'
+        EnergyNet[] enets = new EnergyNet[6];
+        // enets array index
         int index = 0;
+        // Loop through all blocks around the removed position
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
             if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity && !alreadyChecked.contains(offsetPos)) {
-                transmitters[index] = new HashSet<>();
-                transmitters[index].add(removedBlockPos);
-                recheckConnections(offsetPos, transmitters[index], alreadyChecked);
-                transmitters[index].remove(removedBlockPos);
-                IndustrialReforged.LOGGER.info("Offset pos: {} Transmitters test: {}", offsetPos, transmitters[index]);
+                enets[index] = new EnergyNet(level);
+                enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).add(removedBlockPos);
+                recheckConnections(offsetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enets[index], alreadyChecked);
+                enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).remove(removedBlockPos);
+                if (!enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).isEmpty()) {
+                    this.enets.add(enets[index]);
+                }
             }
             index++;
         }
     }
 
-    private void recheckConnections(BlockPos checkFrom, Set<BlockPos> transmitters, Set<BlockPos> alreadyCheckedTracker) {
+    private void recheckConnections(BlockPos checkFrom, EnergyNet.EnergyTypes checkedPosType, EnergyNet enet, Set<BlockPos> alreadyCheckedTracker) {
         if (!alreadyCheckedTracker.contains(checkFrom)) {
-            transmitters.add(checkFrom);
-            alreadyCheckedTracker.add(checkFrom);
+            enet.get(checkedPosType).add(checkFrom);
+            if (checkedPosType== EnergyNet.EnergyTypes.TRANSMITTERS) {
+                alreadyCheckedTracker.add(checkFrom);
+            }
         } else {
             return;
         }
         for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkFrom)) {
-            if (!transmitters.contains(offSetPos) && level.getBlockEntity(offSetPos) instanceof CableBlockEntity) {
-                recheckConnections(offSetPos, transmitters, alreadyCheckedTracker);
-            }
+            if (!enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(offSetPos))
+                if (is(EnergyNet.EnergyTypes.TRANSMITTERS, offSetPos)) {
+                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enet, alreadyCheckedTracker);
+                } else if (is(EnergyNet.EnergyTypes.CONSUMERS, offSetPos)) {
+                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.CONSUMERS, enet, alreadyCheckedTracker);
+                } else if (is(EnergyNet.EnergyTypes.PRODUCERS, offSetPos)) {
+                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.PRODUCERS, enet, alreadyCheckedTracker);
+                }
         }
     }
 
@@ -151,6 +163,21 @@ public class EnergyNets implements IEnergyNets {
             net.deserializeNBT(nbtNetwork);
             enets.add(net);
         }
+    }
+
+    public boolean is(EnergyNet.EnergyTypes type, BlockPos blockPos) {
+        switch (type) {
+            case TRANSMITTERS -> {
+                return level.getBlockEntity(blockPos) instanceof CableBlockEntity;
+            }
+            case CONSUMERS -> {
+                return level.getBlockEntity(blockPos) instanceof IEnergyBlock && !(level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity);
+            }
+            case PRODUCERS -> {
+                return level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity;
+            }
+        };
+        throw new IllegalStateException("Unreachable! Energy type did not match! Energy-type: "+type);
     }
 
     @Override
