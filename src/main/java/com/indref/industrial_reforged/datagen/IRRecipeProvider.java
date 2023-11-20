@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged.datagen;
 
-import com.indref.industrial_reforged.content.IRBlocks;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class IRRecipeProvider extends RecipeProvider {
 

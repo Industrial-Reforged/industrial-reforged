@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.test.energy;
 
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
-import com.indref.industrial_reforged.content.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 

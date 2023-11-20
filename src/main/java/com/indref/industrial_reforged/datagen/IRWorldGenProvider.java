@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.IRBlocks;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.worldgen.RubberTreeFoliagePlacer;
 import com.indref.industrial_reforged.worldgen.RubberTreeTrunkPlacer;
 import net.minecraft.core.HolderGetter;

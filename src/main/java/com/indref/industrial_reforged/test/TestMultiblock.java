@@ -1,13 +1,12 @@
 package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
-import com.indref.industrial_reforged.content.IRBlocks;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import java.util.HashMap;
