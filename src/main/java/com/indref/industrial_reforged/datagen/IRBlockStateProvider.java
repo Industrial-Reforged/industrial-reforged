@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
@@ -9,7 +10,6 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class IRBlockStateProvider extends BlockStateProvider {
 
@@ -30,7 +30,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 		buttonBlock((ButtonBlock) IRBlocks.RUBBER_TREE_BUTTON.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		inventoryModel(IRBlocks.RUBBER_TREE_BUTTON.get(), "button_inventory", blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		doorBlock((DoorBlock) IRBlocks.RUBBER_TREE_DOOR.get(),
-			blockTexture(IRBlocks.RUBBER_TREE_DOOR.get(), treeFolder, "_bottom"), blockTexture(IRBlocks.RUBBER_TREE_DOOR.get(), treeFolder, "_top"));
+				blockTexture(IRBlocks.RUBBER_TREE_DOOR.get(), treeFolder, "_bottom"), blockTexture(IRBlocks.RUBBER_TREE_DOOR.get(), treeFolder, "_top"));
 		fenceBlock((FenceBlock) IRBlocks.RUBBER_TREE_FENCE.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		inventoryModel(IRBlocks.RUBBER_TREE_FENCE.get(), "fence_inventory", blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		fenceGateBlock((FenceGateBlock) IRBlocks.RUBBER_TREE_FENCE_GATE.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
@@ -43,13 +43,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
 	}
 
 	private void logBlock(RotatedPillarBlock block, String textureFolder) {
-		ResourceLocation name = ForgeRegistries.BLOCKS.getKey(block);
+		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
 		axisBlock(block, blockTexture(block, textureFolder), blockTexture(block, textureFolder, "_top"));
 		simpleBlockItem(block, models().withExistingParent(name.getPath(), mcLoc("minecraft:block/cube_column")));
 	}
 
 	private void woodBlock(RotatedPillarBlock block, Block blockTexture, String textureFolder) {
-		ResourceLocation name = ForgeRegistries.BLOCKS.getKey(block);
+		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
 		ResourceLocation texture = blockTexture(blockTexture, textureFolder);
 		axisBlock(block, models().cubeColumn(name.getPath(), texture, texture),
 			models().cubeColumnHorizontal(name.getPath(), texture, texture));
@@ -57,7 +57,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 	}
 
 	private void inventoryModel(Block block, String parentModel, ResourceLocation texture) {
-		ResourceLocation name = ForgeRegistries.BLOCKS.getKey(block);
+		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
 		models().getBuilder(name.getPath() + "_inventory").parent(models().getExistingFile(new ResourceLocation(parentModel))).texture("texture", texture);
 	}
 
@@ -66,14 +66,14 @@ public class IRBlockStateProvider extends BlockStateProvider {
 	}
 
 	private ResourceLocation blockTexture(Block block, String textureFolder, String suffix) {
-		ResourceLocation name = ForgeRegistries.BLOCKS.getKey(block);
+		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
 		if (textureFolder == null || textureFolder.trim().isEmpty())
 			return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath() + suffix);
 		return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + textureFolder + "/" + name.getPath() + suffix);
 	}
 
 	private ModelFile cubeAll(Block block, String textureFolder) {
-		ResourceLocation name = ForgeRegistries.BLOCKS.getKey(block);
+		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
 		return models().singleTexture(name.getPath(), mcLoc(ModelProvider.BLOCK_FOLDER + "/cube_all"), "all", blockTexture(block, textureFolder));
 	}
 
@@ -83,13 +83,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
 	private void simpleBlock(Block block, String modelName, String textureKey, String textureFolder) {
 		simpleBlock(block, models().singleTexture(
-			ForgeRegistries.BLOCKS.getKey(block).getPath(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + modelName),
+			BuiltInRegistries.BLOCK.getKey(block).getPath(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + modelName),
 			textureKey, blockTexture(block, textureFolder)));
 	}
 
 	private void simpleBlockParentItem(Block block, String modelName, String textureKey, String textureFolder) {
 		simpleBlockWithItem(block, models()
-			.withExistingParent(ForgeRegistries.BLOCKS.getKey(block).getPath(), ModelProvider.BLOCK_FOLDER + "/" + modelName)
+			.withExistingParent(BuiltInRegistries.BLOCK.getKey(block).getPath(), ModelProvider.BLOCK_FOLDER + "/" + modelName)
 			.texture(textureKey, blockTexture(block, textureFolder)));
 	}
 }

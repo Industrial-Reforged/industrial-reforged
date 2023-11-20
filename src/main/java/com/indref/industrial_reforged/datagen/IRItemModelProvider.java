@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -9,7 +10,6 @@ import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 		String folder = textureFolder + "/";
 		if (textureFolder == null || textureFolder.trim().isEmpty())
 			folder = "";
-		ResourceLocation name = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
 			.texture("layer0", new ResourceLocation(name.getNamespace(), "item/" + folder + name.getPath()));
 	}
@@ -49,7 +49,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 		String folder = textureFolder + "/";
 		if (textureFolder == null || textureFolder.trim().isEmpty())
 			folder = "";
-		ResourceLocation name = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
 			.texture("layer0", new ResourceLocation(name.getNamespace(), "block/" + folder + name.getPath()));
 	}
@@ -59,7 +59,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder parentItemBlock(Item item, String suffix) {
-		ResourceLocation name = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString())
 			.parent(new ModelFile.UncheckedModelFile(new ResourceLocation(name.getNamespace(), "block/" + name.getPath() + suffix)));
 	}

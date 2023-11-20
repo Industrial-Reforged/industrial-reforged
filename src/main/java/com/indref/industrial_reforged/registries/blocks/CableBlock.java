@@ -46,7 +46,7 @@ public class CableBlock extends PipeBlock {
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState p_60518_, boolean p_60519_) {
         IEnergyNets nets = Util.getEnergyNets(level);
         EnergyNet net = nets.getNetwork(blockPos);
-        // throws null pointer exception
+        // FIXME: throws null pointer exception
         assert net != null;
         if (net.get(EnergyNet.EnergyTypes.TRANSMITTERS).size() > 1) {
             net.remove(blockPos, EnergyNet.EnergyTypes.TRANSMITTERS);

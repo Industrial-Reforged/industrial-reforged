@@ -8,7 +8,7 @@ import com.indref.industrial_reforged.registries.IRFluidTypes;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.events.IREvents;
 import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.registries.screen.IRMenuTypes;
+import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.worldgen.IRPlacerTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;

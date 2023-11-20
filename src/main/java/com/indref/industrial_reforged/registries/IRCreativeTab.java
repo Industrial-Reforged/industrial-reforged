@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -17,11 +18,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class IRCreativeTab {
     /**
@@ -32,7 +32,7 @@ public class IRCreativeTab {
     /**
      * Default Item Group for all indref items
      */
-    public static final RegistryObject<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
+    public static final Supplier<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref"))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
@@ -133,11 +133,11 @@ public class IRCreativeTab {
      * @param output Specify the creative tab
      * @param item Specify the item to add
      */
-    private static void addItem(CreativeModeTab.Output output, RegistryObject<Item> item) {
+    private static void addItem(CreativeModeTab.Output output, Supplier<Item> item) {
         output.accept(item.get());
     }
 
-    public static void addPoweredItem(CreativeModeTab.Output output, RegistryObject<Item> item) {
+    public static void addPoweredItem(CreativeModeTab.Output output, Supplier<Item> item) {
         // Add base item
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
@@ -150,10 +150,10 @@ public class IRCreativeTab {
         output.accept(stack);
     }
 
-    public static void addVariantForAllFluids(CreativeModeTab.Output output, RegistryObject<Item> item) {
+    public static void addVariantForAllFluids(CreativeModeTab.Output output, Supplier<Item> item) {
         // Add base item
         output.accept(item.get());
-        Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = ForgeRegistries.FLUIDS.getEntries();
+        Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = BuiltInRegistries.FLUID.entrySet();
         IndustrialReforged.LOGGER.info(fluids.toString());
         for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
             ItemStack stack = new ItemStack(item.get());
@@ -172,7 +172,7 @@ public class IRCreativeTab {
      * @param output Specify the creative tab
      * @param block Specify the item to add
      */
-    private static void addBlock(CreativeModeTab.Output output, RegistryObject<Block> block) {
+    private static void addBlock(CreativeModeTab.Output output, Supplier<Block> block) {
         output.accept(block.get());
     }
 }
