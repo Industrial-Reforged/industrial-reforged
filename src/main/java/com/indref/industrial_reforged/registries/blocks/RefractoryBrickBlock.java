@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
-import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.util.BlockUtils;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.NetworkHooks;
 
-public class RefractoryBrickBlock extends Block implements IMultiBlockPart, IWrenchable {
+public class RefractoryBrickBlock extends Block implements IWrenchable {
     public RefractoryBrickBlock(Properties properties) {
         super(properties);
     }

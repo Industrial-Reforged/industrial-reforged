@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.test;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
@@ -47,7 +48,7 @@ public class TestMultiblock implements IMultiblock {
     }
 
     @Override
-    public void formBlock(Level level, BlockPos blockPos, int index, int indexY) {
+    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, int index, int indexY) {
         MultiblockHelper.setAndUpdate(level, blockPos, level.getBlockState(blockPos), level.getBlockState(blockPos)
                 .setValue(TestMultiblock.TEST_PART, TestMultiblock.PartIndex.getPartIndexByIndices(0, 0)));
     }

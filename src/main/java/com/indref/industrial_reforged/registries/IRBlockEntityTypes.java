@@ -46,4 +46,8 @@ public class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("firebox", () ->
                     BlockEntityType.Builder.of(FireboxBlockEntity::new,
                             IRBlocks.COIL.get()).build(null));
+    public static final Supplier<BlockEntityType<CrucibleBlockEntity>> CRUCIBLE =
+            BLOCK_ENTITIES.register("crucible", () ->
+                    BlockEntityType.Builder.of(CrucibleBlockEntity::new,
+                            IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()).build(null));
 }

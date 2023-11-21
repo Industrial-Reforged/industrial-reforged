@@ -50,7 +50,7 @@ public class FireBoxMultiblock implements IMultiblock {
     }
 
     @Override
-    public void formBlock(Level level, BlockPos blockPos, int index, int indexY) {
+    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 FireBoxMultiblock.PartIndex.getPartIndexByIndices(index, indexY)));

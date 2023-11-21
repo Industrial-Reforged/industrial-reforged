@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.test;
 
-import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -11,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class TestMultiblockPart extends Block implements IMultiBlockPart {
+public class TestMultiblockPart extends Block {
     public TestMultiblockPart(Properties properties) {
         super(properties);
     }

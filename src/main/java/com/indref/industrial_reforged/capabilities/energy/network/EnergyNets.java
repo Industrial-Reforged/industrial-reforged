@@ -56,10 +56,18 @@ public class EnergyNets implements IEnergyNets {
 
     @Override
     public EnergyNet getOrCreateNetAndPush(BlockPos pos) {
-        EnergyNet net = getNetwork(pos);
-        if (net != null) {
-            net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
-            return getNetwork(pos);
+        {
+            EnergyNet net = getNetwork(pos);
+            if (net != null) {
+                if (is(EnergyNet.EnergyTypes.TRANSMITTERS, pos)) {
+                    net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
+                } else if (is(EnergyNet.EnergyTypes.PRODUCERS, pos)) {
+                    net.add(pos, EnergyNet.EnergyTypes.PRODUCERS);
+                } else if (is(EnergyNet.EnergyTypes.CONSUMERS, pos)) {
+                    net.add(pos, EnergyNet.EnergyTypes.CONSUMERS);
+                }
+                return getNetwork(pos);
+            }
         }
         EnergyNet newNet = EnergyNet.createNetworkAt(pos, this.level);
         enets.add(newNet);
@@ -94,6 +102,7 @@ public class EnergyNets implements IEnergyNets {
         int index = 0;
         // Loop through all blocks around the removed position
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
+            // Check if one of the blocks is a transmitter of energy
             if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity && !alreadyChecked.contains(offsetPos)) {
                 enets[index] = new EnergyNet(level);
                 enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).add(removedBlockPos);
@@ -176,7 +185,7 @@ public class EnergyNets implements IEnergyNets {
             case PRODUCERS -> {
                 return level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity;
             }
-        };
+        }
         throw new IllegalStateException("Unreachable! Energy type did not match! Energy-type: "+type);
     }
 

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "indref:block/multiblock/crucible/crucible_middle"
+    }
+  }
+}

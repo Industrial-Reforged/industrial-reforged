@@ -9,18 +9,12 @@ import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class CableBlock extends PipeBlock {
@@ -35,6 +29,7 @@ public class CableBlock extends PipeBlock {
         // perform this check to ensure that block is actually placed and not just block states updating
         if (oldState.is(Blocks.AIR)) {
             IEnergyNets nets = Util.getEnergyNets(level);
+            // Adds the net
             EnergyNet net = nets.getOrCreateNetAndPush(blockPos);
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
@@ -52,9 +47,7 @@ public class CableBlock extends PipeBlock {
         // perform this check to ensure that block is actually removed and not just block states updating
         if (newState.is(Blocks.AIR)) {
             super.onRemove(blockState, level, blockPos, newState, p_60519_);
-            Player player = Minecraft.getInstance().player;
             IEnergyNets nets = Util.getEnergyNets(level);
-            EnergyNet net = nets.getNetwork(blockPos);
             nets.splitNets(blockPos);
             nets.removeNetwork(blockPos);
         }

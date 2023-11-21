@@ -4,9 +4,12 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.registries.blocks.*;
+import com.indref.industrial_reforged.registries.blocks.machines.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.PrimitiveForgeBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.SimplePressBlock;
+import com.indref.industrial_reforged.registries.blocks.misc.CrucibleWallBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.MiningPipeBlock;
+import com.indref.industrial_reforged.registries.blocks.misc.TerracottaSlabBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock;
@@ -19,7 +22,6 @@ import com.indref.industrial_reforged.worldgen.RubberTreeGrower;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -61,6 +63,13 @@ public class IRBlocks {
             () -> new TestMultiblockController(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TEST_PART = registerBlockAndItem("test_part",
             () -> new TestMultiblockPart(BlockBehaviour.Properties.of()));
+    public static final Supplier<Block> TERRACOTTA_SLAB = registerBlockAndItem("terracotta_slab",
+            () -> new TerracottaSlabBlock(BlockBehaviour.Properties.of()));
+    public static final Supplier<Block> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
+            () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of()));
+    public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("crucible_controller",
+            () -> new CrucibleWallBlock(BlockBehaviour.Properties.of()));
+
 
     // Rubber
     public static final Supplier<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",

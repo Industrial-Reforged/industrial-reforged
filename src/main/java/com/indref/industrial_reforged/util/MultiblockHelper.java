@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
-import com.indref.industrial_reforged.api.multiblocks.IMultiBlockPart;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.mojang.datafixers.util.Pair;
@@ -22,25 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public final class MultiblockHelper {
-    /**
-     * Check if one of the multi's parts does not implement the {@link IMultiBlockPart} or {@link IMultiBlockController} interface.
-     */
-    public static boolean isOnlyParts(IMultiblock multiBlock, Player player) {
-        for (Block block : multiBlock.getDefinition().values()) {
-            if (block != null) {
-                IndustrialReforged.LOGGER.info(block.toString());
-                if (!(block instanceof IMultiBlockPart || block instanceof IMultiBlockController)) {
-                    player.sendSystemMessage(
-                            Component.literal("ERROR: Report this to the creator/maintainer of the mod. " +
-                                            "One of the multiblock's blocks does not implement the IMultiblockPart interface")
-                                    .withStyle(ChatFormatting.RED)
-                    );
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     /**
      * Converts a default minecraft direction to a multiblock direction.
@@ -255,7 +234,7 @@ public final class MultiblockHelper {
         if (multiblock.getFixedDirection() != null) {
             direction = multiblock.getFixedDirection();
         }
-        if (isOnlyParts(multiblock, player) && valid.getFirst()) {
+        if (valid.getFirst()) {
             formBlocks(multiblock, direction, controllerPos, level);
         }
     }
@@ -321,7 +300,7 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    multiblock.formBlock(level, curBlockPos, index - 1, yIndex);
+                    multiblock.formBlock(level, direction, curBlockPos, index - 1, yIndex);
                 }
 
                 if (x + 1 < width) {

@@ -34,4 +34,5 @@ public interface IEnergyNets {
     void mergeNets(EnergyNet originNet, EnergyNet toMergeNet);
 
     void splitNets(BlockPos removedPos);
+    boolean is(EnergyNet.EnergyTypes type, BlockPos blockPos);
 }
