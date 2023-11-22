@@ -67,7 +67,7 @@ public class IRBlocks {
             () -> new TerracottaSlabBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of()));
-    public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("crucible_controller",
+    public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("ceramic_crucible_wall",
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of()));
 
 

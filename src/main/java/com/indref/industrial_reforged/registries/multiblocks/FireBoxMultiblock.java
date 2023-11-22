@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class FireBoxMultiblock implements IMultiblock {
+public record FireBoxMultiblock() implements IMultiblock {
     public static final FireBoxMultiblock INSTANCE = new FireBoxMultiblock();
     public static final EnumProperty<FireBoxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireBoxMultiblock.PartIndex.class);
 

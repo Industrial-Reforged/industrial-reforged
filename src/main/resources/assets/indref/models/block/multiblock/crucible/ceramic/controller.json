@@ -17,13 +17,5 @@
 				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
 			}
 		}
-	],
-	"groups": [
-		{
-			"name": "VoxelShapes",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [0]
-		}
 	]
 }
