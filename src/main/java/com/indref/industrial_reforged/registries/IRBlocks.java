@@ -68,8 +68,7 @@ public class IRBlocks {
     public static final Supplier<Block> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("ceramic_crucible_wall",
-            () -> new CrucibleWallBlock(BlockBehaviour.Properties.of()));
-
+            () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion()));
 
     // Rubber
     public static final Supplier<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",

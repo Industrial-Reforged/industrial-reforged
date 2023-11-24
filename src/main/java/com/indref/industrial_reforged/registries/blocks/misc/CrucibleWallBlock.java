@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.registries.blocks.misc;
 
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,19 +13,33 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 
 public class CrucibleWallBlock extends Block {
-    private static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", WallStates.class);
+    public static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", WallStates.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     public CrucibleWallBlock(Properties properties) {
         super(properties);
     }
 
-
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        if (context.getPlayer().isCrouching()){
-            return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        Player player = context.getPlayer();
+        if (player.hasEffect(MobEffects.ABSORPTION)) {
+            return defaultBlockState()
+                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                    .setValue(CRUCIBLE_WALL, WallStates.WALL_BOTTOM);
+        } else if (player.hasEffect(MobEffects.BAD_OMEN)) {
+            return defaultBlockState()
+                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                    .setValue(CRUCIBLE_WALL, WallStates.WALL_TOP);
+        } else if (player.hasEffect(MobEffects.CONDUIT_POWER)) {
+            return defaultBlockState()
+                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                    .setValue(CRUCIBLE_WALL, WallStates.EDGE_BOTTOM);
+        } else {
+            return defaultBlockState()
+                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                    .setValue(CRUCIBLE_WALL, WallStates.EDGE_TOP);
         }
-        return defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override
@@ -32,10 +48,10 @@ public class CrucibleWallBlock extends Block {
     }
 
     public enum WallStates implements StringRepresentable {
-        EDGE_LOWER("edge_lower"),
-        EDGE_UPPER("edge_upper"),
-        WALL_LOWER("wall_lower"),
-        WALL_UPPER("wall_upper");
+        EDGE_BOTTOM("edge_bottom"),
+        EDGE_TOP("edge_top"),
+        WALL_BOTTOM("wall_bottom"),
+        WALL_TOP("wall_top");
 
         private final String name;
 
