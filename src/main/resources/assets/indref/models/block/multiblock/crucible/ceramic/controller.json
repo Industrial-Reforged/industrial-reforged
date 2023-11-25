@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "block/terracotta",
+		"0": "indref:block/machines/crucible/terracotta_brick",
 		"particle": "block/terracotta"
 	},
 	"elements": [

@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.registries.blocks.*;
 import com.indref.industrial_reforged.registries.blocks.machines.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.PrimitiveForgeBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.SimplePressBlock;
+import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.CrucibleWallBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.MiningPipeBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.TerracottaSlabBlock;
@@ -69,6 +70,8 @@ public class IRBlocks {
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("ceramic_crucible_wall",
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion()));
+    public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet",
+            () -> new FaucetBlock(BlockBehaviour.Properties.of().noOcclusion()));
 
     // Rubber
     public static final Supplier<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",
