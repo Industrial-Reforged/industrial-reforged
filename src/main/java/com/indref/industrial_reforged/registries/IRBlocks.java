@@ -58,8 +58,6 @@ public class IRBlocks {
             () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> SIMPLE_PRESS = registerBlockAndItem("simple_press",
             () -> new SimplePressBlock(BlockBehaviour.Properties.of()));
-    public static final Supplier<Block> CORN_CROP = registerBlock("corn_crop",
-            () -> new CornCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
     public static final Supplier<Block> TEST_CONTROLLER = registerBlockAndItem("test_controller",
             () -> new TestMultiblockController(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TEST_PART = registerBlockAndItem("test_part",

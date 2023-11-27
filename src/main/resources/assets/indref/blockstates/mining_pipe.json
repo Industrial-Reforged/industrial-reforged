@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "indref:block/machines/mining_pipe"
+      "model": "indref:block/mining_pipe"
     }
   }
 }

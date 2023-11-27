@@ -6,7 +6,7 @@
     "north": "indref:block/refractory_brick",
     "particle": "indref:block/refractory_brick",
     "south": "indref:block/refractory_brick",
-    "up": "indref:block/machines/crucible/formed/top_middle_middle",
+    "up": "indref:block/multiblock/firebox/formed/top_middle_middle",
     "west": "indref:block/refractory_brick"
   }
 }

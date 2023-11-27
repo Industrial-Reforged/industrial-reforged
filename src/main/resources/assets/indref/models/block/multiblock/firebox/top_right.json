@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "indref:block/machines/crucible/formed/top_top_right",
+    "end": "indref:block/multiblock/firebox/formed/top_top_right",
     "side": "indref:block/refractory_brick"
   }
 }

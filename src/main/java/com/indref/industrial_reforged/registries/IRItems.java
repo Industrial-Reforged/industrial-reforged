@@ -89,9 +89,6 @@ public class IRItems {
     public static final Supplier<Item> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
 
-    public static final Supplier<Item> CORN_SEEDS = ITEMS.register("corn_seeds",
-            () -> new ItemNameBlockItem(IRBlocks.CORN_CROP.get(), new Item.Properties()));
-
     // Needs to be registered manual for custom placement
     public static final Supplier<Item> MINING_PIPE = registerItem("mining_pipe",
             () -> new MiningPipeBlockItem(new Item.Properties()));

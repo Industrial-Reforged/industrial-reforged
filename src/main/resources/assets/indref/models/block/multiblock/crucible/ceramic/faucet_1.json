@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "indref:block/machines/crucible/terracotta_brick",
+		"0": "indref:block/multiblock/crucible/terracotta_brick",
 		"2": "indref:block/machines/crucible/faucet_hole",
-		"particle": "indref:block/machines/crucible/terracotta_brick"
+		"particle": "indref:block/multiblock/crucible/terracotta_brick"
 	},
 	"elements": [
 		{

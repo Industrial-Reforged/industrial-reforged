@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 public class ToolboxItem extends BundleItem {
     public static final int SLOT_CAPACITY = 8;
+    public static final String COLOR_TAG = "color";
 
     public ToolboxItem(Properties properties) {
         super(properties);

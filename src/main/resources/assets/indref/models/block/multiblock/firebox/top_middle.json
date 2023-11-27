@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "indref:block/machines/crucible/formed/top_top_middle",
-    "side": "indref:block/machines/crucible/formed/hatch"
+    "end": "indref:block/multiblock/firebox/formed/top_top_middle",
+    "side": "indref:block/multiblock/firebox/formed/hatch"
   }
 }
