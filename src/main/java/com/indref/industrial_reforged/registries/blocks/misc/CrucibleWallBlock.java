@@ -1,23 +1,40 @@
 package com.indref.industrial_reforged.registries.blocks.misc;
 
+import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class CrucibleWallBlock extends Block {
     public static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", WallStates.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private final CrucibleTier tier;
 
-    public CrucibleWallBlock(Properties properties) {
+    public CrucibleWallBlock(Properties properties, CrucibleTier crucibleTier) {
         super(properties);
+        this.tier = crucibleTier;
+    }
+
+    public CrucibleTier getTier() {
+        return tier;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+        return tier.getCrucibleWallBlock().asItem().getDefaultInstance();
     }
 
     @Override
@@ -41,6 +58,8 @@ public class CrucibleWallBlock extends Block {
                     .setValue(CRUCIBLE_WALL, WallStates.EDGE_TOP);
         }
     }
+
+
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {

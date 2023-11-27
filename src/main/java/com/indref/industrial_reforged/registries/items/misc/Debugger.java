@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.misc;
 
-import com.indref.industrial_reforged.registries.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
+import com.indref.industrial_reforged.registries.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;

@@ -1,14 +1,14 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.blocks.CableBlock;
+import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.registries.blocks.*;
 import com.indref.industrial_reforged.registries.blocks.machines.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.PrimitiveForgeBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.SimplePressBlock;
-import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.CrucibleWallBlock;
+import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.MiningPipeBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.TerracottaSlabBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
@@ -67,9 +67,9 @@ public class IRBlocks {
     public static final Supplier<Block> TERRACOTTA_SLAB = registerBlockAndItem("terracotta_slab",
             () -> new TerracottaSlabBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
-            () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of()));
+            () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("ceramic_crucible_wall",
-            () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion()));
+            () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of().noOcclusion()));
 

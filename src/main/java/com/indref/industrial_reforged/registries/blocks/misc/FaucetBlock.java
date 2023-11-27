@@ -1,10 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.misc;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
-import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseEntityBlock;

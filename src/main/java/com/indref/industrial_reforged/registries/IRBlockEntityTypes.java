@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.blockentities.CableBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.*;
 import com.indref.industrial_reforged.test.energy.TestGeneratorBE;
 import net.minecraft.core.registries.Registries;
