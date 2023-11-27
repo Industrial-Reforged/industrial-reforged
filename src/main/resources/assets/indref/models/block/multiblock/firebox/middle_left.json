@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column",
   "textures": {
     "end": "indref:block/multiblock/firebox/formed/top_middle_left",
-    "side": "indref:block/machines/crucible/formed/hatch"
+    "side": "indref:block/multiblock/firebox/formed/hatch"
   }
 }

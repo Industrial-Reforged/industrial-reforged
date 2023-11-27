@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "indref:item/ore/raw_uranium"
+    "layer0": "indref:item/raw_ore/uranium"
   }
 }

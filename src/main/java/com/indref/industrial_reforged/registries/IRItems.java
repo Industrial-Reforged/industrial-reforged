@@ -108,6 +108,25 @@ public class IRItems {
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> RAW_URANIUM = registerItem("raw_uranium",
             () -> new Item(new Item.Properties()));
+
+    // ingots
+    public static final Supplier<Item> ALUMINUM_INGOT = registerItem("aluminum_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> TITANIUM_INGOT = registerItem("titanium_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> CHROMIUM_INGOT = registerItem("chromium_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> IRIDIUM_INGOT = registerItem("iridium_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> LEAD_INGOT = registerItem("lead_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> NICKEL_INGOT = registerItem("nickel_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> TIN_INGOT = registerItem("tin_ingot",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> URANIUM_INGOT = registerItem("uranium_ingot",
+            () -> new Item(new Item.Properties()));
+
     public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
             () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER,
                     new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));

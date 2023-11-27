@@ -65,7 +65,6 @@ public class IRCreativeTab {
                 addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.STICKY_RESIN);
-                addItem(output, IRItems.CORN_SEEDS);
 
                 // misc blocks
                 addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
@@ -73,9 +72,6 @@ public class IRCreativeTab {
                 addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.TIN_CABLE);
                 addItem(output, IRItems.MINING_PIPE);
-
-                // Machines
-                addBlock(output, IRBlocks.SIMPLE_PRESS);
 
                 // test objects
                 addPoweredItem(output, IRItems.ENERGY_TEST_ITEM);
@@ -124,6 +120,14 @@ public class IRCreativeTab {
                 addItem(output, IRItems.RAW_NICKEL);
                 addItem(output, IRItems.RAW_TIN);
                 addItem(output, IRItems.RAW_URANIUM);
+
+                addItem(output, IRItems.ALUMINUM_INGOT);
+                addItem(output, IRItems.CHROMIUM_INGOT);
+                addItem(output, IRItems.IRIDIUM_INGOT);
+                addItem(output, IRItems.LEAD_INGOT);
+                addItem(output, IRItems.NICKEL_INGOT);
+                addItem(output, IRItems.TITANIUM_INGOT);
+                addItem(output, IRItems.URANIUM_INGOT);
             }).build());
 
 

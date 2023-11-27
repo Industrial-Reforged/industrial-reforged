@@ -2,7 +2,7 @@
 	"gui_light": "side",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "indref:block/machines/mining_pipe",
+		"0": "indref:block/mining_pipe",
 		"particle": "indref:block/machines/mining_pipe"
 	},
 	"elements": [
