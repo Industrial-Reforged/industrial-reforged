@@ -1,6 +1,7 @@
-package com.indref.industrial_reforged.registries.blocks.misc;
+package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;

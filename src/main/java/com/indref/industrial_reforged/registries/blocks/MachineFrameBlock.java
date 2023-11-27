@@ -1,8 +1,9 @@
 package com.indref.industrial_reforged.registries.blocks;
 
+import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import net.minecraft.world.level.block.Block;
 
-public class MachineFrameBlock extends Block {
+public class MachineFrameBlock extends Block implements IWrenchable {
     public MachineFrameBlock(Properties properties) {
         super(properties);
     }

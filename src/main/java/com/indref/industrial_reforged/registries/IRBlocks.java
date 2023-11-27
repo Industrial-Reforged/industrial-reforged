@@ -4,13 +4,11 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.registries.blocks.*;
-import com.indref.industrial_reforged.registries.blocks.machines.CrucibleControllerBlock;
-import com.indref.industrial_reforged.registries.blocks.machines.PrimitiveForgeBlock;
-import com.indref.industrial_reforged.registries.blocks.machines.SimplePressBlock;
-import com.indref.industrial_reforged.registries.blocks.misc.CrucibleWallBlock;
-import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
-import com.indref.industrial_reforged.registries.blocks.misc.MiningPipeBlock;
-import com.indref.industrial_reforged.registries.blocks.misc.TerracottaSlabBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.FaucetBlock;
+import com.indref.industrial_reforged.registries.blocks.MiningPipeBlock;
+import com.indref.industrial_reforged.registries.blocks.TerracottaSlabBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock;
@@ -54,10 +52,6 @@ public class IRBlocks {
             () -> new HeatTestBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",
             () -> new MachineFrameBlock(BlockBehaviour.Properties.of()));
-    public static final Supplier<Block> PRIMITIVE_FORGE = registerBlockAndItem("primitive_forge",
-            () -> new PrimitiveForgeBlock(BlockBehaviour.Properties.of()));
-    public static final Supplier<Block> SIMPLE_PRESS = registerBlockAndItem("simple_press",
-            () -> new SimplePressBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TEST_CONTROLLER = registerBlockAndItem("test_controller",
             () -> new TestMultiblockController(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TEST_PART = registerBlockAndItem("test_part",

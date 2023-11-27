@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blocks.misc.CrucibleWallBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

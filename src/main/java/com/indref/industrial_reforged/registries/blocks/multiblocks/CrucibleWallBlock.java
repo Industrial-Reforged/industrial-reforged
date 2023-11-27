@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.misc;
+package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
 import net.minecraft.core.BlockPos;

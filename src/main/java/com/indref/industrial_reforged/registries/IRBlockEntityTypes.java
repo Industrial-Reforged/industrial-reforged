@@ -23,16 +23,6 @@ public class IRBlockEntityTypes {
                     BlockEntityType.Builder.of(HeatTestBE::new,
                             IRBlocks.TEST_BLOCK_HEAT.get()).build(null));
 
-    public static final Supplier<BlockEntityType<PrimitiveForgeBE>> PRIMITIVE_FORGE =
-            BLOCK_ENTITIES.register("primitive_forge", () ->
-                    BlockEntityType.Builder.of(PrimitiveForgeBE::new,
-                            IRBlocks.PRIMITIVE_FORGE.get()).build(null));
-
-    public static final Supplier<BlockEntityType<SimplePressBE>> SIMPLE_PRESS =
-            BLOCK_ENTITIES.register("simple_press", () ->
-                    BlockEntityType.Builder.of(SimplePressBE::new,
-                            IRBlocks.SIMPLE_PRESS.get()).build(null));
-
     public static final Supplier<BlockEntityType<TestGeneratorBE>> TEST_GENERATOR =
             BLOCK_ENTITIES.register("test_generator", () ->
                     BlockEntityType.Builder.of(TestGeneratorBE::new,

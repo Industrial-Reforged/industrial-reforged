@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.machines;
+package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
