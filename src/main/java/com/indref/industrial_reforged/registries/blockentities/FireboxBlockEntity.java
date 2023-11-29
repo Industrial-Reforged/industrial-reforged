@@ -46,6 +46,11 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return CommonHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
+        }
     };
     private static final int INPUT_SLOT = 0;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
