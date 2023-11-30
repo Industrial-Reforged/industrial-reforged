@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRFluids;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -50,9 +51,23 @@ public class CrucibleBlockEntity extends BlockEntity implements IHeatBlock, Menu
         }
     };
 
-    public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState, CrucibleTier tier) {
+    public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
-        this.tier = tier;
+        this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyFluidHandler = LazyOptional.of(() -> fluidTank);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyItemHandler.invalidate();
+        lazyFluidHandler.invalidate();
     }
 
     @Override

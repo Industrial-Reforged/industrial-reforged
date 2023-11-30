@@ -72,6 +72,7 @@ public class IRCreativeTab {
                 addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.TIN_CABLE);
                 addItem(output, IRItems.MINING_PIPE);
+                addBlock(output, IRBlocks.TERRACOTTA_SLAB);
 
                 // test objects
                 addPoweredItem(output, IRItems.ENERGY_TEST_ITEM);
@@ -128,6 +129,7 @@ public class IRCreativeTab {
                 addItem(output, IRItems.NICKEL_INGOT);
                 addItem(output, IRItems.TITANIUM_INGOT);
                 addItem(output, IRItems.URANIUM_INGOT);
+                addItem(output, IRItems.TIN_INGOT);
             }).build());
 
 

@@ -49,7 +49,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return new CrucibleBlockEntity(p_153215_, p_153216_, tier);
+        return new CrucibleBlockEntity(p_153215_, p_153216_);
     }
 
     @Override
