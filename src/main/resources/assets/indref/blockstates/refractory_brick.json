@@ -3,32 +3,8 @@
     "firebox_part=unformed": {
       "model": "indref:block/refractory_brick"
     },
-    "firebox_part=top_left": {
-      "model": "indref:block/multiblock/firebox/top_left"
-    },
-    "firebox_part=top_middle": {
-      "model": "indref:block/multiblock/firebox/top_middle"
-    },
-    "firebox_part=top_right": {
-      "model": "indref:block/multiblock/firebox/top_right"
-    },
-    "firebox_part=middle_left": {
-      "model": "indref:block/multiblock/firebox/middle_left"
-    },
-    "firebox_part=middle_middle": {
-      "model": "indref:block/multiblock/firebox/middle_middle"
-    },
-    "firebox_part=middle_right": {
-      "model": "indref:block/multiblock/firebox/middle_right"
-    },
-    "firebox_part=bottom_left": {
-      "model": "indref:block/multiblock/firebox/bottom_left"
-    },
-    "firebox_part=bottom_middle": {
-      "model": "indref:block/multiblock/firebox/bottom_middle"
-    },
-    "firebox_part=bottom_right": {
-      "model": "indref:block/multiblock/firebox/bottom_right"
+    "firebox_part=hatch": {
+      "model": "indref:block/multiblock/firebox/hatch"
     }
   }
 }

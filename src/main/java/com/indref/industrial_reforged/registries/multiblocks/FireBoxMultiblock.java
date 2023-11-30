@@ -53,7 +53,11 @@ public record FireBoxMultiblock() implements IMultiblock {
     public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
-                FireBoxMultiblock.PartIndex.getPartIndexByIndices(index, indexY)));
+                switch (index) {
+                    case 1, 3, 5, 7 -> PartIndex.HATCH;
+                    case 4 -> PartIndex.COIL;
+                    default -> PartIndex.UNFORMED;
+                }));
     }
 
     @Override
@@ -64,35 +68,13 @@ public record FireBoxMultiblock() implements IMultiblock {
     }
 
     public enum PartIndex implements StringRepresentable {
-        UNFORMED("unformed", -1, -1),
-        TOP_LEFT("top_left", 0, 0),
-        TOP_MIDDLE("top_middle", 1, 0),
-        TOP_RIGHT("top_right", 2, 0),
-        MIDDLE_LEFT("middle_left", 3, 0),
-        MIDDLE_MIDDLE("middle_middle", 4, 0),
-        MIDDLE_RIGHT("middle_right", 5, 0),
-        BOTTOM_LEFT("bottom_left", 6, 0),
-        BOTTOM_MIDDLE("bottom_middle", 7, 0),
-        BOTTOM_RIGHT("bottom_right", 8, 0);
-
-        private final int index;
-        private final int yIndex;
+        UNFORMED("unformed"),
+        HATCH("hatch"),
+        COIL("coil");
         private final String name;
 
-        PartIndex(String name, int index, int yIndex) {
+        PartIndex(String name) {
             this.name = name;
-            this.index = index;
-            this.yIndex = yIndex;
-        }
-
-        public static FireBoxMultiblock.PartIndex getPartIndexByIndices(int index, int yIndex) {
-            for (FireBoxMultiblock.PartIndex part : FireBoxMultiblock.PartIndex.values()) {
-                if (part != UNFORMED && part.index == index && part.yIndex == yIndex) {
-                    return part;
-                }
-            }
-
-            throw new IllegalStateException("Indexing error from partIndex enum. Multi: FireBoxMultiblock. Index: "+index+" yIndex:"+yIndex);
         }
 
         @Override
