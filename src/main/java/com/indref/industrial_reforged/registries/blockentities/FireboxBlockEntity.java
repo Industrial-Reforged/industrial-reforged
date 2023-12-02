@@ -42,7 +42,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
             setChanged();
             burnTime = CommonHooks.getBurnTime(itemHandler.getStackInSlot(slot), RecipeType.SMELTING);
             IndustrialReforged.LOGGER.info("Contents changed");
-            if(!level.isClientSide()) {
+            if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -82,7 +82,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == Capabilities.ITEM_HANDLER) {
+        if (cap == Capabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
 
@@ -103,7 +103,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
 
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for(int i = 0; i < itemHandler.getSlots(); i++) {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, inventory);
@@ -121,7 +121,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
             }
             burnTime--;
             heatBlock.tryFill(self, 1);
-            IndustrialReforged.LOGGER.info("Burntime: "+burnTime);
+            IndustrialReforged.LOGGER.info("Burntime: " + burnTime);
         }
     }
 

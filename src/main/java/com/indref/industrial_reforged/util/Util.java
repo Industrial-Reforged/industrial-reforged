@@ -7,12 +7,15 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public final class Util {
     public static final int[] EMPTY_ARRAY = new int[0];
+
     public static <K, V> Map<V, K> reverseMap(Map<K, V> map) {
         Map<V, K> returnMap = new HashMap<>();
         map.forEach((key, value) -> returnMap.put(value, key));
@@ -33,5 +36,13 @@ public final class Util {
     public static IEnergyNets getEnergyNets(Level level) {
         return level.getCapability(IRCapabilities.ENERGY_NETWORKS)
                 .orElseThrow(() -> new NullPointerException("Missing energy networks on level"));
+    }
+
+    public static String fluidStackToString(FluidStack fluidStack) {
+        return "FluidStack { fluid: " + fluidToString(fluidStack.getFluid()) + ", amount: " + fluidStack.getAmount() + " }";
+    }
+
+    public static String fluidToString(Fluid fluid) {
+        return "Fluid { "+"type: "+fluid.getFluidType()+" }";
     }
 }

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks;
+package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;

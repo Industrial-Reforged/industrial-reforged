@@ -4,10 +4,13 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
+import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.blockentities.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -62,7 +65,12 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
+            IFluidHandler fluidHandler = level.getBlockEntity(blockPos).getCapability(Capabilities.FLUID_HANDLER).orElseThrow(NullPointerException::new);
+            if (player.getMainHandItem().is(IRItems.ALUMINUM_INGOT.get())) {
+                fluidHandler.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE);
+            }
             NetworkHooks.openScreen((ServerPlayer) player, (CrucibleBlockEntity) level.getBlockEntity(blockPos), blockPos);
+            player.sendSystemMessage(Component.literal(Util.fluidStackToString(fluidHandler.getFluidInTank(0))));
             return InteractionResult.SUCCESS;
         }
 

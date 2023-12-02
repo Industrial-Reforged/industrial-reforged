@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleCont
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -108,6 +109,24 @@ public class CrucibleBlockEntity extends BlockEntity implements IHeatBlock, Menu
     @Override
     public @NotNull Component getDisplayName() {
         return Component.translatable("Crucible");
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        pTag.put("inventory", itemHandler.serializeNBT());
+        pTag = fluidTank.writeToNBT(pTag);
+        super.saveAdditional(pTag);
+    }
+
+    public FluidStack getFluid() {
+        return fluidTank.getFluid();
+    }
+
+    @Override
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        itemHandler.deserializeNBT(pTag.getCompound("inventory"));
+        fluidTank.readFromNBT(pTag);
     }
 
     @Nullable
