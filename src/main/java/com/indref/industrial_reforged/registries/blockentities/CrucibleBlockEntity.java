@@ -5,7 +5,10 @@ import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRFluids;
+import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
+import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
+import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -33,8 +36,9 @@ public class CrucibleBlockEntity extends BlockEntity implements IHeatBlock, Menu
     private final CrucibleTier tier;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
+    protected final ContainerData data;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -54,6 +58,21 @@ public class CrucibleBlockEntity extends BlockEntity implements IHeatBlock, Menu
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
+        this.data = new ContainerData() {
+            @Override
+            public int get(int pIndex) {
+                return 0;
+            }
+
+            @Override
+            public void set(int pIndex, int pValue) {
+            }
+
+            @Override
+            public int getCount() {
+                return 1;
+            }
+        };
     }
 
     @Override
@@ -87,13 +106,13 @@ public class CrucibleBlockEntity extends BlockEntity implements IHeatBlock, Menu
     }
 
     @Override
-    public Component getDisplayName() {
-        return null;
+    public @NotNull Component getDisplayName() {
+        return Component.translatable("Crucible");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int p_39954_, Inventory p_39955_, Player p_39956_) {
-        return null;
+    public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
+        return new CrucibleMenu(containerId, inventory, this, this.data);
     }
 }

@@ -5,8 +5,10 @@ import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
 import com.indref.industrial_reforged.registries.blockentities.CrucibleBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +29,7 @@ import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController {
@@ -58,12 +61,8 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucibleBlockEntity) {
-            IFluidHandler fluidHandler = crucibleBlockEntity.getCapability(Capabilities.FLUID_HANDLER).orElseThrow(NullPointerException::new);
-            fluidHandler.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE);
-            for (int i = 0; i < fluidHandler.getTanks(); i++){
-                IndustrialReforged.LOGGER.info("Fluid: " + fluidHandler.getFluidInTank(i).getFluid().getFluidType());
-            }
+        if (!level.isClientSide()) {
+            NetworkHooks.openScreen((ServerPlayer) player, (CrucibleBlockEntity) level.getBlockEntity(blockPos), blockPos);
             return InteractionResult.SUCCESS;
         }
 

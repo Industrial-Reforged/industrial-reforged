@@ -46,7 +46,6 @@ public class EnergyTestBlock extends BaseEntityBlock implements IWrenchable {
             BlockEntity entity = level.getBlockEntity(blockPos);
             if (entity instanceof IEnergyBlock energyBlock) {
                 energyBlock.setStored(entity, energyBlock.getStored(entity)+10000);
-                // todo: try moving this to scanner overlay
                 IRPackets.sendToClients(new S2CEnergySync(energyBlock.getStored(entity), blockPos));
                 IndustrialReforged.LOGGER.info("Right-click");
             } else {

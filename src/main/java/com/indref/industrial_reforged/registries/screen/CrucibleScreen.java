@@ -1,20 +1,18 @@
 package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class FireBoxScreen extends AbstractContainerScreen<FireBoxMenu> {
+public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/firebox.png");
+            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/crucible.png");
 
-    public FireBoxScreen(FireBoxMenu fireBoxMenu, Inventory inventory, Component component) {
-        super(fireBoxMenu, inventory, component);
+    public CrucibleScreen(CrucibleMenu p_97741_, Inventory p_97742_, Component p_97743_) {
+        super(p_97741_, p_97742_, p_97743_);
     }
 
     @Override

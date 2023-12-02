@@ -5,8 +5,10 @@ import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -92,12 +94,18 @@ public class TapeMeasureItem extends ToolItem {
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (!level.isClientSide && entity instanceof Player player) {
+        RandomSource randomSource = RandomSource.create();
+        if (entity instanceof Player player) {
             if (player.getMainHandItem().is(IRItems.TAPE_MEASURE.get())) {
                 ItemStack useItem = player.getMainHandItem();
                 int[] blockPos = useItem.getOrCreateTag().getIntArray("firstBlockPos");
                 BlockPos playerPos = new BlockPos(player.getOnPos().getX(), player.getOnPos().getY(), player.getOnPos().getZ());
                 if (blockPos.length != 0) {
+                    double d0 = (double) blockPos[0] + 0.5D + (0.5D - randomSource.nextDouble());
+                    double d1 = (double) blockPos[1] + 1.0D + (0.5D - randomSource.nextDouble());
+                    double d2 = (double) blockPos[2] + 0.5D + (0.5D - randomSource.nextDouble());
+                    double d3 = (double) randomSource.nextFloat() * 0.4D;
+                    level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, 1.0D, 0.0D);
                     player.displayClientMessage(Component.literal(
                                     (Math.abs(blockPos[0]) - Math.abs(playerPos.getX())) + ", "
                                             + -(Math.abs(blockPos[1]) - Math.abs(playerPos.getY())) + ", "
@@ -109,6 +117,8 @@ public class TapeMeasureItem extends ToolItem {
                 int[] blockPos = useItem.getOrCreateTag().getIntArray("firstBlockPos");
                 BlockPos playerPos = new BlockPos(player.getOnPos().getX(), player.getOnPos().getY(), player.getOnPos().getZ());
                 if (blockPos.length != 0) {
+                    double d3 = (double) randomSource.nextFloat() * 0.4D;
+                    level.addParticle(ParticleTypes.HAPPY_VILLAGER, blockPos[0], blockPos[1], blockPos[2], 0.0D, 1.0D, 0.0D);
                     player.displayClientMessage(Component.literal(
                                     (Math.abs(blockPos[0]) - Math.abs(playerPos.getX())) + ", "
                                             + (Math.abs(blockPos[1]) - Math.abs(playerPos.getY())) + ", "

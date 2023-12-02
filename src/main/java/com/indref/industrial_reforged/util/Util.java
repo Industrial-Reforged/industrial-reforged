@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.capabilities.energy.network.EnergyNetsProv
 import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
