@@ -11,7 +11,7 @@ public class TestGeneratorBE extends GeneratorBlockEntity {
     }
 
     @Override
-    public int getCapacity() {
+    public int getEnergyCapacity() {
         return 1_000;
     }
 

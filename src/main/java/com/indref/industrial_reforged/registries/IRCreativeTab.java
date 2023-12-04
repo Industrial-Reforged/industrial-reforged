@@ -148,10 +148,10 @@ public class IRCreativeTab {
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
         if (item.get() instanceof IEnergyItem energyItem)
-            energyItem.setStored(stack, energyItem.getCapacity());
+            energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity());
 
         if (item.get() instanceof IHeatItem heatItem)
-            heatItem.setStored(stack, heatItem.getCapacity());
+            heatItem.setHeatStored(stack, heatItem.getHeatCapacity());
 
         output.accept(stack);
     }
@@ -165,7 +165,7 @@ public class IRCreativeTab {
             ItemStack stack = new ItemStack(item.get());
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
-                    fluidContainerItem.tryFill(fluid.getValue(), 1000, stack);
+                    fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
                 IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
                 IndustrialReforged.LOGGER.info("Registering fluid cell: "+fluid.getValue());
                 output.accept(stack);

@@ -12,7 +12,7 @@ public class HeatTestBE extends BlockEntity implements IHeatBlock {
     }
 
     @Override
-    public int getCapacity() {
+    public int getHeatCapacity() {
         return 10000;
     }
 }

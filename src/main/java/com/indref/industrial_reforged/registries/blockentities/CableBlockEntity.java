@@ -22,7 +22,7 @@ public class CableBlockEntity extends BlockEntity implements IEnergyBlock {
     }
 
     @Override
-    public int getCapacity() {
+    public int getEnergyCapacity() {
         return 1000;
     }
 

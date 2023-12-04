@@ -7,8 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
 public class C2SEnergySync {
     public C2SEnergySync() {
     }
@@ -26,7 +24,7 @@ public class C2SEnergySync {
             ItemStack mainHandItem = player.getMainHandItem();
             IEnergyItem mainHandEnergyItem = ItemUtils.getEnergyItem(mainHandItem);
             assert mainHandEnergyItem != null;
-            mainHandEnergyItem.setStored(mainHandItem, mainHandEnergyItem.getStored(mainHandItem)-1);
+            mainHandEnergyItem.setEnergyStored(mainHandItem, mainHandEnergyItem.getEnergyStored(mainHandItem)-1);
         });
         return true;
     }

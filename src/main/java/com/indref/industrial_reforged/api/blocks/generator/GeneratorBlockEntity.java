@@ -16,14 +16,14 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    public void onChanged() {
+    public void onEnergyChanged() {
         IndustrialReforged.LOGGER.info("Energy Changed!");
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-        energyBlock.tryFill(blockEntity, getGenerationAmount());
+        energyBlock.tryFillEnergy(blockEntity, getGenerationAmount());
 
         Vec3i[] neighbors = {
                 new Vec3i(1, 0, 0),

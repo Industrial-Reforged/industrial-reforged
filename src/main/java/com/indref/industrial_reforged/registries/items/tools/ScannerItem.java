@@ -9,7 +9,7 @@ public class ScannerItem extends SimpleElectricItem implements IToolItem {
     }
 
     @Override
-    public int getCapacity() {
+    public int getEnergyCapacity() {
         return 10000;
     }
 }

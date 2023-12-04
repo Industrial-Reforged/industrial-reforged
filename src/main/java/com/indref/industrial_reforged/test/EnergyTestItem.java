@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.test;
 
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
 import net.minecraft.network.chat.Component;
@@ -25,14 +26,14 @@ public class EnergyTestItem extends SimpleElectricItem {
         }
         if (!level.isClientSide()) {
             useItemStack.getCapability(IRCapabilities.ENERGY).ifPresent((energyStorage) -> energyStorage.setEnergyStored(energyStorage.getEnergyStored()+100));
-            player.sendSystemMessage(Component.literal(String.valueOf(this.getEnergyStorage(useItemStack).getEnergyStored())));
+            player.sendSystemMessage(Component.literal(String.valueOf(IEnergyItem.getEnergyStorage(useItemStack).getEnergyStored())));
             return InteractionResultHolder.success(useItemStack);
         }
         return InteractionResultHolder.fail(useItemStack);
     }
 
     @Override
-    public int getCapacity() {
+    public int getEnergyCapacity() {
         return 10000;
     }
 }

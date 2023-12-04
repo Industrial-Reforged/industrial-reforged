@@ -7,8 +7,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
 public class S2CEnergySync {
     private final int energy;
     private final BlockPos pos;
@@ -32,7 +30,7 @@ public class S2CEnergySync {
         supplier.enqueueWork(() -> {
             BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(pos);
             if (entity instanceof IEnergyBlock blockEntity) {
-                blockEntity.setStored(entity, energy);
+                blockEntity.setEnergyStored(entity, energy);
             }
         });
         return true;

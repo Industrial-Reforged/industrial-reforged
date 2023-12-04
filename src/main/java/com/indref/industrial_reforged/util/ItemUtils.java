@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.items.container.IContainerItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
@@ -54,14 +53,11 @@ public final class ItemUtils {
     }
 
     public static float getChargeRatio(ChargeType type, ItemStack stack) {
-        IContainerItem containerItem = null;
-        switch (type) {
-            case HEAT -> containerItem = getHeatItem(stack);
-            case FLUID -> containerItem = getFluidItem(stack);
-            case ENERGY -> containerItem = getEnergyItem(stack);
-        }
-        assert containerItem != null;
-        return (float) containerItem.getStored(stack) / containerItem.getCapacity();
+        return switch (type) {
+            case HEAT -> (float) getHeatItem(stack).getHeatStored(stack) / getHeatItem(stack).getHeatCapacity();
+            case FLUID -> (float) getFluidItem(stack).getFluidStored(stack) / getFluidItem(stack).getFluidCapacity();
+            case ENERGY -> (float) getEnergyItem(stack).getEnergyStored(stack) / getEnergyItem(stack).getEnergyCapacity();
+        };
     }
 
     public static ItemStack itemStackFromInteractionHand(InteractionHand interactionHand, Player player) {

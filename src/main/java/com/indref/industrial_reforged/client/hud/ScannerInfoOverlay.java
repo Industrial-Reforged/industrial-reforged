@@ -46,7 +46,7 @@ public class ScannerInfoOverlay {
                     guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
                     lineOffset += font.lineHeight + 3;
                 }
-                mainHandEnergyItem.tryDrain(mainHandStack, 1);
+                mainHandEnergyItem.tryDrainEnergy(mainHandStack, 1);
                 IRPackets.sendToServer(new C2SEnergySync());
             }
         }

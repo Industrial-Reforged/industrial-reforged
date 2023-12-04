@@ -6,8 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
 // TODO: 10/19/2023 fix this 
 public class S2CFluidSync {
     private final int fluidAmount;
@@ -34,7 +32,7 @@ public class S2CFluidSync {
     public boolean handle(NetworkEvent.Context supplier) {
         supplier.enqueueWork(() -> {
             if (itemStack.getItem() instanceof IFluidItem fluidItem) {
-                fluidItem.tryFill(this.fluid, this.fluidAmount, this.itemStack);
+                fluidItem.tryFillFluid(this.fluid, this.fluidAmount, this.itemStack);
             }
         });
         return true;

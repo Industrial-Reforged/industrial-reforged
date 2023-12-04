@@ -120,7 +120,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
                 itemStack.shrink(1);
             }
             burnTime--;
-            heatBlock.tryFill(self, 1);
+            heatBlock.tryFillHeat(self, 1);
             IndustrialReforged.LOGGER.info("Burntime: " + burnTime);
         }
     }
@@ -147,7 +147,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
 
     // Heat capacity
     @Override
-    public int getCapacity() {
+    public int getHeatCapacity() {
         return 4000;
     }
 }

@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.capabilities.heat.IHeatStorage;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.LazyOptional;
 
-public interface IHeatItem extends IContainerItem {
+public interface IHeatItem {
     static IHeatStorage getHeatStorage(ItemStack itemStack) {
         LazyOptional<IHeatStorage> cap = itemStack.getCapability(IRCapabilities.HEAT);
         if (cap.isPresent())
@@ -14,16 +14,14 @@ public interface IHeatItem extends IContainerItem {
         return null;
     }
 
-    @Override
-    default void setStored(ItemStack itemStack, int value) {
+    default void setHeatStored(ItemStack itemStack, int value) {
         IHeatStorage heatStorage = getHeatStorage(itemStack);
         if (heatStorage != null) {
             heatStorage.setHeatStored(value);
         }
     }
 
-    @Override
-    default int getStored(ItemStack itemStack) {
+    default int getHeatStored(ItemStack itemStack) {
         IHeatStorage heatStorage = getHeatStorage(itemStack);
         if (heatStorage != null) {
             return heatStorage.getHeatStored();
@@ -31,10 +29,11 @@ public interface IHeatItem extends IContainerItem {
         return -1;
     }
 
+    int getHeatCapacity();
+
     /**
      * Does nothing!
      */
-    @Override
     @Deprecated
     default boolean tryFill(ItemStack itemStack, int amount) {
         return false;
@@ -43,7 +42,6 @@ public interface IHeatItem extends IContainerItem {
     /**
      * Does nothing!
      */
-    @Override
     @Deprecated
     default boolean tryDrain(ItemStack itemStack, int amount) {
         return false;

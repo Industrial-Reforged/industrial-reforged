@@ -102,7 +102,7 @@ public class CrucibleBlockEntity extends BlockEntity implements IHeatBlock, Menu
     }
 
     @Override
-    public int getCapacity() {
+    public int getHeatCapacity() {
         return tier.heatCapacity();
     }
 

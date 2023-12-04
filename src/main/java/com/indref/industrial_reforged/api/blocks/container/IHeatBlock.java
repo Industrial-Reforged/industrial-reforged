@@ -13,36 +13,37 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public interface IHeatBlock extends IContainerBlock, IScannable {
-    @Override
-    default int getStored(BlockEntity blockEntity) {
+public interface IHeatBlock extends IScannable {
+    default int getHeatStored(BlockEntity blockEntity) {
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
         return heatStorage.getHeatStored();
     }
 
-    @Override
-    default void setStored(BlockEntity blockEntity, int value) {
-        int prev = getStored(blockEntity);
+    default void setHeatStored(BlockEntity blockEntity, int value) {
+        int prev = getHeatStored(blockEntity);
         if (prev == value) return;
 
         IHeatStorage heatStorage = blockEntity.getCapability(IRCapabilities.HEAT).orElseThrow(NullPointerException::new);
         heatStorage.setHeatStored(value);
-        onChanged();
+        onHeathanged();
     }
 
-    @Override
-    default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)-value >= 0) {
-            setStored(blockEntity, getStored(blockEntity)-value);
+    int getHeatCapacity();
+
+    default void onHeathanged() {
+    }
+
+    default boolean tryDrainHeat(BlockEntity blockEntity, int value) {
+        if (getHeatStored(blockEntity)-value >= 0) {
+            setHeatStored(blockEntity, getHeatStored(blockEntity)-value);
             return true;
         }
         return false;
     }
 
-    @Override
-    default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity)+value <= getCapacity()) {
-            setStored(blockEntity, getStored(blockEntity)+value);
+    default boolean tryFillHeat(BlockEntity blockEntity, int value) {
+        if (getHeatStored(blockEntity)+value <= getHeatCapacity()) {
+            setHeatStored(blockEntity, getHeatStored(blockEntity)+value);
             return true;
         }
         return false;
@@ -59,9 +60,9 @@ public interface IHeatBlock extends IContainerBlock, IScannable {
                 scannedBlock.getBlock().getName(),
                 MutableComponent.create(ComponentContents.EMPTY)
                         .append(Component.translatable("scanner_info.heat_block.heat_ratio"))
-                        .append(Component.literal(String.format("%d/%d", heatBlock.getStored(blockEntity), heatBlock.getCapacity())))
+                        .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(blockEntity), heatBlock.getHeatCapacity())))
                         .append(Component.literal(",")),
-                Component.literal(String.valueOf(heatBlock.getStored(blockEntity)))
+                Component.literal(String.valueOf(heatBlock.getHeatStored(blockEntity)))
         );
     }
 }

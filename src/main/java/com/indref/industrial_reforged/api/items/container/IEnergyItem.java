@@ -11,9 +11,8 @@ import net.neoforged.neoforge.common.util.LazyOptional;
  * you need to override the getUseDuration() function and make it return 1
  */
 
-// TODO: 10/26/2023 make drain methods static
-public interface IEnergyItem extends IContainerItem {
-    default IEnergyStorage getEnergyStorage(ItemStack itemStack) {
+public interface IEnergyItem {
+    static IEnergyStorage getEnergyStorage(ItemStack itemStack) {
         LazyOptional<IEnergyStorage> cap = itemStack.getCapability(IRCapabilities.ENERGY);
         if (cap.isPresent())
             return cap.orElseThrow(NullPointerException::new);
@@ -21,15 +20,15 @@ public interface IEnergyItem extends IContainerItem {
         return null;
     }
 
-    @Override
-    default void setStored(ItemStack itemStack, int value) {
+    default void setEnergyStored(ItemStack itemStack, int value) {
         getEnergyStorage(itemStack).setEnergyStored(value);
     }
 
-    @Override
-    default int getStored(ItemStack itemStack) {
+    default int getEnergyStored(ItemStack itemStack) {
         return getEnergyStorage(itemStack).getEnergyStored();
     }
+
+    int getEnergyCapacity();
 
     /**
      * Try draining energy from an item
@@ -37,10 +36,9 @@ public interface IEnergyItem extends IContainerItem {
      * @param value the amount of energy you want drain
      * @return whether the draining was successful (true) or not (false)
      */
-    @Override
-    default boolean tryDrain(ItemStack itemStack, int value) {
-        if (getStored(itemStack)-value >= 0) {
-            setStored(itemStack, getStored(itemStack)-value);
+    default boolean tryDrainEnergy(ItemStack itemStack, int value) {
+        if (getEnergyStored(itemStack)-value >= 0) {
+            setEnergyStored(itemStack, getEnergyStored(itemStack)-value);
             return true;
         }
         return false;
@@ -52,10 +50,9 @@ public interface IEnergyItem extends IContainerItem {
      * @param value the amount of energy you want fill
      * @return whether the filling was successful (true) or not (false)
      */
-    @Override
-    default boolean tryFill(ItemStack itemStack, int value) {
-        if (getStored(itemStack)+value <= getCapacity()) {
-            setStored(itemStack, getStored(itemStack)+value);
+    default boolean tryFillEnergy(ItemStack itemStack, int value) {
+        if (getEnergyStored(itemStack)+value <= getEnergyCapacity()) {
+            setEnergyStored(itemStack, getEnergyStored(itemStack)+value);
             return true;
         }
         return false;

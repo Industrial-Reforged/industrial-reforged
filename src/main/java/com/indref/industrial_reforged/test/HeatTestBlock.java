@@ -34,8 +34,8 @@ public class HeatTestBlock extends BaseEntityBlock implements IWrenchable {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(blockPos);
             if (entity instanceof IHeatBlock heatBlock) {
-                heatBlock.setStored(entity, heatBlock.getStored(entity)+100);
-                IRPackets.sendToClients(new S2CEnergySync(heatBlock.getStored(entity), blockPos));
+                heatBlock.setHeatStored(entity, heatBlock.getHeatStored(entity)+100);
+                IRPackets.sendToClients(new S2CEnergySync(heatBlock.getHeatStored(entity), blockPos));
                 IndustrialReforged.LOGGER.info("Right-click");
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");

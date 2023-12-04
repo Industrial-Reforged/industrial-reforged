@@ -45,7 +45,7 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
         Optional<IEnergyStorage> capability = stack.getCapability(IRCapabilities.ENERGY).resolve();
         if (capability.isPresent()) {
             IEnergyItem item = ItemUtils.getEnergyItem(stack);
-            tooltip.add(Component.literal(String.format("%s / %s", item.getStored(stack), item.getCapacity())).withStyle(ChatFormatting.AQUA));
+            tooltip.add(Component.literal(String.format("%s / %s", item.getEnergyStored(stack), item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
         } else {
             tooltip.add(Component.literal("0 / 0"));
         }

@@ -58,7 +58,7 @@ public class FluidCellItem extends SimpleFluidItem {
                 BlockPos blockpos = blockhitresult.getBlockPos();
                 Direction direction = blockhitresult.getDirection();
                 BlockPos blockpos1 = blockpos.relative(direction);
-                Fluid fluid1 = fluidItem.getFluidHandler(handItem).getFluidInTank(0).getFluid();
+                Fluid fluid1 = IFluidItem.getFluidHandler(handItem).getFluidInTank(0).getFluid();
                 if (fluid1 == Fluids.EMPTY) {
                     BlockState blockstate1 = level.getBlockState(blockpos);
                     Block block1 = blockstate1.getBlock();
@@ -74,7 +74,7 @@ public class FluidCellItem extends SimpleFluidItem {
                     return InteractionResultHolder.fail(handItem);
                 } else {
                     if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)
-                            && !fluid1.getFluidType().isVaporizedOnPlacement(level, blockpos, fluidItem.getFluidHandler(handItem).getFluidInTank(0))) {
+                            && !fluid1.getFluidType().isVaporizedOnPlacement(level, blockpos, IFluidItem.getFluidHandler(handItem).getFluidInTank(0))) {
                         level.setBlock(blockpos1, fluid1.defaultFluidState().createLegacyBlock(), 11);
                         return InteractionResultHolder.success(handItem);
                     }
@@ -90,7 +90,7 @@ public class FluidCellItem extends SimpleFluidItem {
                 level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 11);
                 ItemStack stack = new ItemStack(IRItems.FLUID_CELL.get());
                 IFluidItem fluidItem = ItemUtils.getFluidItem(stack);
-                fluidItem.tryFill(liquidBlock.getFluid().getSource(), 1000, stack);
+                fluidItem.tryFillFluid(liquidBlock.getFluid().getSource(), 1000, stack);
                 return stack;
             }
         }
@@ -103,7 +103,7 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
-    public int getCapacity() {
+    public int getFluidCapacity() {
         return this.capacity;
     }
 
@@ -121,7 +121,7 @@ public class FluidCellItem extends SimpleFluidItem {
                                 .append(Component.literal(String.format("%d/%d",
                                         fluidHandlerItem.getFluidInTank(0).getAmount(),
                                         com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
-                                                .getCapacity())).withStyle(ChatFormatting.AQUA));
+                                                .getFluidCapacity())).withStyle(ChatFormatting.AQUA));
                         tooltip.add(descriptionType);
                         tooltip.add(descriptionAmount);
                     }

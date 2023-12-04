@@ -16,11 +16,11 @@ public class EnergyTestBE extends BlockEntity implements IEnergyBlock {
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-        energyBlock.tryDrain(blockEntity, 1);
+        energyBlock.tryDrainEnergy(blockEntity, 1);
     }
 
     @Override
-    public int getCapacity() {
+    public int getEnergyCapacity() {
         return 10000;
     }
 }

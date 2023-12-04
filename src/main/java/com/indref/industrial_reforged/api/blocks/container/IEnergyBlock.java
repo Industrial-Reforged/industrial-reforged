@@ -17,40 +17,41 @@ import java.util.List;
 /**
  * Interface for implementing Blocks that store EU
  */
-public interface IEnergyBlock extends IContainerBlock, IScannable {
+public interface IEnergyBlock extends IScannable {
 
-    @Override
-    default void setStored(BlockEntity blockEntity, int value) {
-        int prev = getStored(blockEntity);
+    default void setEnergyStored(BlockEntity blockEntity, int value) {
+        int prev = getEnergyStored(blockEntity);
         if (prev == value) return;
 
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         energyStorage.setEnergyStored(value);
-        onChanged();
+        onEnergyChanged();
     }
 
-    @Override
-    default int getStored(BlockEntity blockEntity) {
+    default int getEnergyStored(BlockEntity blockEntity) {
         IEnergyStorage energyStorage = blockEntity.getCapability(IRCapabilities.ENERGY).orElseThrow(NullPointerException::new);
         return energyStorage.getEnergyStored();
     }
 
-    @Override
-    default boolean tryDrain(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity) - value >= 0) {
-            setStored(blockEntity, getStored(blockEntity) - value);
+    int getEnergyCapacity();
+
+    default void onEnergyChanged() {
+    }
+
+    default boolean tryDrainEnergy(BlockEntity blockEntity, int value) {
+        if (getEnergyStored(blockEntity) - value >= 0) {
+            setEnergyStored(blockEntity, getEnergyStored(blockEntity) - value);
             return true;
         }
         return false;
     }
 
-    @Override
-    default boolean tryFill(BlockEntity blockEntity, int value) {
-        if (getStored(blockEntity) + value <= getCapacity()) {
-            setStored(blockEntity, getStored(blockEntity) + value);
+    default boolean tryFillEnergy(BlockEntity blockEntity, int value) {
+        if (getEnergyStored(blockEntity) + value <= getEnergyCapacity()) {
+            setEnergyStored(blockEntity, getEnergyStored(blockEntity) + value);
             return true;
         } else {
-            setStored(blockEntity, getCapacity());
+            setEnergyStored(blockEntity, getEnergyCapacity());
         }
         return false;
     }
@@ -66,8 +67,8 @@ public interface IEnergyBlock extends IContainerBlock, IScannable {
                 scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE),
                 MutableComponent.create(ComponentContents.EMPTY).withStyle(ChatFormatting.WHITE)
                         .append(Component.translatable("scanner_info.energy_block.energy_ratio"))
-                        .append(Component.literal(String.format("%d/%d", energyBlock.getStored(blockEntity), energyBlock.getCapacity()))
-                        .append(Component.literal(","))
-        ));
+                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity()))
+                                .append(Component.literal(","))
+                        ));
     }
 }
