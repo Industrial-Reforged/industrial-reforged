@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.api.blocks.generator;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
+import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
@@ -15,7 +16,6 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
         super(blockEntityType, p_155229_, p_155230_);
     }
 
-    @Override
     public void onEnergyChanged() {
         IndustrialReforged.LOGGER.info("Energy Changed!");
     }
@@ -23,7 +23,6 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-        energyBlock.tryFillEnergy(blockEntity, getGenerationAmount());
 
         Vec3i[] neighbors = {
                 new Vec3i(1, 0, 0),
@@ -34,8 +33,8 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
                 new Vec3i(0, 0, -1),
         };
 
-        for (Vec3i pos : neighbors) {
-            BlockEntity blockEntity1 = level.getBlockEntity(blockPos.offset(pos));
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+            BlockEntity blockEntity1 = level.getBlockEntity(pos);
             BlockState block = level.getBlockState(blockPos);
             if (block.getBlock() instanceof CableBlock cableBlock) {
 

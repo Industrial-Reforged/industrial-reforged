@@ -1,51 +1,36 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNetsProvider;
-import com.indref.industrial_reforged.capabilities.energy.storage.EnergyStorageProvider;
-import com.indref.industrial_reforged.capabilities.heat.HeatStorageProvider;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import com.indref.industrial_reforged.capabilities.EnergyWrapper;
+import com.indref.industrial_reforged.capabilities.HeatWrapper;
+import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 
-@Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
-public class CapabilityAttacher {
-    @SubscribeEvent
-    public static void onCapabilityAttachBlockEntity(AttachCapabilitiesEvent<BlockEntity> event) {
-        if (event.getObject() instanceof IEnergyBlock iEnergyBlock) {
-            event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider());
-            IndustrialReforged.LOGGER.info("Attaching energy capability to block entity");
-        }
-
-        if (event.getObject() instanceof IHeatBlock heatBlock) {
-            event.addCapability(HeatStorageProvider.IDENTIFIER, new HeatStorageProvider());
-            IndustrialReforged.LOGGER.info("Attaching heat capability to block entity");
-        }
-    }
+@Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public final class CapabilityAttacher {
 
     @SubscribeEvent
-    public static void onCapabilityAttachLevel(AttachCapabilitiesEvent<Level> event) {
-        event.addCapability(EnergyNetsProvider.IDENTIFIER, new EnergyNetsProvider(event.getObject()));
-        IndustrialReforged.LOGGER.info("Attaching energy networks to level");
-    }
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item instanceof IEnergyItem)
+                event.registerItem(IRCapabilities.EnergyStorage.ITEM, (stack, ctx) -> new EnergyWrapper.Item(stack), item);
 
-    @SubscribeEvent
-    public static void onCapabilityAttachItemStack(AttachCapabilitiesEvent<ItemStack> event) {
-        if (event.getObject().getItem() instanceof IEnergyItem) {
-            event.addCapability(EnergyStorageProvider.IDENTIFIER, new EnergyStorageProvider());
-            IndustrialReforged.LOGGER.info("Attaching energy capability to itemStack");
-        }
+            if (item instanceof IHeatItem) {
+                event.registerItem(IRCapabilities.HeatStorage.ITEM, (stack, ctx) -> new HeatWrapper.Item(stack), item);
+            }
 
-        if (event.getObject().getItem() instanceof IHeatItem) {
-            event.addCapability(HeatStorageProvider.IDENTIFIER, new HeatStorageProvider());
-            IndustrialReforged.LOGGER.info("Attaching heat capability to itemStack");
+            if (item instanceof IFluidItem fluidItem) {
+                event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, fluidItem.getFluidCapacity()), item);
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.api.items;
 
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.capabilities.energy.storage.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.ChatFormatting;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     public SimpleElectricItem(Properties properties) {
@@ -42,12 +40,7 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     @Override
     public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
         super.appendHoverText(stack, p41422, tooltip, p41424);
-        Optional<IEnergyStorage> capability = stack.getCapability(IRCapabilities.ENERGY).resolve();
-        if (capability.isPresent()) {
-            IEnergyItem item = ItemUtils.getEnergyItem(stack);
-            tooltip.add(Component.literal(String.format("%s / %s", item.getEnergyStored(stack), item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
-        } else {
-            tooltip.add(Component.literal("0 / 0"));
-        }
+        IEnergyItem item = this;
+        tooltip.add(Component.literal(String.format("%s / %s", item.getEnergyStored(stack), item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
     }
 }

@@ -1,30 +1,35 @@
 package com.indref.industrial_reforged.capabilities.heat;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.Tag;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
-public class HeatStorage implements IHeatStorage {
+/**
+ * Class for saving and loading energy values of item/block/entity
+ * <br><br>
+ * Should not be use directly,
+ * only for attaching data/accessing it through capabilities
+ */
+public class HeatStorage implements INBTSerializable<Tag> {
+    private int heat;
 
-    public int stored;
+    public HeatStorage(int heat) {
+        this.heat = heat;
+    }
 
-    private static final String NBT_KEY_HEAT_STORED = "heatStored";
-
-    @Override
-    public int getHeatStored() {
-        return this.stored;
+    public int getEnergyStored() {
+        return heat;
     }
 
     @Override
-    public void setHeatStored(int value) {
-        this.stored = value;
+    public Tag serializeNBT() {
+        return IntTag.valueOf(this.getEnergyStored());
     }
 
-    public CompoundTag serializeNBT() {
-        final CompoundTag tag = new CompoundTag();
-        tag.putInt(NBT_KEY_HEAT_STORED, this.stored);
-        return tag;
-    }
-
-    public void deserializeNBT(CompoundTag nbt) {
-        this.stored = nbt.getInt(NBT_KEY_HEAT_STORED);
+    @Override
+    public void deserializeNBT(Tag nbt) {
+        if (!(nbt instanceof IntTag intNbt))
+            throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
+        this.heat = intNbt.getAsInt();
     }
 }

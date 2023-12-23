@@ -1,10 +1,8 @@
 package com.indref.industrial_reforged.client.hud;
 
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.C2SEnergySync;
+import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
@@ -36,19 +34,10 @@ public class ScannerInfoOverlay {
         if (hitResultType == HitResult.Type.BLOCK && (minecraft.player.getMainHandItem().getItem() instanceof ScannerItem
                 || minecraft.player.getOffhandItem().getItem() instanceof ScannerItem)) {
             // TODO: Cast to IEnergyItem produces NullPointerException in some cases
-            IEnergyItem mainHandEnergyItem = (IEnergyItem) minecraft.player.getMainHandItem().getItem();
             BlockPos hitResultBlockPos = ((BlockHitResult) minecraft.hitResult).getBlockPos();
             BlockEntity blockEntity = level.getBlockEntity(hitResultBlockPos);
             BlockState blockstate = level.getBlockState(hitResultBlockPos);
 
-            if (blockEntity instanceof IEnergyBlock energyBlock) {
-                for (Component component : energyBlock.displayText(blockstate, hitResultBlockPos, level)) {
-                    guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
-                    lineOffset += font.lineHeight + 3;
-                }
-                mainHandEnergyItem.tryDrainEnergy(mainHandStack, 1);
-                IRPackets.sendToServer(new C2SEnergySync());
-            }
         }
     };
 }

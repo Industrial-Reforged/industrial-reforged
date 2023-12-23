@@ -27,8 +27,11 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
+import org.openjdk.nashorn.internal.runtime.doubleconv.CachedPowers;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 
 public class FluidCellItem extends SimpleFluidItem {
     private final int capacity;
-    private Fluid fluid = Fluids.EMPTY;
+    private FluidStack fluid = FluidStack.EMPTY;
 
     public FluidCellItem(Properties properties, int capacity) {
         super(properties, capacity);
@@ -47,7 +50,7 @@ public class FluidCellItem extends SimpleFluidItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack handItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
         BlockHitResult blockhitresult = getPlayerPOVHitResult(
-                level, player, this.fluid == Fluids.EMPTY ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE
+                level, player, this.fluid.isEmpty() ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE
         );
         if (blockhitresult.getType() == HitResult.Type.MISS) {
             return InteractionResultHolder.pass(handItem);
@@ -98,7 +101,7 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
-    public Fluid getFluid() {
+    public FluidStack getFluid() {
         return this.fluid;
     }
 
@@ -109,22 +112,18 @@ public class FluidCellItem extends SimpleFluidItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        itemStack.getCapability(Capabilities.FLUID_HANDLER_ITEM).ifPresent(
-                (fluidHandlerItem) -> {
-                    if (!fluidHandlerItem.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
-                        Component descriptionType = MutableComponent.create(ComponentContents.EMPTY)
-                                .append(Component.translatable("fluid_cell.desc.stored")
-                                        .append(Component.literal(fluidHandlerItem.getFluidInTank(0).getDisplayName().getString())
-                                                .withStyle(ChatFormatting.AQUA)));
-                        Component descriptionAmount = MutableComponent.create(ComponentContents.EMPTY)
-                                .append(Component.translatable("fluid_cell.desc.amount"))
-                                .append(Component.literal(String.format("%d/%d",
-                                        fluidHandlerItem.getFluidInTank(0).getAmount(),
-                                        com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
-                                                .getFluidCapacity())).withStyle(ChatFormatting.AQUA));
-                        tooltip.add(descriptionType);
-                        tooltip.add(descriptionAmount);
-                    }
-                });
+        IFluidHandlerItem item = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
+            Component descriptionType = Component.translatable("fluid_cell.desc.stored")
+                    .append(Component.literal(item.getFluidInTank(0).getDisplayName().getString())
+                            .withStyle(ChatFormatting.AQUA));
+            Component descriptionAmount = Component.translatable("fluid_cell.desc.amount")
+                    .append(Component.literal(String.format("%d/%d",
+                            item.getFluidInTank(0).getAmount(),
+                            com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
+                                    .getFluidCapacity())).withStyle(ChatFormatting.AQUA));
+            tooltip.add(descriptionType);
+            tooltip.add(descriptionAmount);
+        }
     }
 }

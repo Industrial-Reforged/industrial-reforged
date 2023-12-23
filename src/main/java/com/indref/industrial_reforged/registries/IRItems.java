@@ -3,20 +3,21 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.registries.items.food.EnergyDrinkItem;
-import com.indref.industrial_reforged.registries.items.misc.Debugger;
 import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
+import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
 import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
-import com.indref.industrial_reforged.test.EnergyTestItem;
-import com.indref.industrial_reforged.test.HeatTestItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -42,6 +43,8 @@ public class IRItems {
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
     public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
+    public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
+            () -> new UraniumFuelRod(new Item.Properties().stacksTo(1)));
     // Canned items
     public static final Supplier<Item> EMPTY_CAN = registerItem("empty_can",
             () -> new Item(new Item.Properties()));
@@ -64,22 +67,13 @@ public class IRItems {
     // armor
 
     public static final Supplier<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",
-            () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+            () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties()));
     public static final Supplier<Item> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
-            () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1)));
+            () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final Supplier<Item> HAZMAT_CHESTPLATE = registerItem("hazmat_chestplate",
-            () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+            () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
     public static final Supplier<Item> HAZMAT_HELMET = registerItem("hazmat_helmet",
-            () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)));
-
-    //test items
-    public static final Supplier<Item> ENERGY_TEST_ITEM = registerItem("energy_test",
-            () -> new EnergyTestItem(new Item.Properties()));
-    public static final Supplier<Item> HEAT_TEST_ITEM = registerItem("heat_test",
-            () -> new HeatTestItem(new Item.Properties()));
-    public static final Supplier<Item> DEBUGGER = registerItem("debugger",
-            () -> new Debugger(new Item.Properties()));
-
+            () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties()));
 
     //misc
     public static final Supplier<Item> RUBBER_SHEET = registerItem("rubber_sheet",

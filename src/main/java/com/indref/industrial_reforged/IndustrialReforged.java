@@ -1,15 +1,10 @@
 package com.indref.industrial_reforged;
 
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRCreativeTab;
-import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.IRFluidTypes;
-import com.indref.industrial_reforged.registries.IRFluids;
+import com.indref.industrial_reforged.capabilities.IRAttachmentTypes;
 import com.indref.industrial_reforged.events.IREvents;
 import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.worldgen.IRPlacerTypes;
+import com.indref.industrial_reforged.registries.*;
+import com.indref.industrial_reforged.registries.IRPlacerTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -48,6 +43,8 @@ public class IndustrialReforged {
 
         IRFluids.FLUIDS.register(modEventBus);
         IRFluidTypes.FLUID_TYPES.register(modEventBus);
+
+        IRAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
     }

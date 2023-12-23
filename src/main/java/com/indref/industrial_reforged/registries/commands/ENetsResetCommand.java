@@ -5,7 +5,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import org.apache.logging.log4j.core.jmx.Server;
 
 public class ENetsResetCommand {
     public ENetsResetCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -16,8 +18,9 @@ public class ENetsResetCommand {
     }
 
     private int resetENets(CommandSourceStack source) {
-        Level level = source.getLevel();
-        Util.getEnergyNets(level).resetNets();
+        ServerLevel level = source.getLevel();
+        Util.getEnergyNets(level).getEnets().resetNets();
+        Util.getEnergyNets(level).setDirty();
         source.sendSuccess(() -> Component.literal("Reset energy nets"), true);
         return 1;
     }

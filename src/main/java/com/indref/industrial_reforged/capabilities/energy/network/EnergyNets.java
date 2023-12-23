@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.capabilities.energy.network;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.CableBlockEntity;
+import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class EnergyNets implements IEnergyNets {
+public class EnergyNets {
     private List<EnergyNet> enets;
     private final Level level;
 
@@ -23,12 +23,10 @@ public class EnergyNets implements IEnergyNets {
         this.enets = new ArrayList<>();
     }
 
-    @Override
     public List<EnergyNet> getNetworks() {
         return this.enets;
     }
 
-    @Override
     @Nullable
     public EnergyNet getNetworkRaw(BlockPos blockPos) {
         for (EnergyNet enet : getNetworks()) {
@@ -38,7 +36,6 @@ public class EnergyNets implements IEnergyNets {
         return null;
     }
 
-    @Override
     @Nullable
     public EnergyNet getNetwork(BlockPos blockPos) {
         EnergyNet rawNet = getNetworkRaw(blockPos);
@@ -54,7 +51,6 @@ public class EnergyNets implements IEnergyNets {
         return null;
     }
 
-    @Override
     public EnergyNet getOrCreateNetAndPush(BlockPos pos) {
         {
             EnergyNet net = getNetwork(pos);
@@ -81,7 +77,6 @@ public class EnergyNets implements IEnergyNets {
      * @param originNet  the main net that the other net will be merged into
      * @param toMergeNet the net that will get merged into originNet
      */
-    @Override
     public void mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
         if (originNet.getEnergyTier() == toMergeNet.getEnergyTier()) {
             originNet.get(EnergyNet.EnergyTypes.PRODUCERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.PRODUCERS));
@@ -91,7 +86,6 @@ public class EnergyNets implements IEnergyNets {
         }
     }
 
-    @Override
     public void splitNets(BlockPos removedBlockPos) {
         // These are all transmitters that have been checked
         Set<BlockPos> alreadyChecked = new HashSet<>();
@@ -103,7 +97,7 @@ public class EnergyNets implements IEnergyNets {
         // Loop through all blocks around the removed position
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
             // Check if one of the blocks is a transmitter of energy
-            if (level.getBlockEntity(offsetPos) instanceof CableBlockEntity && !alreadyChecked.contains(offsetPos)) {
+            if (level.getBlockState(offsetPos).getBlock() instanceof CableBlock && !alreadyChecked.contains(offsetPos)) {
                 enets[index] = new EnergyNet(level);
                 enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).add(removedBlockPos);
                 recheckConnections(offsetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enets[index], alreadyChecked);
@@ -137,21 +131,18 @@ public class EnergyNets implements IEnergyNets {
         }
     }
 
-    @Override
     public void removeNetwork(BlockPos pos) {
         if (getNetwork(pos) != null) {
             enets.remove(getNetwork(pos));
         }
     }
 
-    @Override
     public void removeNetwork(int index) {
         if (getNetworks().get(index) != null) {
             enets.remove(getNetworks().get(index));
         }
     }
 
-    @Override
     public void resetNets() {
         this.enets = new ArrayList<>();
     }
@@ -177,10 +168,10 @@ public class EnergyNets implements IEnergyNets {
     public boolean is(EnergyNet.EnergyTypes type, BlockPos blockPos) {
         switch (type) {
             case TRANSMITTERS -> {
-                return level.getBlockEntity(blockPos) instanceof CableBlockEntity;
+                return level.getBlockState(blockPos).getBlock() instanceof CableBlock;
             }
             case CONSUMERS -> {
-                return level.getBlockEntity(blockPos) instanceof IEnergyBlock && !(level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity);
+                return level.getBlockState(blockPos).getBlock() instanceof IEnergyBlock && !(level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity);
             }
             case PRODUCERS -> {
                 return level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity;

@@ -21,7 +21,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		basicItemBlock(IRBlocks.RUBBER_TREE_SAPLING.get().asItem(), "tree");
+		//basicItemBlock(IRBlocks.RUBBER_TREE_SAPLING.get().asItem(), "tree");
 		parentItemBlock(IRBlocks.RUBBER_TREE_BUTTON.get().asItem(), "_inventory");
 		basicItem(IRBlocks.RUBBER_TREE_DOOR.get().asItem(), "tree");
 		parentItemBlock(IRBlocks.RUBBER_TREE_FENCE.get().asItem(), "_inventory");

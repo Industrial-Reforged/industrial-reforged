@@ -1,9 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
-import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -69,17 +67,13 @@ public class IRCreativeTab {
                 // misc blocks
                 addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
+                addBlock(output, IRBlocks.REFRACTORY_STONE);
                 addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.TIN_CABLE);
                 addItem(output, IRItems.MINING_PIPE);
                 addBlock(output, IRBlocks.TERRACOTTA_SLAB);
-
-                // test objects
-                addPoweredItem(output, IRItems.ENERGY_TEST_ITEM);
-                addPoweredItem(output, IRItems.HEAT_TEST_ITEM);
-                addBlock(output, IRBlocks.TEST_BLOCK_ENERGY);
-                addBlock(output, IRBlocks.TEST_CONTROLLER);
-                addBlock(output, IRBlocks.TEST_PART);
+                addBlock(output, IRBlocks.TERRACOTTA_BRICK);
+                addBlock(output, IRBlocks.CERAMIC_FAUCET);
                 
                 // Rubber Tree
                 addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
@@ -90,7 +84,7 @@ public class IRCreativeTab {
                 addBlock(output, IRBlocks.RUBBER_TREE_LOG);
                 addBlock(output, IRBlocks.RUBBER_TREE_PLANKS);
                 addBlock(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE);
-                addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
+                // addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
                 addBlock(output, IRBlocks.RUBBER_TREE_SLAB);
                 addBlock(output, IRBlocks.RUBBER_TREE_STAIRS);
                 addBlock(output, IRBlocks.RUBBER_TREE_TRAPDOOR);
@@ -132,8 +126,6 @@ public class IRCreativeTab {
                 addItem(output, IRItems.TIN_INGOT);
             }).build());
 
-
-
     /**
      * Add a new item to a creative tab
      * @param output Specify the creative tab
@@ -147,11 +139,7 @@ public class IRCreativeTab {
         // Add base item
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
-        if (item.get() instanceof IEnergyItem energyItem)
-            energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity());
 
-        if (item.get() instanceof IHeatItem heatItem)
-            heatItem.setHeatStored(stack, heatItem.getHeatCapacity());
 
         output.accept(stack);
     }

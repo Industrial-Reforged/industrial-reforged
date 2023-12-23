@@ -27,7 +27,7 @@ import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CoilBlock extends BaseEntityBlock implements IMultiBlockController, IWrenchable {
+public class CoilBlock extends Block implements IMultiBlockController, IWrenchable {
     public CoilBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -59,16 +59,13 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     }
 
     @Nullable
-    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
         if (level.isClientSide()) return null;
 
-        return createTickerHelper(blockEntityType, IRBlockEntityTypes.FIREBOX.get(),
-                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
+        return null;
     }
 
     @Nullable
-    @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new FireboxBlockEntity(blockPos, blockState);
     }

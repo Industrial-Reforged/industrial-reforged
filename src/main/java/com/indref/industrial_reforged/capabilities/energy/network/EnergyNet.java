@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.List;
 
 public class EnergyNet {
-    private EnergyTier energyTier;
+    private @Nullable EnergyTier energyTier;
     private Set<BlockPos> transmitters;
     private Set<BlockPos> producers;
     private Set<BlockPos> consumers;
@@ -27,7 +28,7 @@ public class EnergyNet {
         this.transmitters = new HashSet<>();
         this.producers = new HashSet<>();
         this.consumers = new HashSet<>();
-        this.energyTier = EnergyTiers.CREATIVE;
+        this.energyTier = null;
         this.level = level;
     }
 
@@ -36,7 +37,7 @@ public class EnergyNet {
         this.producers = new HashSet<>();
         this.consumers = new HashSet<>();
         transmitters.add(blockPos);
-        this.energyTier = EnergyTiers.CREATIVE;
+        this.energyTier = ((CableBlock) level.getBlockState(blockPos).getBlock()).getEnergyTier();
         this.level = level;
     }
 

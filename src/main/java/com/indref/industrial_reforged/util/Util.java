@@ -1,13 +1,14 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.capabilities.EnetsSavedData;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNetsProvider;
-import com.indref.industrial_reforged.capabilities.energy.network.IEnergyNets;
-import com.mojang.datafixers.util.Pair;
+import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.HashMap;
@@ -33,9 +34,11 @@ public final class Util {
         };
     }
 
-    public static IEnergyNets getEnergyNets(Level level) {
-        return level.getCapability(IRCapabilities.ENERGY_NETWORKS)
-                .orElseThrow(() -> new NullPointerException("Missing energy networks on level"));
+    public static EnetsSavedData getEnergyNets(ServerLevel level) {
+        return level.getDataStorage().computeIfAbsent(
+                new SavedData.Factory<>(() -> new EnetsSavedData(level),
+                        (CompoundTag nbt) -> EnetsSavedData.load(nbt, level)),
+                "enets");
     }
 
     public static String fluidStackToString(FluidStack fluidStack) {
@@ -43,6 +46,6 @@ public final class Util {
     }
 
     public static String fluidToString(Fluid fluid) {
-        return "Fluid { "+"type: "+fluid.getFluidType()+" }";
+        return "Fluid { " + "type: " + fluid.getFluidType() + " }";
     }
 }

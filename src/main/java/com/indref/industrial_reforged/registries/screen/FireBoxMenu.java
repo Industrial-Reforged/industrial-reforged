@@ -13,7 +13,6 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,10 +30,6 @@ public class FireBoxMenu extends IRAbstractContainerMenu {
         blockEntity = ((FireboxBlockEntity) entity);
         this.level = inv.player.level();
         this.data = data;
-
-        this.blockEntity.getCapability(Capabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 36));
-        });
 
         addDataSlots(data);
     }

@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class RubberTreeLeavesBlock extends LeavesBlock {
 
 	public RubberTreeLeavesBlock() {
-		super(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES));
+		super(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES));
 	}
 
     @Override

@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.mojang.datafixers.util.Pair;
@@ -186,9 +185,8 @@ public final class MultiblockHelper {
 
     private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
         player.sendSystemMessage(Component.translatable("multiblock.info.failed_to_construct").withStyle(ChatFormatting.RED));
-        player.sendSystemMessage(MutableComponent.create(ComponentContents.EMPTY)
-                .append(Component.literal("| ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
+        player.sendSystemMessage(Component.literal("| ")
+                        .withStyle(ChatFormatting.DARK_GRAY)
                 .append(Component.translatable("multiblock.info.actual_block")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.literal(": ")
@@ -196,8 +194,7 @@ public final class MultiblockHelper {
                 .append(Component.literal(level.getBlockState(curBlockPos).getBlock().getName().getString())
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
-        player.sendSystemMessage(MutableComponent.create(ComponentContents.EMPTY)
-                .append(Component.literal("| ")
+        player.sendSystemMessage((Component.literal("| ")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.translatable("multiblock.info.expected_block")
                         .withStyle(ChatFormatting.DARK_GRAY))
@@ -206,9 +203,9 @@ public final class MultiblockHelper {
                 .append(Component.literal(def.get(blockIndex).getName().getString())
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
-        player.sendSystemMessage(MutableComponent.create(ComponentContents.EMPTY)
-                .append(Component.literal("| ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
+        player.sendSystemMessage(
+                Component.literal("| ")
+                        .withStyle(ChatFormatting.DARK_GRAY)
                 .append(Component.translatable("multiblock.info.block_pos")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.literal(": ")

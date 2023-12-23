@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.BlockPos;
@@ -21,15 +20,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuProvider {
+public class FireboxBlockEntity extends BlockEntity implements MenuProvider {
     private int burnTime;
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
@@ -53,7 +49,6 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
         }
     };
     private static final int INPUT_SLOT = 0;
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected final ContainerData data;
 
     public FireboxBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -80,27 +75,6 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
         return Component.literal("Firebox");
     }
 
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == Capabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
-    }
-
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < itemHandler.getSlots(); i++) {
@@ -112,7 +86,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = itemHandler.getStackInSlot(INPUT_SLOT);
         BlockEntity self = level.getBlockEntity(blockPos);
-        IHeatBlock heatBlock = (IHeatBlock) self;
+        // IHeatBlock heatBlock = (IHeatBlock) self;
         // Check if item is a fuel item
         if (CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING) > 0) {
             if (burnTime <= 0) {
@@ -120,7 +94,7 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
                 itemStack.shrink(1);
             }
             burnTime--;
-            heatBlock.tryFillHeat(self, 1);
+            //heatBlock.tryFillHeat(self, 1);
             IndustrialReforged.LOGGER.info("Burntime: " + burnTime);
         }
     }
@@ -146,7 +120,6 @@ public class FireboxBlockEntity extends BlockEntity implements IHeatBlock, MenuP
     }
 
     // Heat capacity
-    @Override
     public int getHeatCapacity() {
         return 4000;
     }

@@ -2,16 +2,16 @@ package com.indref.industrial_reforged.api.items.container;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 public interface IFluidItem {
-    Fluid getFluid();
+    FluidStack getFluid();
 
     static IFluidHandlerItem getFluidHandler(ItemStack itemStack) {
-        return itemStack.getCapability(Capabilities.FLUID_HANDLER_ITEM).orElseThrow(NullPointerException::new);
+        return itemStack.getCapability(Capabilities.FluidHandler.ITEM);
     }
 
     /**
@@ -33,7 +33,7 @@ public interface IFluidItem {
      */
 
     default boolean tryFillFluid(ItemStack itemStack, int amount) {
-        return tryFillFluid(getFluid(), amount, itemStack);
+        return tryFillFluid(getFluid().getFluid(), amount, itemStack);
     }
 
     /**
@@ -53,7 +53,7 @@ public interface IFluidItem {
      * @return true if was able to fill, false if wasn't able to do so
      */
     default boolean tryDrainFluid(ItemStack itemStack, int amount) {
-        return tryDrainFluid(getFluid(), amount, itemStack);
+        return tryDrainFluid(getFluid().getFluid(), amount, itemStack);
     }
 
     /**

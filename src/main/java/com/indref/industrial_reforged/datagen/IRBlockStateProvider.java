@@ -26,7 +26,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 		woodBlock((RotatedPillarBlock) IRBlocks.STRIPPED_RUBBER_TREE_WOOD.get(), IRBlocks.STRIPPED_RUBBER_TREE_LOG.get(), treeFolder);
 		simpleBlockParentItem(IRBlocks.RUBBER_TREE_PLANKS.get(), "cube_all", "all", treeFolder);
 		simpleBlockParentItem(IRBlocks.RUBBER_TREE_LEAVES.get(), "leaves", "all", treeFolder);
-		simpleBlock(IRBlocks.RUBBER_TREE_SAPLING.get(), "cross", "cross", treeFolder);
+		//simpleBlock(IRBlocks.RUBBER_TREE_SAPLING.get(), "cross", "cross", treeFolder);
 		buttonBlock((ButtonBlock) IRBlocks.RUBBER_TREE_BUTTON.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		inventoryModel(IRBlocks.RUBBER_TREE_BUTTON.get(), "button_inventory", blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		doorBlock((DoorBlock) IRBlocks.RUBBER_TREE_DOOR.get(),

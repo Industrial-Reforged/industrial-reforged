@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.worldgen.RubberTreeFoliagePlacer;
-import com.indref.industrial_reforged.worldgen.RubberTreeTrunkPlacer;
+import com.indref.industrial_reforged.registries.worldgen.RubberTreeFoliagePlacer;
+import com.indref.industrial_reforged.registries.worldgen.RubberTreeTrunkPlacer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
@@ -66,8 +66,8 @@ public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
 		})
 		.add(Registries.PLACED_FEATURE, context -> {
 			HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
-			context.register(RUBBER_TREE_PLACE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(RUBBER_TREE_KEY),
-				VegetationPlacements.treePlacement(PlacementUtils.countExtra(3, 0.1f, 2), IRBlocks.RUBBER_TREE_SAPLING.get())));
+			//context.register(RUBBER_TREE_PLACE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(RUBBER_TREE_KEY),
+			//	VegetationPlacements.treePlacement(PlacementUtils.countExtra(3, 0.1f, 2), IRBlocks.RUBBER_TREE_SAPLING.get())));
 			context.register(URANIUM_ORE_PLACE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(URANIUM_ORE_KEY),
 				List.of(CountPlacement.of(40), InSquarePlacement.spread(), HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0)), BiomeFilter.biome())));
 		});
