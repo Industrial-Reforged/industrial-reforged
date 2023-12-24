@@ -57,14 +57,13 @@ public class EnergyNets {
             if (net != null) {
                 if (is(EnergyNet.EnergyTypes.TRANSMITTERS, pos)) {
                     net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
-                } else if (is(EnergyNet.EnergyTypes.PRODUCERS, pos)) {
-                    net.add(pos, EnergyNet.EnergyTypes.PRODUCERS);
-                } else if (is(EnergyNet.EnergyTypes.CONSUMERS, pos)) {
-                    net.add(pos, EnergyNet.EnergyTypes.CONSUMERS);
+                } else if (is(EnergyNet.EnergyTypes.INTERACTORS, pos)) {
+                    net.add(pos, EnergyNet.EnergyTypes.INTERACTORS);
                 }
                 return getNetwork(pos);
             }
         }
+
         EnergyNet newNet = EnergyNet.createNetworkAt(pos, this.level);
         enets.add(newNet);
         return newNet;
@@ -79,8 +78,7 @@ public class EnergyNets {
      */
     public void mergeNets(EnergyNet originNet, EnergyNet toMergeNet) {
         if (originNet.getEnergyTier() == toMergeNet.getEnergyTier()) {
-            originNet.get(EnergyNet.EnergyTypes.PRODUCERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.PRODUCERS));
-            originNet.get(EnergyNet.EnergyTypes.CONSUMERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.CONSUMERS));
+            originNet.get(EnergyNet.EnergyTypes.INTERACTORS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.INTERACTORS));
             originNet.get(EnergyNet.EnergyTypes.TRANSMITTERS).addAll(toMergeNet.get(EnergyNet.EnergyTypes.TRANSMITTERS));
             enets.remove(toMergeNet);
         }
@@ -113,7 +111,7 @@ public class EnergyNets {
     private void recheckConnections(BlockPos checkFrom, EnergyNet.EnergyTypes checkedPosType, EnergyNet enet, Set<BlockPos> alreadyCheckedTracker) {
         if (!alreadyCheckedTracker.contains(checkFrom)) {
             enet.get(checkedPosType).add(checkFrom);
-            if (checkedPosType== EnergyNet.EnergyTypes.TRANSMITTERS) {
+            if (checkedPosType == EnergyNet.EnergyTypes.TRANSMITTERS) {
                 alreadyCheckedTracker.add(checkFrom);
             }
         } else {
@@ -123,10 +121,8 @@ public class EnergyNets {
             if (!enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(offSetPos))
                 if (is(EnergyNet.EnergyTypes.TRANSMITTERS, offSetPos)) {
                     recheckConnections(offSetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enet, alreadyCheckedTracker);
-                } else if (is(EnergyNet.EnergyTypes.CONSUMERS, offSetPos)) {
-                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.CONSUMERS, enet, alreadyCheckedTracker);
-                } else if (is(EnergyNet.EnergyTypes.PRODUCERS, offSetPos)) {
-                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.PRODUCERS, enet, alreadyCheckedTracker);
+                } else if (is(EnergyNet.EnergyTypes.INTERACTORS, offSetPos)) {
+                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.INTERACTORS, enet, alreadyCheckedTracker);
                 }
         }
     }
@@ -170,14 +166,11 @@ public class EnergyNets {
             case TRANSMITTERS -> {
                 return level.getBlockState(blockPos).getBlock() instanceof CableBlock;
             }
-            case CONSUMERS -> {
-                return level.getBlockState(blockPos).getBlock() instanceof IEnergyBlock && !(level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity);
-            }
-            case PRODUCERS -> {
-                return level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity;
+            case INTERACTORS -> {
+                return level.getBlockState(blockPos).getBlock() instanceof IEnergyBlock;
             }
         }
-        throw new IllegalStateException("Unreachable! Energy type did not match! Energy-type: "+type);
+        throw new IllegalStateException("Unreachable! Energy type did not match! Energy-type: " + type);
     }
 
     @Override
@@ -188,3 +181,4 @@ public class EnergyNets {
                 '}';
     }
 }
+

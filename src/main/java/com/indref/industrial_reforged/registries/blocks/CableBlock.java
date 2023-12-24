@@ -5,33 +5,25 @@ import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import com.indref.industrial_reforged.capabilities.EnetsSavedData;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CableBlock extends PipeBlock {
     private final EnergyTier energyTier;
-
     private List<BlockPos> checkedBlocks = new ArrayList<>();
+
     public CableBlock(Properties properties, int width, EnergyTier energyTier) {
         super(properties, width);
         this.energyTier = energyTier;
@@ -52,6 +44,8 @@ public class CableBlock extends PipeBlock {
                         nets.getEnets().mergeNets(net, nets.getEnets().getNetwork(pos));
                         nets.setDirty();
                     }
+                } else if (level.getBlockEntity(pos) instanceof IEnergyBlock) {
+                    nets.getEnets().getNetwork(blockPos).add(pos, EnergyNet.EnergyTypes.INTERACTORS);
                 }
             }
         }
@@ -68,6 +62,11 @@ public class CableBlock extends PipeBlock {
             // Tell the level to save it
             nets.setDirty();
         }
+    }
+
+    @Override
+    public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
+        return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
     }
 
     public EnergyTier getEnergyTier() {

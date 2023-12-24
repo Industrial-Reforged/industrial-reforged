@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blocks.transfer;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -118,8 +119,6 @@ public abstract class PipeBlock extends Block implements IWrenchable {
         return blockState;
     }
 
-    // Check for blocks that are already there when placing the cable
-
 
     @Nullable
     @Override
@@ -131,12 +130,13 @@ public abstract class PipeBlock extends Block implements IWrenchable {
         for (Direction direction : Direction.values()) {
             int connectionIndex = direction.ordinal();
             BlockPos facingBlockPos = blockPos.relative(direction);
-            BlockState facingBlockState = level.getBlockState(facingBlockPos);
 
             if (canConnectTo(level.getBlockEntity(facingBlockPos))) {
-                return blockState.setValue(CONNECTION[connectionIndex], true);
+                blockState = blockState.setValue(CONNECTION[connectionIndex], true);
             }
         }
+
+        IndustrialReforged.LOGGER.info("Cable: {}", blockState);
 
         return blockState;
     }
