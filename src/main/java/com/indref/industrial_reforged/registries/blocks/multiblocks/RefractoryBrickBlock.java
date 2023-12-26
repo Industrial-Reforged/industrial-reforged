@@ -32,17 +32,14 @@ public class RefractoryBrickBlock extends Block implements IWrenchable {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
+        if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED))
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
                 if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
                     NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, pos);
-                    break;
                 }
             }
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.FAIL;
+        return InteractionResult.SUCCESS;
     }
 
     @Override

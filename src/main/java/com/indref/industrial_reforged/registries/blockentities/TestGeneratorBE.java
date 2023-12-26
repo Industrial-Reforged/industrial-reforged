@@ -1,20 +1,20 @@
-package com.indref.industrial_reforged.test;
+package com.indref.industrial_reforged.registries.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TestGeneratorBe extends GeneratorBlockEntity {
-    public TestGeneratorBe(BlockEntityType<?> blockEntityType, BlockPos p_155229_, BlockState p_155230_) {
-        super(blockEntityType, p_155229_, p_155230_);
+public class TestGeneratorBE extends GeneratorBlockEntity {
+    public TestGeneratorBE(BlockPos p_155229_, BlockState p_155230_) {
+        super(IRBlockEntityTypes.TEST_GEN.get(), p_155229_, p_155230_);
     }
 
     @Override
     public int getGenerationAmount() {
-        return 10;
+        return 4;
     }
 
     @Override

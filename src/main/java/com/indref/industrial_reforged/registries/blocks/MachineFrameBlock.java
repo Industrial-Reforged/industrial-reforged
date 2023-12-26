@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class MachineFrameBlock extends BaseEntityBlock implements IWrenchable, IEnergyBlock {
+public class MachineFrameBlock extends BaseEntityBlock implements IWrenchable {
     public static final MapCodec<MachineFrameBlock> CODEC = simpleCodec(MachineFrameBlock::new);
     public MachineFrameBlock(Properties properties) {
         super(properties);

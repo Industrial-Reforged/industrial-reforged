@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.capabilities;
 import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.capabilities.energy.EnergyStorage;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Basic Capability Interface used for handling
@@ -24,6 +25,24 @@ public class EnergyWrapper {
         @Override
         public void setEnergyStored(int value) {
             itemStack.setData(IRAttachmentTypes.ENERGY.get(), new EnergyStorage(value));
+        }
+    }
+
+    public static class Block implements IEnergyStorage {
+        private final BlockEntity blockEntity;
+
+        public Block(BlockEntity blockEntity) {
+            this.blockEntity = blockEntity;
+        }
+
+        @Override
+        public int getEnergyStored() {
+            return blockEntity.getData(IRAttachmentTypes.ENERGY.get()).getEnergyStored();
+        }
+
+        @Override
+        public void setEnergyStored(int value) {
+            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new EnergyStorage(value));
         }
     }
 

@@ -21,6 +21,10 @@ public class EnergyStorage implements INBTSerializable<Tag> {
         return energy;
     }
 
+    public void setEnergyStored(int val) {
+        this.energy = val;
+    }
+
     @Override
     public Tag serializeNBT() {
         return IntTag.valueOf(this.getEnergyStored());

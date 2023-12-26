@@ -18,9 +18,9 @@ public class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<CrucibleBlockEntity>> CRUCIBLE =
             BLOCK_ENTITIES.register("crucible", () ->
                     BlockEntityType.Builder.of(CrucibleBlockEntity::new, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()).build(null));
-    public static final Supplier<BlockEntityType<CrucibleBlockEntity>> TEST_GEN =
+    public static final Supplier<BlockEntityType<TestGeneratorBE>> TEST_GEN =
             BLOCK_ENTITIES.register("test_gen", () ->
-                    BlockEntityType.Builder.of(CrucibleBlockEntity::new, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()).build(null));
+                    BlockEntityType.Builder.of(TestGeneratorBE::new, IRBlocks.TEST_GENERATOR.get()).build(null));
     public static final Supplier<BlockEntityType<TestBlockEntity>> TEST_BLOCK =
             BLOCK_ENTITIES.register("test_block", () ->
                     BlockEntityType.Builder.of(TestBlockEntity::new, IRBlocks.BASIC_MACHINE_FRAME.get()).build(null));

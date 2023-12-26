@@ -23,15 +23,7 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-
-        Vec3i[] neighbors = {
-                new Vec3i(1, 0, 0),
-                new Vec3i(0, 1, 0),
-                new Vec3i(0, 0, 1),
-                new Vec3i(-1, 0, 0),
-                new Vec3i(0, -1, 0),
-                new Vec3i(0, 0, -1),
-        };
+        energyBlock.tryFillEnergy(blockEntity, getGenerationAmount());
 
         for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
             BlockEntity blockEntity1 = level.getBlockEntity(pos);
@@ -39,7 +31,7 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
             if (block.getBlock() instanceof CableBlock cableBlock) {
 
             } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
-
+                energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
             }
         }
     }

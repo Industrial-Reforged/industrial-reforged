@@ -72,6 +72,14 @@ public class CrucibleBlockEntity extends BlockEntity implements MenuProvider {
         return Component.translatable("Crucible");
     }
 
+    public ItemStackHandler getItemHandler() {
+        return itemHandler;
+    }
+
+    public FluidTank getFluidTank() {
+        return fluidTank;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());

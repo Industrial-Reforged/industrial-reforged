@@ -36,7 +36,7 @@ public class CrucibleMenu extends IRAbstractContainerMenu {
         this.level = inv.player.level();
         this.data = data;
 
-        IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, level, blockEntity);
+        IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
 
         int x = 26;
         int y = 18;

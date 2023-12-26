@@ -3,6 +3,9 @@
     "firebox_part=unformed": {
       "model": "indref:block/refractory_brick"
     },
+    "firebox_part=brick": {
+      "model": "indref:block/refractory_brick"
+    },
     "firebox_part=hatch": {
       "model": "indref:block/multiblock/firebox/hatch"
     }

@@ -20,8 +20,9 @@ public final class IRCapabilities {
         public static final BlockCapability<IEnergyStorage, @Nullable Direction> BLOCK = BlockCapability.createSided(create("energy"), IEnergyStorage.class);
         public static final EntityCapability<IEnergyStorage, @Nullable Direction> ENTITY = EntityCapability.createSided(create("energy"), IEnergyStorage.class);
         public static final ItemCapability<IEnergyStorage, Void> ITEM = ItemCapability.createVoid(create("energy"), IEnergyStorage.class);
-        
-        private EnergyStorage() {}
+
+        private EnergyStorage() {
+        }
     }
 
     public static final class HeatStorage {
@@ -29,7 +30,8 @@ public final class IRCapabilities {
         public static final EntityCapability<IHeatStorage, @Nullable Direction> ENTITY = EntityCapability.createSided(create("heat"), IHeatStorage.class);
         public static final ItemCapability<IHeatStorage, Void> ITEM = ItemCapability.createVoid(create("heat"), IHeatStorage.class);
 
-        private HeatStorage() {}
+        private HeatStorage() {
+        }
     }
 
     private static ResourceLocation create(String path) {

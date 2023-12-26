@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -27,9 +28,14 @@ import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CoilBlock extends Block implements IMultiBlockController, IWrenchable {
+public class CoilBlock extends BaseEntityBlock implements IMultiBlockController, IWrenchable {
     public CoilBlock(Properties pProperties) {
         super(pProperties);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(CoilBlock::new);
     }
 
     @Override
@@ -62,10 +68,12 @@ public class CoilBlock extends Block implements IMultiBlockController, IWrenchab
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
         if (level.isClientSide()) return null;
 
-        return null;
+        return createTickerHelper(blockEntityType, IRBlockEntityTypes.FIREBOX.get(),
+                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
     }
 
     @Nullable
+    @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new FireboxBlockEntity(blockPos, blockState);
     }

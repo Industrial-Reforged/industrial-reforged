@@ -14,7 +14,7 @@ public class IRAttachmentTypes {
 
     // Do not try to access these directly! Use capabilities or preferably cast to container block/item/energy
 
-    protected static final Supplier<AttachmentType<EnergyStorage>> ENERGY = ATTACHMENT_TYPES.register(
+    public static final Supplier<AttachmentType<EnergyStorage>> ENERGY = ATTACHMENT_TYPES.register(
             "energy", () -> AttachmentType.serializable(() -> new EnergyStorage(0)).build());
 
     protected static final Supplier<AttachmentType<HeatStorage>> HEAT = ATTACHMENT_TYPES.register(

@@ -3,10 +3,7 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.api.tiers.EnergyTiers;
-import com.indref.industrial_reforged.registries.blocks.CableBlock;
-import com.indref.industrial_reforged.registries.blocks.MachineFrameBlock;
-import com.indref.industrial_reforged.registries.blocks.MiningPipeBlock;
-import com.indref.industrial_reforged.registries.blocks.TerracottaSlabBlock;
+import com.indref.industrial_reforged.registries.blocks.*;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.*;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLogBlock;
@@ -53,6 +50,8 @@ public class IRBlocks {
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of().noOcclusion()));
+    public static final Supplier<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
+            () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
 
     // Rubber
     public static final Supplier<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",

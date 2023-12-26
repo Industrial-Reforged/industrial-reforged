@@ -105,6 +105,10 @@ public class FireboxBlockEntity extends BlockEntity implements MenuProvider {
         return new FireBoxMenu(containerId, inventory, this, this.data);
     }
 
+    public ItemStackHandler getItemHandler() {
+        return itemHandler;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());

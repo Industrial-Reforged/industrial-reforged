@@ -56,7 +56,7 @@ public record FireBoxMultiblock() implements IMultiblock {
                 switch (index) {
                     case 1, 3, 5, 7 -> PartIndex.HATCH;
                     case 4 -> PartIndex.COIL;
-                    default -> PartIndex.UNFORMED;
+                    default -> PartIndex.BRICK;
                 }));
     }
 
@@ -69,6 +69,7 @@ public record FireBoxMultiblock() implements IMultiblock {
 
     public enum PartIndex implements StringRepresentable {
         UNFORMED("unformed"),
+        BRICK("brick"),
         HATCH("hatch"),
         COIL("coil");
         private final String name;

@@ -32,11 +32,11 @@ public final class BlockUtils {
         };
     }
 
-    public static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, Level level, BlockEntity blockEntity) {
-        return getBlockEntityCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null, level);
+    public static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
+        return getBlockEntityCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null, blockEntity.getLevel());
     }
 
-    public static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
+    private static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
         return level.getCapability(cap, pos, state, blockEntity, context);
     }
 
