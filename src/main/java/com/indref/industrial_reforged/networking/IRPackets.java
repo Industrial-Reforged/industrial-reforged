@@ -45,17 +45,13 @@ public class IRPackets {
                 .encoder(S2CFluidSync::toBytes)
                 .consumerMainThread(S2CFluidSync::handle)
                 .add();
-
-        IndustrialReforged.LOGGER.info("registering packets");
     }
 
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);
-        IndustrialReforged.LOGGER.info("sending to server");
     }
 
     public static <MSG> void sendToClients(MSG message) {
         INSTANCE.send(PacketDistributor.ALL.noArg(), message);
-        IndustrialReforged.LOGGER.info("sending to all clients");
     }
 }

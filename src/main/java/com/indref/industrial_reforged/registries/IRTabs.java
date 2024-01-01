@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
@@ -21,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class IRCreativeTab {
+public class IRTabs {
     /**
      * Variable used for registering and storing all item groups under the "indref" mod-id
      */
@@ -30,16 +31,18 @@ public class IRCreativeTab {
     /**
      * Default Item Group for all indref items
      */
-    public static final Supplier<CreativeModeTab> MAIN = CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
-            .title(Component.translatable("creative_tab.indref"))
+    public static final Supplier<CreativeModeTab> ITEMS = CREATIVE_TABS.register("items", () -> CreativeModeTab.builder()
+            .title(Component.translatable("creative_tab.indref.items"))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
+            .icon(() -> new ItemStack(IRItems.HAMMER.get()))
             .displayItems((parameters, output) -> {
                 // Tools
                 addItem(output, IRItems.WRENCH);
                 addItem(output, IRItems.HAMMER);
                 addItem(output, IRItems.TREE_TAP);
                 addPoweredItem(output, IRItems.SCANNER);
+                addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
+                addPoweredItem(output, IRItems.ELECTRIC_HOE);
                 addItem(output, IRItems.TAPE_MEASURE);
 
                 // Storage items
@@ -54,60 +57,10 @@ public class IRCreativeTab {
                 addItem(output, IRItems.HAZMAT_CHESTPLATE);
                 addItem(output, IRItems.HAZMAT_HELMET);
 
-                //food
-                addItem(output, IRItems.EMPTY_CAN);
-                addItem(output, IRItems.NUKA_COLA);
-                addItem(output, IRItems.ENERGY_DRINK);
-
                 // misc and crafting items
                 addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.STICKY_RESIN);
-
-                // misc blocks
-                addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
-                addBlock(output, IRBlocks.REFRACTORY_BRICK);
-                addBlock(output, IRBlocks.REFRACTORY_STONE);
-                addBlock(output, IRBlocks.COIL);
-                addBlock(output, IRBlocks.TIN_CABLE);
-                addItem(output, IRItems.MINING_PIPE);
-                addBlock(output, IRBlocks.TERRACOTTA_SLAB);
-                addBlock(output, IRBlocks.TERRACOTTA_BRICK);
-                addBlock(output, IRBlocks.CERAMIC_FAUCET);
-                
-                // Rubber Tree
-                addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
-                addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
-                addBlock(output, IRBlocks.RUBBER_TREE_FENCE);
-                addBlock(output, IRBlocks.RUBBER_TREE_FENCE_GATE);
-                addBlock(output, IRBlocks.RUBBER_TREE_LEAVES);
-                addBlock(output, IRBlocks.RUBBER_TREE_LOG);
-                addBlock(output, IRBlocks.RUBBER_TREE_PLANKS);
-                addBlock(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE);
-                // addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
-                addBlock(output, IRBlocks.RUBBER_TREE_SLAB);
-                addBlock(output, IRBlocks.RUBBER_TREE_STAIRS);
-                addBlock(output, IRBlocks.RUBBER_TREE_TRAPDOOR);
-                addBlock(output, IRBlocks.RUBBER_TREE_WOOD);
-                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_LOG);
-                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
-
-                // Ores
-                addBlock(output, IRBlocks.BAUXITE_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_BAUXITE_ORE);
-                addBlock(output, IRBlocks.CHROMIUM_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_CHROMIUM_ORE);
-                addBlock(output, IRBlocks.IRIDIUM_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_IRIDIUM_ORE);
-                addBlock(output, IRBlocks.LEAD_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_LEAD_ORE);
-                addBlock(output, IRBlocks.NICKEL_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_NICKEL_ORE);
-                addBlock(output, IRBlocks.TIN_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_TIN_ORE);
-                addBlock(output, IRBlocks.URANIUM_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_URANIUM_ORE);
-
                 addItem(output, IRItems.RAW_BAUXITE);
                 addItem(output, IRItems.RAW_CHROMIUM);
                 addItem(output, IRItems.RAW_IRIDIUM);
@@ -125,21 +78,64 @@ public class IRCreativeTab {
                 addItem(output, IRItems.URANIUM_INGOT);
                 addItem(output, IRItems.TIN_INGOT);
             }).build());
+    public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
+            .title(Component.translatable("creative_tab.indref.blocks"))
+            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+            .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
+            .displayItems((parameters, output) -> {
+                // misc blocks
+                addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
+                addBlock(output, IRBlocks.REFRACTORY_BRICK);
+                addBlock(output, IRBlocks.REFRACTORY_STONE);
+                addBlock(output, IRBlocks.COIL);
+                addBlock(output, IRBlocks.TIN_CABLE);
+                addItem(output, IRItems.MINING_PIPE);
+                addBlock(output, IRBlocks.TERRACOTTA_SLAB);
+                addBlock(output, IRBlocks.TERRACOTTA_BRICK);
+                addBlock(output, IRBlocks.CERAMIC_FAUCET);
 
-    /**
-     * Add a new item to a creative tab
-     * @param output Specify the creative tab
-     * @param item Specify the item to add
-     */
+                // Ores
+                addBlock(output, IRBlocks.BAUXITE_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_BAUXITE_ORE);
+                addBlock(output, IRBlocks.CHROMIUM_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_CHROMIUM_ORE);
+                addBlock(output, IRBlocks.IRIDIUM_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_IRIDIUM_ORE);
+                addBlock(output, IRBlocks.LEAD_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_LEAD_ORE);
+                addBlock(output, IRBlocks.NICKEL_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_NICKEL_ORE);
+                addBlock(output, IRBlocks.TIN_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_TIN_ORE);
+                addBlock(output, IRBlocks.URANIUM_ORE);
+                addBlock(output, IRBlocks.DEEPSLATE_URANIUM_ORE);
+
+                addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
+                addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
+                addBlock(output, IRBlocks.RUBBER_TREE_FENCE);
+                addBlock(output, IRBlocks.RUBBER_TREE_FENCE_GATE);
+                addBlock(output, IRBlocks.RUBBER_TREE_LEAVES);
+                addBlock(output, IRBlocks.RUBBER_TREE_LOG);
+                addBlock(output, IRBlocks.RUBBER_TREE_PLANKS);
+                addBlock(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE);
+                // addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
+                addBlock(output, IRBlocks.RUBBER_TREE_SLAB);
+                addBlock(output, IRBlocks.RUBBER_TREE_STAIRS);
+                addBlock(output, IRBlocks.RUBBER_TREE_TRAPDOOR);
+                addBlock(output, IRBlocks.RUBBER_TREE_WOOD);
+                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_LOG);
+                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
+            }).build());
+
     private static void addItem(CreativeModeTab.Output output, Supplier<Item> item) {
         output.accept(item.get());
     }
 
     public static void addPoweredItem(CreativeModeTab.Output output, Supplier<Item> item) {
-        // Add base item
         output.accept(item.get());
         ItemStack stack = new ItemStack(item.get());
-
+        IEnergyItem energyItem = (IEnergyItem) stack.getItem();
+        energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity());
 
         output.accept(stack);
     }

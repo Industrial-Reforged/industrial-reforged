@@ -25,7 +25,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FireboxBlockEntity extends BlockEntity implements MenuProvider {
+public class FireboxBlockEntity extends BlockEntity implements MenuProvider/*, IHeatBlock */ {
     private int burnTime;
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
@@ -37,7 +37,6 @@ public class FireboxBlockEntity extends BlockEntity implements MenuProvider {
         protected void onContentsChanged(int slot) {
             setChanged();
             burnTime = CommonHooks.getBurnTime(itemHandler.getStackInSlot(slot), RecipeType.SMELTING);
-            IndustrialReforged.LOGGER.info("Contents changed");
             if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
@@ -95,7 +94,6 @@ public class FireboxBlockEntity extends BlockEntity implements MenuProvider {
             }
             burnTime--;
             //heatBlock.tryFillHeat(self, 1);
-            IndustrialReforged.LOGGER.info("Burntime: " + burnTime);
         }
     }
 

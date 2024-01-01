@@ -30,7 +30,7 @@ public class EnergyNets {
     @Nullable
     public EnergyNet getNetworkRaw(BlockPos blockPos) {
         for (EnergyNet enet : getNetworks()) {
-            if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(blockPos))
+            if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(blockPos) || enet.get(EnergyNet.EnergyTypes.INTERACTORS).contains(blockPos))
                 return enet;
         }
         return null;

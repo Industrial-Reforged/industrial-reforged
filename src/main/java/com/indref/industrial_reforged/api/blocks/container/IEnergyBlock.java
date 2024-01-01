@@ -1,11 +1,13 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IScannable;
 import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 /**
- * Interface for implementing Blocks that store EU
+ * Interface for implementing BlockEntities that store EU
  */
 public interface IEnergyBlock extends IScannable {
 
@@ -32,6 +34,10 @@ public interface IEnergyBlock extends IScannable {
     default int getEnergyStored(BlockEntity blockEntity) {
         IEnergyStorage energyStorage = blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), null);
         return energyStorage.getEnergyStored();
+    }
+
+    default boolean canAcceptEnergy(BlockEntity blockEntity, int amount) {
+        return getEnergyStored(blockEntity) + amount < getEnergyCapacity();
     }
 
     default int getEnergyCapacity() {
@@ -60,6 +66,11 @@ public interface IEnergyBlock extends IScannable {
     }
 
     EnergyTier getEnergyTier();
+
+    static boolean canAcceptEnergyFromSide(BlockEntity blockEntity, Direction direction) {
+        IndustrialReforged.LOGGER.debug("Cap: "+blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), direction));
+        return false;
+    }
 
     @Override
     default List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {

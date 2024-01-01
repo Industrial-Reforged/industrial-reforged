@@ -45,7 +45,6 @@ public class IREvents {
     private static final Set<String> STING_DAMAGE_TYPES = new HashSet<>();
 
     public static void setup() {
-        IndustrialReforged.LOGGER.info("Setup sting damage types");
         STING_DAMAGE_TYPES.add("sting");
         STING_DAMAGE_TYPES.add("cactus");
         STING_DAMAGE_TYPES.add("sweetBerryBush");

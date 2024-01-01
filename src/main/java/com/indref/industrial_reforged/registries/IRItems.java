@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.items.armor.HazmatSuiteItem;
-import com.indref.industrial_reforged.registries.items.food.EnergyDrinkItem;
 import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
@@ -14,10 +13,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -33,6 +29,10 @@ public class IRItems {
             () -> new TreeTapItem(new Item.Properties()));
     public static final Supplier<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
+    public static final Supplier<Item> ELECTRIC_WRENCH = registerItem("electric_wrench",
+            () -> new ElectricWrenchItem(new Item.Properties()));
+    public static final Supplier<Item> ELECTRIC_HOE = registerItem("electric_hoe",
+            () -> new ElectricHoeItem(Tiers.IRON, 0, 0, new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
 
@@ -45,25 +45,6 @@ public class IRItems {
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
             () -> new UraniumFuelRod(new Item.Properties().stacksTo(1)));
-    // Canned items
-    public static final Supplier<Item> EMPTY_CAN = registerItem("empty_can",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> NUKA_COLA = registerItem("nuka_cola",
-            () -> new EnergyDrinkItem(new Item.Properties().food(new FoodProperties.Builder().saturationMod(0.1f)
-                    .effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 300, 1), 1F)
-                    .effect(new MobEffectInstance(MobEffects.LUCK, 300, 1), 1F)
-                    .alwaysEat()
-                    .fast()
-                    .build()
-            )));
-    public static final Supplier<Item> ENERGY_DRINK = registerItem("energy_drink",
-            () -> new EnergyDrinkItem(new Item.Properties().food(new FoodProperties.Builder().saturationMod(0.1f)
-                    .effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 500, 1), 1F)
-                    .effect(new MobEffectInstance(MobEffects.DIG_SPEED, 500, 1), 1F)
-                    .alwaysEat()
-                    .fast()
-                    .build()
-            )));
     // armor
 
     public static final Supplier<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "indref:item/empty_can"
+    "layer0": "indref:item/tool/electric_wrench"
   }
 }

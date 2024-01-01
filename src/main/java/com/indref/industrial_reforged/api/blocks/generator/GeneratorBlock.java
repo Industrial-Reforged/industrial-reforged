@@ -4,11 +4,13 @@ import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.capabilities.IRAttachmentTypes;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +55,14 @@ public abstract class GeneratorBlock extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(blockPos);
         IEnergyStorage es = level.getCapability(IRCapabilities.EnergyStorage.BLOCK, blockPos, blockState, be, null);
         es.setEnergyStored(100);
+        if (level instanceof ServerLevel serverLevel) {
+            player.sendSystemMessage(Component.literal("Is part of net: " + isPartOfEnet(serverLevel, blockPos)));
+            IEnergyBlock.canAcceptEnergyFromSide(be, Direction.NORTH);
+        }
         return InteractionResult.SUCCESS;
     }
+
+     public static boolean isPartOfEnet(ServerLevel level, BlockPos blockPos) {
+        return Util.getEnergyNets(level).getEnets().getNetworkRaw(blockPos) != null;
+     }
 }

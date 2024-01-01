@@ -48,4 +48,26 @@ public final class Util {
     public static String fluidToString(Fluid fluid) {
         return "Fluid { " + "type: " + fluid.getFluidType() + " }";
     }
+
+    public static int[] splitNumberEvenly(int number, int parts) {
+        if (parts <= 0) {
+            throw new IllegalArgumentException("Number of parts must be greater than 0");
+        }
+
+        int[] result = new int[parts];
+        int remainder = number % parts;
+        int quotient = number / parts;
+
+        // Distribute the remainder evenly among the first 'remainder' parts
+        for (int i = 0; i < remainder; i++) {
+            result[i] = quotient + 1;
+        }
+
+        // Distribute the remaining parts
+        for (int i = remainder; i < parts; i++) {
+            result[i] = quotient;
+        }
+
+        return result;
+    }
 }

@@ -36,7 +36,7 @@ public class IndustrialReforged {
 
         IRMenuTypes.MENUS.register(modEventBus);
 
-        IRCreativeTab.CREATIVE_TABS.register(modEventBus);
+        IRTabs.CREATIVE_TABS.register(modEventBus);
 
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);

@@ -2,10 +2,13 @@ package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,20 +19,25 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
         super(blockEntityType, p_155229_, p_155230_);
     }
 
+    @Override
     public void onEnergyChanged() {
-        IndustrialReforged.LOGGER.info("Energy Changed!");
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
+        IndustrialReforged.LOGGER.debug("Ticking");
+        EnergyNets energyNets = Util.getEnergyNets((ServerLevel) level).getEnets();
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
         energyBlock.tryFillEnergy(blockEntity, getGenerationAmount());
 
         for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
             BlockEntity blockEntity1 = level.getBlockEntity(pos);
-            BlockState block = level.getBlockState(blockPos);
+            BlockState block = level.getBlockState(pos);
             if (block.getBlock() instanceof CableBlock cableBlock) {
-
+                IndustrialReforged.LOGGER.debug("Found cable");
+                if (energyNets.getNetwork(pos).distributeEnergy(energyBlock.getEnergyTier().getMaxOutput())) {
+                    energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
+                }
             } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
                 energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
             }

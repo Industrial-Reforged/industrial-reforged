@@ -28,6 +28,6 @@ public enum CrucibleTiers implements CrucibleTier {
 
     @Override
     public Block getCrucibleWallBlock() {
-        return Blocks.TERRACOTTA;
+        return IRBlocks.TERRACOTTA_BRICK.get();
     }
 }

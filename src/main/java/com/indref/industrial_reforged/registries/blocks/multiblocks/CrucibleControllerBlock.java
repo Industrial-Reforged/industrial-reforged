@@ -1,10 +1,12 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.blockentities.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
@@ -17,6 +19,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,7 +42,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController {
+public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController, IWrenchable {
     public static final MapCodec<CrucibleControllerBlock> CODEC = simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, CrucibleTiers.CERAMIC));
     private final CrucibleTier tier;
 
@@ -96,5 +99,10 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
     @Override
     public IMultiblock getMultiblock() {
         return CrucibleMultiblock.CERAMIC;
+    }
+
+    @Override
+    public Item getDropItem() {
+        return IRBlocks.TERRACOTTA_SLAB.get().asItem();
     }
 }
