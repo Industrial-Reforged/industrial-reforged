@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import com.indref.industrial_reforged.api.items.IToolItem;
+import com.indref.industrial_reforged.api.items.SimpleElectricItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
@@ -10,24 +12,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import java.util.Objects;
 import java.util.Random;
 
 import static com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
-public class TreeTapItem extends ToolItem {
-    public TreeTapItem(Properties properties) {
+public class ElectricTreeTapItem extends SimpleElectricItem implements IToolItem {
+    public ElectricTreeTapItem(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return 40;
-    }
-
-    @Override
-    public boolean isDamageable(ItemStack stack) {
-        return true;
     }
 
     @Override
@@ -42,11 +33,16 @@ public class TreeTapItem extends ToolItem {
             int randomInt = random.nextInt(1, 4);
             resinDrop.setCount(randomInt);
             ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
-            useOnContext.getItemInHand().hurtAndBreak(1, Objects.requireNonNull(useOnContext.getPlayer()), (player1) -> {
-                player1.broadcastBreakEvent(useOnContext.getHand());
-            });
+            if (getEnergyStored(useOnContext.getItemInHand()) >= 3) {
+                setEnergyStored(useOnContext.getItemInHand(), getEnergyStored(useOnContext.getItemInHand()) - 3);
+            }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
+    }
+
+    @Override
+    public int getEnergyCapacity() {
+        return 10000;
     }
 }

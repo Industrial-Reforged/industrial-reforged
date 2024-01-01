@@ -43,6 +43,7 @@ public class IRTabs {
                 addPoweredItem(output, IRItems.SCANNER);
                 addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
                 addPoweredItem(output, IRItems.ELECTRIC_HOE);
+                addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addItem(output, IRItems.TAPE_MEASURE);
 
                 // Storage items
@@ -56,6 +57,9 @@ public class IRTabs {
                 addItem(output, IRItems.HAZMAT_LEGGINGS);
                 addItem(output, IRItems.HAZMAT_CHESTPLATE);
                 addItem(output, IRItems.HAZMAT_HELMET);
+
+                // reactor
+                addItem(output, IRItems.URANIUM_FUEL_ROD);
 
                 // misc and crafting items
                 addItem(output, IRItems.FERTILIZER);

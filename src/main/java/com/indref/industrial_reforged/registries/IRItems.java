@@ -10,9 +10,6 @@ import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -33,6 +30,8 @@ public class IRItems {
             () -> new ElectricWrenchItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(Tiers.IRON, 0, 0, new Item.Properties()));
+    public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
+            () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
 
@@ -45,8 +44,8 @@ public class IRItems {
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
             () -> new UraniumFuelRod(new Item.Properties().stacksTo(1)));
-    // armor
 
+    // armor
     public static final Supplier<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",
             () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties()));
     public static final Supplier<Item> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
