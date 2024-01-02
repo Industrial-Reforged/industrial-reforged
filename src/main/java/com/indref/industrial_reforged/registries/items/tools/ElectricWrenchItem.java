@@ -44,7 +44,7 @@ public class ElectricWrenchItem extends SimpleElectricItem implements IToolItem 
         // only on the server side
         if (!level.isClientSide) {
             // check if block can be wrenched
-            if (wrenchableBlock instanceof IWrenchable iWrenchableBlock && player.isCrouching() && getEnergyStored(itemInHand) >= 3) {
+            if (wrenchableBlock instanceof IWrenchable iWrenchableBlock && player.isCrouching() && getEnergyStored(itemInHand) >= 10) {
                 // Drop the block itself instead of custom drop
                 if (iWrenchableBlock.getDropItem() == null) {
                     ItemStack dropItem = wrenchableBlock.asItem().getDefaultInstance();
@@ -55,7 +55,7 @@ public class ElectricWrenchItem extends SimpleElectricItem implements IToolItem 
                     ItemStack dropItem = iWrenchableBlock.getDropItem().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
-                setEnergyStored(itemInHand, getEnergyStored(itemInHand)-3);
+                setEnergyStored(itemInHand, getEnergyStored(itemInHand)-10);
                 level.removeBlock(clickPos, false);
                 return InteractionResult.SUCCESS;
             }

@@ -32,6 +32,10 @@ public class IRItems {
             () -> new ElectricHoeItem(Tiers.IRON, 0, 0, new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties()));
+    public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> ADVANCED_DRILL = registerItem("advanced_drill",
+            () -> new Item(new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
 

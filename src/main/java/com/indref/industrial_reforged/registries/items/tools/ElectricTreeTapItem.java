@@ -27,16 +27,16 @@ public class ElectricTreeTapItem extends SimpleElectricItem implements IToolItem
         BlockPos blockPos = useOnContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
         if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
-            ItemStack resinDrop = new ItemStack(IRItems.STICKY_RESIN.get());
-            Random random = new Random();
-            int randomInt = random.nextInt(1, 4);
-            resinDrop.setCount(randomInt);
-            ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
-            if (getEnergyStored(useOnContext.getItemInHand()) >= 3) {
-                setEnergyStored(useOnContext.getItemInHand(), getEnergyStored(useOnContext.getItemInHand()) - 3);
+            if (getEnergyStored(useOnContext.getItemInHand()) >= 10) {
+                level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
+                ItemStack resinDrop = new ItemStack(IRItems.STICKY_RESIN.get());
+                Random random = new Random();
+                int randomInt = random.nextInt(1, 4);
+                resinDrop.setCount(randomInt);
+                ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
+                setEnergyStored(useOnContext.getItemInHand(), getEnergyStored(useOnContext.getItemInHand()) - 10);
+                return InteractionResult.SUCCESS;
             }
-            return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }
