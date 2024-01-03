@@ -1,15 +1,18 @@
 package com.indref.industrial_reforged.capabilities.energy.network;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class EnergyNets {
     private List<EnergyNet> enets;
@@ -18,7 +21,7 @@ public class EnergyNets {
     /**
      * Initializes energy networks of the world
      */
-    public EnergyNets(Level level) {
+    public EnergyNets(ServerLevel level) {
         this.level = level;
         this.enets = new ArrayList<>();
     }

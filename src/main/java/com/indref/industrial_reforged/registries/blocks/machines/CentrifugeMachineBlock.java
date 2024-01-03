@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
+import com.indref.industrial_reforged.registries.blockentities.CentrifugeBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -26,6 +27,6 @@ public class CentrifugeMachineBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return null;
+        return new CentrifugeBlockEntity(p_153215_, p_153216_);
     }
 }

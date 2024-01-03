@@ -24,4 +24,7 @@ public class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<TestBlockEntity>> TEST_BLOCK =
             BLOCK_ENTITIES.register("test_block", () ->
                     BlockEntityType.Builder.of(TestBlockEntity::new, IRBlocks.BASIC_MACHINE_FRAME.get()).build(null));
+    public static final Supplier<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE =
+            BLOCK_ENTITIES.register("centrifuge", () ->
+                    BlockEntityType.Builder.of(CentrifugeBlockEntity::new, IRBlocks.CENTRIFUGE.get()).build(null));
 }

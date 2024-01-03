@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.capabilities;
 
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class EnetsSavedData extends SavedData {
     private EnergyNets enets;
 
-    public EnetsSavedData(Level level) {
+    public EnetsSavedData(ServerLevel level) {
         this.enets = new EnergyNets(level);
     }
 
@@ -27,7 +28,7 @@ public class EnetsSavedData extends SavedData {
         return nbt;
     }
 
-    public static EnetsSavedData load(CompoundTag nbt, Level level) {
+    public static EnetsSavedData load(CompoundTag nbt, ServerLevel level) {
         EnergyNets enets = new EnergyNets(level);
         enets.deserializeNBT(nbt.getCompound("enets"));
         return new EnetsSavedData(enets);
