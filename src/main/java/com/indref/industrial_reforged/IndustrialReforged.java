@@ -8,10 +8,12 @@ import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.registries.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
 
@@ -51,5 +53,9 @@ public class IndustrialReforged {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(IRPackets::register);
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
     }
 }

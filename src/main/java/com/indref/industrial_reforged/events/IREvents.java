@@ -45,7 +45,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class IREvents {
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
     public static class Client {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
@@ -79,15 +79,9 @@ public class IREvents {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.DEDICATED_SERVER, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Server {
-        @SubscribeEvent
-        public static void onLivingFall(LivingFallEvent event) {
-            if (event.getEntity().getItemBySlot(EquipmentSlot.FEET).is(IRItems.HAZMAT_BOOTS.get())) {
-                event.setDistance(0);
-            }
-        }
 
+    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class Server {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             for (Item item : BuiltInRegistries.ITEM) {
