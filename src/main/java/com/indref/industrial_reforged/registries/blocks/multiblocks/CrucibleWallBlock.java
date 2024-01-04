@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
-import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
+import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffects;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.common.extensions.IBlockExtension;
 import org.jetbrains.annotations.NotNull;
 
 public class CrucibleWallBlock extends Block implements IWrenchable {

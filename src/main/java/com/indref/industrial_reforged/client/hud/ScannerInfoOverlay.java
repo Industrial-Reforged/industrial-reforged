@@ -1,12 +1,9 @@
 package com.indref.industrial_reforged.client.hud;
 
-import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.networking.packets.C2SEnergySync;
 import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

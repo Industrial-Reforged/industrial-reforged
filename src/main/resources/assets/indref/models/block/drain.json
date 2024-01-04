@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "indref:block/machines/drain_bottom",
+    "east": "indref:block/machines/drain_side",
+    "north": "indref:block/machines/drain_front",
+    "particle": "indref:block/machines/drain_side",
+    "south": "indref:block/machines/drain_side",
+    "up": "indref:block/machines/drain_top",
+    "west": "indref:block/machines/drain_side"
+  }
+}

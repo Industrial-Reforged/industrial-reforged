@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
-import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
+import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
@@ -15,9 +15,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

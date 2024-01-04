@@ -1,12 +1,9 @@
 package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.capabilities.EnetsSavedData;
-import com.indref.industrial_reforged.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.fluids.FluidStack;

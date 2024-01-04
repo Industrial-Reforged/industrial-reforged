@@ -1,6 +1,6 @@
-package com.indref.industrial_reforged.api.tiers;
+package com.indref.industrial_reforged.tiers;
 
-import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 
 public enum EnergyTiers implements EnergyTier {
     LOW("low", 32, 32, 32_000),

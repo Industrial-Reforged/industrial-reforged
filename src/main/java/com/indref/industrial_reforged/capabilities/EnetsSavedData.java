@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.capabilities;
 import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 

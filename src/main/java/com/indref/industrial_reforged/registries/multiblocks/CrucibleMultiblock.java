@@ -2,8 +2,7 @@ package com.indref.industrial_reforged.registries.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
-import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
+import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public record CrucibleMultiblock(CrucibleTier tier) implements IMultiblock {
-    public static final CrucibleMultiblock CERAMIC = new CrucibleMultiblock(CrucibleTiers.CERAMIC);
 
     @Override
     public Block getController() {
@@ -53,7 +51,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements IMultiblock {
     }
 
     @Override
-    public @Nullable MultiblockDirection getFixedDirection() {
+    public MultiblockDirection getFixedDirection() {
         return MultiblockDirection.NORTH;
     }
 

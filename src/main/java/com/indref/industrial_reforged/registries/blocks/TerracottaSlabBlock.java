@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
-import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.registries.IRMultiblocks;
 import net.minecraft.world.level.block.SlabBlock;
 
 public class TerracottaSlabBlock extends SlabBlock implements IMultiBlockController {
@@ -12,6 +12,6 @@ public class TerracottaSlabBlock extends SlabBlock implements IMultiBlockControl
 
     @Override
     public IMultiblock getMultiblock() {
-        return CrucibleMultiblock.CERAMIC;
+        return IRMultiblocks.CRUCIBLE.get();
     }
 }

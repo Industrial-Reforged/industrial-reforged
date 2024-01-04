@@ -6,8 +6,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.core.jmx.Server;
 
 public class ENetsResetCommand {
     public ENetsResetCommand(CommandDispatcher<CommandSourceStack> dispatcher) {

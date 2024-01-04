@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.tiers.templates;
+package com.indref.industrial_reforged.api.tiers;
 
 import net.minecraft.world.level.block.Block;
 

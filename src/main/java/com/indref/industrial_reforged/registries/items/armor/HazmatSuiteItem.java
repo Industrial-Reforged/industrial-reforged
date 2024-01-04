@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.registries.items.armor;
 
+import com.indref.industrial_reforged.tiers.IRArmorMaterials;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 
 public class HazmatSuiteItem extends ArmorItem {
     public HazmatSuiteItem(Type type, Properties properties) {
-        super(ArmorMaterials.LEATHER, type, properties.stacksTo(1));
+        super(IRArmorMaterials.HAZMAT, type, properties.stacksTo(1));
     }
 }

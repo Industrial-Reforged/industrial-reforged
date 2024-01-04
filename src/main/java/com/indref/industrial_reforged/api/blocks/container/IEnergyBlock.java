@@ -2,15 +2,13 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.IScannable;
-import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

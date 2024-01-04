@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.capabilities;
 
-import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.capabilities.energy.EnergyStorage;
-import net.minecraft.core.Direction;
+import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 

@@ -3,13 +3,12 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
-import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
-import com.indref.industrial_reforged.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.CrucibleBlockEntity;
-import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
 import com.mojang.serialization.MapCodec;
@@ -34,8 +33,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.attachment.AttachmentHolder;
-import net.neoforged.neoforge.attachment.AttachmentInternals;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -98,7 +95,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
 
     @Override
     public IMultiblock getMultiblock() {
-        return CrucibleMultiblock.CERAMIC;
+        return IRMultiblocks.CRUCIBLE.get();
     }
 
     @Override

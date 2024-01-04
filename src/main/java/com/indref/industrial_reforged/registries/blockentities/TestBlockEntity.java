@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.tiers.EnergyTiers;
-import com.indref.industrial_reforged.api.tiers.templates.EnergyTier;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

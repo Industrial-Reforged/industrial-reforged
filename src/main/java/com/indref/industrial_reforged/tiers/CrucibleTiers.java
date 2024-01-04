@@ -1,9 +1,8 @@
-package com.indref.industrial_reforged.api.tiers;
+package com.indref.industrial_reforged.tiers;
 
-import com.indref.industrial_reforged.api.tiers.templates.CrucibleTier;
+import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 public enum CrucibleTiers implements CrucibleTier {
     CERAMIC("ceramic", 1200);

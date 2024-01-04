@@ -1,17 +1,17 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.api.tiers.EnergyTiers;
 import com.indref.industrial_reforged.registries.blocks.*;
 import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeMachineBlock;
+import com.indref.industrial_reforged.registries.blocks.machines.DrainBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.*;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock;
+import com.indref.industrial_reforged.tiers.CrucibleTiers;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
@@ -55,6 +55,10 @@ public class IRBlocks {
             () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CENTRIFUGE = registerBlockAndItem("centrifuge",
             () -> new CentrifugeMachineBlock(BlockBehaviour.Properties.of()));
+    public static final Supplier<Block> DRAIN = registerBlockAndItem("drain",
+            () -> new DrainBlock(BlockBehaviour.Properties.of()));
+    public static final Supplier<Block> CRAFTING_STATION = registerBlockAndItem("crafting_station",
+            () -> new DrainBlock(BlockBehaviour.Properties.of()));
 
     // Rubber
     public static final Supplier<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",

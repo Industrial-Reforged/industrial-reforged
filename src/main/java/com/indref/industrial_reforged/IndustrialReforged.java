@@ -4,7 +4,6 @@ import com.indref.industrial_reforged.capabilities.IRAttachmentTypes;
 import com.indref.industrial_reforged.events.IREvents;
 import com.indref.industrial_reforged.networking.IRPackets;
 import com.indref.industrial_reforged.registries.*;
-import com.indref.industrial_reforged.registries.IRPlacerTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -31,6 +30,8 @@ public class IndustrialReforged {
         IRItems.ITEMS.register(modEventBus);
 
         IRBlocks.BLOCKS.register(modEventBus);
+
+        IRMultiblocks.MULTIBLOCKS.register(modEventBus);
 
         IRBlockEntityTypes.BLOCK_ENTITIES.register(modEventBus);
 

@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
@@ -16,8 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public record FireBoxMultiblock() implements IMultiblock {
-    public static final FireBoxMultiblock INSTANCE = new FireBoxMultiblock();
+public record FireBoxMultiblock(FireboxTier fireboxTier) implements IMultiblock {
     public static final EnumProperty<FireBoxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireBoxMultiblock.PartIndex.class);
 
     @Override

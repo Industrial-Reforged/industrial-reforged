@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.materials;
+package com.indref.industrial_reforged.tiers;
 
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.Util;
@@ -13,8 +13,18 @@ import java.util.function.Supplier;
 
 public enum IRArmorMaterials implements ArmorMaterial {
     HAZMAT("hazmat", 5, Util.make(new EnumMap<>(ArmorItem.Type.class), (protection) -> {
+        protection.put(ArmorItem.Type.HELMET, 1);
+        protection.put(ArmorItem.Type.CHESTPLATE, 1);
+        protection.put(ArmorItem.Type.LEGGINGS, 1);
         protection.put(ArmorItem.Type.BOOTS, 1);
     }), 15, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER_SHEET.get()));
+
+    private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), p_266653_ -> {
+        p_266653_.put(ArmorItem.Type.BOOTS, 13);
+        p_266653_.put(ArmorItem.Type.LEGGINGS, 15);
+        p_266653_.put(ArmorItem.Type.CHESTPLATE, 16);
+        p_266653_.put(ArmorItem.Type.HELMET, 11);
+    });
 
     private final String name;
     private final int durabilityMultiplier;
@@ -35,17 +45,17 @@ public enum IRArmorMaterials implements ArmorMaterial {
     }
     @Override
     public int getDurabilityForType(ArmorItem.Type p_266807_) {
-        return 0;
+        return HEALTH_FUNCTION_FOR_TYPE.get(p_266807_) * this.durabilityMultiplier;
     }
 
     @Override
     public int getDefenseForType(ArmorItem.Type p_267168_) {
-        return 0;
+        return protectionFunctionForType.get(p_267168_);
     }
 
     @Override
     public int getEnchantmentValue() {
-        return 0;
+        return enchantmentValue;
     }
 
     @Override
@@ -55,21 +65,21 @@ public enum IRArmorMaterials implements ArmorMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return null;
+        return repairIngredient.get();
     }
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public float getToughness() {
-        return 0;
+        return toughness;
     }
 
     @Override
     public float getKnockbackResistance() {
-        return 0;
+        return knockbackResistance;
     }
 }

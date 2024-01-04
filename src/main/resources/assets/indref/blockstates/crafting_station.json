@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "indref:block/crafting_station",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "indref:block/crafting_station",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "indref:block/crafting_station"
+    },
+    "facing=west": {
+      "model": "indref:block/crafting_station",
+      "y": 90
+    }
+  }
+}

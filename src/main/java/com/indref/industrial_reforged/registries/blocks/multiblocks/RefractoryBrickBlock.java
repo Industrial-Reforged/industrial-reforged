@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.util.BlockUtils;
@@ -26,7 +27,7 @@ public class RefractoryBrickBlock extends Block implements IWrenchable {
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState ignored, boolean p_60519_) {
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockHelper.unform(FireBoxMultiblock.INSTANCE, blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.FIREBOX.get(), blockPos, level);
         }
     }
 

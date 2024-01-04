@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.api.items;
 
-import com.indref.industrial_reforged.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.ChatFormatting;

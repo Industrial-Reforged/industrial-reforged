@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.registries.items.tools;
 import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public class ElectricWrenchItem extends SimpleElectricItem implements IToolItem {
     public ElectricWrenchItem(Item.Properties properties) {

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.IWrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -41,7 +42,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockHelper.unform(FireBoxMultiblock.INSTANCE, blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.FIREBOX.get(), blockPos, level);
         }
 
         if (level.getBlockEntity(blockPos) instanceof FireboxBlockEntity fireboxBlockEntity && newState.is(Blocks.AIR)) {
@@ -61,7 +62,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
 
     @Override
     public IMultiblock getMultiblock() {
-        return FireBoxMultiblock.INSTANCE;
+        return IRMultiblocks.FIREBOX.get();
     }
 
     @Nullable
