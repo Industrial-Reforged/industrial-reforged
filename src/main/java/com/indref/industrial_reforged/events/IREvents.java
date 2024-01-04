@@ -45,7 +45,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class IREvents {
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
+    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Client {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
