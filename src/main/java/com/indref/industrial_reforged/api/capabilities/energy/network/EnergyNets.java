@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.capabilities.energy.network;
+package com.indref.industrial_reforged.api.capabilities.energy.network;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;

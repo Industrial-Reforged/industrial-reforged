@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNet;
-import com.indref.industrial_reforged.capabilities.energy.network.EnergyNets;
+import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
+import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNets;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;

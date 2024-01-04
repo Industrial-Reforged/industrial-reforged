@@ -12,8 +12,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class IRMultiblocks {
     public static final DeferredRegister<IMultiblock> MULTIBLOCKS = DeferredRegister.create(IRRegistries.MULTIBLOCK, IndustrialReforged.MODID);
 
-    public static final DeferredHolder<IMultiblock, CrucibleMultiblock> CRUCIBLE = MULTIBLOCKS.register("crucible",
+    public static final DeferredHolder<IMultiblock, CrucibleMultiblock> CRUCIBLE_CERAMIC = MULTIBLOCKS.register("crucible_ceramic",
             () -> new CrucibleMultiblock(CrucibleTiers.CERAMIC));
-    public static final DeferredHolder<IMultiblock, FireBoxMultiblock> FIREBOX = MULTIBLOCKS.register("firebox",
+    public static final DeferredHolder<IMultiblock, FireBoxMultiblock> FIREBOX_REFRACTORY = MULTIBLOCKS.register("firebox_refractory",
             () -> new FireBoxMultiblock(FireboxTiers.REFRACTORY));
 }

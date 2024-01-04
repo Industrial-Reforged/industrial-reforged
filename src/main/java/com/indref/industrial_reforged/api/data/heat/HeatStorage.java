@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.capabilities.heat;
+package com.indref.industrial_reforged.api.data.heat;
 
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;

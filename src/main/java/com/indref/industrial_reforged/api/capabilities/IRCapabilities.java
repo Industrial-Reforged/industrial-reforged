@@ -1,8 +1,8 @@
-package com.indref.industrial_reforged.capabilities;
+package com.indref.industrial_reforged.api.capabilities;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.data.heat.IHeatStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.capabilities.BlockCapability;

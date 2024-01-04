@@ -88,18 +88,18 @@ public class IRTabs {
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {
                 // misc blocks
-                addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
-                addBlock(output, IRBlocks.REFRACTORY_BRICK);
-                addBlock(output, IRBlocks.REFRACTORY_STONE);
-                addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.CENTRIFUGE);
+                addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
                 addBlock(output, IRBlocks.DRAIN);
                 addBlock(output, IRBlocks.CRAFTING_STATION);
                 addBlock(output, IRBlocks.TIN_CABLE);
                 addItem(output, IRItems.MINING_PIPE);
+                addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.TERRACOTTA_SLAB);
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK);
                 addBlock(output, IRBlocks.CERAMIC_FAUCET);
+                addBlock(output, IRBlocks.REFRACTORY_BRICK);
+                addBlock(output, IRBlocks.REFRACTORY_STONE);
 
                 // Ores
                 addBlock(output, IRBlocks.BAUXITE_ORE);

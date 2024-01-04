@@ -1,7 +1,8 @@
-package com.indref.industrial_reforged.capabilities;
+package com.indref.industrial_reforged.api.capabilities.heat.storage;
 
-import com.indref.industrial_reforged.capabilities.energy.EnergyStorage;
-import com.indref.industrial_reforged.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.data.energy.EnergyStorage;
+import com.indref.industrial_reforged.api.data.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import net.minecraft.world.item.ItemStack;
 
 public class HeatWrapper {

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 
 public interface IEnergyItem {

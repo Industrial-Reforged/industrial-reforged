@@ -27,7 +27,7 @@ public class RefractoryBrickBlock extends Block implements IWrenchable {
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState ignored, boolean p_60519_) {
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockHelper.unform(IRMultiblocks.FIREBOX.get(), blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.FIREBOX_REFRACTORY.get(), blockPos, level);
         }
     }
 

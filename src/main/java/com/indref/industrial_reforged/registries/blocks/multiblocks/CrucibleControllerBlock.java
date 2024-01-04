@@ -95,7 +95,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
 
     @Override
     public IMultiblock getMultiblock() {
-        return IRMultiblocks.CRUCIBLE.get();
+        return IRMultiblocks.CRUCIBLE_CERAMIC.get();
     }
 
     @Override

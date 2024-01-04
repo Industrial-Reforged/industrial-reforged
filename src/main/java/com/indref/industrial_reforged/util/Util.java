@@ -1,12 +1,14 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.capabilities.EnetsSavedData;
+import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,5 +68,13 @@ public final class Util {
         }
 
         return result;
+    }
+
+    public static int rgbToHex(Vec3i rgb) {
+        return Integer.parseUnsignedInt(String.format("0x%02X%02X%02X", rgb.getX(), rgb.getY(), rgb.getY()).substring(2), 16);
+    }
+
+    public static Vector3f rgbToHsv(Vec3i rgb) {
+        return new Vector3f((float) rgb.getX() / 256F, (float) rgb.getY() / 256F, (float) rgb.getZ() / 256F);
     }
 }

@@ -42,7 +42,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockHelper.unform(IRMultiblocks.FIREBOX.get(), blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.FIREBOX_REFRACTORY.get(), blockPos, level);
         }
 
         if (level.getBlockEntity(blockPos) instanceof FireboxBlockEntity fireboxBlockEntity && newState.is(Blocks.AIR)) {
@@ -62,7 +62,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
 
     @Override
     public IMultiblock getMultiblock() {
-        return IRMultiblocks.FIREBOX.get();
+        return IRMultiblocks.FIREBOX_REFRACTORY.get();
     }
 
     @Nullable

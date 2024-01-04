@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.events;
+package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.commands.ENetsInfoCommand;
@@ -9,7 +9,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.server.command.ConfigCommand;
 
 @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
-public class IRCommandRegister {
+public class IRCommands {
 
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {

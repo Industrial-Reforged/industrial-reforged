@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

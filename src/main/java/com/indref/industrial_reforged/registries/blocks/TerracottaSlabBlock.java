@@ -12,6 +12,6 @@ public class TerracottaSlabBlock extends SlabBlock implements IMultiBlockControl
 
     @Override
     public IMultiblock getMultiblock() {
-        return IRMultiblocks.CRUCIBLE.get();
+        return IRMultiblocks.CRUCIBLE_CERAMIC.get();
     }
 }

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.capabilities.energy;
+package com.indref.industrial_reforged.api.data.energy;
 
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
