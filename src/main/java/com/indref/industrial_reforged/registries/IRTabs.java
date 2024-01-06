@@ -89,6 +89,7 @@ public class IRTabs {
             .displayItems((parameters, output) -> {
                 // misc blocks
                 addBlock(output, IRBlocks.CENTRIFUGE);
+                addBlock(output, IRBlocks.BASIC_GENERATOR);
                 addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
                 addBlock(output, IRBlocks.DRAIN);
                 addBlock(output, IRBlocks.CRAFTING_STATION);

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
+import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GeneratorBlock extends BaseEntityBlock {
+public abstract class GeneratorBlock extends RotatableEntityBlock {
     /**
      * List of blocks next to generator that can be filled
      */
@@ -34,12 +35,17 @@ public abstract class GeneratorBlock extends BaseEntityBlock {
         this.suppliesTo = new ArrayList<>();
     }
 
+    @Nullable
     public abstract BlockEntityType<? extends GeneratorBlockEntity> getBlockEntity();
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
         if (level.isClientSide()) return null;
+
+        BlockEntityType<? extends GeneratorBlockEntity> blockEntity = getBlockEntity();
+
+        if (blockEntity == null) return null;
 
         return createTickerHelper(blockEntityType, getBlockEntity(),
                 (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
@@ -57,7 +63,7 @@ public abstract class GeneratorBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-     public static boolean isPartOfEnet(ServerLevel level, BlockPos blockPos) {
+    public static boolean isPartOfEnet(ServerLevel level, BlockPos blockPos) {
         return Util.getEnergyNets(level).getEnets().getNetworkRaw(blockPos) != null;
-     }
+    }
 }

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "indref:block/machines/basic_generator_top",
+    "east": "indref:block/machines/basic_generator_side",
+    "north": "indref:block/machines/basic_generator_front",
+    "particle": "indref:block/machines/basic_generator_side",
+    "south": "indref:block/machines/basic_generator_side",
+    "up": "indref:block/machines/basic_generator_top",
+    "west": "indref:block/machines/basic_generator_side"
+  }
+}

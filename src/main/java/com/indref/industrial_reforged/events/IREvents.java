@@ -14,18 +14,14 @@ import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
+import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
 import com.indref.industrial_reforged.registries.screen.FireBoxScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -36,14 +32,9 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
 
-import java.util.HashSet;
-import java.util.Set;
-
+@SuppressWarnings("unused")
 public class IREvents {
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Client {
@@ -56,6 +47,7 @@ public class IREvents {
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
             MenuScreens.register(IRMenuTypes.CRUCIBLE_MENU.get(), CrucibleScreen::new);
+            MenuScreens.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
         }
 
         @SubscribeEvent
@@ -65,6 +57,7 @@ public class IREvents {
                     event.register(item, new MultiBarRenderer(item));
             }
         }
+
         @SubscribeEvent
         public static void registerItemColor(RegisterColorHandlersEvent.Item event) {
             event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
@@ -72,10 +65,8 @@ public class IREvents {
 
         @SubscribeEvent
         public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
-            event.enqueueWork(() -> {
-                ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"),
-                        (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
-            });
+            event.enqueueWork(() -> ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"),
+                    (stack, level, living, id) -> TapeMeasureItem.isExtended(stack)));
         }
     }
 
@@ -95,13 +86,16 @@ public class IREvents {
                     event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, fluidItem.getFluidCapacity()), item);
             }
 
-            // Register all your blockentity capabilities manually
+            // Register all your block entity capabilities manually
             event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.TEST_GEN.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
             event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.TEST_BLOCK.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
 
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
         }
     }

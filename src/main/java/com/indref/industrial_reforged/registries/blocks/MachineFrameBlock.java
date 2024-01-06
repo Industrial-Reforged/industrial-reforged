@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.blockentities.TestBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class MachineFrameBlock extends BaseEntityBlock implements IWrenchable {
+public class MachineFrameBlock extends BaseEntityBlock implements Wrenchable {
     public static final MapCodec<MachineFrameBlock> CODEC = simpleCodec(MachineFrameBlock::new);
     public MachineFrameBlock(Properties properties) {
         super(properties);

@@ -40,6 +40,8 @@ public class FireBoxMenu extends IRAbstractContainerMenu {
         this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
 
         addDataSlots(data);
+        //addPlayerHotbar(inv);
+        //addPlayerInventory(inv);
     }
 
     @Override

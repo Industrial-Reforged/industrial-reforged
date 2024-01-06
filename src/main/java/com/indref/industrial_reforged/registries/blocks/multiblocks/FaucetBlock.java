@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-public class FaucetBlock extends Block implements IWrenchable {
+public class FaucetBlock extends Block implements Wrenchable {
     public static final BooleanProperty ATTACHED_TO_CRUCIBLE = BooleanProperty.create("attached_to_crucible");
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 

@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +43,7 @@ public class WrenchItem extends ToolItem {
         // only on the server side
         if (!level.isClientSide) {
             // check if block can be wrenched
-            if (wrenchableBlock instanceof IWrenchable iWrenchableBlock && player.isCrouching()) {
+            if (wrenchableBlock instanceof Wrenchable iWrenchableBlock && player.isCrouching()) {
                 // Drop the block itself instead of custom drop
                 if (iWrenchableBlock.getDropItem() == null) {
                     ItemStack dropItem = wrenchableBlock.asItem().getDefaultInstance();

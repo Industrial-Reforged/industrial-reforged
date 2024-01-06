@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public class ElectricWrenchItem extends SimpleElectricItem implements IToolItem 
         // only on the server side
         if (!level.isClientSide) {
             // check if block can be wrenched
-            if (wrenchableBlock instanceof IWrenchable iWrenchableBlock && player.isCrouching() && getEnergyStored(itemInHand) >= 10) {
+            if (wrenchableBlock instanceof Wrenchable iWrenchableBlock && player.isCrouching() && getEnergyStored(itemInHand) >= 10) {
                 // Drop the block itself instead of custom drop
                 if (iWrenchableBlock.getDropItem() == null) {
                     ItemStack dropItem = wrenchableBlock.asItem().getDefaultInstance();

@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 public abstract class RotatableEntityBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public RotatableEntityBlock(Properties p_49224_) {
-        super(p_49224_);
+    public RotatableEntityBlock(Properties properties) {
+        super(properties);
     }
 
     @Override

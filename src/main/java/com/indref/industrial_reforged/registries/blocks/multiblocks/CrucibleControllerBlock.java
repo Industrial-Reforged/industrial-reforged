@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -39,7 +39,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController, IWrenchable {
+public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController, Wrenchable {
     public static final MapCodec<CrucibleControllerBlock> CODEC = simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, CrucibleTiers.CERAMIC));
     private final CrucibleTier tier;
 

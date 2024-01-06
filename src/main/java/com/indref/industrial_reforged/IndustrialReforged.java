@@ -18,7 +18,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
 
 @Mod(IndustrialReforged.MODID)
-public class IndustrialReforged {
+public final class IndustrialReforged {
     public static final String MODID = "indref";
     public static final Logger LOGGER = LogUtils.getLogger();
 

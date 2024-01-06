@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.screen;
 import com.indref.industrial_reforged.api.screen.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.registries.blockentities.CrucibleBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,47 +19,65 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class CrucibleMenu extends IRAbstractContainerMenu {
-    public final CrucibleBlockEntity blockEntity;
+public class CraftingStationMenu extends IRAbstractContainerMenu {
+    public final CraftingStationBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public CrucibleMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
+    public CraftingStationMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
-    public CrucibleMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(IRMenuTypes.CRUCIBLE_MENU.get(), pContainerId, inv);
+    public CraftingStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(IRMenuTypes.CRAFTING_STATION_MENU.get(), pContainerId, inv);
         checkContainerSize(inv, 1);
-        blockEntity = ((CrucibleBlockEntity) entity);
+        blockEntity = ((CraftingStationBlockEntity) entity);
         this.level = inv.player.level();
         this.data = data;
 
         IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
 
-        int x = 26;
-        int y = 18;
-        int index = 0;
+        addCraftingSlots(itemHandler);
+        addStorageSlots(itemHandler);
+        // Output slot
+        this.addSlot(new SlotItemHandler(itemHandler, 27, 37, -16));
+        addDataSlots(data);
+        addPlayerHotbar(inv, 185);
+        addPlayerInventory(inv, 127);
+    }
+
+    private void addCraftingSlots(IItemHandler itemHandler) {
+        int x = 37;
+        int y = 10;
+        int index = 18;
         for (int yIndex = 0; yIndex < 3; yIndex++) {
             for (int xIndex = 0; xIndex < 3; xIndex++) {
                 this.addSlot(new SlotItemHandler(itemHandler, index, x + xIndex * 18, y + yIndex * 18));
                 index++;
             }
         }
+    }
 
-        addDataSlots(data);
-        addPlayerHotbar(inv);
-        addPlayerInventory(inv);
+    private void addStorageSlots(IItemHandler itemHandler) {
+        int x = 8;
+        int y = 82;
+        int index = 0;
+        for (int yIndex = 0; yIndex < 2; yIndex++) {
+            for (int xIndex = 0; xIndex < 9; xIndex++) {
+                this.addSlot(new SlotItemHandler(itemHandler, index, x + xIndex * 18, y + yIndex * 18));
+                index++;
+            }
+        }
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int slotId) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int slotId) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get());
+                player, IRBlocks.CRAFTING_STATION.get());
     }
 }

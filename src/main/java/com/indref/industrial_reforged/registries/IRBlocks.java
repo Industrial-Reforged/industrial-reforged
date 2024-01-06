@@ -2,7 +2,9 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blocks.*;
+import com.indref.industrial_reforged.registries.blocks.machines.BasicGeneratorBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeMachineBlock;
+import com.indref.industrial_reforged.registries.blocks.machines.CraftingStationBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.DrainBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.*;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
@@ -55,10 +57,12 @@ public class IRBlocks {
             () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CENTRIFUGE = registerBlockAndItem("centrifuge",
             () -> new CentrifugeMachineBlock(BlockBehaviour.Properties.of()));
+    public static final Supplier<Block> BASIC_GENERATOR = registerBlockAndItem("basic_generator",
+            () -> new BasicGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> DRAIN = registerBlockAndItem("drain",
             () -> new DrainBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CRAFTING_STATION = registerBlockAndItem("crafting_station",
-            () -> new DrainBlock(BlockBehaviour.Properties.of()));
+            () -> new CraftingStationBlock(BlockBehaviour.Properties.of()));
 
     // Rubber
     public static final Supplier<Block> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log",

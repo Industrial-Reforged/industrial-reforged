@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
  * Implement this if you want your block to be able to be picked up by a
  * variant (inheritor) of the {@link WrenchItem} class
  */
-public interface IWrenchable {
+public interface Wrenchable {
     /**
      * If you override this method it will use a custom drop.
      * If it returns null the block itself will drop

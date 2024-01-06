@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.core.BlockPos;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
-public class CrucibleWallBlock extends Block implements IWrenchable {
+public class CrucibleWallBlock extends Block implements Wrenchable {
     public static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", WallStates.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;

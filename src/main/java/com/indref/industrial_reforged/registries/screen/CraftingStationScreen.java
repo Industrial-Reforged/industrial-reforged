@@ -8,25 +8,28 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
+public class CraftingStationScreen extends AbstractContainerScreen<CraftingStationMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/crucible.png");
+            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/crafting_station.png");
 
-    public CrucibleScreen(CrucibleMenu p_97741_, Inventory p_97742_, Component p_97743_) {
+    public CraftingStationScreen(CraftingStationMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
     }
 
     @Override
     protected void init() {
+        this.imageHeight = 209;
         super.init();
-        this.inventoryLabelY = 10000;
-        this.titleLabelY = 10000;
+        this.inventoryLabelY = 1000;
+        this.titleLabelY = 1000;
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
+
+        IndustrialReforged.LOGGER.info("w: {}, h: {}", imageWidth, imageHeight);
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
     }

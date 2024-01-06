@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.BOTTOM;
 
-public class MiningPipeBlock extends Block implements IWrenchable {
+public class MiningPipeBlock extends Block implements Wrenchable {
     private static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 0, 512);
 
     public MiningPipeBlock(Properties properties) {

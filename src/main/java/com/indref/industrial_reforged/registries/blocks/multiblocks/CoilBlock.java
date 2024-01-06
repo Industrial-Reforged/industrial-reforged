@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.IWrenchable;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -29,7 +29,7 @@ import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CoilBlock extends BaseEntityBlock implements IMultiBlockController, IWrenchable {
+public class CoilBlock extends BaseEntityBlock implements IMultiBlockController, Wrenchable {
     public CoilBlock(Properties pProperties) {
         super(pProperties);
     }

@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
+import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +21,8 @@ public class IRMenuTypes {
             registerMenuType("firebox_menu", FireBoxMenu::new);
     public static final Supplier<MenuType<CrucibleMenu>> CRUCIBLE_MENU =
             registerMenuType("crucible_menu", CrucibleMenu::new);
+    public static final Supplier<MenuType<CraftingStationMenu>> CRAFTING_STATION_MENU =
+            registerMenuType("crafting_station_menu", CraftingStationMenu::new);
 
     private static <T extends AbstractContainerMenu>Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
