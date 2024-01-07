@@ -24,7 +24,6 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        IndustrialReforged.LOGGER.debug("Ticking");
         EnergyNets energyNets = Util.getEnergyNets((ServerLevel) level).getEnets();
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;

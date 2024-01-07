@@ -29,8 +29,6 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        IndustrialReforged.LOGGER.info("w: {}, h: {}", imageWidth, imageHeight);
-
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
     }
 

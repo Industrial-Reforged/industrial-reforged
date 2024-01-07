@@ -33,11 +33,13 @@ public class IRItems {
     public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
-            () -> new Item(new Item.Properties()));
+            () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new Item(new Item.Properties()));
+            () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
+    public static final Supplier<Item> BLUEPRINT = registerItem("blueprint",
+            () -> new Item(new Item.Properties()));
 
     // Item storages
     public static final Supplier<Item> LUNCH_BAG = registerItem("lunch_bag",
