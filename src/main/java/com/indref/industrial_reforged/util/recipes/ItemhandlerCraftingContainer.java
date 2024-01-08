@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util;
+package com.indref.industrial_reforged.util.recipes;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.ContainerHelper;

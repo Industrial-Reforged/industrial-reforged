@@ -1,12 +1,15 @@
 package com.indref.industrial_reforged.registries.screen;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.screen.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.ItemhandlerCraftingContainer;
-import com.indref.industrial_reforged.util.SmartItemHandlerSlot;
+import com.indref.industrial_reforged.util.recipes.ItemhandlerCraftingContainer;
+import com.indref.industrial_reforged.util.recipes.ResultItemHandlerContainer;
+import com.indref.industrial_reforged.util.recipes.ResultItemHandlerSlot;
+import com.indref.industrial_reforged.util.recipes.SmartItemHandlerSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +35,7 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
     public final CraftingStationBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
-    private final ItemhandlerCraftingContainer craftSlots;
+    private ItemhandlerCraftingContainer craftSlots;
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;
@@ -55,7 +59,8 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
         addCraftingSlots(itemHandler);
         addStorageSlots(itemHandler);
         // Output slot
-        this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots,27, 131, 29));
+        this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 29));
+        this.addSlot(new SlotItemHandler(itemHandler, 27, 154, 29));
         addDataSlots(data);
         addPlayerHotbar(inv, 185);
         addPlayerInventory(inv, 127);
@@ -86,7 +91,6 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
 
             p_150551_.setItem(0, itemstack);
             p_150547_.setRemoteSlot(0, itemstack);
-            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(p_150547_.containerId, p_150547_.incrementStateId(), 0, itemstack));
         }
     }
 

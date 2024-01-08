@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util;
+package com.indref.industrial_reforged.util.recipes;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +23,6 @@ public class SmartItemHandlerSlot extends Slot {
         this.container = p_40223_;
         this.slotIndex = slotIndex;
         this.itemhandlerIndex = itemhandlerIndex;
-        // FIXME: SlotItemHandler creates an empty container. That's why slot changes don't get tracked
     }
 
     @Override
@@ -65,7 +64,6 @@ public class SmartItemHandlerSlot extends Slot {
 
     @Override
     public void setChanged() {
-        IndustrialReforged.LOGGER.debug("Changed slot content");
     }
 
     @Override
@@ -108,5 +106,15 @@ public class SmartItemHandlerSlot extends Slot {
 
     public IItemHandler getItemHandler() {
         return container.itemHandler;
+    }
+
+    @Override
+    public String toString() {
+        return "SmartItemHandlerSlot{" +
+                "container=" + container +
+                ", slotIndex=" + slotIndex +
+                ", itemhandlerIndex=" + itemhandlerIndex +
+                ", container=" + container +
+                '}';
     }
 }

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CraftingStationBlockEntity extends BlockEntity implements MenuProvider {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(28) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(29) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -62,5 +63,16 @@ public class CraftingStationBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
         return new CraftingStationMenu(containerId, inventory, this, this.data);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag p_187471_) {
+        super.saveAdditional(p_187471_);
+        p_187471_.put("inventory", this.itemHandler.serializeNBT());
+    }
+
+    @Override
+    public void load(CompoundTag p_155245_) {
+        this.itemHandler.deserializeNBT(p_155245_.getCompound("inventory"));
     }
 }
