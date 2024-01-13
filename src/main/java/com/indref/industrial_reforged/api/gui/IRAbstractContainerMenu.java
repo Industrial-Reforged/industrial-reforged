@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.screen;
+package com.indref.industrial_reforged.api.gui;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;

@@ -58,28 +58,25 @@ public record CrucibleMultiblock(CrucibleTier tier) implements IMultiblock {
     @Override
     public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        if (currentBlock.is(Blocks.TERRACOTTA)) {
+        if (currentBlock.is(tier.getCrucibleWallBlock())) {
             MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
                     .defaultBlockState()
                     .setValue(CrucibleWallBlock.CRUCIBLE_WALL, switch (index) {
                         case 0, 2, 6, 8 -> switch (indexY) {
                             case 0 -> CrucibleWallBlock.WallStates.EDGE_BOTTOM;
-                            case 1 -> CrucibleWallBlock.WallStates.EDGE_TOP;
-                            default -> null;
+                            default -> CrucibleWallBlock.WallStates.EDGE_TOP;
                         };
                         case 1, 3, 5, 7 -> switch (indexY) {
                             case 0 -> CrucibleWallBlock.WallStates.WALL_BOTTOM;
-                            case 1 -> CrucibleWallBlock.WallStates.WALL_TOP;
-                            default -> null;
+                            default -> CrucibleWallBlock.WallStates.WALL_TOP;
                         };
                         default -> CrucibleWallBlock.WallStates.WALL_TOP;
                     })
                     .setValue(CrucibleWallBlock.FACING, switch (index) {
-                        case 0, 3 -> Direction.NORTH;
                         case 1, 2 -> Direction.EAST;
                         case 5, 8 -> Direction.SOUTH;
                         case 6, 7 -> Direction.WEST;
-                        default -> null;
+                        default -> Direction.NORTH;
                     }));
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_SLAB.get())) {
             MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState());

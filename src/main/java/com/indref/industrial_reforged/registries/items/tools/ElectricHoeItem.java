@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -77,12 +79,11 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     @Override
     public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
         super.appendHoverText(stack, p41422, tooltip, p41424);
-        IEnergyItem item = this;
-        tooltip.add(Component.literal(String.format("%s / %s", item.getEnergyStored(stack), item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.literal(String.format("%s / %s", getEnergyStored(stack), getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
     }
 
     @Override
-    public int getEnergyCapacity() {
-        return 10000;
+    public EnergyTier getEnergyTier() {
+        return EnergyTiers.LOW;
     }
 }

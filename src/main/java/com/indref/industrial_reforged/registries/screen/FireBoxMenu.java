@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.screen;
 
-import com.indref.industrial_reforged.api.screen.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;

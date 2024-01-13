@@ -32,7 +32,13 @@ public class IRBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, IndustrialReforged.MODID);
 
     public static final Supplier<Block> TIN_CABLE = registerBlockAndItem("tin_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.of(), 6, EnergyTiers.LOW));
+            () -> new CableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOL), 6, EnergyTiers.LOW));
+    public static final Supplier<Block> COPPER_CABLE = registerBlockAndItem("copper_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOL), 6, EnergyTiers.MEDIUM));
+    public static final Supplier<Block> GOLD_CABLE = registerBlockAndItem("gold_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOL), 6, EnergyTiers.HIGH));
+    public static final Supplier<Block> STEEL_CABLE = registerBlockAndItem("steel_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOL), 6, EnergyTiers.EXTREME));
     public static final Supplier<Block> MINING_PIPE = registerBlock("mining_pipe",
             () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",

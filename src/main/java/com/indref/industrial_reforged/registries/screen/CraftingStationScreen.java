@@ -2,6 +2,9 @@ package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +33,11 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        addRenderableWidget(new ImageButton(100, 100, 20, 20, new WidgetSprites(
+                new ResourceLocation("indref", "widget/recipe_transfer"),
+                new ResourceLocation("widget/button_disabled"),
+                new ResourceLocation("widget/button_disabled")
+        ), (button) -> {}, Component.empty()));
     }
 
     @Override

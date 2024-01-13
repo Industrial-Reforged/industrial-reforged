@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.world.item.ItemStack;
 
 public interface IEnergyItem {
@@ -17,5 +18,9 @@ public interface IEnergyItem {
         getCap(itemStack).setEnergyStored(value);
     }
 
-    int getEnergyCapacity();
+    default int getEnergyCapacity() {
+       return getEnergyTier().getDefaultCapacity();
+    }
+
+    EnergyTier getEnergyTier();
 }

@@ -1,17 +1,13 @@
 package com.indref.industrial_reforged.registries.screen;
 
-import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.screen.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.recipes.ItemhandlerCraftingContainer;
-import com.indref.industrial_reforged.util.recipes.ResultItemHandlerContainer;
-import com.indref.industrial_reforged.util.recipes.ResultItemHandlerSlot;
 import com.indref.industrial_reforged.util.recipes.SmartItemHandlerSlot;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
