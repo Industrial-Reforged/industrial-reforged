@@ -34,12 +34,11 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
         IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
         energyBlock.tryFillEnergy(blockEntity, getGenerationAmount());
 
-        for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
-            BlockEntity blockEntity1 = level.getBlockEntity(pos);
-            BlockState block = level.getBlockState(pos);
-            if (block.getBlock() instanceof CableBlock cableBlock) {
-                IndustrialReforged.LOGGER.debug("Found cable");
-                EnergyNet enet = energyNets.getNetwork(pos);
+        for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+            BlockEntity blockEntity1 = level.getBlockEntity(offsetPos);
+            BlockState block = level.getBlockState(offsetPos);
+            if (block.getBlock() instanceof CableBlock) {
+                EnergyNet enet = energyNets.getNetwork(offsetPos);
                 try {
                     if (enet.distributeEnergy(energyBlock.getEnergyTier().getMaxOutput())) {
                         energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
@@ -48,6 +47,7 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
                 }
             } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
                 energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
+                energyBlock1.tryFillEnergy(blockEntity1, energyBlock.getEnergyTier().getMaxOutput());
             }
         }
     }

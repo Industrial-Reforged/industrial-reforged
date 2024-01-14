@@ -19,6 +19,6 @@ public class BasicGeneratorBlockEntity extends GeneratorBlockEntity {
 
     @Override
     public int getGenerationAmount() {
-        return 0;
+        return 10;
     }
 }
