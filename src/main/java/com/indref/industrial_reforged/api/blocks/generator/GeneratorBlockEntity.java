@@ -4,6 +4,8 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNets;
+import com.indref.industrial_reforged.networking.IRPackets;
+import com.indref.industrial_reforged.networking.packets.S2CEnergySync;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
@@ -21,6 +23,9 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
 
     @Override
     public void onEnergyChanged() {
+        if (!level.isClientSide()) {
+            IRPackets.sendToClients(new S2CEnergySync(getEnergyStored(this), worldPosition));
+        }
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {

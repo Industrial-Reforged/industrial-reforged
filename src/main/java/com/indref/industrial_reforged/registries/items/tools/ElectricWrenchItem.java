@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.registries.items.tools;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -20,8 +22,8 @@ public class ElectricWrenchItem extends SimpleElectricItem implements IToolItem 
     }
 
     @Override
-    public int getMaxDamage(ItemStack stack) {
-        return 100;
+    public EnergyTier getEnergyTier() {
+        return EnergyTiers.LOW;
     }
 
     @Override

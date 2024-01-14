@@ -14,6 +14,7 @@ import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
+import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
@@ -65,8 +66,12 @@ public class IREvents {
 
         @SubscribeEvent
         public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
-            event.enqueueWork(() -> ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"),
-                    (stack, level, living, id) -> TapeMeasureItem.isExtended(stack)));
+            event.enqueueWork(() -> {
+                ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, "extended"),
+                        (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
+                ItemProperties.register(IRItems.NANO_SABER.get(), new ResourceLocation(IndustrialReforged.MODID, "active"),
+                        (stack, level, living, id) -> NanoSaberItem.isActive(stack));
+            });
         }
     }
 

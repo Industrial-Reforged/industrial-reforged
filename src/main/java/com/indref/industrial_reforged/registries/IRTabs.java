@@ -46,6 +46,7 @@ public class IRTabs {
                 addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addPoweredItem(output, IRItems.ELECTRIC_DRILL);
                 addPoweredItem(output, IRItems.ADVANCED_DRILL);
+                addPoweredItem(output, IRItems.NANO_SABER);
                 addItem(output, IRItems.TAPE_MEASURE);
                 addItem(output, IRItems.BLUEPRINT);
 

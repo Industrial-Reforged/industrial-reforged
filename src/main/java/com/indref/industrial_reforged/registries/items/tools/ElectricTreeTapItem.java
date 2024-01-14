@@ -2,16 +2,22 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock.RESIN;
@@ -42,7 +48,7 @@ public class ElectricTreeTapItem extends SimpleElectricItem implements IToolItem
     }
 
     @Override
-    public int getEnergyCapacity() {
-        return 10000;
+    public EnergyTier getEnergyTier() {
+        return EnergyTiers.LOW;
     }
 }

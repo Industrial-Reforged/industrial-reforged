@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.networking.packets;
 
+import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,6 +30,9 @@ public class S2CEnergySync {
     public boolean handle(NetworkEvent.Context supplier) {
         supplier.enqueueWork(() -> {
             BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(pos);
+            if (entity instanceof IEnergyBlock blockEntity) {
+                blockEntity.setEnergyStored(entity, energy);
+            }
         });
         return true;
     }

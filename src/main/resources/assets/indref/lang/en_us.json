@@ -1,10 +1,23 @@
 {
   "creative_tab.indref": "Industrial Reforged",
 
+  "indref.energy.desc.stored": "Stored",
+  "indref.energy.desc.tier": "Tier",
+
+  "indref.energy.tier.low": "Low",
+  "indref.energy.tier.medium": "Medium",
+  "indref.energy.tier.high": "High",
+  "indref.energy.tier.extreme": "Extreme",
+  "indref.energy.tier.insane": "Insane",
+  "indref.energy.tier.creative": "Creative",
+
   "item.indref.hammer": "Hammer",
   "item.indref.tree_tap": "Tree Tap",
   "item.indref.wrench": "Wrench",
   "item.indref.scanner": "Scanner",
+  "item.indref.nano_saber": "Nano Saber",
+  "nano_saber.desc.active": "Active",
+  "nano_saber.desc.inactive": "Inactive",
   "item.indref.tape_measure": "Tape Measure",
   "tape_measure.desc.info1": "Measure distance between blocks",
   "tape_measure.desc.info2": "Press",

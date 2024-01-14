@@ -77,13 +77,23 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
-        super.appendHoverText(stack, p41422, tooltip, p41424);
-        tooltip.add(Component.literal(String.format("%s / %s", getEnergyStored(stack), getEnergyCapacity())).withStyle(ChatFormatting.AQUA));
+    public EnergyTier getEnergyTier() {
+        return EnergyTiers.LOW;
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
-        return EnergyTiers.LOW;
+    public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
+        super.appendHoverText(stack, p41422, tooltip, p41424);
+        tooltip.add(
+                Component.translatable("indref.energy.desc.stored").withStyle(ChatFormatting.GRAY)
+                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                        .append(Component.literal(String.format("%s / %s", getEnergyStored(stack),
+                                getEnergyCapacity())).withStyle(ChatFormatting.AQUA))
+        );
+        tooltip.add(
+                Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GRAY)
+                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                        .append(getEnergyTier().getName())
+        );
     }
 }

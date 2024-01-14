@@ -1,30 +1,24 @@
 package com.indref.industrial_reforged.tiers;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public enum EnergyTiers implements EnergyTier {
-    LOW("low", 32, 32, 32_000),
-    MEDIUM("medium",64, 64, 128_000),
-    HIGH("high",128, 128, 400_000),
-    EXTREME("extreme", 512, 512, 4_000_000),
-    INSANE("insane", 1024, 1024, 40_000_000),
-    CREATIVE("creative", Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    LOW(Component.translatable("indref.energy.tier.low").withStyle(ChatFormatting.WHITE), 32, 32, 32_000),
+    MEDIUM(Component.translatable("indref.energy.tier.medium").withStyle(ChatFormatting.GOLD),64, 64, 64_000),
+    HIGH(Component.translatable("indref.energy.tier.high").withStyle(ChatFormatting.BLUE),128, 128, 128_000),
+    EXTREME(Component.translatable("indref.energy.tier.extreme").withStyle(ChatFormatting.GREEN), 512, 512, 512_000),
+    INSANE(Component.translatable("indref.energy.tier.insane").withStyle(ChatFormatting.RED), 1024, 1024, 1_024_000),
+    CREATIVE(Component.translatable("indref.energy.tier.creative").withStyle(ChatFormatting.LIGHT_PURPLE), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     private final int maxInput;
     private final int maxOutput;
     private final int current;
     private final int defaultCapacity;
-    private final String name;
+    private final Component name;
 
-    EnergyTiers(String name, int maxInput, int maxOutput, int current, int defaultCapacity) {
-        this.name = name;
-        this.maxInput = maxInput;
-        this.maxOutput = maxOutput;
-        this.current = current;
-        this.defaultCapacity = defaultCapacity;
-    }
-
-    EnergyTiers(String name, int throughPut, int current, int defaultCapacity) {
+    EnergyTiers(Component name, int throughPut, int current, int defaultCapacity) {
         this.name = name;
         this.maxInput = throughPut;
         this.maxOutput = throughPut;
@@ -53,7 +47,7 @@ public enum EnergyTiers implements EnergyTier {
     }
 
     @Override
-    public String getName() {
+    public Component getName() {
         return this.name;
     }
 }

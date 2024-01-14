@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -24,6 +25,8 @@ public class IRItems {
             () -> new HammerItem(new Item.Properties()));
     public static final Supplier<Item> TREE_TAP = registerItem("tree_tap",
             () -> new TreeTapItem(new Item.Properties()));
+    public static final Supplier<Item> NANO_SABER = registerItem("nano_saber",
+            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final Supplier<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_WRENCH = registerItem("electric_wrench",

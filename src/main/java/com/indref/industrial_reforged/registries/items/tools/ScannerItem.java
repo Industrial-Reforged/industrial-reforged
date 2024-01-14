@@ -2,6 +2,8 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.items.IToolItem;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,8 +17,13 @@ public class ScannerItem extends SimpleElectricItem implements IToolItem {
     }
 
     @Override
-    public int getEnergyCapacity() {
-        return 69;
+    public EnergyTier getEnergyTier() {
+        return EnergyTiers.LOW;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
     }
 
     @Override

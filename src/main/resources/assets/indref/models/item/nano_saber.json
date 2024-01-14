@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "overrides": [
+    {
+      "model": "indref:item/nano_saber",
+      "predicate": {
+        "indref:active": 0.0
+      }
+    },
+    {
+      "model": "indref:item/nano_saber_active",
+      "predicate": {
+        "indref:active": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "indref:item/tool/nano_saber"
+  }
+}
