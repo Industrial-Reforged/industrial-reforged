@@ -24,4 +24,4 @@ A modern re-imagination and rewrite of the Industrial Craft mod
 
 [Skiprocks999](https://github.com/skiprocks999) for helping out with the energy api
 
-[malcomriley's unused textures repository](https://github.com/malcolmriley/unused-textures) from which we borrowed a few textures
+[malcomriley's unused textures repository](https://github.com/malcolmriley/unused-textures) from where we borrowed a few textures
