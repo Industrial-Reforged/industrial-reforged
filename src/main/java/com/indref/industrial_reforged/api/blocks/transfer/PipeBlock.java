@@ -110,7 +110,8 @@ public abstract class PipeBlock extends Block implements Wrenchable {
     @Override
     public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         int connectionIndex = facingDirection.ordinal();
-        if (canConnectToPipe(facingBlockState.getBlock()) || canConnectTo(level.getBlockEntity(facingBlockPos))) {
+        BlockEntity blockEntity = level.getBlockEntity(facingBlockPos);
+        if (canConnectToPipe(facingBlockState.getBlock()) || (blockEntity != null && canConnectTo(blockEntity))) {
             return blockState.setValue(CONNECTION[connectionIndex], true);
         } else if (facingBlockState.is(Blocks.AIR)) {
             return blockState.setValue(CONNECTION[connectionIndex], false);
@@ -129,8 +130,9 @@ public abstract class PipeBlock extends Block implements Wrenchable {
         for (Direction direction : Direction.values()) {
             int connectionIndex = direction.ordinal();
             BlockPos facingBlockPos = blockPos.relative(direction);
+            BlockEntity blockEntity = level.getBlockEntity(facingBlockPos);
 
-            if (canConnectTo(level.getBlockEntity(facingBlockPos))) {
+            if (blockEntity != null && canConnectTo(blockEntity)) {
                 blockState = blockState.setValue(CONNECTION[connectionIndex], true);
             }
         }

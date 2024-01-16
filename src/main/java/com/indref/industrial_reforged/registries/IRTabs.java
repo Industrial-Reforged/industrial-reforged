@@ -3,8 +3,6 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
-import com.indref.industrial_reforged.networking.IRPackets;
-import com.indref.industrial_reforged.networking.packets.S2CFluidSync;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -98,6 +96,9 @@ public class IRTabs {
                 addBlock(output, IRBlocks.DRAIN);
                 addBlock(output, IRBlocks.CRAFTING_STATION);
                 addBlock(output, IRBlocks.TIN_CABLE);
+                addBlock(output, IRBlocks.COPPER_CABLE);
+                addBlock(output, IRBlocks.GOLD_CABLE);
+                addBlock(output, IRBlocks.STEEL_CABLE);
                 addItem(output, IRItems.MINING_PIPE);
                 addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.TERRACOTTA_SLAB);
@@ -130,7 +131,7 @@ public class IRTabs {
                 addBlock(output, IRBlocks.RUBBER_TREE_LOG);
                 addBlock(output, IRBlocks.RUBBER_TREE_PLANKS);
                 addBlock(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE);
-                // addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
+                addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
                 addBlock(output, IRBlocks.RUBBER_TREE_SLAB);
                 addBlock(output, IRBlocks.RUBBER_TREE_STAIRS);
                 addBlock(output, IRBlocks.RUBBER_TREE_TRAPDOOR);
@@ -162,7 +163,7 @@ public class IRTabs {
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
-                IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
+                // IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
                 IndustrialReforged.LOGGER.info("Registering fluid cell: "+fluid.getValue());
                 output.accept(stack);
             }

@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,7 +82,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         BlockEntity fireBoxBlockEntity = level.getBlockEntity(blockPos);
         if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, blockPos);
+            player.openMenu((FireboxBlockEntity) fireBoxBlockEntity, blockPos);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

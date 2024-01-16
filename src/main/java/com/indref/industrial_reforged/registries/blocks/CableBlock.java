@@ -2,9 +2,9 @@ package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
+import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Util;
 import net.minecraft.core.BlockPos;
@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,6 @@ public class CableBlock extends PipeBlock {
 
     @Override
     public boolean canConnectTo(BlockEntity connectTo) {
-        return connectTo instanceof IEnergyBlock;
+        return (connectTo instanceof IEnergyBlock) || (connectTo.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, connectTo.getBlockPos(), null) != null);
     }
 }

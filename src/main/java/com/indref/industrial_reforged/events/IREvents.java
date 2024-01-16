@@ -11,6 +11,8 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
+import com.indref.industrial_reforged.networking.EnergyPayload;
+import com.indref.industrial_reforged.networking.data.EnergySyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -34,6 +36,8 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 
 @SuppressWarnings("unused")
 public class IREvents {
@@ -75,7 +79,6 @@ public class IREvents {
         }
     }
 
-
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Server {
         @SubscribeEvent
@@ -102,6 +105,13 @@ public class IREvents {
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
 
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
+        }
+
+        @SubscribeEvent
+        public static void registerPayloads(final RegisterPayloadHandlerEvent event) {
+            final IPayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
+            registrar.play(EnergySyncData.ID, EnergySyncData::new, handler -> handler
+                    .client(EnergyPayload.getInstance()::handleData));
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.util.recipes;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +9,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class ResultItemHandlerContainer implements Container, RecipeCraftingHolder {
     @Nullable

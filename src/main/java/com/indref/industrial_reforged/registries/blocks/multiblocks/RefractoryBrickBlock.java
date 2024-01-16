@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class RefractoryBrickBlock extends Block implements Wrenchable {
     public RefractoryBrickBlock(Properties properties) {
@@ -37,7 +36,7 @@ public class RefractoryBrickBlock extends Block implements Wrenchable {
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
                 if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
-                    NetworkHooks.openScreen(((ServerPlayer) player), (FireboxBlockEntity) fireBoxBlockEntity, pos);
+                    player.openMenu((FireboxBlockEntity) fireBoxBlockEntity, pos);
                 }
             }
         return InteractionResult.SUCCESS;

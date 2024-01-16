@@ -2,12 +2,9 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.BaseElectricSwordItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +16,9 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -86,6 +85,14 @@ public class NanoSaberItem extends BaseElectricSwordItem implements IEnergyItem 
                 setEnergyStored(stack, getEnergyStored(stack) - 1);
             }
         }
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, Player player) {
+        if (item.hasTag()) {
+            item.getOrCreateTag().putBoolean("active", false);
+        }
+        return super.onDroppedByPlayer(item, player);
     }
 
     public static float isActive(ItemStack stack) {

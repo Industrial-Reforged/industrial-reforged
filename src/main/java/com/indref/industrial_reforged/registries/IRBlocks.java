@@ -81,8 +81,8 @@ public class IRBlocks {
             RubberTreeLogBlock::new);
     public static final Supplier<Block> RUBBER_TREE_LEAVES = registerBlockAndItem("rubber_tree_leaves",
             RubberTreeLeavesBlock::new);
-    //public static final Supplier<Block> RUBBER_TREE_SAPLING = registerBlockAndItem("rubber_tree_sapling",
-    //        () -> new SaplingBlock(new IRTreeGrowers(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final Supplier<Block> RUBBER_TREE_SAPLING = registerBlockAndItem("rubber_tree_sapling",
+            () -> new SaplingBlock(IRTreeGrowers.RUBBER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final Supplier<Block> RUBBER_TREE_RESIN_HOLE = registerBlockAndItem("rubber_tree_resin_hole",
             RubberTreeResinHoleBlock::new);
     public static final Supplier<Block> RUBBER_TREE_PLANKS = registerBlockAndItem("rubber_tree_planks",

@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
-import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.registries.Registries;

@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "indref:block/cable/tin_cable_base"
+        "model": "indref:block/cable/copper_cable_base"
       }
     },
     {
@@ -10,7 +10,7 @@
         "down": "true"
       },
       "apply": {
-        "model": "indref:block/cable/tin_cable_connection"
+        "model": "indref:block/cable/copper_cable_connection"
       }
     },
     {
@@ -18,7 +18,7 @@
         "up": "true"
       },
       "apply": {
-        "model": "indref:block/cable/tin_cable_connection",
+        "model": "indref:block/cable/copper_cable_connection",
         "x": 180
       }
     },
@@ -27,7 +27,7 @@
         "north": "true"
       },
       "apply": {
-        "model": "indref:block/cable/tin_cable_connection",
+        "model": "indref:block/cable/copper_cable_connection",
         "x": 90,
         "y": 180
       }
@@ -37,7 +37,7 @@
         "south": "true"
       },
       "apply": {
-        "model": "indref:block/cable/tin_cable_connection",
+        "model": "indref:block/cable/copper_cable_connection",
         "x": 90
       }
     },
@@ -46,7 +46,7 @@
         "west": "true"
       },
       "apply": {
-        "model": "indref:block/cable/tin_cable_connection",
+        "model": "indref:block/cable/copper_cable_connection",
         "x": 90,
         "y": 90
       }
@@ -56,7 +56,7 @@
         "east": "true"
       },
       "apply": {
-        "model": "indref:block/cable/tin_cable_connection",
+        "model": "indref:block/cable/copper_cable_connection",
         "x": 90,
         "y": 270
       }

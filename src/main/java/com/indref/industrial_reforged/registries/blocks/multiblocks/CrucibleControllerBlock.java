@@ -36,7 +36,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController, Wrenchable {
@@ -79,7 +78,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
             if (player.getMainHandItem().is(IRItems.ALUMINUM_INGOT.get())) {
                 fluidHandler.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE);
             }
-            NetworkHooks.openScreen((ServerPlayer) player, (CrucibleBlockEntity) level.getBlockEntity(blockPos), blockPos);
+            player.openMenu((CrucibleBlockEntity) level.getBlockEntity(blockPos), blockPos);
             player.sendSystemMessage(Component.literal(Util.fluidStackToString(fluidHandler.getFluidInTank(0))));
             return InteractionResult.SUCCESS;
         }
