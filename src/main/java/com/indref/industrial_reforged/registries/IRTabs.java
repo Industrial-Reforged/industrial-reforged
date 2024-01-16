@@ -51,7 +51,6 @@ public class IRTabs {
                 // Storage items
                 addItem(output, IRItems.TOOLBOX);
                 addItem(output, IRItems.LUNCH_BAG);
-                addItem(output, IRItems.SOAP_WATER_BUCKET);
                 addVariantForAllFluids(output, IRItems.FLUID_CELL);
 
                 // armor
@@ -61,7 +60,7 @@ public class IRTabs {
                 addItem(output, IRItems.HAZMAT_HELMET);
 
                 // reactor
-                addItem(output, IRItems.URANIUM_FUEL_ROD);
+                // addItem(output, IRItems.URANIUM_FUEL_ROD);
 
                 // misc and crafting items
                 addItem(output, IRItems.FERTILIZER);
