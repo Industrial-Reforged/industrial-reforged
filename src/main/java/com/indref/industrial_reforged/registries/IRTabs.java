@@ -122,6 +122,24 @@ public class IRTabs {
                 addBlock(output, IRBlocks.URANIUM_ORE);
                 addBlock(output, IRBlocks.DEEPSLATE_URANIUM_ORE);
 
+                addBlock(output, IRBlocks.RAW_BAUXITE_BLOCK);
+                addBlock(output, IRBlocks.RAW_CHROMIUM_BLOCK);
+                addBlock(output, IRBlocks.RAW_IRIDIUM_BLOCK);
+                addBlock(output, IRBlocks.RAW_LEAD_BLOCK);
+                addBlock(output, IRBlocks.RAW_NICKEL_BLOCK);
+                addBlock(output, IRBlocks.RAW_TIN_BLOCK);
+                addBlock(output, IRBlocks.RAW_URANIUM_BLOCK);
+
+                addBlock(output, IRBlocks.ALUMINUM_BLOCK);
+                addBlock(output, IRBlocks.CHROMIUM_BLOCK);
+                addBlock(output, IRBlocks.IRIDIUM_BLOCK);
+                addBlock(output, IRBlocks.LEAD_BLOCK);
+                addBlock(output, IRBlocks.NICKEL_BLOCK);
+                addBlock(output, IRBlocks.TIN_BLOCK);
+                addBlock(output, IRBlocks.TITANIUM_BLOCK);
+                addBlock(output, IRBlocks.URANIUM_BLOCK);
+
+
                 addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
                 addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
                 addBlock(output, IRBlocks.RUBBER_TREE_FENCE);

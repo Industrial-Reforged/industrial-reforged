@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "indref:block/storage/raw_uranium_block"
+  }
+}

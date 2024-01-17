@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "indref:block/storage/raw_bauxite_block"
+    }
+  }
+}

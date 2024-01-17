@@ -134,6 +134,24 @@ public class IRBlocks {
             () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
     public static final Supplier<Block> DEEPSLATE_URANIUM_ORE = registerBlockAndItem("deepslate_uranium_ore",
             () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
+
+    // Metal storage blocks
+    public static final Supplier<Block> ALUMINUM_BLOCK = registerBlockAndItem("aluminum_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_BAUXITE_BLOCK = registerBlockAndItem("raw_bauxite_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> CHROMIUM_BLOCK = registerBlockAndItem("chromium_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_CHROMIUM_BLOCK = registerBlockAndItem("raw_chromium_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> IRIDIUM_BLOCK = registerBlockAndItem("iridium_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_IRIDIUM_BLOCK = registerBlockAndItem("raw_iridium_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> LEAD_BLOCK = registerBlockAndItem("lead_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_LEAD_BLOCK = registerBlockAndItem("raw_lead_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> NICKEL_BLOCK = registerBlockAndItem("nickel_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_NICKEL_BLOCK = registerBlockAndItem("raw_nickel_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> TIN_BLOCK = registerBlockAndItem("tin_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_TIN_BLOCK = registerBlockAndItem("raw_tin_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> TITANIUM_BLOCK = registerBlockAndItem("titanium_block", MetalStorageBlock::new);
+    public static final Supplier<Block> URANIUM_BLOCK = registerBlockAndItem("uranium_block", MetalStorageBlock::new);
+    public static final Supplier<Block> RAW_URANIUM_BLOCK = registerBlockAndItem("raw_uranium_block", RawOreStorageBlock::new);
+
     public static final Supplier<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
             () -> new LiquidBlock(IRFluids.SOURCE_SOAP_WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)));
 
