@@ -11,7 +11,9 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
+import com.indref.industrial_reforged.networking.ActivityPayload;
 import com.indref.industrial_reforged.networking.EnergyPayload;
+import com.indref.industrial_reforged.networking.data.ActivitySyncData;
 import com.indref.industrial_reforged.networking.data.EnergySyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -21,6 +23,8 @@ import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
 import com.indref.industrial_reforged.registries.screen.FireBoxScreen;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,9 +39,12 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import org.lwjgl.glfw.GLFW;
 
 @SuppressWarnings("unused")
 public class IREvents {
@@ -77,6 +84,25 @@ public class IREvents {
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
             });
         }
+
+        public static final Lazy<KeyMapping> JETPACK_TOGGLE = Lazy.of(() -> new KeyMapping(
+                "key.indref.toggle_jetpack",
+                InputConstants.Type.KEYSYM,
+                GLFW.GLFW_KEY_J,
+                "key.categories.indref"
+        ));
+        public static final Lazy<KeyMapping> JETPACK_ASCEND = Lazy.of(() -> new KeyMapping(
+                "key.indref.ascend_jetpack",
+                InputConstants.Type.KEYSYM,
+                GLFW.GLFW_KEY_SPACE,
+                "key.categories.indref"
+        ));
+
+        @SubscribeEvent
+        public static void registerBindings(RegisterKeyMappingsEvent event) {
+            event.register(JETPACK_TOGGLE.get());
+            event.register(JETPACK_ASCEND.get());
+        }
     }
 
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -112,6 +138,8 @@ public class IREvents {
             final IPayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
             registrar.play(EnergySyncData.ID, EnergySyncData::new, handler -> handler
                     .client(EnergyPayload.getInstance()::handleData));
+            registrar.play(ActivitySyncData.ID, ActivitySyncData::new, handler -> handler
+                    .server(ActivityPayload.getInstance()::handleData));
         }
     }
 }

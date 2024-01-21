@@ -78,12 +78,16 @@
   "item.indref.raw_tin": "Raw Tin",
   "item.indref.raw_uranium": "Raw Uranium",
 
-  "scanner_info.energy_block.energy_ratio": "Energy stored: ",
+  "drain.desc.0": "A simple device for draining fluids",
+  "drain.info.0": "Fluid stored: ",
+
   "tape_measure.block_difference": "Distance measured:",
 
   "multiblock.info.failed_to_construct": "Missing or invalid block:",
   "multiblock.info.actual_block": "Block",
   "multiblock.info.expected_block": "Expected",
   "multiblock.info.block_pos": "Coords",
-  "scanner_info.heat_block.heat_ratio": "Heat stored: "
+
+  "scanner_info.heat_block.heat_ratio": "Heat stored: ",
+  "scanner_info.energy_block.energy_ratio": "Energy stored: "
 }

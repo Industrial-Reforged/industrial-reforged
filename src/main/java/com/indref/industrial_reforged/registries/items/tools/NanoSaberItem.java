@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.indref.industrial_reforged.api.items.BaseElectricSwordItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,13 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class NanoSaberItem extends BaseElectricSwordItem implements IEnergyItem {
-    final EnergyTier energyTier;
-
-    @Deprecated
-    // deprecated cuz need to remove energy tier parameter and hardcode it
-    public NanoSaberItem(Properties p_43272_, EnergyTier energyTier) {
+    public NanoSaberItem(Properties p_43272_) {
         super(Tiers.DIAMOND, -1, -3F, p_43272_);
-        this.energyTier = energyTier;
     }
 
     @Override
@@ -105,7 +101,7 @@ public class NanoSaberItem extends BaseElectricSwordItem implements IEnergyItem 
 
     @Override
     public EnergyTier getEnergyTier() {
-        return energyTier;
+        return EnergyTiers.HIGH;
     }
 
     @Override

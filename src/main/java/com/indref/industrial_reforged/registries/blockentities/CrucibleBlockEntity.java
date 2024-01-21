@@ -36,7 +36,7 @@ public class CrucibleBlockEntity extends BlockEntity implements MenuProvider {
         protected void onContentsChanged() {
             setChanged();
             if (!level.isClientSide()) {
-                // IRPackets.sendToClients(new FluidSyncS2CPacket(this.fluid, worldPosition));
+                level.setBlockAndUpdate(worldPosition, getBlockState());
             }
         }
     };

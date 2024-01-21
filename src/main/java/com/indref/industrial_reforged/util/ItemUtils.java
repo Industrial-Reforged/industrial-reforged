@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.util;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -25,11 +26,32 @@ public final class ItemUtils {
         return Math.round(13.0F - ((1 - getChargeRatio(ChargeType.HEAT, itemStack)) * 13.0F));
     }
 
-
     public static int fluidForDurabilityBar(ItemStack itemStack) {
         return Math.round(13.0F - ((1 - getChargeRatio(ChargeType.FLUID, itemStack)) * 13.0F));
     }
 
+    public static EquipmentSlot equipmentSlotFromIndex(int index) {
+        return switch (index) {
+            case 0 -> EquipmentSlot.MAINHAND;
+            case 1 -> EquipmentSlot.OFFHAND;
+            case 2 -> EquipmentSlot.FEET;
+            case 3 -> EquipmentSlot.LEGS;
+            case 4 -> EquipmentSlot.CHEST;
+            case 5 -> EquipmentSlot.HEAD;
+            default -> null;
+        };
+    }
+
+    public static int indexFromEquipmentSlot(EquipmentSlot slot) {
+        return switch (slot) {
+            case MAINHAND -> 0;
+            case OFFHAND -> 1;
+            case FEET -> 2;
+            case LEGS -> 3;
+            case CHEST -> 4;
+            case HEAD -> 5;
+        };
+    }
 
     public static IFluidItem getFluidItem(ItemStack itemStack) {
         if (itemStack.getItem() instanceof IFluidItem fluidItem) {
@@ -48,7 +70,8 @@ public final class ItemUtils {
     public static float getChargeRatio(ChargeType type, ItemStack stack) {
         return switch (type) {
             case FLUID -> (float) getFluidItem(stack).getFluidStored(stack) / getFluidItem(stack).getFluidCapacity();
-            case ENERGY -> (float) getEnergyItem(stack).getEnergyStored(stack) / getEnergyItem(stack).getEnergyCapacity();
+            case ENERGY ->
+                    (float) getEnergyItem(stack).getEnergyStored(stack) / getEnergyItem(stack).getEnergyCapacity();
             default -> 0F;
         };
     }

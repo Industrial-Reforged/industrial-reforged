@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.items.armor.HazmatSuiteItem;
+import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
 import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
@@ -9,7 +10,6 @@ import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -26,7 +26,7 @@ public class IRItems {
     public static final Supplier<Item> TREE_TAP = registerItem("tree_tap",
             () -> new TreeTapItem(new Item.Properties()));
     public static final Supplier<Item> NANO_SABER = registerItem("nano_saber",
-            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
+            () -> new NanoSaberItem(new Item.Properties()));
     public static final Supplier<Item> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_WRENCH = registerItem("electric_wrench",
@@ -63,6 +63,8 @@ public class IRItems {
             () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
     public static final Supplier<Item> HAZMAT_HELMET = registerItem("hazmat_helmet",
             () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final Supplier<Item> JETPACK = registerItem("jetpack",
+            () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
 
     //misc
     public static final Supplier<Item> RUBBER_SHEET = registerItem("rubber_sheet",
