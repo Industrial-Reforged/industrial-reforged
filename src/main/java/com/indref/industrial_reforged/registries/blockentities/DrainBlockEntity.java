@@ -37,8 +37,10 @@ public class DrainBlockEntity extends BlockEntity {
         FluidState fluidOnTop = level.getFluidState(blockPos.above());
         if (fluidOnTop.is(FluidTags.WATER) && fluidOnTop.isSource()) {
             if (level.getGameTime() % 20 == 0) {
-                level.setBlockAndUpdate(blockPos.above(), Blocks.AIR.defaultBlockState());
-                fluidTank.fill(new FluidStack(fluidOnTop.getType(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                if (fluidTank.getFluidInTank(0).getAmount() < fluidTank.getTankCapacity(0)) {
+                    level.setBlockAndUpdate(blockPos.above(), Blocks.AIR.defaultBlockState());
+                    fluidTank.fill(new FluidStack(fluidOnTop.getType(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                }
             }
         }
     }

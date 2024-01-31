@@ -11,40 +11,50 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
-import com.indref.industrial_reforged.networking.ActivityPayload;
+import com.indref.industrial_reforged.networking.ArmorActivityPayload;
 import com.indref.industrial_reforged.networking.EnergyPayload;
-import com.indref.industrial_reforged.networking.data.ActivitySyncData;
+import com.indref.industrial_reforged.networking.ItemActivityPayload;
+import com.indref.industrial_reforged.networking.NbtPayload;
+import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
 import com.indref.industrial_reforged.networking.data.EnergySyncData;
+import com.indref.industrial_reforged.networking.data.ItemActivitySyncData;
+import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
+import com.indref.industrial_reforged.registries.blockentities.render.CastingTableRenderer;
+import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
 import com.indref.industrial_reforged.registries.screen.FireBoxScreen;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.capabilities.BaseCapability;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
-import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class IREvents {
@@ -82,6 +92,8 @@ public class IREvents {
                         (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
                 ItemProperties.register(IRItems.NANO_SABER.get(), new ResourceLocation(IndustrialReforged.MODID, "active"),
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
+                ItemProperties.register(IRItems.BLUEPRINT.get(), new ResourceLocation(IndustrialReforged.MODID, "has_recipe"),
+                        (stack, level, living, id) -> BlueprintItem.hasRecipe(stack));
             });
         }
 
@@ -102,6 +114,12 @@ public class IREvents {
         public static void registerBindings(RegisterKeyMappingsEvent event) {
             event.register(JETPACK_TOGGLE.get());
             event.register(JETPACK_ASCEND.get());
+        }
+
+        @SubscribeEvent
+        public static void registerBERenderer(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_TABLE.get(),
+                    CastingTableRenderer::new);
         }
     }
 
@@ -128,9 +146,12 @@ public class IREvents {
 
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_TABLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
 
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
         }
 
         @SubscribeEvent
@@ -138,8 +159,12 @@ public class IREvents {
             final IPayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
             registrar.play(EnergySyncData.ID, EnergySyncData::new, handler -> handler
                     .client(EnergyPayload.getInstance()::handleData));
-            registrar.play(ActivitySyncData.ID, ActivitySyncData::new, handler -> handler
-                    .server(ActivityPayload.getInstance()::handleData));
+            registrar.play(ArmorActivitySyncData.ID, ArmorActivitySyncData::new, handler -> handler
+                    .server(ArmorActivityPayload.getInstance()::handleData));
+            registrar.play(ItemNbtSyncData.ID, ItemNbtSyncData::new, handler -> handler
+                    .server(NbtPayload.getInstance()::handleData));
+            registrar.play(ItemActivitySyncData.ID, ItemActivitySyncData::new, handler -> handler
+                    .server(ItemActivityPayload.getInstance()::handleData));
         }
     }
 }

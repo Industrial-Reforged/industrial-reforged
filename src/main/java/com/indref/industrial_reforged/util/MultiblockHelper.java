@@ -261,7 +261,7 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (multiblock.getDefinition().containsValue(level.getBlockState(curBlockPos).getBlock())) {
-                    multiblock.unformBlock(level, curBlockPos);
+                    multiblock.unformBlock(level, curBlockPos, controllerPos);
                 }
 
                 if (x + 1 < width) {
@@ -295,7 +295,7 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    multiblock.formBlock(level, direction, curBlockPos, index - 1, yIndex);
+                    multiblock.formBlock(level, direction, curBlockPos, controllerPos, index - 1, yIndex);
                 }
 
                 if (x + 1 < width) {

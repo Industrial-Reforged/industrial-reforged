@@ -1,13 +1,19 @@
 package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
+import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
+import com.indref.industrial_reforged.util.SimpleFunction;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class CraftingStationScreen extends AbstractContainerScreen<CraftingStationMenu> {
@@ -32,11 +38,9 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        addRenderableWidget(new ImageButton(x + 153, y + 46, 20, 20, new WidgetSprites(
-                new ResourceLocation("indref", "widget/recipe_transfer"),
-                new ResourceLocation("indref", "widget/recipe_transfer"),
-                new ResourceLocation("indref", "widget/recipe_transfer_highlighted")
-        ), (button) -> {}, Component.empty()));
+        ItemStack itemStack = getMenu().getSlot(CraftingStationMenu.BLUEPRINT_SLOT).getItem();
+        addImageButton(x + 153, y + 46, "recipe_transfer", transferRecipe);
+        addImageButton(x + 153, y + 62, "recipe_set", () -> BlueprintItem.setRecipe(CraftingStationMenu.BLUEPRINT_SLOT, menu));
     }
 
     @Override
@@ -45,4 +49,17 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
+
+    private void addImageButton(int x, int y, String path, SimpleFunction onClick) {
+        addRenderableWidget(new ImageButton(x, y, 20, 20, new WidgetSprites(
+                new ResourceLocation("indref", "widget/" + path),
+                new ResourceLocation("indref", "widget/" + path),
+                new ResourceLocation("indref", "widget/" + path + "_highlighted")
+        ), (button) -> onClick.call(), Component.empty()));
+    }
+
+    private final SimpleFunction transferRecipe = () -> {
+        CompoundTag tag = new CompoundTag();
+        PacketDistributor.SERVER.noArg().send(new ItemNbtSyncData(CraftingStationMenu.BLUEPRINT_SLOT, "storedRecipe", tag));
+    };
 }

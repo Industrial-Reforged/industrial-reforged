@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
-import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
 import com.mojang.serialization.MapCodec;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -57,7 +57,7 @@ public class DrainBlock extends RotatableEntityBlock {
             DrainBlockEntity blockEntity = (DrainBlockEntity) level.getBlockEntity(blockPos);
             Fluid fluid = blockEntity.getFluidTank().getFluid().getFluid();
             int fluidAmount = blockEntity.getFluidTank().getFluid().getAmount();
-            player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType().toString() + ", " + fluidAmount + "mb"));
+            player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType() + ", " + fluidAmount + "mb"));
         }
         return InteractionResult.SUCCESS;
     }

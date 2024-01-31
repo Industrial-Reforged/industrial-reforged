@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
+import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
@@ -18,7 +19,8 @@ import java.util.function.Supplier;
 
 public class IRItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, IndustrialReforged.MODID);
-    //tools
+
+    // Tools
     public static final Supplier<Item> WRENCH = registerItem("wrench",
             () -> new WrenchItem(new Item.Properties()));
     public static final Supplier<Item> HAMMER = registerItem("hammer",
@@ -42,7 +44,7 @@ public class IRItems {
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
     public static final Supplier<Item> BLUEPRINT = registerItem("blueprint",
-            () -> new Item(new Item.Properties()));
+            () -> new BlueprintItem(new Item.Properties()));
 
     // Item storages
     public static final Supplier<Item> LUNCH_BAG = registerItem("lunch_bag",
@@ -73,6 +75,10 @@ public class IRItems {
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
+    public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> CLAY_MOLD_ROD = registerItem("clay_mold_rod",
+            () -> new Item(new Item.Properties()));
 
     // Needs to be registered manual for custom placement
     public static final Supplier<Item> MINING_PIPE = registerItem("mining_pipe",

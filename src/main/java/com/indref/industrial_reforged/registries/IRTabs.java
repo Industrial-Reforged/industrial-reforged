@@ -66,6 +66,8 @@ public class IRTabs {
                 addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.STICKY_RESIN);
+                addItem(output, IRItems.CLAY_MOLD);
+                addItem(output, IRItems.CLAY_MOLD_ROD);
                 addItem(output, IRItems.RAW_BAUXITE);
                 addItem(output, IRItems.RAW_CHROMIUM);
                 addItem(output, IRItems.RAW_IRIDIUM);
@@ -100,9 +102,10 @@ public class IRTabs {
                 addBlock(output, IRBlocks.STEEL_CABLE);
                 addItem(output, IRItems.MINING_PIPE);
                 addBlock(output, IRBlocks.COIL);
-                addBlock(output, IRBlocks.TERRACOTTA_SLAB);
+                addBlock(output, IRBlocks.TERRACOTTA_BRICK_SLAB);
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK);
                 addBlock(output, IRBlocks.CERAMIC_FAUCET);
+                addBlock(output, IRBlocks.CERAMIC_CASTING_TABLE);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.REFRACTORY_STONE);
 

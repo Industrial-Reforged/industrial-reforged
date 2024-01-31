@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.screen;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -27,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class CraftingStationMenu extends IRAbstractContainerMenu {
+    public static final int BLUEPRINT_SLOT = 28;
+
     public final CraftingStationBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
@@ -55,10 +58,13 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
         addStorageSlots(itemHandler);
         // Output slot
         this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 29));
-        this.addSlot(new SlotItemHandler(itemHandler, 27, 154, 29));
+        // Blueprint
+        this.addSlot(new SlotItemHandler(itemHandler, BLUEPRINT_SLOT, 154, 29));
         addDataSlots(data);
         addPlayerHotbar(inv, 185);
         addPlayerInventory(inv, 127);
+        IndustrialReforged.LOGGER.debug("blueprint id: {}", getSlot(BLUEPRINT_SLOT).getItem());
+        IndustrialReforged.LOGGER.debug("blueprint nbt: {}", getSlot(BLUEPRINT_SLOT).getItem().getOrCreateTag());
     }
 
     @Override

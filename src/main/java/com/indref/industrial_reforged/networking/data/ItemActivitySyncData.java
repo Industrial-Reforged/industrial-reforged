@@ -8,16 +8,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
-public record ActivitySyncData(EquipmentSlot slot, boolean active)  implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(IndustrialReforged.MODID, "activity_sync_data");
+public record ItemActivitySyncData(int slot, String tagName, boolean active)  implements CustomPacketPayload {
+    public static final ResourceLocation ID = new ResourceLocation(IndustrialReforged.MODID, "item_activity_sync_data");
 
-    public ActivitySyncData(final FriendlyByteBuf buffer) {
-        this(ItemUtils.equipmentSlotFromIndex(buffer.readInt()), buffer.readBoolean());
+    public ItemActivitySyncData(final FriendlyByteBuf buffer) {
+        this(buffer.readInt(), buffer.readUtf(), buffer.readBoolean());
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(ItemUtils.indexFromEquipmentSlot(slot()));
+        buffer.writeInt(slot());
+        buffer.writeUtf(tagName);
         buffer.writeBoolean(active());
     }
 

@@ -50,7 +50,7 @@ public record FireBoxMultiblock(FireboxTier fireboxTier) implements IMultiblock 
     }
 
     @Override
-    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, int index, int indexY) {
+    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 switch (index) {
@@ -61,7 +61,7 @@ public record FireBoxMultiblock(FireboxTier fireboxTier) implements IMultiblock 
     }
 
     @Override
-    public void unformBlock(Level level, BlockPos blockPos) {
+    public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
         BlockState currentBlock = level.getBlockState(blockPos);
         MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 PartIndex.UNFORMED));

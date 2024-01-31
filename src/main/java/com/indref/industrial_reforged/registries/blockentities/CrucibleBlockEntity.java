@@ -28,6 +28,9 @@ public class CrucibleBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()) {
+                level.setBlockAndUpdate(worldPosition, getBlockState());
+            }
         }
     };
 

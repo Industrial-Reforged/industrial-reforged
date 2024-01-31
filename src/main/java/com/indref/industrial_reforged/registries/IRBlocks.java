@@ -49,7 +49,7 @@ public class IRBlocks {
             () -> new CoilBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",
             () -> new MachineFrameBlock(BlockBehaviour.Properties.of()));
-    public static final Supplier<Block> TERRACOTTA_SLAB = registerBlockAndItem("terracotta_slab",
+    public static final Supplier<Block> TERRACOTTA_BRICK_SLAB = registerBlockAndItem("terracotta_brick_slab",
             () -> new TerracottaSlabBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TERRACOTTA_BRICK = registerBlockAndItem("terracotta_brick",
             () -> new Block(BlockBehaviour.Properties.of()));
@@ -59,6 +59,8 @@ public class IRBlocks {
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of().noOcclusion()));
+    public static final Supplier<Block> CERAMIC_CASTING_TABLE = registerBlockAndItem("ceramic_casting_table",
+            () -> new CastingTableBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
             () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CENTRIFUGE = registerBlockAndItem("centrifuge",

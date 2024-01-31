@@ -98,6 +98,6 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
 
     @Override
     public Item getDropItem() {
-        return IRBlocks.TERRACOTTA_SLAB.get().asItem();
+        return IRBlocks.TERRACOTTA_BRICK_SLAB.get().asItem();
     }
 }

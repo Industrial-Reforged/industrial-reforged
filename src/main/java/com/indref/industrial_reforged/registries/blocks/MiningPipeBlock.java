@@ -15,9 +15,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.BOTTOM;
 
+@SuppressWarnings("deprecation")
 public class MiningPipeBlock extends Block implements Wrenchable {
     private static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 0, 512);
 
@@ -36,13 +38,8 @@ public class MiningPipeBlock extends Block implements Wrenchable {
     }
 
     @Override
-    public VoxelShape getInteractionShape(BlockState p_56053_, BlockGetter p_56054_, BlockPos p_56055_) {
-        return Shapes.block();
-    }
-
-    @Override
-    public boolean canBeReplaced(BlockState p_56037_, BlockPlaceContext p_56038_) {
-        return p_56038_.getItemInHand().is(this.asItem());
+    public boolean canBeReplaced(@NotNull BlockState p_56037_, BlockPlaceContext context) {
+        return context.getItemInHand().is(this.asItem());
     }
 
     @Override
@@ -63,7 +60,7 @@ public class MiningPipeBlock extends Block implements Wrenchable {
     }
 
     @Override
-    public BlockState updateShape(BlockState p_56044_, Direction p_56045_, BlockState p_56046_, LevelAccessor p_56047_, BlockPos p_56048_, BlockPos p_56049_) {
+    public @NotNull BlockState updateShape(BlockState p_56044_, Direction p_56045_, BlockState p_56046_, LevelAccessor p_56047_, BlockPos p_56048_, BlockPos p_56049_) {
         if (!p_56047_.isClientSide()) {
             p_56047_.scheduleTick(p_56048_, this, 1);
         }

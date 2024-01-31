@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.blockentities.CrucibleWallBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffects;
@@ -12,7 +14,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,8 +25,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class CrucibleWallBlock extends Block implements Wrenchable {
+public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
     public static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", WallStates.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
@@ -29,6 +35,11 @@ public class CrucibleWallBlock extends Block implements Wrenchable {
     public CrucibleWallBlock(Properties properties, CrucibleTier crucibleTier) {
         super(properties);
         this.tier = crucibleTier;
+    }
+
+    public CrucibleWallBlock(Properties properties) {
+        super(properties);
+        this.tier = null;
     }
 
     public CrucibleTier getTier() {
@@ -62,11 +73,25 @@ public class CrucibleWallBlock extends Block implements Wrenchable {
         }
     }
 
-
+    @Override
+    public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
+        return RenderShape.MODEL;
+    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
         p_49915_.add(CRUCIBLE_WALL, FACING);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(CrucibleWallBlock::new);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new CrucibleWallBlockEntity(blockPos, blockState);
     }
 
     public enum WallStates implements StringRepresentable {

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.blockentities.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
@@ -55,7 +56,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements IMultiblock {
     }
 
     @Override
-    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, int index, int indexY) {
+    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getCrucibleWallBlock())) {
             MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
@@ -77,13 +78,15 @@ public record CrucibleMultiblock(CrucibleTier tier) implements IMultiblock {
                         case 6, 7 -> Direction.WEST;
                         default -> Direction.NORTH;
                     }));
-        } else if (currentBlock.is(IRBlocks.TERRACOTTA_SLAB.get())) {
+            CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
+            blockEntity.controllerPos = controllerPos;
+        } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
             MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState());
         }
     }
 
     @Override
-    public void unformBlock(Level level, BlockPos blockPos) {
+    public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
 
     }
 }

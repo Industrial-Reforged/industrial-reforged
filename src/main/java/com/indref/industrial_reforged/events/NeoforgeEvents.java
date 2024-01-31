@@ -1,13 +1,11 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.networking.data.ActivitySyncData;
+import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
 import com.indref.industrial_reforged.util.InputHandler;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +33,6 @@ public class NeoforgeEvents {
 
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Client {
-
         private static boolean up = false;
 
         @SubscribeEvent
@@ -46,7 +43,7 @@ public class NeoforgeEvents {
                     ItemStack jetpackItem = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
                     if (jetpackItem.getItem() instanceof JetpackItem) {
                         JetpackItem.toggle(jetpackItem);
-                        PacketDistributor.SERVER.noArg().send(new ActivitySyncData(EquipmentSlot.CHEST,
+                        PacketDistributor.SERVER.noArg().send(new ArmorActivitySyncData(EquipmentSlot.CHEST,
                                 player.getItemBySlot(EquipmentSlot.CHEST).getOrCreateTag().getBoolean("active")));
                     }
                 }

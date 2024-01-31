@@ -165,6 +165,7 @@ public class EnergyNet {
         }
         transmitters = tPositions;
         interactors = iPositions;
+        // FIXME: Causes error (cannot cast air to cable block)
         energyTier = ((CableBlock) level.getBlockState(transmitters.stream().toList().get(0)).getBlock()).getEnergyTier();
     }
 
