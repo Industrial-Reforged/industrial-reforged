@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
+import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
 import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
@@ -76,9 +77,9 @@ public class IRItems {
     public static final Supplier<Item> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
     public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold",
-            () -> new Item(new Item.Properties()));
+            () -> new MoldItem(new Item.Properties()));
     public static final Supplier<Item> CLAY_MOLD_ROD = registerItem("clay_mold_rod",
-            () -> new Item(new Item.Properties()));
+            () -> new MoldItem(new Item.Properties()));
 
     // Needs to be registered manual for custom placement
     public static final Supplier<Item> MINING_PIPE = registerItem("mining_pipe",
