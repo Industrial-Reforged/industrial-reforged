@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -26,6 +27,8 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -43,7 +46,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
 
     public CrucibleControllerBlock(Properties properties, CrucibleTier crucibleTier) {
         super(properties);
-        tier = crucibleTier;
+        this.tier = crucibleTier;
     }
 
     public CrucibleTier getTier() {
@@ -99,5 +102,14 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
     @Override
     public Item getDropItem() {
         return IRBlocks.TERRACOTTA_BRICK_SLAB.get().asItem();
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (level.isClientSide()) return null;
+
+        return createTickerHelper(blockEntityType, IRBlockEntityTypes.CRUCIBLE.get(),
+                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
     }
 }

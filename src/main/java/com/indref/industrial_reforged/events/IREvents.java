@@ -11,14 +11,8 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
-import com.indref.industrial_reforged.networking.ArmorActivityPayload;
-import com.indref.industrial_reforged.networking.EnergyPayload;
-import com.indref.industrial_reforged.networking.ItemActivityPayload;
-import com.indref.industrial_reforged.networking.NbtPayload;
-import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
-import com.indref.industrial_reforged.networking.data.EnergySyncData;
-import com.indref.industrial_reforged.networking.data.ItemActivitySyncData;
-import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
+import com.indref.industrial_reforged.networking.*;
+import com.indref.industrial_reforged.networking.data.*;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -159,6 +153,8 @@ public class IREvents {
             final IPayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
             registrar.play(EnergySyncData.ID, EnergySyncData::new, handler -> handler
                     .client(EnergyPayload.getInstance()::handleData));
+            registrar.play(ItemSyncData.ID, ItemSyncData::new, handler -> handler
+                    .client(ItemPayload.getInstance()::handleData));
             registrar.play(ArmorActivitySyncData.ID, ArmorActivitySyncData::new, handler -> handler
                     .server(ArmorActivityPayload.getInstance()::handleData));
             registrar.play(ItemNbtSyncData.ID, ItemNbtSyncData::new, handler -> handler

@@ -32,6 +32,8 @@ public final class IndustrialReforged {
 
         IRTabs.CREATIVE_TABS.register(modEventBus);
 
+        IRRecipes.SERIALIZERS.register(modEventBus);
+
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
 
