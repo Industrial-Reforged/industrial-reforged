@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.BlockUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -18,13 +19,13 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CastingTableBlockEntity extends BlockEntity {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(29) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
             if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, 1, new ItemStack[]{itemHandler.getStackInSlot(0)}));
+                PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, 2, new ItemStack[]{itemHandler.getStackInSlot(0), itemHandler.getStackInSlot(1)}));
             }
         }
     };
@@ -34,7 +35,7 @@ public class CastingTableBlockEntity extends BlockEntity {
     }
 
     public ItemStack[] getRenderStacks() {
-        return new ItemStack[]{itemHandler.getStackInSlot(0)};
+        return new ItemStack[]{itemHandler.getStackInSlot(0), itemHandler.getStackInSlot(1)};
     }
 
     public ItemStackHandler getItemHandler() {
@@ -57,19 +58,18 @@ public class CastingTableBlockEntity extends BlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
-        if (!level.isClientSide()) {
-            PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, 1, new ItemStack[]{itemHandler.getStackInSlot(0)}));
-        }
     }
 
     public void tick(BlockPos blockPos, BlockState blockState) {
-        try {
-            IItemHandler clientItemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, Minecraft.getInstance().level.getBlockEntity(blockPos));
-            if (clientItemHandler.getStackInSlot(0).isEmpty() && !level.isClientSide()) {
-                PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, 1, new ItemStack[]{itemHandler.getStackInSlot(0)}));
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level != null) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity != null) {
+                IItemHandler clientItemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
+                if (clientItemHandler.getStackInSlot(0).isEmpty() && !this.level.isClientSide()) {
+                    PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, 2, new ItemStack[]{itemHandler.getStackInSlot(0), itemHandler.getStackInSlot(1)}));
+                }
             }
-        } catch (Exception e) {
-
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.render;
+package com.indref.industrial_reforged.client.renderer;
 
 import com.indref.industrial_reforged.registries.blockentities.CastingTableBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,7 +24,7 @@ public class CastingTableRenderer implements BlockEntityRenderer<CastingTableBlo
     public void render(CastingTableBlockEntity castingTableBlockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int i1) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack[] itemStacks = castingTableBlockEntity.getRenderStacks();
-        for (int j = 0; j < 1; j++) {
+        for (int j = 0; j < itemStacks.length; j++) {
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.75f, 0.5f);
             poseStack.scale(0.78f, 0.78f, 0.78f);

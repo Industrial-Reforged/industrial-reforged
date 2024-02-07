@@ -1,10 +1,14 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public final class BlockUtils {
@@ -38,6 +42,17 @@ public final class BlockUtils {
 
     private static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
         return level.getCapability(cap, pos, state, blockEntity, context);
+    }
+
+    public static @Nullable IItemHandler getClientItemHandler(BlockPos blockPos) {
+        Level level = Minecraft.getInstance().level;
+        if (level != null) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity != null) {
+                return BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
+            }
+        }
+        return null;
     }
 
     /*
