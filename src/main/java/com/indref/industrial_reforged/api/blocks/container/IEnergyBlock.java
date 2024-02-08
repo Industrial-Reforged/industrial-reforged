@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.IScannable;
+import com.indref.industrial_reforged.api.blocks.Scannable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -12,13 +12,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
  * Interface for implementing BlockEntities that store EU
  */
-public interface IEnergyBlock extends IScannable {
+public interface IEnergyBlock extends Scannable {
 
     default void setEnergyStored(BlockEntity blockEntity, int value) {
         int prev = getEnergyStored(blockEntity);
@@ -39,7 +40,11 @@ public interface IEnergyBlock extends IScannable {
     }
 
     default int getEnergyCapacity() {
-        return getEnergyTier().getDefaultCapacity();
+        EnergyTier energyTier = getEnergyTier();
+        if (energyTier != null)
+            return energyTier.getDefaultCapacity();
+        IndustrialReforged.LOGGER.error("{} does not provide a correct energy type (energy type is null) unable to get Capacity", this.getClass().getName());
+        return -1;
     }
 
     default void onEnergyChanged() {
@@ -63,19 +68,22 @@ public interface IEnergyBlock extends IScannable {
         return false;
     }
 
+    @Nullable
     EnergyTier getEnergyTier();
 
     static boolean canAcceptEnergyFromSide(BlockEntity blockEntity, Direction direction) {
-        IndustrialReforged.LOGGER.debug("Cap: "+blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), direction));
+        IndustrialReforged.LOGGER.debug("Cap: " + blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), direction));
         return false;
     }
 
     @Override
     default List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
-        IEnergyBlock energyBlock = null;
+        IEnergyBlock energyBlock;
         BlockEntity blockEntity = level.getBlockEntity(scannedBlockPos);
         if (blockEntity instanceof IEnergyBlock energyBlock1)
             energyBlock = energyBlock1;
+        else
+            return List.of();
 
         return List.of(
                 scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE),

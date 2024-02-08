@@ -1,11 +1,9 @@
 package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.saveddata.SavedData;

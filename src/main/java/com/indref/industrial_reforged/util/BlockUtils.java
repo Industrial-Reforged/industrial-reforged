@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

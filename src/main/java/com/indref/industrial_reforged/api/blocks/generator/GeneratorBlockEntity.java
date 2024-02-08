@@ -1,8 +1,10 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNets;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.networking.data.EnergySyncData;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
@@ -29,24 +31,23 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         EnergyNets energyNets = Util.getEnergyNets((ServerLevel) level).getEnets();
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-        energyBlock.tryFillEnergy(blockEntity, getGenerationAmount());
+        tryFillEnergy(this, getGenerationAmount());
 
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(blockPos)) {
             BlockEntity blockEntity1 = level.getBlockEntity(offsetPos);
             BlockState block = level.getBlockState(offsetPos);
-            if (block.getBlock() instanceof CableBlock) {
-                EnergyNet enet = energyNets.getNetwork(offsetPos);
-                try {
-                    if (enet.distributeEnergy(getGenerationAmount())) {
-                        energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
-                    }
-                } catch (Exception ignored) {
+            EnergyTier energyTier = getEnergyTier();
+            if (energyTier != null) {
+                if (block.getBlock() instanceof CableBlock) {
+                    EnergyNet enet = energyNets.getNetwork(offsetPos);
+                    if (enet != null && enet.distributeEnergy(getGenerationAmount()))
+                        tryDrainEnergy(this, energyTier.getMaxOutput());
+                } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
+                    tryDrainEnergy(this, energyTier.getMaxOutput());
+                    energyBlock1.tryFillEnergy(blockEntity1, energyTier.getMaxOutput());
                 }
-            } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
-                energyBlock.tryDrainEnergy(blockEntity, energyBlock.getEnergyTier().getMaxOutput());
-                energyBlock1.tryFillEnergy(blockEntity1, energyBlock.getEnergyTier().getMaxOutput());
+            } else {
+                IndustrialReforged.LOGGER.error("{} at {} does not have a correct energy tier. Unable to produce energy", blockState.getBlock().getName().getString(), blockPos);
             }
         }
     }

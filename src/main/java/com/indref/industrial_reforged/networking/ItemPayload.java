@@ -1,9 +1,5 @@
 package com.indref.industrial_reforged.networking;
 
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.networking.data.EnergySyncData;
-import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
 import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.client.Minecraft;

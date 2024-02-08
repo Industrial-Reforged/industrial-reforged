@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.items.armor;
 
 import com.indref.industrial_reforged.util.InputHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;

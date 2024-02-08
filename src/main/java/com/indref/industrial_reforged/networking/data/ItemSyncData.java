@@ -1,13 +1,11 @@
 package com.indref.industrial_reforged.networking.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemSyncData implements CustomPacketPayload {

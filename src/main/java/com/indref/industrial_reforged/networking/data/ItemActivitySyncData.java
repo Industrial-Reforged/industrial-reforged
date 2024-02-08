@@ -1,11 +1,9 @@
 package com.indref.industrial_reforged.networking.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
 public record ItemActivitySyncData(int slot, String tagName, boolean active)  implements CustomPacketPayload {

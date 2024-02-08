@@ -1,25 +1,29 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class ContainerBlockEntity extends BlockEntity implements IEnergyBlock {
-    private final BlockEntityType<?> blockEntityType;
-    private final int energyCapacity;
+import java.util.Objects;
+
+public abstract class ContainerBlockEntity extends BlockEntity implements IEnergyBlock, IHeatBlock {
+    private int energyCapacity;
+    private int heatCapacity;
     private ItemStackHandler itemHandler;
     private FluidTank fluidTank;
+    private @Nullable EnergyTier energyTier;
 
-    public ContainerBlockEntity(int slots, int fluidCapacity, int energyCapacity, BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
+    public ContainerBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
         super(p_155228_, p_155229_, p_155230_);
-        this.blockEntityType = p_155228_;
-        this.energyCapacity = energyCapacity;
-        registerContainers(slots, fluidCapacity, this);
     }
 
     @Override
@@ -28,37 +32,75 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
+    public int getHeatCapacity() {
+        return heatCapacity;
+    }
+
+    @Override
+    public @Nullable EnergyTier getEnergyTier() {
+        return energyTier;
+    }
+
+    public ItemStackHandler getItemHandler() {
+        return itemHandler;
+    }
+
+    public ItemStack[] getItemHandlerStacks() {
+        ItemStack[] itemStacks = new ItemStack[getItemHandler().getSlots()];
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            itemStacks[i] = itemHandler.getStackInSlot(i);
+        }
+        return itemStacks;
+    }
+
+    public FluidTank getFluidTank() {
+        return fluidTank;
+    }
+
+    @Override
     protected void saveAdditional(CompoundTag p_187471_) {
-        if (itemHandler != null) {
-            p_187471_.put("itemhandler", itemHandler.serializeNBT());
-        }
-        if (fluidTank != null) {
-            fluidTank.writeToNBT(p_187471_);
-        }
+        fluidTank.writeToNBT(p_187471_);
+        p_187471_.put("itemhandler", itemHandler.serializeNBT());
     }
 
-    private static void registerContainers(int slots, int fluidCapacity, ContainerBlockEntity blockEntity) {
-        if (slots > 0) {
-            blockEntity.itemHandler = new ItemStackHandler(slots) {
-                @Override
-                protected void onContentsChanged(int slot) {
-                    blockEntity.setChanged();
-                    if (!blockEntity.level.isClientSide()) {
-                        blockEntity.level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
-                    }
-                }
-            };
-        }
-
-        if (fluidCapacity > 0) {
-            blockEntity.fluidTank = new FluidTank(16000) {
-                @Override
-                protected void onContentsChanged() {
-                    blockEntity.setChanged();
-                    blockEntity.level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
-                }
-            };
-        }
+    @Override
+    public void load(CompoundTag p_155245_) {
+        super.load(p_155245_);
+        if (fluidTank != null) fluidTank.readFromNBT(p_155245_);
+        if (itemHandler != null) itemHandler.deserializeNBT(p_155245_.getCompound("itemhandler"));
     }
 
+    public final void addItemHandler(int slots) {
+        this.itemHandler = new ItemStackHandler(slots) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+                if (!level.isClientSide()) {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, slots, getItemHandlerStacks()));
+                }
+            }
+        };
+    }
+
+    public final void addFluidTank(int capacityInMb) {
+        this.fluidTank = new FluidTank(capacityInMb) {
+            @Override
+            protected void onContentsChanged() {
+                setChanged();
+                if (!level.isClientSide()) {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                }
+            }
+        };
+    }
+
+    public final void addHeatStorage(int capacity) {
+        this.heatCapacity = capacity;
+    }
+
+    public final void addEnergyStorage(EnergyTier energyTier, @Nullable Integer capacity) {
+        this.energyTier = energyTier;
+        this.energyCapacity = Objects.requireNonNullElseGet(capacity, energyTier::getDefaultCapacity);
+    }
 }

@@ -1,19 +1,15 @@
 package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.CastingTableBlockEntity;
-import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -29,7 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,6 +60,7 @@ public class CastingTableBlock extends BaseEntityBlock {
         IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
         if (!level.isClientSide()) {
             insertAndExtract(player, hand, itemHandler);
+            blockEntity.setChanged();
         }
         IndustrialReforged.LOGGER.debug("Item: {}", BlockUtils.getClientItemHandler(blockPos).getStackInSlot(1));
         return InteractionResult.SUCCESS;

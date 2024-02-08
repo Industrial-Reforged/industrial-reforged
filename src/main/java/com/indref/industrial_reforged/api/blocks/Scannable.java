@@ -14,7 +14,7 @@ import java.util.List;
  * to display a custom info message when the
  * player hovers over the block with a scanner
  */
-public interface IScannable {
+public interface Scannable {
     /**
      * This method will display hover scanner information for the specific block.
      * Note: The lists in the list stand for the lines, so if you want to have
