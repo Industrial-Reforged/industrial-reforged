@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
-import com.indref.industrial_reforged.api.items.IToolItem;
+import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.api.items.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
-public class ElectricWrenchItem extends SimpleElectricItem implements IToolItem {
+public class ElectricWrenchItem extends SimpleElectricItem implements ToolItem {
     public ElectricWrenchItem(Item.Properties properties) {
         super(properties);
     }

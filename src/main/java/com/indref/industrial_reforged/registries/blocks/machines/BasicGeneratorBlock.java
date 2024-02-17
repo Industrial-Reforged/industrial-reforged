@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.machines;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blockentities.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.BasicGeneratorBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;

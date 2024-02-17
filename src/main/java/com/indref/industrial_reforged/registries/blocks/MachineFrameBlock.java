@@ -9,5 +9,5 @@ public class MachineFrameBlock extends Block implements Wrenchable {
     }
 
 
-    // TODO: 10/15/2023 Add energy tier
+    // TODO: 10/15/2023 Add heat tier
 }

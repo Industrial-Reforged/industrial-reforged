@@ -16,13 +16,6 @@ public class FireBoxScreen extends AbstractContainerScreen<FireBoxMenu> {
     }
 
     @Override
-    protected void init() {
-        super.init();
-        this.inventoryLabelY = 10000;
-        this.titleLabelY = 10000;
-    }
-
-    @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;

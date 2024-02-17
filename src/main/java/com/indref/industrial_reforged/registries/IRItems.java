@@ -18,7 +18,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class IRItems {
+public final class IRItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, IndustrialReforged.MODID);
 
     // Tools
@@ -26,6 +26,8 @@ public class IRItems {
             () -> new WrenchItem(new Item.Properties()));
     public static final Supplier<Item> HAMMER = registerItem("hammer",
             () -> new HammerItem(new Item.Properties()));
+    public static final Supplier<Item> THERMOMETER = registerItem("thermometer",
+            () -> new ThermometerItem(new Item.Properties()));
     public static final Supplier<Item> TREE_TAP = registerItem("tree_tap",
             () -> new TreeTapItem(new Item.Properties()));
     public static final Supplier<Item> NANO_SABER = registerItem("nano_saber",

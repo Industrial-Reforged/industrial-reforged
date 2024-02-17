@@ -1,0 +1,13 @@
+{
+  "type": "indref:crucible_melting",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "result": {
+      "FluidName": "minecraft:lava",
+      "Amount": 1000
+  },
+  "duration": 100
+}

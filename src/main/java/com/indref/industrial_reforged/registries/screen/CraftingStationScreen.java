@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.screen;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
-import com.indref.industrial_reforged.util.SimpleFunction;
+import com.indref.industrial_reforged.api.util.SimpleFunction;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;

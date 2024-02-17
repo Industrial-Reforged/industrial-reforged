@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blockentities.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
@@ -48,7 +48,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return Items.TERRACOTTA.getDefaultInstance();
+        return IRBlocks.TERRACOTTA_BRICK.get().asItem().getDefaultInstance();
     }
 
     @Override

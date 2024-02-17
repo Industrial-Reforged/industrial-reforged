@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.api.util.ValidationFunctions;
 import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -8,9 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -59,8 +62,9 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
 
     @Override
     protected void saveAdditional(CompoundTag p_187471_) {
-        fluidTank.writeToNBT(p_187471_);
-        p_187471_.put("itemhandler", itemHandler.serializeNBT());
+        super.saveAdditional(p_187471_);
+        if (fluidTank != null) fluidTank.writeToNBT(p_187471_);
+        if (itemHandler != null) p_187471_.put("itemhandler", itemHandler.serializeNBT());
     }
 
     @Override
@@ -71,28 +75,54 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     public final void addItemHandler(int slots) {
+        addItemHandler(slots, (slot, itemStack) -> true);
+    }
+
+    public final void addFluidTank(int capacityInMb) {
+        addFluidTank(capacityInMb, fluidStack -> true);
+    }
+
+    public final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
         this.itemHandler = new ItemStackHandler(slots) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
+                onItemsChanged(slot);
                 if (!level.isClientSide()) {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
                     PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, slots, getItemHandlerStacks()));
                 }
             }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                return validation.itemValid(slot, stack);
+            }
         };
     }
 
-    public final void addFluidTank(int capacityInMb) {
+    public final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
         this.fluidTank = new FluidTank(capacityInMb) {
             @Override
             protected void onContentsChanged() {
                 setChanged();
+                onFluidsChanged();
                 if (!level.isClientSide()) {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
                 }
             }
+
+            @Override
+            public boolean isFluidValid(FluidStack stack) {
+                return validation.fluidValid(stack);
+            }
         };
+    }
+
+    public void onItemsChanged(int slot) {
+    }
+
+    public void onFluidsChanged() {
     }
 
     public final void addHeatStorage(int capacity) {

@@ -20,6 +20,7 @@ import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
+import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
 import com.indref.industrial_reforged.registries.screen.FireBoxScreen;
@@ -81,6 +82,8 @@ public class IREvents {
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
                 ItemProperties.register(IRItems.BLUEPRINT.get(), new ResourceLocation(IndustrialReforged.MODID, "has_recipe"),
                         (stack, level, living, id) -> BlueprintItem.hasRecipe(stack));
+                ItemProperties.register(IRItems.THERMOMETER.get(), new ResourceLocation(IndustrialReforged.MODID, "temperature"),
+                        (stack, level, living, id) -> ThermometerItem.getTemperature(stack));
             });
         }
 
@@ -131,6 +134,8 @@ public class IREvents {
             event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.TEST_BLOCK.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
             event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
 
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
+
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_TABLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
@@ -146,6 +151,8 @@ public class IREvents {
             final IPayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
             registrar.play(EnergySyncData.ID, EnergySyncData::new, handler -> handler
                     .client(EnergyPayload.getInstance()::handleData));
+            registrar.play(HeatSyncData.ID, HeatSyncData::new, handler -> handler
+                    .client(HeatPayload.getInstance()::handleData));
             registrar.play(ItemSyncData.ID, ItemSyncData::new, handler -> handler
                     .client(ItemPayload.getInstance()::handleData));
             registrar.play(ArmorActivitySyncData.ID, ArmorActivitySyncData::new, handler -> handler

@@ -9,8 +9,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.server.command.ConfigCommand;
 
 @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
-public class IRCommands {
-
+public final class IRCommands {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         new ENetsResetCommand(event.getDispatcher());

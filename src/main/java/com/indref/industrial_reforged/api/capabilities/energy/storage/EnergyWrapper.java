@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Basic Capability Interface used for handling
- * methods related to the energy storage capability
+ * methods related to the heat storage capability
  */
 public class EnergyWrapper {
     public static class Item implements IEnergyStorage {

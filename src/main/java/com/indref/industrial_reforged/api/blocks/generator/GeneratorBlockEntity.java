@@ -47,7 +47,7 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
                     energyBlock1.tryFillEnergy(blockEntity1, energyTier.getMaxOutput());
                 }
             } else {
-                IndustrialReforged.LOGGER.error("{} at {} does not have a correct energy tier. Unable to produce energy", blockState.getBlock().getName().getString(), blockPos);
+                IndustrialReforged.LOGGER.error("{} at {} does not have a correct heat tier. Unable to produce heat", blockState.getBlock().getName().getString(), blockPos);
             }
         }
     }

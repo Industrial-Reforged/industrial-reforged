@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blockentities.CastingTableBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

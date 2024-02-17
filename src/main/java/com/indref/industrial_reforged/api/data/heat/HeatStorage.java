@@ -5,7 +5,7 @@ import net.minecraft.nbt.Tag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
 /**
- * Class for saving and loading energy values of item/block/entity
+ * Class for saving and loading heat values of item/block/entity
  * <br><br>
  * Should not be use directly,
  * only for attaching data/accessing it through capabilities
@@ -17,13 +17,13 @@ public class HeatStorage implements INBTSerializable<Tag> {
         this.heat = heat;
     }
 
-    public int getEnergyStored() {
+    public int getHeatStored() {
         return heat;
     }
 
     @Override
     public Tag serializeNBT() {
-        return IntTag.valueOf(this.getEnergyStored());
+        return IntTag.valueOf(this.getHeatStored());
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.storage;
 
-import com.indref.industrial_reforged.api.items.IToolItem;
+import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
@@ -41,7 +41,7 @@ public class ToolboxItem extends BundleItem {
             if (itemstack.isEmpty()) {
                 this.playRemoveOneSound(player);
                 removeOne(toolbox).ifPresent((p_150740_) -> add(toolbox, slot.safeInsert(p_150740_)));
-            } else if (itemstack.getItem().canFitInsideContainerItems() && (itemstack.getItem() instanceof IToolItem || itemstack.getItem() instanceof PickaxeItem || itemstack.getItem() instanceof AxeItem || itemstack.getItem() instanceof ShovelItem )) {
+            } else if (itemstack.getItem().canFitInsideContainerItems() && (itemstack.getItem() instanceof ToolItem || itemstack.getItem() instanceof PickaxeItem || itemstack.getItem() instanceof AxeItem || itemstack.getItem() instanceof ShovelItem )) {
                 int i = (SLOT_CAPACITY - getContentWeight(toolbox));
                 int j = add(toolbox, slot.safeTake(itemstack.getCount(), i, player));
                 if (j > 0) {
@@ -67,7 +67,7 @@ public class ToolboxItem extends BundleItem {
                     this.playRemoveOneSound(p_150746_);
                     p_150747_.set(p_186347_);
                 });
-            } else if (itemStack.getItem() instanceof IToolItem || itemStack.getItem() instanceof PickaxeItem || itemStack.getItem() instanceof AxeItem || itemStack.getItem() instanceof ShovelItem ) {
+            } else if (itemStack.getItem() instanceof ToolItem || itemStack.getItem() instanceof PickaxeItem || itemStack.getItem() instanceof AxeItem || itemStack.getItem() instanceof ShovelItem ) {
                 int i = add(toolbox, itemStack);
                 if (i > 0) {
                     this.playInsertSound(p_150746_);
@@ -81,7 +81,7 @@ public class ToolboxItem extends BundleItem {
     }
 
     private static int add(ItemStack toolboxItemStack, ItemStack newItemStack) {
-        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && (newItemStack.getItem() instanceof IToolItem || newItemStack.getItem()  instanceof PickaxeItem || newItemStack.getItem() instanceof AxeItem || newItemStack.getItem() instanceof ShovelItem ))) {
+        if (!newItemStack.isEmpty() && (newItemStack.getItem().canFitInsideContainerItems() && (newItemStack.getItem() instanceof ToolItem || newItemStack.getItem()  instanceof PickaxeItem || newItemStack.getItem() instanceof AxeItem || newItemStack.getItem() instanceof ShovelItem ))) {
 
             CompoundTag compoundtag = toolboxItemStack.getOrCreateTag();
             if (!compoundtag.contains("Items")) {

@@ -12,7 +12,7 @@ import org.joml.Vector3f;
 
 import java.util.function.Supplier;
 
-public class IRFluidTypes {
+public final class IRFluidTypes {
 
     public static final ResourceLocation WATER_STILL_RL = new ResourceLocation("block/water_still");
     public static final ResourceLocation WATER_FLOWING_RL = new ResourceLocation("block/water_flow");

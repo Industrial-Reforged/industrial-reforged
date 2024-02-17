@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
-import com.indref.industrial_reforged.registries.blockentities.CentrifugeBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;

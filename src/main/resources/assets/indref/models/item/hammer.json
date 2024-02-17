@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "indref:item/hammer"
+    "layer0": "indref:item/tool/hammer"
   }
 }

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
-    public static final String NAME = "crucible_smelting";
+    public static final String NAME = "crucible_melting";
 
     private final Ingredient itemStack;
     private final FluidStack fluidStack;
@@ -32,9 +32,7 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
     }
 
     public CrucibleSmeltingRecipe(List<Ingredient> input, FluidStack output, Integer duration) {
-        this.itemStack = input.get(0);
-        this.fluidStack = output;
-        this.duration = duration;
+        this(input.get(0), output, duration);
     }
 
     @Override
@@ -50,6 +48,10 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return NonNullList.withSize(1, itemStack);
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     @Override
@@ -79,8 +81,8 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
     public static class Serializer implements RecipeSerializer<CrucibleSmeltingRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         private static final Codec<CrucibleSmeltingRecipe> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredient").forGetter((recipe) -> recipe.getIngredients().stream().toList()),
-                FluidStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.getResultFluid()),
+                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter((recipe) -> recipe.getIngredients().stream().toList()),
+                FluidStack.CODEC.fieldOf("result").forGetter(CrucibleSmeltingRecipe::getResultFluid),
                 Codec.INT.fieldOf("duration").forGetter(recipe -> recipe.duration)
         ).apply(builder, CrucibleSmeltingRecipe::new));
 

@@ -19,7 +19,7 @@ public class EnergyNets {
     private final Level level;
 
     /**
-     * Initializes energy networks of the world
+     * Initializes heat networks of the world
      */
     public EnergyNets(ServerLevel level) {
         this.level = level;
@@ -73,7 +73,7 @@ public class EnergyNets {
     }
 
     /**
-     * merges two energy nets into one
+     * merges two heat nets into one
      * (the one that is supplied first as an argument)
      *
      * @param originNet  the main net that the other net will be merged into
@@ -90,14 +90,14 @@ public class EnergyNets {
     public void splitNets(BlockPos removedBlockPos) {
         // These are all transmitters that have been checked
         Set<BlockPos> alreadyChecked = new HashSet<>();
-        // Every array entry represents the energy network created from checking each side.
+        // Every array entry represents the heat network created from checking each side.
         // Some of these might be empty due to there not being an exclusive enet on one side of the 'removedBlockPos'
         EnergyNet[] enets = new EnergyNet[6];
         // enets array index
         int index = 0;
         // Loop through all blocks around the removed position
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
-            // Check if one of the blocks is a transmitter of energy
+            // Check if one of the blocks is a transmitter of heat
             if (level.getBlockState(offsetPos).getBlock() instanceof CableBlock && !alreadyChecked.contains(offsetPos)) {
                 enets[index] = new EnergyNet(level);
                 enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).add(removedBlockPos);

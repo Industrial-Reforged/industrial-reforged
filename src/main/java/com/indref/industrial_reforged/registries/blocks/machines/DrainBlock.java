@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.blocks.machines;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

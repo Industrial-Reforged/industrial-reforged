@@ -5,7 +5,7 @@ import net.minecraft.nbt.Tag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
 /**
- * Class for saving and loading energy values of item/block/entity
+ * Class for saving and loading heat values of item/block/entity
  * <br><br>
  * Should not be use directly,
  * only for attaching data/accessing it through capabilities

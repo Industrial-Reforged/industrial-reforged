@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public interface IHeatBlock {
-
     default void setHeatStored(BlockEntity blockEntity, int value) {
         int prev = getHeatStored(blockEntity);
         if (prev == value) return;

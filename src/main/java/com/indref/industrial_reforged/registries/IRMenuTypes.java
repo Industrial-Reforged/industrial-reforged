@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class IRMenuTypes {
+public final class IRMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(Registries.MENU, IndustrialReforged.MODID);
     public static final Supplier<MenuType<FireBoxMenu>> FIREBOX_MENU =

@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blockentities.FireboxBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -25,20 +25,22 @@ public class RefractoryBrickBlock extends Block implements Wrenchable {
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState ignored, boolean p_60519_) {
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockHelper.unform(IRMultiblocks.FIREBOX_REFRACTORY.get(), blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
         }
     }
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED))
+        if (!level.isClientSide() && !blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
                 if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
                     player.openMenu((FireboxBlockEntity) fireBoxBlockEntity, pos);
                 }
             }
-        return InteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.FAIL;
     }
 
     @Override

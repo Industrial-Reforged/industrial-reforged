@@ -1,5 +1,8 @@
-package com.indref.industrial_reforged.registries.blockentities;
+package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.networking.data.EnergySyncData;
+import com.indref.industrial_reforged.networking.data.HeatSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.BlockPos;
@@ -19,36 +22,20 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FireboxBlockEntity extends BlockEntity implements MenuProvider/*, IHeatBlock */ {
-    private int burnTime;
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
-        @Override
-        public int getSlots() {
-            return 1;
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            burnTime = CommonHooks.getBurnTime(itemHandler.getStackInSlot(slot), RecipeType.SMELTING);
-            if (!level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return CommonHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-        }
-    };
+public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private static final int INPUT_SLOT = 0;
-    protected final ContainerData data;
+
+    private int burnTime;
+    private final ContainerData data;
 
     public FireboxBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.FIREBOX.get(), blockPos, blockState);
+        addItemHandler(1, (slot, itemStack) -> CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING) > 0);
+        addHeatStorage(4000);
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
@@ -67,30 +54,39 @@ public class FireboxBlockEntity extends BlockEntity implements MenuProvider/*, I
     }
 
     @Override
+    public void onItemsChanged(int slot) {
+        this.burnTime = CommonHooks.getBurnTime(getItemHandler().getStackInSlot(slot), RecipeType.SMELTING);
+    }
+
+    @Override
+    public void onHeatChanged() {
+        if (!level.isClientSide()) {
+            PacketDistributor.ALL.noArg().send(new HeatSyncData(getHeatStored(this), worldPosition));
+        }
+    }
+
+    @Override
     public Component getDisplayName() {
         return Component.literal("Firebox");
     }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        SimpleContainer inventory = new SimpleContainer(getItemHandler().getSlots());
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            inventory.setItem(i, getItemHandler().getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        ItemStack itemStack = itemHandler.getStackInSlot(INPUT_SLOT);
-        BlockEntity self = level.getBlockEntity(blockPos);
-        // IHeatBlock heatBlock = (IHeatBlock) self;
-        // Check if item is a fuel item
+        ItemStack itemStack = getItemHandler().getStackInSlot(INPUT_SLOT);
         if (CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING) > 0) {
             if (burnTime <= 0) {
                 burnTime = CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING);
                 itemStack.shrink(1);
             }
             burnTime--;
-            //heatBlock.tryFillHeat(self, 1);
+            this.tryFillHeat(this, 1);
         }
     }
 
@@ -100,26 +96,15 @@ public class FireboxBlockEntity extends BlockEntity implements MenuProvider/*, I
         return new FireBoxMenu(containerId, inventory, this, this.data);
     }
 
-    public ItemStackHandler getItemHandler() {
-        return itemHandler;
-    }
-
     @Override
     protected void saveAdditional(CompoundTag pTag) {
-        pTag.put("inventory", itemHandler.serializeNBT());
-        pTag.putInt("burnTime", burnTime);
         super.saveAdditional(pTag);
+        pTag.putInt("burnTime", burnTime);
     }
 
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        itemHandler.deserializeNBT(pTag.getCompound("inventory"));
         burnTime = pTag.getInt("burnTime");
-    }
-
-    // Heat capacity
-    public int getHeatCapacity() {
-        return 4000;
     }
 }

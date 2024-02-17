@@ -85,7 +85,7 @@ public class EnergyNet {
 
     /**
      * Get all blockpositions of interactors
-     * that can accept energy
+     * that can accept heat
      */
     public List<BlockPos> getEnergyAcceptors() {
         for (BlockPos blockPos : interactors) {
@@ -99,7 +99,7 @@ public class EnergyNet {
     }
 
     public boolean distributeEnergy(int amount) {
-        IndustrialReforged.LOGGER.debug("Distributing energy");
+        IndustrialReforged.LOGGER.debug("Distributing heat");
         List<BlockPos> interactors = this.interactors.stream().toList();
         List<BlockPos> consumers = new ArrayList<>();
         // check for potential consumers
@@ -114,7 +114,7 @@ public class EnergyNet {
         List<BlockPos> finalConsumers = new ArrayList<>();
         int[] initialAmount = Util.splitNumberEvenly(amount, consumers.size());
 
-        // check which blocks can accept the energy
+        // check which blocks can accept the heat
         for (int i = 0; i < consumers.size(); i++) {
             BlockPos blockPos = consumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
@@ -128,7 +128,7 @@ public class EnergyNet {
 
         int[] finalAmount = Util.splitNumberEvenly(amount, finalConsumers.size());
 
-        // distribute energy
+        // distribute heat
         for (int i = 0; i < finalConsumers.size(); i++) {
             BlockPos blockPos = finalConsumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);

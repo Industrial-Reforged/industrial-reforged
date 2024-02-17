@@ -52,13 +52,13 @@ public abstract class BaseElectricSwordItem extends SwordItem implements IEnergy
         super.appendHoverText(stack, p41422, tooltip, p41424);
         IEnergyItem item = this;
         tooltip.add(
-                Component.translatable("indref.energy.desc.stored").withStyle(ChatFormatting.GRAY)
+                Component.translatable("indref.heat.desc.stored").withStyle(ChatFormatting.GRAY)
                         .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal(String.format("%s / %s", item.getEnergyStored(stack),
                                 item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA))
         );
         tooltip.add(
-                Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GRAY)
+                Component.translatable("indref.heat.desc.tier").withStyle(ChatFormatting.GRAY)
                         .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
                         .append(getEnergyTier().getName())
         );

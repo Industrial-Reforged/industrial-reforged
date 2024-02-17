@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public final class IRAttachmentTypes {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, IndustrialReforged.MODID);
 
-    // Do not try to access these directly! Use capabilities or preferably cast to container block/item/energy
+    // Do not try to access these directly! Use capabilities or preferably cast to container block/item/heat
 
     public static final Supplier<AttachmentType<EnergyStorage>> ENERGY = ATTACHMENT_TYPES.register(
             "energy", () -> AttachmentType.serializable(() -> new EnergyStorage(0)).build());

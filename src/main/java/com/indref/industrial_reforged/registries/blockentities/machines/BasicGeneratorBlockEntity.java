@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities;
+package com.indref.industrial_reforged.registries.blockentities.machines;
 
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;

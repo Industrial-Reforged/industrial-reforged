@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.recipes.ItemhandlerCraftingContainer;
 import com.indref.industrial_reforged.util.recipes.SmartItemHandlerSlot;

@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.client.renderer;
 
-import com.indref.industrial_reforged.registries.blockentities.CastingTableBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;

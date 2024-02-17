@@ -8,7 +8,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
 import java.util.Optional;
 
-public class IRTreeGrowers {
+public final class IRTreeGrowers {
     public static final TreeGrower RUBBER = new TreeGrower("rubber", Optional.empty(), Optional.of(IRWorldGenProvider.RUBBER_TREE_KEY), Optional.empty());
 
     private ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean hasFlowers) {

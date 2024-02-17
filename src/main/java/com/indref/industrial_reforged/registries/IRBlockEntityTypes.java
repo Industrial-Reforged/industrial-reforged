@@ -2,13 +2,22 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blockentities.*;
+import com.indref.industrial_reforged.registries.blockentities.machines.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.FaucetBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class IRBlockEntityTypes {
+public final class IRBlockEntityTypes {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, IndustrialReforged.MODID);
     public static final Supplier<BlockEntityType<FireboxBlockEntity>> FIREBOX =

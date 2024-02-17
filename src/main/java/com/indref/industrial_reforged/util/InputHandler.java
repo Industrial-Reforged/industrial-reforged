@@ -8,7 +8,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InputHandler {
+public final class InputHandler {
     private static final Map<Player, Boolean> HOLDING_UP = new HashMap<>();
     private static final Map<Player, Boolean> HOLDING_DOWN = new HashMap<>();
     private static final Map<Player, Boolean> HOLDING_FORWARDS = new HashMap<>();

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -10,9 +11,11 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Executable;
+
 public final class BlockUtils {
     public static BlockPos[] getBlocksAroundSelf(BlockPos selfPos) {
-        return new BlockPos[] {
+        return new BlockPos[]{
                 selfPos.offset(1, 0, 0),
                 selfPos.offset(0, 1, 0),
                 selfPos.offset(0, 0, 1),
@@ -23,7 +26,7 @@ public final class BlockUtils {
     }
 
     public static BlockPos[] getBlocksAroundSelf3x3(BlockPos selfPos) {
-        return new BlockPos[] {
+        return new BlockPos[]{
                 selfPos.offset(1, 0, 0),
                 selfPos.offset(0, 0, 1),
                 selfPos.offset(-1, 0, 0),
@@ -52,6 +55,14 @@ public final class BlockUtils {
             }
         }
         return null;
+    }
+
+    public static boolean isEnergyBlock(BlockEntity blockEntity) {
+        return blockEntity != null && getBlockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity) != null;
+    }
+
+    public static boolean isHeatBlock(BlockEntity blockEntity) {
+        return blockEntity != null && getBlockEntityCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity) != null;
     }
 
     /*

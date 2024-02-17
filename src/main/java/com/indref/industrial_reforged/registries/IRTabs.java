@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class IRTabs {
+public final class IRTabs {
     /**
      * Variable used for registering and storing all item groups under the "indref" mod-id
      */
@@ -38,6 +38,7 @@ public class IRTabs {
                 addItem(output, IRItems.WRENCH);
                 addItem(output, IRItems.HAMMER);
                 addItem(output, IRItems.TREE_TAP);
+                addItem(output, IRItems.THERMOMETER);
                 addPoweredItem(output, IRItems.SCANNER);
                 addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
                 addPoweredItem(output, IRItems.ELECTRIC_HOE);

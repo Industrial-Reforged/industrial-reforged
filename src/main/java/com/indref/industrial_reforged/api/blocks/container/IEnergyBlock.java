@@ -19,8 +19,7 @@ import java.util.List;
 /**
  * Interface for implementing BlockEntities that store EU
  */
-public interface IEnergyBlock extends Scannable {
-
+public interface IEnergyBlock {
     default void setEnergyStored(BlockEntity blockEntity, int value) {
         int prev = getEnergyStored(blockEntity);
         if (prev == value) return;
@@ -43,7 +42,7 @@ public interface IEnergyBlock extends Scannable {
         EnergyTier energyTier = getEnergyTier();
         if (energyTier != null)
             return energyTier.getDefaultCapacity();
-        IndustrialReforged.LOGGER.error("{} does not provide a correct energy type (energy type is null) unable to get Capacity", this.getClass().getName());
+        IndustrialReforged.LOGGER.error("{} does not provide a correct heat type (heat type is null) unable to get Capacity", this.getClass().getName());
         return -1;
     }
 
@@ -74,25 +73,5 @@ public interface IEnergyBlock extends Scannable {
     static boolean canAcceptEnergyFromSide(BlockEntity blockEntity, Direction direction) {
         IndustrialReforged.LOGGER.debug("Cap: " + blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), direction));
         return false;
-    }
-
-    @Override
-    default List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
-        IEnergyBlock energyBlock;
-        BlockEntity blockEntity = level.getBlockEntity(scannedBlockPos);
-        if (blockEntity instanceof IEnergyBlock energyBlock1)
-            energyBlock = energyBlock1;
-        else
-            return List.of();
-
-        return List.of(
-                scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE),
-                Component.translatable("scanner_info.energy_block.energy_ratio")
-                        .withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity())))
-                        .withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal(","))
-                        .withStyle(ChatFormatting.WHITE)
-        );
     }
 }
