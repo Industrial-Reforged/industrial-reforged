@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -54,6 +55,12 @@ public final class BlockUtils {
                 return BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
             }
         }
+        return null;
+    }
+
+    public static @Nullable IHeatBlock getHeatBlock(BlockEntity blockEntity) {
+        if (BlockUtils.isHeatBlock(blockEntity))
+            return (IHeatBlock) blockEntity;
         return null;
     }
 

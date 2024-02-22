@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.util.MultiblockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
@@ -12,12 +12,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
-public record FireBoxMultiblock(FireboxTier fireboxTier) implements IMultiblock {
+public record FireBoxMultiblock(FireboxTier fireboxTier) implements Multiblock {
     public static final EnumProperty<FireBoxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireBoxMultiblock.PartIndex.class);
 
     @Override
@@ -45,14 +44,14 @@ public record FireBoxMultiblock(FireboxTier fireboxTier) implements IMultiblock 
     }
 
     @Override
-    public @Nullable MultiblockDirection getFixedDirection() {
+    public MultiblockDirection getFixedDirection() {
         return MultiblockDirection.SOUTH;
     }
 
     @Override
     public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
+        MultiblockUtils.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 switch (index) {
                     case 1, 3, 5, 7 -> PartIndex.HATCH;
                     case 4 -> PartIndex.COIL;
@@ -63,7 +62,7 @@ public record FireBoxMultiblock(FireboxTier fireboxTier) implements IMultiblock 
     @Override
     public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        MultiblockHelper.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
+        MultiblockUtils.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 PartIndex.UNFORMED));
     }
 

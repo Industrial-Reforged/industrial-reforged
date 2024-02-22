@@ -1,19 +1,10 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.Scannable;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.data.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.List;
 
 public interface IHeatBlock {
     default void setHeatStored(BlockEntity blockEntity, int value) {

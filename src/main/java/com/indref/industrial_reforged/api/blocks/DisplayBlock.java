@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.api.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * to display a custom info message when the
  * player hovers over the block with a scanner
  */
-public interface Scannable {
+public interface DisplayBlock {
     /**
      * This method will display hover scanner information for the specific block.
      * Note: The lists in the list stand for the lines, so if you want to have
@@ -24,5 +25,7 @@ public interface Scannable {
      * @param level gives you info about the level of the block the scanner is hovering over
      * @return the text that should be displayed
      */
-    List<Component> displayText(BlockState scannedBlock, BlockPos scannedBlockPos, Level level);
+    List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level);
+
+    List<Item> getCompatibleItems();
 }

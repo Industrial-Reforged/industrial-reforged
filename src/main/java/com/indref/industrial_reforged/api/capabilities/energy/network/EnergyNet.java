@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
-import com.indref.industrial_reforged.util.Util;
+import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -112,7 +112,7 @@ public class EnergyNet {
         if (consumers.isEmpty()) return false;
 
         List<BlockPos> finalConsumers = new ArrayList<>();
-        int[] initialAmount = Util.splitNumberEvenly(amount, consumers.size());
+        int[] initialAmount = Utils.splitNumberEvenly(amount, consumers.size());
 
         // check which blocks can accept the heat
         for (int i = 0; i < consumers.size(); i++) {
@@ -126,7 +126,7 @@ public class EnergyNet {
 
         if (finalConsumers.isEmpty()) return false;
 
-        int[] finalAmount = Util.splitNumberEvenly(amount, finalConsumers.size());
+        int[] finalAmount = Utils.splitNumberEvenly(amount, finalConsumers.size());
 
         // distribute heat
         for (int i = 0; i < finalConsumers.size(); i++) {

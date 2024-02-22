@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
-import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
-import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiBlockController;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -11,7 +11,7 @@ import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.Util;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,9 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBlockController, Wrenchable {
+import java.util.List;
+
+public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlockController, Wrenchable {
     public static final MapCodec<CrucibleControllerBlock> CODEC = simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, CrucibleTiers.CERAMIC));
     private final CrucibleTier tier;
 
@@ -81,7 +83,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
                 fluidHandler.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE);
             }
             player.openMenu((CrucibleBlockEntity) level.getBlockEntity(blockPos), blockPos);
-            player.sendSystemMessage(Component.literal(Util.fluidStackToString(fluidHandler.getFluidInTank(0))));
+            player.sendSystemMessage(Component.literal(Utils.fluidStackToString(fluidHandler.getFluidInTank(0))));
             return InteractionResult.SUCCESS;
         }
 
@@ -95,7 +97,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
     }
 
     @Override
-    public IMultiblock getMultiblock() {
+    public Multiblock getMultiblock() {
         return IRMultiblocks.CRUCIBLE_CERAMIC.get();
     }
 
@@ -111,5 +113,17 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements IMultiBl
 
         return createTickerHelper(blockEntityType, IRBlockEntityTypes.CRUCIBLE.get(),
                 (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
+    }
+
+    @Override
+    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+        CrucibleBlockEntity blockEntity = (CrucibleBlockEntity) level.getBlockEntity(scannedBlockPos);
+
+        return List.of();
+    }
+
+    @Override
+    public List<Item> getCompatibleItems() {
+        return List.of(IRItems.SCANNER.get());
     }
 }

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.multiblocks;
 
+import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -11,12 +12,15 @@ import java.util.List;
 import java.util.Map;
 
 // TODO: 10/23/2023 Allow rotating the multi (currently only works for south)
-public interface IMultiblock {
+public interface Multiblock {
     // Returns the block that is the controller
     Block getController();
 
     /**
      * Return the layout of the multi
+     * The order of this is top layer first.
+     * As an example see: {@link CrucibleMultiblock#getLayout()}
+     *
      * <br>[<br>0, 0, 0,
      * <br>0, 1, 0
      * <br>0, 0, 0<br>]
@@ -51,9 +55,11 @@ public interface IMultiblock {
     }
 
     void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
+
     void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos);
 
-    @Nullable default MultiblockDirection getFixedDirection() {
+    @Nullable
+    default MultiblockDirection getFixedDirection() {
         return null;
     }
 }

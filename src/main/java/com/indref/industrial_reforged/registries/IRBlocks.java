@@ -43,6 +43,10 @@ public final class IRBlocks {
             () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",
             () -> new RefractoryBrickBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final Supplier<Block> BLAST_FURNACE_BRICKS = registerBlockAndItem("blast_furnace_bricks",
+            () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final Supplier<Block> BLAST_FURNACE_HATCH = registerBlockAndItem("blast_furnace_hatch",
+            () -> new BlastFurnaceHatch(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final Supplier<Block> REFRACTORY_STONE = registerBlockAndItem("refractory_stone",
             () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final Supplier<Block> COIL = registerBlockAndItem("coil",

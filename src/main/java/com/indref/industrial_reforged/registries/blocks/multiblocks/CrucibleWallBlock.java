@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
-    public static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", WallStates.class);
+    public static final EnumProperty<CrucibleMultiblock.WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", CrucibleMultiblock.WallStates.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
 
@@ -57,19 +58,19 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
         if (player.hasEffect(MobEffects.ABSORPTION)) {
             return defaultBlockState()
                     .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, WallStates.WALL_BOTTOM);
+                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.WALL_BOTTOM);
         } else if (player.hasEffect(MobEffects.BAD_OMEN)) {
             return defaultBlockState()
                     .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, WallStates.WALL_TOP);
+                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.WALL_TOP);
         } else if (player.hasEffect(MobEffects.CONDUIT_POWER)) {
             return defaultBlockState()
                     .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, WallStates.EDGE_BOTTOM);
+                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.EDGE_BOTTOM);
         } else {
             return defaultBlockState()
                     .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, WallStates.EDGE_TOP);
+                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.EDGE_TOP);
         }
     }
 
@@ -92,24 +93,6 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new CrucibleWallBlockEntity(blockPos, blockState);
-    }
-
-    public enum WallStates implements StringRepresentable {
-        EDGE_BOTTOM("edge_bottom"),
-        EDGE_TOP("edge_top"),
-        WALL_BOTTOM("wall_bottom"),
-        WALL_TOP("wall_top");
-
-        private final String name;
-
-        WallStates(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public @NotNull String getSerializedName() {
-            return name;
-        }
     }
 
     @Override

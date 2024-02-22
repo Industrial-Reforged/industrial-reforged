@@ -109,6 +109,9 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.CERAMIC_CASTING_TABLE);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.REFRACTORY_STONE);
+                addBlock(output, IRBlocks.BLAST_FURNACE_BRICKS);
+                addBlock(output, IRBlocks.BLAST_FURNACE_CONTROLLER);
+                addBlock(output, IRBlocks.BLAST_FURNACE_TOP);
 
                 // Ores
                 addBlock(output, IRBlocks.BAUXITE_ORE);

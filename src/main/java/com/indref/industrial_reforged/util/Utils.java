@@ -13,7 +13,7 @@ import org.joml.Vector3f;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Util {
+public final class Utils {
     public static final int[] EMPTY_ARRAY = new int[0];
 
     public static <K, V> Map<V, K> reverseMap(Map<K, V> map) {

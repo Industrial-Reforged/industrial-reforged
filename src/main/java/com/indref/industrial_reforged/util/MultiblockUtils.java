@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public final class MultiblockHelper {
+public final class MultiblockUtils {
 
     /**
      * Converts a default minecraft direction to a multiblock direction.
@@ -40,7 +40,7 @@ public final class MultiblockHelper {
      * @param player        player that is trying to form the multi
      * @return first: isValid? second: Direction that multi is valid
      */
-    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(IMultiblock multiblock, BlockPos controllerPos, Level level, Player player) {
+    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(Multiblock multiblock, BlockPos controllerPos, Level level, Player player) {
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
@@ -157,8 +157,8 @@ public final class MultiblockHelper {
      * @return x, y, z
      */
     @Nullable
-    public static Vec3i getRelativeControllerPos(IMultiblock multiblock) {
-        Map<Block, Integer> reverseDef = Util.reverseMap(multiblock.getDefinition());
+    public static Vec3i getRelativeControllerPos(Multiblock multiblock) {
+        Map<Block, Integer> reverseDef = Utils.reverseMap(multiblock.getDefinition());
         List<List<Integer>> layout = multiblock.getLayout();
         int y = 0;
         for (List<Integer> layer : layout) {
@@ -223,7 +223,7 @@ public final class MultiblockHelper {
         );
     }
 
-    public static void form(IMultiblock multiblock, BlockPos controllerPos, Level level, Player player) {
+    public static void form(Multiblock multiblock, BlockPos controllerPos, Level level, Player player) {
         Pair<Boolean, MultiblockDirection> valid = isValid(multiblock, controllerPos, level, player);
         MultiblockDirection direction = valid.getSecond();
         if (multiblock.getFixedDirection() != null) {
@@ -234,7 +234,7 @@ public final class MultiblockHelper {
         }
     }
 
-    public static void unform(IMultiblock multiblock, BlockPos controllerPos, Level level) {
+    public static void unform(Multiblock multiblock, BlockPos controllerPos, Level level) {
         for (MultiblockDirection direction1 : MultiblockDirection.values()) {
             if (multiblock.getFixedDirection() != null) {
                 try {
@@ -245,7 +245,7 @@ public final class MultiblockHelper {
         }
     }
 
-    private static void unformBlocks(IMultiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
+    private static void unformBlocks(Multiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
@@ -275,7 +275,7 @@ public final class MultiblockHelper {
         }
     }
 
-    private static void formBlocks(IMultiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
+    private static void formBlocks(Multiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
@@ -313,5 +313,13 @@ public final class MultiblockHelper {
     public static void setAndUpdate(Level level, BlockPos blockPos, BlockState oldState, BlockState newState) {
         level.setBlock(blockPos, newState, 2);
         level.sendBlockUpdated(blockPos, oldState, newState, 11);
+    }
+
+    public static List<List<Integer>> singleBlockMultiblock(List<Integer> yLayout) {
+        List<List<Integer>> toReturn = new ArrayList<>();
+        for (int yLayer : yLayout) {
+            toReturn.add(List.of(yLayer));
+        }
+        return toReturn;
     }
 }

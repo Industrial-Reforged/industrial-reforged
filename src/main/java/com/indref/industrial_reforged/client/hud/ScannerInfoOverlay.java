@@ -25,15 +25,13 @@ public class ScannerInfoOverlay {
         int lineOffset = 0;
         int x = width / 2;
         int y = height / 2;
-        HitResult.Type hitResultType = minecraft.hitResult.getType();
         Level level = minecraft.level;
         Player player = minecraft.player;
-        BlockPos hitResultBlockPos = ((BlockHitResult) minecraft.hitResult).getBlockPos();
-        if (hitResultType == HitResult.Type.BLOCK) {
+        if (minecraft.hitResult instanceof BlockHitResult blockHitResult) {
             if (minecraft.player.getMainHandItem().getItem() instanceof DisplayItem displayItem) {
-                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, hitResultBlockPos);
+                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos());
             } else if (minecraft.player.getOffhandItem().getItem() instanceof DisplayItem displayItem) {
-                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, hitResultBlockPos);
+                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos());
             }
         }
     };

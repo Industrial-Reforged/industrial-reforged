@@ -1,18 +1,22 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
-import com.indref.industrial_reforged.api.multiblocks.IMultiBlockController;
-import com.indref.industrial_reforged.api.multiblocks.IMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiBlockController;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
-import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.util.DisplayUtils;
+import com.indref.industrial_reforged.util.MultiblockUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -27,7 +31,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CoilBlock extends BaseEntityBlock implements IMultiBlockController, Wrenchable {
+import java.util.List;
+
+public class CoilBlock extends BaseEntityBlock implements MultiBlockController, Wrenchable {
     public CoilBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -42,7 +48,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
 
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
+            MultiblockUtils.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
         }
 
         if (level.getBlockEntity(blockPos) instanceof FireboxBlockEntity fireboxBlockEntity && newState.is(Blocks.AIR)) {
@@ -61,7 +67,7 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
     }
 
     @Override
-    public IMultiblock getMultiblock() {
+    public Multiblock getMultiblock() {
         return IRMultiblocks.REFRACTORY_FIREBOX.get();
     }
 
@@ -87,5 +93,18 @@ public class CoilBlock extends BaseEntityBlock implements IMultiBlockController,
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
+    }
+
+    @Override
+    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+        if (scannedBlock.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED))
+            return List.of();
+
+        return DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.translatable("Firebox"));
+    }
+
+    @Override
+    public List<Item> getCompatibleItems() {
+        return List.of(IRItems.THERMOMETER.get());
     }
 }

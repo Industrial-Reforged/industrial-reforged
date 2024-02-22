@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -86,7 +88,15 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private void meltItem() {
         CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
-        this.getItemHandler().getStackInSlot(0).setCount(0);
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
+            Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
+            if (itemStack.is(input)) {
+                itemStack.shrink(1);
+                IndustrialReforged.LOGGER.debug("Slot: {}, item: {}", i, input);
+                break;
+            }
+        }
         FluidStack resultFluid = recipe.getResultFluid();
         this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
     }
@@ -105,6 +115,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     public boolean hasRecipe() {
+
         Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
@@ -113,7 +124,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
         FluidStack result = recipe.get().value().getResultFluid();
 
-        return canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid());
+        boolean canInsert = canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid());
+        IndustrialReforged.LOGGER.debug("Has recipe");
+        return canInsert;
     }
 
     private Optional<RecipeHolder<CrucibleSmeltingRecipe>> getCurrentRecipe() {
@@ -152,5 +165,17 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt("duration", duration);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        duration = tag.getInt("duration");
     }
 }

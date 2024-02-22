@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.Util;
+import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,7 +31,7 @@ public class TapeMeasureItem extends ToolItem {
         useItem.setTag(tag);
         if (player.isShiftKeyDown() && tag.getBoolean("extended")) {
             tag.putBoolean("extended", false);
-            tag.putIntArray("firstBlockPos", Util.EMPTY_ARRAY);
+            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResultHolder.success(useItem);
         }
         return InteractionResultHolder.fail(useItem);
@@ -82,11 +82,11 @@ public class TapeMeasureItem extends ToolItem {
             }
 
             tag.putBoolean("extended", false);
-            tag.putIntArray("firstBlockPos", Util.EMPTY_ARRAY);
+            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
             tag.putBoolean("extended", false);
-            tag.putIntArray("firstBlockPos", Util.EMPTY_ARRAY);
+            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

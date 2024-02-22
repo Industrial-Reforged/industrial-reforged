@@ -88,10 +88,6 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
             protected void onContentsChanged(int slot) {
                 setChanged();
                 onItemsChanged(slot);
-                if (!level.isClientSide()) {
-                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                    PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, slots, getItemHandlerStacks()));
-                }
             }
 
             @Override
@@ -107,9 +103,6 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
             protected void onContentsChanged() {
                 setChanged();
                 onFluidsChanged();
-                if (!level.isClientSide()) {
-                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                }
             }
 
             @Override

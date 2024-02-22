@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
-import com.indref.industrial_reforged.util.InputHandler;
+import com.indref.industrial_reforged.util.InputUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -51,7 +51,7 @@ public class NeoforgeEvents {
 
             if (event.phase == TickEvent.Phase.START) {
                 if (JETPACK_ASCEND.get().isDown()) {
-                    InputHandler.update(player, true, false, false, false, false, false, false);
+                    InputUtils.update(player, true, false, false, false, false, false, false);
                 }
             }
         }

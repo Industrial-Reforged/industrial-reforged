@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.commands;
 
-import com.indref.industrial_reforged.util.Util;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -19,8 +19,8 @@ public class ENetsInfoCommand {
     private int infoOnENets(CommandSourceStack source) {
         ServerLevel level = source.getLevel();
         Player player = source.getPlayer();
-        player.sendSystemMessage(Component.literal("EnergyNet amount: " + Util.getEnergyNets(level).getEnets().getNetworks().size()));
-        player.sendSystemMessage(Component.literal("EnergyNets: " + Util.getEnergyNets(level).getEnets().getNetworks()));
+        player.sendSystemMessage(Component.literal("EnergyNet amount: " + Utils.getEnergyNets(level).getEnets().getNetworks().size()));
+        player.sendSystemMessage(Component.literal("EnergyNets: " + Utils.getEnergyNets(level).getEnets().getNetworks()));
         return 1;
     }
 }

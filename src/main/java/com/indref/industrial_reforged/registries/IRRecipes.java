@@ -12,6 +12,7 @@ public final class IRRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
             DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, IndustrialReforged.MODID);
 
-    public static final Supplier<RecipeSerializer<CrucibleSmeltingRecipe>> ANVIL_SMASHING_SERIALIZER =
-            SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.Serializer.INSTANCE);
+    static {
+        SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.Serializer.INSTANCE);
+    }
 }

@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,7 +31,7 @@ public final class DisplayUtils {
         );
     }
 
-    public static List<Component> displayHeatInfo(BlockEntity blockEntity, BlockState blockState) {
+    public static List<Component> displayHeatInfo(BlockEntity blockEntity, BlockState blockState, MutableComponent name) {
         IHeatBlock heatBlock;
         if (blockEntity instanceof IHeatBlock energyBlock1)
             heatBlock = energyBlock1;
@@ -38,7 +39,7 @@ public final class DisplayUtils {
             return List.of();
 
         return List.of(
-                blockState.getBlock().getName().withStyle(ChatFormatting.WHITE),
+                name.withStyle(ChatFormatting.WHITE),
                 Component.translatable("scanner_info.heat_block.heat_ratio")
                         .withStyle(ChatFormatting.WHITE)
                         .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(blockEntity), heatBlock.getHeatCapacity())))

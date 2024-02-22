@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.armor;
 
-import com.indref.industrial_reforged.util.InputHandler;
+import com.indref.industrial_reforged.util.InputUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -19,7 +19,7 @@ public class JetpackItem extends ArmorItem {
         ItemStack item = player.getInventory().getItem(38);
         CompoundTag tag = stack.getOrCreateTag();
         if (item.is(this) && tag.getBoolean("active")) {
-            if (InputHandler.isHoldingDown(player)) {
+            if (InputUtils.isHoldingDown(player)) {
                 Vec3 motion = player.getDeltaMovement();
                 player.setDeltaMovement(motion.x(), 0.5, motion.z());
             }

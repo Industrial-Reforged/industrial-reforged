@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.commands;
 
-import com.indref.industrial_reforged.util.Util;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -17,8 +17,8 @@ public class ENetsResetCommand {
 
     private int resetENets(CommandSourceStack source) {
         ServerLevel level = source.getLevel();
-        Util.getEnergyNets(level).getEnets().resetNets();
-        Util.getEnergyNets(level).setDirty();
+        Utils.getEnergyNets(level).getEnets().resetNets();
+        Utils.getEnergyNets(level).setDirty();
         source.sendSuccess(() -> Component.literal("Reset heat nets"), true);
         return 1;
     }

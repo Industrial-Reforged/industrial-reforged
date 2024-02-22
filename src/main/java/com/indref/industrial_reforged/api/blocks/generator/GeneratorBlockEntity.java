@@ -8,7 +8,7 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.networking.data.EnergySyncData;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.Util;
+import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -30,7 +30,7 @@ public abstract class GeneratorBlockEntity extends BlockEntity implements IEnerg
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        EnergyNets energyNets = Util.getEnergyNets((ServerLevel) level).getEnets();
+        EnergyNets energyNets = Utils.getEnergyNets((ServerLevel) level).getEnets();
         tryFillEnergy(this, getGenerationAmount());
 
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(blockPos)) {
