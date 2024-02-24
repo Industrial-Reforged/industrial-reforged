@@ -77,4 +77,24 @@ public final class Utils {
     public static Vector3f rgbToHsv(Vec3i rgb) {
         return new Vector3f((float) rgb.getX() / 256F, (float) rgb.getY() / 256F, (float) rgb.getZ() / 256F);
     }
+
+    public static int facingToIndex(Direction direction) {
+        return switch (direction) {
+            case NORTH -> 0;
+            case EAST -> 1;
+            case SOUTH -> 2;
+            case WEST -> 3;
+            default -> -1;
+        };
+    }
+
+    public static Direction indexToFacing(int index) {
+        return switch (index) {
+            case 0 -> Direction.NORTH;
+            case 1 -> Direction.EAST;
+            case 2 -> Direction.SOUTH;
+            case 3 -> Direction.WEST;
+            default -> null;
+        };
+    }
 }

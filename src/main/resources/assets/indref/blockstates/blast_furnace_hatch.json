@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "brick_state=unformed,facing=north": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
+      "y": 180
+    },
+    "brick_state=hatch_left,facing=north": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_left",
+      "y": 180
+    },
+    "brick_state=hatch_right,facing=north": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_right",
+      "y": 180
+    },
+    "brick_state=unformed,facing=east": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
+      "y": 270
+    },
+    "brick_state=hatch_left,facing=east": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_left",
+      "y": 270
+    },
+    "brick_state=hatch_right,facing=east": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_right",
+      "y": 270
+    },
+    "brick_state=unformed,facing=south": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch"
+    },
+    "brick_state=hatch_left,facing=south": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_left"
+    },
+    "brick_state=hatch_right,facing=south": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_right"
+    },
+    "brick_state=unformed,facing=west": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
+      "y": 90
+    },
+    "brick_state=hatch_left,facing=west": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_left",
+      "y": 90
+    },
+    "brick_state=hatch_right,facing=west": {
+      "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_right",
+      "y": 90
+    }
+  }
+}

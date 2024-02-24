@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "indref:block/multiblock/blast_furnace/blast_furnace_front",
-    "side": "indref:block/multiblock/blast_furnace/sandy_bricks",
-    "top": "indref:block/multiblock/blast_furnace/sandy_bricks"
-  }
-}

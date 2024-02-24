@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -71,8 +72,8 @@ public class FaucetBlock extends Block implements Wrenchable {
         BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().relative(context.getHorizontalDirection()));
         BlockState toReturn = super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
         if (blockState.getBlock() instanceof CrucibleWallBlock &&
-                (blockState.getValue(CrucibleWallBlock.CRUCIBLE_WALL).equals(CrucibleWallBlock.WallStates.WALL_BOTTOM) ||
-                        blockState.getValue(CrucibleWallBlock.CRUCIBLE_WALL).equals(CrucibleWallBlock.WallStates.EDGE_BOTTOM))) {
+                (blockState.getValue(CrucibleWallBlock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.WALL_BOTTOM) ||
+                        blockState.getValue(CrucibleWallBlock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.EDGE_BOTTOM))) {
             return toReturn.setValue(ATTACHED_TO_CRUCIBLE, true);
         }
 
