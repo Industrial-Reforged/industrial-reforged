@@ -50,17 +50,6 @@ public abstract class BaseElectricSwordItem extends SwordItem implements IEnergy
     @Override
     public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
         super.appendHoverText(stack, p41422, tooltip, p41424);
-        IEnergyItem item = this;
-        tooltip.add(
-                Component.translatable("indref.heat.desc.stored").withStyle(ChatFormatting.GRAY)
-                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
-                        .append(Component.literal(String.format("%s / %s", item.getEnergyStored(stack),
-                                item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA))
-        );
-        tooltip.add(
-                Component.translatable("indref.heat.desc.tier").withStyle(ChatFormatting.GRAY)
-                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
-                        .append(getEnergyTier().getName())
-        );
+        ItemUtils.addEnergyTooltip(tooltip, stack);
     }
 }
