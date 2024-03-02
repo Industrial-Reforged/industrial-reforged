@@ -18,7 +18,7 @@ public interface Multiblock {
 
     /**
      * Return the layout of the multi
-     * The order of this is top layer first.
+     * The order of this is bottom layer first.
      * As an example see: {@link CrucibleMultiblock#getLayout()}
      *
      * <br>[<br>0, 0, 0,

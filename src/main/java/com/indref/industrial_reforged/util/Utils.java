@@ -97,4 +97,12 @@ public final class Utils {
             default -> null;
         };
     }
+
+    public static Direction incDirection(Direction facing) {
+        int facingIndex = Utils.facingToIndex(facing);
+        facingIndex++;
+        if (facingIndex > 3)
+            return Direction.NORTH;
+        return Utils.indexToFacing(facingIndex);
+    }
 }

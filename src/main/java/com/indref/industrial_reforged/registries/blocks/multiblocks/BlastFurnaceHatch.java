@@ -62,13 +62,4 @@ public class BlastFurnaceHatch extends RotatableEntityBlock implements MultiBloc
         return IRMultiblocks.BLAST_FURNACE.get();
     }
 
-    @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
-        if (p_60506_.isShiftKeyDown()) {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.HATCH_LEFT));
-        } else {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.HATCH_RIGHT));
-        }
-        return InteractionResult.SUCCESS;
-    }
 }

@@ -1,8 +1,12 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "front": "indref:block/multiblock/blast_furnace/blast_furnace_front",
-    "side": "indref:block/multiblock/blast_furnace/blast_furnace_bricks",
-    "top": "indref:block/multiblock/blast_furnace/blast_furnace_bricks"
+    "down": "indref:block/multiblock/blast_furnace/blast_furnace_bricks",
+    "east": "indref:block/multiblock/blast_furnace/blast_furnace_front",
+    "north": "indref:block/multiblock/blast_furnace/blast_furnace_front",
+    "particle": "indref:block/multiblock/blast_furnace/blast_furnace",
+    "south": "indref:block/multiblock/blast_furnace/blast_furnace_front",
+    "up": "indref:block/multiblock/blast_furnace/blast_furnace_bricks",
+    "west": "indref:block/multiblock/blast_furnace/blast_furnace_front"
   }
 }

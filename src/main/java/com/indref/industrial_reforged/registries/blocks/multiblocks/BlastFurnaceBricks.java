@@ -44,16 +44,8 @@ public class BlastFurnaceBricks extends Block {
         if (player.isShiftKeyDown() && blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
             level.setBlockAndUpdate(blockPos, blockState.setValue(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.TOP));
         } else {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(FACING, incDirection(blockState.getValue(FACING))));
+            level.setBlockAndUpdate(blockPos, blockState.setValue(FACING, Utils.incDirection(blockState.getValue(FACING))));
         }
         return InteractionResult.SUCCESS;
-    }
-
-    private static Direction incDirection(Direction facing) {
-        int facingIndex = Utils.facingToIndex(facing);
-        facingIndex++;
-        if (facingIndex > 3)
-            return Direction.NORTH;
-        return Utils.indexToFacing(facingIndex);
     }
 }
