@@ -120,6 +120,8 @@ public final class IRItems {
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> URANIUM_INGOT = registerItem("uranium_ingot",
             () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> STEEL_INGOT = registerItem("steel_ingot",
+            () -> new Item(new Item.Properties()));
 
     public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
             () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER,

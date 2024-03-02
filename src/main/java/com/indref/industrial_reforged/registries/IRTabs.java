@@ -85,6 +85,7 @@ public final class IRTabs {
                 addItem(output, IRItems.TITANIUM_INGOT);
                 addItem(output, IRItems.URANIUM_INGOT);
                 addItem(output, IRItems.TIN_INGOT);
+                addItem(output, IRItems.STEEL_INGOT);
             }).build());
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref.blocks"))

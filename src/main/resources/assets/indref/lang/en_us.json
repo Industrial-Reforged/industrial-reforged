@@ -43,6 +43,16 @@
   "item.indref.hazmat_leggings": "Hazmat Leggings",
   "item.indref.hazmat_boots": "Hazmat Boots",
 
+  "block.indref.basic_generator": "Basic Generator",
+  "block.indref.centrifuge": "Centrifuge",
+  "block.indref.drain": "Drain",
+  "block.indref.crafting_station": "Crafting Station",
+
+  "block.indref.tin_cable": "Tin Cable",
+  "block.indref.copper_cable": "Copper Cable",
+  "block.indref.gold_cable": "Gold Cable",
+  "block.indref.steel_cable": "Steel Cable",
+
   "block.indref.test_block_energy": "Test Block Energy",
   "block.indref.test_part": "Test Part",
   "block.indref.test_controller": "Test Controller",
