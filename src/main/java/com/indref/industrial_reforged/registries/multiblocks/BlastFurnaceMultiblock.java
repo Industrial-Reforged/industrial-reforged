@@ -62,11 +62,8 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         IndustrialReforged.LOGGER.debug("Direction: {}", direction);
         if (blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED)) {
             level.setBlockAndUpdate(blockPos, switch (indexY) {
-                case 0 -> switch (index) {
-                    case 0 -> blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED);
-                    default ->
-                            blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
-                };
+                case 0 ->
+                        blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
                 case 3 ->
                         blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricks.FACING, getCorrectDirection(index, direction));
                 default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
