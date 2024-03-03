@@ -59,7 +59,6 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     @Override
     public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
-        IndustrialReforged.LOGGER.debug("Direction: {}", direction);
         if (blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED)) {
             level.setBlockAndUpdate(blockPos, switch (indexY) {
                 case 0 ->

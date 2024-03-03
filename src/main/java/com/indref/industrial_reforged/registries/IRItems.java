@@ -80,7 +80,7 @@ public final class IRItems {
             () -> new FertilizerItem(new Item.Properties()));
     public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold",
             () -> new MoldItem(new Item.Properties()));
-    public static final Supplier<Item> CLAY_MOLD_ROD = registerItem("clay_mold_rod",
+    public static final Supplier<Item> CLAY_MOLD_ROD = registerItem("clay_mold_item",
             () -> new MoldItem(new Item.Properties()));
 
     // Needs to be registered manual for custom placement

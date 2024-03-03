@@ -10,6 +10,9 @@ version="${mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
 
+[[mixins]]
+config = "${mod_id}.mixins.json"
+
 description='''${mod_description}'''
 
 [[dependencies.${mod_id}]]

@@ -11,6 +11,7 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.CastingTableRenderer;
+import com.indref.industrial_reforged.client.renderer.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.networking.data.*;
@@ -25,12 +26,15 @@ import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
 import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
 import com.indref.industrial_reforged.registries.screen.FireBoxScreen;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -39,6 +43,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
@@ -47,7 +52,7 @@ import org.lwjgl.glfw.GLFW;
 @SuppressWarnings("unused")
 public class IREvents {
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Client {
+    public static class ClientBus {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll(new ResourceLocation(IndustrialReforged.MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
@@ -66,6 +71,7 @@ public class IREvents {
                 if (item instanceof IMultiBarItem)
                     event.register(item, new MultiBarRenderer(item));
             }
+            event.register(Items.IRON_INGOT, new CrucibleProgressRenderer());
         }
 
         @SubscribeEvent
@@ -114,7 +120,7 @@ public class IREvents {
     }
 
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Server {
+    public static class ServerBus {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             for (Item item : BuiltInRegistries.ITEM) {
