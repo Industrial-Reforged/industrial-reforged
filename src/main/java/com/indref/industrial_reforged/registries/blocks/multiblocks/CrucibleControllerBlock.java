@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.multiblocks.MultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
@@ -9,8 +10,12 @@ import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
+import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.registries.multiblocks.FireBoxMultiblock;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.MultiblockUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -25,6 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -38,10 +44,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlockController, Wrenchable {
     public static final MapCodec<CrucibleControllerBlock> CODEC = simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, CrucibleTiers.CERAMIC));
     private final CrucibleTier tier;
@@ -66,17 +74,17 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlo
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_49232_) {
+    public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
             IFluidHandler fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, level.getBlockEntity(blockPos));
             if (player.getMainHandItem().is(IRItems.ALUMINUM_INGOT.get())) {
@@ -88,6 +96,17 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlo
         }
 
         return InteractionResult.FAIL;
+    }
+
+    @Override
+    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
+        super.onRemove(blockState, level, blockPos, newState, p_60519_);
+        MultiblockUtils.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
+
+        if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucibleBlockEntity && newState.is(Blocks.AIR)) {
+            crucibleBlockEntity.drops();
+        }
+        IndustrialReforged.LOGGER.debug("TEST1");
     }
 
     @Nullable

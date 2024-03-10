@@ -31,6 +31,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -116,6 +118,19 @@ public class IREvents {
         public static void registerBERenderer(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_TABLE.get(),
                     CastingTableRenderer::new);
+        }
+    }
+
+    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
+    public static class Client {
+        @SubscribeEvent
+        public static void appendTooltips(ItemTooltipEvent event) {
+            CompoundTag tag = event.getItemStack().getOrCreateTag();
+            if (tag.getBoolean("cruciblemelting"))
+                event.getToolTip().add(Component.translatable("*.desc.melting_progress")
+                        .append(": ")
+                        .append(String.valueOf(tag.getInt("barwidth")))
+                        .withStyle(ChatFormatting.GRAY));
         }
     }
 

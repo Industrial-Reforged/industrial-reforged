@@ -23,9 +23,8 @@ public final class DisplayUtils {
         return List.of(
                 blockState.getBlock().getName().withStyle(ChatFormatting.WHITE),
                 Component.translatable("scanner_info.energy_block.energy_ratio")
-                        .withStyle(ChatFormatting.WHITE)
+                        .append(": ")
                         .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity())))
-                        .withStyle(ChatFormatting.WHITE)
                         .append(Component.literal(","))
                         .withStyle(ChatFormatting.WHITE)
         );
@@ -41,9 +40,8 @@ public final class DisplayUtils {
         return List.of(
                 name.withStyle(ChatFormatting.WHITE),
                 Component.translatable("scanner_info.heat_block.heat_ratio")
-                        .withStyle(ChatFormatting.WHITE)
+                        .append(": ")
                         .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(blockEntity), heatBlock.getHeatCapacity())))
-                        .withStyle(ChatFormatting.WHITE)
                         .append(Component.literal(","))
                         .withStyle(ChatFormatting.WHITE)
         );

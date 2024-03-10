@@ -68,7 +68,7 @@ public final class IRTabs {
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CLAY_MOLD);
-                addItem(output, IRItems.CLAY_MOLD_ROD);
+                addItem(output, IRItems.CLAY_MOLD_INGOT);
                 addItem(output, IRItems.RAW_BAUXITE);
                 addItem(output, IRItems.RAW_CHROMIUM);
                 addItem(output, IRItems.RAW_IRIDIUM);

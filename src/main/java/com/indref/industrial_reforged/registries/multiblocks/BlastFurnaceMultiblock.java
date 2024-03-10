@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
@@ -57,22 +58,28 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public @Nullable BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
         if (blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED)) {
-            level.setBlockAndUpdate(blockPos, switch (indexY) {
+            return switch (indexY) {
                 case 0 ->
                         blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
                 case 3 ->
                         blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricks.FACING, getCorrectDirection(index, direction));
                 default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
-            });
+            };
         }
+        return null;
     }
 
     @Override
     public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
 
+    }
+
+    @Override
+    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+        return true;
     }
 
     private static Direction getCorrectDirection(int index, MultiblockDirection direction) {

@@ -17,8 +17,10 @@
   "tape_measure.desc.info2": "Press",
   "tape_measure.desc.info3": "to set start and final position",
 
-  "fluid_cell.desc.stored": "Stored Fluid: ",
-  "fluid_cell.desc.amount": "Stored Amount: ",
+  "fluid_cell.desc.stored": "Stored Fluid",
+  "fluid_cell.desc.amount": "Stored Amount",
+
+  "*.desc.melting_progress": "Melting Progress",
 
   "item.indref.nuka_cola": "Nuka Cola",
   "item.indref.empty_can": "Empty Can",
@@ -151,6 +153,6 @@
   "multiblock.info.expected_block": "Expected",
   "multiblock.info.block_pos": "Coords",
 
-  "scanner_info.heat_block.heat_ratio": "Heat stored: ",
-  "scanner_info.energy_block.energy_ratio": "Energy stored: "
+  "scanner_info.heat_block.heat_ratio": "Heat stored",
+  "scanner_info.energy_block.energy_ratio": "Energy stored"
 }

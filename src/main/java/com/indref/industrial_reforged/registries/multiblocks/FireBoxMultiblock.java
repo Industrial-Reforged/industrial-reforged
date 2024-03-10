@@ -49,20 +49,25 @@ public record FireBoxMultiblock(FireboxTier fireboxTier) implements Multiblock {
     }
 
     @Override
-    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+        return !level.getBlockState(blockPos).getValue(FIREBOX_PART).equals(PartIndex.UNFORMED);
+    }
+
+    @Override
+    public BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        MultiblockUtils.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
+        return currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 switch (index) {
                     case 1, 3, 5, 7 -> PartIndex.HATCH;
                     case 4 -> PartIndex.COIL;
                     default -> PartIndex.BRICK;
-                }));
+                });
     }
 
     @Override
     public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        MultiblockUtils.setAndUpdate(level, blockPos, currentBlock, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
+        MultiblockUtils.setAndUpdate(level, blockPos, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
                 PartIndex.UNFORMED));
     }
 

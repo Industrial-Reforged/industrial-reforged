@@ -2,9 +2,11 @@ package com.indref.industrial_reforged.api.multiblocks;
 
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.patchy.BlockedServers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -54,9 +56,11 @@ public interface Multiblock {
         return widths;
     }
 
-    void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
+    @Nullable BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
 
     void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos);
+
+    boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos);
 
     @Nullable
     default MultiblockDirection getFixedDirection() {

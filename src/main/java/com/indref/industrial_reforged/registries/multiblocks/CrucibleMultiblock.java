@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -12,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
 
@@ -58,10 +61,10 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public void formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getCrucibleWallBlock())) {
-            MultiblockUtils.setAndUpdate(level, blockPos, currentBlock, IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
+            return IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
                     .defaultBlockState()
                     .setValue(CrucibleWallBlock.CRUCIBLE_WALL, switch (index) {
                         case 0, 2, 6, 8 -> switch (indexY) {
@@ -79,19 +82,30 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
                         case 5, 8 -> Direction.SOUTH;
                         case 6, 7 -> Direction.WEST;
                         default -> Direction.NORTH;
-                    }));
-            CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
-            blockEntity.controllerPos = controllerPos;
+                    });
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
-            MultiblockUtils.setAndUpdate(level, blockPos, currentBlock, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState());
+            return IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState();
         }
+        return null;
     }
 
     @Override
     public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
+        // TODO: Implement smart unforming
+        BlockState currentBlock = level.getBlockState(blockPos);
+        if (currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get())) {
+            MultiblockUtils.setAndUpdate(level, blockPos, IRBlocks.TERRACOTTA_BRICK_SLAB.get().defaultBlockState());
+        } else {
+            MultiblockUtils.setAndUpdate(level, blockPos, IRBlocks.TERRACOTTA_BRICK.get().defaultBlockState());
+        }
 
+        IndustrialReforged.LOGGER.debug("TEST5");
     }
 
+    @Override
+    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+        return true;
+    }
 
     public enum WallStates implements StringRepresentable {
         EDGE_BOTTOM("edge_bottom"),

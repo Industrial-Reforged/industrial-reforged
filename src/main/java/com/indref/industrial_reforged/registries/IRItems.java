@@ -41,9 +41,9 @@ public final class IRItems {
     public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
-            () -> new ElectricTreeTapItem(new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, Tiers.IRON, new Item.Properties()));
     public static final Supplier<Item> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new ElectricTreeTapItem(new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, Tiers.DIAMOND, new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
     public static final Supplier<Item> BLUEPRINT = registerItem("blueprint",
@@ -80,7 +80,7 @@ public final class IRItems {
             () -> new FertilizerItem(new Item.Properties()));
     public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold",
             () -> new MoldItem(new Item.Properties()));
-    public static final Supplier<Item> CLAY_MOLD_ROD = registerItem("clay_mold_item",
+    public static final Supplier<Item> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot",
             () -> new MoldItem(new Item.Properties()));
 
     // Needs to be registered manual for custom placement

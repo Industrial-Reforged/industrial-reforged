@@ -11,6 +11,7 @@ import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -99,6 +100,14 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         }
         FluidStack resultFluid = recipe.getResultFluid();
         this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
+    }
+
+    public void drops() {
+        SimpleContainer inventory = new SimpleContainer(getItemHandler().getSlots());
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            inventory.setItem(i, getItemHandler().getStackInSlot(i));
+        }
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     private void resetProgress() {

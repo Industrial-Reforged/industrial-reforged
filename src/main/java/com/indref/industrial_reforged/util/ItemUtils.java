@@ -119,16 +119,14 @@ public final class ItemUtils {
         if (item == null) return;
 
         if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
-            Component descriptionType = Component.translatable("fluid_cell.desc.stored")
+            tooltip.add(Component.translatable("fluid_cell.desc.stored").append(": ")
                     .append(Component.literal(item.getFluidInTank(0).getDisplayName().getString())
-                            .withStyle(ChatFormatting.AQUA));
-            Component descriptionAmount = Component.translatable("fluid_cell.desc.amount")
-                    .append(Component.literal(String.format("%d/%d",
+                            .withStyle(ChatFormatting.AQUA)));
+            tooltip.add(Component.translatable("fluid_cell.desc.amount").append(": ")
+                    .append("%d/%d".formatted(
                             item.getFluidInTank(0).getAmount(),
-                            com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
-                                    .getFluidCapacity())).withStyle(ChatFormatting.AQUA));
-            tooltip.add(descriptionType);
-            tooltip.add(descriptionAmount);
+                            getFluidItem(itemStack).getFluidCapacity()))
+                    .withStyle(ChatFormatting.AQUA));
         }
     }
 

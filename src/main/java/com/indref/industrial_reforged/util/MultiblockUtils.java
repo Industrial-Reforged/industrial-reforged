@@ -1,7 +1,9 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -11,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -184,7 +187,7 @@ public final class MultiblockUtils {
     private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
         player.sendSystemMessage(Component.translatable("multiblock.info.failed_to_construct").withStyle(ChatFormatting.RED));
         player.sendSystemMessage(Component.literal("| ")
-                        .withStyle(ChatFormatting.DARK_GRAY)
+                .withStyle(ChatFormatting.DARK_GRAY)
                 .append(Component.translatable("multiblock.info.actual_block")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.literal(": ")
@@ -193,7 +196,7 @@ public final class MultiblockUtils {
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
         player.sendSystemMessage((Component.literal("| ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
+                .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.translatable("multiblock.info.expected_block")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.literal(": ")
@@ -204,22 +207,22 @@ public final class MultiblockUtils {
         player.sendSystemMessage(
                 Component.literal("| ")
                         .withStyle(ChatFormatting.DARK_GRAY)
-                .append(Component.translatable("multiblock.info.block_pos")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(": ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(String.valueOf(curBlockPos.getX()))
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(", ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(String.valueOf(curBlockPos.getY()))
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(", ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(String.valueOf(curBlockPos.getZ()))
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(", ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("multiblock.info.block_pos")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(": ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(String.valueOf(curBlockPos.getX()))
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(", ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(String.valueOf(curBlockPos.getY()))
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(", ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(String.valueOf(curBlockPos.getZ()))
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(", ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
         );
     }
 
@@ -235,11 +238,12 @@ public final class MultiblockUtils {
     }
 
     public static void unform(Multiblock multiblock, BlockPos controllerPos, Level level) {
-        for (MultiblockDirection direction1 : MultiblockDirection.values()) {
-            if (multiblock.getFixedDirection() != null) {
+        if (multiblock.getFixedDirection() != null) {
+            for (MultiblockDirection direction1 : MultiblockDirection.values()) {
                 try {
                     unformBlocks(multiblock, direction1, controllerPos, level);
                 } catch (Exception ignored) {
+                    IndustrialReforged.LOGGER.debug("Caught exception");
                 }
             }
         }
@@ -250,18 +254,28 @@ public final class MultiblockUtils {
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
-
+        IndustrialReforged.LOGGER.debug("first: {}", firstBlockPos);
         int yIndex = 0;
+        int xIndex = 0;
+        IndustrialReforged.LOGGER.debug("TEST2");
         for (List<Integer> layer : layout) {
+            // relative position
             int x = 0;
+            // multiblock index
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
             for (int ignored : layer) {
+                xIndex++;
+                IndustrialReforged.LOGGER.debug("TEST3");
                 // Increase index
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
-                if (multiblock.getDefinition().containsValue(level.getBlockState(curBlockPos).getBlock())) {
+                BlockState blockState = level.getBlockState(curBlockPos);
+                BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex-1, yIndex);
+                IndustrialReforged.LOGGER.debug("Expected: {}, blockState: {}, x: {}, y: {}, blockpos: {}", expectedState, blockState, xIndex-1, yIndex, curBlockPos);
+                if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
                     multiblock.unformBlock(level, curBlockPos, controllerPos);
+                    IndustrialReforged.LOGGER.debug("TEST4");
                 }
 
                 if (x + 1 < width) {
@@ -271,6 +285,7 @@ public final class MultiblockUtils {
                     z++;
                 }
             }
+            xIndex = 0;
             yIndex++;
         }
     }
@@ -295,7 +310,12 @@ public final class MultiblockUtils {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    multiblock.formBlock(level, direction, curBlockPos, controllerPos, index - 1, yIndex);
+                    BlockState newState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, index - 1, yIndex);
+                    if (newState != null) level.setBlockAndUpdate(curBlockPos, newState);
+                    BlockEntity blockEntity = level.getBlockEntity(curBlockPos);
+                    if (blockEntity instanceof SavesControllerPos savesControllerPosBE) {
+                        savesControllerPosBE.setControllerPos(controllerPos);
+                    }
                 }
 
                 if (x + 1 < width) {
@@ -310,9 +330,8 @@ public final class MultiblockUtils {
         }
     }
 
-    public static void setAndUpdate(Level level, BlockPos blockPos, BlockState oldState, BlockState newState) {
-        level.setBlock(blockPos, newState, 2);
-        level.sendBlockUpdated(blockPos, oldState, newState, 11);
+    public static void setAndUpdate(Level level, BlockPos blockPos, BlockState newState) {
+        level.setBlockAndUpdate(blockPos, newState);
     }
 
     public static List<List<Integer>> singleBlockMultiblock(List<Integer> yLayout) {
