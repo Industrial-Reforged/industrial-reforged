@@ -12,6 +12,7 @@ import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
+import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -41,9 +42,9 @@ public final class IRItems {
     public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
-            () -> new ElectricDrillItem(1, -2.8F, Tiers.IRON, new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, 54, Tiers.IRON, EnergyTiers.LOW, new Item.Properties()));
     public static final Supplier<Item> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new ElectricDrillItem(1, -2.8F, Tiers.DIAMOND, new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, 96, Tiers.DIAMOND, EnergyTiers.HIGH, new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
     public static final Supplier<Item> BLUEPRINT = registerItem("blueprint",

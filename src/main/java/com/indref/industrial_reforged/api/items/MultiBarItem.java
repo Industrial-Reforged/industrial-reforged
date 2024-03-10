@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * {@link net.minecraft.world.item.Item#isBarVisible(ItemStack stack)} needs to be set to true in order to render the bars
  */
-public interface IMultiBarItem {
+public interface MultiBarItem {
     /**
      * @param itemStack the itemStack this gets rendered to
      * @return First pair entry: Color, second: Width || null

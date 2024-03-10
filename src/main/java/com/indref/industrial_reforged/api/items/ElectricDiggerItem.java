@@ -1,28 +1,45 @@
 package com.indref.industrial_reforged.api.items;
 
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.Utils;
-import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyItem {
-    public ElectricDiggerItem(float p_204108_, float p_204109_, Tier p_204110_, TagKey<Block> p_204111_, Properties p_204112_) {
-        super(p_204108_, p_204109_, p_204110_, p_204111_, p_204112_);
+    private final int energyUsage;
+
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, Tier tier, TagKey<Block> blocks, Properties properties) {
+        super(baseAttackDamage, attackSpeed, tier, blocks, properties);
+        this.energyUsage = energyUsage;
+    }
+
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, Tier tier, TagKey<Block> blocks, Properties properties) {
+        super(baseAttackDamage, attackSpeed, tier, blocks, properties);
+        this.energyUsage = -1;
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
-        return EnergyTiers.HIGH;
+    public int getMaxStackSize(ItemStack stack) {
+        return 1;
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack itemStack, Level p_40999_, BlockState p_41000_, BlockPos p_41001_, LivingEntity p_41002_) {
+        this.tryDrainEnergy(itemStack, getEnergyUsage(itemStack));
+        return super.mineBlock(itemStack, p_40999_, p_41000_, p_41001_, p_41002_);
+    }
+
+    public int getEnergyUsage(ItemStack itemStack) {
+        return energyUsage != -1 ? energyUsage : 3;
     }
 
     @Override

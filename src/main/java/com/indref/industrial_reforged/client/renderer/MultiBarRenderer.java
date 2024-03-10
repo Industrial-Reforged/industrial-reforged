@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.client.renderer;
 
-import com.indref.industrial_reforged.api.items.IMultiBarItem;
+import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,7 +21,7 @@ public class MultiBarRenderer implements IItemDecorator {
 
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int xOffset, int yOffset) {
-        IMultiBarItem multiBarItem = (IMultiBarItem) item;
+        MultiBarItem multiBarItem = (MultiBarItem) item;
         if (item.isBarVisible(stack)) {
             @NotNull List<Pair<Integer, Integer>> barColorsAndWidths = multiBarItem.getBarColorsAndWidths(stack);
             for (int i1 = 0, barColorsAndWidthsSize = barColorsAndWidths.size(); i1 < barColorsAndWidthsSize; i1++) {

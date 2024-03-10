@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
-import com.indref.industrial_reforged.api.items.IMultiBarItem;
+import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
@@ -32,7 +32,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -70,7 +69,7 @@ public class IREvents {
         @SubscribeEvent
         public static void itemDecorationRender(RegisterItemDecorationsEvent event) {
             for (Item item : BuiltInRegistries.ITEM) {
-                if (item instanceof IMultiBarItem)
+                if (item instanceof MultiBarItem)
                     event.register(item, new MultiBarRenderer(item));
             }
             event.register(Items.IRON_INGOT, new CrucibleProgressRenderer());

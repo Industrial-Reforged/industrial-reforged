@@ -1,17 +1,11 @@
 package com.indref.industrial_reforged.client.renderer;
 
-import com.indref.industrial_reforged.api.items.IMultiBarItem;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.IItemDecorator;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class CrucibleProgressRenderer implements IItemDecorator {
     @Override
