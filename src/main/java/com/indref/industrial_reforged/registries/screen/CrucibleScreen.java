@@ -55,13 +55,13 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        renderFluidAreaTooltips(pGuiGraphics, pMouseX, pMouseY, x + 98 - renderer.getWidth() - 4, y + 18);
+        renderFluidAreaTooltips(pGuiGraphics, pMouseX, pMouseY, x + 98 - renderer.getWidth() - 4, y+3);
     }
 
     private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(new FluidStack(Fluids.LAVA, 1000), TooltipFlag.Default.NORMAL),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(new FluidStack(Fluids.LAVA, 32000)),
+                    Optional.empty(), pMouseX - x+45, pMouseY - y);
         }
     }
 
