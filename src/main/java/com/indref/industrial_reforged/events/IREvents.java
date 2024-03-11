@@ -173,6 +173,8 @@ public class IREvents {
                     .client(EnergyPayload.getInstance()::handleData));
             registrar.play(HeatSyncData.ID, HeatSyncData::new, handler -> handler
                     .client(HeatPayload.getInstance()::handleData));
+            registrar.play(FluidSyncData.ID, FluidSyncData::new, handler -> handler
+                    .client(FluidPayload.getInstance()::handleData));
             registrar.play(ItemSyncData.ID, ItemSyncData::new, handler -> handler
                     .client(ItemPayload.getInstance()::handleData));
             registrar.play(ArmorActivitySyncData.ID, ArmorActivitySyncData::new, handler -> handler

@@ -37,7 +37,7 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
     }
 
     private void assignFluidRenderer() {
-        renderer = new FluidTankRenderer(64000, true, 52, 52);
+        renderer = new FluidTankRenderer(menu.blockEntity.getFluidTank().getCapacity(), true, 52, 52);
     }
 
 
@@ -47,7 +47,7 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        renderer.render(guiGraphics.pose(), x + 98, y + 18, new FluidStack(Fluids.LAVA, 32000));
+        renderer.render(guiGraphics.pose(), x + 98, y + 18, menu.blockEntity.getFluidTank().getFluid());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
 
     private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(new FluidStack(Fluids.LAVA, 32000)),
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(menu.blockEntity.getFluidTank().getFluid()),
                     Optional.empty(), pMouseX - x+45, pMouseY - y);
         }
     }

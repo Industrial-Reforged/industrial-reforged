@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -74,15 +75,15 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         if (itemHandler != null) itemHandler.deserializeNBT(p_155245_.getCompound("itemhandler"));
     }
 
-    public final void addItemHandler(int slots) {
+    protected final void addItemHandler(int slots) {
         addItemHandler(slots, (slot, itemStack) -> true);
     }
 
-    public final void addFluidTank(int capacityInMb) {
+    protected final void addFluidTank(int capacityInMb) {
         addFluidTank(capacityInMb, fluidStack -> true);
     }
 
-    public final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
+    protected final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
         this.itemHandler = new ItemStackHandler(slots) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -97,7 +98,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         };
     }
 
-    public final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
+    protected final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
         this.fluidTank = new FluidTank(capacityInMb) {
             @Override
             protected void onContentsChanged() {
@@ -112,17 +113,19 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         };
     }
 
-    public void onItemsChanged(int slot) {
+    protected void onItemsChanged(int slot) {
     }
 
-    public void onFluidsChanged() {
+    protected void onFluidsChanged() {
     }
 
-    public final void addHeatStorage(int capacity) {
+    public void tick(BlockPos blockPos, Level level) {}
+
+    protected final void addHeatStorage(int capacity) {
         this.heatCapacity = capacity;
     }
 
-    public final void addEnergyStorage(EnergyTier energyTier, @Nullable Integer capacity) {
+    protected final void addEnergyStorage(EnergyTier energyTier, @Nullable Integer capacity) {
         this.energyTier = energyTier;
         this.energyCapacity = Objects.requireNonNullElseGet(capacity, energyTier::getDefaultCapacity);
     }

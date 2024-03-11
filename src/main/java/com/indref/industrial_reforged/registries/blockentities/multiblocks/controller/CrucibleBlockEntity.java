@@ -4,10 +4,16 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.networking.data.FluidSyncData;
+import com.indref.industrial_reforged.networking.data.HeatSyncData;
+import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
+import com.indref.industrial_reforged.util.BlockUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,10 +31,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,6 +93,26 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             }
         } else {
             resetProgress();
+        }
+
+
+        ClientLevel clientLevel = Minecraft.getInstance().level;
+        if (clientLevel != null) {
+            BlockEntity blockEntity = clientLevel.getBlockEntity(blockPos);
+            if (blockEntity != null) {
+                FluidTank clientFluidHandler = (FluidTank) BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
+                if (!clientFluidHandler.equals(getFluidTank()) && !this.level.isClientSide()) {
+                    PacketDistributor.ALL.noArg().send(new FluidSyncData(getFluidTank().getFluid(), worldPosition));
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onFluidsChanged() {
+        if (!level.isClientSide()) {
+            // TODO: Sync when client joins the game
+            PacketDistributor.ALL.noArg().send(new FluidSyncData(getFluidTank().getFluid(), worldPosition));
         }
     }
 

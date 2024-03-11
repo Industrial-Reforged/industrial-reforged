@@ -36,7 +36,7 @@ public class CastingTableBlockEntity extends ContainerBlockEntity {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity != null) {
                 IItemHandler clientItemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
-                if (clientItemHandler.getStackInSlot(0).isEmpty() && !this.level.isClientSide()) {
+                if (!clientItemHandler.equals(getItemHandler()) && !this.level.isClientSide()) {
                     PacketDistributor.ALL.noArg().send(new ItemSyncData(worldPosition, 2, new ItemStack[]{
                             getItemHandler().getStackInSlot(0),
                             getItemHandler().getStackInSlot(1)
