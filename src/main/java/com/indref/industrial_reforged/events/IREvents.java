@@ -71,8 +71,8 @@ public class IREvents {
             for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof MultiBarItem)
                     event.register(item, new MultiBarRenderer(item));
+                event.register(item, new CrucibleProgressRenderer());
             }
-            event.register(Items.IRON_INGOT, new CrucibleProgressRenderer());
         }
 
         @SubscribeEvent

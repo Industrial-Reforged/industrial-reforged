@@ -42,7 +42,7 @@ public class NeoforgeEvents {
             for (ItemStack item : items) {
                 CompoundTag tag = item.getTag();
                 if (tag != null && tag.getBoolean("cruciblemelting"))
-                    tag.putInt("barwidth", -5);
+                    tag.putInt("barwidth", 0);
             }
         }
     }

@@ -1,12 +1,9 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.networking.data.FluidSyncData;
-import com.indref.industrial_reforged.networking.data.HeatSyncData;
-import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
@@ -35,8 +32,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -123,7 +118,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
             if (itemStack.is(input)) {
                 itemStack.shrink(1);
-                IndustrialReforged.LOGGER.debug("Slot: {}, item: {}", i, input);
                 break;
             }
         }
@@ -145,6 +139,19 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private void increaseCraftingProgress() {
         this.duration++;
+        CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
+            Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
+            if (itemStack.is(input)) {
+                CompoundTag tag = itemStack.getOrCreateTag();
+                if (!tag.getBoolean("cruciblemelting"))
+                    tag.putBoolean("cruciblemelting", true);
+                int pValue = recipe.getDuration();
+                tag.putInt("barwidth", duration/(pValue/10));
+                break;
+            }
+        }
     }
 
     private boolean hasProgressFinished() {
@@ -163,7 +170,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         FluidStack result = recipe.get().value().getResultFluid();
 
         boolean canInsert = canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid());
-        IndustrialReforged.LOGGER.debug("Has recipe");
         return canInsert;
     }
 
