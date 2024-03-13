@@ -59,12 +59,12 @@ public class NeoforgeEvents {
                 CompoundTag tag = item.getTag();
                 if (tag != null && tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
                     if (level.getGameTime() % 20 == 0) {
-                        tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
+                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
                         Registry<DamageType> damageTypes = player.damageSources().damageTypes;
                         player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 4);
                     }
 
-                    if (tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0)
+                    if (tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0)
                         tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
                 }
             }

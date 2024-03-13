@@ -124,7 +124,7 @@ public class IREvents {
         @SubscribeEvent
         public static void appendTooltips(ItemTooltipEvent event) {
             CompoundTag tag = event.getItemStack().getOrCreateTag();
-            if (tag.getBoolean("cruciblemelting"))
+            if (tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
                         .append(String.valueOf(tag.getInt("barwidth")))

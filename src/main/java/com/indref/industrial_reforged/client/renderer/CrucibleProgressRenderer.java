@@ -15,7 +15,7 @@ public class CrucibleProgressRenderer implements IItemDecorator {
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack itemStack, int xOffset, int yOffset) {
         if (itemStack.hasTag() && itemStack.getOrCreateTag().getBoolean(IS_MELTING_KEY)) {
-            int barWidth = itemStack.getOrCreateTag().getInt(BARWIDTH_KEY);
+            int barWidth = (int) itemStack.getOrCreateTag().getFloat(BARWIDTH_KEY);
             int width = 1;
             int i = ItemUtils.HEAT_BAR_COLOR;
             int j = xOffset + 2;

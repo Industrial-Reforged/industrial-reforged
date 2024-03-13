@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -42,15 +43,13 @@ import java.util.Optional;
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, IHeatBlock {
     private final CrucibleTier tier;
     private final ContainerData data;
-    private int duration;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
         addFluidTank(9000);
         addItemHandler(9);
-        this.duration = 0;
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
-        // TODO: Serialize duration
+        // TODO: Remove this
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
@@ -83,14 +82,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             increaseCraftingProgress();
             setChanged(level, blockPos, blockState);
 
-            if (hasProgressFinished()) {
-                meltItem();
-                resetProgress();
-            }
-        } else {
-            resetProgress();
+            tryMeltItem();
         }
-
 
         ClientLevel clientLevel = Minecraft.getInstance().level;
         if (clientLevel != null) {
@@ -112,18 +105,18 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         }
     }
 
-    private void meltItem() {
+    private void tryMeltItem() {
+        // TODO: dynamic recipes
         CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
             ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
             Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
-            if (itemStack.is(input)) {
+            if (itemStack.is(input) && itemStack.getOrCreateTag().getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
                 itemStack.shrink(1);
-                break;
+                FluidStack resultFluid = recipe.getResultFluid();
+                this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
             }
         }
-        FluidStack resultFluid = recipe.getResultFluid();
-        this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
     }
 
     public void drops() {
@@ -134,12 +127,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    private void resetProgress() {
-        this.duration = 0;
-    }
-
     private void increaseCraftingProgress() {
-        this.duration++;
         CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
             ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
@@ -148,16 +136,12 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 CompoundTag tag = itemStack.getOrCreateTag();
                 if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
                     tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
-                int pValue = recipe.getDuration();
-                tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, duration/(pValue/10));
-                break;
+                float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.getDuration()) * 6;
+                if (pValue < 0) pValue = 0;
+                IndustrialReforged.LOGGER.info("Progress: {}", pValue);
+                tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
             }
         }
-    }
-
-    private boolean hasProgressFinished() {
-        int maxDuration = getCurrentRecipe().get().value().getDuration();
-        return this.duration >= maxDuration;
     }
 
     public boolean hasRecipe() {
@@ -210,17 +194,5 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 return true;
         }
         return false;
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("duration", duration);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        duration = tag.getInt("duration");
     }
 }
