@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.client.renderer.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.data.FluidSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
@@ -145,10 +146,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
             if (itemStack.is(input)) {
                 CompoundTag tag = itemStack.getOrCreateTag();
-                if (!tag.getBoolean("cruciblemelting"))
-                    tag.putBoolean("cruciblemelting", true);
+                if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
+                    tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
                 int pValue = recipe.getDuration();
-                tag.putInt("barwidth", duration/(pValue/10));
+                tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, duration/(pValue/10));
                 break;
             }
         }

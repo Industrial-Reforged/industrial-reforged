@@ -22,9 +22,7 @@ import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
-import com.indref.industrial_reforged.registries.screen.CraftingStationScreen;
-import com.indref.industrial_reforged.registries.screen.CrucibleScreen;
-import com.indref.industrial_reforged.registries.screen.FireBoxScreen;
+import com.indref.industrial_reforged.registries.screen.*;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -60,10 +58,11 @@ public class IREvents {
         }
 
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
-            MenuScreens.register(IRMenuTypes.CRUCIBLE_MENU.get(), CrucibleScreen::new);
-            MenuScreens.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
+        public static void onClientSetup(RegisterMenuScreensEvent event) {
+            event.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
+            event.register(IRMenuTypes.CRUCIBLE_MENU.get(), CrucibleScreen::new);
+            event.register(IRMenuTypes.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
+            event.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
         }
 
         @SubscribeEvent
@@ -129,6 +128,7 @@ public class IREvents {
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
                         .append(String.valueOf(tag.getInt("barwidth")))
+                        .append("/10")
                         .withStyle(ChatFormatting.GRAY));
         }
     }

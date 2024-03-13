@@ -86,12 +86,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlo
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
-            IFluidHandler fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, level.getBlockEntity(blockPos));
-            if (player.getMainHandItem().is(IRItems.ALUMINUM_INGOT.get())) {
-                fluidHandler.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE);
-            }
             player.openMenu((CrucibleBlockEntity) level.getBlockEntity(blockPos), blockPos);
-            player.sendSystemMessage(Component.literal(Utils.fluidStackToString(fluidHandler.getFluidInTank(0))));
             return InteractionResult.SUCCESS;
         }
 

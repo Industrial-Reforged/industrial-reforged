@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.registries.screen.CentrifugeMenu;
 import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
@@ -22,6 +23,8 @@ public final class IRMenuTypes {
             registerMenuType("crucible_menu", CrucibleMenu::new);
     public static final Supplier<MenuType<CraftingStationMenu>> CRAFTING_STATION_MENU =
             registerMenuType("crafting_station_menu", CraftingStationMenu::new);
+    public static final Supplier<MenuType<CentrifugeMenu>> CENTRIFUGE_MENU =
+            registerMenuType("centrifuge_menu", CentrifugeMenu::new);
 
     private static <T extends AbstractContainerMenu>Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

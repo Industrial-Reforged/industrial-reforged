@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.items.armor;
 
 import com.indref.industrial_reforged.util.InputUtils;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -15,7 +16,12 @@ public class JetpackItem extends ArmorItem {
     }
 
     @Override
-    public void onArmorTick(ItemStack stack, Level level, Player player) {
+    public void inventoryTick(ItemStack stack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        Player player;
+        if (pEntity instanceof Player player1)
+            player = player1;
+        else return;
+
         ItemStack item = player.getInventory().getItem(38);
         CompoundTag tag = stack.getOrCreateTag();
         if (item.is(this) && tag.getBoolean("active")) {

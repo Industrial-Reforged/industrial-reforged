@@ -125,8 +125,13 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         this.heatCapacity = capacity;
     }
 
-    protected final void addEnergyStorage(EnergyTier energyTier, @Nullable Integer capacity) {
+    protected final void addEnergyStorage(EnergyTier energyTier, int capacity) {
         this.energyTier = energyTier;
         this.energyCapacity = Objects.requireNonNullElseGet(capacity, energyTier::getDefaultCapacity);
+    }
+
+    protected final void addEnergyStorage(EnergyTier energyTier) {
+        this.energyTier = energyTier;
+        this.energyCapacity = energyTier.getDefaultCapacity();
     }
 }

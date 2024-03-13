@@ -1,19 +1,30 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.client.renderer.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
 import com.indref.industrial_reforged.util.InputUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -38,11 +49,24 @@ public class NeoforgeEvents {
     public static class CommonBus {
         @SubscribeEvent
         public static void playerTick(TickEvent.PlayerTickEvent event) {
-            NonNullList<ItemStack> items = event.player.getInventory().items;
+            if (event.player.level().isClientSide()) return;
+
+            Player player = event.player;
+            Level level = player.level();
+
+            NonNullList<ItemStack> items = player.getInventory().items;
             for (ItemStack item : items) {
                 CompoundTag tag = item.getTag();
-                if (tag != null && tag.getBoolean("cruciblemelting"))
-                    tag.putInt("barwidth", 0);
+                if (tag != null && tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
+                    if (level.getGameTime() % 20 == 0) {
+                        tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
+                        Registry<DamageType> damageTypes = player.damageSources().damageTypes;
+                        player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 4);
+                    }
+
+                    if (tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0)
+                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
+                }
             }
         }
     }
