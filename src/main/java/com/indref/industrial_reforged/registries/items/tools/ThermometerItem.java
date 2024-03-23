@@ -30,6 +30,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem {
+    public static final String DISPLAY_TEMPERATURE_KEY = "thermometer_temperature";
+
     public ThermometerItem(Properties properties) {
         super(properties);
     }
@@ -65,11 +67,11 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
         } else {
             setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
         }
-        itemStack.getOrCreateTag().putFloat("temperature", Math.round((float) getHeatStored(itemStack) / 1000));
+        itemStack.getOrCreateTag().putFloat(DISPLAY_TEMPERATURE_KEY, Math.round((float) getHeatStored(itemStack) / 1000));
     }
 
     public static float getTemperature(ItemStack itemStack) {
-        return itemStack.getOrCreateTag().getFloat("temperature");
+        return itemStack.getOrCreateTag().getFloat(DISPLAY_TEMPERATURE_KEY);
     }
 
     @Override

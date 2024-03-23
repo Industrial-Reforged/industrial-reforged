@@ -20,6 +20,8 @@ import net.minecraft.world.level.Level;
 
 // TODO: 10/22/2023 Implement highlight for the first block pos
 public class TapeMeasureItem extends ToolItem {
+    public static final String EXTENDED_KEY = "tape_measure_extended";
+
     public TapeMeasureItem(Properties properties) {
         super(properties);
     }
@@ -29,8 +31,8 @@ public class TapeMeasureItem extends ToolItem {
         ItemStack useItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
         CompoundTag tag = useItem.getOrCreateTag();
         useItem.setTag(tag);
-        if (player.isShiftKeyDown() && tag.getBoolean("extended")) {
-            tag.putBoolean("extended", false);
+        if (player.isShiftKeyDown() && tag.getBoolean(EXTENDED_KEY)) {
+            tag.putBoolean(EXTENDED_KEY, false);
             tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResultHolder.success(useItem);
         }
@@ -46,7 +48,7 @@ public class TapeMeasureItem extends ToolItem {
         if (!player.isCrouching() && isExtended(useItem) == 0) {
             int[] blockPosCoords = {blockPos.getX(), blockPos.getY(), blockPos.getZ()};
             tag.putIntArray("firstBlockPos", blockPosCoords);
-            tag.putBoolean("extended", true);
+            tag.putBoolean(EXTENDED_KEY, true);
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
@@ -81,11 +83,11 @@ public class TapeMeasureItem extends ToolItem {
                 }
             }
 
-            tag.putBoolean("extended", false);
+            tag.putBoolean(EXTENDED_KEY, false);
             tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
-            tag.putBoolean("extended", false);
+            tag.putBoolean(EXTENDED_KEY, false);
             tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResult.SUCCESS;
         }
@@ -132,7 +134,7 @@ public class TapeMeasureItem extends ToolItem {
     public static float isExtended(ItemStack stack) {
         if (stack.hasTag()) {
             CompoundTag tag = stack.getOrCreateTag();
-            return tag.getBoolean("extended") ? 1 : 0;
+            return tag.getBoolean(EXTENDED_KEY) ? 1 : 0;
         } else {
             return 0;
         }

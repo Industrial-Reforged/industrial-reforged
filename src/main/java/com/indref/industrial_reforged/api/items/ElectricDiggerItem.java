@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -16,15 +17,23 @@ import java.util.List;
 
 public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyItem {
     private final int energyUsage;
+    private final TagKey<Block> blocks;
 
-    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, Tier tier, TagKey<Block> blocks, Properties properties) {
-        super(baseAttackDamage, attackSpeed, tier, blocks, properties);
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
+        super(baseAttackDamage, attackSpeed, tier, mineableBlocks, properties);
         this.energyUsage = energyUsage;
+        this.blocks = mineableBlocks;
     }
 
-    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, Tier tier, TagKey<Block> blocks, Properties properties) {
-        super(baseAttackDamage, attackSpeed, tier, blocks, properties);
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
+        super(baseAttackDamage, attackSpeed, tier, mineableBlocks, properties);
         this.energyUsage = -1;
+        this.blocks = mineableBlocks;
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack pStack, BlockState pState) {
+        return pState.is(this.blocks) && getEnergyStored(pStack) - getEnergyUsage(pStack) > 0 ? this.speed : 1f;
     }
 
     @Override
@@ -36,6 +45,11 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     public boolean mineBlock(ItemStack itemStack, Level p_40999_, BlockState p_41000_, BlockPos p_41001_, LivingEntity p_41002_) {
         this.tryDrainEnergy(itemStack, getEnergyUsage(itemStack));
         return super.mineBlock(itemStack, p_40999_, p_41000_, p_41001_, p_41002_);
+    }
+
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
+        return false;
     }
 
     public int getEnergyUsage(ItemStack itemStack) {

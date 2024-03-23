@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlueprintItem extends Item {
+    public static final String HAS_RECIPE_KEY = "blueprint_has_recipe";
+
     public BlueprintItem(Properties p_41383_) {
         super(p_41383_);
     }
@@ -22,7 +24,7 @@ public class BlueprintItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         CompoundTag tag = itemStack.getOrCreateTag();
-        if (tag.getBoolean("hasRecipe") && player.isShiftKeyDown()) {
+        if (tag.getBoolean(HAS_RECIPE_KEY) && player.isShiftKeyDown()) {
             resetRecipe(itemStack);
             return InteractionResultHolder.success(itemStack);
         }
@@ -38,21 +40,21 @@ public class BlueprintItem extends Item {
             items.put(String.valueOf(i), itemTag);
             IndustrialReforged.LOGGER.debug("Item: {}, slot: {}", item, i);
         }
-        menu.getSlot(blueprintSlot).getItem().getOrCreateTag().putBoolean("hasRecipe", true);
+        menu.getSlot(blueprintSlot).getItem().getOrCreateTag().putBoolean(HAS_RECIPE_KEY, true);
         PacketDistributor.SERVER.noArg().send(new ItemNbtSyncData(blueprintSlot, "storedRecipe", items));
-        PacketDistributor.SERVER.noArg().send(new ItemActivitySyncData(blueprintSlot, "hasRecipe", true));
+        PacketDistributor.SERVER.noArg().send(new ItemActivitySyncData(blueprintSlot, HAS_RECIPE_KEY, true));
     }
 
     public static float hasRecipe(ItemStack itemStack) {
         if (itemStack.hasTag()) {
             CompoundTag tag = itemStack.getOrCreateTag();
-            return tag.getBoolean("hasRecipe") ? 1 : 0;
+            return tag.getBoolean(HAS_RECIPE_KEY) ? 1 : 0;
         }
         return 0;
     }
 
     public static void resetRecipe(ItemStack itemStack) {
-        itemStack.getOrCreateTag().putBoolean("hasRecipe", false);
+        itemStack.getOrCreateTag().putBoolean(HAS_RECIPE_KEY, false);
         itemStack.removeTagKey("storedRecipe");
     }
 }

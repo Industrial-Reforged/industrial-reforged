@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.indref.industrial_reforged.api.items.BaseElectricSwordItem;
+import com.indref.industrial_reforged.api.items.ElectricSwordItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -25,7 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class NanoSaberItem extends BaseElectricSwordItem implements IEnergyItem {
+import static com.indref.industrial_reforged.util.ItemUtils.ACTIVE_KEY;
+
+public class NanoSaberItem extends ElectricSwordItem implements IEnergyItem {
     public NanoSaberItem(Properties p_43272_) {
         super(Tiers.DIAMOND, -1, -3F, p_43272_);
     }
@@ -42,7 +44,7 @@ public class NanoSaberItem extends BaseElectricSwordItem implements IEnergyItem 
                     modifiers.removeAll(Attributes.ATTACK_DAMAGE);
                     modifiers.removeAll(Attributes.ATTACK_SPEED);
 
-                    if (tag.getBoolean("active")) {
+                    if (tag.getBoolean(ACTIVE_KEY)) {
                         modifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Nano modifier", 19, AttributeModifier.Operation.ADDITION));
                         modifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Speed modifier", -2.8F, AttributeModifier.Operation.ADDITION));
                     }
@@ -60,9 +62,9 @@ public class NanoSaberItem extends BaseElectricSwordItem implements IEnergyItem 
         CompoundTag tag = stack.getOrCreateTag();
         if (player.isShiftKeyDown() && getEnergyStored(stack) > 0) {
             if (stack.hasTag()) {
-                tag.putBoolean("active", !tag.getBoolean("active"));
+                tag.putBoolean(ACTIVE_KEY, !tag.getBoolean(ACTIVE_KEY));
             } else {
-                tag.putBoolean("active", true);
+                tag.putBoolean(ACTIVE_KEY, true);
             }
             return InteractionResultHolder.success(stack);
         }

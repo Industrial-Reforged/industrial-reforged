@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -14,5 +15,6 @@ public final class IRRecipes {
 
     static {
         SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.Serializer.INSTANCE);
+        SERIALIZERS.register(CrucibleCastingRecipe.NAME, () -> CrucibleCastingRecipe.Serializer.INSTANCE);
     }
 }

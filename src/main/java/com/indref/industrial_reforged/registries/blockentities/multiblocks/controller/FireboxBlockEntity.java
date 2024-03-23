@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.networking.data.EnergySyncData;
-import com.indref.industrial_reforged.networking.data.HeatSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
 import net.minecraft.core.BlockPos;
@@ -59,13 +57,6 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     @Override
-    public void onHeatChanged() {
-        if (!level.isClientSide()) {
-            PacketDistributor.ALL.noArg().send(new HeatSyncData(getHeatStored(this), worldPosition));
-        }
-    }
-
-    @Override
     public Component getDisplayName() {
         return Component.literal("Firebox");
     }
@@ -97,14 +88,12 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveOther(CompoundTag pTag) {
         pTag.putInt("burnTime", burnTime);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadOther(CompoundTag pTag) {
         burnTime = pTag.getInt("burnTime");
     }
 }

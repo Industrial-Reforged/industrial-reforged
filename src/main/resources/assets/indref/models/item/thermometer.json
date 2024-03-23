@@ -4,43 +4,43 @@
     {
       "model": "indref:item/thermometer/0",
       "predicate": {
-        "indref:temperature": 0.0
+        "indref:thermometer_temperature": 0.0
       }
     },
     {
       "model": "indref:item/thermometer/1",
       "predicate": {
-        "indref:temperature": 1.0
+        "indref:thermometer_temperature": 1.0
       }
     },
     {
       "model": "indref:item/thermometer/2",
       "predicate": {
-        "indref:temperature": 2.0
+        "indref:thermometer_temperature": 2.0
       }
     },
     {
       "model": "indref:item/thermometer/3",
       "predicate": {
-        "indref:temperature": 3.0
+        "indref:thermometer_temperature": 3.0
       }
     },
     {
       "model": "indref:item/thermometer/4",
       "predicate": {
-        "indref:temperature": 4.0
+        "indref:thermometer_temperature": 4.0
       }
     },
     {
       "model": "indref:item/thermometer/5",
       "predicate": {
-        "indref:temperature": 5.0
+        "indref:thermometer_temperature": 5.0
       }
     },
     {
       "model": "indref:item/thermometer/6",
       "predicate": {
-        "indref:temperature": 6.0
+        "indref:thermometer_temperature": 6.0
       }
     }
   ],

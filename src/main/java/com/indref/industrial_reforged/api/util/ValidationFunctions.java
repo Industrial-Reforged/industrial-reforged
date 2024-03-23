@@ -6,7 +6,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 /**
  * Functional interfaces for itemstack and fluidstack validation checks
  */
-public class ValidationFunctions {
+public final class ValidationFunctions {
     @FunctionalInterface
     public interface ItemValid {
         boolean itemValid(int slot, ItemStack itemStack);

@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.items;
 
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.util.ItemUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -12,8 +11,8 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public abstract class BaseElectricSwordItem extends SwordItem implements IEnergyItem {
-    public BaseElectricSwordItem(Tier tier, int i, float v, Properties properties) {
+public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem {
+    public ElectricSwordItem(Tier tier, int i, float v, Properties properties) {
         super(tier, i, v, properties);
     }
 

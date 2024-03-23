@@ -6,6 +6,14 @@ import com.indref.industrial_reforged.api.data.heat.IHeatStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+/**
+ * Interface for implementing BlockEntities that store EU
+ * <p>
+ * Note: if you want to check if a block is a heat block,
+ * then use {@link com.indref.industrial_reforged.util.BlockUtils#isHeatBlock(BlockEntity)}
+ * instead of an `instanceof` check, since all Blockentities that inherit {@link ContainerBlockEntity}
+ * are IHeatBlocks
+ */
 public interface IHeatBlock {
     default void setHeatStored(BlockEntity blockEntity, int value) {
         int prev = getHeatStored(blockEntity);

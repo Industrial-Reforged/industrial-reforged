@@ -4,13 +4,13 @@
     {
       "model": "indref:item/blueprint",
       "predicate": {
-        "indref:has_recipe": 0.0
+        "indref:blueprint_has_recipe": 0.0
       }
     },
     {
       "model": "indref:item/blueprint_written",
       "predicate": {
-        "indref:has_recipe": 1.0
+        "indref:blueprint_has_recipe": 1.0
       }
     }
   ],

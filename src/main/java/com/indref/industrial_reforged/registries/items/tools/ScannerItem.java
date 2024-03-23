@@ -59,7 +59,7 @@ public class ScannerItem extends SimpleElectricItem implements ToolItem, Display
                 guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
                 lineOffset += font.lineHeight + 3;
             }
-            if (level.getGameTime() % 20 == 0) {
+            if (level.getGameTime() % 20 == 0 && !player.isCreative()) {
                 this.tryDrainEnergy(mainHandStack, 1);
             }
         }

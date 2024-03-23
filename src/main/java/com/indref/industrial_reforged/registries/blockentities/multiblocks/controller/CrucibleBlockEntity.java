@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.networking.data.FluidSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
@@ -84,25 +83,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
             tryMeltItem();
         }
-
-        ClientLevel clientLevel = Minecraft.getInstance().level;
-        if (clientLevel != null) {
-            BlockEntity blockEntity = clientLevel.getBlockEntity(blockPos);
-            if (blockEntity != null) {
-                FluidTank clientFluidHandler = (FluidTank) BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
-                if (!clientFluidHandler.equals(getFluidTank()) && !this.level.isClientSide()) {
-                    PacketDistributor.ALL.noArg().send(new FluidSyncData(getFluidTank().getFluid(), worldPosition));
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void onFluidsChanged() {
-        if (!level.isClientSide()) {
-            // TODO: Sync when client joins the game
-            PacketDistributor.ALL.noArg().send(new FluidSyncData(getFluidTank().getFluid(), worldPosition));
-        }
     }
 
     private void tryMeltItem() {
@@ -160,8 +140,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
             if (canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid())) return true;
         }
-
-        IndustrialReforged.LOGGER.info("Empty recipe");
 
         return false;
     }

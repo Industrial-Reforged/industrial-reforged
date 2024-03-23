@@ -11,6 +11,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -42,7 +43,7 @@ public final class IRTabs {
                 addPoweredItem(output, IRItems.SCANNER);
                 addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
                 addPoweredItem(output, IRItems.ELECTRIC_HOE);
-                addPoweredItem(output, IRItems.ROCK_CUTTER);
+                addRockCutter(output, IRItems.ROCK_CUTTER);
                 addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addPoweredItem(output, IRItems.ELECTRIC_DRILL);
                 addPoweredItem(output, IRItems.ADVANCED_DRILL);
@@ -176,6 +177,18 @@ public final class IRTabs {
         energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity());
 
         output.accept(stack);
+    }
+
+    public static void addRockCutter(CreativeModeTab.Output output, Supplier<Item> item) {
+        ItemStack stack = new ItemStack(item.get());
+        stack.enchant(Enchantments.SILK_TOUCH, 1);
+
+        output.accept(stack);
+        ItemStack energyStack = stack.copy();
+        IEnergyItem energyItem = (IEnergyItem) energyStack.getItem();
+        energyItem.setEnergyStored(energyStack, energyItem.getEnergyCapacity());
+
+        output.accept(energyStack);
     }
 
     public static void addVariantForAllFluids(CreativeModeTab.Output output, Supplier<Item> item) {

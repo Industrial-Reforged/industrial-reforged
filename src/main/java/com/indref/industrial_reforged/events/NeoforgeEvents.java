@@ -33,7 +33,6 @@ import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_A
 import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_TOGGLE;
 
 public class NeoforgeEvents {
-
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
     public static class Common {
         @SubscribeEvent
@@ -43,7 +42,6 @@ public class NeoforgeEvents {
             }
         }
     }
-
 
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class CommonBus {
@@ -73,7 +71,6 @@ public class NeoforgeEvents {
 
     @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Client {
-        private static boolean up = false;
 
         @SubscribeEvent
         public static void onClientTick(TickEvent.ClientTickEvent event) {

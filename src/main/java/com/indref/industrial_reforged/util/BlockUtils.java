@@ -1,7 +1,9 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -39,11 +41,11 @@ public final class BlockUtils {
         };
     }
 
-    public static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
+    public static <T, C> @Nullable T getBlockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
         return getBlockEntityCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null, blockEntity.getLevel());
     }
 
-    private static <T, C> T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
+    private static <T, C> @Nullable T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
         return level.getCapability(cap, pos, state, blockEntity, context);
     }
 
@@ -61,6 +63,12 @@ public final class BlockUtils {
     public static @Nullable IHeatBlock getHeatBlock(BlockEntity blockEntity) {
         if (BlockUtils.isHeatBlock(blockEntity))
             return (IHeatBlock) blockEntity;
+        return null;
+    }
+
+    public static @Nullable IEnergyBlock getEnergyBlock(BlockEntity blockEntity) {
+        if (BlockUtils.isEnergyBlock(blockEntity))
+            return (IEnergyBlock) blockEntity;
         return null;
     }
 

@@ -19,6 +19,7 @@ public final class ItemUtils {
     // The corresponding rgb value: rgb(77,166,255)
     public static final int ENERGY_BAR_COLOR = 0x4DA6FF;
     public static final int HEAT_BAR_COLOR = 0xFF8000;
+    public static final String ACTIVE_KEY = "active";
 
     public enum ChargeType {
         HEAT,
