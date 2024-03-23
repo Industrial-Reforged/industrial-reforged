@@ -58,7 +58,7 @@ public class CastingTableBlock extends BaseEntityBlock {
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
-        if (!level.isClientSide()) {
+        if (level.isClientSide()){
             insertAndExtract(player, hand, itemHandler);
             blockEntity.setChanged();
         }
@@ -70,7 +70,10 @@ public class CastingTableBlock extends BaseEntityBlock {
         if (!player.getItemInHand(interactionHand).isEmpty()) {
             int insertIndex = getFirstForInsert(itemHandler, player.getItemInHand(interactionHand));
             if (insertIndex != -1) {
-                itemHandler.insertItem(insertIndex, player.getItemInHand(interactionHand).copyAndClear(), false);
+                int count = player.getItemInHand(interactionHand).getCount();
+                ItemStack itemStack = player.getItemInHand(interactionHand).copyAndClear();
+                itemStack.setCount(count);
+                itemHandler.insertItem(insertIndex, itemStack, false);
             }
         } else if (player.getItemInHand(interactionHand).isEmpty()) {
             int extractIndex = getFirstForExtract(itemHandler);

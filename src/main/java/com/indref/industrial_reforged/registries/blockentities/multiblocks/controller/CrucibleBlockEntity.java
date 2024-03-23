@@ -107,14 +107,17 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private void tryMeltItem() {
         // TODO: dynamic recipes
-        CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
-            Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
-            if (itemStack.is(input) && itemStack.getOrCreateTag().getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
-                itemStack.shrink(1);
-                FluidStack resultFluid = recipe.getResultFluid();
-                this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
+            Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
+            if (recipe.isPresent()) {
+                ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
+                Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
+                if (itemStack.is(input) && itemStack.getOrCreateTag().getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
+                    itemStack.shrink(1);
+                    itemStack.getOrCreateTag().putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
+                    FluidStack resultFluid = recipe.get().value().getResultFluid();
+                    this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
+                }
             }
         }
     }
@@ -128,45 +131,46 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     private void increaseCraftingProgress() {
-        CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
-            Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
-            if (itemStack.is(input)) {
-                CompoundTag tag = itemStack.getOrCreateTag();
-                if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
-                    tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
-                float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.getDuration()) * 6;
-                if (pValue < 0) pValue = 0;
-                IndustrialReforged.LOGGER.info("Progress: {}", pValue);
-                tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+            Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
+            if (recipe.isPresent()) {
+                ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
+                Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
+                if (itemStack.is(input)) {
+                    CompoundTag tag = itemStack.getOrCreateTag();
+                    if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
+                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
+                    float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().value().getDuration()) * 6;
+                    if (pValue < 0) pValue = 0;
+                    IndustrialReforged.LOGGER.info("Progress: {}", pValue);
+                    tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+                }
             }
         }
     }
 
     public boolean hasRecipe() {
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
+            if (recipe.isEmpty()) {
+                continue;
+            }
 
-        Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe();
+            FluidStack result = recipe.get().value().getResultFluid();
 
-        if (recipe.isEmpty()) {
-            return false;
+            if (canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid())) return true;
         }
 
-        FluidStack result = recipe.get().value().getResultFluid();
+        IndustrialReforged.LOGGER.info("Empty recipe");
 
-        boolean canInsert = canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid());
-        return canInsert;
+        return false;
     }
 
-    private Optional<RecipeHolder<CrucibleSmeltingRecipe>> getCurrentRecipe() {
-        SimpleContainer inventory = new SimpleContainer(this.getItemHandler().getSlots());
-        int j = 0;
-        for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            ItemStack stackInSlot = this.getItemHandler().getStackInSlot(i);
-            if (!stackInSlot.isEmpty()) {
-                inventory.setItem(j, stackInSlot);
-                j++;
-            }
+    private Optional<RecipeHolder<CrucibleSmeltingRecipe>> getCurrentRecipe(int slot) {
+        SimpleContainer inventory = new SimpleContainer(1);
+        ItemStack stackInSlot = this.getItemHandler().getStackInSlot(slot);
+        if (!stackInSlot.isEmpty()) {
+            inventory.setItem(0, stackInSlot);
         }
 
         return this.level.getRecipeManager().getRecipeFor(CrucibleSmeltingRecipe.Type.INSTANCE, inventory, level);

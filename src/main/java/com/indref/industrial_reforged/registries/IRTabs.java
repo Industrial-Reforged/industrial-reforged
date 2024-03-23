@@ -42,6 +42,7 @@ public final class IRTabs {
                 addPoweredItem(output, IRItems.SCANNER);
                 addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
                 addPoweredItem(output, IRItems.ELECTRIC_HOE);
+                addPoweredItem(output, IRItems.ROCK_CUTTER);
                 addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addPoweredItem(output, IRItems.ELECTRIC_DRILL);
                 addPoweredItem(output, IRItems.ADVANCED_DRILL);

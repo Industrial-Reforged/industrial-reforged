@@ -39,6 +39,8 @@ public final class IRItems {
             () -> new ElectricWrenchItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(Tiers.IRON, 0, 0, new Item.Properties()));
+    public static final Supplier<Item> ROCK_CUTTER = registerItem("rock_cutter",
+            () -> new ElectricHoeItem(Tiers.IRON, 0, 0, new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
