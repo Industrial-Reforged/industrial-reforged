@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.client.renderer;
+package com.indref.industrial_reforged.client.renderer.items;
 
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.gui.Font;

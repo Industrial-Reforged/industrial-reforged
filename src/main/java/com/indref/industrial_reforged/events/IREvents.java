@@ -10,9 +10,9 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
-import com.indref.industrial_reforged.client.renderer.CastingTableRenderer;
-import com.indref.industrial_reforged.client.renderer.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.client.renderer.MultiBarRenderer;
+import com.indref.industrial_reforged.client.renderer.blocks.CastingBasinRenderer;
+import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.renderer.items.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.networking.data.*;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -112,8 +112,8 @@ public class IREvents {
 
         @SubscribeEvent
         public static void registerBERenderer(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_TABLE.get(),
-                    CastingTableRenderer::new);
+            event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_BASIN.get(),
+                    CastingBasinRenderer::new);
         }
     }
 
@@ -156,13 +156,13 @@ public class IREvents {
 
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_TABLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
 
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_TABLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
         }
 
         @SubscribeEvent
@@ -174,6 +174,10 @@ public class IREvents {
                     .server(NbtPayload.getInstance()::handleData));
             registrar.play(ItemActivitySyncData.ID, ItemActivitySyncData::new, handler -> handler
                     .server(ItemActivityPayload.getInstance()::handleData));
+            registrar.play(CastingDurationSyncData.ID, CastingDurationSyncData::new, handler -> handler
+                    .client(CastingDurationPayload.getInstance()::handleData));
+            registrar.play(CastingGhostItemSyncData.ID, CastingGhostItemSyncData::new, handler -> handler
+                    .client(CastingGhostItemPayload.getInstance()::handleData));
         }
     }
 }

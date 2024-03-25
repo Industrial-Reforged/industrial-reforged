@@ -63,8 +63,8 @@ public final class IRBlocks {
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of().noOcclusion()));
-    public static final Supplier<Block> CERAMIC_CASTING_TABLE = registerBlockAndItem("ceramic_casting_table",
-            () -> new CastingTableBlock(BlockBehaviour.Properties.of().noOcclusion()));
+    public static final Supplier<Block> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
             () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CENTRIFUGE = registerBlockAndItem("centrifuge",
@@ -157,6 +157,7 @@ public final class IRBlocks {
     public static final Supplier<Block> TITANIUM_BLOCK = registerBlockAndItem("titanium_block", MetalStorageBlock::new);
     public static final Supplier<Block> URANIUM_BLOCK = registerBlockAndItem("uranium_block", MetalStorageBlock::new);
     public static final Supplier<Block> RAW_URANIUM_BLOCK = registerBlockAndItem("raw_uranium_block", RawOreStorageBlock::new);
+    public static final Supplier<Block> STEEL_BLOCK = registerBlockAndItem("steel_block", MetalStorageBlock::new);
 
     public static final Supplier<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
             () -> new LiquidBlock(IRFluids.SOURCE_SOAP_WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)));

@@ -8,6 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+// TODO: manually determine controllerpos based on blockstate
+@Deprecated
 public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPos {
     public BlockPos controllerPos;
 

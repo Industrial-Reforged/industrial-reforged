@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.items.misc;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.networking.NetworkingHelper;
 import com.indref.industrial_reforged.networking.data.ItemActivitySyncData;
 import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
 import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
@@ -31,6 +32,9 @@ public class BlueprintItem extends Item {
         return InteractionResultHolder.pass(itemStack);
     }
 
+    /**
+     * Note: This should be called client-side (for example a screen like the crafting station)
+     */
     public static void setRecipe(int blueprintSlot, CraftingStationMenu menu) {
         CompoundTag items = new CompoundTag();
         for (int i = 0; i < 9; i++) {
@@ -41,8 +45,8 @@ public class BlueprintItem extends Item {
             IndustrialReforged.LOGGER.debug("Item: {}, slot: {}", item, i);
         }
         menu.getSlot(blueprintSlot).getItem().getOrCreateTag().putBoolean(HAS_RECIPE_KEY, true);
-        PacketDistributor.SERVER.noArg().send(new ItemNbtSyncData(blueprintSlot, "storedRecipe", items));
-        PacketDistributor.SERVER.noArg().send(new ItemActivitySyncData(blueprintSlot, HAS_RECIPE_KEY, true));
+        NetworkingHelper.sendToServer(new ItemNbtSyncData(blueprintSlot, "storedRecipe", items));
+        NetworkingHelper.sendToServer(new ItemActivitySyncData(blueprintSlot, HAS_RECIPE_KEY, true));
     }
 
     public static float hasRecipe(ItemStack itemStack) {

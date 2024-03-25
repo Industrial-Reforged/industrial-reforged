@@ -1,9 +1,10 @@
-package com.indref.industrial_reforged.client.renderer;
+package com.indref.industrial_reforged.client.renderer.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.CastingTableBlock;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.registries.blocks.CastingBasinBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -29,31 +30,57 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
 
-import java.util.Optional;
+public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
+    private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f,
+            MIN_Y = 2.1f / 16f,
+            MAX_Y = 0.4f - MIN_Y;
 
-public class CastingTableRenderer implements BlockEntityRenderer<CastingTableBlockEntity> {
-    private static final float SIDE_MARGIN = (float) CastingTableBlock.SHAPE.min(Direction.Axis.X) + 0.1f,
-            MIN_Y = 10 / 16f,
-            MAX_Y = 1.61f - MIN_Y;
-
-    public CastingTableRenderer(BlockEntityRendererProvider.Context ignored) {
+    public CastingBasinRenderer(BlockEntityRendererProvider.Context ignored) {
     }
 
     @Override
-    public void render(CastingTableBlockEntity castingTableBlockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, int combinedOverlay) {
+    public void render(CastingBasinBlockEntity castingTableBlockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, int combinedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack[] itemStacks = castingTableBlockEntity.getRenderStacks();
-        for (ItemStack itemStack : itemStacks) {
+
+        // This code for fading item and fluid texture is from Tinkers construct.
+        // Thank you to the tinkers construct devs for implementing this
+        int duration = castingTableBlockEntity.getData().get(0);
+        int maxDuration = castingTableBlockEntity.getData().get(1);
+        int fluidOpacity = 0xFF;
+        int itemOpacity = 0;
+        if (duration > 0 && maxDuration > 0) {
+            int opacity = (4 * 0xFF) * duration / maxDuration;
+            // fade item in
+            itemOpacity = opacity / 4;
+
+            // fade fluid and temperature out during last 10%
+            if (opacity > 3 * 0xFF) {
+                fluidOpacity = (4 * 0xFF) - opacity;
+            }
+        }
+
+        for (int i = 0; i < itemStacks.length; i++) {
+            ItemStack itemStack = itemStacks[i];
             poseStack.pushPose();
-            poseStack.translate(0.5f, 0.80f, 0.5f);
+            poseStack.translate(0.5f, 0.18f, 0.5f);
             poseStack.scale(0.78f, 0.78f, 0.78f);
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
 
             poseStack.mulPose(Axis.ZP.rotationDegrees(0));
 
+            // This code for fading the item texture is from Tinkers construct.
+            // Thank you to the tinkers construct devs for implementing this
+            MultiBufferSource outputBuffer = multiBufferSource;
+            if (itemOpacity > 0 && i == 1) {
+                // apply a buffer wrapper to tint and add opacity
+                IndustrialReforged.LOGGER.debug("ITemstack: {}", itemStack);
+                outputBuffer = new CastingItemRenderTypeBuffer(multiBufferSource, itemOpacity, fluidOpacity);
+            }
+
             itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, getLightLevel(castingTableBlockEntity.getLevel(),
                             castingTableBlockEntity.getBlockPos()),
-                    OverlayTexture.NO_OVERLAY, poseStack, multiBufferSource, castingTableBlockEntity.getLevel(), 1);
+                    OverlayTexture.NO_OVERLAY, poseStack, outputBuffer, castingTableBlockEntity.getLevel(), 1);
             poseStack.popPose();
         }
 
@@ -62,18 +89,16 @@ public class CastingTableRenderer implements BlockEntityRenderer<CastingTableBlo
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             int fluidCapacity = fluidHandler.getTankCapacity(0);
             int alpha = 1;
-            float progress = (float) castingTableBlockEntity.getDuration() / castingTableBlockEntity.getMaxDuration();
 
             if (fluidStack.isEmpty())
                 return;
 
-            IndustrialReforged.LOGGER.debug("Progress: {}", progress);
-
             float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
+
             if (fluidStack.getFluid().getFluidType().isLighterThanAir())
-                renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight);
+                renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
             else
-                renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight);
+                renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
 
         } catch (Exception ignored) {
         }
@@ -85,11 +110,17 @@ public class CastingTableRenderer implements BlockEntityRenderer<CastingTableBlo
         return LightTexture.pack(bLight, sLight);
     }
 
-    private static void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float heightPercentage, int combinedLight) {
+    private static void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float heightPercentage, int combinedLight, int opacity) {
         VertexConsumer vertexBuilder = bufferSource.getBuffer(RenderType.translucent());
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(fluidTypeExtensions.getStillTexture(fluidStack));
         int color = fluidTypeExtensions.getTintColor();
+        if (opacity < 0xFF) {
+            // alpha is top 8 bits, multiply by opacity and divide out remainder
+            int alpha1 = ((color >> 24) & 0xFF) * opacity / 0xFF;
+            // clear bits in color and or in the new alpha
+            color = (color & 0xFFFFFF) | (alpha1 << 24);
+        }
         alpha *= (color >> 24 & 255) / 255f;
         float red = (color >> 16 & 255) / 255f;
         float green = (color >> 8 & 255) / 255f;

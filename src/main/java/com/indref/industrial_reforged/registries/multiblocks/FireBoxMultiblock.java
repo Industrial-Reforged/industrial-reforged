@@ -66,9 +66,7 @@ public record FireBoxMultiblock(FireboxTier fireboxTier) implements Multiblock {
 
     @Override
     public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        BlockState currentBlock = level.getBlockState(blockPos);
-        MultiblockUtils.setAndUpdate(level, blockPos, currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
-                PartIndex.UNFORMED));
+
     }
 
     public enum PartIndex implements StringRepresentable {

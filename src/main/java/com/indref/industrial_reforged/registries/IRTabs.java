@@ -68,6 +68,7 @@ public final class IRTabs {
                 // misc and crafting items
                 addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.RUBBER_SHEET);
+                addItem(output, IRItems.BIOMASS);
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CLAY_MOLD);
                 addItem(output, IRItems.CLAY_MOLD_INGOT);
@@ -109,7 +110,7 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK_SLAB);
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK);
                 addBlock(output, IRBlocks.CERAMIC_FAUCET);
-                addBlock(output, IRBlocks.CERAMIC_CASTING_TABLE);
+                addBlock(output, IRBlocks.CERAMIC_CASTING_BASIN);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.REFRACTORY_STONE);
                 addBlock(output, IRBlocks.BLAST_FURNACE_BRICKS);
@@ -147,7 +148,7 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.TIN_BLOCK);
                 addBlock(output, IRBlocks.TITANIUM_BLOCK);
                 addBlock(output, IRBlocks.URANIUM_BLOCK);
-
+                addBlock(output, IRBlocks.STEEL_BLOCK);
 
                 addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
                 addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
@@ -202,7 +203,7 @@ public final class IRTabs {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
                 // IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
-                IndustrialReforged.LOGGER.info("Registering fluid cell: "+fluid.getValue());
+                IndustrialReforged.LOGGER.info("Registering fluid cell: " + fluid.getValue());
                 output.accept(stack);
             }
         }
@@ -210,8 +211,9 @@ public final class IRTabs {
 
     /**
      * Add a new item to a creative tab
+     *
      * @param output Specify the creative tab
-     * @param block Specify the item to add
+     * @param block  Specify the item to add
      */
     private static void addBlock(CreativeModeTab.Output output, Supplier<Block> block) {
         output.accept(block.get());

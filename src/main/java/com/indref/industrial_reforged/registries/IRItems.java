@@ -77,14 +77,14 @@ public final class IRItems {
     //misc
     public static final Supplier<Item> RUBBER_SHEET = registerItem("rubber_sheet",
             () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> BIOMASS = registerItem("biomass",
+            () -> new Item(new Item.Properties()));
     public static final Supplier<Item> STICKY_RESIN = registerItem("sticky_resin",
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
-    public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold",
-            () -> new MoldItem(new Item.Properties()));
-    public static final Supplier<Item> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot",
-            () -> new MoldItem(new Item.Properties()));
+    public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold", MoldItem::new);
+    public static final Supplier<Item> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot", MoldItem::new);
 
     // Needs to be registered manual for custom placement
     public static final Supplier<Item> MINING_PIPE = registerItem("mining_pipe",
@@ -124,6 +124,14 @@ public final class IRItems {
     public static final Supplier<Item> URANIUM_INGOT = registerItem("uranium_ingot",
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> STEEL_INGOT = registerItem("steel_ingot",
+            () -> new Item(new Item.Properties()));
+
+    // Plates
+    public static final Supplier<Item> IRON_PLATE = registerItem("iron_plate",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> COPPER_PLATE = registerItem("copper_plate",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> STEEL_PLATE = registerItem("steel_plate",
             () -> new Item(new Item.Properties()));
 
     public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",

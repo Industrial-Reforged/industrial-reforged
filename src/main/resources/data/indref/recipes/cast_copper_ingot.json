@@ -9,9 +9,9 @@
     "Count": 1
   },
   "result": {
-    "id": "minecraft:redstone",
+    "id": "minecraft:iron_ingot",
     "Count": 15
   },
   "duration": 220,
-  "consume_cast": false
+  "consume_cast": true
 }

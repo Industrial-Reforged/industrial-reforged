@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.client.renderer;
+package com.indref.industrial_reforged.client.renderer.items;
 
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.mojang.datafixers.util.Pair;

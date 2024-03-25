@@ -6,7 +6,7 @@ import com.indref.industrial_reforged.registries.blockentities.machines.BasicGen
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.FaucetBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
@@ -60,8 +60,8 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("crafting_station", () ->
                     BlockEntityType.Builder.of(CraftingStationBlockEntity::new,
                             IRBlocks.CRAFTING_STATION.get()).build(null));
-    public static final Supplier<BlockEntityType<CastingTableBlockEntity>> CASTING_TABLE =
-            BLOCK_ENTITIES.register("casting_table", () ->
-                    BlockEntityType.Builder.of(CastingTableBlockEntity::new,
-                            IRBlocks.CERAMIC_CASTING_TABLE.get()).build(null));
+    public static final Supplier<BlockEntityType<CastingBasinBlockEntity>> CASTING_BASIN =
+            BLOCK_ENTITIES.register("casting_basin", () ->
+                    BlockEntityType.Builder.of(CastingBasinBlockEntity::new,
+                            IRBlocks.CERAMIC_CASTING_BASIN.get()).build(null));
 }

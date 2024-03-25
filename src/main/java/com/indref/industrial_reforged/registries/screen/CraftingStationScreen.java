@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.networking.NetworkingHelper;
 import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.api.util.SimpleFunction;
@@ -60,6 +61,6 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
 
     private final SimpleFunction transferRecipe = () -> {
         CompoundTag tag = new CompoundTag();
-        PacketDistributor.SERVER.noArg().send(new ItemNbtSyncData(CraftingStationMenu.BLUEPRINT_SLOT, "storedRecipe", tag));
+        NetworkingHelper.sendToServer(new ItemNbtSyncData(CraftingStationMenu.BLUEPRINT_SLOT, "storedRecipe", tag));
     };
 }

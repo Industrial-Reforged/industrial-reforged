@@ -63,7 +63,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     @Override
     public BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        if (currentBlock.is(tier.getCrucibleWallBlock())) {
+        if (currentBlock.is(tier.getCrucibleWallBlock()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_WALL.get())) {
             return IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
                     .defaultBlockState()
                     .setValue(CrucibleWallBlock.CRUCIBLE_WALL, switch (index) {

@@ -2,7 +2,8 @@ package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
+import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -19,6 +20,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -34,30 +37,33 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-import static com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity.CAST_SLOT;
+import static com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity.CAST_SLOT;
 
 @SuppressWarnings("deprecation")
-public class CastingTableBlock extends BaseEntityBlock {
+public class CastingBasinBlock extends BaseEntityBlock {
+
     public static final VoxelShape SHAPE = Stream.of(
-            Block.box(0, 0, 0, 4, 10, 4),
-            Block.box(12, 0, 0, 16, 10, 4),
-            Block.box(12, 0, 12, 16, 10, 16),
-            Block.box(0, 0, 12, 4, 10, 16),
-            Block.box(0, 10, 0, 16, 13, 16)
+            Block.box(2, 2, 0, 16, 6, 2),
+            Block.box(0, 0, 0, 16, 2, 16),
+            Block.box(0, 2, 0, 2, 6, 14),
+            Block.box(14, 2, 2, 16, 6, 16),
+            Block.box(0, 2, 14, 14, 6, 16)
     ).reduce(Shapes::or).get();
 
-    public CastingTableBlock(Properties p_49224_) {
+    public CastingBasinBlock(Properties p_49224_) {
         super(p_49224_);
     }
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(CastingTableBlock::new);
+        return simpleCodec(CastingBasinBlock::new);
     }
+
 
     @Override
     public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
         return RenderShape.MODEL;
+
     }
 
     @Override
@@ -68,7 +74,7 @@ public class CastingTableBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new CastingTableBlockEntity(blockPos, blockState);
+        return new CastingBasinBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -77,7 +83,7 @@ public class CastingTableBlock extends BaseEntityBlock {
         IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
         IFluidHandler fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
         if (!level.isClientSide()) {
-            insertAndExtract(player, hand, itemHandler);
+            insertAndExtract(player, hand, itemHandler, (CastingBasinBlockEntity) blockEntity);
             fluidHandler.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
             blockEntity.setChanged();
         }
@@ -85,7 +91,7 @@ public class CastingTableBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    private static void insertAndExtract(Player player, InteractionHand interactionHand, IItemHandler itemHandler) {
+    private static void insertAndExtract(Player player, InteractionHand interactionHand, IItemHandler itemHandler, CastingBasinBlockEntity blockEntity) {
         if (!player.getItemInHand(interactionHand).isEmpty()) {
             if (canInsert(itemHandler, player.getItemInHand(interactionHand))) {
                 int count = player.getItemInHand(interactionHand).getCount();
@@ -94,11 +100,13 @@ public class CastingTableBlock extends BaseEntityBlock {
                 itemHandler.insertItem(CAST_SLOT, itemStack, false);
             }
         } else if (player.getItemInHand(interactionHand).isEmpty()) {
+            // TODO: Prevent extracting items when casting is going on
             int extractIndex = getFirstForExtract(itemHandler);
             if (extractIndex != -1) {
                 ItemStack stack = itemHandler.getStackInSlot(extractIndex);
                 ItemHandlerHelper.giveItemToPlayer(player, stack.copy());
                 itemHandler.extractItem(extractIndex, stack.getCount(), false);
+                blockEntity.resetRenderedStack();
             }
         }
     }
@@ -123,7 +131,9 @@ public class CastingTableBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        return createTickerHelper(p_153214_, IRBlockEntityTypes.CASTING_TABLE.get(),
+        if (level.isClientSide()) return null;
+
+        return createTickerHelper(p_153214_, IRBlockEntityTypes.CASTING_BASIN.get(),
                 (level1, blockPos, blockState, blockEntity) -> blockEntity.tick(blockPos, blockState));
     }
 }

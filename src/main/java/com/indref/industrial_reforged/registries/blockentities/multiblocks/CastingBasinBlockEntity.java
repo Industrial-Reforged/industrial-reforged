@@ -2,53 +2,103 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.client.renderer.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.networking.NetworkingHelper;
+import com.indref.industrial_reforged.networking.data.CastingDurationSyncData;
+import com.indref.industrial_reforged.networking.data.CastingGhostItemSyncData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
-import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
-import com.indref.industrial_reforged.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.Optional;
 
-public class CastingTableBlockEntity extends ContainerBlockEntity {
+public class CastingBasinBlockEntity extends ContainerBlockEntity {
     public static final int CAST_SLOT = 0;
 
-    private int duration;
-    private int maxDuration;
+    public int duration;
+    public int maxDuration;
+    private ContainerData data;
+    public ItemStack resultItem = ItemStack.EMPTY;
 
-    public CastingTableBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(IRBlockEntityTypes.CASTING_TABLE.get(), p_155229_, p_155230_);
+    public CastingBasinBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
+        super(IRBlockEntityTypes.CASTING_BASIN.get(), p_155229_, p_155230_);
         addItemHandler(2);
         addFluidTank(1000);
+        this.data = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> CastingBasinBlockEntity.this.duration;
+                    case 1 -> CastingBasinBlockEntity.this.maxDuration;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int val) {
+                switch (index) {
+                    case 0 -> CastingBasinBlockEntity.this.duration = val;
+                    case 1 -> CastingBasinBlockEntity.this.maxDuration = val;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
     }
 
     public ItemStack[] getRenderStacks() {
-        return new ItemStack[]{
-                getItemHandler().getStackInSlot(0),
-                getItemHandler().getStackInSlot(1)
-        };
+        ItemStack[] itemStacks = new ItemStack[2];
+        itemStacks[0] = getItemHandler().getStackInSlot(0);
+
+        ItemStack resultStack = getItemHandler().getStackInSlot(1);
+        if (!resultStack.isEmpty()) {
+            resetRenderedStack();
+            itemStacks[1] = resultStack;
+            IndustrialReforged.LOGGER.debug("real item");
+        } else {
+            itemStacks[1] = resultItem;
+            IndustrialReforged.LOGGER.debug("Ghost item");
+        }
+
+        return itemStacks;
     }
 
     public void tick(BlockPos blockPos, BlockState blockState) {
         if (hasRecipe()) {
             increaseCraftingProgress();
             setChanged(level, blockPos, blockState);
+            updateRenderedStack();
 
-            if (hasProgressFinished())
+            if (hasProgressFinished()) {
                 castItem();
+            }
         } else {
             resetProgress();
         }
+    }
+
+    public void updateRenderedStack() {
+        IndustrialReforged.LOGGER.debug("Updating render stack");
+        this.resultItem = getCurrentRecipe().get().value().getResultItem(level.registryAccess());
+        NetworkingHelper.sendToClient(new CastingGhostItemSyncData(this.resultItem, getBlockPos()));
+    }
+
+    public void resetRenderedStack() {
+        this.resultItem = ItemStack.EMPTY;
+        NetworkingHelper.sendToClient(new CastingGhostItemSyncData(this.resultItem, getBlockPos()));
     }
 
     public void castItem() {
@@ -66,24 +116,30 @@ public class CastingTableBlockEntity extends ContainerBlockEntity {
 
     public void increaseCraftingProgress() {
         this.duration++;
+        NetworkingHelper.sendToClient(new CastingDurationSyncData(duration, maxDuration, worldPosition));
     }
 
     public void resetProgress() {
         this.duration = 0;
+        this.maxDuration = 0;
+        NetworkingHelper.sendToClient(new CastingDurationSyncData(duration, maxDuration, worldPosition));
     }
 
+    // TODO: Use container data to sync these
     public int getDuration() {
-        IndustrialReforged.LOGGER.debug("duration: {}", duration);
         return duration;
     }
 
     public int getMaxDuration() {
-        IndustrialReforged.LOGGER.debug("maxduration: {}", maxDuration);
         return maxDuration;
     }
 
+    public ContainerData getData() {
+        return data;
+    }
+
     public boolean hasProgressFinished() {
-        return this.duration >= getCurrentRecipe().get().value().getDuration();
+        return getCurrentRecipe().isPresent() && this.duration >= getCurrentRecipe().get().value().getDuration();
     }
 
     public boolean hasRecipe() {
@@ -109,8 +165,6 @@ public class CastingTableBlockEntity extends ContainerBlockEntity {
 
         this.maxDuration = recipe.get().value().getDuration();
 
-        IndustrialReforged.LOGGER.debug("maxduration: {}", maxDuration);
-
         boolean matchesFluid = recipe.get().value().matchesFluids(getFluidTank().getFluidInTank(0), level);
 
         return matchesFluid ? recipe : Optional.empty();
@@ -127,11 +181,15 @@ public class CastingTableBlockEntity extends ContainerBlockEntity {
     protected void saveOther(CompoundTag tag) {
         tag.putInt("duration", this.duration);
         tag.putInt("maxDuration", this.maxDuration);
+        CompoundTag itemTag = new CompoundTag();
+        this.resultItem.save(itemTag);
+        tag.put("resultItem", itemTag);
     }
 
     @Override
     protected void loadOther(CompoundTag tag) {
         this.duration = tag.getInt("duration");
         this.maxDuration = tag.getInt("maxDuration");
+        this.resultItem = ItemStack.of(tag.getCompound("resultItem"));
     }
 }

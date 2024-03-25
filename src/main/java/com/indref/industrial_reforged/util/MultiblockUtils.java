@@ -73,7 +73,7 @@ public final class MultiblockUtils {
         // iterate through all possible directions
         for (MultiblockDirection mDirection : directions) {
             // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-            Vec3i firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
+            BlockPos firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
             // Iterate over layers (Y)
             for (List<Integer> layer : layout) {
                 // Iterate over blocks in a layer (X, Z)
@@ -139,7 +139,7 @@ public final class MultiblockUtils {
         };
     }
 
-    private static Vec3i getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
+    private static BlockPos getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
         int firstBlockPosX = switch (direction) {
             case NORTH -> controllerPos.getX() - relativeControllerPos.getX();
             case EAST -> controllerPos.getX() + relativeControllerPos.getZ();
@@ -153,7 +153,7 @@ public final class MultiblockUtils {
             case SOUTH -> controllerPos.getZ() + relativeControllerPos.getZ();
             case WEST -> controllerPos.getZ() + relativeControllerPos.getX();
         };
-        return new Vec3i(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
+        return new BlockPos(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
     }
 
     /**
@@ -240,11 +240,7 @@ public final class MultiblockUtils {
     public static void unform(Multiblock multiblock, BlockPos controllerPos, Level level) {
         if (multiblock.getFixedDirection() != null) {
             for (MultiblockDirection direction1 : MultiblockDirection.values()) {
-                try {
-                    unformBlocks(multiblock, direction1, controllerPos, level);
-                } catch (Exception ignored) {
-                    IndustrialReforged.LOGGER.debug("Caught exception");
-                }
+                unformBlocks(multiblock, direction1, controllerPos, level);
             }
         }
     }
@@ -252,8 +248,9 @@ public final class MultiblockUtils {
     private static void unformBlocks(Multiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-        Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
+        Map<Integer, Block> definition = multiblock.getDefinition();
         IndustrialReforged.LOGGER.debug("first: {}", firstBlockPos);
         int yIndex = 0;
         int xIndex = 0;
@@ -264,18 +261,17 @@ public final class MultiblockUtils {
             // multiblock index
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
-            for (int ignored : layer) {
+            for (int blockIndex : layer) {
+                Block definedBlock = definition.get(blockIndex);
                 xIndex++;
-                IndustrialReforged.LOGGER.debug("TEST3");
                 // Increase index
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 BlockState blockState = level.getBlockState(curBlockPos);
                 BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex-1, yIndex);
-                IndustrialReforged.LOGGER.debug("Expected: {}, blockState: {}, x: {}, y: {}, blockpos: {}", expectedState, blockState, xIndex-1, yIndex, curBlockPos);
-                if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
+                if (expectedState != null && blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
                     multiblock.unformBlock(level, curBlockPos, controllerPos);
-                    IndustrialReforged.LOGGER.debug("TEST4");
+                    MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
                 }
 
                 if (x + 1 < width) {
@@ -293,7 +289,7 @@ public final class MultiblockUtils {
     private static void formBlocks(Multiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-        Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
 
