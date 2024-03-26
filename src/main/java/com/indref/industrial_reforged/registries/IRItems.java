@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
+import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
@@ -57,6 +58,12 @@ public final class IRItems {
             () -> new LunchBagItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
+    public static final Supplier<Item> BASIC_BATTERY = registerItem("basic_battery",
+            () -> new BatteryItem(new Item.Properties().stacksTo(16), EnergyTiers.LOW));
+    public static final Supplier<Item> ADVANCED_BATTERY = registerItem("advanced_battery",
+            () -> new BatteryItem(new Item.Properties().stacksTo(16), EnergyTiers.HIGH));
+    public static final Supplier<Item> ULTIMATE_BATTERY = registerItem("ultimate_battery",
+            () -> new BatteryItem(new Item.Properties().stacksTo(16), EnergyTiers.INSANE));
     public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
@@ -76,6 +83,12 @@ public final class IRItems {
 
     //misc
     public static final Supplier<Item> RUBBER_SHEET = registerItem("rubber_sheet",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> BASIC_CIRCUIT = registerItem("basic_circuit",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> ADVANCED_CIRCUIT = registerItem("advanced_circuit",
+            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> ULTIMATE_CIRCUIT = registerItem("ultimate_circuit",
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> BIOMASS = registerItem("biomass",
             () -> new Item(new Item.Properties()));

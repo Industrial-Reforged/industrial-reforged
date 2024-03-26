@@ -90,19 +90,6 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        // TODO: Implement smart unforming
-        BlockState currentBlock = level.getBlockState(blockPos);
-        if (currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get())) {
-            MultiblockUtils.setAndUpdate(level, blockPos, IRBlocks.TERRACOTTA_BRICK_SLAB.get().defaultBlockState());
-        } else {
-            MultiblockUtils.setAndUpdate(level, blockPos, IRBlocks.TERRACOTTA_BRICK.get().defaultBlockState());
-        }
-
-        IndustrialReforged.LOGGER.debug("TEST5");
-    }
-
-    @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
         return true;
     }

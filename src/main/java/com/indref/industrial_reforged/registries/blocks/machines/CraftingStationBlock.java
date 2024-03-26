@@ -35,10 +35,9 @@ public class CraftingStationBlock extends RotatableEntityBlock {
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand p_60507_, @NotNull BlockHitResult p_60508_) {
         CraftingStationBlockEntity craftingStationBE = (CraftingStationBlockEntity) level.getBlockEntity(blockPos);
-        if (!level.isClientSide()) {
+        if (!level.isClientSide())
             player.openMenu(craftingStationBE, blockPos);
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.FAIL;
+
+        return InteractionResult.SUCCESS;
     }
 }

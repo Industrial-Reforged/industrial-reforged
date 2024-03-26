@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.multiblocks;
 
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.patchy.BlockedServers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -58,7 +57,27 @@ public interface Multiblock {
 
     @Nullable BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
 
-    void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos);
+    /**
+     * This gets called after the block at `blockpos` is formed
+     * @param direction Direction of the multiblock
+     * @param blockPos BlockPos of the block that was unformed
+     * @param controllerPos BlockPos of the controller block of this multi
+     * @param indexX Current multiblock index on the x-axis
+     * @param indexY Current multiblock index on the y-axis
+     */
+    default void afterFormBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY) {
+    }
+
+    /**
+     * This gets called after the block at `blockpos` is unformed
+     * @param direction Direction of the multiblock
+     * @param blockPos BlockPos of the block that was unformed
+     * @param controllerPos BlockPos of the controller block of this multi
+     * @param indexX Current multiblock index on the x-axis
+     * @param indexY Current multiblock index on the y-axis
+     */
+    default void afterUnformBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY) {
+    }
 
     boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos);
 

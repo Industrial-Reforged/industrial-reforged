@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlo
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.FaucetBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -64,4 +65,8 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("casting_basin", () ->
                     BlockEntityType.Builder.of(CastingBasinBlockEntity::new,
                             IRBlocks.CERAMIC_CASTING_BASIN.get()).build(null));
+    public static final Supplier<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
+            BLOCK_ENTITIES.register("blast_furnace", () ->
+                    BlockEntityType.Builder.of(BlastFurnaceBlockEntity::new,
+                            IRBlocks.BLAST_FURNACE_HATCH.get()).build(null));
 }

@@ -66,12 +66,21 @@ public final class IRTabs {
                 // addItem(output, IRItems.URANIUM_FUEL_ROD);
 
                 // misc and crafting items
-                addItem(output, IRItems.FERTILIZER);
+                addItem(output, IRItems.BASIC_CIRCUIT);
+                addItem(output, IRItems.ADVANCED_CIRCUIT);
+                addItem(output, IRItems.ULTIMATE_CIRCUIT);
+                addPoweredItem(output, IRItems.BASIC_BATTERY);
+                addPoweredItem(output, IRItems.ADVANCED_BATTERY);
+                addPoweredItem(output, IRItems.ULTIMATE_BATTERY);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.BIOMASS);
+
+                addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CLAY_MOLD);
                 addItem(output, IRItems.CLAY_MOLD_INGOT);
+
+                // Raw ore items
                 addItem(output, IRItems.RAW_BAUXITE);
                 addItem(output, IRItems.RAW_CHROMIUM);
                 addItem(output, IRItems.RAW_IRIDIUM);

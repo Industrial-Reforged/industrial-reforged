@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.multiblocks.MultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -32,19 +33,18 @@ public class BlastFurnaceHatch extends RotatableEntityBlock implements MultiBloc
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return null;
+        return simpleCodec(BlastFurnaceHatch::new);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
-        super.createBlockStateDefinition(p_49915_);
-        p_49915_.add(BlastFurnaceMultiblock.BRICK_STATE);
+        super.createBlockStateDefinition(p_49915_.add(BlastFurnaceMultiblock.BRICK_STATE));
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return null;
+        return new BlastFurnaceBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -62,4 +62,12 @@ public class BlastFurnaceHatch extends RotatableEntityBlock implements MultiBloc
         return IRMultiblocks.BLAST_FURNACE.get();
     }
 
+    /**
+     * Get the blockpos of the main controler pos
+     * @param blockPos blockpos of any block that is part of the blast furnace
+     * @return BlockPos of the main controller block
+     */
+    public static BlockPos getController(Level level, BlockPos blockPos) {
+        return null;
+    }
 }

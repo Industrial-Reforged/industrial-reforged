@@ -32,7 +32,13 @@ public class RefractoryBrickBlock extends Block implements Wrenchable, DisplayBl
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState ignored, boolean p_60519_) {
         if (!blockState.getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockUtils.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
+            for (BlockPos blockPos1 : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
+                if (level.getBlockState(blockPos1).getBlock() instanceof CoilBlock
+                        && level.getBlockState(blockPos1).getValue(FireBoxMultiblock.FIREBOX_PART).equals(FireBoxMultiblock.PartIndex.COIL)) {
+                    MultiblockUtils.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos1, level);
+                    break;
+                }
+            }
         }
     }
 

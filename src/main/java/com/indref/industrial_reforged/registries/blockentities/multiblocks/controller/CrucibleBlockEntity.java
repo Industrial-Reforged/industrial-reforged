@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, IHeatBlock {
+public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private final CrucibleTier tier;
     private final ContainerData data;
 

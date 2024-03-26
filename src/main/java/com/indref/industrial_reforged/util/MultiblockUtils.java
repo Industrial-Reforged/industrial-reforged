@@ -251,10 +251,8 @@ public final class MultiblockUtils {
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> definition = multiblock.getDefinition();
-        IndustrialReforged.LOGGER.debug("first: {}", firstBlockPos);
         int yIndex = 0;
         int xIndex = 0;
-        IndustrialReforged.LOGGER.debug("TEST2");
         for (List<Integer> layer : layout) {
             // relative position
             int x = 0;
@@ -263,15 +261,17 @@ public final class MultiblockUtils {
             int z = 0;
             for (int blockIndex : layer) {
                 Block definedBlock = definition.get(blockIndex);
-                xIndex++;
+                // TODO: Put this at the end of the for-loop
                 // Increase index
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 BlockState blockState = level.getBlockState(curBlockPos);
-                BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex-1, yIndex);
-                if (expectedState != null && blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
-                    multiblock.unformBlock(level, curBlockPos, controllerPos);
-                    MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
+                BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                if (expectedState != null) {
+                    if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
+                        MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
+                        multiblock.afterUnformBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                    }
                 }
 
                 if (x + 1 < width) {
@@ -280,6 +280,7 @@ public final class MultiblockUtils {
                     x = 0;
                     z++;
                 }
+                xIndex++;
             }
             xIndex = 0;
             yIndex++;
@@ -300,14 +301,14 @@ public final class MultiblockUtils {
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
             for (int blockIndex : layer) {
-                // Increase index
-                index++;
-
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    BlockState newState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, index - 1, yIndex);
+                    BlockState newState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, index, yIndex);
                     if (newState != null) level.setBlockAndUpdate(curBlockPos, newState);
+
+                    multiblock.afterFormBlock(level, direction, curBlockPos, controllerPos, index, yIndex);
+
                     BlockEntity blockEntity = level.getBlockEntity(curBlockPos);
                     if (blockEntity instanceof SavesControllerPos savesControllerPosBE) {
                         savesControllerPosBE.setControllerPos(controllerPos);
@@ -320,6 +321,7 @@ public final class MultiblockUtils {
                     x = 0;
                     z++;
                 }
+                index++;
             }
             index = 0;
             yIndex++;

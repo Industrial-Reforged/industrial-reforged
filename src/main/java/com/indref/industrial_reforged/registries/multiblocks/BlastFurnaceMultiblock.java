@@ -73,11 +73,6 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public void unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos) {
-
-    }
-
-    @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
         return true;
     }
