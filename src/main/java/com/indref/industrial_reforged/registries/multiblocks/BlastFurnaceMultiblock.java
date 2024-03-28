@@ -64,7 +64,7 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         BlockState blockState = level.getBlockState(blockPos);
         return switch (indexY) {
             case 0 ->
-                    blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
+                    blockState.setValue(BRICK_STATE, BrickStates.FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
             case 3 ->
                     blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricks.FACING, getCorrectDirection(index, direction));
             default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
@@ -133,7 +133,6 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     public enum BrickStates implements StringRepresentable {
         UNFORMED("unformed"),
         FORMED("formed"),
-        HATCH_FORMED("hatch_formed"),
         TOP("top");
 
         private final String name;
