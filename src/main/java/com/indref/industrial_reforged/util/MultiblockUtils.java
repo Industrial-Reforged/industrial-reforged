@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
@@ -43,7 +42,7 @@ public final class MultiblockUtils {
      * @param player        player that is trying to form the multi
      * @return first: isValid? second: Direction that multi is valid
      */
-    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(Multiblock multiblock, BlockPos controllerPos, Level level, Player player) {
+    public static Pair<Boolean, @Nullable MultiblockDirection> isUnformedValid(Multiblock multiblock, BlockPos controllerPos, Level level, Player player, boolean sendErrorMsg) {
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
@@ -62,6 +61,7 @@ public final class MultiblockUtils {
 
         // Check if controller exists
         if (relativeControllerPos == null) {
+            // TODO: Remove this null pointer exception
             throw new NullPointerException("Relative controller pos is not available. May be caused due to a multiblock layout without a controller");
         }
 
@@ -119,7 +119,9 @@ public final class MultiblockUtils {
 
         MultiblockDirection prioritizedDirection = prioritizedDirectionLayout.getSecond();
 
-        sendFailureMsg(player, level, firstMissingBlockPoses.get(prioritizedDirection).getFirst(), def, firstMissingBlockPoses.get(prioritizedDirection).getSecond());
+        if (sendErrorMsg) {
+            sendFailureMsg(player, level, firstMissingBlockPoses.get(prioritizedDirection).getFirst(), def, firstMissingBlockPoses.get(prioritizedDirection).getSecond());
+        }
 
         return Pair.of(false, null);
     }
@@ -227,7 +229,7 @@ public final class MultiblockUtils {
     }
 
     public static void form(Multiblock multiblock, BlockPos controllerPos, Level level, Player player) {
-        Pair<Boolean, MultiblockDirection> valid = isValid(multiblock, controllerPos, level, player);
+        Pair<Boolean, MultiblockDirection> valid = isUnformedValid(multiblock, controllerPos, level, player, true);
         MultiblockDirection direction = valid.getSecond();
         if (multiblock.getFixedDirection() != null) {
             direction = multiblock.getFixedDirection();
@@ -238,10 +240,16 @@ public final class MultiblockUtils {
     }
 
     public static void unform(Multiblock multiblock, BlockPos controllerPos, Level level) {
-        if (multiblock.getFixedDirection() != null) {
-            for (MultiblockDirection direction1 : MultiblockDirection.values()) {
-                unformBlocks(multiblock, direction1, controllerPos, level);
+        if (multiblock.getFixedDirection() == null) {
+            for (MultiblockDirection direction : MultiblockDirection.values()){
+                try {
+                    unformBlocks(multiblock, direction, controllerPos, level);
+                } catch (Exception ignored) {
+                }
             }
+
+        } else {
+            unformBlocks(multiblock, multiblock.getFixedDirection(), controllerPos, level);
         }
     }
 
@@ -261,19 +269,18 @@ public final class MultiblockUtils {
             int z = 0;
             for (int blockIndex : layer) {
                 Block definedBlock = definition.get(blockIndex);
-                // TODO: Put this at the end of the for-loop
-                // Increase index
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 BlockState blockState = level.getBlockState(curBlockPos);
-                BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
-                if (expectedState != null) {
-                    if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
-                        MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
-                        multiblock.afterUnformBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                if (!level.getBlockState(curBlockPos).isEmpty()) {
+                    BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                    if (expectedState != null) {
+                        if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
+                            MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
+                            multiblock.afterUnformBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                        }
                     }
                 }
-
                 if (x + 1 < width) {
                     x++;
                 } else {

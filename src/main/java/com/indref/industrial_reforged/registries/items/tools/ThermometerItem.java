@@ -46,7 +46,7 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
         BlockState blockstate = level.getBlockState(blockPos);
         ItemStack mainHandStack = player.getMainHandItem();
         if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
-            if (!displayBlock.getCompatibleItems().contains(IRItems.THERMOMETER.get())) return;
+            if (!displayBlock.getCompatibleItems().contains((DisplayItem) IRItems.THERMOMETER.get())) return;
 
             for (Component component : displayBlock.displayOverlay(blockstate, blockPos, level)) {
                 guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);

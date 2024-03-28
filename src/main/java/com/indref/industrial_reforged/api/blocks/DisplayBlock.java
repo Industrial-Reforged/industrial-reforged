@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blocks;
 
+import com.indref.industrial_reforged.api.items.DisplayItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -27,5 +28,5 @@ public interface DisplayBlock {
      */
     List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level);
 
-    List<Item> getCompatibleItems();
+    List<DisplayItem> getCompatibleItems();
 }

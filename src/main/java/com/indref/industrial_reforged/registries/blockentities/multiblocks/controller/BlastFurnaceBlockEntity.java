@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,18 +22,44 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private boolean mainController;
-    private BlockPos mainControllerPos;
+    private BlockPos mainControllerPos = null;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
+    }
+
+    public void setMainController(boolean mainController) {
+        this.mainController = mainController;
     }
 
     public boolean isMainController() {
         return mainController;
     }
 
+    public void setMainControllerPos(BlockPos mainControllerPos) {
+        this.mainControllerPos = mainControllerPos;
+    }
+
+    public BlockPos getMainControllerPos() {
+        return mainControllerPos;
+    }
+
     public BlastFurnaceBlockEntity getActualBlockEntity() {
         return (BlastFurnaceBlockEntity) level.getBlockEntity(mainControllerPos);
+    }
+
+    @Override
+    protected void saveOther(CompoundTag tag) {
+        tag.putBoolean("isController", isMainController());
+        if (mainControllerPos != null) {
+            tag.putLong("mainControllerPos", mainControllerPos.asLong());
+        }
+    }
+
+    @Override
+    protected void loadOther(CompoundTag tag) {
+        this.mainController = tag.getBoolean("isController");
+        this.mainControllerPos = BlockPos.of(tag.getLong("mainControllerPos"));
     }
 
     @Override

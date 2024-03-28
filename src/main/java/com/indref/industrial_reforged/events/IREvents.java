@@ -19,6 +19,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
+import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
@@ -88,6 +89,12 @@ public class IREvents {
                         (stack, level, living, id) -> BlueprintItem.hasRecipe(stack));
                 ItemProperties.register(IRItems.THERMOMETER.get(), new ResourceLocation(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),
                         (stack, level, living, id) -> ThermometerItem.getTemperature(stack));
+                for (Item item : BuiltInRegistries.ITEM) {
+                    if (item instanceof BatteryItem) {
+                        ItemProperties.register(item, new ResourceLocation(IndustrialReforged.MODID, BatteryItem.ENERGY_STAGE_KEY),
+                                (stack, level, living, id) -> BatteryItem.getEnergyStage(stack));
+                    }
+                }
             });
         }
 

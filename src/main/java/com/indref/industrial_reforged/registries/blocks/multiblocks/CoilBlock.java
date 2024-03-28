@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.multiblocks.MultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -104,7 +105,7 @@ public class CoilBlock extends BaseEntityBlock implements MultiBlockController, 
     }
 
     @Override
-    public List<Item> getCompatibleItems() {
-        return List.of(IRItems.THERMOMETER.get());
+    public List<DisplayItem> getCompatibleItems() {
+        return List.of((DisplayItem) IRItems.THERMOMETER.get());
     }
 }

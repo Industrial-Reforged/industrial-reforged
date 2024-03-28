@@ -146,6 +146,16 @@ public final class IRItems {
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> STEEL_PLATE = registerItem("steel_plate",
             () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> TIN_PLATE = registerItem("tin_plate",
+            () -> new Item(new Item.Properties()));
+
+    // Rods
+    public static final Supplier<Item> IRON_ROD = registerItem("iron_rod",
+            () -> new Item(new Item.Properties()));
+
+    // Wires
+    public static final Supplier<Item> COPPER_WIRE = registerItem("copper_wire",
+            () -> new Item(new Item.Properties()));
 
     public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
             () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER,

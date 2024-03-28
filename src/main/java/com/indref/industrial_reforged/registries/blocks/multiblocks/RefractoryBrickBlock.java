@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
@@ -76,7 +77,7 @@ public class RefractoryBrickBlock extends Block implements Wrenchable, DisplayBl
     }
 
     @Override
-    public List<Item> getCompatibleItems() {
-        return List.of(IRItems.THERMOMETER.get());
+    public List<DisplayItem> getCompatibleItems() {
+        return List.of((DisplayItem) IRItems.THERMOMETER.get());
     }
 }

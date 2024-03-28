@@ -143,7 +143,7 @@
   "block.indref.uranium_ore": "Uranium Ore",
   "block.indref.deepslate_uranium_ore": "Deepslate Uranium Ore",
 
-  "drain.desc.0": "A simple device for draining fluids",
+  "drain.desc.0": "A simple device for collecting fluids",
   "drain.info.0": "Fluid stored: ",
 
   "tape_measure.block_difference": "Distance measured:",

@@ -1,6 +1,44 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "indref:item/batteries/ultimate/0",
+      "predicate": {
+        "indref:energy_stage": 0.0
+      }
+    },
+    {
+      "model": "indref:item/batteries/ultimate/1",
+      "predicate": {
+        "indref:energy_stage": 1.0
+      }
+    },
+    {
+      "model": "indref:item/batteries/ultimate/2",
+      "predicate": {
+        "indref:energy_stage": 2.0
+      }
+    },
+    {
+      "model": "indref:item/batteries/ultimate/3",
+      "predicate": {
+        "indref:energy_stage": 3.0
+      }
+    },
+    {
+      "model": "indref:item/batteries/ultimate/4",
+      "predicate": {
+        "indref:energy_stage": 4.0
+      }
+    },
+    {
+      "model": "indref:item/batteries/ultimate/5",
+      "predicate": {
+        "indref:energy_stage": 5.0
+      }
+    }
+  ],
   "textures": {
-    "layer0": "indref:item/ultimate_battery"
+    "layer0": "indref:item/batteries/ultimate/0"
   }
 }

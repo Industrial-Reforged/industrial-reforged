@@ -33,7 +33,7 @@ public class TapeMeasureItem extends ToolItem {
         useItem.setTag(tag);
         if (player.isShiftKeyDown() && tag.getBoolean(EXTENDED_KEY)) {
             tag.putBoolean(EXTENDED_KEY, false);
-            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
+            tag.putLong("firstBlockPos", 0);
             return InteractionResultHolder.success(useItem);
         }
         return InteractionResultHolder.fail(useItem);
@@ -46,20 +46,19 @@ public class TapeMeasureItem extends ToolItem {
         BlockPos blockPos = useOnContext.getClickedPos();
         Player player = useOnContext.getPlayer();
         if (!player.isCrouching() && isExtended(useItem) == 0) {
-            int[] blockPosCoords = {blockPos.getX(), blockPos.getY(), blockPos.getZ()};
-            tag.putIntArray("firstBlockPos", blockPosCoords);
+            tag.putLong("firstBlockPos", blockPos.asLong());
             tag.putBoolean(EXTENDED_KEY, true);
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
             // first marked block pos
-            int[] firstBlockPos = tag.getIntArray("firstBlockPos");
+            BlockPos firstBlockPos = BlockPos.of(tag.getLong("firstBlockPos"));
 
             // calculate distance between first pos and player pos
             int[] finalPos = {
-                    Math.abs(firstBlockPos[0]) - Math.abs(blockPos.getX()),
-                    Math.abs(firstBlockPos[1]) - Math.abs(blockPos.getY()),
-                    Math.abs(firstBlockPos[2]) - Math.abs(blockPos.getZ())
+                    Math.abs(firstBlockPos.getX()) - Math.abs(blockPos.getX()),
+                    Math.abs(firstBlockPos.getY()) - Math.abs(blockPos.getY()),
+                    Math.abs(firstBlockPos.getZ()) - Math.abs(blockPos.getZ())
             };
 
             if (useOnContext.getLevel().isClientSide) {

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -25,8 +26,15 @@ public class FaucetBlock extends Block implements Wrenchable {
     public static final BooleanProperty ATTACHED_TO_CRUCIBLE = BooleanProperty.create("attached_to_crucible");
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    public FaucetBlock(Properties properties) {
-        super(properties);
+    private final CrucibleTier crucibleTier;
+
+    public FaucetBlock(Properties properties, CrucibleTier crucibleTier) {
+        super(properties.noOcclusion());
+        this.crucibleTier = crucibleTier;
+    }
+
+    public CrucibleTier getCrucibleTier() {
+        return crucibleTier;
     }
 
     @Override

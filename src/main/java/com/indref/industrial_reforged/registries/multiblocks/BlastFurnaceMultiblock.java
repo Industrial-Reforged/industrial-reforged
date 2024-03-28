@@ -4,8 +4,10 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceHatch;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.MultiblockUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -60,20 +62,38 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     @Override
     public @Nullable BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED)) {
-            return switch (indexY) {
-                case 0 ->
-                        blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
-                case 3 ->
-                        blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricks.FACING, getCorrectDirection(index, direction));
-                default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
-            };
+        return switch (indexY) {
+            case 0 ->
+                    blockState.setValue(BRICK_STATE, BrickStates.HATCH_FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
+            case 3 ->
+                    blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricks.FACING, getCorrectDirection(index, direction));
+            default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
+        };
+    }
+
+    @Override
+    public void afterFormBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY) {
+        // Check if the formed block is a hatch
+        if (level.getBlockEntity(blockPos) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+            for (BlockPos blockPos1 : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
+                if (level.getBlockEntity(blockPos1) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
+                    BlockPos mainControllerPos = blastFurnaceBlockEntity1.getMainControllerPos();
+                    if (mainControllerPos != null) {
+                        blastFurnaceBlockEntity.setMainControllerPos(mainControllerPos);
+                        blastFurnaceBlockEntity.setMainController(false);
+                        return;
+                    }
+                }
+            }
+
+            blastFurnaceBlockEntity.setMainControllerPos(blockPos);
+            blastFurnaceBlockEntity.setMainController(true);
         }
-        return null;
     }
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+        // TODO: Add actual check
         return true;
     }
 

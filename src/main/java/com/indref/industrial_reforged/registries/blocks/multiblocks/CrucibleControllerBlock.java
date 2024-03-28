@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.multiblocks.MultiBlockController;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -95,13 +96,13 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlo
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        super.onRemove(blockState, level, blockPos, newState, p_60519_);
         MultiblockUtils.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
 
         if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucibleBlockEntity && newState.is(Blocks.AIR)) {
             crucibleBlockEntity.drops();
         }
-        IndustrialReforged.LOGGER.debug("TEST1");
+
+        super.onRemove(blockState, level, blockPos, newState, p_60519_);
     }
 
     @Nullable
@@ -137,7 +138,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements MultiBlo
     }
 
     @Override
-    public List<Item> getCompatibleItems() {
-        return List.of(IRItems.SCANNER.get());
+    public List<DisplayItem> getCompatibleItems() {
+        return List.of((DisplayItem) IRItems.SCANNER.get());
     }
 }

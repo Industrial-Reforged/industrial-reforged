@@ -61,8 +61,7 @@ public final class IRBlocks {
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("ceramic_crucible_wall",
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
-    public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet",
-            () -> new FaucetBlock(BlockBehaviour.Properties.of().noOcclusion()));
+    public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet", CeramicFaucetBlock::new);
     public static final Supplier<Block> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
