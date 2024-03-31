@@ -124,6 +124,8 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.REFRACTORY_STONE);
                 addBlock(output, IRBlocks.BLAST_FURNACE_BRICKS);
                 addBlock(output, IRBlocks.BLAST_FURNACE_HATCH);
+                addBlock(output, IRBlocks.BLAST_FURNACE_FAUCET);
+                addBlock(output, IRBlocks.SMALL_FIREBOX_HATCH);
 
                 // Ores
                 addBlock(output, IRBlocks.BAUXITE_ORE);

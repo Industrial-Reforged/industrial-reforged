@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "minecraft:block/iron_block",
+    "east": "indref:block/multiblock/small_firebox/front",
+    "north": "indref:block/multiblock/small_firebox/front",
+    "particle": "minecraft:block/iron_block",
+    "south": "indref:block/multiblock/small_firebox/front",
+    "up": "minecraft:block/iron_block",
+    "west": "indref:block/multiblock/small_firebox/front"
+  }
+}

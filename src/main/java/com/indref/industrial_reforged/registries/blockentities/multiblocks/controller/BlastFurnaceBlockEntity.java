@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.screen.BlastFurnaceMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -10,6 +11,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,6 +30,9 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
+        addItemHandler(2);
+        addFluidTank(9000);
+        getFluidTank().setFluid(new FluidStack(Fluids.WATER, 3000));
     }
 
     public void setMainController(boolean mainController) {
@@ -63,13 +70,13 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
-    public Component getDisplayName() {
-        return null;
+    public @NotNull Component getDisplayName() {
+        return Component.empty();
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return null;
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return new BlastFurnaceMenu(containerId, inventory, this, null);
     }
 }

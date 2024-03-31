@@ -14,10 +14,15 @@ import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRItems {
@@ -158,8 +163,15 @@ public final class IRItems {
             () -> new Item(new Item.Properties()));
 
     public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
-            () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER,
-                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+            () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+
+    public static final Supplier<Item> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
+            () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
+                @Override
+                public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+                    pTooltipComponents.add(Component.literal("Only for testing").withStyle(ChatFormatting.RED));
+                }
+            });
 
     /**
      * Registers a new item

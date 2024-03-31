@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 // TODO: manually determine controllerpos based on blockstate
 @Deprecated
 public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPos {
-    public BlockPos controllerPos;
+    private BlockPos controllerPos;
 
     public CrucibleWallBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE_WALL.get(), blockPos, blockState);
@@ -20,7 +20,7 @@ public class CrucibleWallBlockEntity extends BlockEntity implements SavesControl
     @Override
     protected void saveAdditional(CompoundTag tag) {
         try {
-            tag.putIntArray("controllerPos", new int[]{controllerPos.getX(), controllerPos.getY(), controllerPos.getZ()});
+            tag.putLong("controllerPos", controllerPos.asLong());
         } catch (Exception e) {
             IndustrialReforged.LOGGER.error("Failed to save controller pos {}", e.toString());
         }
@@ -28,12 +28,15 @@ public class CrucibleWallBlockEntity extends BlockEntity implements SavesControl
 
     @Override
     public void load(CompoundTag tag) {
-        int[] rawPos = tag.getIntArray("controllerPos");
-        controllerPos = new BlockPos(rawPos[0], rawPos[1], rawPos[2]);
+        this.controllerPos = BlockPos.of(tag.getLong("controllerPos"));
     }
 
     @Override
     public void setControllerPos(BlockPos blockPos) {
         this.controllerPos = blockPos;
+    }
+
+    public BlockPos getControllerPos() {
+        return controllerPos;
     }
 }

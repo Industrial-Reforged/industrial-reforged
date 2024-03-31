@@ -1,64 +1,33 @@
 {
   "variants": {
-    "is_sandy=false,attached_to_crucible=true,facing=north": {
+    "attached_to_crucible=true,facing=north": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_1",
       "y": 180
     },
-    "is_sandy=false,attached_to_crucible=true,facing=east": {
+    "attached_to_crucible=true,facing=east": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_1",
       "y": 270
     },
-    "is_sandy=false,attached_to_crucible=true,facing=south": {
+    "attached_to_crucible=true,facing=south": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_1"
     },
-    "is_sandy=false,attached_to_crucible=true,facing=west": {
+    "attached_to_crucible=true,facing=west": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_1",
       "y": 90
     },
-    "is_sandy=false,attached_to_crucible=false,facing=north": {
+    "attached_to_crucible=false,facing=north": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_0",
       "y": 180
     },
-    "is_sandy=false,attached_to_crucible=false,facing=east": {
+    "attached_to_crucible=false,facing=east": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_0",
       "y": 270
     },
-    "is_sandy=false,attached_to_crucible=false,facing=south": {
+    "attached_to_crucible=false,facing=south": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_0"
     },
-    "is_sandy=false,attached_to_crucible=false,facing=west": {
+    "attached_to_crucible=false,facing=west": {
       "model": "indref:block/multiblock/crucible/ceramic/faucet_0",
-      "y": 90
-    },
-
-    "is_sandy=true,attached_to_crucible=true,facing=north": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_1",
-      "y": 180
-    },
-    "is_sandy=true,attached_to_crucible=true,facing=east": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_1",
-      "y": 270
-    },
-    "is_sandy=true,attached_to_crucible=true,facing=south": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_1"
-    },
-    "is_sandy=true,attached_to_crucible=true,facing=west": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_1",
-      "y": 90
-    },
-    "is_sandy=true,attached_to_crucible=false,facing=north": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_0",
-      "y": 180
-    },
-    "is_sandy=true,attached_to_crucible=false,facing=east": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_0",
-      "y": 270
-    },
-    "is_sandy=true,attached_to_crucible=false,facing=south": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_0"
-    },
-    "is_sandy=true,attached_to_crucible=false,facing=west": {
-      "model": "indref:block/multiblock/blast_furnace/faucet_0",
       "y": 90
     }
   }

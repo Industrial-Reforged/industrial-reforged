@@ -9,20 +9,20 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.Cruci
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,10 +30,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
     public static final EnumProperty<CrucibleMultiblock.WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", CrucibleMultiblock.WallStates.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -63,7 +65,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
         if (blockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
-            MultiblockUtils.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), crucibleWallBlockEntity.controllerPos, level);
+            MultiblockUtils.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), crucibleWallBlockEntity.getControllerPos(), level);
         } else {
             IndustrialReforged.LOGGER.error("Failed to unform crucible, crucible wall blockentity corruption");
         }
@@ -90,6 +92,17 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
                     .setValue(FACING, context.getHorizontalDirection().getOpposite())
                     .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.EDGE_TOP);
         }
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        try {
+            CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) pLevel.getBlockEntity(pPos);
+            CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) pLevel.getBlockEntity(blockEntity.getControllerPos());
+            Utils.openMenu(pPlayer, controllerBlockEntity);
+        } catch (Exception ignored) {
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override

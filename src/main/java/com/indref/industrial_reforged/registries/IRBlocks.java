@@ -27,8 +27,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public final class IRBlocks {
-	public static final BlockSetType RUBBER_SET_TYPE = BlockSetType.register(new BlockSetType(IndustrialReforged.MODID + ":rubber"));
-	public static final WoodType RUBBER_WOOD_TYPE = WoodType.register(new WoodType(IndustrialReforged.MODID + ":rubber", RUBBER_SET_TYPE));
+    public static final BlockSetType RUBBER_SET_TYPE = BlockSetType.register(new BlockSetType(IndustrialReforged.MODID + ":rubber"));
+    public static final WoodType RUBBER_WOOD_TYPE = WoodType.register(new WoodType(IndustrialReforged.MODID + ":rubber", RUBBER_SET_TYPE));
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, IndustrialReforged.MODID);
 
     public static final Supplier<Block> TIN_CABLE = registerBlockAndItem("tin_cable",
@@ -44,9 +44,11 @@ public final class IRBlocks {
     public static final Supplier<Block> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",
             () -> new RefractoryBrickBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final Supplier<Block> BLAST_FURNACE_BRICKS = registerBlockAndItem("blast_furnace_bricks",
-            () -> new BlastFurnaceBricks(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+            () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final Supplier<Block> BLAST_FURNACE_HATCH = registerBlockAndItem("blast_furnace_hatch",
-            () -> new BlastFurnaceHatch(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+            () -> new BlastFurnaceHatchBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final Supplier<Block> SMALL_FIREBOX_HATCH = registerBlockAndItem("small_firebox_hatch",
+            () -> new SmallFireboxHatchBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL)));
     public static final Supplier<Block> REFRACTORY_STONE = registerBlockAndItem("refractory_stone",
             () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final Supplier<Block> COIL = registerBlockAndItem("coil",
@@ -54,14 +56,17 @@ public final class IRBlocks {
     public static final Supplier<Block> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",
             () -> new MachineFrameBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TERRACOTTA_BRICK_SLAB = registerBlockAndItem("terracotta_brick_slab",
-            () -> new TerracottaSlabBlock(BlockBehaviour.Properties.of()));
+            () -> new SlabBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> TERRACOTTA_BRICK = registerBlockAndItem("terracotta_brick",
             () -> new Block(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC));
-    public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL= registerBlockAndItem("ceramic_crucible_wall",
+    public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL = registerBlockAndItem("ceramic_crucible_wall",
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
-    public static final Supplier<Block> CERAMIC_FAUCET= registerBlockAndItem("ceramic_faucet", CeramicFaucetBlock::new);
+    public static final Supplier<Block> CERAMIC_FAUCET = registerBlockAndItem("ceramic_faucet",
+            () -> new FaucetBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC, IRBlocks.TERRACOTTA_BRICK.get()));
+    public static final Supplier<Block> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",
+            () -> new FaucetBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC, IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final Supplier<Block> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final Supplier<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
@@ -93,20 +98,20 @@ public final class IRBlocks {
     public static final Supplier<Block> RUBBER_TREE_PLANKS = registerBlockAndItem("rubber_tree_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
     @SuppressWarnings("deprecation")
-	public static final Supplier<Block> RUBBER_TREE_STAIRS = registerBlockAndItem("rubber_tree_stairs",
-    		() -> new StairBlock(RUBBER_TREE_PLANKS.get().defaultBlockState(),BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS)));
+    public static final Supplier<Block> RUBBER_TREE_STAIRS = registerBlockAndItem("rubber_tree_stairs",
+            () -> new StairBlock(RUBBER_TREE_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS)));
     public static final Supplier<Block> RUBBER_TREE_DOOR = registerBlockAndItem("rubber_tree_door",
-    		() -> new DoorBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)));
+            () -> new DoorBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)));
     public static final Supplier<Block> RUBBER_TREE_PRESSURE_PLATE = registerBlockAndItem("rubber_tree_pressure_plate",
-    		() -> new PressurePlateBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)));
+            () -> new PressurePlateBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)));
     public static final Supplier<Block> RUBBER_TREE_FENCE = registerBlockAndItem("rubber_tree_fence",
-    		() -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)));
+            () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)));
     public static final Supplier<Block> RUBBER_TREE_TRAPDOOR = registerBlockAndItem("rubber_tree_trapdoor",
-    		() -> new TrapDoorBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)));
+            () -> new TrapDoorBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)));
     public static final Supplier<Block> RUBBER_TREE_FENCE_GATE = registerBlockAndItem("rubber_tree_fence_gate",
-    		() -> new FenceGateBlock(RUBBER_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)));
+            () -> new FenceGateBlock(RUBBER_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)));
     public static final Supplier<Block> RUBBER_TREE_BUTTON = registerBlockAndItem("rubber_tree_button",
-    		() -> new ButtonBlock(RUBBER_SET_TYPE, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)));
+            () -> new ButtonBlock(RUBBER_SET_TYPE, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)));
     public static final Supplier<Block> RUBBER_TREE_SLAB = registerBlockAndItem("rubber_tree_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB)));
 
@@ -160,6 +165,8 @@ public final class IRBlocks {
 
     public static final Supplier<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
             () -> new LiquidBlock(IRFluids.SOURCE_SOAP_WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)));
+    public static final Supplier<LiquidBlock> MOLTEN_STEEL_BLOCK = BLOCKS.register("molten_steel_block",
+            () -> new LiquidBlock(IRFluids.MOLTEN_STEEL_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
 
     /**
      * Registers a new block and item

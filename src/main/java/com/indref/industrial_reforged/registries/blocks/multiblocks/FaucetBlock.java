@@ -4,8 +4,14 @@ import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,23 +20,29 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
+@SuppressWarnings("deprecation")
 public class FaucetBlock extends Block implements Wrenchable {
     public static final BooleanProperty ATTACHED_TO_CRUCIBLE = BooleanProperty.create("attached_to_crucible");
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
 
     private final CrucibleTier crucibleTier;
 
-    public FaucetBlock(Properties properties, CrucibleTier crucibleTier) {
+    public FaucetBlock(Properties properties, CrucibleTier crucibleTier, Block ingredient) {
         super(properties.noOcclusion());
         this.crucibleTier = crucibleTier;
+        ALTERNATE_VERSIONS.put(ingredient, this);
     }
 
     public CrucibleTier getCrucibleTier() {
@@ -62,6 +74,24 @@ public class FaucetBlock extends Block implements Wrenchable {
             ).reduce(Shapes::or).get();
             default -> Block.box(0, 0, 0, 0, 0, 0);
         };
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        ItemStack item = pPlayer.getItemInHand(pHand);
+        Direction direction = pState.getValue(FACING);
+        boolean attached = pState.getValue(ATTACHED_TO_CRUCIBLE);
+
+        for (Block key : ALTERNATE_VERSIONS.keySet()) {
+            Block val = ALTERNATE_VERSIONS.get(key);
+            if (item.is(key.asItem()) && !pState.is(val)) {
+                pLevel.setBlockAndUpdate(pPos, val.defaultBlockState()
+                        .setValue(FACING, direction)
+                        .setValue(ATTACHED_TO_CRUCIBLE, attached));
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.FAIL;
     }
 
     @Override

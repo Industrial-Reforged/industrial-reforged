@@ -61,6 +61,7 @@ public class IREvents {
             event.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
             event.register(IRMenuTypes.CRUCIBLE_MENU.get(), CrucibleScreen::new);
             event.register(IRMenuTypes.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
+            event.register(IRMenuTypes.BLAST_FURNACE_MENU.get(), BlastFurnaceScreen::new);
             event.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
         }
 

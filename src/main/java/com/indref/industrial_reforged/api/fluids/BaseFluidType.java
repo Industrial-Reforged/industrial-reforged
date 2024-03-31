@@ -54,12 +54,12 @@ public class BaseFluidType extends FluidType {
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {
             @Override
-            public ResourceLocation getStillTexture() {
+            public @NotNull ResourceLocation getStillTexture() {
                 return stillTexture;
             }
 
             @Override
-            public ResourceLocation getFlowingTexture() {
+            public @NotNull ResourceLocation getFlowingTexture() {
                 return flowingTexture;
             }
 

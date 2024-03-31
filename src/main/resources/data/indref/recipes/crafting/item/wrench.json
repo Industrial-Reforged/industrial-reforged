@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "key": {
+    "#": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "pattern": [
+    " # ",
+    " ##",
+    "#  "
+  ],
+  "result": {
+    "item": "indref:wrench"
+  },
+  "show_notification": true
+}

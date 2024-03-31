@@ -1,10 +1,16 @@
 package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -42,6 +48,10 @@ public final class Utils {
 
     public static String fluidStackToString(FluidStack fluidStack) {
         return "FluidStack { fluid: " + fluidToString(fluidStack.getFluid()) + ", amount: " + fluidStack.getAmount() + " }";
+    }
+
+    public static <T extends BlockEntity & MenuProvider> void openMenu(Player player, T blockEntity) {
+        player.openMenu(blockEntity, blockEntity.getBlockPos());
     }
 
     public static String fluidToString(Fluid fluid) {

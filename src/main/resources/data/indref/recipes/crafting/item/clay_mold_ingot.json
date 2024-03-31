@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "indref:clay_mold"
+    },
+    {
+      "tag": "forge:ingots"
+    }
+  ],
+  "result": {
+    "item": "indref:clay_mold_ingot"
+  }
+}

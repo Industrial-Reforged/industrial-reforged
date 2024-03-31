@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "bark",
   "key": {
     "#": {
       "item": "indref:stripped_rubber_tree_log"

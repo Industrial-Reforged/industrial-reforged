@@ -1,21 +1,17 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricks;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceHatch;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricksBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceHatchBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.MultiblockUtils;
-import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
@@ -60,13 +56,13 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public @Nullable BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public @NotNull BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
         return switch (indexY) {
             case 0 ->
-                    blockState.setValue(BRICK_STATE, BrickStates.FORMED).setValue(BlastFurnaceHatch.FACING, getCorrectDirection(index, direction));
+                    blockState.setValue(BRICK_STATE, BrickStates.FORMED).setValue(BlastFurnaceHatchBlock.FACING, getCorrectDirection(index, direction));
             case 3 ->
-                    blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricks.FACING, getCorrectDirection(index, direction));
+                    blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction));
             default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
         };
     }

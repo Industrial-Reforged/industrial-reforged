@@ -4,9 +4,7 @@ import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -17,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public record FireBoxMultiblock(FireboxTier tier) implements Multiblock {
-    public static final EnumProperty<FireBoxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireBoxMultiblock.PartIndex.class);
+public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
+    public static final EnumProperty<FireboxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireboxMultiblock.PartIndex.class);
 
     @Override
     public Block getController() {
@@ -58,7 +56,7 @@ public record FireBoxMultiblock(FireboxTier tier) implements Multiblock {
     public BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
-            return currentBlock.setValue(FireBoxMultiblock.FIREBOX_PART,
+            return currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
                     switch (index) {
                         case 1, 3, 5, 7 -> PartIndex.HATCH;
                         case 4 -> PartIndex.COIL;

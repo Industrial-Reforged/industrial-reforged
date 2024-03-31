@@ -2,16 +2,16 @@
   "type": "indref:crucible_casting",
   "fluid": {
     "FluidName": "minecraft:lava",
-    "Amount": 1000
+    "Amount": 88
   },
   "cast": {
     "id": "indref:clay_mold_ingot",
     "Count": 1
   },
   "result": {
-    "id": "minecraft:iron_ingot",
-    "Count": 15
+    "id": "minecraft:copper_ingot",
+    "Count": 1
   },
-  "duration": 220,
+  "duration": 120,
   "consume_cast": true
 }

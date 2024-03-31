@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "key": {
+    "#": {
+      "item": "minecraft:redstone"
+    },
+    "P": {
+      "tag": "forge:glass_panes"
+    }
+  },
+  "pattern": [
+    "P#P",
+    "P#P",
+    " P "
+  ],
+  "result": {
+    "item": "indref:thermometer"
+  },
+  "show_notification": true
+}

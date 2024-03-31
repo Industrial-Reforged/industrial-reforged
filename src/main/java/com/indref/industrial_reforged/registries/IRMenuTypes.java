@@ -1,10 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.screen.CentrifugeMenu;
-import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
-import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
-import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
+import com.indref.industrial_reforged.registries.screen.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +18,8 @@ public final class IRMenuTypes {
             registerMenuType("firebox_menu", FireBoxMenu::new);
     public static final Supplier<MenuType<CrucibleMenu>> CRUCIBLE_MENU =
             registerMenuType("crucible_menu", CrucibleMenu::new);
+    public static final Supplier<MenuType<BlastFurnaceMenu>> BLAST_FURNACE_MENU =
+            registerMenuType("blast_furnace_menu", BlastFurnaceMenu::new);
     public static final Supplier<MenuType<CraftingStationMenu>> CRAFTING_STATION_MENU =
             registerMenuType("crafting_station_menu", CraftingStationMenu::new);
     public static final Supplier<MenuType<CentrifugeMenu>> CENTRIFUGE_MENU =
