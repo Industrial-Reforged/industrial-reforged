@@ -11,12 +11,16 @@ public interface IEnergyItem {
         return itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
     }
 
+    default void onEnergyChanged(ItemStack itemStack) {
+    }
+
     default int getEnergyStored(ItemStack itemStack) {
         return getCap(itemStack).getEnergyStored();
     }
 
     default void setEnergyStored(ItemStack itemStack, int value) {
         getCap(itemStack).setEnergyStored(value);
+        onEnergyChanged(itemStack);
     }
 
     default int getEnergyCapacity() {

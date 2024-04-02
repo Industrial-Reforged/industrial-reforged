@@ -16,7 +16,7 @@ public enum CrucibleTiers implements CrucibleTier {
     }
 
     @Override
-    public int heatCapacity() {
+    public int getHeatCapacity() {
         return this.heatCapacity;
     }
 

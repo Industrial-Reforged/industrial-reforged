@@ -2,17 +2,20 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.api.util.ValidationFunctions;
-import com.indref.industrial_reforged.networking.data.ItemSyncData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,33 +64,42 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    protected void saveAdditional(CompoundTag p_187471_) {
+    protected final void saveAdditional(CompoundTag p_187471_) {
         super.saveAdditional(p_187471_);
         if (fluidTank != null) fluidTank.writeToNBT(p_187471_);
         if (itemHandler != null) p_187471_.put("itemhandler", itemHandler.serializeNBT());
+        saveOther(p_187471_);
     }
 
     @Override
-    public void load(CompoundTag p_155245_) {
+    public final void load(CompoundTag p_155245_) {
         super.load(p_155245_);
         if (fluidTank != null) fluidTank.readFromNBT(p_155245_);
         if (itemHandler != null) itemHandler.deserializeNBT(p_155245_.getCompound("itemhandler"));
+        loadOther(p_155245_);
     }
 
-    public final void addItemHandler(int slots) {
+    protected void loadOther(CompoundTag tag) {
+    }
+
+    protected void saveOther(CompoundTag tag) {
+    }
+
+    protected final void addItemHandler(int slots) {
         addItemHandler(slots, (slot, itemStack) -> true);
     }
 
-    public final void addFluidTank(int capacityInMb) {
+    protected final void addFluidTank(int capacityInMb) {
         addFluidTank(capacityInMb, fluidStack -> true);
     }
 
-    public final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
+    protected final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
         this.itemHandler = new ItemStackHandler(slots) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
                 onItemsChanged(slot);
+                update();
             }
 
             @Override
@@ -97,12 +109,18 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         };
     }
 
-    public final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
+    private void update() {
+        if (!level.isClientSide())
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+    }
+
+    protected final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
         this.fluidTank = new FluidTank(capacityInMb) {
             @Override
             protected void onContentsChanged() {
                 setChanged();
                 onFluidsChanged();
+                update();
             }
 
             @Override
@@ -112,18 +130,52 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         };
     }
 
-    public void onItemsChanged(int slot) {
+    protected void onItemsChanged(int slot) {
     }
 
-    public void onFluidsChanged() {
+    protected void onFluidsChanged() {
     }
 
-    public final void addHeatStorage(int capacity) {
+    @Override
+    public void onEnergyChanged() {
+        update();
+    }
+
+    @Override
+    public void onHeatChanged() {
+        update();
+    }
+
+    public void tick(BlockPos blockPos, Level level) {
+    }
+
+    protected final void addHeatStorage(int capacity) {
         this.heatCapacity = capacity;
     }
 
-    public final void addEnergyStorage(EnergyTier energyTier, @Nullable Integer capacity) {
+    protected final void addEnergyStorage(EnergyTier energyTier, int capacity) {
         this.energyTier = energyTier;
         this.energyCapacity = Objects.requireNonNullElseGet(capacity, energyTier::getDefaultCapacity);
+    }
+
+    protected final void addEnergyStorage(EnergyTier energyTier) {
+        this.energyTier = energyTier;
+        this.energyCapacity = energyTier.getDefaultCapacity();
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
     }
 }

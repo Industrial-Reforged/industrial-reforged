@@ -17,7 +17,13 @@ public enum IRArmorMaterials implements ArmorMaterial {
         protection.put(ArmorItem.Type.CHESTPLATE, 1);
         protection.put(ArmorItem.Type.LEGGINGS, 1);
         protection.put(ArmorItem.Type.BOOTS, 1);
-    }), 15, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER_SHEET.get()));
+    }), 15, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER_SHEET.get())),
+    NANO("nano", 5, Util.make(new EnumMap<>(ArmorItem.Type.class), (protection) -> {
+        protection.put(ArmorItem.Type.HELMET, 1);
+        protection.put(ArmorItem.Type.CHESTPLATE, 1);
+        protection.put(ArmorItem.Type.LEGGINGS, 1);
+        protection.put(ArmorItem.Type.BOOTS, 1);
+    }), 15, 0.0F, 0.0F, () -> Ingredient.EMPTY);
 
     private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), p_266653_ -> {
         p_266653_.put(ArmorItem.Type.BOOTS, 13);
@@ -43,6 +49,7 @@ public enum IRArmorMaterials implements ArmorMaterial {
         this.knockbackResistance = knockbackResistance;
         this.repairIngredient = new LazyLoadedValue<>(ingredientSupplier);
     }
+
     @Override
     public int getDurabilityForType(ArmorItem.Type p_266807_) {
         return HEALTH_FUNCTION_FOR_TYPE.get(p_266807_) * this.durabilityMultiplier;

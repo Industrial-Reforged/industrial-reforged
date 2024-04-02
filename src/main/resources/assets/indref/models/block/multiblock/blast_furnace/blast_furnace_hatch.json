@@ -2,11 +2,11 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "down": "indref:block/multiblock/blast_furnace/blast_furnace_bricks",
-    "east": "indref:block/multiblock/blast_furnace/blast_furnace_front",
-    "north": "indref:block/multiblock/blast_furnace/blast_furnace_front",
-    "particle": "indref:block/multiblock/blast_furnace/blast_furnace",
-    "south": "indref:block/multiblock/blast_furnace/blast_furnace_front",
+    "east": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
+    "north": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
+    "particle": "indref:block/multiblock/blast_furnace/blast_furnace_bricks",
+    "south": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
     "up": "indref:block/multiblock/blast_furnace/blast_furnace_bricks",
-    "west": "indref:block/multiblock/blast_furnace/blast_furnace_front"
+    "west": "indref:block/multiblock/blast_furnace/blast_furnace_hatch"
   }
 }

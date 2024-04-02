@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
@@ -11,6 +12,7 @@ import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,30 +23,25 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, IHeatBlock {
+public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private final CrucibleTier tier;
     private final ContainerData data;
-    private int duration;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
         addFluidTank(9000);
         addItemHandler(9);
-        this.duration = 0;
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
-        // TODO: Serialize duration
+        // TODO: Remove this
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
@@ -64,7 +61,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     @Override
     public int getHeatCapacity() {
-        return tier.heatCapacity();
+        return tier.getHeatCapacity();
     }
 
     @Override
@@ -77,67 +74,74 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             increaseCraftingProgress();
             setChanged(level, blockPos, blockState);
 
-            if (hasProgressFinished()) {
-                meltItem();
-                resetProgress();
-            }
-        } else {
-            resetProgress();
+            tryMeltItem();
         }
     }
 
-    private void meltItem() {
-        CrucibleSmeltingRecipe recipe = getCurrentRecipe().get().value();
+    private void tryMeltItem() {
+        // TODO: dynamic recipes
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
-            Item input = recipe.getIngredients().get(0).getItems()[0].getItem();
-            if (itemStack.is(input)) {
-                itemStack.shrink(1);
-                IndustrialReforged.LOGGER.debug("Slot: {}, item: {}", i, input);
-                break;
+            Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
+            if (recipe.isPresent()) {
+                ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
+                Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
+                if (itemStack.is(input) && itemStack.getOrCreateTag().getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
+                    itemStack.shrink(1);
+                    itemStack.getOrCreateTag().putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
+                    FluidStack resultFluid = recipe.get().value().getResultFluid();
+                    this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
+                }
             }
         }
-        FluidStack resultFluid = recipe.getResultFluid();
-        this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
     }
 
-    private void resetProgress() {
-        this.duration = 0;
+    public void drops() {
+        SimpleContainer inventory = new SimpleContainer(getItemHandler().getSlots());
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            inventory.setItem(i, getItemHandler().getStackInSlot(i));
+        }
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     private void increaseCraftingProgress() {
-        this.duration++;
-    }
-
-    private boolean hasProgressFinished() {
-        int maxDuration = getCurrentRecipe().get().value().getDuration();
-        return this.duration >= maxDuration;
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
+            if (recipe.isPresent()) {
+                ItemStack itemStack = this.getItemHandler().getStackInSlot(i);
+                Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
+                if (itemStack.is(input)) {
+                    CompoundTag tag = itemStack.getOrCreateTag();
+                    if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
+                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
+                    float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().value().getDuration()) * 6;
+                    if (pValue < 0) pValue = 0;
+                    IndustrialReforged.LOGGER.info("Progress: {}", pValue);
+                    tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+                }
+            }
+        }
     }
 
     public boolean hasRecipe() {
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
+            if (recipe.isEmpty()) {
+                continue;
+            }
 
-        Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe();
+            FluidStack result = recipe.get().value().getResultFluid();
 
-        if (recipe.isEmpty()) {
-            return false;
+            if (canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid())) return true;
         }
 
-        FluidStack result = recipe.get().value().getResultFluid();
-
-        boolean canInsert = canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid());
-        IndustrialReforged.LOGGER.debug("Has recipe");
-        return canInsert;
+        return false;
     }
 
-    private Optional<RecipeHolder<CrucibleSmeltingRecipe>> getCurrentRecipe() {
-        SimpleContainer inventory = new SimpleContainer(this.getItemHandler().getSlots());
-        int j = 0;
-        for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            ItemStack stackInSlot = this.getItemHandler().getStackInSlot(i);
-            if (!stackInSlot.isEmpty()) {
-                inventory.setItem(j, stackInSlot);
-                j++;
-            }
+    private Optional<RecipeHolder<CrucibleSmeltingRecipe>> getCurrentRecipe(int slot) {
+        SimpleContainer inventory = new SimpleContainer(1);
+        ItemStack stackInSlot = this.getItemHandler().getStackInSlot(slot);
+        if (!stackInSlot.isEmpty()) {
+            inventory.setItem(0, stackInSlot);
         }
 
         return this.level.getRecipeManager().getRecipeFor(CrucibleSmeltingRecipe.Type.INSTANCE, inventory, level);
@@ -165,17 +169,5 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 return true;
         }
         return false;
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("duration", duration);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        duration = tag.getInt("duration");
     }
 }

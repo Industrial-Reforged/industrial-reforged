@@ -22,6 +22,11 @@ public class WrenchItem extends ToolItem {
     }
 
     @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return false;
+    }
+
+    @Override
     public int getMaxDamage(ItemStack stack) {
         return 100;
     }

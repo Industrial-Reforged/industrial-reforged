@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +42,7 @@ public final class MultiblockUtils {
      * @param player        player that is trying to form the multi
      * @return first: isValid? second: Direction that multi is valid
      */
-    public static Pair<Boolean, @Nullable MultiblockDirection> isValid(Multiblock multiblock, BlockPos controllerPos, Level level, Player player) {
+    public static Pair<Boolean, @Nullable MultiblockDirection> isUnformedValid(Multiblock multiblock, BlockPos controllerPos, Level level, Player player, boolean sendErrorMsg) {
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
@@ -59,6 +61,7 @@ public final class MultiblockUtils {
 
         // Check if controller exists
         if (relativeControllerPos == null) {
+            // TODO: Remove this null pointer exception
             throw new NullPointerException("Relative controller pos is not available. May be caused due to a multiblock layout without a controller");
         }
 
@@ -70,7 +73,7 @@ public final class MultiblockUtils {
         // iterate through all possible directions
         for (MultiblockDirection mDirection : directions) {
             // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-            Vec3i firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
+            BlockPos firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
             // Iterate over layers (Y)
             for (List<Integer> layer : layout) {
                 // Iterate over blocks in a layer (X, Z)
@@ -116,7 +119,9 @@ public final class MultiblockUtils {
 
         MultiblockDirection prioritizedDirection = prioritizedDirectionLayout.getSecond();
 
-        sendFailureMsg(player, level, firstMissingBlockPoses.get(prioritizedDirection).getFirst(), def, firstMissingBlockPoses.get(prioritizedDirection).getSecond());
+        if (sendErrorMsg) {
+            sendFailureMsg(player, level, firstMissingBlockPoses.get(prioritizedDirection).getFirst(), def, firstMissingBlockPoses.get(prioritizedDirection).getSecond());
+        }
 
         return Pair.of(false, null);
     }
@@ -136,7 +141,7 @@ public final class MultiblockUtils {
         };
     }
 
-    private static Vec3i getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
+    private static BlockPos getFirstBlockPos(MultiblockDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
         int firstBlockPosX = switch (direction) {
             case NORTH -> controllerPos.getX() - relativeControllerPos.getX();
             case EAST -> controllerPos.getX() + relativeControllerPos.getZ();
@@ -150,7 +155,7 @@ public final class MultiblockUtils {
             case SOUTH -> controllerPos.getZ() + relativeControllerPos.getZ();
             case WEST -> controllerPos.getZ() + relativeControllerPos.getX();
         };
-        return new Vec3i(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
+        return new BlockPos(firstBlockPosX, firstBlockPosY, firstBlockPosZ);
     }
 
     /**
@@ -184,7 +189,7 @@ public final class MultiblockUtils {
     private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
         player.sendSystemMessage(Component.translatable("multiblock.info.failed_to_construct").withStyle(ChatFormatting.RED));
         player.sendSystemMessage(Component.literal("| ")
-                        .withStyle(ChatFormatting.DARK_GRAY)
+                .withStyle(ChatFormatting.DARK_GRAY)
                 .append(Component.translatable("multiblock.info.actual_block")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.literal(": ")
@@ -193,7 +198,7 @@ public final class MultiblockUtils {
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
         player.sendSystemMessage((Component.literal("| ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
+                .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.translatable("multiblock.info.expected_block")
                         .withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.literal(": ")
@@ -204,27 +209,27 @@ public final class MultiblockUtils {
         player.sendSystemMessage(
                 Component.literal("| ")
                         .withStyle(ChatFormatting.DARK_GRAY)
-                .append(Component.translatable("multiblock.info.block_pos")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(": ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(String.valueOf(curBlockPos.getX()))
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(", ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(String.valueOf(curBlockPos.getY()))
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(", ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(String.valueOf(curBlockPos.getZ()))
-                        .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.literal(", ")
-                        .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("multiblock.info.block_pos")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(": ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(String.valueOf(curBlockPos.getX()))
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(", ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(String.valueOf(curBlockPos.getY()))
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(", ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(String.valueOf(curBlockPos.getZ()))
+                                .withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(", ")
+                                .withStyle(ChatFormatting.DARK_GRAY))
         );
     }
 
     public static void form(Multiblock multiblock, BlockPos controllerPos, Level level, Player player) {
-        Pair<Boolean, MultiblockDirection> valid = isValid(multiblock, controllerPos, level, player);
+        Pair<Boolean, MultiblockDirection> valid = isUnformedValid(multiblock, controllerPos, level, player, true);
         MultiblockDirection direction = valid.getSecond();
         if (multiblock.getFixedDirection() != null) {
             direction = multiblock.getFixedDirection();
@@ -235,42 +240,56 @@ public final class MultiblockUtils {
     }
 
     public static void unform(Multiblock multiblock, BlockPos controllerPos, Level level) {
-        for (MultiblockDirection direction1 : MultiblockDirection.values()) {
-            if (multiblock.getFixedDirection() != null) {
+        if (multiblock.getFixedDirection() == null) {
+            for (MultiblockDirection direction : MultiblockDirection.values()){
                 try {
-                    unformBlocks(multiblock, direction1, controllerPos, level);
+                    unformBlocks(multiblock, direction, controllerPos, level);
                 } catch (Exception ignored) {
                 }
             }
+
+        } else {
+            unformBlocks(multiblock, multiblock.getFixedDirection(), controllerPos, level);
         }
     }
 
     private static void unformBlocks(Multiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-        Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
-
+        Map<Integer, Block> definition = multiblock.getDefinition();
         int yIndex = 0;
+        int xIndex = 0;
         for (List<Integer> layer : layout) {
+            // relative position
             int x = 0;
+            // multiblock index
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
-            for (int ignored : layer) {
-                // Increase index
+            for (int blockIndex : layer) {
+                Block definedBlock = definition.get(blockIndex);
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
-                if (multiblock.getDefinition().containsValue(level.getBlockState(curBlockPos).getBlock())) {
-                    multiblock.unformBlock(level, curBlockPos, controllerPos);
+                BlockState blockState = level.getBlockState(curBlockPos);
+                if (!level.getBlockState(curBlockPos).isEmpty()) {
+                    BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                    if (expectedState != null) {
+                        if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
+                            MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
+                            multiblock.afterUnformBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                        }
+                    }
                 }
-
                 if (x + 1 < width) {
                     x++;
                 } else {
                     x = 0;
                     z++;
                 }
+                xIndex++;
             }
+            xIndex = 0;
             yIndex++;
         }
     }
@@ -278,7 +297,7 @@ public final class MultiblockUtils {
     private static void formBlocks(Multiblock multiblock, MultiblockDirection direction, BlockPos controllerPos, Level level) {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
-        Vec3i firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+        BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         List<List<Integer>> layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
 
@@ -289,13 +308,18 @@ public final class MultiblockUtils {
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;
             for (int blockIndex : layer) {
-                // Increase index
-                index++;
-
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    multiblock.formBlock(level, direction, curBlockPos, controllerPos, index - 1, yIndex);
+                    BlockState newState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, index, yIndex);
+                    if (newState != null) level.setBlockAndUpdate(curBlockPos, newState);
+
+                    multiblock.afterFormBlock(level, direction, curBlockPos, controllerPos, index, yIndex);
+
+                    BlockEntity blockEntity = level.getBlockEntity(curBlockPos);
+                    if (blockEntity instanceof SavesControllerPos savesControllerPosBE) {
+                        savesControllerPosBE.setControllerPos(controllerPos);
+                    }
                 }
 
                 if (x + 1 < width) {
@@ -304,15 +328,15 @@ public final class MultiblockUtils {
                     x = 0;
                     z++;
                 }
+                index++;
             }
             index = 0;
             yIndex++;
         }
     }
 
-    public static void setAndUpdate(Level level, BlockPos blockPos, BlockState oldState, BlockState newState) {
-        level.setBlock(blockPos, newState, 2);
-        level.sendBlockUpdated(blockPos, oldState, newState, 11);
+    public static void setAndUpdate(Level level, BlockPos blockPos, BlockState newState) {
+        level.setBlockAndUpdate(blockPos, newState);
     }
 
     public static List<List<Integer>> singleBlockMultiblock(List<Integer> yLayout) {

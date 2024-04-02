@@ -11,6 +11,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -42,6 +43,7 @@ public final class IRTabs {
                 addPoweredItem(output, IRItems.SCANNER);
                 addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
                 addPoweredItem(output, IRItems.ELECTRIC_HOE);
+                addRockCutter(output, IRItems.ROCK_CUTTER);
                 addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addPoweredItem(output, IRItems.ELECTRIC_DRILL);
                 addPoweredItem(output, IRItems.ADVANCED_DRILL);
@@ -64,11 +66,21 @@ public final class IRTabs {
                 // addItem(output, IRItems.URANIUM_FUEL_ROD);
 
                 // misc and crafting items
-                addItem(output, IRItems.FERTILIZER);
+                addItem(output, IRItems.BASIC_CIRCUIT);
+                addItem(output, IRItems.ADVANCED_CIRCUIT);
+                addItem(output, IRItems.ULTIMATE_CIRCUIT);
+                addPoweredItem(output, IRItems.BASIC_BATTERY);
+                addPoweredItem(output, IRItems.ADVANCED_BATTERY);
+                addPoweredItem(output, IRItems.ULTIMATE_BATTERY);
                 addItem(output, IRItems.RUBBER_SHEET);
+                addItem(output, IRItems.BIOMASS);
+
+                addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CLAY_MOLD);
-                addItem(output, IRItems.CLAY_MOLD_ROD);
+                addItem(output, IRItems.CLAY_MOLD_INGOT);
+
+                // Raw ore items
                 addItem(output, IRItems.RAW_BAUXITE);
                 addItem(output, IRItems.RAW_CHROMIUM);
                 addItem(output, IRItems.RAW_IRIDIUM);
@@ -107,11 +119,13 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK_SLAB);
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK);
                 addBlock(output, IRBlocks.CERAMIC_FAUCET);
-                addBlock(output, IRBlocks.CERAMIC_CASTING_TABLE);
+                addBlock(output, IRBlocks.CERAMIC_CASTING_BASIN);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.REFRACTORY_STONE);
                 addBlock(output, IRBlocks.BLAST_FURNACE_BRICKS);
                 addBlock(output, IRBlocks.BLAST_FURNACE_HATCH);
+                addBlock(output, IRBlocks.BLAST_FURNACE_FAUCET);
+                addBlock(output, IRBlocks.SMALL_FIREBOX_HATCH);
 
                 // Ores
                 addBlock(output, IRBlocks.BAUXITE_ORE);
@@ -145,7 +159,7 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.TIN_BLOCK);
                 addBlock(output, IRBlocks.TITANIUM_BLOCK);
                 addBlock(output, IRBlocks.URANIUM_BLOCK);
-
+                addBlock(output, IRBlocks.STEEL_BLOCK);
 
                 addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
                 addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
@@ -177,6 +191,18 @@ public final class IRTabs {
         output.accept(stack);
     }
 
+    public static void addRockCutter(CreativeModeTab.Output output, Supplier<Item> item) {
+        ItemStack stack = new ItemStack(item.get());
+        stack.enchant(Enchantments.SILK_TOUCH, 1);
+
+        output.accept(stack);
+        ItemStack energyStack = stack.copy();
+        IEnergyItem energyItem = (IEnergyItem) energyStack.getItem();
+        energyItem.setEnergyStored(energyStack, energyItem.getEnergyCapacity());
+
+        output.accept(energyStack);
+    }
+
     public static void addVariantForAllFluids(CreativeModeTab.Output output, Supplier<Item> item) {
         // Add base item
         output.accept(item.get());
@@ -188,7 +214,7 @@ public final class IRTabs {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
                 // IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
-                IndustrialReforged.LOGGER.info("Registering fluid cell: "+fluid.getValue());
+                IndustrialReforged.LOGGER.info("Registering fluid cell: " + fluid.getValue());
                 output.accept(stack);
             }
         }
@@ -196,8 +222,9 @@ public final class IRTabs {
 
     /**
      * Add a new item to a creative tab
+     *
      * @param output Specify the creative tab
-     * @param block Specify the item to add
+     * @param block  Specify the item to add
      */
     private static void addBlock(CreativeModeTab.Output output, Supplier<Block> block) {
         output.accept(block.get());

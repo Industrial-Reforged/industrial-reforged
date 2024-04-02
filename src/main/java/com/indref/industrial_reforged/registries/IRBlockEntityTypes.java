@@ -6,15 +6,21 @@ import com.indref.industrial_reforged.registries.blockentities.machines.BasicGen
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingTableBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.FaucetBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.FaucetBlock;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRBlockEntityTypes {
@@ -34,8 +40,8 @@ public final class IRBlockEntityTypes {
                             IRBlocks.CERAMIC_CRUCIBLE_WALL.get()).build(null));
     public static final Supplier<BlockEntityType<FaucetBlockEntity>> FAUCET =
             BLOCK_ENTITIES.register("faucet", () ->
-                    BlockEntityType.Builder.of(FaucetBlockEntity::new,
-                            IRBlocks.CERAMIC_FAUCET.get()).build(null));
+                    BlockEntityType.Builder.of(FaucetBlockEntity::new, getFaucetBlocks()).build(null));
+    // TODO: REMOVE THESE
     public static final Supplier<BlockEntityType<TestGeneratorBE>> TEST_GEN =
             BLOCK_ENTITIES.register("test_gen", () ->
                     BlockEntityType.Builder.of(TestGeneratorBE::new,
@@ -60,8 +66,24 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("crafting_station", () ->
                     BlockEntityType.Builder.of(CraftingStationBlockEntity::new,
                             IRBlocks.CRAFTING_STATION.get()).build(null));
-    public static final Supplier<BlockEntityType<CastingTableBlockEntity>> CASTING_TABLE =
-            BLOCK_ENTITIES.register("casting_table", () ->
-                    BlockEntityType.Builder.of(CastingTableBlockEntity::new,
-                            IRBlocks.CERAMIC_CASTING_TABLE.get()).build(null));
+    public static final Supplier<BlockEntityType<CastingBasinBlockEntity>> CASTING_BASIN =
+            BLOCK_ENTITIES.register("casting_basin", () ->
+                    BlockEntityType.Builder.of(CastingBasinBlockEntity::new,
+                            IRBlocks.CERAMIC_CASTING_BASIN.get()).build(null));
+    public static final Supplier<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
+            BLOCK_ENTITIES.register("blast_furnace", () ->
+                    BlockEntityType.Builder.of(BlastFurnaceBlockEntity::new,
+                            IRBlocks.BLAST_FURNACE_HATCH.get()).build(null));
+
+    private static Block[] getFaucetBlocks() {
+        List<Block> blocks = new ArrayList<>();
+        for (Block block : BuiltInRegistries.BLOCK) {
+            if (block instanceof FaucetBlock) {
+                blocks.add(block);
+            }
+        }
+        Block[] blocks1 = new Block[blocks.size()];
+        blocks.toArray(blocks1);
+        return blocks1;
+    }
 }

@@ -20,6 +20,8 @@ import net.minecraft.world.level.Level;
 
 // TODO: 10/22/2023 Implement highlight for the first block pos
 public class TapeMeasureItem extends ToolItem {
+    public static final String EXTENDED_KEY = "tape_measure_extended";
+
     public TapeMeasureItem(Properties properties) {
         super(properties);
     }
@@ -29,9 +31,9 @@ public class TapeMeasureItem extends ToolItem {
         ItemStack useItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
         CompoundTag tag = useItem.getOrCreateTag();
         useItem.setTag(tag);
-        if (player.isShiftKeyDown() && tag.getBoolean("extended")) {
-            tag.putBoolean("extended", false);
-            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
+        if (player.isShiftKeyDown() && tag.getBoolean(EXTENDED_KEY)) {
+            tag.putBoolean(EXTENDED_KEY, false);
+            tag.putLong("firstBlockPos", 0);
             return InteractionResultHolder.success(useItem);
         }
         return InteractionResultHolder.fail(useItem);
@@ -44,20 +46,19 @@ public class TapeMeasureItem extends ToolItem {
         BlockPos blockPos = useOnContext.getClickedPos();
         Player player = useOnContext.getPlayer();
         if (!player.isCrouching() && isExtended(useItem) == 0) {
-            int[] blockPosCoords = {blockPos.getX(), blockPos.getY(), blockPos.getZ()};
-            tag.putIntArray("firstBlockPos", blockPosCoords);
-            tag.putBoolean("extended", true);
+            tag.putLong("firstBlockPos", blockPos.asLong());
+            tag.putBoolean(EXTENDED_KEY, true);
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
             // first marked block pos
-            int[] firstBlockPos = tag.getIntArray("firstBlockPos");
+            BlockPos firstBlockPos = BlockPos.of(tag.getLong("firstBlockPos"));
 
             // calculate distance between first pos and player pos
             int[] finalPos = {
-                    Math.abs(firstBlockPos[0]) - Math.abs(blockPos.getX()),
-                    Math.abs(firstBlockPos[1]) - Math.abs(blockPos.getY()),
-                    Math.abs(firstBlockPos[2]) - Math.abs(blockPos.getZ())
+                    Math.abs(firstBlockPos.getX()) - Math.abs(blockPos.getX()),
+                    Math.abs(firstBlockPos.getY()) - Math.abs(blockPos.getY()),
+                    Math.abs(firstBlockPos.getZ()) - Math.abs(blockPos.getZ())
             };
 
             if (useOnContext.getLevel().isClientSide) {
@@ -81,11 +82,11 @@ public class TapeMeasureItem extends ToolItem {
                 }
             }
 
-            tag.putBoolean("extended", false);
+            tag.putBoolean(EXTENDED_KEY, false);
             tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
-            tag.putBoolean("extended", false);
+            tag.putBoolean(EXTENDED_KEY, false);
             tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
             return InteractionResult.SUCCESS;
         }
@@ -132,7 +133,7 @@ public class TapeMeasureItem extends ToolItem {
     public static float isExtended(ItemStack stack) {
         if (stack.hasTag()) {
             CompoundTag tag = stack.getOrCreateTag();
-            return tag.getBoolean("extended") ? 1 : 0;
+            return tag.getBoolean(EXTENDED_KEY) ? 1 : 0;
         } else {
             return 0;
         }

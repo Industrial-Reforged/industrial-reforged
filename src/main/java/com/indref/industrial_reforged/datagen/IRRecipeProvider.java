@@ -9,8 +9,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class IRRecipeProvider extends RecipeProvider {
 
-	public IRRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(output, lookupProvider);
+	public IRRecipeProvider(PackOutput output) {
+		super(output);
 	}
 
 	@Override

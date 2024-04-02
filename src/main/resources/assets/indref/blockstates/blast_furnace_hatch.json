@@ -4,7 +4,7 @@
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
       "y": 180
     },
-    "brick_state=hatch_formed,facing=north": {
+    "brick_state=formed,facing=north": {
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_formed",
       "y": 180
     },
@@ -12,21 +12,21 @@
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
       "y": 270
     },
-    "brick_state=hatch_formed,facing=east": {
+    "brick_state=formed,facing=east": {
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_formed",
       "y": 270
     },
     "brick_state=unformed,facing=south": {
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch"
     },
-    "brick_state=hatch_formed,facing=south": {
+    "brick_state=formed,facing=south": {
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_formed"
     },
     "brick_state=unformed,facing=west": {
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch",
       "y": 90
     },
-    "brick_state=hatch_formed,facing=west": {
+    "brick_state=formed,facing=west": {
       "model": "indref:block/multiblock/blast_furnace/blast_furnace_hatch_formed",
       "y": 90
     }

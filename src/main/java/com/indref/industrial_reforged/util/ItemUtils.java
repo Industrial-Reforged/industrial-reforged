@@ -2,15 +2,24 @@ package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+
+import java.util.List;
 
 public final class ItemUtils {
     // The corresponding rgb value: rgb(77,166,255)
     public static final int ENERGY_BAR_COLOR = 0x4DA6FF;
     public static final int HEAT_BAR_COLOR = 0xFF8000;
+    public static final String ACTIVE_KEY = "active";
 
     public enum ChargeType {
         HEAT,
@@ -86,6 +95,40 @@ public final class ItemUtils {
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    public static void addEnergyTooltip(List<Component> tooltip, ItemStack itemStack) {
+        IEnergyItem item;
+        if (itemStack.getItem() instanceof IEnergyItem iEnergyItem)
+            item = iEnergyItem;
+        else return;
+        tooltip.add(
+                Component.translatable("indref.energy.desc.stored").withStyle(ChatFormatting.GRAY)
+                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                        .append(Component.literal(String.format("%s / %s", item.getEnergyStored(itemStack),
+                                item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA))
+        );
+        tooltip.add(
+                Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GRAY)
+                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                        .append(item.getEnergyTier().getName())
+        );
+    }
+
+    public static void addFluidToolTip(List<Component> tooltip, ItemStack itemStack) {
+        IFluidHandlerItem item = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (item == null) return;
+
+        if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
+            tooltip.add(Component.translatable("fluid_cell.desc.stored").append(": ")
+                    .append(Component.literal(item.getFluidInTank(0).getDisplayName().getString())
+                            .withStyle(ChatFormatting.AQUA)));
+            tooltip.add(Component.translatable("fluid_cell.desc.amount").append(": ")
+                    .append("%d/%d".formatted(
+                            item.getFluidInTank(0).getAmount(),
+                            getFluidItem(itemStack).getFluidCapacity()))
+                    .withStyle(ChatFormatting.AQUA));
+        }
     }
 
 }

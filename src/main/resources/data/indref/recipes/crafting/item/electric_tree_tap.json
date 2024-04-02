@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/copper"
+    },
+    "T": {
+      "item": "indref:tree_tap"
+    },
+    "B": {
+      "item": "indref:basic_battery"
+    }
+  },
+  "pattern": [
+    "T  ",
+    " B#",
+    " ##"
+  ],
+  "result": {
+    "item": "indref:electric_tree_tap"
+  },
+  "show_notification": true
+}

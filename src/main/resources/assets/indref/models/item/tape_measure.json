@@ -4,13 +4,13 @@
     {
       "model": "indref:item/tape_measure",
       "predicate": {
-        "indref:extended": 0.0
+        "indref:tape_measure_extended": 0.0
       }
     },
     {
       "model": "indref:item/tape_measure_extended",
       "predicate": {
-        "indref:extended": 1.0
+        "indref:tape_measure_extended": 1.0
       }
     }
   ],

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -63,37 +64,44 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
         addDataSlots(data);
         addPlayerHotbar(inv, 185);
         addPlayerInventory(inv, 127);
-        IndustrialReforged.LOGGER.debug("blueprint id: {}", getSlot(BLUEPRINT_SLOT).getItem());
-        IndustrialReforged.LOGGER.debug("blueprint nbt: {}", getSlot(BLUEPRINT_SLOT).getItem().getOrCreateTag());
+        IndustrialReforged.LOGGER.debug("Craftslots 0: "+this.craftSlots.getItems());
+        for (int i = 0; i < 9; i++) {
+            ItemStack itemStack = itemHandler.getStackInSlot(i+18);
+            this.craftSlots.setItem(i, itemStack);
+        }
+        this.access.execute((level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots));
+        IndustrialReforged.LOGGER.debug("Craftslots 1: "+this.craftSlots.getItems());
     }
 
     @Override
-    public void slotsChanged(Container p_39366_) {
-        this.access.execute((p_39386_, p_39387_) -> slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots));
+    public void slotsChanged(Container container) {
+        this.access.execute((level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots));
     }
 
     protected static void slotChangedCraftingGrid(
-            AbstractContainerMenu p_150547_, Level p_150548_, Player p_150549_, CraftingContainer p_150550_, ResultContainer p_150551_
+            AbstractContainerMenu menu, Level level, Player player, CraftingContainer craftingContainer, ResultContainer container
     ) {
-        if (!p_150548_.isClientSide) {
-            ServerPlayer serverplayer = (ServerPlayer)p_150549_;
+        if (!level.isClientSide) {
+            ServerPlayer serverplayer = (ServerPlayer)player;
             ItemStack itemstack = ItemStack.EMPTY;
-            Optional<RecipeHolder<CraftingRecipe>> optional = p_150548_.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, p_150550_, p_150548_);
+            Optional<RecipeHolder<CraftingRecipe>> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level);
             if (optional.isPresent()) {
                 RecipeHolder<CraftingRecipe> recipeholder = optional.get();
                 CraftingRecipe craftingrecipe = recipeholder.value();
-                if (p_150551_.setRecipeUsed(p_150548_, serverplayer, recipeholder)) {
-                    ItemStack itemstack1 = craftingrecipe.assemble(p_150550_, p_150548_.registryAccess());
-                    if (itemstack1.isItemEnabled(p_150548_.enabledFeatures())) {
+                if (container.setRecipeUsed(level, serverplayer, recipeholder)) {
+                    ItemStack itemstack1 = craftingrecipe.assemble(craftingContainer, level.registryAccess());
+                    if (itemstack1.isItemEnabled(level.enabledFeatures())) {
                         itemstack = itemstack1;
                     }
                 }
             }
 
-            p_150551_.setItem(0, itemstack);
-            p_150547_.setRemoteSlot(0, itemstack);
+            container.setItem(0, itemstack);
+            menu.setRemoteSlot(0, itemstack);
         }
     }
+
+
 
     private void addCraftingSlots(IItemHandler itemHandler) {
         int x = 37;

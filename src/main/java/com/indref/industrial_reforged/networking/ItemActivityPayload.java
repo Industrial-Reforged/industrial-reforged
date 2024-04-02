@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.networking.data.ItemActivitySyncData;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class ItemActivityPayload {
+public final class ItemActivityPayload {
     private static final ItemActivityPayload INSTANCE = new ItemActivityPayload();
 
     public static ItemActivityPayload getInstance() {

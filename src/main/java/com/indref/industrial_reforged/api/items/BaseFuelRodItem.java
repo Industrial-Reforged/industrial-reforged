@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public abstract class BaseFuelRodItem extends Item implements IMultiBarItem {
+public abstract class BaseFuelRodItem extends Item implements MultiBarItem {
     public BaseFuelRodItem(Properties p_41383_) {
         super(p_41383_);
     }

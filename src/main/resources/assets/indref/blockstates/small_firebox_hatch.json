@@ -1,0 +1,35 @@
+{
+  "variants": {
+    "firebox_state=unformed,facing=north": {
+      "model": "indref:block/multiblock/small_firebox/unformed",
+      "y": 180
+    },
+    "firebox_state=unformed,facing=east": {
+      "model": "indref:block/multiblock/small_firebox/unformed",
+      "y": 270
+    },
+    "firebox_state=unformed,facing=south": {
+      "model": "indref:block/multiblock/small_firebox/unformed"
+    },
+    "firebox_state=unformed,facing=west": {
+      "model": "indref:block/multiblock/small_firebox/unformed",
+      "y": 90
+    },
+
+    "firebox_state=formed,facing=north": {
+      "model": "indref:block/multiblock/small_firebox/formed",
+      "y": 180
+    },
+    "firebox_state=formed,facing=east": {
+      "model": "indref:block/multiblock/small_firebox/formed",
+      "y": 270
+    },
+    "firebox_state=formed,facing=south": {
+      "model": "indref:block/multiblock/small_firebox/formed"
+    },
+    "firebox_state=formed,facing=west": {
+      "model": "indref:block/multiblock/small_firebox/formed",
+      "y": 90
+    }
+  }
+}

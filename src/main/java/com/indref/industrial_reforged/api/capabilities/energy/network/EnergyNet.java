@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -85,21 +86,27 @@ public class EnergyNet {
 
     /**
      * Get all blockpositions of interactors
-     * that can accept heat
+     * that can accept energy
      */
     public List<BlockPos> getEnergyAcceptors() {
         for (BlockPos blockPos : interactors) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-            if (energyBlock.getEnergyStored(blockEntity) < energyBlock.getEnergyCapacity()) {
+            if (BlockUtils.isEnergyBlock(blockEntity)) {
+                IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
+                if (energyBlock.getEnergyStored(blockEntity) < energyBlock.getEnergyCapacity()) {
 
+                }
             }
         }
         return null;
     }
 
+    /**
+     * Distribute energy evenly in this energynet
+     * @param amount specify the amount of energy that should be distributed
+     * @return whether the energy was distributed
+     */
     public boolean distributeEnergy(int amount) {
-        IndustrialReforged.LOGGER.debug("Distributing heat");
         List<BlockPos> interactors = this.interactors.stream().toList();
         List<BlockPos> consumers = new ArrayList<>();
         // check for potential consumers
@@ -114,12 +121,12 @@ public class EnergyNet {
         List<BlockPos> finalConsumers = new ArrayList<>();
         int[] initialAmount = Utils.splitNumberEvenly(amount, consumers.size());
 
-        // check which blocks can accept the heat
+        // check which blocks can accept the energy
         for (int i = 0; i < consumers.size(); i++) {
             BlockPos blockPos = consumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof IEnergyBlock energyBlock) {
-                if (energyBlock.canAcceptEnergy(blockEntity, initialAmount[i]))
+            if (BlockUtils.isEnergyBlock(blockEntity)) {
+                if (((IEnergyBlock) blockEntity).canAcceptEnergy(blockEntity, initialAmount[i]))
                     finalConsumers.add(blockPos);
             }
         }
@@ -128,12 +135,12 @@ public class EnergyNet {
 
         int[] finalAmount = Utils.splitNumberEvenly(amount, finalConsumers.size());
 
-        // distribute heat
+        // distribute energy
         for (int i = 0; i < finalConsumers.size(); i++) {
             BlockPos blockPos = finalConsumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof IEnergyBlock energyBlock)
-                energyBlock.tryFillEnergy(blockEntity, finalAmount[i]);
+            if (BlockUtils.isEnergyBlock(blockEntity))
+                ((IEnergyBlock) blockEntity).tryFillEnergy(blockEntity, finalAmount[i]);
         }
 
         return true;

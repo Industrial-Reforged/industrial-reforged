@@ -10,6 +10,11 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Interface for implementing BlockEntities that store EU
+ * <p>
+ * Note: if you want to check if a block is an energy block,
+ * then use {@link com.indref.industrial_reforged.util.BlockUtils#isEnergyBlock(BlockEntity)}
+ * instead of an `instanceof` check, since all Blockentities that inherit {@link ContainerBlockEntity}
+ * are IEnergyBlocks
  */
 public interface IEnergyBlock {
     default void setEnergyStored(BlockEntity blockEntity, int value) {

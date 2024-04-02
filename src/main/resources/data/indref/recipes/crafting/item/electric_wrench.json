@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/copper"
+    },
+    "W": {
+      "item": "indref:wrench"
+    },
+    "B": {
+      "item": "indref:basic_battery"
+    }
+  },
+  "pattern": [
+    "W  ",
+    " B#",
+    " ##"
+  ],
+  "result": {
+    "item": "indref:electric_wrench"
+  },
+  "show_notification": true
+}

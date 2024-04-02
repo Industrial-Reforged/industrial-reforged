@@ -106,21 +106,4 @@ public class FluidCellItem extends SimpleFluidItem {
     public int getFluidCapacity() {
         return this.capacity;
     }
-
-    @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        IFluidHandlerItem item = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
-        if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
-            Component descriptionType = Component.translatable("fluid_cell.desc.stored")
-                    .append(Component.literal(item.getFluidInTank(0).getDisplayName().getString())
-                            .withStyle(ChatFormatting.AQUA));
-            Component descriptionAmount = Component.translatable("fluid_cell.desc.amount")
-                    .append(Component.literal(String.format("%d/%d",
-                            item.getFluidInTank(0).getAmount(),
-                            com.indref.industrial_reforged.util.ItemUtils.getFluidItem(itemStack)
-                                    .getFluidCapacity())).withStyle(ChatFormatting.AQUA));
-            tooltip.add(descriptionType);
-            tooltip.add(descriptionAmount);
-        }
-    }
 }

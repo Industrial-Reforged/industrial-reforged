@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class NbtPayload {
+public final class NbtPayload {
     private static final NbtPayload INSTANCE = new NbtPayload();
 
     public static NbtPayload getInstance() {

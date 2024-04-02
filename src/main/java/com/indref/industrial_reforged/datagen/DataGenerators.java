@@ -22,7 +22,7 @@ public class DataGenerators {
 
         generator.addProvider(true, new IRBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(true, new IRItemModelProvider(packOutput, existingFileHelper));
-        generator.addProvider(true, new IRRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(true, new IRRecipeProvider(packOutput));
         generator.addProvider(event.includeServer(), new IRWorldGenProvider(packOutput, lookupProvider));
     }
 }

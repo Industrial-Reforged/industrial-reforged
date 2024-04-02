@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/copper"
+    },
+    "H": {
+      "item": "minecraft:iron_hoe"
+    },
+    "B": {
+      "item": "indref:basic_battery"
+    }
+  },
+  "pattern": [
+    "H  ",
+    " B#",
+    " ##"
+  ],
+  "result": {
+    "item": "indref:electric_hoe"
+  },
+  "show_notification": true
+}
