@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "indref:raw_bauxite_block"
+  },
+  "result": "indref:aluminum_block",
+  "experience": 0.6,
+  "cookingtime": 300
+}
