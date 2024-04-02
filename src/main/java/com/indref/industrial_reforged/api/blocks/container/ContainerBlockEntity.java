@@ -8,6 +8,8 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,8 +21,6 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public abstract class ContainerBlockEntity extends BlockEntity implements IEnergyBlock, IHeatBlock {
     private int energyCapacity;
     private int heatCapacity;
@@ -30,6 +30,11 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
 
     public ContainerBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
         super(p_155228_, p_155229_, p_155230_);
+    }
+
+    public void drops() {
+        SimpleContainer inventory = new SimpleContainer(getItemHandlerStacks());
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     @Override
@@ -155,7 +160,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
 
     protected final void addEnergyStorage(EnergyTier energyTier, int capacity) {
         this.energyTier = energyTier;
-        this.energyCapacity = Objects.requireNonNullElseGet(capacity, energyTier::getDefaultCapacity);
+        this.energyCapacity = capacity;
     }
 
     protected final void addEnergyStorage(EnergyTier energyTier) {

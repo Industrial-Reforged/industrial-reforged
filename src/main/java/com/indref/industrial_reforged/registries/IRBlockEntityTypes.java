@@ -12,6 +12,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.Fauce
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.FaucetBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -29,6 +30,10 @@ public final class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<FireboxBlockEntity>> FIREBOX =
             BLOCK_ENTITIES.register("firebox", () ->
                     BlockEntityType.Builder.of(FireboxBlockEntity::new,
+                            IRBlocks.COIL.get()).build(null));
+    public static final Supplier<BlockEntityType<SmallFireboxBlockEntity>> SMALL_FIREBOX =
+            BLOCK_ENTITIES.register("small_firebox", () ->
+                    BlockEntityType.Builder.of(SmallFireboxBlockEntity::new,
                             IRBlocks.COIL.get()).build(null));
     public static final Supplier<BlockEntityType<CrucibleBlockEntity>> CRUCIBLE =
             BLOCK_ENTITIES.register("crucible", () ->

@@ -31,19 +31,16 @@ public final class DisplayUtils {
     }
 
     public static List<Component> displayHeatInfo(BlockEntity blockEntity, BlockState blockState, MutableComponent name) {
-        IHeatBlock heatBlock;
-        if (blockEntity instanceof IHeatBlock energyBlock1)
-            heatBlock = energyBlock1;
-        else
-            return List.of();
+        if (BlockUtils.isHeatBlock(blockEntity) && blockEntity instanceof IHeatBlock heatBlock)
+            return List.of(
+                    name.withStyle(ChatFormatting.WHITE),
+                    Component.translatable("scanner_info.heat_block.heat_ratio")
+                            .append(": ")
+                            .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(blockEntity), heatBlock.getHeatCapacity())))
+                            .append(Component.literal(","))
+                            .withStyle(ChatFormatting.WHITE)
+            );
 
-        return List.of(
-                name.withStyle(ChatFormatting.WHITE),
-                Component.translatable("scanner_info.heat_block.heat_ratio")
-                        .append(": ")
-                        .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(blockEntity), heatBlock.getHeatCapacity())))
-                        .append(Component.literal(","))
-                        .withStyle(ChatFormatting.WHITE)
-        );
+        return List.of();
     }
 }

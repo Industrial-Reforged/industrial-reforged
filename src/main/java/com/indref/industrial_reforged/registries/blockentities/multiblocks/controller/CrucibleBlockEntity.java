@@ -34,29 +34,14 @@ import java.util.Optional;
 
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private final CrucibleTier tier;
-    private final ContainerData data;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
         addFluidTank(9000);
         addItemHandler(9);
+        addHeatStorage(2000);
+
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
-        // TODO: Remove this
-        this.data = new ContainerData() {
-            @Override
-            public int get(int pIndex) {
-                return 0;
-            }
-
-            @Override
-            public void set(int pIndex, int pValue) {
-            }
-
-            @Override
-            public int getCount() {
-                return 1;
-            }
-        };
     }
 
     @Override
@@ -95,13 +80,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         }
     }
 
-    public void drops() {
-        SimpleContainer inventory = new SimpleContainer(getItemHandler().getSlots());
-        for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            inventory.setItem(i, getItemHandler().getStackInSlot(i));
-        }
-        Containers.dropContents(this.level, this.worldPosition, inventory);
-    }
 
     private void increaseCraftingProgress() {
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
@@ -150,7 +128,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
-        return new CrucibleMenu(containerId, inventory, this, this.data);
+        return new CrucibleMenu(containerId, inventory, this);
     }
 
     private boolean canInsertFluidIntoOutput(Fluid fluid) {

@@ -1,17 +1,25 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.DisplayUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
@@ -35,9 +43,12 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
+import static com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
+
 @SuppressWarnings("deprecation")
-public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
-    public static final EnumProperty<CrucibleMultiblock.WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", CrucibleMultiblock.WallStates.class);
+public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, DisplayBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
 
@@ -65,7 +76,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
         if (blockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
-            MultiblockUtils.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), crucibleWallBlockEntity.getControllerPos(), level);
+            MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), crucibleWallBlockEntity.getControllerPos(), level);
         } else {
             IndustrialReforged.LOGGER.error("Failed to unform crucible, crucible wall blockentity corruption");
         }
@@ -129,5 +140,24 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable {
     @Override
     public Item getDropItem() {
         return IRBlocks.TERRACOTTA_BRICK.get().asItem();
+    }
+
+    @Override
+    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+        BlockEntity wallBlockEntity = level.getBlockEntity(scannedBlockPos);
+
+        if (wallBlockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
+            BlockPos controllerPos = crucibleWallBlockEntity.getControllerPos();
+            IndustrialReforged.LOGGER.debug("ControllerPos: {}", controllerPos);
+            BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
+            return DisplayUtils.displayHeatInfo(controllerBlockEntity, scannedBlock, Component.literal("Crucible"));
+        }
+
+        return List.of();
+    }
+
+    @Override
+    public List<DisplayItem> getCompatibleItems() {
+        return List.of((DisplayItem) IRItems.THERMOMETER.get());
     }
 }

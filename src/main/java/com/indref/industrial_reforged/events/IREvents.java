@@ -161,16 +161,22 @@ public class IREvents {
             event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
 
             event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
 
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
 
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
         }
 
         @SubscribeEvent

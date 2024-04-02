@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
@@ -22,7 +23,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeMachineBlock extends BaseEntityBlock {
+public class CentrifugeMachineBlock extends BaseEntityBlock implements Wrenchable {
     public CentrifugeMachineBlock(Properties properties) {
         super(properties);
     }

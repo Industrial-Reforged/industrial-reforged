@@ -3,14 +3,13 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
 import com.indref.industrial_reforged.util.DisplayUtils;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -48,7 +47,7 @@ public class CoilBlock extends BaseEntityBlock implements Wrenchable, DisplayBlo
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
 
         if (!blockState.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED)) {
-            MultiblockUtils.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
         }
 
         if (level.getBlockEntity(blockPos) instanceof FireboxBlockEntity fireboxBlockEntity && newState.is(Blocks.AIR)) {

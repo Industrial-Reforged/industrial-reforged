@@ -9,7 +9,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.contr
 import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +35,7 @@ public class RefractoryBrickBlock extends Block implements Wrenchable, DisplayBl
             for (BlockPos blockPos1 : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 if (level.getBlockState(blockPos1).getBlock() instanceof CoilBlock
                         && level.getBlockState(blockPos1).getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.COIL)) {
-                    MultiblockUtils.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos1, level);
+                    MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos1, level);
                     break;
                 }
             }

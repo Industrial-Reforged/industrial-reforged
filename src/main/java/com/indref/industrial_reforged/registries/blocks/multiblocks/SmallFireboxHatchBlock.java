@@ -1,14 +1,17 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
-import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.SmallFireboxMultiblock;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -16,14 +19,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class SmallFireboxHatchBlock extends RotatableEntityBlock {
+public class SmallFireboxHatchBlock extends RotatableEntityBlock implements Wrenchable {
     public SmallFireboxHatchBlock(Properties properties) {
         super(properties);
+        registerDefaultState(this.defaultBlockState().setValue(SmallFireboxMultiblock.FIREBOX_STATE, SmallFireboxMultiblock.FireboxState.UNFORMED));
     }
 
     @Override
@@ -39,11 +42,30 @@ public class SmallFireboxHatchBlock extends RotatableEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return null;
+        return new SmallFireboxBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+        if (pState.getValue(SmallFireboxMultiblock.FIREBOX_STATE).equals(SmallFireboxMultiblock.FireboxState.FORMED)
+                && blockEntity instanceof SmallFireboxBlockEntity fireboxBlockEntity) {
+            Utils.openMenu(pPlayer, fireboxBlockEntity);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.FAIL;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
         super.createBlockStateDefinition(p_49915_.add(SmallFireboxMultiblock.FIREBOX_STATE));
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if (!pState.is(pNewState.getBlock())) {
+            MultiblockHelper.unform(IRMultiblocks.SMALL_FIREBOX.get(), pPos, pLevel);
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 }

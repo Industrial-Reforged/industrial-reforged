@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +24,6 @@ import java.util.List;
 
 public class CableBlock extends PipeBlock {
     private final EnergyTier energyTier;
-    private List<BlockPos> checkedBlocks = new ArrayList<>();
 
     public CableBlock(Properties properties, int width, EnergyTier energyTier) {
         super(properties, width);
@@ -34,7 +34,7 @@ public class CableBlock extends PipeBlock {
     public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState oldState, boolean p_60570_) {
         // perform this check to ensure that block is actually placed and not just block states updating
         if (oldState.is(Blocks.AIR) && level instanceof ServerLevel serverLevel) {
-            EnetsSavedData nets = Utils.getEnergyNets(serverLevel);
+            EnetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
             // Adds the net
             EnergyNet net = nets.getEnets().getOrCreateNetAndPush(blockPos);
             nets.setDirty();
@@ -57,7 +57,7 @@ public class CableBlock extends PipeBlock {
         // perform this check to ensure that block is actually removed and not just block states updating
         if (newState.is(Blocks.AIR) && level instanceof ServerLevel serverLevel) {
             super.onRemove(blockState, level, blockPos, newState, p_60519_);
-            EnetsSavedData nets = Utils.getEnergyNets(serverLevel);
+            EnetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
             nets.getEnets().splitNets(blockPos);
             nets.getEnets().removeNetwork(blockPos);
             // Tell the level to save it
@@ -68,7 +68,7 @@ public class CableBlock extends PipeBlock {
     @Override
     public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         if (level.getBlockEntity(facingBlockPos) instanceof IEnergyBlock && level instanceof ServerLevel serverLevel) {
-            Utils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos).add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
+            EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos).add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
         }
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
     }

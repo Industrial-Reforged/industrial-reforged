@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public final class MultiblockUtils {
+public final class MultiblockHelper {
 
     /**
      * Converts a default minecraft direction to a multiblock direction.
@@ -276,7 +276,7 @@ public final class MultiblockUtils {
                     BlockState expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
                     if (expectedState != null) {
                         if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
-                            MultiblockUtils.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
+                            MultiblockHelper.setAndUpdate(level, curBlockPos, definedBlock.defaultBlockState());
                             multiblock.afterUnformBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
                         }
                     }

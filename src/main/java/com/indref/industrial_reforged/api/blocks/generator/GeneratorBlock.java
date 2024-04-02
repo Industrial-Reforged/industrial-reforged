@@ -1,9 +1,11 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
+import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,6 +65,6 @@ public abstract class GeneratorBlock extends RotatableEntityBlock {
     }
 
     public static boolean isPartOfEnet(ServerLevel level, BlockPos blockPos) {
-        return Utils.getEnergyNets(level).getEnets().getNetworkRaw(blockPos) != null;
+        return EnergyNetUtils.getEnergyNets(level).getEnets().getNetworkRaw(blockPos) != null;
     }
 }

@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -10,7 +10,8 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.DisplayUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -41,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchable {
+public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchable, DisplayBlock {
     public static final MapCodec<CrucibleControllerBlock> CODEC = simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, CrucibleTiers.CERAMIC));
     private final CrucibleTier tier;
 
@@ -86,13 +87,12 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchab
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        MultiblockUtils.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
+        super.onRemove(blockState, level, blockPos, newState, p_60519_);
+        MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
 
         if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucibleBlockEntity && newState.is(Blocks.AIR)) {
             crucibleBlockEntity.drops();
         }
-
-        super.onRemove(blockState, level, blockPos, newState, p_60519_);
     }
 
     @Nullable
@@ -113,5 +113,15 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchab
 
         return createTickerHelper(blockEntityType, IRBlockEntityTypes.CRUCIBLE.get(),
                 (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
+    }
+
+    @Override
+    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+        return DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.literal("Crucible"));
+    }
+
+    @Override
+    public List<DisplayItem> getCompatibleItems() {
+        return List.of((DisplayItem) IRItems.THERMOMETER.get());
     }
 }

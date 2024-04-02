@@ -2,16 +2,14 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
-import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,9 +22,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class BlastFurnaceHatchBlock extends RotatableEntityBlock {
+public class BlastFurnaceHatchBlock extends RotatableEntityBlock implements Wrenchable {
     public BlastFurnaceHatchBlock(Properties properties) {
         super(properties);
     }
@@ -45,7 +41,7 @@ public class BlastFurnaceHatchBlock extends RotatableEntityBlock {
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
             IndustrialReforged.LOGGER.debug("formed, now unforming");
-            MultiblockUtils.unform(IRMultiblocks.BLAST_FURNACE.get(), blockPos, level);
+            MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blockPos, level);
         }
 
         super.onRemove(blockState, level, blockPos, newState, p_60519_);

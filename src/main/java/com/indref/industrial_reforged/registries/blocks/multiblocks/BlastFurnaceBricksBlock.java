@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
-import com.indref.industrial_reforged.util.MultiblockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class BlastFurnaceBricksBlock extends Block {
+public class BlastFurnaceBricksBlock extends Block implements Wrenchable {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BlastFurnaceBricksBlock(Properties properties) {
@@ -66,7 +66,7 @@ public class BlastFurnaceBricksBlock extends Block {
                 }
             }
             if (controllerPos != null) {
-                MultiblockUtils.unform(IRMultiblocks.BLAST_FURNACE.get(), controllerPos, pLevel);
+                MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), controllerPos, pLevel);
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);

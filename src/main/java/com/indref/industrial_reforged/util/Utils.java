@@ -39,13 +39,6 @@ public final class Utils {
         };
     }
 
-    public static EnetsSavedData getEnergyNets(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(
-                new SavedData.Factory<>(() -> new EnetsSavedData(level),
-                        (CompoundTag nbt) -> EnetsSavedData.load(nbt, level)),
-                "enets");
-    }
-
     public static String fluidStackToString(FluidStack fluidStack) {
         return "FluidStack { fluid: " + fluidToString(fluidStack.getFluid()) + ", amount: " + fluidStack.getAmount() + " }";
     }

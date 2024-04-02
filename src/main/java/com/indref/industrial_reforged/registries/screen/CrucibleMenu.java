@@ -25,18 +25,16 @@ import org.jetbrains.annotations.NotNull;
 public class CrucibleMenu extends IRAbstractContainerMenu {
     public final CrucibleBlockEntity blockEntity;
     private final Level level;
-    private final ContainerData data;
 
     public CrucibleMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public CrucibleMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public CrucibleMenu(int pContainerId, Inventory inv, BlockEntity entity) {
         super(IRMenuTypes.CRUCIBLE_MENU.get(), pContainerId, inv);
         checkContainerSize(inv, 1);
         blockEntity = ((CrucibleBlockEntity) entity);
         this.level = inv.player.level();
-        this.data = data;
 
         IItemHandler itemHandler = blockEntity.getItemHandler();
 
@@ -50,7 +48,6 @@ public class CrucibleMenu extends IRAbstractContainerMenu {
             }
         }
 
-        addDataSlots(data);
         addPlayerHotbar(inv);
         addPlayerInventory(inv);
     }
