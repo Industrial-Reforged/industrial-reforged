@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "i i",
+    "iii"
+  ],
+  "key": {
+    "i": {
+      "item": "indref:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "indref:basic_machine_frame",
+    "count": 1
+  }
+}
