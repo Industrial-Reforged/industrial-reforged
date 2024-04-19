@@ -45,13 +45,13 @@ public class ElectricWrenchItem extends SimpleElectricItem implements ToolItem {
             // check if block can be wrenched
             if (wrenchableBlock instanceof Wrenchable iWrenchableBlock && player.isCrouching() && getEnergyStored(itemInHand) >= 10) {
                 // Drop the block itself instead of custom drop
-                if (iWrenchableBlock.getDropItem() == null) {
+                if (iWrenchableBlock.getDropItem().isEmpty()) {
                     ItemStack dropItem = wrenchableBlock.asItem().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
                 // Drop the custom drop
                 else {
-                    ItemStack dropItem = iWrenchableBlock.getDropItem().getDefaultInstance();
+                    ItemStack dropItem = iWrenchableBlock.getDropItem().get().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
                 setEnergyStored(itemInHand, getEnergyStored(itemInHand)-10);

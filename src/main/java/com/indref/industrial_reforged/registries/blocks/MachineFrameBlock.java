@@ -7,7 +7,4 @@ public class MachineFrameBlock extends Block implements Wrenchable {
     public MachineFrameBlock(Properties properties) {
         super(properties);
     }
-
-
-    // TODO: 10/15/2023 Add heat tier
 }

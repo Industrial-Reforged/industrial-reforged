@@ -35,6 +35,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity.CAST_SLOT;
@@ -80,14 +81,13 @@ public class CastingBasinBlock extends BaseEntityBlock {
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
-        IFluidHandler fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
-        if (!level.isClientSide()) {
-            insertAndExtract(player, hand, itemHandler, (CastingBasinBlockEntity) blockEntity);
-            fluidHandler.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
+        Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
+        Optional<IFluidHandler> fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
+        if (!level.isClientSide() && itemHandler.isPresent() && fluidHandler.isPresent()) {
+            insertAndExtract(player, hand, itemHandler.get(), (CastingBasinBlockEntity) blockEntity);
+            fluidHandler.get().fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
             blockEntity.setChanged();
         }
-        IndustrialReforged.LOGGER.debug("Item: {}", BlockUtils.getClientItemHandler(blockPos).getStackInSlot(1));
         return InteractionResult.SUCCESS;
     }
 

@@ -3,8 +3,6 @@ package com.indref.industrial_reforged.registries.multiblocks;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricksBlock;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceHatchBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.SmallFireboxHatchBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public record SmallFireboxMultiblock() implements Multiblock {
     public static final EnumProperty<SmallFireboxMultiblock.FireboxState> FIREBOX_STATE = EnumProperty.create("firebox_state",
@@ -42,12 +41,12 @@ public record SmallFireboxMultiblock() implements Multiblock {
     }
 
     @Override
-    public @NotNull BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 0) {
-            return blockState.setValue(SmallFireboxHatchBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED);
+            return Optional.of(blockState.setValue(SmallFireboxHatchBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED));
         }
-        return blockState;
+        return Optional.of(blockState);
     }
 
     private static Direction getCorrectDirection(int index, MultiblockDirection direction) {

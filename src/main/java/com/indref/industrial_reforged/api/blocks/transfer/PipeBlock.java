@@ -2,6 +2,8 @@ package com.indref.industrial_reforged.api.blocks.transfer;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.util.BlockUtils;
+import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,6 +21,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public abstract class PipeBlock extends Block implements Wrenchable {
     public static final BooleanProperty[] CONNECTION = new BooleanProperty[6];
@@ -110,8 +114,8 @@ public abstract class PipeBlock extends Block implements Wrenchable {
     @Override
     public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         int connectionIndex = facingDirection.ordinal();
-        BlockEntity blockEntity = level.getBlockEntity(facingBlockPos);
-        if (canConnectToPipe(facingBlockState.getBlock()) || (blockEntity != null && canConnectTo(blockEntity))) {
+        Optional<BlockEntity> blockEntity = BlockUtils.blockEntityAt(level, blockPos);
+        if (canConnectToPipe(facingBlockState.getBlock()) || (blockEntity.isPresent() && canConnectTo(blockEntity.get()))) {
             return blockState.setValue(CONNECTION[connectionIndex], true);
         } else if (facingBlockState.is(Blocks.AIR)) {
             return blockState.setValue(CONNECTION[connectionIndex], false);
@@ -130,9 +134,9 @@ public abstract class PipeBlock extends Block implements Wrenchable {
         for (Direction direction : Direction.values()) {
             int connectionIndex = direction.ordinal();
             BlockPos facingBlockPos = blockPos.relative(direction);
-            BlockEntity blockEntity = level.getBlockEntity(facingBlockPos);
+            Optional<BlockEntity> blockEntity = BlockUtils.blockEntityAt(level, blockPos);
 
-            if (blockEntity != null && canConnectTo(blockEntity)) {
+            if (blockEntity.isPresent() && canConnectTo(blockEntity.get())) {
                 blockState = blockState.setValue(CONNECTION[connectionIndex], true);
             }
         }

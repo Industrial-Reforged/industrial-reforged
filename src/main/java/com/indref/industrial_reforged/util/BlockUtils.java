@@ -3,18 +3,21 @@ package com.indref.industrial_reforged.util;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Executable;
+import java.util.List;
+import java.util.Optional;
 
 public final class BlockUtils {
     public static BlockPos[] getBlocksAroundSelf(BlockPos selfPos) {
@@ -41,15 +44,15 @@ public final class BlockUtils {
         };
     }
 
-    public static <T, C> @Nullable T getBlockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
-        return getBlockEntityCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null, blockEntity.getLevel());
+    public static <T, C> Optional<T> getBlockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
+        return Optional.ofNullable(getBlockEntityCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null, blockEntity.getLevel()));
     }
 
     private static <T, C> @Nullable T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
         return level.getCapability(cap, pos, state, blockEntity, context);
     }
 
-    public static @Nullable IItemHandler getClientItemHandler(BlockPos blockPos) {
+    public static Optional<IItemHandler> getClientItemHandler(BlockPos blockPos) {
         Level level = Minecraft.getInstance().level;
         if (level != null) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
@@ -57,7 +60,7 @@ public final class BlockUtils {
                 return BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public static @Nullable IHeatBlock getHeatBlock(BlockEntity blockEntity) {
@@ -78,6 +81,18 @@ public final class BlockUtils {
 
     public static boolean isHeatBlock(BlockEntity blockEntity) {
         return blockEntity != null && getBlockEntityCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity) != null;
+    }
+
+    public static Optional<BlockEntity> blockEntityAt(LevelAccessor level, BlockPos blockPos) {
+        return Optional.ofNullable(level.getBlockEntity(blockPos));
+    }
+
+    public static BlockState rotateBlock(BlockState state, DirectionProperty prop, Comparable<?> currentValue) {
+        List<Direction> directions = prop.getPossibleValues().stream().toList();
+        int currentDirectionIndex = directions.indexOf(currentValue);
+        int nextDirectionIndex = (currentDirectionIndex + 1) % directions.size();
+        Direction nextDirection = directions.get(nextDirectionIndex);
+        return state.setValue(prop, nextDirection);
     }
 
     /*

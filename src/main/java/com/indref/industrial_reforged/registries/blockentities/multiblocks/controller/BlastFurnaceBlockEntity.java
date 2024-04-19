@@ -4,10 +4,10 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRRecipes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.screen.BlastFurnaceMenu;
+import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -16,17 +16,15 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This is the blockentity for the blast furnace.
@@ -38,7 +36,7 @@ import java.util.List;
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity {
     private boolean mainController;
-    private BlockPos mainControllerPos = null;
+    private Optional<BlockPos> mainControllerPos;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
@@ -55,27 +53,22 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     public void setMainControllerPos(BlockPos mainControllerPos) {
-        this.mainControllerPos = mainControllerPos;
+        this.mainControllerPos = Optional.of(mainControllerPos);
     }
 
-    public BlockPos getMainControllerPos() {
+    public Optional<BlockPos> getMainControllerPos() {
         return mainControllerPos;
     }
 
     @Override
-    public BlockEntity getActualBlockEntity() {
-        if (mainControllerPos == null) {
-            return null;
-        }
-        return level.getBlockEntity(mainControllerPos);
+    public Optional<BlockEntity> getActualBlockEntity() {
+        return BlockUtils.blockEntityAt(level, worldPosition);
     }
 
     @Override
     protected void saveOther(CompoundTag tag) {
         tag.putBoolean("isController", isMainController());
-        if (mainControllerPos != null) {
-            tag.putLong("mainControllerPos", mainControllerPos.asLong());
-        }
+        mainControllerPos.ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
     }
 
     @Override
@@ -84,9 +77,9 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         IndustrialReforged.LOGGER.debug("Controller pos long: {}", mainControllerPos1);
         if (mainControllerPos1 != 0) {
-            this.mainControllerPos = BlockPos.of(mainControllerPos1);
+            this.mainControllerPos = Optional.of(BlockPos.of(mainControllerPos1));
         } else {
-            this.mainControllerPos = null;
+            this.mainControllerPos = Optional.empty();
         }
     }
 
@@ -94,7 +87,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     public void tick() {
         if (isMainController()) {
             List<RecipeHolder<BlastFurnaceRecipe>> recipes = level.getRecipeManager()
-                    .getRecipesFor(BlastFurnaceRecipe.Type.INSTANCE, new SimpleContainer(getItemHandlerStacks()), level);
+                    .getRecipesFor(BlastFurnaceRecipe.Type.INSTANCE, new SimpleContainer(getItemHandlerStacks().orElse(new ItemStack[0])), level);
             IndustrialReforged.LOGGER.debug("Recipes: {}", recipes);
         }
     }
@@ -111,6 +104,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        // TODO: Replace NULL
         return new BlastFurnaceMenu(containerId, inventory, this, null);
     }
 }

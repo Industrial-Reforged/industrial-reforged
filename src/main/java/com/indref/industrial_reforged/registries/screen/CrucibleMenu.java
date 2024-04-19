@@ -19,8 +19,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class CrucibleMenu extends IRAbstractContainerMenu {
     public final CrucibleBlockEntity blockEntity;
@@ -36,20 +39,22 @@ public class CrucibleMenu extends IRAbstractContainerMenu {
         blockEntity = ((CrucibleBlockEntity) entity);
         this.level = inv.player.level();
 
-        IItemHandler itemHandler = blockEntity.getItemHandler();
+        Optional<ItemStackHandler> itemHandler = blockEntity.getItemHandler();
 
-        int x = 26;
-        int y = 18;
-        int index = 0;
-        for (int yIndex = 0; yIndex < 3; yIndex++) {
-            for (int xIndex = 0; xIndex < 3; xIndex++) {
-                this.addSlot(new SlotItemHandler(itemHandler, index, x + xIndex * 18, y + yIndex * 18));
-                index++;
+        itemHandler.ifPresent(handler -> {
+            int x = 26;
+            int y = 18;
+            int index = 0;
+            for (int yIndex = 0; yIndex < 3; yIndex++) {
+                for (int xIndex = 0; xIndex < 3; xIndex++) {
+                    this.addSlot(new SlotItemHandler(handler, index, x + xIndex * 18, y + yIndex * 18));
+                    index++;
+                }
             }
-        }
 
-        addPlayerHotbar(inv);
-        addPlayerInventory(inv);
+            addPlayerHotbar(inv);
+            addPlayerInventory(inv);
+        });
     }
 
     @Override
@@ -63,7 +68,10 @@ public class CrucibleMenu extends IRAbstractContainerMenu {
                 player, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get());
     }
 
-    public FluidStack getFluidStack() {
-         return this.blockEntity.getFluidTank().getFluid();
+    public Optional<FluidStack> getFluidStack() {
+         if (this.blockEntity.getFluidTank().isPresent()) {
+             return Optional.of(this.blockEntity.getFluidTank().get().getFluid());
+         }
+         return Optional.empty();
     }
 }

@@ -69,8 +69,6 @@ public final class IRBlocks {
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC, IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final Supplier<Block> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion()));
-    public static final Supplier<Block> TEST_GENERATOR = registerBlockAndItem("test_generator",
-            () -> new TestGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> CENTRIFUGE = registerBlockAndItem("centrifuge",
             () -> new CentrifugeMachineBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> BASIC_GENERATOR = registerBlockAndItem("basic_generator",

@@ -34,7 +34,6 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
 
     public final CraftingStationBlockEntity blockEntity;
     private final Level level;
-    private final ContainerData data;
     private ItemhandlerCraftingContainer craftSlots;
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
@@ -42,18 +41,17 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
     private final IItemHandler itemHandler;
 
     public CraftingStationMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public CraftingStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public CraftingStationMenu(int pContainerId, Inventory inv, BlockEntity entity) {
         super(IRMenuTypes.CRAFTING_STATION_MENU.get(), pContainerId, inv);
         checkContainerSize(inv, 1);
         blockEntity = ((CraftingStationBlockEntity) entity);
         this.level = inv.player.level();
-        this.data = data;
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(level, blockEntity.getBlockPos());
-        this.itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
+        this.itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity).get();
         this.craftSlots = new ItemhandlerCraftingContainer(itemHandler, this, 3, 3);
 
         addCraftingSlots(itemHandler);
@@ -62,7 +60,6 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
         this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 29));
         // Blueprint
         this.addSlot(new SlotItemHandler(itemHandler, BLUEPRINT_SLOT, 154, 29));
-        addDataSlots(data);
         addPlayerHotbar(inv, 185);
         addPlayerInventory(inv, 127);
         IndustrialReforged.LOGGER.debug("Craftslots 0: "+this.craftSlots.getItems());

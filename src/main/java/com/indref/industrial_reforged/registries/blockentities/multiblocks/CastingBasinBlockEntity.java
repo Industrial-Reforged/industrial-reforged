@@ -60,20 +60,23 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public ItemStack[] getRenderStacks() {
-        ItemStack[] itemStacks = new ItemStack[2];
-        itemStacks[0] = getItemHandler().getStackInSlot(0);
+        if (getItemHandler().isPresent()) {
+            ItemStack[] itemStacks = new ItemStack[2];
+            itemStacks[0] = getItemHandler().get().getStackInSlot(0);
 
-        ItemStack resultStack = getItemHandler().getStackInSlot(1);
-        if (!resultStack.isEmpty()) {
-            resetRenderedStack();
-            itemStacks[1] = resultStack;
-            IndustrialReforged.LOGGER.debug("real item");
-        } else {
-            itemStacks[1] = resultItem;
-            IndustrialReforged.LOGGER.debug("Ghost item");
+            ItemStack resultStack = getItemHandler().get().getStackInSlot(1);
+            if (!resultStack.isEmpty()) {
+                resetRenderedStack();
+                itemStacks[1] = resultStack;
+                IndustrialReforged.LOGGER.debug("real item");
+            } else {
+                itemStacks[1] = resultItem;
+                IndustrialReforged.LOGGER.debug("Ghost item");
+            }
+
+            return itemStacks;
         }
-
-        return itemStacks;
+        return new ItemStack[0];
     }
 
     public void tick(BlockPos blockPos, BlockState blockState) {
@@ -103,13 +106,13 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public void castItem() {
         Optional<RecipeHolder<CrucibleCastingRecipe>> rawRecipe = getCurrentRecipe();
-        if (rawRecipe.isPresent()) {
+        if (rawRecipe.isPresent() && getFluidTank().isPresent() && getItemHandler().isPresent()) {
             CrucibleCastingRecipe recipe = rawRecipe.get().value();
 
-            getFluidTank().drain(recipe.getFluid(), IFluidHandler.FluidAction.EXECUTE);
+            getFluidTank().get().drain(recipe.getFluid(), IFluidHandler.FluidAction.EXECUTE);
             if (recipe.shouldConsumeCast())
-                getItemHandler().setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
-            getItemHandler().insertItem(1, recipe.getResultItem(level.registryAccess()), false);
+                getItemHandler().get().setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
+            getItemHandler().get().insertItem(1, recipe.getResultItem(level.registryAccess()), false);
             resetProgress();
         }
     }
@@ -150,10 +153,10 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     private Optional<RecipeHolder<CrucibleCastingRecipe>> getCurrentRecipe() {
-        if (level.isClientSide()) return Optional.empty();
+        if (level.isClientSide() || getFluidTank().isEmpty() || getItemHandler().isEmpty()) return Optional.empty();
 
         SimpleContainer inventory = new SimpleContainer(1);
-        ItemStack stackInSlot = this.getItemHandler().getStackInSlot(CAST_SLOT);
+        ItemStack stackInSlot = this.getItemHandler().get().getStackInSlot(CAST_SLOT);
 
         if (!stackInSlot.isEmpty()) {
             inventory.setItem(CAST_SLOT, stackInSlot);
@@ -165,13 +168,15 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
         this.maxDuration = recipe.get().value().getDuration();
 
-        boolean matchesFluid = recipe.get().value().matchesFluids(getFluidTank().getFluidInTank(0), level);
+        boolean matchesFluid = recipe.get().value().matchesFluids(getFluidTank().get().getFluidInTank(0), level);
 
         return matchesFluid ? recipe : Optional.empty();
     }
 
     private boolean canInsertIntoOutput(ItemStack outputItem) {
-        ItemStack itemStack = getItemHandler().getStackInSlot(1);
+        if (getItemHandler().isEmpty()) return false;
+
+        ItemStack itemStack = getItemHandler().get().getStackInSlot(1);
         return itemStack.isEmpty()
                 || (ItemHandlerHelper.canItemStacksStack(itemStack, outputItem)
                 && itemStack.getCount() + outputItem.getCount() <= outputItem.getMaxStackSize());

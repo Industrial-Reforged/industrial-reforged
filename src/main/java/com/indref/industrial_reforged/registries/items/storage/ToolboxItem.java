@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+//TODO: Refactor this into api and use caps
 public class ToolboxItem extends BundleItem {
     public static final int SLOT_CAPACITY = 8;
     public static final String COLOR_TAG = "color";

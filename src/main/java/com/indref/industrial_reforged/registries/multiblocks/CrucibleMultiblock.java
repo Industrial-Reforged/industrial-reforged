@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     public static final EnumProperty<WallStates> CRUCIBLE_WALL = EnumProperty.create("crucible_wall", CrucibleMultiblock.WallStates.class);
@@ -53,15 +54,15 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public MultiblockDirection getFixedDirection() {
-        return MultiblockDirection.NORTH;
+    public Optional<MultiblockDirection> getFixedDirection() {
+        return Optional.of(MultiblockDirection.NORTH);
     }
 
     @Override
-    public BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getCrucibleWallBlock()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_WALL.get())) {
-            return IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
+            return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
                     .defaultBlockState()
                     .setValue(CRUCIBLE_WALL, switch (index) {
                         case 0, 2, 6, 8 -> switch (indexY) {
@@ -79,9 +80,9 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
                         case 5, 8 -> Direction.SOUTH;
                         case 6, 7 -> Direction.WEST;
                         default -> Direction.NORTH;
-                    });
+                    }));
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
-            return IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState();
+            return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState());
         }
         return null;
     }

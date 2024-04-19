@@ -26,7 +26,6 @@ public class CentrifugeMenu extends IRAbstractContainerMenu {
     private final ContainerData data;
     private final ContainerLevelAccess access;
     private final Player player;
-    private final IItemHandler itemHandler;
 
 
     public CentrifugeMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
@@ -39,7 +38,6 @@ public class CentrifugeMenu extends IRAbstractContainerMenu {
         this.data = data;
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(level, blockEntity.getBlockPos());
-        this.itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
         this.blockEntity = (CentrifugeBlockEntity) blockEntity;
     }
 

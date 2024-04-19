@@ -60,7 +60,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     @Override
     public void onItemsChanged(int slot) {
-        this.burnTime = CommonHooks.getBurnTime(getItemHandler().getStackInSlot(slot), RecipeType.SMELTING);
+        this.burnTime = CommonHooks.getBurnTime(getItemHandler().get().getStackInSlot(slot), RecipeType.SMELTING);
     }
 
     @Override
@@ -69,7 +69,9 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        ItemStack itemStack = getItemHandler().getStackInSlot(INPUT_SLOT);
+        if (getItemHandler().isEmpty()) return;
+
+        ItemStack itemStack = getItemHandler().get().getStackInSlot(INPUT_SLOT);
         if (CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING) > 0) {
             if (burnTime <= 0) {
                 burnTime = CommonHooks.getBurnTime(itemStack, RecipeType.SMELTING);

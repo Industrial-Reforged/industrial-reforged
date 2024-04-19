@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.util;
 
-import javax.swing.*;
+import java.util.Optional;
 
 public class Result<T, E extends Throwable> {
     private final T okValue;
@@ -71,6 +71,18 @@ public class Result<T, E extends Throwable> {
         if (isOk())
             return ok(this.okValue);
         return other;
+    }
+
+    public Optional<T> okToOpt() {
+        if (isOk())
+            return Optional.of(this.okValue);
+        return Optional.empty();
+    }
+
+    public Optional<E> errToOpt() {
+        if (isErr())
+            return Optional.of(this.errValue);
+        return Optional.empty();
     }
 
     @FunctionalInterface

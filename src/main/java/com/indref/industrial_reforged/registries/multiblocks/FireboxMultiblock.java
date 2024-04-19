@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
     public static final EnumProperty<FireboxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireboxMultiblock.PartIndex.class);
@@ -43,8 +44,8 @@ public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
     }
 
     @Override
-    public MultiblockDirection getFixedDirection() {
-        return MultiblockDirection.SOUTH;
+    public Optional<MultiblockDirection> getFixedDirection() {
+        return Optional.of(MultiblockDirection.SOUTH);
     }
 
     @Override
@@ -53,17 +54,17 @@ public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
     }
 
     @Override
-    public BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
-            return currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
+            return Optional.of(currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
                     switch (index) {
                         case 1, 3, 5, 7 -> PartIndex.HATCH;
                         case 4 -> PartIndex.COIL;
                         default -> PartIndex.BRICK;
-                    });
+                    }));
         }
-        return null;
+        return Optional.empty();
     }
 
     public enum PartIndex implements StringRepresentable {

@@ -14,13 +14,6 @@ public interface IFluidItem {
         return itemStack.getCapability(Capabilities.FluidHandler.ITEM);
     }
 
-    /**
-     * Does nothing!
-     */
-    @Deprecated
-    default void setFluidStored(ItemStack itemStack, int value) {
-    }
-
     default int getFluidStored(ItemStack itemStack) {
         IFluidHandlerItem fluidHandlerItem = getFluidHandler(itemStack);
         return fluidHandlerItem.getFluidInTank(0).getAmount();
@@ -31,7 +24,6 @@ public interface IFluidItem {
     /**
      * @return true if was able to fill, false if wasn't able to do so
      */
-
     default boolean tryFillFluid(ItemStack itemStack, int amount) {
         return tryFillFluid(getFluid().getFluid(), amount, itemStack);
     }

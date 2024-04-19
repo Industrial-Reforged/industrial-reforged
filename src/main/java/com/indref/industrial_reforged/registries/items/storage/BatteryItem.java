@@ -66,11 +66,10 @@ public class BatteryItem extends SimpleElectricItem {
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && pStack.getOrCreateTag().getBoolean("active")) {
-            IndustrialReforged.LOGGER.debug("Amount of items: {}", player.getInventory().getContainerSize());
             for (ItemStack itemStack : player.getInventory().items) {
                 if (pLevel.getGameTime() % 10 == 0) {
                     if (itemStack.getItem() instanceof IEnergyItem item) {
-                        if (this.tryDrainEnergy(pStack, )) {
+                        if (this.tryDrainEnergy(pStack, getEnergyTier().getMaxOutput())) {
                             item.tryFillEnergy(itemStack, getEnergyTier().getMaxOutput());
                         }
                     } else {

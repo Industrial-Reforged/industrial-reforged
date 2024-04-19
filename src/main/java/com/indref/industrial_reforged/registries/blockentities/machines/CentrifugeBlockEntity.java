@@ -9,7 +9,6 @@ import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,15 +17,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class CentrifugeBlockEntity extends ContainerBlockEntity implements IEnergyBlock, MenuProvider {
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
-        addEnergyStorage(getEnergyTier());
+        addEnergyStorage(getEnergyTier().get());
     }
 
     @Override
-    public @NotNull EnergyTier getEnergyTier() {
-        return EnergyTiers.LOW;
+    public Optional<EnergyTier> getEnergyTier() {
+        return Optional.of(EnergyTiers.LOW);
     }
 
     @Override

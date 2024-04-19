@@ -18,8 +18,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class BlastFurnaceMenu extends IRAbstractContainerMenu {
     public final BlastFurnaceBlockEntity blockEntity;
@@ -37,13 +40,15 @@ public class BlastFurnaceMenu extends IRAbstractContainerMenu {
         this.level = inv.player.level();
         this.data = data;
 
-        IItemHandler itemHandler = blockEntity.getItemHandler();
+        Optional<ItemStackHandler> itemHandler = blockEntity.getItemHandler();
 
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 37));
-        this.addSlot(new SlotItemHandler(itemHandler, 1, 18, 37));
+        itemHandler.ifPresent(handler -> {
+            this.addSlot(new SlotItemHandler(handler, 0, 44, 37));
+            this.addSlot(new SlotItemHandler(handler, 1, 18, 37));
 
-        addPlayerHotbar(inv);
-        addPlayerInventory(inv);
+            addPlayerHotbar(inv);
+            addPlayerInventory(inv);
+        });
     }
 
     @Override
@@ -57,7 +62,9 @@ public class BlastFurnaceMenu extends IRAbstractContainerMenu {
                 player, IRBlocks.BLAST_FURNACE_HATCH.get());
     }
 
-    public FluidStack getFluidStack() {
-         return this.blockEntity.getFluidTank().getFluid();
+    public Optional<FluidStack> getFluidStack() {
+         if (this.blockEntity.getFluidTank().isPresent())
+             return Optional.of(this.blockEntity.getFluidTank().get().getFluid());
+         return Optional.empty();
     }
 }

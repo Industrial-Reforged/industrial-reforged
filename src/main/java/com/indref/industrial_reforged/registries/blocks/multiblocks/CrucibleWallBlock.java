@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
@@ -138,8 +139,8 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, Di
     }
 
     @Override
-    public Item getDropItem() {
-        return IRBlocks.TERRACOTTA_BRICK.get().asItem();
+    public Optional<Item> getDropItem() {
+        return Optional.of(IRBlocks.TERRACOTTA_BRICK.get().asItem());
     }
 
     @Override

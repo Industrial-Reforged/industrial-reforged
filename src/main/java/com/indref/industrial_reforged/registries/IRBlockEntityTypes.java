@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.blockentities.*;
 import com.indref.industrial_reforged.registries.blockentities.machines.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
@@ -46,15 +45,6 @@ public final class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<FaucetBlockEntity>> FAUCET =
             BLOCK_ENTITIES.register("faucet", () ->
                     BlockEntityType.Builder.of(FaucetBlockEntity::new, getFaucetBlocks()).build(null));
-    // TODO: REMOVE THESE
-    public static final Supplier<BlockEntityType<TestGeneratorBE>> TEST_GEN =
-            BLOCK_ENTITIES.register("test_gen", () ->
-                    BlockEntityType.Builder.of(TestGeneratorBE::new,
-                            IRBlocks.TEST_GENERATOR.get()).build(null));
-    public static final Supplier<BlockEntityType<TestBlockEntity>> TEST_BLOCK =
-            BLOCK_ENTITIES.register("test_block", () ->
-                    BlockEntityType.Builder.of(TestBlockEntity::new,
-                            IRBlocks.BASIC_MACHINE_FRAME.get()).build(null));
     public static final Supplier<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE =
             BLOCK_ENTITIES.register("centrifuge", () ->
                     BlockEntityType.Builder.of(CentrifugeBlockEntity::new,

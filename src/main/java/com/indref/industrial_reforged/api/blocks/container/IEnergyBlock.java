@@ -8,6 +8,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Interface for implementing BlockEntities that store EU
  * <p>
@@ -36,9 +38,8 @@ public interface IEnergyBlock {
     }
 
     default int getEnergyCapacity() {
-        EnergyTier energyTier = getEnergyTier();
-        if (energyTier != null)
-            return energyTier.getDefaultCapacity();
+        if (getEnergyTier().isPresent())
+            return getEnergyTier().get().getDefaultCapacity();
         IndustrialReforged.LOGGER.error("{} does not provide a correct heat type (heat type is null) unable to get Capacity", this.getClass().getName());
         return -1;
     }
@@ -64,8 +65,7 @@ public interface IEnergyBlock {
         return false;
     }
 
-    @Nullable
-    EnergyTier getEnergyTier();
+    Optional<EnergyTier> getEnergyTier();
 
     static boolean canAcceptEnergyFromSide(BlockEntity blockEntity, Direction direction) {
         IndustrialReforged.LOGGER.debug("Cap: " + blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), direction));

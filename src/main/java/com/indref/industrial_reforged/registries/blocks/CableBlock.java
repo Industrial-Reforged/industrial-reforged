@@ -21,6 +21,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CableBlock extends PipeBlock {
     private final EnergyTier energyTier;
@@ -41,12 +42,14 @@ public class CableBlock extends PipeBlock {
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
                 Block block = level.getBlockState(pos).getBlock();
                 if (block instanceof CableBlock) {
-                    if (nets.getEnets().getNetwork(pos) != net) {
-                        nets.getEnets().mergeNets(net, nets.getEnets().getNetwork(pos));
+                    Optional<EnergyNet> network = nets.getEnets().getNetwork(pos);
+                    if (network.isPresent() && network.get() != net) {
+                        nets.getEnets().mergeNets(net, network.get());
                         nets.setDirty();
                     }
                 } else if (level.getBlockEntity(pos) instanceof IEnergyBlock) {
-                    nets.getEnets().getNetwork(blockPos).add(pos, EnergyNet.EnergyTypes.INTERACTORS);
+                    Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
+                    network.ifPresent(energyNet -> energyNet.add(pos, EnergyNet.EnergyTypes.INTERACTORS));
                 }
             }
         }
@@ -68,7 +71,8 @@ public class CableBlock extends PipeBlock {
     @Override
     public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         if (level.getBlockEntity(facingBlockPos) instanceof IEnergyBlock && level instanceof ServerLevel serverLevel) {
-            EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos).add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
+            Optional<EnergyNet> network = EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos);
+            network.ifPresent(net -> net.add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS));
         }
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
     }
@@ -84,6 +88,6 @@ public class CableBlock extends PipeBlock {
 
     @Override
     public boolean canConnectTo(BlockEntity connectTo) {
-        return (connectTo instanceof IEnergyBlock) || (connectTo.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, connectTo.getBlockPos(), null) != null);
+        return (connectTo instanceof IEnergyBlock) || BlockUtils.getBlockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo) != null;
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -32,7 +33,8 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
     }
 
     private void assignFluidRenderer() {
-        renderer = new FluidTankRenderer(menu.blockEntity.getFluidTank().getCapacity(), true, 52, 52);
+        Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
+        fluidTank.ifPresent(tank -> renderer = new FluidTankRenderer(tank.getCapacity(), true, 52, 52));
     }
 
     @Override
@@ -41,7 +43,8 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        renderer.render(guiGraphics.pose(), x + 98, y + 18, menu.blockEntity.getFluidTank().getFluid());
+        Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
+        fluidTank.ifPresent(tank -> renderer.render(guiGraphics.pose(), x + 98, y + 18, tank.getFluid()));
     }
 
     @Override
@@ -54,8 +57,9 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
 
     private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(menu.blockEntity.getFluidTank().getFluid()),
-                    Optional.empty(), pMouseX - x+45, pMouseY - y);
+            Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
+            fluidTank.ifPresent(tank -> guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(tank.getFluid()),
+                    Optional.empty(), pMouseX - x + 45, pMouseY - y));
         }
     }
 

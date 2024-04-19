@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
+//TODO: Refactor this into api and use caps
 public class LunchBagItem extends BundleItem {
     public static final int SLOT_CAPACITY = 128;
 

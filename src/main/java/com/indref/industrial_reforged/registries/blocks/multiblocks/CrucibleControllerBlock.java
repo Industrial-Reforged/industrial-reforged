@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("deprecation")
 public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchable, DisplayBlock {
@@ -102,8 +103,8 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchab
     }
 
     @Override
-    public Item getDropItem() {
-        return IRBlocks.TERRACOTTA_BRICK_SLAB.get().asItem();
+    public Optional<Item> getDropItem() {
+        return Optional.of(IRBlocks.TERRACOTTA_BRICK_SLAB.get().asItem());
     }
 
     @Nullable

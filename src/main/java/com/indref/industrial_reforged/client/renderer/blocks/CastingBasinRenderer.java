@@ -30,6 +30,8 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
 
+import java.util.Optional;
+
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
     private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f,
             MIN_Y = 2.1f / 16f,
@@ -85,21 +87,22 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         }
 
         try {
-            IFluidHandler fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, castingTableBlockEntity);
-            FluidStack fluidStack = fluidHandler.getFluidInTank(0);
-            int fluidCapacity = fluidHandler.getTankCapacity(0);
-            int alpha = 1;
+            Optional<IFluidHandler> fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, castingTableBlockEntity);
+            if (fluidHandler.isPresent()) {
+                FluidStack fluidStack = fluidHandler.get().getFluidInTank(0);
+                int fluidCapacity = fluidHandler.get().getTankCapacity(0);
+                int alpha = 1;
 
-            if (fluidStack.isEmpty())
-                return;
+                if (fluidStack.isEmpty())
+                    return;
 
-            float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
+                float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
 
-            if (fluidStack.getFluid().getFluidType().isLighterThanAir())
-                renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
-            else
-                renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
-
+                if (fluidStack.getFluid().getFluidType().isLighterThanAir())
+                    renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
+                else
+                    renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
+            }
         } catch (Exception ignored) {
         }
     }

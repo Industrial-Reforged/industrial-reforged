@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class CraftingStationScreen extends AbstractContainerScreen<CraftingStationMenu> {
@@ -40,7 +39,9 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         ItemStack itemStack = getMenu().getSlot(CraftingStationMenu.BLUEPRINT_SLOT).getItem();
-        addImageButton(x + 153, y + 46, "recipe_transfer", transferRecipe);
+        addImageButton(x + 153, y + 46, "recipe_transfer", () -> NetworkingHelper.sendToServer(
+                new ItemNbtSyncData(CraftingStationMenu.BLUEPRINT_SLOT, "storedRecipe", new CompoundTag())
+        ));
         addImageButton(x + 153, y + 62, "recipe_set", () -> BlueprintItem.setRecipe(CraftingStationMenu.BLUEPRINT_SLOT, menu));
     }
 
@@ -58,9 +59,4 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
                 new ResourceLocation("indref", "widget/" + path + "_highlighted")
         ), (button) -> onClick.call(), Component.empty()));
     }
-
-    private final SimpleFunction transferRecipe = () -> {
-        CompoundTag tag = new CompoundTag();
-        NetworkingHelper.sendToServer(new ItemNbtSyncData(CraftingStationMenu.BLUEPRINT_SLOT, "storedRecipe", tag));
-    };
 }

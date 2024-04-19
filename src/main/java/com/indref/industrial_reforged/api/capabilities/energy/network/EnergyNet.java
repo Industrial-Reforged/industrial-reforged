@@ -13,13 +13,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class EnergyNet {
-    private @Nullable EnergyTier energyTier;
+    private Optional<EnergyTier> energyTier;
     private Set<BlockPos> transmitters;
     private Set<BlockPos> interactors;
     private final Level level;
@@ -29,7 +26,7 @@ public class EnergyNet {
     public EnergyNet(Level level) {
         this.transmitters = new HashSet<>();
         this.interactors = new HashSet<>();
-        this.energyTier = null;
+        this.energyTier = Optional.empty();
         this.level = level;
     }
 
@@ -37,7 +34,11 @@ public class EnergyNet {
         this.transmitters = new HashSet<>();
         this.interactors = new HashSet<>();
         transmitters.add(blockPos);
-        this.energyTier = ((CableBlock) level.getBlockState(blockPos).getBlock()).getEnergyTier();
+        if (level.getBlockState(blockPos).getBlock() instanceof CableBlock cableBlock) {
+            this.energyTier = Optional.of(cableBlock.getEnergyTier());
+        } else {
+            this.energyTier = Optional.empty();
+        }
         this.level = level;
     }
 
@@ -45,7 +46,7 @@ public class EnergyNet {
         return new EnergyNet(blockPos, level);
     }
 
-    public EnergyTier getEnergyTier() {
+    public Optional<EnergyTier> getEnergyTier() {
         return this.energyTier;
     }
 
@@ -98,7 +99,7 @@ public class EnergyNet {
                 }
             }
         }
-        return null;
+        return List.of();
     }
 
     /**
@@ -172,8 +173,13 @@ public class EnergyNet {
         }
         transmitters = tPositions;
         interactors = iPositions;
-        // FIXME: Causes error (cannot cast air to cable block)
-        energyTier = ((CableBlock) level.getBlockState(transmitters.stream().toList().get(0)).getBlock()).getEnergyTier();
+        if (!transmitters.isEmpty()) {
+            if (level.getBlockState(transmitters.stream().findFirst().get()).getBlock() instanceof CableBlock cableBlock) {
+                this.energyTier = Optional.of(cableBlock.getEnergyTier());
+                return;
+            }
+        }
+        this.energyTier = Optional.empty();
     }
 
     @Override
@@ -186,7 +192,16 @@ public class EnergyNet {
     }
 
     public enum EnergyTypes {
+        /**
+         * This interacts with the enet,
+         * meaning it will drain or fill
+         * the enet with energy
+         */
         INTERACTORS,
+        /**
+         * This transmits energy through the enet
+         * and most likely is a cable
+         */
         TRANSMITTERS,
     }
 }

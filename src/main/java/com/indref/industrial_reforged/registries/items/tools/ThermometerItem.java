@@ -64,8 +64,11 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos blockPos = blockHitResult.getBlockPos();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
-                blockEntity = fakeBlockEntity.getActualBlockEntity();
+            if (blockEntity instanceof FakeBlockEntity fakeBlockEntity) {
+                if (fakeBlockEntity.getActualBlockEntity().isPresent()) {
+                    blockEntity = fakeBlockEntity.getActualBlockEntity().get();
+                }
+            }
             IHeatBlock heatBlock = BlockUtils.getHeatBlock(blockEntity);
             if (heatBlock != null && blockEntity != null) {
                 setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.getHeatStored(blockEntity)));

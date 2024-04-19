@@ -1,12 +1,12 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
@@ -27,6 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchable {
     public BlastFurnaceHatchBlock(Properties properties) {
         super(properties);
@@ -58,9 +59,16 @@ public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchabl
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
-            Utils.openMenu(pPlayer, (BlastFurnaceBlockEntity) ((BlastFurnaceBlockEntity) pLevel.getBlockEntity(pPos)).getActualBlockEntity());
+            BlockUtils.blockEntityAt(pLevel, pPos).ifPresent(be -> {
+                if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                    if (blastFurnaceBlockEntity.getActualBlockEntity().isPresent()
+                            && blastFurnaceBlockEntity.getActualBlockEntity().get() instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
+                        Utils.openMenu(pPlayer, blastFurnaceBlockEntity1);
+                    }
+                }
+            });
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

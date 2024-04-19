@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricksBlock;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceHatchBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public record BlastFurnaceMultiblock() implements Multiblock {
     public static final EnumProperty<BrickStates> BRICK_STATE = EnumProperty.create("brick_state", BlastFurnaceMultiblock.BrickStates.class);
@@ -56,12 +56,12 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public @NotNull BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 3) {
-            return blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction));
+            return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));
         } else {
-            return blockState.setValue(BRICK_STATE, BrickStates.FORMED);
+            return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.FORMED));
         }
     }
 
@@ -71,9 +71,9 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         if (level.getBlockEntity(blockPos) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
             for (BlockPos blockPos1 : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 if (level.getBlockEntity(blockPos1) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
-                    BlockPos mainControllerPos = blastFurnaceBlockEntity1.getMainControllerPos();
-                    if (mainControllerPos != null) {
-                        blastFurnaceBlockEntity.setMainControllerPos(mainControllerPos);
+                    Optional<BlockPos> mainControllerPos = blastFurnaceBlockEntity1.getMainControllerPos();
+                    if (mainControllerPos.isPresent()) {
+                        blastFurnaceBlockEntity.setMainControllerPos(mainControllerPos.get());
                         blastFurnaceBlockEntity.setMainController(false);
                         return;
                     }

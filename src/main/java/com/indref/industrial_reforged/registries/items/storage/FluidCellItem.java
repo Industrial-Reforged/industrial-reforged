@@ -27,8 +27,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -54,7 +52,7 @@ public class FluidCellItem extends SimpleFluidItem {
         } else if (blockhitresult.getType() != HitResult.Type.BLOCK) {
             return InteractionResultHolder.pass(handItem);
         } else {
-            if (handItem.getItem() instanceof IFluidItem fluidItem) {
+            if (handItem.getItem() instanceof IFluidItem) {
                 BlockPos blockpos = blockhitresult.getBlockPos();
                 Direction direction = blockhitresult.getDirection();
                 BlockPos blockpos1 = blockpos.relative(direction);

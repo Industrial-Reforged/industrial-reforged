@@ -12,7 +12,7 @@ import java.util.List;
 public interface MultiBarItem {
     /**
      * @param itemStack the itemStack this gets rendered to
-     * @return First pair entry: Color, second: Width || null
+     * @return First pair entry: Color, second: Width
      */
     @NotNull
     List<Pair<Integer, Integer>> getBarColorsAndWidths(ItemStack itemStack);

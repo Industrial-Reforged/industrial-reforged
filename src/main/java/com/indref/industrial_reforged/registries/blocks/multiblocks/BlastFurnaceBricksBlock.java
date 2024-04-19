@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.contr
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
+import com.mojang.datafixers.optics.Optic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class BlastFurnaceBricksBlock extends Block implements Wrenchable {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -44,30 +47,19 @@ public class BlastFurnaceBricksBlock extends Block implements Wrenchable {
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
-            BlockPos controllerPos = null;
+            Optional<BlockPos> controllerPos = Optional.empty();
             if (pState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.TOP)) {
-                controllerPos = pPos.offset(0, -3, 0);
+                controllerPos = Optional.of(pPos.offset(0, -3, 0));
             } else {
                 for (int i = 1; i < 3; i++) {
                     BlockPos offsetPos = pPos.offset(0, -i, 0);
                     if (pLevel.getBlockEntity(offsetPos) instanceof BlastFurnaceBlockEntity) {
-                        controllerPos = offsetPos;
+                        controllerPos = Optional.of(offsetPos);
                     }
                 }
             }
-            if (controllerPos != null) {
-                MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), controllerPos, pLevel);
-            }
+            controllerPos.ifPresent(pos -> MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), pos, pLevel));
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-    }
-
-    /**
-     * Get the blockpos of the main controler pos
-     * @param blockPos blockpos of any block that is part of the blast furnace
-     * @return BlockPos of the main controller block
-     */
-    public static BlockPos getControllerPos(Level level, BlockPos blockPos) {
-        return null;
     }
 }

@@ -7,12 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class EnergyNets {
     private List<EnergyNet> enets;
@@ -30,40 +26,49 @@ public class EnergyNets {
         return this.enets;
     }
 
-    @Nullable
-    public EnergyNet getNetworkRaw(BlockPos blockPos) {
+    /**
+     * Tries to find an enet at the specified blockpos and returns {@link Optional#empty()} otherwise.
+     * If there is an enet next to the specified blockpos, it will not be returned. If you need this
+     * behavior, use {@link EnergyNets#getNetwork(BlockPos)} instead
+     */
+    public Optional<EnergyNet> getNetworkRaw(BlockPos blockPos) {
         for (EnergyNet enet : getNetworks()) {
             if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(blockPos) || enet.get(EnergyNet.EnergyTypes.INTERACTORS).contains(blockPos))
-                return enet;
+                return Optional.of(enet);
         }
-        return null;
+        return Optional.empty();
     }
 
-    @Nullable
-    public EnergyNet getNetwork(BlockPos blockPos) {
-        EnergyNet rawNet = getNetworkRaw(blockPos);
+    /**
+     * This will check if the block at the specified pos is part of an enet
+     * and if so, will return that net. Otherwise, it will look at the blocks
+     * around the blockpos and check if they are part of an enet and if so, return
+     * that net.
+     */
+    public Optional<EnergyNet> getNetwork(BlockPos blockPos) {
+        Optional<EnergyNet> rawNet = getNetworkRaw(blockPos);
 
-        if (rawNet != null) return rawNet;
+        if (rawNet.isPresent()) return rawNet;
 
         for (EnergyNet enet : getNetworks()) {
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
                 if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(pos))
-                    return enet;
+                    return Optional.of(enet);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public EnergyNet getOrCreateNetAndPush(BlockPos pos) {
         {
-            EnergyNet net = getNetwork(pos);
-            if (net != null) {
+            Optional<EnergyNet> net = getNetwork(pos);
+            if (net.isPresent()) {
                 if (is(EnergyNet.EnergyTypes.TRANSMITTERS, pos)) {
-                    net.add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
+                    net.get().add(pos, EnergyNet.EnergyTypes.TRANSMITTERS);
                 } else if (is(EnergyNet.EnergyTypes.INTERACTORS, pos)) {
-                    net.add(pos, EnergyNet.EnergyTypes.INTERACTORS);
+                    net.get().add(pos, EnergyNet.EnergyTypes.INTERACTORS);
                 }
-                return getNetwork(pos);
+                return net.get();
             }
         }
 
@@ -131,9 +136,9 @@ public class EnergyNets {
     }
 
     public void removeNetwork(BlockPos pos) {
-        if (getNetwork(pos) != null) {
-            enets.remove(getNetwork(pos));
-        }
+        getNetwork(pos).ifPresent(net -> {
+            enets.remove(net);
+        });
     }
 
     public void removeNetwork(int index) {

@@ -20,6 +20,8 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class FireBoxMenu extends IRAbstractContainerMenu {
     public final FireboxBlockEntity blockEntity;
     private final Level level;
@@ -37,8 +39,8 @@ public class FireBoxMenu extends IRAbstractContainerMenu {
 
         checkContainerSize(inv, 1);
 
-        IItemHandler itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
+        Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
+        itemHandler.ifPresent(handler -> this.addSlot(new SlotItemHandler(handler, 0, 80, 36)));
 
         addDataSlots(data);
         addPlayerHotbar(inv);

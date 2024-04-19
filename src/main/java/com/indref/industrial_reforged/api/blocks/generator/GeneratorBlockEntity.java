@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Optional;
+
 public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
     public GeneratorBlockEntity(BlockEntityType<?> blockEntityType, BlockPos p_155229_, BlockState p_155230_) {
         super(blockEntityType, p_155229_, p_155230_);
@@ -28,15 +30,16 @@ public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(blockPos)) {
             BlockEntity blockEntity1 = level.getBlockEntity(offsetPos);
             BlockState block = level.getBlockState(offsetPos);
-            EnergyTier energyTier = getEnergyTier();
-            if (energyTier != null) {
+            Optional<EnergyTier> energyTier = getEnergyTier();
+            if (energyTier.isPresent()) {
+                EnergyTier tier = energyTier.get();
                 if (block.getBlock() instanceof CableBlock) {
-                    EnergyNet enet = energyNets.getNetwork(offsetPos);
-                    if (enet != null && enet.distributeEnergy(getGenerationAmount()))
-                        tryDrainEnergy(this, energyTier.getMaxOutput());
+                    Optional<EnergyNet> enet = energyNets.getNetwork(offsetPos);
+                    if (enet.isPresent() && enet.get().distributeEnergy(getGenerationAmount()))
+                        tryDrainEnergy(this, tier.getMaxOutput());
                 } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
-                    tryDrainEnergy(this, energyTier.getMaxOutput());
-                    energyBlock1.tryFillEnergy(blockEntity1, energyTier.getMaxOutput());
+                    tryDrainEnergy(this, tier.getMaxOutput());
+                    energyBlock1.tryFillEnergy(blockEntity1, tier.getMaxOutput());
                 }
             } else {
                 IndustrialReforged.LOGGER.error("{} at {} does not have a correct heat tier. Unable to produce heat", blockState.getBlock().getName().getString(), blockPos);

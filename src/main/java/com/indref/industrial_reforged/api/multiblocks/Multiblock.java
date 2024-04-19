@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 // TODO: 10/23/2023 Allow rotating the multi (currently only works for south)
 public interface Multiblock {
@@ -55,7 +56,7 @@ public interface Multiblock {
         return widths;
     }
 
-    @Nullable BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
+    Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
 
     /**
      * This gets called after the block at `blockpos` is formed
@@ -81,8 +82,7 @@ public interface Multiblock {
 
     boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos);
 
-    @Nullable
-    default MultiblockDirection getFixedDirection() {
-        return null;
+    default Optional<MultiblockDirection> getFixedDirection() {
+        return Optional.empty();
     }
 }
