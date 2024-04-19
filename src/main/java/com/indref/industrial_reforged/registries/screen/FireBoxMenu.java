@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -51,7 +52,13 @@ public class FireBoxMenu extends IRAbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, IRBlocks.COIL.get());
+        for (Block block : blockEntity.getType().getValidBlocks()){
+            boolean valid = stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
+                    player, block);
+            if (valid) {
+                return true;
+            }
+        }
+        return false;
     }
 }

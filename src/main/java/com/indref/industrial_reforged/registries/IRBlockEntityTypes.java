@@ -34,7 +34,7 @@ public final class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<SmallFireboxBlockEntity>> SMALL_FIREBOX =
             BLOCK_ENTITIES.register("small_firebox", () ->
                     BlockEntityType.Builder.of(SmallFireboxBlockEntity::new,
-                            IRBlocks.COIL.get()).build(null));
+                            IRBlocks.SMALL_FIREBOX_HATCH.get()).build(null));
     public static final Supplier<BlockEntityType<CrucibleBlockEntity>> CRUCIBLE =
             BLOCK_ENTITIES.register("crucible", () ->
                     BlockEntityType.Builder.of(CrucibleBlockEntity::new,

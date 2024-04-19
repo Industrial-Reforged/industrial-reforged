@@ -58,13 +58,11 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     @Override
     public @NotNull BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
-        return switch (indexY) {
-            case 0 ->
-                    blockState.setValue(BRICK_STATE, BrickStates.FORMED).setValue(BlastFurnaceHatchBlock.FACING, getCorrectDirection(index, direction));
-            case 3 ->
-                    blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction));
-            default -> blockState.setValue(BRICK_STATE, BrickStates.FORMED);
-        };
+        if (indexY == 3) {
+            return blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction));
+        } else {
+            return blockState.setValue(BRICK_STATE, BrickStates.FORMED);
+        }
     }
 
     @Override

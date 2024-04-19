@@ -1,0 +1,17 @@
+{
+  "type": "indref:blast_furnace",
+  "ingredients": [
+    {
+      "item": "minecraft:coal"
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 2
+    }
+  ],
+  "result": {
+    "FluidName": "indref:molten_steel",
+    "Amount": 200
+  },
+  "duration": 250
+}

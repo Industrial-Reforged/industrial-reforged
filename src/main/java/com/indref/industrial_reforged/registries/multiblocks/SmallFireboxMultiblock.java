@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricksBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceHatchBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.SmallFireboxHatchBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -44,7 +45,7 @@ public record SmallFireboxMultiblock() implements Multiblock {
     public @NotNull BlockState formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 0) {
-            return blockState.setValue(BlastFurnaceHatchBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED);
+            return blockState.setValue(SmallFireboxHatchBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED);
         }
         return blockState;
     }

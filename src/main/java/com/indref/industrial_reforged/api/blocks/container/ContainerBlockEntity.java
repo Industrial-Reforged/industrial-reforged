@@ -71,16 +71,16 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     @Override
     protected final void saveAdditional(CompoundTag p_187471_) {
         super.saveAdditional(p_187471_);
-        if (fluidTank != null) fluidTank.writeToNBT(p_187471_);
-        if (itemHandler != null) p_187471_.put("itemhandler", itemHandler.serializeNBT());
+        if (getFluidTank() != null) fluidTank.writeToNBT(p_187471_);
+        if (getItemHandler() != null) p_187471_.put("itemhandler", itemHandler.serializeNBT());
         saveOther(p_187471_);
     }
 
     @Override
     public final void load(CompoundTag p_155245_) {
         super.load(p_155245_);
-        if (fluidTank != null) fluidTank.readFromNBT(p_155245_);
-        if (itemHandler != null) itemHandler.deserializeNBT(p_155245_.getCompound("itemhandler"));
+        if (getFluidTank() != null) fluidTank.readFromNBT(p_155245_);
+        if (getItemHandler() != null) itemHandler.deserializeNBT(p_155245_.getCompound("itemhandler"));
         loadOther(p_155245_);
     }
 
@@ -151,7 +151,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         update();
     }
 
-    public void tick(BlockPos blockPos, Level level) {
+    public void tick() {
     }
 
     protected final void addHeatStorage(int capacity) {

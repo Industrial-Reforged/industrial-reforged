@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
+import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
@@ -63,8 +64,10 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos blockPos = blockHitResult.getBlockPos();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
+                blockEntity = fakeBlockEntity.getActualBlockEntity();
             IHeatBlock heatBlock = BlockUtils.getHeatBlock(blockEntity);
-            if (heatBlock != null) {
+            if (heatBlock != null && blockEntity != null) {
                 setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.getHeatStored(blockEntity)));
             } else {
                 setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));

@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class CraftingStationMenu extends IRAbstractContainerMenu {
+    // TODO: Throw out useless classes
     public static final int BLUEPRINT_SLOT = 28;
 
     public final CraftingStationBlockEntity blockEntity;

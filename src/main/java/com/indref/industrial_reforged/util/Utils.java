@@ -1,27 +1,20 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketListener;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Utils {
-    public static final int[] EMPTY_ARRAY = new int[0];
-
     public static <K, V> Map<V, K> reverseMap(Map<K, V> map) {
         Map<V, K> returnMap = new HashMap<>();
         map.forEach((key, value) -> returnMap.put(value, key));
@@ -44,7 +37,9 @@ public final class Utils {
     }
 
     public static <T extends BlockEntity & MenuProvider> void openMenu(Player player, T blockEntity) {
-        player.openMenu(blockEntity, blockEntity.getBlockPos());
+        if (blockEntity != null) {
+            player.openMenu(blockEntity, blockEntity.getBlockPos());
+        }
     }
 
     public static String fluidToString(Fluid fluid) {
@@ -107,5 +102,11 @@ public final class Utils {
         if (facingIndex > 3)
             return Direction.NORTH;
         return Utils.indexToFacing(facingIndex);
+    }
+
+    public static <T> NonNullList<T> listToNonNullList(List<T> list) {
+        NonNullList<T> nnl = NonNullList.create();
+        nnl.addAll(list);
+        return nnl;
     }
 }

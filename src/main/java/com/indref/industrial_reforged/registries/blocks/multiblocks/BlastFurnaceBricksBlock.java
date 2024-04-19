@@ -42,16 +42,6 @@ public class BlastFurnaceBricksBlock extends Block implements Wrenchable {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult p_60508_) {
-        if (player.isShiftKeyDown() && blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.TOP));
-        } else {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(FACING, Utils.incDirection(blockState.getValue(FACING))));
-        }
-        return InteractionResult.SUCCESS;
-    }
-
-    @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
             BlockPos controllerPos = null;

@@ -1,20 +1,32 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRRecipes;
+import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.screen.BlastFurnaceMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * This is the blockentity for the blast furnace.
@@ -24,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
  * is the actual blockentity that handles the
  * logic and the others just point to that block.
  */
-public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider {
+public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity {
     private boolean mainController;
     private BlockPos mainControllerPos = null;
 
@@ -32,7 +44,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
         addItemHandler(2);
         addFluidTank(9000);
-        getFluidTank().setFluid(new FluidStack(Fluids.WATER, 3000));
     }
 
     public void setMainController(boolean mainController) {
@@ -51,8 +62,12 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         return mainControllerPos;
     }
 
-    public BlastFurnaceBlockEntity getActualBlockEntity() {
-        return (BlastFurnaceBlockEntity) level.getBlockEntity(mainControllerPos);
+    @Override
+    public BlockEntity getActualBlockEntity() {
+        if (mainControllerPos == null) {
+            return null;
+        }
+        return level.getBlockEntity(mainControllerPos);
     }
 
     @Override
@@ -66,12 +81,31 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     @Override
     protected void loadOther(CompoundTag tag) {
         this.mainController = tag.getBoolean("isController");
-        this.mainControllerPos = BlockPos.of(tag.getLong("mainControllerPos"));
+        long mainControllerPos1 = tag.getLong("mainControllerPos");
+        IndustrialReforged.LOGGER.debug("Controller pos long: {}", mainControllerPos1);
+        if (mainControllerPos1 != 0) {
+            this.mainControllerPos = BlockPos.of(mainControllerPos1);
+        } else {
+            this.mainControllerPos = null;
+        }
+    }
+
+    @Override
+    public void tick() {
+        if (isMainController()) {
+            List<RecipeHolder<BlastFurnaceRecipe>> recipes = level.getRecipeManager()
+                    .getRecipesFor(BlastFurnaceRecipe.Type.INSTANCE, new SimpleContainer(getItemHandlerStacks()), level);
+            IndustrialReforged.LOGGER.debug("Recipes: {}", recipes);
+        }
+    }
+
+    public boolean isFormed() {
+        return !level.getBlockState(worldPosition).getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED);
     }
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.empty();
+        return Component.literal("Blast Furnace");
     }
 
     @Nullable

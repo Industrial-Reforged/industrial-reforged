@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
@@ -16,25 +17,34 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BlastFurnaceHatchBlock extends RotatableEntityBlock implements Wrenchable {
+public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchable {
     public BlastFurnaceHatchBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(BlastFurnaceHatchBlock::new);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
         super.createBlockStateDefinition(p_49915_.add(BlastFurnaceMultiblock.BRICK_STATE));
+    }
+
+    @Override
+    public @NotNull RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -50,7 +60,7 @@ public class BlastFurnaceHatchBlock extends RotatableEntityBlock implements Wren
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
-            Utils.openMenu(pPlayer, ((BlastFurnaceBlockEntity) pLevel.getBlockEntity(pPos)));
+            Utils.openMenu(pPlayer, (BlastFurnaceBlockEntity) ((BlastFurnaceBlockEntity) pLevel.getBlockEntity(pPos)).getActualBlockEntity());
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
@@ -62,4 +72,12 @@ public class BlastFurnaceHatchBlock extends RotatableEntityBlock implements Wren
         return new BlastFurnaceBlockEntity(blockPos, blockState);
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        if (level.isClientSide()) return null;
+
+        return createTickerHelper(blockEntityType, IRBlockEntityTypes.BLAST_FURNACE.get(),
+                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick());
+    }
 }

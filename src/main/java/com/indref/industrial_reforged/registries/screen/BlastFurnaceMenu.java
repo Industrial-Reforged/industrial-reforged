@@ -39,8 +39,8 @@ public class BlastFurnaceMenu extends IRAbstractContainerMenu {
 
         IItemHandler itemHandler = blockEntity.getItemHandler();
 
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 19));
-        this.addSlot(new SlotItemHandler(itemHandler, 1, 44, 55));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 37));
+        this.addSlot(new SlotItemHandler(itemHandler, 1, 18, 37));
 
         addPlayerHotbar(inv);
         addPlayerInventory(inv);

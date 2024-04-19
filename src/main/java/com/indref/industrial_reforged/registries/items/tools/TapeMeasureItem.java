@@ -83,11 +83,11 @@ public class TapeMeasureItem extends ToolItem {
             }
 
             tag.putBoolean(EXTENDED_KEY, false);
-            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
+            tag.putIntArray("firstBlockPos", new int[0]);
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
             tag.putBoolean(EXTENDED_KEY, false);
-            tag.putIntArray("firstBlockPos", Utils.EMPTY_ARRAY);
+            tag.putIntArray("firstBlockPos", new int[0]);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

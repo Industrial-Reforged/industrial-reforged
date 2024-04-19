@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.util;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public record IngredientWithCount(Ingredient ingredient, int count) {
@@ -11,6 +12,10 @@ public record IngredientWithCount(Ingredient ingredient, int count) {
             Codec.INT.optionalFieldOf("count", 1).codec(),
             Ingredient.CODEC
     );
+
+    public boolean test(ItemStack itemStack) {
+        return ingredient.test(itemStack) && itemStack.getCount() >= count;
+    }
 
     public static final Codec<IngredientWithCount> CODEC = PAIR_CODEC.xmap(pair -> new IngredientWithCount(pair.getSecond(), pair.getFirst()), iwc -> new Pair<>(iwc.count, iwc.ingredient));
 }
