@@ -12,8 +12,8 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem {
-    public ElectricSwordItem(Tier tier, int i, float v, Properties properties) {
-        super(tier, i, v, properties);
+    public ElectricSwordItem(Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
+        super(tier, properties.attributes(SwordItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed)));
     }
 
     @Override
@@ -47,8 +47,8 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
-        super.appendHoverText(stack, p41422, tooltip, p41424);
+    public void appendHoverText(ItemStack stack, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
+        super.appendHoverText(stack, p_339594_, tooltip, p_41424_);
         ItemUtils.addEnergyTooltip(tooltip, stack);
     }
 }

@@ -1,11 +1,16 @@
 package com.indref.industrial_reforged.registries.recipes;
 
+import com.indref.industrial_reforged.util.RecipeUtils;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -24,15 +29,17 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
     private final Ingredient itemStack;
     private final FluidStack fluidStack;
     private final int duration;
+    private final int heat;
 
-    public CrucibleSmeltingRecipe(Ingredient input, FluidStack output, Integer duration) {
+    public CrucibleSmeltingRecipe(Ingredient input, FluidStack output, int duration, int heat) {
         this.itemStack = input;
         this.fluidStack = output;
         this.duration = duration;
+        this.heat = heat;
     }
 
-    public CrucibleSmeltingRecipe(List<Ingredient> input, FluidStack output, Integer duration) {
-        this(input.get(0), output, duration);
+    public CrucibleSmeltingRecipe(List<Ingredient> input, FluidStack output, int duration, int heat) {
+        this(input.get(0), output, duration, heat);
     }
 
     @Override
@@ -41,7 +48,7 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
+    public ItemStack assemble(SimpleContainer simpleContainer, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -54,13 +61,17 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
         return duration;
     }
 
+    public int getHeat() {
+        return heat;
+    }
+
     @Override
     public boolean canCraftInDimensions(int i, int i1) {
         return true;
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -80,28 +91,35 @@ public class CrucibleSmeltingRecipe implements Recipe<SimpleContainer> {
 
     public static class Serializer implements RecipeSerializer<CrucibleSmeltingRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        private static final Codec<CrucibleSmeltingRecipe> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
+        private static final MapCodec<CrucibleSmeltingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter((recipe) -> recipe.getIngredients().stream().toList()),
                 FluidStack.CODEC.fieldOf("result").forGetter(CrucibleSmeltingRecipe::getResultFluid),
-                Codec.INT.fieldOf("duration").forGetter(recipe -> recipe.duration)
+                Codec.INT.fieldOf("duration").forGetter(recipe -> recipe.duration),
+                Codec.INT.fieldOf("heat").forGetter(recipe -> recipe.heat)
         ).apply(builder, CrucibleSmeltingRecipe::new));
+        private static final StreamCodec<RegistryFriendlyByteBuf, CrucibleSmeltingRecipe> STREAM_CODEC = StreamCodec.composite(
+                RecipeUtils.INGREDIENT_STREAM_LIST_CODEC,
+                recipe -> recipe.getIngredients().stream().toList(),
+                FluidStack.STREAM_CODEC,
+                CrucibleSmeltingRecipe::getResultFluid,
+                ByteBufCodecs.INT,
+                CrucibleSmeltingRecipe::getDuration,
+                ByteBufCodecs.INT,
+                CrucibleSmeltingRecipe::getHeat,
+                CrucibleSmeltingRecipe::new
+        );
 
         private Serializer() {
         }
 
         @Override
-        public Codec<CrucibleSmeltingRecipe> codec() {
+        public MapCodec<CrucibleSmeltingRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public CrucibleSmeltingRecipe fromNetwork(FriendlyByteBuf buf) {
-            return buf.readWithCodecTrusted(NbtOps.INSTANCE, CODEC);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, CrucibleSmeltingRecipe recipe) {
-            buf.writeWithCodec(NbtOps.INSTANCE, CODEC, recipe);
+        public StreamCodec<RegistryFriendlyByteBuf, CrucibleSmeltingRecipe> streamCodec() {
+            return null;
         }
     }
 

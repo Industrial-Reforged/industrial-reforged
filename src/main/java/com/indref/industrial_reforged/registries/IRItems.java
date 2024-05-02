@@ -59,18 +59,20 @@ public final class IRItems {
             () -> new BlueprintItem(new Item.Properties()));
 
     // Item storages
-    public static final Supplier<Item> LUNCH_BAG = registerItem("lunch_bag",
-            () -> new LunchBagItem(new Item.Properties().stacksTo(1)));
+    //public static final Supplier<Item> LUNCH_BAG = registerItem("lunch_bag",
+    //        () -> new LunchBagItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
+    public static final Supplier<Item> ANTENNA = registerStandardItem("antenna");
+    public static final Supplier<Item> PLANT_BALL = registerStandardItem("plant_ball");
     public static final Supplier<Item> BASIC_BATTERY = registerItem("basic_battery",
-            () -> new BatteryItem(new Item.Properties().stacksTo(16), EnergyTiers.LOW));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW));
     public static final Supplier<Item> ADVANCED_BATTERY = registerItem("advanced_battery",
-            () -> new BatteryItem(new Item.Properties().stacksTo(16), EnergyTiers.HIGH));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final Supplier<Item> ULTIMATE_BATTERY = registerItem("ultimate_battery",
-            () -> new BatteryItem(new Item.Properties().stacksTo(16), EnergyTiers.INSANE));
-    public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
-            () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE));
+    //public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
+    //        () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
             () -> new UraniumFuelRod(new Item.Properties().stacksTo(1)));
 
@@ -87,18 +89,13 @@ public final class IRItems {
             () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
 
     //misc
-    public static final Supplier<Item> RUBBER_SHEET = registerItem("rubber_sheet",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> BASIC_CIRCUIT = registerItem("basic_circuit",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> ADVANCED_CIRCUIT = registerItem("advanced_circuit",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> ULTIMATE_CIRCUIT = registerItem("ultimate_circuit",
-            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
+    public static final Supplier<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
+    public static final Supplier<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
+    public static final Supplier<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
     public static final Supplier<Item> BIOMASS = registerItem("biomass",
             () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> STICKY_RESIN = registerItem("sticky_resin",
-            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
     public static final Supplier<Item> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
     public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold", MoldItem::new);
@@ -109,10 +106,8 @@ public final class IRItems {
             () -> new MiningPipeBlockItem(new Item.Properties()));
 
     //ores
-    public static final Supplier<Item> RAW_BAUXITE = registerItem("raw_bauxite",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> RAW_CHROMIUM = registerItem("raw_chromium",
-            () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");
+    public static final Supplier<Item> RAW_CHROMIUM = registerStandardItem("raw_chromium");
     public static final Supplier<Item> RAW_IRIDIUM = registerItem("raw_iridium",
             () -> new Item(new Item.Properties()));
     public static final Supplier<Item> RAW_LEAD = registerItem("raw_lead",
@@ -168,8 +163,8 @@ public final class IRItems {
     public static final Supplier<Item> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
             () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
                 @Override
-                public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-                    pTooltipComponents.add(Component.literal("Only for testing").withStyle(ChatFormatting.RED));
+                public void appendHoverText(ItemStack p_41421_, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
+                    tooltip.add(Component.literal("Only for testing").withStyle(ChatFormatting.RED));
                 }
             });
 
@@ -182,6 +177,10 @@ public final class IRItems {
      */
     private static Supplier<Item> registerItem(String name, Supplier<Item> item) {
         return ITEMS.register(name, item);
+    }
+
+    private static Supplier<Item> registerStandardItem(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
 }

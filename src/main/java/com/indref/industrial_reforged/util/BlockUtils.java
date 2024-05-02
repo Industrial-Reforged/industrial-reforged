@@ -1,8 +1,10 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,24 +65,32 @@ public final class BlockUtils {
         return Optional.empty();
     }
 
-    public static @Nullable IHeatBlock getHeatBlock(BlockEntity blockEntity) {
-        if (BlockUtils.isHeatBlock(blockEntity))
-            return (IHeatBlock) blockEntity;
-        return null;
+    public static Optional<IHeatBlock> getHeatBlock(final BlockEntity blockEntity) {
+        BlockEntity blockEntity1 = blockEntity;
+        if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
+            if (fakeBlockEntity.getActualBlockEntity().isPresent())
+                blockEntity1 = fakeBlockEntity.getActualBlockEntity().get();
+        if (BlockUtils.isHeatBlock(blockEntity1))
+            return Optional.of((IHeatBlock) blockEntity1);
+        return Optional.empty();
     }
 
-    public static @Nullable IEnergyBlock getEnergyBlock(BlockEntity blockEntity) {
-        if (BlockUtils.isEnergyBlock(blockEntity))
-            return (IEnergyBlock) blockEntity;
-        return null;
+    public static Optional<IEnergyBlock> getEnergyBlock(BlockEntity blockEntity) {
+        BlockEntity blockEntity1 = blockEntity;
+        if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
+            if (fakeBlockEntity.getActualBlockEntity().isPresent())
+                blockEntity1 = fakeBlockEntity.getActualBlockEntity().get();
+        if (BlockUtils.isEnergyBlock(blockEntity1))
+            return Optional.of((IEnergyBlock) blockEntity1);
+        return Optional.empty();
     }
 
     public static boolean isEnergyBlock(BlockEntity blockEntity) {
-        return blockEntity != null && getBlockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity) != null;
+        return blockEntity != null && getBlockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity).isPresent();
     }
 
     public static boolean isHeatBlock(BlockEntity blockEntity) {
-        return blockEntity != null && getBlockEntityCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity) != null;
+        return blockEntity != null && getBlockEntityCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity).isPresent();
     }
 
     public static Optional<BlockEntity> blockEntityAt(LevelAccessor level, BlockPos blockPos) {

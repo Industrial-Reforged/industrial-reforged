@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -51,18 +52,20 @@ public class DrainBlock extends RotatableEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState p_60503_, Level level, BlockPos blockPos, Player player, InteractionHand p_60507_, BlockHitResult p_60508_) {
+    protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         if (!level.isClientSide()) {
             DrainBlockEntity blockEntity = (DrainBlockEntity) level.getBlockEntity(blockPos);
-            Fluid fluid = blockEntity.getFluidTank().getFluid().getFluid();
-            int fluidAmount = blockEntity.getFluidTank().getFluid().getAmount();
-            player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType() + ", " + fluidAmount + "mb"));
+            blockEntity.getFluidTank().ifPresent(tank -> {
+                Fluid fluid = tank.getFluid().getFluid();
+                int fluidAmount = tank.getFluid().getAmount();
+                player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType() + ", " + fluidAmount + "mb"));
+            });
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void appendHoverText(ItemStack p_49816_, @Nullable BlockGetter p_49817_, List<Component> tooltip, TooltipFlag p_49819_) {
+    public void appendHoverText(ItemStack p_49816_, Item.TooltipContext p_339606_, List<Component> tooltip, TooltipFlag p_49819_) {
         tooltip.add(Component.translatable("drain.desc.0").withStyle(ChatFormatting.GRAY));
     }
 }

@@ -4,6 +4,9 @@ import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
+import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
+public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
     public static final EnumProperty<FireboxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireboxMultiblock.PartIndex.class);
 
     @Override
@@ -50,7 +53,11 @@ public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        return !level.getBlockState(blockPos).getValue(FIREBOX_PART).equals(PartIndex.UNFORMED);
+        BlockState blockState = level.getBlockState(blockPos);
+
+        if (!getDefinition().containsValue(blockState.getBlock())) return false;
+
+        return !blockState.getValue(FIREBOX_PART).equals(PartIndex.UNFORMED);
     }
 
     @Override
@@ -63,6 +70,24 @@ public record FireboxMultiblock(FireboxTier tier) implements Multiblock {
                         case 4 -> PartIndex.COIL;
                         default -> PartIndex.BRICK;
                     }));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public FireboxTier getTier() {
+        return tier;
+    }
+
+    @Override
+    public Optional<BlockPos> getControllerPos(BlockPos multiblockPos, Level level) {
+        if (level.getBlockEntity(multiblockPos) instanceof FireboxBlockEntity)
+            return Optional.of(multiblockPos);
+
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(multiblockPos)) {
+            if (level.getBlockEntity(pos) instanceof FireboxBlockEntity) {
+                return Optional.of(pos);
+            }
         }
         return Optional.empty();
     }

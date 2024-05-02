@@ -52,8 +52,8 @@ public final class IRTabs {
                 addItem(output, IRItems.BLUEPRINT);
 
                 // Storage items
-                addItem(output, IRItems.TOOLBOX);
-                addItem(output, IRItems.LUNCH_BAG);
+                //addItem(output, IRItems.TOOLBOX);
+                //addItem(output, IRItems.LUNCH_BAG);
                 addVariantForAllFluids(output, IRItems.FLUID_CELL);
 
                 // armor
@@ -74,6 +74,8 @@ public final class IRTabs {
                 addPoweredItem(output, IRItems.ULTIMATE_BATTERY);
                 addItem(output, IRItems.RUBBER_SHEET);
                 addItem(output, IRItems.BIOMASS);
+                addItem(output, IRItems.PLANT_BALL);
+                addItem(output, IRItems.ANTENNA);
 
                 addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.STICKY_RESIN);

@@ -1,14 +1,22 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRRecipes;
+import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
+import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -61,6 +70,19 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
             tryMeltItem();
         }
+
+        Optional<IFireboxMultiblock> firebox = hasFireBox();
+        if (firebox.isPresent()) {
+            IFireboxMultiblock fireboxMultiblock = firebox.get();
+            BlockPos controllerPos = this.worldPosition.offset(0, -1, 0);
+            BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
+            if (controllerBlockEntity instanceof FireboxBlockEntity fireboxBlockEntity) {
+                int output = fireboxMultiblock.getTier().getMaxHeatOutput();
+                if (fireboxBlockEntity.tryDrainHeat(fireboxBlockEntity, output)==0){
+                    this.tryFillHeat(this, output);
+                }
+            }
+        }
     }
 
     private void tryMeltItem() {
@@ -70,9 +92,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 if (recipe.isPresent()) {
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
-                    if (itemStack.is(input) && itemStack.getOrCreateTag().getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
+                    if (itemStack.is(input) && itemStack.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0).intValue() >= 10) {
                         itemStack.shrink(1);
-                        itemStack.getOrCreateTag().putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
+                        itemStack.set(IRDataComponents.MELTING_BARWIDTH, 0F);
                         if (getFluidTank().isPresent()) {
                             FluidStack resultFluid = recipe.get().value().getResultFluid();
                             this.getFluidTank().get().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
@@ -88,17 +110,16 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         getItemHandler().ifPresent(itemStackHandler -> {
             for (int i = 0; i < itemStackHandler.getSlots(); i++) {
                 Optional<RecipeHolder<CrucibleSmeltingRecipe>> recipe = getCurrentRecipe(i);
-                if (recipe.isPresent()) {
+                if (recipe.isPresent() && getHeatStored(this) >= recipe.get().value().getHeat()) {
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
                     if (itemStack.is(input)) {
-                        CompoundTag tag = itemStack.getOrCreateTag();
-                        if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
-                            tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
-                        float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().value().getDuration()) * 6;
+                        if (!itemStack.getOrDefault(IRDataComponents.MELTING, false))
+                            itemStack.set(IRDataComponents.MELTING, true);
+                        float pValue = itemStack.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0).intValue() + ((float) 1 / recipe.get().value().getDuration()) * 6;
                         if (pValue < 0) pValue = 0;
                         IndustrialReforged.LOGGER.info("Progress: {}", pValue);
-                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+                        itemStack.set(IRDataComponents.MELTING_BARWIDTH, pValue);
                     }
                 }
             }
@@ -162,5 +183,28 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 return true;
         }
         return false;
+    }
+
+    public Optional<IFireboxMultiblock> hasFireBox() {
+        BlockPos fireboxPos = worldPosition.offset(0, -1, 0);
+        for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
+            if (multiblock instanceof IFireboxMultiblock fireboxMultiblock) {
+                try {
+                    BlockPos controllerPos = fireboxPos;
+                    if (level.getBlockEntity(fireboxPos) instanceof FakeBlockEntity fakeBlockEntity) {
+                        IndustrialReforged.LOGGER.debug("Fake be found");
+                        if (fakeBlockEntity.getActualBlockEntity().isPresent()) {
+                            controllerPos = fakeBlockEntity.getActualBlockEntity().get().getBlockPos();
+                        }
+                    }
+                    if (multiblock.isFormed(level, fireboxPos, controllerPos)) {
+                        return Optional.of(fireboxMultiblock);
+                    }
+                } catch (Exception ignored) {
+                    return Optional.empty();
+                }
+            }
+        }
+        return Optional.empty();
     }
 }

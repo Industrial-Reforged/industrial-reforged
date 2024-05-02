@@ -1,15 +1,17 @@
 package com.indref.industrial_reforged.registries.recipes;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -42,15 +44,15 @@ public class CrucibleCastingRecipe implements Recipe<SimpleContainer> {
         return castItem.equals(simpleContainer.getItem(0).getItem());
     }
 
+    @Override
+    public ItemStack assemble(SimpleContainer simpleContainer, HolderLookup.Provider provider) {
+        return resultStack.copy();
+    }
+
     public boolean matchesFluids(FluidStack fluidStack, Level level) {
         if (level.isClientSide) return false;
 
         return fluidStack.is(this.fluidStack.getFluid()) && fluidStack.getAmount() >= this.fluidStack.getAmount();
-    }
-
-    @Override
-    public @NotNull ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
-        return resultStack.copy();
     }
 
     public int getDuration() {
@@ -67,7 +69,7 @@ public class CrucibleCastingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
         return resultStack.copy();
     }
 
@@ -87,30 +89,38 @@ public class CrucibleCastingRecipe implements Recipe<SimpleContainer> {
 
     public static class Serializer implements RecipeSerializer<CrucibleCastingRecipe> {
         public static final CrucibleCastingRecipe.Serializer INSTANCE = new CrucibleCastingRecipe.Serializer();
-        private static final Codec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
+        private static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 FluidStack.CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::getFluid),
                 ItemStack.CODEC.fieldOf("cast").forGetter(recipe -> recipe.castItem.getDefaultInstance()),
                 ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.resultStack),
                 Codec.INT.fieldOf("duration").forGetter(recipe -> recipe.duration),
                 Codec.BOOL.fieldOf("consume_cast").forGetter(recipe -> recipe.consumeCast)
         ).apply(builder, CrucibleCastingRecipe::new));
+        private static final StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> STREAM_CODEC = StreamCodec.composite(
+                FluidStack.STREAM_CODEC,
+                CrucibleCastingRecipe::getFluid,
+                ItemStack.STREAM_CODEC,
+                recipe -> recipe.castItem.getDefaultInstance(),
+                ItemStack.STREAM_CODEC,
+                recipe -> recipe.resultStack,
+                ByteBufCodecs.INT,
+                recipe -> recipe.duration,
+                ByteBufCodecs.BOOL,
+                recipe -> recipe.consumeCast,
+                CrucibleCastingRecipe::new
+        );
 
         private Serializer() {
         }
 
         @Override
-        public @NotNull Codec<CrucibleCastingRecipe> codec() {
+        public @NotNull MapCodec<CrucibleCastingRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull CrucibleCastingRecipe fromNetwork(FriendlyByteBuf buf) {
-            return buf.readWithCodecTrusted(NbtOps.INSTANCE, CODEC);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, CrucibleCastingRecipe recipe) {
-            buf.writeWithCodec(NbtOps.INSTANCE, CODEC, recipe);
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 

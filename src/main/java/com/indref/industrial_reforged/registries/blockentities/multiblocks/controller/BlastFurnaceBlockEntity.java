@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.screen.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -66,13 +67,13 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
-    protected void saveOther(CompoundTag tag) {
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.putBoolean("isController", isMainController());
         mainControllerPos.ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
     }
 
     @Override
-    protected void loadOther(CompoundTag tag) {
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         this.mainController = tag.getBoolean("isController");
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         IndustrialReforged.LOGGER.debug("Controller pos long: {}", mainControllerPos1);

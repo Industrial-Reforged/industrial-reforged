@@ -1,8 +1,11 @@
 package com.indref.industrial_reforged.registries.items.armor;
 
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.util.InputUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -11,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class JetpackItem extends ArmorItem {
-    public JetpackItem(ArmorMaterial p_40386_, Properties p_40388_) {
+    public JetpackItem(Holder<ArmorMaterial> p_40386_, Properties p_40388_) {
         super(p_40386_, Type.CHESTPLATE, p_40388_.stacksTo(1));
     }
 
@@ -23,8 +26,7 @@ public class JetpackItem extends ArmorItem {
         else return;
 
         ItemStack item = player.getInventory().getItem(38);
-        CompoundTag tag = stack.getOrCreateTag();
-        if (item.is(this) && tag.getBoolean("active")) {
+        if (item.getEquipmentSlot().equals(EquipmentSlot.CHEST) && item.getOrDefault(IRDataComponents.ACTIVE, false)) {
             if (InputUtils.isHoldingDown(player)) {
                 Vec3 motion = player.getDeltaMovement();
                 player.setDeltaMovement(motion.x(), 0.5, motion.z());
@@ -33,11 +35,6 @@ public class JetpackItem extends ArmorItem {
     }
 
     public static void toggle(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        if (itemStack.hasTag()) {
-            tag.putBoolean("active", !tag.getBoolean("active"));
-        } else {
-            tag.putBoolean("active", true);
-        }
+        itemStack.set(IRDataComponents.ACTIVE, !itemStack.getOrDefault(IRDataComponents.ACTIVE, false));
     }
 }

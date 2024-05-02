@@ -25,8 +25,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class ElectricHoeItem extends HoeItem implements IEnergyItem {
-    public ElectricHoeItem(Tier p_41336_, int p_41337_, float p_41338_, Properties p_41339_) {
-        super(p_41336_, p_41337_, p_41338_, p_41339_.stacksTo(1));
+    public ElectricHoeItem(Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties p_41339_) {
+        super(tier, p_41339_.stacksTo(1).attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed)));
     }
 
     @Override
@@ -82,8 +82,8 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
-        super.appendHoverText(stack, p41422, tooltip, p41424);
+    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p41424) {
+        super.appendHoverText(stack, ctx, tooltip, p41424);
 
         ItemUtils.addEnergyTooltip(tooltip, stack);
     }

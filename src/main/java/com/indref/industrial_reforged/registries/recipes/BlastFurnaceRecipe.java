@@ -5,11 +5,15 @@ import com.indref.industrial_reforged.util.IngredientWithCount;
 import com.indref.industrial_reforged.util.RecipeUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,7 +25,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
@@ -52,7 +56,7 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
+    public @NotNull ItemStack assemble(SimpleContainer simpleContainer, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -75,7 +79,7 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -95,28 +99,32 @@ public class BlastFurnaceRecipe implements Recipe<SimpleContainer> {
 
     public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
         public static final BlastFurnaceRecipe.Serializer INSTANCE = new BlastFurnaceRecipe.Serializer();
-        private static final Codec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
+        private static final MapCodec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
                 IngredientWithCount.CODEC.listOf().fieldOf("ingredients").forGetter(BlastFurnaceRecipe::getIngredientsWithCount),
                 FluidStack.CODEC.fieldOf("result").forGetter(BlastFurnaceRecipe::getResultFluid),
                 Codec.INT.fieldOf("duration").forGetter(BlastFurnaceRecipe::getDuration)
         ).apply(builder, BlastFurnaceRecipe::new));
+        private static final StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> STREAM_CODEC = StreamCodec.composite(
+                IngredientWithCount.STREAM_LIST_CODEC,
+                BlastFurnaceRecipe::getIngredientsWithCount,
+                FluidStack.STREAM_CODEC,
+                BlastFurnaceRecipe::getResultFluid,
+                ByteBufCodecs.INT,
+                BlastFurnaceRecipe::getDuration,
+                BlastFurnaceRecipe::new
+        );
 
         private Serializer() {
         }
 
         @Override
-        public @NotNull Codec<BlastFurnaceRecipe> codec() {
+        public @NotNull MapCodec<BlastFurnaceRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull BlastFurnaceRecipe fromNetwork(FriendlyByteBuf buf) {
-            return buf.readWithCodecTrusted(NbtOps.INSTANCE, CODEC);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, BlastFurnaceRecipe recipe) {
-            buf.writeWithCodec(NbtOps.INSTANCE, CODEC, recipe);
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 

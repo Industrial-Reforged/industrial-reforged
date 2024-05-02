@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.api.blocks.container;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.api.util.ValidationFunctions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
@@ -25,9 +26,9 @@ import java.util.Optional;
 public abstract class ContainerBlockEntity extends BlockEntity implements IEnergyBlock, IHeatBlock {
     private int energyCapacity;
     private int heatCapacity;
-    private Optional<ItemStackHandler> itemHandler;
-    private Optional<FluidTank> fluidTank;
-    private Optional<EnergyTier> energyTier;
+    private Optional<ItemStackHandler> itemHandler = Optional.empty();
+    private Optional<FluidTank> fluidTank = Optional.empty();
+    private Optional<EnergyTier> energyTier = Optional.empty();
 
     public ContainerBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
         super(p_155228_, p_155229_, p_155230_);
@@ -74,25 +75,25 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    protected final void saveAdditional(CompoundTag p_187471_) {
-        super.saveAdditional(p_187471_);
-        getFluidTank().ifPresent(fluidTank1 -> fluidTank1.writeToNBT(p_187471_));
-        getItemHandler().ifPresent(itemStackHandler -> p_187471_.put("itemhandler", itemStackHandler.serializeNBT()));
-        saveOther(p_187471_);
+    protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
+        super.loadAdditional(nbt, provider);
+        getFluidTank().ifPresent(fluidTank1 -> fluidTank1.readFromNBT(provider, nbt));
+        getItemHandler().ifPresent(itemStackHandler -> itemStackHandler.deserializeNBT(provider, nbt.getCompound("itemhandler")));
+        loadData(nbt, provider);
     }
 
     @Override
-    public final void load(CompoundTag p_155245_) {
-        super.load(p_155245_);
-        getFluidTank().ifPresent(fluidTank1 -> fluidTank1.readFromNBT(p_155245_));
-        getItemHandler().ifPresent(itemStackHandler -> itemStackHandler.deserializeNBT(p_155245_.getCompound("itemhandler")));
-        loadOther(p_155245_);
+    protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
+        super.saveAdditional(nbt, provider);
+        getFluidTank().ifPresent(fluidTank1 -> fluidTank1.writeToNBT(provider, nbt));
+        getItemHandler().ifPresent(itemStackHandler -> nbt.put("itemhandler", itemStackHandler.serializeNBT(provider)));
+        saveData(nbt, provider);
     }
 
-    protected void loadOther(CompoundTag tag) {
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
     }
 
-    protected void saveOther(CompoundTag tag) {
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
     }
 
     protected final void addItemHandler(int slots) {
@@ -163,13 +164,13 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         this.heatCapacity = capacity;
     }
 
-    protected final void addEnergyStorage(EnergyTier energyTier, int capacity) {
-        this.energyTier = Optional.ofNullable(energyTier);
+    protected final void addEnergyStorage(@NotNull EnergyTier energyTier, int capacity) {
+        this.energyTier = Optional.of(energyTier);
         this.energyCapacity = capacity;
     }
 
-    protected final void addEnergyStorage(EnergyTier energyTier) {
-        this.energyTier = Optional.ofNullable(energyTier);
+    protected final void addEnergyStorage(@NotNull EnergyTier energyTier) {
+        this.energyTier = Optional.of(energyTier);
         this.energyCapacity = energyTier.getDefaultCapacity();
     }
 
@@ -180,12 +181,12 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        super.onDataPacket(net, pkt);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+        super.onDataPacket(net, pkt, lookupProvider);
     }
 }

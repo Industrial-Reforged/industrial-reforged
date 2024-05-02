@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -63,9 +64,7 @@ public class WrenchItem extends ToolItem {
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
                 if (isDamageable(itemInHand)) {
-                    itemInHand.hurtAndBreak(1, Objects.requireNonNull(useOnContext.getPlayer()), (player1) -> {
-                        player1.broadcastBreakEvent(useOnContext.getHand());
-                    });
+                    itemInHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(useOnContext.getHand()));
                 }
                 level.removeBlock(clickPos, false);
             } else {

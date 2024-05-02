@@ -1,10 +1,19 @@
 package com.indref.industrial_reforged.util;
 
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.*;
 
 public class RecipeUtils {
+    public static final StreamCodec<RegistryFriendlyByteBuf, List<Ingredient>> INGREDIENT_STREAM_LIST_CODEC = Ingredient.CONTENTS_STREAM_CODEC.apply(
+            ByteBufCodecs.collection(NonNullList::createWithCapacity)
+    );
+
     // I HAVE WRITTEN THIS DAMN ALGORITHM SO MANY
     // TIMES ACROSS TWO DIFFERENT MODS AND HAVE
     // NEVER GOTTEN IT TO WORK PROPERLY. I SWEAR
@@ -12,6 +21,7 @@ public class RecipeUtils {
 
     // Stolen from minecraft's RecipeMatcher utility class :>
     // Changed a bit of stuff like predicates -> IngredientWithCount
+
     /**
      * This compares two lists of items/ingredients.
      * It does not care about the order of these.
@@ -27,12 +37,12 @@ public class RecipeUtils {
 
             BitSet data = new BitSet((elements + 2) * elements);
 
-            for(int x = 0; x < elements; ++x) {
+            for (int x = 0; x < elements; ++x) {
                 int matched = 0;
                 int offset = (x + 2) * elements;
                 IngredientWithCount test = ingredients.get(x);
 
-                for(int y = 0; y < elements; ++y) {
+                for (int y = 0; y < elements; ++y) {
                     if (!data.get(y) && test.test(inputs.get(y))) {
                         data.set(offset + y);
                         ++matched;
@@ -58,8 +68,8 @@ public class RecipeUtils {
         Queue<Integer> pending = new LinkedList<>();
         pending.add(claimed);
 
-        while(pending.peek() != null) {
-            int test = (Integer)pending.poll();
+        while (pending.peek() != null) {
+            int test = (Integer) pending.poll();
             int offset = (test + 2) * elements;
             int used = data.nextSetBit(offset) - offset;
             if (used >= elements || used < 0) {
@@ -70,13 +80,13 @@ public class RecipeUtils {
             data.set(elements + test);
             ret[used] = test;
 
-            for(int x = 0; x < elements; ++x) {
+            for (int x = 0; x < elements; ++x) {
                 offset = (x + 2) * elements;
                 if (data.get(offset + used) && !data.get(elements + x)) {
                     data.clear(offset + used);
                     int count = 0;
 
-                    for(int y = offset; y < offset + elements; ++y) {
+                    for (int y = offset; y < offset + elements; ++y) {
                         if (data.get(y)) {
                             ++count;
                         }
@@ -105,7 +115,7 @@ public class RecipeUtils {
         } else {
             int offset = (test + 2) * elements;
 
-            for(int x = 0; x < elements; ++x) {
+            for (int x = 0; x < elements; ++x) {
                 if (data.get(offset + x) && !data.get(x)) {
                     data.set(x);
                     if (backtrack(data, ret, test + 1, elements)) {

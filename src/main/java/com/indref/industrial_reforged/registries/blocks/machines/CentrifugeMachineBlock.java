@@ -38,8 +38,9 @@ public class CentrifugeMachineBlock extends BaseEntityBlock implements Wrenchabl
         return RenderShape.MODEL;
     }
 
+
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         if (!level.isClientSide()) {
             player.openMenu((CentrifugeBlockEntity) level.getBlockEntity(blockPos), blockPos);
             return InteractionResult.SUCCESS;

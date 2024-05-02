@@ -59,6 +59,7 @@ public final class ItemUtils {
             case LEGS -> 3;
             case CHEST -> 4;
             case HEAD -> 5;
+            case BODY -> -6;
         };
     }
 
@@ -121,7 +122,7 @@ public final class ItemUtils {
 
         if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
             tooltip.add(Component.translatable("fluid_cell.desc.stored").append(": ")
-                    .append(Component.literal(item.getFluidInTank(0).getDisplayName().getString())
+                    .append(Component.literal(item.getFluidInTank(0).getHoverName().getString())
                             .withStyle(ChatFormatting.AQUA)));
             tooltip.add(Component.translatable("fluid_cell.desc.amount").append(": ")
                     .append("%d/%d".formatted(

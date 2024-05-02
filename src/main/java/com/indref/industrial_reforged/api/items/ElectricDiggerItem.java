@@ -20,20 +20,18 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     private final TagKey<Block> blocks;
 
     public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
-        super(baseAttackDamage, attackSpeed, tier, mineableBlocks, properties);
+        super(tier, mineableBlocks, properties.attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed)));
         this.energyUsage = energyUsage;
         this.blocks = mineableBlocks;
     }
 
     public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
-        super(baseAttackDamage, attackSpeed, tier, mineableBlocks, properties);
-        this.energyUsage = -1;
-        this.blocks = mineableBlocks;
+        this(baseAttackDamage, attackSpeed, -1, tier, mineableBlocks, properties);
     }
 
     @Override
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
-        return pState.is(this.blocks) && getEnergyStored(pStack) - getEnergyUsage(pStack) > 0 ? this.speed : 1f;
+        return pState.is(this.blocks) && getEnergyStored(pStack) - getEnergyUsage(pStack) > 0 ? super.getDestroySpeed(pStack, pState) : 1f;
     }
 
     @Override
@@ -82,7 +80,9 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
-        ItemUtils.addEnergyTooltip(tooltip, p_41421_);
+    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, ctx, tooltip, flag);
+
+        ItemUtils.addEnergyTooltip(tooltip, stack);
     }
 }

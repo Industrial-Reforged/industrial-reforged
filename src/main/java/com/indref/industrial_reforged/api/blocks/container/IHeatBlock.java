@@ -38,22 +38,24 @@ public interface IHeatBlock {
     default void onHeatChanged() {
     }
 
-    default boolean tryDrainHeat(BlockEntity blockEntity, int value) {
+    default int tryDrainHeat(BlockEntity blockEntity, int value) {
         if (getHeatStored(blockEntity) - value >= 0) {
             setHeatStored(blockEntity, getHeatStored(blockEntity) - value);
-            return true;
+            return 0;
         }
-        return false;
+        int stored = getHeatStored(blockEntity);
+        setHeatStored(blockEntity, 0);
+        return value - stored;
     }
 
-    default boolean tryFillHeat(BlockEntity blockEntity, int value) {
+    default int tryFillHeat(BlockEntity blockEntity, int value) {
         if (getHeatStored(blockEntity) + value <= getHeatCapacity()) {
             setHeatStored(blockEntity, getHeatStored(blockEntity) + value);
-            return true;
-        } else {
-            setHeatStored(blockEntity, getHeatCapacity());
+            return 0;
         }
-        return false;
+        int stored = getHeatStored(blockEntity);
+        setHeatStored(blockEntity, getHeatCapacity());
+        return value - stored;
     }
 
     static boolean canAcceptHeatFromSide(BlockEntity blockEntity, Direction direction) {

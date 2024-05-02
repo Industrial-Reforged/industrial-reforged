@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.worldgen;
 
 import com.indref.industrial_reforged.registries.IRPlacerTypes;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -11,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class RubberTreeFoliagePlacer extends FoliagePlacer {
-	public static final Codec<RubberTreeFoliagePlacer> CODEC = RecordCodecBuilder.create(instance ->
+	public static final MapCodec<RubberTreeFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		foliagePlacerParts(instance).apply(instance, RubberTreeFoliagePlacer::new));
 
 	public RubberTreeFoliagePlacer(IntProvider radius, IntProvider offset) {

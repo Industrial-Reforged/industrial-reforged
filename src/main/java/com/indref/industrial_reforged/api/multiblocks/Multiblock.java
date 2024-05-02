@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO: 10/23/2023 Allow rotating the multi (currently only works for south)
+// TODO: Add a saved data for multiblocks so we can store stuff like blockposes
 public interface Multiblock {
     // Returns the block that is the controller
     Block getController();

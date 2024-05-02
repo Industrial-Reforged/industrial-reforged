@@ -27,19 +27,23 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     }
 
     @Override
-    public boolean isBarVisible(ItemStack p_150899_) {
+    public boolean isBarVisible(ItemStack stack) {
         return true;
     }
 
     @Override
-    public int getUseDuration(ItemStack p_41454_) {
+    public int getUseDuration(ItemStack stack) {
         return 1;
     }
 
+    @Override
+    public int getMaxStackSize(ItemStack stack) {
+        return 1;
+    }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level p41422, List<Component> tooltip, TooltipFlag p41424) {
-        super.appendHoverText(stack, p41422, tooltip, p41424);
+    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, ctx, tooltip, flag);
 
         ItemUtils.addEnergyTooltip(tooltip, stack);
     }

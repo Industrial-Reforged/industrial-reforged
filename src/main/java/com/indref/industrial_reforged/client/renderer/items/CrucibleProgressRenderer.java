@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.client.renderer.items;
 
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,8 +15,8 @@ public class CrucibleProgressRenderer implements IItemDecorator {
 
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack itemStack, int xOffset, int yOffset) {
-        if (itemStack.hasTag() && itemStack.getOrCreateTag().getBoolean(IS_MELTING_KEY)) {
-            int barWidth = (int) itemStack.getOrCreateTag().getFloat(BARWIDTH_KEY);
+        if (itemStack.getOrDefault(IRDataComponents.MELTING, false)) {
+            int barWidth = itemStack.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0F).intValue();
             int width = 1;
             int i = ItemUtils.HEAT_BAR_COLOR;
             int j = xOffset + 2;

@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -15,16 +16,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 
 public class ScannerInfoOverlay {
     // TODO: 10/17/2023 implement off-hand
 
-    public static final IGuiOverlay HUD_SCANNER_INFO = (gui, guiGraphics, partialTick, width, height) -> {
+    public static final LayeredDraw.Layer HUD_SCANNER_INFO = (guiGraphics, var1) -> {
         Minecraft minecraft = Minecraft.getInstance();
         int lineOffset = 0;
-        int x = width / 2;
-        int y = height / 2;
+        int x = guiGraphics.guiWidth() / 2;
+        int y = guiGraphics.guiHeight() / 2;
         Level level = minecraft.level;
         Player player = minecraft.player;
         if (minecraft.hitResult instanceof BlockHitResult blockHitResult) {

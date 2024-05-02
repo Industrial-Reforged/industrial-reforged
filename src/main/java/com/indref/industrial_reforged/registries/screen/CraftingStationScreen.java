@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.networking.NetworkingHelper;
-import com.indref.industrial_reforged.networking.data.ItemNbtSyncData;
+import com.indref.industrial_reforged.networking.BlueprintStoredRecipePayload;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.api.util.SimpleFunction;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +13,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class CraftingStationScreen extends AbstractContainerScreen<CraftingStationMenu> {
     private static final ResourceLocation TEXTURE =
@@ -39,8 +41,8 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         ItemStack itemStack = getMenu().getSlot(CraftingStationMenu.BLUEPRINT_SLOT).getItem();
-        addImageButton(x + 153, y + 46, "recipe_transfer", () -> NetworkingHelper.sendToServer(
-                new ItemNbtSyncData(CraftingStationMenu.BLUEPRINT_SLOT, "storedRecipe", new CompoundTag())
+        addImageButton(x + 153, y + 46, "recipe_transfer", () -> PacketDistributor.sendToServer(
+                new BlueprintStoredRecipePayload(itemStack, List.of())
         ));
         addImageButton(x + 153, y + 62, "recipe_set", () -> BlueprintItem.setRecipe(CraftingStationMenu.BLUEPRINT_SLOT, menu));
     }

@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -77,21 +78,20 @@ public class FaucetBlock extends Block implements Wrenchable {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack item = pPlayer.getItemInHand(pHand);
-        Direction direction = pState.getValue(FACING);
-        boolean attached = pState.getValue(ATTACHED_TO_CRUCIBLE);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        Direction direction = blockState.getValue(FACING);
+        boolean attached = blockState.getValue(ATTACHED_TO_CRUCIBLE);
 
         for (Block key : ALTERNATE_VERSIONS.keySet()) {
             Block val = ALTERNATE_VERSIONS.get(key);
-            if (item.is(key.asItem()) && !pState.is(val)) {
-                pLevel.setBlockAndUpdate(pPos, val.defaultBlockState()
+            if (itemStack.is(key.asItem()) && !blockState.is(val)) {
+                level.setBlockAndUpdate(blockPos, val.defaultBlockState()
                         .setValue(FACING, direction)
                         .setValue(ATTACHED_TO_CRUCIBLE, attached));
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
-        return InteractionResult.FAIL;
+        return ItemInteractionResult.FAIL;
     }
 
     @Override

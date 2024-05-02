@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -42,9 +43,7 @@ public class TreeTapItem extends ToolItem {
             int randomInt = random.nextInt(1, 4);
             resinDrop.setCount(randomInt);
             ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
-            useOnContext.getItemInHand().hurtAndBreak(1, Objects.requireNonNull(useOnContext.getPlayer()), (player1) -> {
-                player1.broadcastBreakEvent(useOnContext.getHand());
-            });
+            useOnContext.getItemInHand().hurtAndBreak(1, useOnContext.getPlayer(), LivingEntity.getSlotForHand(useOnContext.getHand()));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

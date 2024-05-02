@@ -18,6 +18,7 @@ import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -77,7 +78,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, Di
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
         if (blockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
-            MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), crucibleWallBlockEntity.getControllerPos(), level);
+            crucibleWallBlockEntity.getControllerPos().ifPresent(pos -> MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), pos, level));
         } else {
             IndustrialReforged.LOGGER.error("Failed to unform crucible, crucible wall blockentity corruption");
         }
@@ -107,11 +108,15 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, Di
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         try {
-            CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) pLevel.getBlockEntity(pPos);
-            CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) pLevel.getBlockEntity(blockEntity.getControllerPos());
-            Utils.openMenu(pPlayer, controllerBlockEntity);
+            CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
+            blockEntity.getControllerPos().ifPresent(pos -> {
+                IndustrialReforged.LOGGER.debug("client: {}", Minecraft.getInstance().level.getBlockEntity(pos).getPersistentData());
+                CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
+                IndustrialReforged.LOGGER.debug("server: {}", controllerBlockEntity.getPersistentData());
+                Utils.openMenu(player, controllerBlockEntity);
+            });
         } catch (Exception ignored) {
         }
         return InteractionResult.SUCCESS;
@@ -146,12 +151,15 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, Di
     @Override
     public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
         BlockEntity wallBlockEntity = level.getBlockEntity(scannedBlockPos);
-
+        IndustrialReforged.LOGGER.debug("Wall entity pos: {}, is wall: {}", wallBlockEntity.getBlockPos(), wallBlockEntity instanceof CrucibleWallBlockEntity);
         if (wallBlockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
-            BlockPos controllerPos = crucibleWallBlockEntity.getControllerPos();
-            IndustrialReforged.LOGGER.debug("ControllerPos: {}", controllerPos);
-            BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
-            return DisplayUtils.displayHeatInfo(controllerBlockEntity, scannedBlock, Component.literal("Crucible"));
+            Optional<BlockPos> controllerPos = crucibleWallBlockEntity.getControllerPos();
+            if (controllerPos.isPresent()) {
+                CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos.get());
+                return DisplayUtils.displayHeatInfo(controllerBlockEntity, scannedBlock, Component.literal("Crucible"));
+            }
+            IndustrialReforged.LOGGER.error("Issue with controllerPos of crucible wall at {}", crucibleWallBlockEntity.getBlockPos());
+            return List.of();
         }
 
         return List.of();

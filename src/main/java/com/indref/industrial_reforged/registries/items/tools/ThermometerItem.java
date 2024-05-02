@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries.items.tools;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -32,6 +33,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem {
     public static final String DISPLAY_TEMPERATURE_KEY = "thermometer_temperature";
@@ -69,16 +71,18 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
                     blockEntity = fakeBlockEntity.getActualBlockEntity().get();
                 }
             }
-            IHeatBlock heatBlock = BlockUtils.getHeatBlock(blockEntity);
-            if (heatBlock != null && blockEntity != null) {
-                setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.getHeatStored(blockEntity)));
-            } else {
-                setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
+            Optional<IHeatBlock> heatBlock = BlockUtils.getHeatBlock(blockEntity);
+            if (heatBlock.isPresent()) {
+                if (blockEntity != null) {
+                    setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.get().getHeatStored(blockEntity)));
+                } else {
+                    setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
+                }
             }
         } else {
             setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
         }
-        itemStack.getOrCreateTag().putFloat(DISPLAY_TEMPERATURE_KEY, Math.round((float) getHeatStored(itemStack) / 1000));
+        itemStack.set(IRDataComponents.THERMOMETER_STAGE, Math.round((float) getHeatStored(itemStack) / 1000));
 
         if (getHeatStored(itemStack) >= getHeatCapacity()) {
             explodeThermometer(player, itemStack);
@@ -94,7 +98,7 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
     }
 
     public static float getTemperature(ItemStack itemStack) {
-        return itemStack.getOrCreateTag().getFloat(DISPLAY_TEMPERATURE_KEY);
+        return itemStack.getOrDefault(IRDataComponents.THERMOMETER_STAGE, 0);
     }
 
     @Override
@@ -103,7 +107,7 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
     }
 
     @Override
-    public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
+    public void appendHoverText(ItemStack p_41421_, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
         tooltip.add(Component.literal("Heat Stored: ").append("%d/%d".formatted(getHeatStored(p_41421_), getHeatCapacity())));
     }
 

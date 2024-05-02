@@ -1,18 +1,25 @@
 package com.indref.industrial_reforged.networking;
 
-import com.indref.industrial_reforged.networking.data.ItemActivitySyncData;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import com.indref.industrial_reforged.IndustrialReforged;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public final class ItemActivityPayload {
-    private static final ItemActivityPayload INSTANCE = new ItemActivityPayload();
+public record ItemActivityPayload(ItemStack itemStack, boolean active)  implements CustomPacketPayload {
+    public static final Type<ItemActivityPayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "item_activity_payload"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, ItemActivityPayload> STREAM_CODEC = StreamCodec.composite(
+            ItemStack.STREAM_CODEC,
+            ItemActivityPayload::itemStack,
+            ByteBufCodecs.BOOL,
+            ItemActivityPayload::active,
+            ItemActivityPayload::new);
 
-    public static ItemActivityPayload getInstance() {
-        return INSTANCE;
-    }
-
-    public void handleData(final ItemActivitySyncData data, final PlayPayloadContext ctx) {
-        Player player = ctx.player().get();
-        player.containerMenu.getSlot(data.slot()).getItem().getOrCreateTag().putBoolean(data.tagName(), data.active());
+    @Override
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

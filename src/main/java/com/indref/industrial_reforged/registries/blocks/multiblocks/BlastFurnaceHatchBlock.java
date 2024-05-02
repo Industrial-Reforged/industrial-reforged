@@ -59,13 +59,13 @@ public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchabl
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
-            BlockUtils.blockEntityAt(pLevel, pPos).ifPresent(be -> {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
+        if (blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
+            BlockUtils.blockEntityAt(level, blockPos).ifPresent(be -> {
                 if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
                     if (blastFurnaceBlockEntity.getActualBlockEntity().isPresent()
                             && blastFurnaceBlockEntity.getActualBlockEntity().get() instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
-                        Utils.openMenu(pPlayer, blastFurnaceBlockEntity1);
+                        Utils.openMenu(player, blastFurnaceBlockEntity1);
                     }
                 }
             });

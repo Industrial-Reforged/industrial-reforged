@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
@@ -14,7 +15,6 @@ import com.indref.industrial_reforged.client.renderer.blocks.CastingBasinRendere
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.client.renderer.items.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
-import com.indref.industrial_reforged.networking.data.*;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -30,13 +30,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -44,15 +44,16 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStackSimple;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientBus {
         @SubscribeEvent
-        public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
             event.registerAboveAll(new ResourceLocation(IndustrialReforged.MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
         }
 
@@ -125,21 +126,22 @@ public class IREvents {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
     public static class Client {
         @SubscribeEvent
         public static void appendTooltips(ItemTooltipEvent event) {
-            CompoundTag tag = event.getItemStack().getOrCreateTag();
-            if (tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
+            ItemStack item = event.getItemStack();
+            if (item.getOrDefault(IRDataComponents.MELTING, false)) {
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
-                        .append(String.valueOf(tag.getInt("barwidth")))
+                        .append(String.valueOf(item.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0)))
                         .append("/10")
                         .withStyle(ChatFormatting.GRAY));
+            }
         }
     }
 
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.MOD)
     public static class ServerBus {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -151,7 +153,7 @@ public class IREvents {
                     event.registerItem(IRCapabilities.HeatStorage.ITEM, (stack, ctx) -> new HeatWrapper.Item(stack), item);
 
                 if (item instanceof IFluidItem fluidItem)
-                    event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, fluidItem.getFluidCapacity()), item);
+                    event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity()), item);
             }
 
             // Register all your block entity capabilities manually
@@ -171,25 +173,23 @@ public class IREvents {
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler().get());
 
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank().get());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidTank());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank().get());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidTank().get());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getFluidTank().get());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getFluidTank().get());
         }
 
         @SubscribeEvent
-        public static void registerPayloads(final RegisterPayloadHandlerEvent event) {
-            final IPayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
-            registrar.play(ArmorActivitySyncData.ID, ArmorActivitySyncData::new, handler -> handler
-                    .server(ArmorActivityPayload.getInstance()::handleData));
-            registrar.play(ItemNbtSyncData.ID, ItemNbtSyncData::new, handler -> handler
-                    .server(NbtPayload.getInstance()::handleData));
-            registrar.play(ItemActivitySyncData.ID, ItemActivitySyncData::new, handler -> handler
-                    .server(ItemActivityPayload.getInstance()::handleData));
-            registrar.play(CastingDurationSyncData.ID, CastingDurationSyncData::new, handler -> handler
-                    .client(CastingDurationPayload.getInstance()::handleData));
-            registrar.play(CastingGhostItemSyncData.ID, CastingGhostItemSyncData::new, handler -> handler
-                    .client(CastingGhostItemPayload.getInstance()::handleData));
+        public static void registerPayloads(RegisterPayloadHandlersEvent event) {
+            PayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
+            registrar.playToServer(BlueprintHasRecipePayload.TYPE, BlueprintHasRecipePayload.STREAM_CODEC, PayloadActions::blueprintHasRecipe);
+            registrar.playToServer(BlueprintStoredRecipePayload.TYPE, BlueprintStoredRecipePayload.STREAM_CODEC, PayloadActions::blueprintStoredRecipe);
+            registrar.playToServer(ItemActivityPayload.TYPE, ItemActivityPayload.STREAM_CODEC, PayloadActions::itemActivitySync);
+            registrar.playToServer(ArmorActivityPayload.TYPE, ArmorActivityPayload.STREAM_CODEC, PayloadActions::armorActivitySync);
+
+            registrar.playToClient(CastingDurationPayload.TYPE, CastingDurationPayload.STREAM_CODEC, PayloadActions::castingDurationSync);
+            registrar.playToClient(CastingGhostItemPayload.TYPE, CastingGhostItemPayload.STREAM_CODEC, PayloadActions::castingGhostItemSync);
+            registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, PayloadActions::crucibleControllerSync);
         }
     }
 }

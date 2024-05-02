@@ -1,12 +1,13 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.networking.NetworkingHelper;
-import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
+import com.indref.industrial_reforged.networking.ArmorActivityPayload;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
 import com.indref.industrial_reforged.util.InputUtils;
+import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
@@ -20,15 +21,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_ASCEND;
 import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_TOGGLE;
 
 public class NeoforgeEvents {
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID)
+    @EventBusSubscriber(modid = IndustrialReforged.MODID)
     public static class Common {
         @SubscribeEvent
         public static void onLivingFall(LivingFallEvent event) {
@@ -38,7 +40,7 @@ public class NeoforgeEvents {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.GAME)
     public static class CommonBus {
         @SubscribeEvent
         public static void playerTick(TickEvent.PlayerTickEvent event) {
@@ -49,22 +51,21 @@ public class NeoforgeEvents {
 
             NonNullList<ItemStack> items = player.getInventory().items;
             for (ItemStack item : items) {
-                CompoundTag tag = item.getTag();
-                if (tag != null && tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
+                if (item.getOrDefault(IRDataComponents.MELTING, false)) {
                     if (level.getGameTime() % 20 == 0) {
-                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
+                        item.set(IRDataComponents.MELTING_BARWIDTH, item.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0F) - 1);
                         Registry<DamageType> damageTypes = player.damageSources().damageTypes;
                         player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 4);
                     }
 
-                    if (tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0)
-                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
+                    if (item.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0F) <= 0)
+                        item.set(IRDataComponents.MELTING, false);
                 }
             }
         }
     }
 
-    @Mod.EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
     public static class Client {
 
         @SubscribeEvent
@@ -75,8 +76,8 @@ public class NeoforgeEvents {
                     ItemStack jetpackItem = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
                     if (jetpackItem.getItem() instanceof JetpackItem) {
                         JetpackItem.toggle(jetpackItem);
-                        NetworkingHelper.sendToServer(new ArmorActivitySyncData(EquipmentSlot.CHEST,
-                                player.getItemBySlot(EquipmentSlot.CHEST).getOrCreateTag().getBoolean("active")));
+                        PacketDistributor.sendToServer(new ArmorActivityPayload(ItemUtils.indexFromEquipmentSlot(EquipmentSlot.CHEST),
+                                player.getItemBySlot(EquipmentSlot.CHEST).getOrDefault(IRDataComponents.ACTIVE, false)));
                     }
                 }
             }

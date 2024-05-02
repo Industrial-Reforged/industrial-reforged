@@ -2,23 +2,20 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.networking.NetworkingHelper;
-import com.indref.industrial_reforged.networking.data.CastingDurationSyncData;
-import com.indref.industrial_reforged.networking.data.CastingGhostItemSyncData;
+import com.indref.industrial_reforged.networking.CastingDurationPayload;
+import com.indref.industrial_reforged.networking.CastingGhostItemPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.Optional;
 
@@ -96,12 +93,12 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     public void updateRenderedStack() {
         IndustrialReforged.LOGGER.debug("Updating render stack");
         this.resultItem = getCurrentRecipe().get().value().getResultItem(level.registryAccess());
-        NetworkingHelper.sendToClient(new CastingGhostItemSyncData(this.resultItem, getBlockPos()));
+        PacketDistributor.sendToAllPlayers(new CastingGhostItemPayload(this.resultItem, getBlockPos()));
     }
 
     public void resetRenderedStack() {
         this.resultItem = ItemStack.EMPTY;
-        NetworkingHelper.sendToClient(new CastingGhostItemSyncData(this.resultItem, getBlockPos()));
+        PacketDistributor.sendToAllPlayers(new CastingGhostItemPayload(this.resultItem, getBlockPos()));
     }
 
     public void castItem() {
@@ -119,13 +116,13 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public void increaseCraftingProgress() {
         this.duration++;
-        NetworkingHelper.sendToClient(new CastingDurationSyncData(duration, maxDuration, worldPosition));
+        PacketDistributor.sendToAllPlayers(new CastingDurationPayload(duration, maxDuration, worldPosition));
     }
 
     public void resetProgress() {
         this.duration = 0;
         this.maxDuration = 0;
-        NetworkingHelper.sendToClient(new CastingDurationSyncData(duration, maxDuration, worldPosition));
+        PacketDistributor.sendToAllPlayers(new CastingDurationPayload(duration, maxDuration, worldPosition));
     }
 
     // TODO: Use container data to sync these
@@ -178,23 +175,24 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
         ItemStack itemStack = getItemHandler().get().getStackInSlot(1);
         return itemStack.isEmpty()
-                || (ItemHandlerHelper.canItemStacksStack(itemStack, outputItem)
+                || (ItemStack.isSameItemSameComponents(itemStack, outputItem)
                 && itemStack.getCount() + outputItem.getCount() <= outputItem.getMaxStackSize());
     }
 
     @Override
-    protected void saveOther(CompoundTag tag) {
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.putInt("duration", this.duration);
         tag.putInt("maxDuration", this.maxDuration);
         CompoundTag itemTag = new CompoundTag();
-        this.resultItem.save(itemTag);
+        this.resultItem.save(provider);
         tag.put("resultItem", itemTag);
     }
 
     @Override
-    protected void loadOther(CompoundTag tag) {
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         this.duration = tag.getInt("duration");
         this.maxDuration = tag.getInt("maxDuration");
-        this.resultItem = ItemStack.of(tag.getCompound("resultItem"));
+        Optional<ItemStack> resultItem1 = ItemStack.parse(provider, tag.getCompound("resultItem"));
+        resultItem1.ifPresent(stack -> this.resultItem = stack);
     }
 }

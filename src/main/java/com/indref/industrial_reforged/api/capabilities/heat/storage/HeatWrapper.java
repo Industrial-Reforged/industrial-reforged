@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities.heat.storage;
 
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.energy.EnergyStorage;
 import com.indref.industrial_reforged.api.data.heat.HeatStorage;
 import com.indref.industrial_reforged.api.data.heat.IHeatStorage;
@@ -17,12 +18,22 @@ public class HeatWrapper {
 
         @Override
         public int getHeatStored() {
-            return itemStack.getData(IRAttachmentTypes.HEAT.get()).getHeatStored();
+            return itemStack.get(IRDataComponents.HEAT).getHeatStored();
         }
 
         @Override
         public void setHeatStored(int value) {
-            itemStack.setData(IRAttachmentTypes.HEAT.get(), new HeatStorage(value));
+            itemStack.get(IRDataComponents.HEAT).setHeatStored(value);
+        }
+
+        @Override
+        public int getHeatCapacity() {
+            return itemStack.get(IRDataComponents.HEAT).getHeatCapacity();
+        }
+
+        @Override
+        public void setHeatCapacity(int value) {
+            itemStack.get(IRDataComponents.HEAT).setHeatCapacity(value);
         }
     }
 
@@ -40,7 +51,17 @@ public class HeatWrapper {
 
         @Override
         public void setHeatStored(int value) {
-            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new HeatStorage(value));
+            blockEntity.getData(IRAttachmentTypes.HEAT.get()).setHeatStored(value);
+        }
+
+        @Override
+        public int getHeatCapacity() {
+            return blockEntity.getData(IRAttachmentTypes.HEAT.get()).getHeatCapacity();
+        }
+
+        @Override
+        public void setHeatCapacity(int value) {
+            blockEntity.getData(IRAttachmentTypes.HEAT.get()).setHeatCapacity(value);
         }
     }
 }

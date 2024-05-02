@@ -77,7 +77,7 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchab
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             Utils.openMenu(player, (CrucibleBlockEntity) level.getBlockEntity(blockPos));
             return InteractionResult.SUCCESS;

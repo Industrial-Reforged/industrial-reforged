@@ -54,11 +54,11 @@ public class SmallFireboxHatchBlock extends RotatableEntityBlock implements Wren
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-        if (pState.getValue(SmallFireboxMultiblock.FIREBOX_STATE).equals(SmallFireboxMultiblock.FireboxState.FORMED)
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
+        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+        if (blockState.getValue(SmallFireboxMultiblock.FIREBOX_STATE).equals(SmallFireboxMultiblock.FireboxState.FORMED)
                 && blockEntity instanceof SmallFireboxBlockEntity fireboxBlockEntity) {
-            Utils.openMenu(pPlayer, fireboxBlockEntity);
+            Utils.openMenu(player, fireboxBlockEntity);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

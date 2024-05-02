@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.SmallFireboxHatchBlock;
 import net.minecraft.core.BlockPos;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public record SmallFireboxMultiblock() implements Multiblock {
+public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
     public static final EnumProperty<SmallFireboxMultiblock.FireboxState> FIREBOX_STATE = EnumProperty.create("firebox_state",
             SmallFireboxMultiblock.FireboxState.class);
     @Override
@@ -33,6 +34,11 @@ public record SmallFireboxMultiblock() implements Multiblock {
                         0, 0,
                         0, 0
                 ));
+    }
+
+    @Override
+    public Optional<BlockPos> getControllerPos(BlockPos multiblockPos, Level level) {
+        return Optional.empty();
     }
 
     @Override
@@ -84,7 +90,12 @@ public record SmallFireboxMultiblock() implements Multiblock {
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        return true;
+        return !level.getBlockState(blockPos).getValue(FIREBOX_STATE).equals(FireboxState.UNFORMED);
+    }
+
+    @Override
+    public FireboxTier getTier() {
+        return tier;
     }
 
     public enum FireboxState implements StringRepresentable {

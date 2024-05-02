@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.util;
 
 import java.util.Optional;
 
-public class Result<T, E extends Throwable> {
+public final class Result<T, E extends Throwable> {
     private final T okValue;
     private final E errValue;
 

@@ -21,5 +21,5 @@ public final class IRMultiblocks {
     public static final DeferredHolder<Multiblock, BlastFurnaceMultiblock> BLAST_FURNACE = MULTIBLOCKS.register("blast_furnace",
             BlastFurnaceMultiblock::new);
     public static final DeferredHolder<Multiblock, SmallFireboxMultiblock> SMALL_FIREBOX = MULTIBLOCKS.register("small_firebox",
-            SmallFireboxMultiblock::new);
+            () -> new SmallFireboxMultiblock(FireboxTiers.SMALL));
 }

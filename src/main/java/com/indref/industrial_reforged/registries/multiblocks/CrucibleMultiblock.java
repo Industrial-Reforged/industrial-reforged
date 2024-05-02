@@ -84,7 +84,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
             return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState());
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

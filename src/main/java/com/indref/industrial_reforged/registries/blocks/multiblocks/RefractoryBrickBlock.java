@@ -43,7 +43,7 @@ public class RefractoryBrickBlock extends Block implements Wrenchable, DisplayBl
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         if (!level.isClientSide() && !blockState.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED)) {
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);

@@ -166,7 +166,7 @@ public class FluidTankRenderer {
             if (fluidType.isSame(Fluids.EMPTY))
                 return tooltip;
 
-            Component displayName = fluidStack.getDisplayName();
+            Component displayName = fluidStack.getHoverName();
             tooltip.add(displayName);
 
             long amount = fluidStack.getAmount();

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities.energy.storage;
 
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.energy.EnergyStorage;
 import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
 import net.minecraft.world.item.ItemStack;
@@ -20,12 +21,22 @@ public class EnergyWrapper {
 
         @Override
         public int getEnergyStored() {
-            return itemStack.getData(IRAttachmentTypes.ENERGY.get()).getEnergyStored();
+            return itemStack.get(IRDataComponents.ENERGY).getEnergyStored();
         }
 
         @Override
         public void setEnergyStored(int value) {
-            itemStack.setData(IRAttachmentTypes.ENERGY.get(), new EnergyStorage(value));
+            itemStack.get(IRDataComponents.ENERGY).setEnergyStored(value);
+        }
+
+        @Override
+        public int getEnergyCapacity() {
+            return itemStack.get(IRDataComponents.ENERGY).getEnergyStored();
+        }
+
+        @Override
+        public void setEnergyCapacity(int value) {
+            itemStack.get(IRDataComponents.ENERGY).setEnergyCapacity(value);
         }
     }
 
@@ -43,7 +54,17 @@ public class EnergyWrapper {
 
         @Override
         public void setEnergyStored(int value) {
-            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new EnergyStorage(value));
+            blockEntity.getData(IRAttachmentTypes.ENERGY.get()).setEnergyStored(value);
+        }
+
+        @Override
+        public int getEnergyCapacity() {
+            return blockEntity.getData(IRAttachmentTypes.ENERGY.get()).getEnergyCapacity();
+        }
+
+        @Override
+        public void setEnergyCapacity(int value) {
+            blockEntity.getData(IRAttachmentTypes.ENERGY.get()).setEnergyCapacity(value);
         }
     }
 

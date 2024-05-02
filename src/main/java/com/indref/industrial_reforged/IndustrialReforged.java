@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
@@ -33,6 +34,8 @@ public final class IndustrialReforged {
         IRTabs.CREATIVE_TABS.register(modEventBus);
 
         IRRecipes.SERIALIZERS.register(modEventBus);
+
+        IRDataComponents.DATA_COMPONENT_TYPES.register(modEventBus);
 
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);

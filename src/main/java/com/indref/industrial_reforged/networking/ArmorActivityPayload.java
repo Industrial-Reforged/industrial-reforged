@@ -1,18 +1,26 @@
 package com.indref.industrial_reforged.networking;
 
-import com.indref.industrial_reforged.networking.data.ArmorActivitySyncData;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import com.indref.industrial_reforged.IndustrialReforged;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-public final class ArmorActivityPayload {
-    private static final ArmorActivityPayload INSTANCE = new ArmorActivityPayload();
 
-    public static ArmorActivityPayload getInstance() {
-        return INSTANCE;
-    }
+// Use conversion methods in ItemUtils class for the slot
+public record ArmorActivityPayload(int slot, boolean active)  implements CustomPacketPayload {
+    public static final Type<ArmorActivityPayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "armor_activity_payload"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, ArmorActivityPayload> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT,
+            ArmorActivityPayload::slot,
+            ByteBufCodecs.BOOL,
+            ArmorActivityPayload::active,
+            ArmorActivityPayload::new);
 
-    public void handleData(final ArmorActivitySyncData data, final PlayPayloadContext ctx) {
-        Player player = ctx.player().get();
-        player.getItemBySlot(data.slot()).getOrCreateTag().putBoolean("active", data.active());
+    @Override
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }
