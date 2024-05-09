@@ -1,11 +1,12 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -25,8 +26,10 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class ElectricHoeItem extends HoeItem implements IEnergyItem {
-    public ElectricHoeItem(Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties p_41339_) {
-        super(tier, p_41339_.stacksTo(1).attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed)));
+    public ElectricHoeItem(EnergyTier energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
+        super(tier, properties.stacksTo(1)
+                .attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
     }
 
     @Override

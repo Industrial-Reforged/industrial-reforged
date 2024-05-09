@@ -1,10 +1,8 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.ToolItem;
-import com.indref.industrial_reforged.api.items.SimpleElectricItem;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
@@ -21,18 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-
-import java.time.chrono.MinguoChronology;
 
 public class ScannerItem extends SimpleElectricItem implements ToolItem, DisplayItem {
-    public ScannerItem(Properties p_41383_) {
-        super(p_41383_);
-    }
-
-    @Override
-    public EnergyTier getEnergyTier() {
-        return EnergyTiers.LOW;
+    public ScannerItem(Properties p_41383_, EnergyTier energyTier) {
+        super(p_41383_, energyTier);
     }
 
     @Override

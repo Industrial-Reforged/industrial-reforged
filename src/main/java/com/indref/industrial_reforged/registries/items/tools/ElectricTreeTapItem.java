@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.items.ToolItem;
-import com.indref.industrial_reforged.api.items.SimpleElectricItem;
+import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -19,8 +19,8 @@ import java.util.Random;
 import static com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class ElectricTreeTapItem extends SimpleElectricItem implements ToolItem {
-    public ElectricTreeTapItem(Properties properties) {
-        super(properties);
+    public ElectricTreeTapItem(Properties properties, EnergyTier energyTier) {
+        super(properties, energyTier);
     }
 
     @Override
@@ -41,10 +41,5 @@ public class ElectricTreeTapItem extends SimpleElectricItem implements ToolItem 
             }
         }
         return InteractionResult.FAIL;
-    }
-
-    @Override
-    public EnergyTier getEnergyTier() {
-        return EnergyTiers.LOW;
     }
 }

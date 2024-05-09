@@ -6,10 +6,7 @@ import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyWrap
 import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
-import com.indref.industrial_reforged.api.items.SimpleFluidItem;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
-import com.indref.industrial_reforged.api.items.container.IHeatItem;
+import com.indref.industrial_reforged.api.items.container.*;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.blocks.CastingBasinRenderer;
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
@@ -44,7 +41,9 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStackSimple;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.lwjgl.glfw.GLFW;
@@ -131,10 +130,10 @@ public class IREvents {
         @SubscribeEvent
         public static void appendTooltips(ItemTooltipEvent event) {
             ItemStack item = event.getItemStack();
-            if (item.getOrDefault(IRDataComponents.MELTING, false)) {
+            if (ItemUtils.getTag(item).getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
-                        .append(String.valueOf(item.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0)))
+                        .append(String.valueOf(ItemUtils.getTag(item)))
                         .append("/10")
                         .withStyle(ChatFormatting.GRAY));
             }
@@ -145,6 +144,7 @@ public class IREvents {
     public static class ServerBus {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+            IndustrialReforged.LOGGER.debug("Register caps");
             for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof IEnergyItem)
                     event.registerItem(IRCapabilities.EnergyStorage.ITEM, (stack, ctx) -> new EnergyWrapper.Item(stack), item);
@@ -153,7 +153,11 @@ public class IREvents {
                     event.registerItem(IRCapabilities.HeatStorage.ITEM, (stack, ctx) -> new HeatWrapper.Item(stack), item);
 
                 if (item instanceof IFluidItem fluidItem)
-                    event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity()), item);
+                    event.registerItem(Capabilities.FluidHandler.ITEM,
+                            (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity(stack)), item);
+
+                //if (item instanceof IItemItem itemItem)
+                //    event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ItemStackHandler(itemItem.getSlots(stack)));
             }
 
             // Register all your block entity capabilities manually

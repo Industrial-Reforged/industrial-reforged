@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IEnergyItem {
     private static IEnergyStorage getCap(ItemStack itemStack) {
@@ -23,8 +22,12 @@ public interface IEnergyItem {
         onEnergyChanged(itemStack);
     }
 
-    default int getEnergyCapacity() {
+    default int getEnergyCapacity(ItemStack itemStack) {
        return getEnergyTier().getDefaultCapacity();
+    }
+
+    default void setEnergyCapacity(ItemStack itemStack, int value) {
+        getCap(itemStack).setEnergyCapacity(value);
     }
 
     EnergyTier getEnergyTier();
@@ -38,11 +41,11 @@ public interface IEnergyItem {
     }
 
     default boolean tryFillEnergy(ItemStack itemStack, int value) {
-        if (getEnergyStored(itemStack) + value <= getEnergyCapacity()) {
+        if (getEnergyStored(itemStack) + value <= getEnergyCapacity(itemStack)) {
             setEnergyStored(itemStack, getEnergyStored(itemStack) + value);
             return true;
         } else {
-            setEnergyStored(itemStack, getEnergyCapacity());
+            setEnergyStored(itemStack, getEnergyCapacity(itemStack));
         }
         return false;
     }

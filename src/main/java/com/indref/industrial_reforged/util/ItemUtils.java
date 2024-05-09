@@ -3,14 +3,16 @@ package com.indref.industrial_reforged.util;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.List;
@@ -79,9 +81,10 @@ public final class ItemUtils {
 
     public static float getChargeRatio(ChargeType type, ItemStack stack) {
         return switch (type) {
-            case FLUID -> (float) getFluidItem(stack).getFluidStored(stack) / getFluidItem(stack).getFluidCapacity();
+            case FLUID ->
+                    (float) getFluidItem(stack).getFluidStored(stack) / getFluidItem(stack).getFluidCapacity(stack);
             case ENERGY ->
-                    (float) getEnergyItem(stack).getEnergyStored(stack) / getEnergyItem(stack).getEnergyCapacity();
+                    (float) getEnergyItem(stack).getEnergyStored(stack) / getEnergyItem(stack).getEnergyCapacity(stack);
             default -> 0F;
         };
     }
@@ -107,7 +110,7 @@ public final class ItemUtils {
                 Component.translatable("indref.energy.desc.stored").withStyle(ChatFormatting.GRAY)
                         .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
                         .append(Component.literal(String.format("%s / %s", item.getEnergyStored(itemStack),
-                                item.getEnergyCapacity())).withStyle(ChatFormatting.AQUA))
+                                item.getEnergyCapacity(itemStack))).withStyle(ChatFormatting.AQUA))
         );
         tooltip.add(
                 Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GRAY)
@@ -127,9 +130,16 @@ public final class ItemUtils {
             tooltip.add(Component.translatable("fluid_cell.desc.amount").append(": ")
                     .append("%d/%d".formatted(
                             item.getFluidInTank(0).getAmount(),
-                            getFluidItem(itemStack).getFluidCapacity()))
+                            getFluidItem(itemStack).getFluidCapacity(itemStack)))
                     .withStyle(ChatFormatting.AQUA));
         }
     }
 
+    public static CompoundTag getTag(ItemStack itemStack) {
+        return itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).getUnsafe();
+    }
+
+    public static List<ItemStack> copyItems(List<ItemStack> itemStacks) {
+        return itemStacks.stream().map(ItemStack::copy).toList();
+    }
 }

@@ -1,21 +1,18 @@
 package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.gui.FluidTankRenderer;
-import com.indref.industrial_reforged.util.MouseUtil;
-import net.minecraft.client.Minecraft;
+
+import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
+import com.indref.industrial_reforged.api.gui.components.EnergyGuiComponent;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2i;
 
-import java.util.Optional;
-
-public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/centrifuge.png");
+public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(IndustrialReforged.MODID, "textures/gui/centrifuge.png");
 
     public CentrifugeScreen(CentrifugeMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
@@ -26,14 +23,14 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         super.init();
         this.inventoryLabelY = 10000;
         this.titleLabelY = 10000;
+        initComponents(
+                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 8))
+        );
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-
-        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
 
     @Override

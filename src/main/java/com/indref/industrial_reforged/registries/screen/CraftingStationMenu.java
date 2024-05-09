@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
+import com.indref.industrial_reforged.registries.blocks.machines.CraftingStationBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.recipes.ItemhandlerCraftingContainer;
 import com.indref.industrial_reforged.util.recipes.SmartItemHandlerSlot;
@@ -28,11 +29,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class CraftingStationMenu extends IRAbstractContainerMenu {
+public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStationBlockEntity> {
     // TODO: Throw out useless classes
     public static final int BLUEPRINT_SLOT = 28;
 
-    public final CraftingStationBlockEntity blockEntity;
     private final Level level;
     private ItemhandlerCraftingContainer craftSlots;
     private final ResultContainer resultSlots = new ResultContainer();
@@ -41,17 +41,16 @@ public class CraftingStationMenu extends IRAbstractContainerMenu {
     private final IItemHandler itemHandler;
 
     public CraftingStationMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(containerId, inv, (CraftingStationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public CraftingStationMenu(int pContainerId, Inventory inv, BlockEntity entity) {
-        super(IRMenuTypes.CRAFTING_STATION_MENU.get(), pContainerId, inv);
+    public CraftingStationMenu(int pContainerId, Inventory inv, CraftingStationBlockEntity entity) {
+        super(IRMenuTypes.CRAFTING_STATION_MENU.get(), pContainerId, inv, entity);
         checkContainerSize(inv, 1);
-        blockEntity = ((CraftingStationBlockEntity) entity);
         this.level = inv.player.level();
         this.player = inv.player;
-        this.access = ContainerLevelAccess.create(level, blockEntity.getBlockPos());
-        this.itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity).get();
+        this.access = ContainerLevelAccess.create(level, entity.getBlockPos());
+        this.itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, entity).get();
         this.craftSlots = new ItemhandlerCraftingContainer(itemHandler, this, 3, 3);
 
         addCraftingSlots(itemHandler);

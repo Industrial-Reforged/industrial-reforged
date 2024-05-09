@@ -2,11 +2,11 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
+import org.apache.commons.lang3.reflect.InheritanceUtils;
 
 import java.util.Optional;
 
@@ -19,22 +19,29 @@ import java.util.Optional;
  * are IEnergyBlocks
  */
 public interface IEnergyBlock {
-    default void setEnergyStored(BlockEntity blockEntity, int value) {
-        int prev = getEnergyStored(blockEntity);
+    default BlockEntity self() {
+        if (this instanceof BlockEntity blockEntity) {
+            return blockEntity;
+        }
+        throw new Error(this.getClass()+ "is not an instanceof blockentity even though IEnergyBlock is implemented for the class");
+    }
+
+    default void setEnergyStored(int value) {
+        int prev = getEnergyStored();
         if (prev == value) return;
 
-        IEnergyStorage energyStorage = blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), null);
+        IEnergyStorage energyStorage = self().getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, self().getBlockPos(), null);
         energyStorage.setEnergyStored(value);
         onEnergyChanged();
     }
 
-    default int getEnergyStored(BlockEntity blockEntity) {
-        IEnergyStorage energyStorage = blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), null);
+    default int getEnergyStored() {
+        IEnergyStorage energyStorage = self().getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, self().getBlockPos(), null);
         return energyStorage.getEnergyStored();
     }
 
-    default boolean canAcceptEnergy(BlockEntity blockEntity, int amount) {
-        return getEnergyStored(blockEntity) + amount < getEnergyCapacity();
+    default boolean canAcceptEnergy(int amount) {
+        return getEnergyStored() + amount < getEnergyCapacity();
     }
 
     default int getEnergyCapacity() {
@@ -47,20 +54,20 @@ public interface IEnergyBlock {
     default void onEnergyChanged() {
     }
 
-    default boolean tryDrainEnergy(BlockEntity blockEntity, int value) {
-        if (getEnergyStored(blockEntity) - value >= 0) {
-            setEnergyStored(blockEntity, getEnergyStored(blockEntity) - value);
+    default boolean tryDrainEnergy(int value) {
+        if (getEnergyStored() - value >= 0) {
+            setEnergyStored(getEnergyStored() - value);
             return true;
         }
         return false;
     }
 
-    default boolean tryFillEnergy(BlockEntity blockEntity, int value) {
-        if (getEnergyStored(blockEntity) + value <= getEnergyCapacity()) {
-            setEnergyStored(blockEntity, getEnergyStored(blockEntity) + value);
+    default boolean tryFillEnergy(int value) {
+        if (getEnergyStored() + value <= getEnergyCapacity()) {
+            setEnergyStored(getEnergyStored() + value);
             return true;
         } else {
-            setEnergyStored(blockEntity, getEnergyCapacity());
+            setEnergyStored(getEnergyCapacity());
         }
         return false;
     }

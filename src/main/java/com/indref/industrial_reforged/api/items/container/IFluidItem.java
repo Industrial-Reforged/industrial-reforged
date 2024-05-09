@@ -19,7 +19,7 @@ public interface IFluidItem {
         return fluidHandlerItem.getFluidInTank(0).getAmount();
     }
 
-    int getFluidCapacity();
+    int getFluidCapacity(ItemStack itemStack);
 
     /**
      * @return true if was able to fill, false if wasn't able to do so

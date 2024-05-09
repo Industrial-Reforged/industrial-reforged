@@ -1,13 +1,15 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.items.container.IHeatItem;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.api.data.attachments.AttachmentHeatStorage;
+import com.indref.industrial_reforged.api.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class SimpleHeatItem extends Item implements IHeatItem {
     public SimpleHeatItem(Item.Properties properties) {
-        super(properties);
+        super(properties.component(IRDataComponents.HEAT.get(), ComponentHeatStorage.EMPTY));
     }
 
     @Override

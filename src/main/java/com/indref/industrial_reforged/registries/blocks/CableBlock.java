@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class CableBlock extends PipeBlock {
                         nets.getEnets().mergeNets(net, network.get());
                         nets.setDirty();
                     }
-                } else if (level.getBlockEntity(pos) instanceof IEnergyBlock) {
+                } else if (BlockUtils.isEnergyBlock(level.getBlockEntity(pos))) {
                     Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
                     network.ifPresent(energyNet -> energyNet.add(pos, EnergyNet.EnergyTypes.INTERACTORS));
                 }
@@ -69,8 +71,8 @@ public class CableBlock extends PipeBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
-        if (level.getBlockEntity(facingBlockPos) instanceof IEnergyBlock && level instanceof ServerLevel serverLevel) {
+    public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
+        if (BlockUtils.isEnergyBlock(level.getBlockEntity(facingBlockPos)) && level instanceof ServerLevel serverLevel) {
             Optional<EnergyNet> network = EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos);
             network.ifPresent(net -> net.add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS));
         }
@@ -82,12 +84,12 @@ public class CableBlock extends PipeBlock {
     }
 
     @Override
-    public boolean canConnectToPipe(Block connectTo) {
-        return connectTo instanceof CableBlock;
+    public boolean canConnectToPipe(BlockState connectTo) {
+        return connectTo.getBlock() instanceof CableBlock;
     }
 
     @Override
     public boolean canConnectTo(BlockEntity connectTo) {
-        return (connectTo instanceof IEnergyBlock) || BlockUtils.getBlockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo) != null;
+        return BlockUtils.isEnergyBlock(connectTo) || BlockUtils.getBlockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo).isPresent();
     }
 }

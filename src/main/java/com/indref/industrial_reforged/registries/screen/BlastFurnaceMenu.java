@@ -24,17 +24,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class BlastFurnaceMenu extends IRAbstractContainerMenu {
+public class BlastFurnaceMenu extends IRAbstractContainerMenu<BlastFurnaceBlockEntity> {
     public final BlastFurnaceBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
     public BlastFurnaceMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, (BlastFurnaceBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
-    public BlastFurnaceMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(IRMenuTypes.BLAST_FURNACE_MENU.get(), pContainerId, inv);
+    public BlastFurnaceMenu(int pContainerId, Inventory inv, BlastFurnaceBlockEntity entity, ContainerData data) {
+        super(IRMenuTypes.BLAST_FURNACE_MENU.get(), pContainerId, inv, entity);
         checkContainerSize(inv, 1);
         blockEntity = (BlastFurnaceBlockEntity) entity;
         this.level = inv.player.level();

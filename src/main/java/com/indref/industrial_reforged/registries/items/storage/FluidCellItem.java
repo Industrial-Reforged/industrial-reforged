@@ -1,18 +1,15 @@
 package com.indref.industrial_reforged.registries.items.storage;
 
-import com.indref.industrial_reforged.api.items.SimpleFluidItem;
+import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.ItemUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -25,10 +22,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-
-import java.util.List;
 
 import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 
@@ -88,7 +82,7 @@ public class FluidCellItem extends SimpleFluidItem {
                 level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 11);
                 ItemStack stack = new ItemStack(IRItems.FLUID_CELL.get());
                 IFluidItem fluidItem = ItemUtils.getFluidItem(stack);
-                fluidItem.tryFillFluid(liquidBlock.getFluid().getSource(), 1000, stack);
+                fluidItem.tryFillFluid(liquidBlock.fluid.getSource(), 1000, stack);
                 return stack;
             }
         }
@@ -101,7 +95,7 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
-    public int getFluidCapacity() {
+    public int getFluidCapacity(ItemStack itemStack) {
         return this.capacity;
     }
 }

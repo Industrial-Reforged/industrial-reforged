@@ -157,9 +157,6 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
         update();
     }
 
-    public void tick() {
-    }
-
     protected final void addHeatStorage(int capacity) {
         this.heatCapacity = capacity;
     }

@@ -1,6 +1,9 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.api.items.electric;
 
+import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -11,22 +14,25 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyItem {
     private final int energyUsage;
     private final TagKey<Block> blocks;
+    protected final EnergyTier energyTier;
 
-    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
-        super(tier, mineableBlocks, properties.attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed)));
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, EnergyTier energyTier, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
+        super(tier, mineableBlocks, properties
+                .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
         this.energyUsage = energyUsage;
         this.blocks = mineableBlocks;
+        this.energyTier = energyTier;
     }
 
-    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
-        this(baseAttackDamage, attackSpeed, -1, tier, mineableBlocks, properties);
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, EnergyTier energyTier, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
+        this(baseAttackDamage, attackSpeed, 3, energyTier, tier, mineableBlocks, properties);
     }
 
     @Override
@@ -51,7 +57,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     public int getEnergyUsage(ItemStack itemStack) {
-        return energyUsage != -1 ? energyUsage : 3;
+        return energyUsage;
     }
 
     @Override

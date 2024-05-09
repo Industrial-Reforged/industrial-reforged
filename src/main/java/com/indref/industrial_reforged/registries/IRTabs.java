@@ -185,10 +185,10 @@ public final class IRTabs {
     }
 
     public static void addPoweredItem(CreativeModeTab.Output output, Supplier<Item> item) {
-        output.accept(item.get());
+        output.accept(item.get().getDefaultInstance());
         ItemStack stack = new ItemStack(item.get());
         IEnergyItem energyItem = (IEnergyItem) stack.getItem();
-        energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity());
+        energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity(stack));
 
         output.accept(stack);
     }
@@ -200,14 +200,14 @@ public final class IRTabs {
         output.accept(stack);
         ItemStack energyStack = stack.copy();
         IEnergyItem energyItem = (IEnergyItem) energyStack.getItem();
-        energyItem.setEnergyStored(energyStack, energyItem.getEnergyCapacity());
+        energyItem.setEnergyStored(energyStack, energyItem.getEnergyCapacity(energyStack));
 
         output.accept(energyStack);
     }
 
     public static void addVariantForAllFluids(CreativeModeTab.Output output, Supplier<Item> item) {
         // Add base item
-        output.accept(item.get());
+        output.accept(item.get().getDefaultInstance());
         Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = BuiltInRegistries.FLUID.entrySet();
         IndustrialReforged.LOGGER.info(fluids.toString());
         for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
@@ -215,7 +215,6 @@ public final class IRTabs {
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
-                // IRPackets.sendToClients(new S2CFluidSync(fluid.getValue(), 1000, stack));
                 IndustrialReforged.LOGGER.info("Registering fluid cell: " + fluid.getValue());
                 output.accept(stack);
             }

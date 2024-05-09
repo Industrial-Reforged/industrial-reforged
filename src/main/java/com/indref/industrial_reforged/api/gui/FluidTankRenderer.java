@@ -180,7 +180,7 @@ public class FluidTankRenderer {
                 tooltip.add(amountString.withStyle(ChatFormatting.GRAY));
             }
         } catch (RuntimeException e) {
-            IndustrialReforged.LOGGER.error("Failed to get tooltip for fluid: " + e);
+            IndustrialReforged.LOGGER.error("Failed to get tooltip for fluid: ", e);
         }
 
         return tooltip;

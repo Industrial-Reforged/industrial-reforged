@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.data.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.storage.IHeatStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 

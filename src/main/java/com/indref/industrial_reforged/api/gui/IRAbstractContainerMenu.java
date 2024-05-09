@@ -1,14 +1,22 @@
 package com.indref.industrial_reforged.api.gui;
 
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class IRAbstractContainerMenu extends AbstractContainerMenu {
-    protected IRAbstractContainerMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inv) {
+public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> extends AbstractContainerMenu {
+    private final T blockEntity;
+
+    public T getBlockEntity() {
+        return blockEntity;
+    }
+
+    protected IRAbstractContainerMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inv, T blockEntity) {
         super(menuType, containerId);
+        this.blockEntity = blockEntity;
     }
 
     protected void addPlayerInventory(Inventory playerInventory) {

@@ -1,9 +1,11 @@
 package com.indref.industrial_reforged.api.capabilities.energy.storage;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.energy.EnergyStorage;
-import com.indref.industrial_reforged.api.data.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.data.attachments.AttachmentEnergyStorage;
+import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -26,17 +28,17 @@ public class EnergyWrapper {
 
         @Override
         public void setEnergyStored(int value) {
-            itemStack.get(IRDataComponents.ENERGY).setEnergyStored(value);
+            itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(value, getEnergyCapacity()));
         }
 
         @Override
         public int getEnergyCapacity() {
-            return itemStack.get(IRDataComponents.ENERGY).getEnergyStored();
+            return itemStack.get(IRDataComponents.ENERGY).getEnergyCapacity();
         }
 
         @Override
         public void setEnergyCapacity(int value) {
-            itemStack.get(IRDataComponents.ENERGY).setEnergyCapacity(value);
+            itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(getEnergyStored(), value));
         }
     }
 
@@ -54,7 +56,7 @@ public class EnergyWrapper {
 
         @Override
         public void setEnergyStored(int value) {
-            blockEntity.getData(IRAttachmentTypes.ENERGY.get()).setEnergyStored(value);
+            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new AttachmentEnergyStorage(value, getEnergyCapacity()));
         }
 
         @Override
@@ -64,7 +66,7 @@ public class EnergyWrapper {
 
         @Override
         public void setEnergyCapacity(int value) {
-            blockEntity.getData(IRAttachmentTypes.ENERGY.get()).setEnergyCapacity(value);
+            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new AttachmentEnergyStorage(getEnergyStored(), value));
         }
     }
 

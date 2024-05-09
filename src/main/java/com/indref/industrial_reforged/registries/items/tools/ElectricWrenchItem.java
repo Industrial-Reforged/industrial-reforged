@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.Wrenchable;
 import com.indref.industrial_reforged.api.items.ToolItem;
-import com.indref.industrial_reforged.api.items.SimpleElectricItem;
+import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.BlockPos;
@@ -17,13 +17,8 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class ElectricWrenchItem extends SimpleElectricItem implements ToolItem {
-    public ElectricWrenchItem(Item.Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public EnergyTier getEnergyTier() {
-        return EnergyTiers.LOW;
+    public ElectricWrenchItem(Item.Properties properties, EnergyTier energyTier) {
+        super(properties, energyTier);
     }
 
     @Override
@@ -63,7 +58,7 @@ public class ElectricWrenchItem extends SimpleElectricItem implements ToolItem {
     }
 
     @Override
-    public int getEnergyCapacity() {
+    public int getEnergyCapacity(ItemStack itemStack) {
         return 10000;
     }
 }

@@ -36,14 +36,13 @@ public final class IndustrialReforged {
         IRRecipes.SERIALIZERS.register(modEventBus);
 
         IRDataComponents.DATA_COMPONENT_TYPES.register(modEventBus);
+        IRAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
 
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
 
         IRFluids.FLUIDS.register(modEventBus);
         IRFluidTypes.FLUID_TYPES.register(modEventBus);
-
-        IRAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
     }

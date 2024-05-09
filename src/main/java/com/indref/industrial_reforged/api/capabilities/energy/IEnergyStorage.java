@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.data.energy;
+package com.indref.industrial_reforged.api.capabilities.energy;
 
 public interface IEnergyStorage {
     int getEnergyStored();

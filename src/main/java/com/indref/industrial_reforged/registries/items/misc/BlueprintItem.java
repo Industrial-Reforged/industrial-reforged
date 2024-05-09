@@ -20,7 +20,7 @@ public class BlueprintItem extends Item {
     public static final String HAS_RECIPE_KEY = "blueprint_has_recipe";
 
     public BlueprintItem(Properties p_41383_) {
-        super(p_41383_);
+        super(p_41383_.component(IRDataComponents.HAS_RECIPE, false).component(IRDataComponents.STORED_RECIPE, List.of()));
     }
 
     @Override

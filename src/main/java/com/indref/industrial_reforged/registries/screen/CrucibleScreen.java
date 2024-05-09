@@ -25,7 +25,7 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
             new ResourceLocation(IndustrialReforged.MODID, "textures/gui/crucible.png");
 
     private FluidTankRenderer renderer;
-    private CrucibleMenu menu;
+    private final CrucibleMenu menu;
 
     public CrucibleScreen(CrucibleMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
@@ -41,19 +41,19 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
     }
 
     private void assignFluidRenderer() {
-        Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
+        Optional<FluidTank> fluidTank = menu.getBlockEntity().getFluidTank();
         fluidTank.ifPresent(tank -> renderer = new FluidTankRenderer(tank.getCapacity(), true, 52, 52));
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        if (menu.blockEntity.getFluidTank().isEmpty()) return;
+        if (menu.getBlockEntity().getFluidTank().isEmpty()) return;
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        renderer.render(guiGraphics.pose(), x + 98, y + 18, menu.blockEntity.getFluidTank().get().getFluid());
+        renderer.render(guiGraphics.pose(), x + 98, y + 18, menu.getBlockEntity().getFluidTank().get().getFluid());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
 
     private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
-            Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
+            Optional<FluidTank> fluidTank = menu.getBlockEntity().getFluidTank();
             fluidTank.ifPresent(tank -> guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(tank.getFluid()),
                     Optional.empty(), pMouseX - x + 45, pMouseY - y));
         }
@@ -76,7 +76,7 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        int temperature = menu.blockEntity.getHeatStored(menu.blockEntity);
+        int temperature = menu.getBlockEntity().getHeatStored(menu.getBlockEntity());
 
         guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("Temperature: " + temperature + "°C").withStyle(ChatFormatting.WHITE), x + imageWidth - 95, y + 5, 0);
     }

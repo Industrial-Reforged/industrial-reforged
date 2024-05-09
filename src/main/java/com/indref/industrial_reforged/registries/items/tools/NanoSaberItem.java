@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.items.ElectricSwordItem;
+import com.indref.industrial_reforged.api.items.electric.ElectricSwordItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -24,9 +24,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class NanoSaberItem extends ElectricSwordItem implements IEnergyItem {
-    public NanoSaberItem(Properties p_43272_) {
-        super(Tiers.DIAMOND, -1, -3F, p_43272_);
+public class NanoSaberItem extends ElectricSwordItem {
+    public NanoSaberItem(Properties p_43272_, EnergyTier energyTier) {
+        super(energyTier, Tiers.DIAMOND, -1, -3F, p_43272_);
     }
 
     @Override

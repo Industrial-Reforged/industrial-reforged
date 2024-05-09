@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.items.storage;
 
 import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
@@ -25,5 +26,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 //TODO: Refactor this into api and use caps
-public class ToolboxItem {
+public class ToolboxItem extends AdvancedBundleItem {
+    public ToolboxItem(Properties pProperties) {
+        super(pProperties);
+    }
+
+    @Override
+    public int getSlots(ItemStack itemStack) {
+        return 1;
+    }
 }

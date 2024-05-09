@@ -1,12 +1,9 @@
 package com.indref.industrial_reforged.registries.items.storage;
 
-import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.items.SimpleElectricItem;
+import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -14,7 +11,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -24,25 +20,15 @@ import java.util.List;
 
 public class BatteryItem extends SimpleElectricItem {
     public static final String ENERGY_STAGE_KEY = "energy_stage";
-
-    private final EnergyTier energyTier;
     private final int capacity;
 
     public BatteryItem(Properties properties, EnergyTier energyTier) {
-        super(properties);
-        this.energyTier = energyTier;
-        this.capacity = energyTier.getDefaultCapacity();
+        this(properties, energyTier, energyTier.getDefaultCapacity());
     }
 
     public BatteryItem(Properties properties, EnergyTier energyTier, int capacity) {
-        super(properties);
-        this.energyTier = energyTier;
+        super(properties.component(IRDataComponents.BATTERY_STAGE, 0),energyTier);
         this.capacity = capacity;
-    }
-
-    @Override
-    public EnergyTier getEnergyTier() {
-        return this.energyTier;
     }
 
     public int getCapacity() {

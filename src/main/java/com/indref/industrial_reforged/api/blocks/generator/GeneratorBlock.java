@@ -21,7 +21,7 @@ public abstract class GeneratorBlock extends RotatableEntityBlock {
         super(properties);
     }
 
-    public abstract Optional<BlockEntityType<? extends ContainerBlockEntity>> getBlockEntity();
+    public abstract Optional<BlockEntityType<? extends GeneratorBlockEntity>> getBlockEntity();
 
     @Nullable
     @Override

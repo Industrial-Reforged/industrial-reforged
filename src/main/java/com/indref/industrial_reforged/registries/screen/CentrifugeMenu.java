@@ -19,26 +19,22 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeMenu extends IRAbstractContainerMenu {
-
-    public final CentrifugeBlockEntity blockEntity;
+public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntity> {
     private final Level level;
     private final ContainerData data;
     private final ContainerLevelAccess access;
     private final Player player;
 
-
     public CentrifugeMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, (CentrifugeBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
-    public CentrifugeMenu(int containerId, Inventory inv, BlockEntity blockEntity, ContainerData data) {
-        super(IRMenuTypes.CENTRIFUGE_MENU.get(), containerId, inv);
+    public CentrifugeMenu(int containerId, Inventory inv, CentrifugeBlockEntity blockEntity, ContainerData data) {
+        super(IRMenuTypes.CENTRIFUGE_MENU.get(), containerId, inv, blockEntity);
         this.level = inv.player.level();
         this.data = data;
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(level, blockEntity.getBlockPos());
-        this.blockEntity = (CentrifugeBlockEntity) blockEntity;
     }
 
     @Override

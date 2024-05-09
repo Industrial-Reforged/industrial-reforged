@@ -44,7 +44,7 @@ public class FireBoxScreen extends AbstractContainerScreen<FireBoxMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        int temperature = menu.blockEntity.getHeatStored(menu.blockEntity);
+        int temperature = menu.getBlockEntity().getHeatStored(menu.getBlockEntity());
 
         guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("Temperature: " + temperature + "°C").withStyle(ChatFormatting.WHITE), x + imageWidth - 95, y + 5, 0);
     }
@@ -54,8 +54,8 @@ public class FireBoxScreen extends AbstractContainerScreen<FireBoxMenu> {
         int j = this.topPos;
         boolean i1;
         int j1;
-        if (this.menu.blockEntity.isActive()) {
-            float burnTime = ((float) this.menu.blockEntity.getBurnTime() / this.menu.blockEntity.getMaxBurnTime());
+        if (this.menu.getBlockEntity().isActive()) {
+            float burnTime = ((float) this.menu.getBlockEntity().getBurnTime() / this.menu.getBlockEntity().getMaxBurnTime());
             IndustrialReforged.LOGGER.debug("Burn time: "+burnTime);
             j1 = Mth.ceil(burnTime * 13F);
             pGuiGraphics.blitSprite(LIT_PROGRESS_SPRITE, 14, 14, 0, 14 - j1, i + 80, j + 20 + 14 - j1, 14, j1);

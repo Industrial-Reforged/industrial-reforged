@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -112,10 +113,10 @@ public abstract class PipeBlock extends Block implements Wrenchable {
 
     // Check for newly added blocks
     @Override
-    public BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
+    public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         int connectionIndex = facingDirection.ordinal();
-        Optional<BlockEntity> blockEntity = BlockUtils.blockEntityAt(level, blockPos);
-        if (canConnectToPipe(facingBlockState.getBlock()) || (blockEntity.isPresent() && canConnectTo(blockEntity.get()))) {
+        Optional<BlockEntity> blockEntity = BlockUtils.blockEntityAt(level, facingBlockPos);
+        if (canConnectToPipe(facingBlockState) || (blockEntity.isPresent() && canConnectTo(blockEntity.get()))) {
             return blockState.setValue(CONNECTION[connectionIndex], true);
         } else if (facingBlockState.is(Blocks.AIR)) {
             return blockState.setValue(CONNECTION[connectionIndex], false);
@@ -134,7 +135,7 @@ public abstract class PipeBlock extends Block implements Wrenchable {
         for (Direction direction : Direction.values()) {
             int connectionIndex = direction.ordinal();
             BlockPos facingBlockPos = blockPos.relative(direction);
-            Optional<BlockEntity> blockEntity = BlockUtils.blockEntityAt(level, blockPos);
+            Optional<BlockEntity> blockEntity = BlockUtils.blockEntityAt(level, facingBlockPos);
 
             if (blockEntity.isPresent() && canConnectTo(blockEntity.get())) {
                 blockState = blockState.setValue(CONNECTION[connectionIndex], true);
@@ -147,7 +148,7 @@ public abstract class PipeBlock extends Block implements Wrenchable {
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState blockState) {
+    public @NotNull RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
 
@@ -156,7 +157,7 @@ public abstract class PipeBlock extends Block implements Wrenchable {
         builder.add(CONNECTION[0], CONNECTION[1], CONNECTION[2], CONNECTION[3], CONNECTION[4], CONNECTION[5]);
     }
 
-    public abstract boolean canConnectToPipe(Block connectTo);
+    public abstract boolean canConnectToPipe(BlockState connectTo);
 
     public abstract boolean canConnectTo(@Nullable BlockEntity connectTo);
 }

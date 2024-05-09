@@ -1,14 +1,12 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.other.TapeMeasureData;
+import com.indref.industrial_reforged.api.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -25,14 +23,14 @@ public class TapeMeasureItem extends ToolItem {
     public static final String EXTENDED_KEY = "tape_measure_extended";
 
     public TapeMeasureItem(Properties properties) {
-        super(properties);
+        super(properties.component(IRDataComponents.TAPE_MEASURE_DATA, ComponentTapeMeasure.EMPTY));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack useItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
         if (player.isShiftKeyDown() && useItem.get(IRDataComponents.TAPE_MEASURE_DATA).tape_measure_extended()) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new TapeMeasureData(BlockPos.ZERO, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
             return InteractionResultHolder.success(useItem);
         }
         return InteractionResultHolder.fail(useItem);
@@ -44,7 +42,7 @@ public class TapeMeasureItem extends ToolItem {
         BlockPos blockPos = useOnContext.getClickedPos();
         Player player = useOnContext.getPlayer();
         if (!player.isCrouching() && isExtended(useItem) == 0) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new TapeMeasureData(blockPos, true));
+            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(blockPos, true));
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
@@ -79,10 +77,10 @@ public class TapeMeasureItem extends ToolItem {
                 }
             }
 
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new TapeMeasureData(BlockPos.ZERO, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new TapeMeasureData(BlockPos.ZERO, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
@@ -126,6 +124,6 @@ public class TapeMeasureItem extends ToolItem {
 
     public static float isExtended(ItemStack stack) {
         return stack.getOrDefault(IRDataComponents.TAPE_MEASURE_DATA,
-                new TapeMeasureData(BlockPos.ZERO, false)).tape_measure_extended() ? 1 : 0;
+                new ComponentTapeMeasure(BlockPos.ZERO, false)).tape_measure_extended() ? 1 : 0;
     }
 }

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class CentrifugeBlockEntity extends ContainerBlockEntity implements IEnergyBlock, MenuProvider {
+public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuProvider {
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
         addEnergyStorage(getEnergyTier().get());

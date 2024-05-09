@@ -5,7 +5,9 @@ import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
+import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
+import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.client.Minecraft;
@@ -16,7 +18,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -30,16 +31,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem {
+public class ThermometerItem extends SimpleHeatItem implements DisplayItem, ToolItem {
     public static final String DISPLAY_TEMPERATURE_KEY = "thermometer_temperature";
 
     public ThermometerItem(Properties properties) {
-        super(properties);
+        super(properties.component(IRDataComponents.THERMOMETER_STAGE, 0));
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
         }
         itemStack.set(IRDataComponents.THERMOMETER_STAGE, Math.round((float) getHeatStored(itemStack) / 1000));
 
-        if (getHeatStored(itemStack) >= getHeatCapacity()) {
+        if (getHeatStored(itemStack) >= getHeatCapacity(itemStack)) {
             explodeThermometer(player, itemStack);
         }
     }
@@ -102,17 +102,22 @@ public class ThermometerItem extends ToolItem implements DisplayItem, IHeatItem 
     }
 
     @Override
-    public int getHeatCapacity() {
+    public int getHeatCapacity(ItemStack itemStack) {
         return 7000;
     }
 
     @Override
     public void appendHoverText(ItemStack p_41421_, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
-        tooltip.add(Component.literal("Heat Stored: ").append("%d/%d".formatted(getHeatStored(p_41421_), getHeatCapacity())));
+        tooltip.add(Component.literal("Heat Stored: ").append("%d/%d".formatted(getHeatStored(p_41421_), getHeatCapacity(p_41421_))));
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack p_150899_) {
         return false;
     }
 }

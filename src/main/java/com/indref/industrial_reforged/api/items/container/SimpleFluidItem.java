@@ -1,32 +1,31 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public abstract class SimpleFluidItem extends Item implements IFluidItem {
     private final int capacity;
     public SimpleFluidItem(Properties properties, int capacity) {
-        super(properties);
+        super(properties.component(IRDataComponents.FLUID.get(), SimpleFluidContent.EMPTY));
         this.capacity = capacity;
     }
 
     @Override
-    public int getFluidCapacity() {
+    public int getFluidCapacity(ItemStack itemStack) {
         return this.capacity;
     }
 

@@ -84,7 +84,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         }
     }
 
-    @Override
     public void tick() {
         if (isMainController()) {
             List<RecipeHolder<BlastFurnaceRecipe>> recipes = level.getRecipeManager()

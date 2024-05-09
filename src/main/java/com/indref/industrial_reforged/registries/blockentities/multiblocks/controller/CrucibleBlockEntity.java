@@ -16,6 +16,7 @@ import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleCont
 import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
+import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -92,9 +93,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 if (recipe.isPresent()) {
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
-                    if (itemStack.is(input) && itemStack.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0).intValue() >= 10) {
+                    if (itemStack.is(input) && ItemUtils.getTag(itemStack).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
                         itemStack.shrink(1);
-                        itemStack.set(IRDataComponents.MELTING_BARWIDTH, 0F);
+                        ItemUtils.getTag(itemStack).putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
                         if (getFluidTank().isPresent()) {
                             FluidStack resultFluid = recipe.get().value().getResultFluid();
                             this.getFluidTank().get().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
@@ -114,12 +115,12 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.get().value().getIngredients().get(0).getItems()[0].getItem();
                     if (itemStack.is(input)) {
-                        if (!itemStack.getOrDefault(IRDataComponents.MELTING, false))
-                            itemStack.set(IRDataComponents.MELTING, true);
-                        float pValue = itemStack.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0).intValue() + ((float) 1 / recipe.get().value().getDuration()) * 6;
+                        if (!ItemUtils.getTag(itemStack).getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
+                            ItemUtils.getTag(itemStack).putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
+                        float pValue = ItemUtils.getTag(itemStack).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().value().getDuration()) * 6;
                         if (pValue < 0) pValue = 0;
                         IndustrialReforged.LOGGER.info("Progress: {}", pValue);
-                        itemStack.set(IRDataComponents.MELTING_BARWIDTH, pValue);
+                        ItemUtils.getTag(itemStack).putInt(CrucibleProgressRenderer.BARWIDTH_KEY, (int) pValue);
                     }
                 }
             }

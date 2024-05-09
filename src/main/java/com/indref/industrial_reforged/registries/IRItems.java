@@ -38,21 +38,21 @@ public final class IRItems {
     public static final Supplier<Item> TREE_TAP = registerItem("tree_tap",
             () -> new TreeTapItem(new Item.Properties()));
     public static final Supplier<Item> NANO_SABER = registerItem("nano_saber",
-            () -> new NanoSaberItem(new Item.Properties()));
+            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final Supplier<Item> SCANNER = registerItem("scanner",
-            () -> new ScannerItem(new Item.Properties()));
+            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM));
     public static final Supplier<Item> ELECTRIC_WRENCH = registerItem("electric_wrench",
-            () -> new ElectricWrenchItem(new Item.Properties()));
+            () -> new ElectricWrenchItem(new Item.Properties(), EnergyTiers.LOW));
     public static final Supplier<Item> ELECTRIC_HOE = registerItem("electric_hoe",
-            () -> new ElectricHoeItem(Tiers.IRON, 0, 0, new Item.Properties()));
+            () -> new ElectricHoeItem(EnergyTiers.LOW, Tiers.IRON, 0, 0, new Item.Properties()));
     public static final Supplier<Item> ROCK_CUTTER = registerItem("rock_cutter",
-            () -> new RockCutterItem(1, -2.8F, 54, Tiers.IRON, EnergyTiers.LOW, new Item.Properties()));
+            () -> new RockCutterItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
     public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
-            () -> new ElectricTreeTapItem(new Item.Properties()));
+            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
     public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
-            () -> new ElectricDrillItem(1, -2.8F, 54, Tiers.IRON, EnergyTiers.LOW, new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
     public static final Supplier<Item> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new ElectricDrillItem(1, -2.8F, 96, Tiers.DIAMOND, EnergyTiers.HIGH, new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
     public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
     public static final Supplier<Item> BLUEPRINT = registerItem("blueprint",
@@ -158,10 +158,10 @@ public final class IRItems {
             () -> new Item(new Item.Properties()));
 
     public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
-            () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+            () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
     public static final Supplier<Item> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
-            () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
+            () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack p_41421_, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
                     tooltip.add(Component.literal("Only for testing").withStyle(ChatFormatting.RED));

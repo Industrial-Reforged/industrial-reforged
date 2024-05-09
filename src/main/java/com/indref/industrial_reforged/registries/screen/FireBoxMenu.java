@@ -22,24 +22,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class FireBoxMenu extends IRAbstractContainerMenu {
-    public final FireboxBlockEntity blockEntity;
+public class FireBoxMenu extends IRAbstractContainerMenu<FireboxBlockEntity> {
     private final Level level;
     private final Player player;
 
     public FireBoxMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, (FireboxBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
     }
 
-    public FireBoxMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(IRMenuTypes.FIREBOX_MENU.get(), pContainerId, inv);
+    public FireBoxMenu(int pContainerId, Inventory inv, FireboxBlockEntity entity, ContainerData data) {
+        super(IRMenuTypes.FIREBOX_MENU.get(), pContainerId, inv, entity);
         this.level = inv.player.level();
-        this.blockEntity = ((FireboxBlockEntity) entity);
         this.player = inv.player;
 
         checkContainerSize(inv, 1);
 
-        Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
+        Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, entity);
         itemHandler.ifPresent(handler -> this.addSlot(new SlotItemHandler(handler, 0, 80, 36)));
 
         addDataSlots(data);
@@ -54,8 +52,8 @@ public class FireBoxMenu extends IRAbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        for (Block block : blockEntity.getType().getValidBlocks()){
-            boolean valid = stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, block);
+        for (Block block : getBlockEntity().getType().getValidBlocks()) {
+            boolean valid = stillValid(ContainerLevelAccess.create(level, getBlockEntity().getBlockPos()), player, block);
             if (valid) {
                 return true;
             }

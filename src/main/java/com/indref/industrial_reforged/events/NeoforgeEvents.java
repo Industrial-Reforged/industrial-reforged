@@ -22,8 +22,9 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_ASCEND;
@@ -43,23 +44,23 @@ public class NeoforgeEvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.GAME)
     public static class CommonBus {
         @SubscribeEvent
-        public static void playerTick(TickEvent.PlayerTickEvent event) {
-            if (event.player.level().isClientSide()) return;
+        public static void playerTick(PlayerTickEvent.Pre event) {
+            if (event.getEntity().level().isClientSide()) return;
 
-            Player player = event.player;
+            Player player = event.getEntity();
             Level level = player.level();
 
             NonNullList<ItemStack> items = player.getInventory().items;
             for (ItemStack item : items) {
-                if (item.getOrDefault(IRDataComponents.MELTING, false)) {
+                if (ItemUtils.getTag(item).getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
                     if (level.getGameTime() % 20 == 0) {
-                        item.set(IRDataComponents.MELTING_BARWIDTH, item.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0F) - 1);
+                        ItemUtils.getTag(item).putInt(CrucibleProgressRenderer.BARWIDTH_KEY, ItemUtils.getTag(item).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
                         Registry<DamageType> damageTypes = player.damageSources().damageTypes;
                         player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 4);
                     }
 
-                    if (item.getOrDefault(IRDataComponents.MELTING_BARWIDTH, 0F) <= 0)
-                        item.set(IRDataComponents.MELTING, false);
+                    if (ItemUtils.getTag(item).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0)
+                        ItemUtils.getTag(item).putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
                 }
             }
         }
@@ -69,23 +70,23 @@ public class NeoforgeEvents {
     public static class Client {
 
         @SubscribeEvent
-        public static void onClientTick(TickEvent.ClientTickEvent event) {
+        public static void onClientTickPost(ClientTickEvent.Post event) {
             Player player = Minecraft.getInstance().player;
-            if (event.phase == TickEvent.Phase.END) { // Only call code once as the tick event is called twice every tick
-                while (JETPACK_TOGGLE.get().consumeClick()) {
-                    ItemStack jetpackItem = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
-                    if (jetpackItem.getItem() instanceof JetpackItem) {
-                        JetpackItem.toggle(jetpackItem);
-                        PacketDistributor.sendToServer(new ArmorActivityPayload(ItemUtils.indexFromEquipmentSlot(EquipmentSlot.CHEST),
-                                player.getItemBySlot(EquipmentSlot.CHEST).getOrDefault(IRDataComponents.ACTIVE, false)));
-                    }
+            while (JETPACK_TOGGLE.get().consumeClick()) {
+                ItemStack jetpackItem = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
+                if (jetpackItem.getItem() instanceof JetpackItem) {
+                    JetpackItem.toggle(jetpackItem);
+                    PacketDistributor.sendToServer(new ArmorActivityPayload(ItemUtils.indexFromEquipmentSlot(EquipmentSlot.CHEST),
+                            player.getItemBySlot(EquipmentSlot.CHEST).getOrDefault(IRDataComponents.ACTIVE, false)));
                 }
             }
+        }
 
-            if (event.phase == TickEvent.Phase.START) {
-                if (JETPACK_ASCEND.get().isDown()) {
-                    InputUtils.update(player, true, false, false, false, false, false, false);
-                }
+        @SubscribeEvent
+        public static void onClientTickPre(ClientTickEvent.Pre event) {
+            if (JETPACK_ASCEND.get().isDown()) {
+                Player player = Minecraft.getInstance().player;
+                InputUtils.update(player, true, false, false, false, false, false, false);
             }
         }
     }
