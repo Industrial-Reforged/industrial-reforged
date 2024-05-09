@@ -94,7 +94,7 @@ public class EnergyNet {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (BlockUtils.isEnergyBlock(blockEntity)) {
                 IEnergyBlock energyBlock = (IEnergyBlock) blockEntity;
-                if (energyBlock.getEnergyStored(blockEntity) < energyBlock.getEnergyCapacity()) {
+                if (energyBlock.getEnergyStored() < energyBlock.getEnergyCapacity()) {
 
                 }
             }
@@ -127,7 +127,7 @@ public class EnergyNet {
             BlockPos blockPos = consumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (BlockUtils.isEnergyBlock(blockEntity)) {
-                if (((IEnergyBlock) blockEntity).canAcceptEnergy(blockEntity, initialAmount[i]))
+                if (((IEnergyBlock) blockEntity).canAcceptEnergy(initialAmount[i]))
                     finalConsumers.add(blockPos);
             }
         }
@@ -141,7 +141,7 @@ public class EnergyNet {
             BlockPos blockPos = finalConsumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (BlockUtils.isEnergyBlock(blockEntity))
-                ((IEnergyBlock) blockEntity).tryFillEnergy(blockEntity, finalAmount[i]);
+                ((IEnergyBlock) blockEntity).tryFillEnergy(finalAmount[i]);
         }
 
         return true;

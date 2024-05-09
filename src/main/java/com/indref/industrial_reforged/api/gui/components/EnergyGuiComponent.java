@@ -22,7 +22,7 @@ public class EnergyGuiComponent extends TooltipGuiComponent {
     @Override
     public List<Component> getTooltip() {
         return List.of(
-                Component.literal("Energy stored: "+screen.getMenu().getBlockEntity().getEnergyStored(screen.getMenu().getBlockEntity()))
+                Component.literal("Energy stored: "+screen.getMenu().getBlockEntity().getEnergyStored())
         );
     }
 
@@ -42,7 +42,7 @@ public class EnergyGuiComponent extends TooltipGuiComponent {
         GuiUtils.drawImg(guiGraphics, ENERGY_BAR, position.x, position.y, textureWidth(), textureHeight());
 
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        int energyStored = blockEntity.getEnergyStored(blockEntity);
+        int energyStored = blockEntity.getEnergyStored();
         int maxStored = blockEntity.getEnergyCapacity();
 
         float percentage = (float) energyStored / maxStored;

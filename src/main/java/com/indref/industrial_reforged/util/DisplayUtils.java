@@ -24,7 +24,7 @@ public final class DisplayUtils {
                 blockState.getBlock().getName().withStyle(ChatFormatting.WHITE),
                 Component.translatable("scanner_info.energy_block.energy_ratio")
                         .append(": ")
-                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(blockEntity), energyBlock.getEnergyCapacity())))
+                        .append(Component.literal(String.format("%d/%d", energyBlock.getEnergyStored(), energyBlock.getEnergyCapacity())))
                         .append(Component.literal(","))
                         .withStyle(ChatFormatting.WHITE)
         );

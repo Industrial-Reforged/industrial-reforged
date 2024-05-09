@@ -27,7 +27,7 @@ public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
     public void tick() {
         BlockState blockState = level.getBlockState(worldPosition);
         EnergyNets energyNets = EnergyNetUtils.getEnergyNets((ServerLevel) level).getEnets();
-        tryFillEnergy(this, getGenerationAmount());
+        tryFillEnergy(getGenerationAmount());
 
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(worldPosition)) {
             BlockEntity blockEntity1 = level.getBlockEntity(offsetPos);
@@ -39,11 +39,11 @@ public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
                     Optional<EnergyNet> enet = energyNets.getNetwork(offsetPos);
                     enet.ifPresent(energyNet -> {
                         if (energyNet.distributeEnergy(getGenerationAmount()))
-                            tryDrainEnergy(this, tier.getMaxOutput());
+                            tryDrainEnergy(tier.getMaxOutput());
                     });
                 } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
-                    tryDrainEnergy(this, tier.getMaxOutput());
-                    energyBlock1.tryFillEnergy(blockEntity1, tier.getMaxOutput());
+                    tryDrainEnergy(tier.getMaxOutput());
+                    energyBlock1.tryFillEnergy(tier.getMaxOutput());
                 }
             } else {
                 IndustrialReforged.LOGGER.error("{} at {} does not have a correct heat tier. Unable to produce heat", blockState.getBlock().getName().getString(), worldPosition);
