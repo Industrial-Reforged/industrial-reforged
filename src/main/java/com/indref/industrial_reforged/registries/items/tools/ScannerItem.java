@@ -31,14 +31,6 @@ public class ScannerItem extends SimpleElectricItem implements ToolItem, Display
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player player, InteractionHand p_41434_) {
-        ItemStack itemStack = player.getItemInHand(p_41434_);
-        setEnergyStored(itemStack, getEnergyStored(itemStack)+10);
-        player.sendSystemMessage(Component.literal("Energy stored: "+getEnergyStored(itemStack)));
-        return InteractionResultHolder.success(itemStack);
-    }
-
-    @Override
     public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos) {
         Font font = Minecraft.getInstance().font;
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
@@ -50,7 +42,7 @@ public class ScannerItem extends SimpleElectricItem implements ToolItem, Display
                 lineOffset += font.lineHeight + 3;
             }
             if (level.getGameTime() % 20 == 0 && !player.isCreative()) {
-                this.tryDrainEnergy(mainHandStack, 1);
+                //this.tryDrainEnergy(mainHandStack, 1);
             }
         }
     }

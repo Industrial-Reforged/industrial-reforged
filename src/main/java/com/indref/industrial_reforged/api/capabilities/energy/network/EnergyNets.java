@@ -102,7 +102,7 @@ public class EnergyNets {
         int index = 0;
         // Loop through all blocks around the removed position
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
-            // Check if one of the blocks is a transmitter of heat
+            // Check if one of the blocks is a transmitter of energy
             if (level.getBlockState(offsetPos).getBlock() instanceof CableBlock && !alreadyChecked.contains(offsetPos)) {
                 enets[index] = new EnergyNet(level);
                 enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).add(removedBlockPos);
@@ -117,7 +117,9 @@ public class EnergyNets {
     }
 
     private void recheckConnections(BlockPos checkFrom, EnergyNet.EnergyTypes checkedPosType, EnergyNet enet, Set<BlockPos> alreadyCheckedTracker) {
+        // Position has not been checked
         if (!alreadyCheckedTracker.contains(checkFrom)) {
+            // Add the checked position to the new enet
             enet.get(checkedPosType).add(checkFrom);
             if (checkedPosType == EnergyNet.EnergyTypes.TRANSMITTERS) {
                 alreadyCheckedTracker.add(checkFrom);

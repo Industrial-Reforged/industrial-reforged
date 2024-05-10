@@ -19,7 +19,7 @@ public class ENetsResetCommand {
     private int resetENets(CommandSourceStack source) {
         ServerLevel level = source.getLevel();
         EnergyNetUtils.resetNets(level);
-        source.sendSuccess(() -> Component.literal("Reset heat nets"), true);
+        source.sendSuccess(() -> Component.literal("Reset energy nets"), true);
         return 1;
     }
 }

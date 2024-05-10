@@ -45,9 +45,6 @@ public class CentrifugeMachineBlock extends BaseEntityBlock implements Wrenchabl
     @Override
     protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         if (!level.isClientSide()) {
-            IEnergyStorage es = BlockUtils.getBlockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, level.getBlockEntity(blockPos)).get();
-            IndustrialReforged.LOGGER.debug("ES: {}", es.getEnergyStored());
-            es.setEnergyStored(69);
             player.openMenu((CentrifugeBlockEntity) level.getBlockEntity(blockPos), blockPos);
             return InteractionResult.SUCCESS;
         }
