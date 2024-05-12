@@ -72,9 +72,15 @@ public class CableBlock extends PipeBlock {
 
     @Override
     public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
-        if (BlockUtils.isEnergyBlock(level.getBlockEntity(facingBlockPos)) && level instanceof ServerLevel serverLevel) {
+        if (level instanceof ServerLevel serverLevel) {
             Optional<EnergyNet> network = EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos);
-            network.ifPresent(net -> net.add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS));
+            if (BlockUtils.isEnergyBlock(level.getBlockEntity(facingBlockPos))) {
+                network.ifPresent(net -> net.add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS));
+            } else if (network.isPresent() && network.get().get(EnergyNet.EnergyTypes.INTERACTORS).contains(facingBlockPos)) {
+                if (facingBlockState.isEmpty()) {
+                    network.get().remove(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
+                }
+            }
         }
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
     }

@@ -29,4 +29,7 @@ public abstract class GuiComponent {
     public abstract int textureHeight();
 
     public abstract void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
+
+    public void renderInBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    }
 }

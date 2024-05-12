@@ -29,6 +29,9 @@ public abstract class IRAbstractContainerScreen<T extends IRAbstractContainerMen
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float v, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+        for (GuiComponent component : components) {
+            component.renderInBackground(guiGraphics, mouseX, mouseY, delta);
+        }
     }
 }

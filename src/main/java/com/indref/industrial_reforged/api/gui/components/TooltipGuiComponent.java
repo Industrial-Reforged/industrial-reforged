@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.api.gui.components;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
-import java.nio.charset.MalformedInputException;
 import java.util.List;
 
 public abstract class TooltipGuiComponent extends GuiComponent {

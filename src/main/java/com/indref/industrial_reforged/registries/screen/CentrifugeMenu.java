@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.screen;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -16,8 +17,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntity> {
     private final Level level;
@@ -35,6 +40,15 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         this.data = data;
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(level, blockEntity.getBlockPos());
+        addDataSlots(data);
+        addPlayerInventory(inv);
+        addPlayerHotbar(inv);
+        Optional<ItemStackHandler> itemHandler = this.getBlockEntity().getItemHandler();
+        if (itemHandler.isPresent()) {
+            addSlot(new SlotItemHandler(itemHandler.get(), 0, 9, 57));
+        } else {
+            IndustrialReforged.LOGGER.error("Centrifuge itemhandler does not exist. Was not able to add slots");
+        }
     }
 
     @Override

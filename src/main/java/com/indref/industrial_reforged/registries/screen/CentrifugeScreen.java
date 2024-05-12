@@ -24,13 +24,14 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
         this.inventoryLabelY = 10000;
         this.titleLabelY = 10000;
         initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 8))
+                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 6), true)
         );
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
         guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        super.renderBg(guiGraphics, delta, mouseX, mouseY);
     }
 
     @Override

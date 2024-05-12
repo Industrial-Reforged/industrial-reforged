@@ -109,4 +109,8 @@ public final class Utils {
         nnl.addAll(list);
         return nnl;
     }
+
+    public static <T> void arrayAdd(T[] arr, T elem) {
+        arr[arr.length-1] = elem;
+    }
 }
