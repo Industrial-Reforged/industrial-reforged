@@ -31,7 +31,7 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
     private final Player player;
 
     public CentrifugeMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, (CentrifugeBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, (CentrifugeBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(6));
     }
 
     public CentrifugeMenu(int containerId, Inventory inv, CentrifugeBlockEntity blockEntity, ContainerData data) {
@@ -41,11 +41,18 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(level, blockEntity.getBlockPos());
         addDataSlots(data);
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
+        addPlayerInventory(inv, 83 + 20);
+        addPlayerHotbar(inv, 141 + 20);
         Optional<ItemStackHandler> itemHandler = this.getBlockEntity().getItemHandler();
         if (itemHandler.isPresent()) {
-            addSlot(new SlotItemHandler(itemHandler.get(), 0, 9, 57));
+            // Battery slot
+            // addSlot(new SlotItemHandler(itemHandler.get(), 0, 9, 67));
+            // Centrifuge slots
+            addSlot(new SlotItemHandler(itemHandler.get(), 0, 80, 41));
+            addSlot(new SlotItemHandler(itemHandler.get(), 1, 44, 41));
+            addSlot(new SlotItemHandler(itemHandler.get(), 2, 116, 41));
+            addSlot(new SlotItemHandler(itemHandler.get(), 3, 80, 5));
+            addSlot(new SlotItemHandler(itemHandler.get(), 4, 80, 77));
         } else {
             IndustrialReforged.LOGGER.error("Centrifuge itemhandler does not exist. Was not able to add slots");
         }

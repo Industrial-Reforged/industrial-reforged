@@ -16,7 +16,7 @@ public class HeatWrapper {
 
         @Override
         public int getHeatStored() {
-            return itemStack.get(IRDataComponents.HEAT).getHeatStored();
+            return itemStack.get(IRDataComponents.HEAT).heatStored();
         }
 
         @Override
@@ -26,7 +26,7 @@ public class HeatWrapper {
 
         @Override
         public int getHeatCapacity() {
-            return itemStack.get(IRDataComponents.HEAT).getHeatCapacity();
+            return itemStack.get(IRDataComponents.HEAT).heatCapacity();
         }
 
         @Override

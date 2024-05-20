@@ -23,7 +23,7 @@ public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuP
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
         addEnergyStorage(getEnergyTier().get());
-        addItemHandler(5);
+        addItemHandler(7);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuP
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new CentrifugeMenu(i, inventory, this, new SimpleContainerData(1));
+        return new CentrifugeMenu(i, inventory, this, new SimpleContainerData(6));
     }
 }

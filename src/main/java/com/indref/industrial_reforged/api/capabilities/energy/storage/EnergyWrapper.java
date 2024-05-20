@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.api.capabilities.energy.storage;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.attachments.AttachmentEnergyStorage;
@@ -23,7 +22,7 @@ public class EnergyWrapper {
 
         @Override
         public int getEnergyStored() {
-            return itemStack.get(IRDataComponents.ENERGY).getEnergyStored();
+            return itemStack.get(IRDataComponents.ENERGY).energyStored();
         }
 
         @Override
@@ -33,7 +32,7 @@ public class EnergyWrapper {
 
         @Override
         public int getEnergyCapacity() {
-            return itemStack.get(IRDataComponents.ENERGY).getEnergyCapacity();
+            return itemStack.get(IRDataComponents.ENERGY).energyCapacity();
         }
 
         @Override

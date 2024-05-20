@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRArmorMaterials {
-    public static final Holder<ArmorMaterial> HAZMAT = register("iron", Util.make(new EnumMap<>(ArmorItem.Type.class), (p_323378_) -> {
+    public static final Holder<ArmorMaterial> HAZMAT = register("hazmat", Util.make(new EnumMap<>(ArmorItem.Type.class), (p_323378_) -> {
         p_323378_.put(ArmorItem.Type.BOOTS, 2);
         p_323378_.put(ArmorItem.Type.LEGGINGS, 5);
         p_323378_.put(ArmorItem.Type.CHESTPLATE, 6);

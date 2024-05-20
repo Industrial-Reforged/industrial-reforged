@@ -3,31 +3,23 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
-import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
-import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRRecipes;
 import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -72,18 +64,16 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             tryMeltItem();
         }
 
-        Optional<IFireboxMultiblock> firebox = hasFireBox();
-        if (firebox.isPresent()) {
-            IFireboxMultiblock fireboxMultiblock = firebox.get();
+        getFireBox().ifPresent(iFireboxMultiblock -> {
             BlockPos controllerPos = this.worldPosition.offset(0, -1, 0);
             BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
             if (controllerBlockEntity instanceof FireboxBlockEntity fireboxBlockEntity) {
-                int output = fireboxMultiblock.getTier().getMaxHeatOutput();
-                if (fireboxBlockEntity.tryDrainHeat(fireboxBlockEntity, output)==0){
+                int output = iFireboxMultiblock.getTier().getMaxHeatOutput();
+                if (fireboxBlockEntity.tryDrainHeat(fireboxBlockEntity, output) == 0) {
                     this.tryFillHeat(this, output);
                 }
             }
-        }
+        });
     }
 
     private void tryMeltItem() {
@@ -186,7 +176,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return false;
     }
 
-    public Optional<IFireboxMultiblock> hasFireBox() {
+    public Optional<IFireboxMultiblock> getFireBox() {
         BlockPos fireboxPos = worldPosition.offset(0, -1, 0);
         for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
             if (multiblock instanceof IFireboxMultiblock fireboxMultiblock) {

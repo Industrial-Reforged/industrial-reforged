@@ -1,17 +1,22 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.electric.ElectricSwordItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -20,43 +25,28 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class NanoSaberItem extends ElectricSwordItem {
-    public NanoSaberItem(Properties p_43272_, EnergyTier energyTier) {
-        super(energyTier, Tiers.DIAMOND, -1, -3F, p_43272_);
+    public NanoSaberItem(Properties properties, EnergyTier energyTier) {
+        super(energyTier, Tiers.DIAMOND, -1, -3F, properties.component(IRDataComponents.ACTIVE, false));
     }
 
-    @Override
-    public @NotNull ItemAttributeModifiers getAttributeModifiers(ItemStack stack) {
-        EquipmentSlot slot = stack.getEquipmentSlot();
-        ItemAttributeModifiers.Builder modifiers = ItemAttributeModifiers.builder();
+    public @NotNull ItemAttributeModifiers createAttributes(ItemStack stack) {
+        IndustrialReforged.LOGGER.debug("Get attr mods");
         if (stack.is(this)) {
-            if (slot == EquipmentSlot.MAINHAND) {
-                if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
-                    modifiers.add(
-                            Attributes.ATTACK_DAMAGE,
-                            new AttributeModifier(
-                                    BASE_ATTACK_DAMAGE_UUID,
-                                    "Nano Saber damage modifier",
-                                    19,
-                                    AttributeModifier.Operation.ADD_VALUE),
-                            EquipmentSlotGroup.MAINHAND
-                    );
-                    modifiers.add(
-                            Attributes.ATTACK_SPEED,
-                            new AttributeModifier(
-                                    BASE_ATTACK_SPEED_UUID,
-                                    "Nano Saber speed modifier",
-                                    -2.8F,
-                                    AttributeModifier.Operation.ADD_VALUE),
-                            EquipmentSlotGroup.MAINHAND
-                    );
+            if (stack.has(IRDataComponents.ACTIVE) && stack.has(IRDataComponents.ENERGY)) {
+                ItemAttributeModifiers.Builder modifiers = ItemAttributeModifiers.builder();
 
-                    return modifiers.build();
+                if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
+                    modifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Nano modifier", 19, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    modifiers.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Speed modifier", 1.2F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
                 }
+
+                return modifiers.build();
             }
         }
         return super.getAttributeModifiers(stack);
@@ -67,6 +57,7 @@ public class NanoSaberItem extends ElectricSwordItem {
         ItemStack stack = player.getItemInHand(interactionHand);
         if (player.isShiftKeyDown() && getEnergyStored(stack) > 0) {
             stack.set(IRDataComponents.ACTIVE, !stack.getOrDefault(IRDataComponents.ACTIVE, false));
+            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(stack));
             return InteractionResultHolder.success(stack);
         }
         return InteractionResultHolder.fail(stack);
@@ -77,11 +68,15 @@ public class NanoSaberItem extends ElectricSwordItem {
         return false;
     }
 
+    public int getUsageAmount(ItemStack itemStack) {
+        return 25;
+    }
+
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean b) {
         if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
             if (level.getGameTime() % 20 == 0) {
-                setEnergyStored(stack, getEnergyStored(stack) - 1);
+                tryDrainEnergy(stack, getUsageAmount(stack));
             }
         }
     }

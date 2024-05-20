@@ -29,7 +29,7 @@ public class TapeMeasureItem extends ToolItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack useItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
-        if (player.isShiftKeyDown() && useItem.get(IRDataComponents.TAPE_MEASURE_DATA).tape_measure_extended()) {
+        if (player.isShiftKeyDown() && useItem.get(IRDataComponents.TAPE_MEASURE_DATA).tapeMeasureExtended()) {
             useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
             return InteractionResultHolder.success(useItem);
         }
@@ -124,6 +124,6 @@ public class TapeMeasureItem extends ToolItem {
 
     public static float isExtended(ItemStack stack) {
         return stack.getOrDefault(IRDataComponents.TAPE_MEASURE_DATA,
-                new ComponentTapeMeasure(BlockPos.ZERO, false)).tape_measure_extended() ? 1 : 0;
+                new ComponentTapeMeasure(BlockPos.ZERO, false)).tapeMeasureExtended() ? 1 : 0;
     }
 }

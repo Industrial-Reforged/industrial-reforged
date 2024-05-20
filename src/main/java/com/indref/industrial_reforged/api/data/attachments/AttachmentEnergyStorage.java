@@ -7,16 +7,16 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
 
 public final class AttachmentEnergyStorage implements INBTSerializable<Tag> {
-    private int energy;
+    private int energyStored;
     private int energyCapacity;
 
-    public AttachmentEnergyStorage(int energy, int energyCapacity){
+    public AttachmentEnergyStorage(int energyStored, int energyCapacity){
         this.energyCapacity = energyCapacity;
-        this.energy = energy;
+        this.energyStored = energyStored;
     }
 
     public int getEnergyStored() {
-        return energy;
+        return energyStored;
     }
 
     public int getEnergyCapacity() {
@@ -25,13 +25,13 @@ public final class AttachmentEnergyStorage implements INBTSerializable<Tag> {
 
     @Override
     public @UnknownNullability Tag serializeNBT(HolderLookup.Provider provider) {
-        return IntTag.valueOf(this.energy);
+        return IntTag.valueOf(this.energyStored);
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, Tag tag) {
         if (!(tag instanceof IntTag intNbt))
             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-        this.energy = intNbt.getAsInt();
+        this.energyStored = intNbt.getAsInt();
     }
 }

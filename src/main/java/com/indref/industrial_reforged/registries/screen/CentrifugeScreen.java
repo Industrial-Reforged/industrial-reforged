@@ -23,8 +23,9 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
         super.init();
         this.inventoryLabelY = 10000;
         this.titleLabelY = 10000;
+        this.imageHeight = 185;
         initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 6), true)
+                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true)
         );
     }
 
