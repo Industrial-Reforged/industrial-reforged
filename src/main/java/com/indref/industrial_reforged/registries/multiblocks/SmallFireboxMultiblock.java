@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -15,25 +14,26 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
     public static final EnumProperty<SmallFireboxMultiblock.FireboxState> FIREBOX_STATE = EnumProperty.create("firebox_state",
             SmallFireboxMultiblock.FireboxState.class);
+
     @Override
     public Block getController() {
         return IRBlocks.SMALL_FIREBOX_HATCH.get();
     }
 
     @Override
-    public List<List<Integer>> getLayout() {
-        return List.of(
-                List.of(
+    public int[][] getLayout() {
+        return new int[][]{
+                {
                         0, 0,
                         0, 0
-                ));
+                }
+        };
     }
 
     @Override

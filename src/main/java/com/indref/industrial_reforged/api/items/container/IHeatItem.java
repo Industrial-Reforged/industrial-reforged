@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.storage.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.world.item.ItemStack;
 
 public interface IHeatItem {

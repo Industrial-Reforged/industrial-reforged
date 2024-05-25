@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
 import com.indref.industrial_reforged.api.gui.components.EnergyGuiComponent;
 import net.minecraft.client.gui.GuiGraphics;

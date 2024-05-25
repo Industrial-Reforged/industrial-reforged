@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface MultiBarItem {
     /**
-     * @param itemStack the itemStack this gets rendered to
+     * @param itemStack the ingredient this gets rendered to
      * @return First pair entry: Color, second: Width
      */
     @NotNull

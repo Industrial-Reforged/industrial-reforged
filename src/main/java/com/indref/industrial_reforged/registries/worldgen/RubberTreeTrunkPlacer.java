@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRPlacerTypes;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;

@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.api.capabilities.energy.storage;
 
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.attachments.AttachmentEnergyStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 

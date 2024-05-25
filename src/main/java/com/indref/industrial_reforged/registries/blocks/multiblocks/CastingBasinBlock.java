@@ -1,14 +1,11 @@
-package com.indref.industrial_reforged.registries.blocks;
+package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,8 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -36,6 +31,8 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -43,6 +40,7 @@ import static com.indref.industrial_reforged.registries.blockentities.multiblock
 
 @SuppressWarnings("deprecation")
 public class CastingBasinBlock extends BaseEntityBlock {
+    private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
 
     public static final VoxelShape SHAPE = Stream.of(
             Block.box(2, 2, 0, 16, 6, 2),
@@ -52,13 +50,16 @@ public class CastingBasinBlock extends BaseEntityBlock {
             Block.box(0, 2, 14, 14, 6, 16)
     ).reduce(Shapes::or).get();
 
-    public CastingBasinBlock(Properties p_49224_) {
+    public CastingBasinBlock(Properties p_49224_, Block ingredient) {
         super(p_49224_);
+        if (ingredient != null) {
+            ALTERNATE_VERSIONS.put(ingredient, this);
+        }
     }
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(CastingBasinBlock::new);
+        return simpleCodec(properties1 -> new CastingBasinBlock(properties1, null));
     }
 
 
@@ -88,6 +89,13 @@ public class CastingBasinBlock extends BaseEntityBlock {
             insertAndExtract(player, hand, itemHandler.get(), (CastingBasinBlockEntity) blockEntity);
             fluidHandler.get().fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
             blockEntity.setChanged();
+        }
+
+        for (Block key : ALTERNATE_VERSIONS.keySet()) {
+            Block val = ALTERNATE_VERSIONS.get(key);
+            if (itemStack.is(key.asItem()) && !blockState.is(val)) {
+                level.setBlockAndUpdate(blockPos, val.defaultBlockState());
+            }
         }
         return ItemInteractionResult.SUCCESS;
     }

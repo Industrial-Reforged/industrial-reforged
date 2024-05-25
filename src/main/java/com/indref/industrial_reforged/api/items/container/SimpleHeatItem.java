@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.attachments.AttachmentHeatStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.world.item.Item;

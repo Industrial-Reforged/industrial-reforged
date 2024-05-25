@@ -1,0 +1,18 @@
+{
+  "type": "indref:centrifuge",
+  "ingredient": {
+    "item": "minecraft:stick",
+    "count": 2
+  },
+  "results": [
+    {
+      "id": "minecraft:copper_ingot",
+      "count": 1
+    },
+    {
+      "id": "minecraft:iron_ingot",
+      "count": 1
+    }
+  ],
+  "duration": 100
+}

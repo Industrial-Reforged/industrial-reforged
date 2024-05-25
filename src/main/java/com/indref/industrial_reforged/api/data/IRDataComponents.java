@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.api.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.data.attachments.AttachmentHeatStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentTapeMeasure;

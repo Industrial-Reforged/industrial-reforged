@@ -6,7 +6,6 @@ import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.apache.commons.lang3.reflect.InheritanceUtils;
 
 import java.util.Optional;
 

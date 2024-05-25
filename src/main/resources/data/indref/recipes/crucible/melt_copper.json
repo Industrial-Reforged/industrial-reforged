@@ -6,8 +6,9 @@
     }
   ],
   "result": {
-      "FluidName": "minecraft:lava",
-      "Amount": 100
+      "id": "minecraft:lava",
+      "amount": 100
   },
+  "heat": 100,
   "duration": 250
 }

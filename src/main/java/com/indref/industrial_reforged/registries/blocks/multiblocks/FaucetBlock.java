@@ -6,7 +6,6 @@ import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,16 +37,9 @@ public class FaucetBlock extends Block implements Wrenchable {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
 
-    private final CrucibleTier crucibleTier;
-
-    public FaucetBlock(Properties properties, CrucibleTier crucibleTier, Block ingredient) {
+    public FaucetBlock(Properties properties, Block ingredient) {
         super(properties.noOcclusion());
-        this.crucibleTier = crucibleTier;
         ALTERNATE_VERSIONS.put(ingredient, this);
-    }
-
-    public CrucibleTier getCrucibleTier() {
-        return crucibleTier;
     }
 
     @Override
@@ -104,6 +96,7 @@ public class FaucetBlock extends Block implements Wrenchable {
         return RenderShape.MODEL;
     }
 
+    // TODO: Make attaching dynamic
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {

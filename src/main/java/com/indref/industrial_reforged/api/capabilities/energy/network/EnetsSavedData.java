@@ -1,13 +1,8 @@
 package com.indref.industrial_reforged.api.capabilities.energy.network;
 
-import com.mojang.datafixers.DSL;
-import io.netty.channel.embedded.EmbeddedChannel;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.datafix.DataFixTypes;
-import net.minecraft.util.datafix.fixes.References;
-import net.minecraft.world.entity.raid.Raids;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 

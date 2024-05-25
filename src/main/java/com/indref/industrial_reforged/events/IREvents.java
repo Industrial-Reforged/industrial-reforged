@@ -6,7 +6,10 @@ import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyWrap
 import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
-import com.indref.industrial_reforged.api.items.container.*;
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import com.indref.industrial_reforged.api.items.container.IHeatItem;
+import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.blocks.CastingBasinRenderer;
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
@@ -41,12 +44,8 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {

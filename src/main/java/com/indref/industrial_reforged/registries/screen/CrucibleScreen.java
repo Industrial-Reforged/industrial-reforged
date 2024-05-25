@@ -3,8 +3,6 @@ package com.indref.industrial_reforged.registries.screen;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.FluidTankRenderer;
 import com.indref.industrial_reforged.util.MouseUtil;
-import com.indref.industrial_reforged.util.Utils;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,9 +10,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 

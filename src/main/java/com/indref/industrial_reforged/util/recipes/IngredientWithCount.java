@@ -1,8 +1,7 @@
-package com.indref.industrial_reforged.util;
+package com.indref.industrial_reforged.util.recipes;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public record IngredientWithCount(Ingredient ingredient, int count) {
     public static final IngredientWithCount EMPTY = new IngredientWithCount(Ingredient.EMPTY, -1);
-    //Note: for implementation reasons count has to be above ingredient, otherwise we will get a JSON Null issue thingy
+    // Note: for implementation reasons count has to be above ingredient, otherwise we will get a JSON Null issue thingy
     private static final Codec<Pair<Integer, Ingredient>> PAIR_CODEC = Codec.pair(
             Codec.INT.optionalFieldOf("count", 1).codec(),
             Ingredient.CODEC

@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.client.renderer.blocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.CastingBasinBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.CastingBasinBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -80,7 +80,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("Firebox");
     }
 

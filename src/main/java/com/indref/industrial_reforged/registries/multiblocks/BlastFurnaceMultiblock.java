@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,25 +28,25 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public List<List<Integer>> getLayout() {
-        return List.of(
-                List.of(
+    public int[][] getLayout() {
+        return new int[][]{
+                {
                         1, 1,
                         1, 1
-                ),
-                List.of(
+                },
+                {
                         0, 0,
                         0, 0
-                ),
-                List.of(
+                },
+                {
                         0, 0,
                         0, 0
-                ),
-                List.of(
+                },
+                {
                         0, 0,
                         0, 0
-                )
-        );
+                }
+        };
     }
 
     @Override

@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,19 +28,19 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public List<List<Integer>> getLayout() {
-        return List.of(
-                List.of(
+    public int[][] getLayout() {
+        return new int[][]{
+                {
                         0, 0, 0,
                         0, 2, 0,
                         0, 0, 0
-                ),
-                List.of(
+                },
+                {
                         0, 0, 0,
                         0, 1, 0,
                         0, 0, 0
-                )
-        );
+                }
+        };
     }
 
     @Override

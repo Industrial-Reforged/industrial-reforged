@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.registries.items.misc;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.networking.BlueprintHasRecipePayload;
 import com.indref.industrial_reforged.networking.BlueprintStoredRecipePayload;
-import com.indref.industrial_reforged.networking.ItemActivityPayload;
 import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

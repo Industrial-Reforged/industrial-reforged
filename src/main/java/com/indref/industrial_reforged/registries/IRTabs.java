@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries;
 
+import com.google.errorprone.annotations.InlineMe;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
@@ -127,6 +128,7 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.BLAST_FURNACE_BRICKS);
                 addBlock(output, IRBlocks.BLAST_FURNACE_HATCH);
                 addBlock(output, IRBlocks.BLAST_FURNACE_FAUCET);
+                addBlock(output, IRBlocks.SANDY_CASTING_BASIN);
                 addBlock(output, IRBlocks.SMALL_FIREBOX_HATCH);
 
                 // Ores

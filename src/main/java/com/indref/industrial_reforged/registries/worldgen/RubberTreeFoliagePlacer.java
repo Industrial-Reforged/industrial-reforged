@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.worldgen;
 
 import com.indref.industrial_reforged.registries.IRPlacerTypes;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;

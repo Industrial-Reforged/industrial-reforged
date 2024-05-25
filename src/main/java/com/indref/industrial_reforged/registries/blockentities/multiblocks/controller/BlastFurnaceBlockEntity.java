@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultibl
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.screen.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,9 +19,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +43,8 @@ import java.util.Optional;
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity {
     private boolean mainController;
-    private Optional<BlockPos> mainControllerPos;
+    private BlockPos mainControllerPos;
+    private int duration;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
@@ -54,22 +61,22 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     public void setMainControllerPos(BlockPos mainControllerPos) {
-        this.mainControllerPos = Optional.of(mainControllerPos);
+        this.mainControllerPos = mainControllerPos;
     }
 
     public Optional<BlockPos> getMainControllerPos() {
-        return mainControllerPos;
+        return Optional.ofNullable(mainControllerPos);
     }
 
     @Override
     public Optional<BlockEntity> getActualBlockEntity() {
-        return BlockUtils.blockEntityAt(level, worldPosition);
+        return BlockUtils.blockEntityAt(level, getMainControllerPos().orElseThrow(NullPointerException::new));
     }
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.putBoolean("isController", isMainController());
-        mainControllerPos.ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
+        getMainControllerPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
     }
 
     @Override
@@ -78,18 +85,47 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         IndustrialReforged.LOGGER.debug("Controller pos long: {}", mainControllerPos1);
         if (mainControllerPos1 != 0) {
-            this.mainControllerPos = Optional.of(BlockPos.of(mainControllerPos1));
-        } else {
-            this.mainControllerPos = Optional.empty();
+            this.mainControllerPos = BlockPos.of(mainControllerPos1);
         }
     }
 
     public void tick() {
         if (isMainController()) {
-            List<RecipeHolder<BlastFurnaceRecipe>> recipes = level.getRecipeManager()
-                    .getRecipesFor(BlastFurnaceRecipe.Type.INSTANCE, new SimpleContainer(getItemHandlerStacks().orElse(new ItemStack[0])), level);
-            IndustrialReforged.LOGGER.debug("Recipes: {}", recipes);
+            Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
+            optRecipe.ifPresent(recipe -> {
+                int maxDuration = recipe.duration();
+                if (duration >= maxDuration) {
+                    IndustrialReforged.LOGGER.debug("Recipe has finished");
+                    Optional<ItemStackHandler> itemHandler = getItemHandler();
+                    itemHandler.ifPresent(handler -> {
+                        IngredientWithCount ingredient0 = recipe.ingredients().get(0);
+                        IngredientWithCount ingredient1 = recipe.ingredients().get(1);
+                        ItemStack firstStack = handler.getStackInSlot(0);
+                        ItemStack secondStack = handler.getStackInSlot(1);
+                        if (ingredient0.test(firstStack)) {
+                            // Ingredient refers to slot 0
+                            firstStack.shrink(ingredient0.count());
+                            secondStack.shrink(ingredient1.count());
+                        } else {
+                            // Ingredient refers to slot 1
+                            secondStack.shrink(ingredient0.count());
+                            firstStack.shrink(ingredient1.count());
+                        }
+                    });
+                    Optional<FluidTank> optionalFluidTank = getFluidTank();
+                    optionalFluidTank.ifPresent(fluidTank -> fluidTank.fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE));
+                } else {
+                    duration++;
+                }
+            });
         }
+    }
+
+    public Optional<BlastFurnaceRecipe> getCurrentRecipe() {
+        return level.getRecipeManager()
+                .getRecipeFor(BlastFurnaceRecipe.TYPE,
+                        new SimpleContainer(getItemHandlerStacks().orElse(new ItemStack[0])), level)
+                .map(RecipeHolder::value);
     }
 
     public boolean isFormed() {

@@ -1,7 +1,9 @@
 package com.indref.industrial_reforged.api.capabilities.heat.storage;
 
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.api.data.attachments.AttachmentHeatStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentHeatStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -49,7 +51,7 @@ public class HeatWrapper {
 
         @Override
         public void setHeatStored(int value) {
-            blockEntity.getData(IRAttachmentTypes.HEAT.get()).setHeatStored(value);
+            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new AttachmentHeatStorage(value, getHeatCapacity()));
         }
 
         @Override
@@ -59,7 +61,7 @@ public class HeatWrapper {
 
         @Override
         public void setHeatCapacity(int value) {
-            blockEntity.getData(IRAttachmentTypes.HEAT.get()).setHeatCapacity(value);
+            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new AttachmentHeatStorage(getHeatStored(), value));
         }
     }
 }

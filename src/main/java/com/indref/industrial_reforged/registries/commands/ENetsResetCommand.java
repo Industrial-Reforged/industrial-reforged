@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.registries.commands;
 
 import com.indref.industrial_reforged.util.EnergyNetUtils;
-import com.indref.industrial_reforged.util.Utils;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

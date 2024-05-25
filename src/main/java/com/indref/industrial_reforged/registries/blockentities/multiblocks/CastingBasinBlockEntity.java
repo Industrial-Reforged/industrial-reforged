@@ -106,7 +106,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         if (rawRecipe.isPresent() && getFluidTank().isPresent() && getItemHandler().isPresent()) {
             CrucibleCastingRecipe recipe = rawRecipe.get().value();
 
-            getFluidTank().get().drain(recipe.getFluid(), IFluidHandler.FluidAction.EXECUTE);
+            getFluidTank().get().drain(recipe.fluidStack(), IFluidHandler.FluidAction.EXECUTE);
             if (recipe.shouldConsumeCast())
                 getItemHandler().get().setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
             getItemHandler().get().insertItem(1, recipe.getResultItem(level.registryAccess()), false);
@@ -159,7 +159,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
             inventory.setItem(CAST_SLOT, stackInSlot);
         }
 
-        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(CrucibleCastingRecipe.Type.INSTANCE, inventory, level);
+        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(CrucibleCastingRecipe.TYPE, inventory, level);
 
         if (recipe.isEmpty()) return Optional.empty();
 
@@ -184,7 +184,9 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         tag.putInt("duration", this.duration);
         tag.putInt("maxDuration", this.maxDuration);
         CompoundTag itemTag = new CompoundTag();
-        this.resultItem.save(provider);
+        if (!this.resultItem.isEmpty()) {
+            this.resultItem.save(provider);
+        }
         tag.put("resultItem", itemTag);
     }
 
@@ -193,6 +195,6 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         this.duration = tag.getInt("duration");
         this.maxDuration = tag.getInt("maxDuration");
         Optional<ItemStack> resultItem1 = ItemStack.parse(provider, tag.getCompound("resultItem"));
-        resultItem1.ifPresent(stack -> this.resultItem = stack);
+        this.resultItem = resultItem1.orElse(ItemStack.EMPTY);
     }
 }

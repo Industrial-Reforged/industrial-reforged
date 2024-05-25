@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blocks.*;
 import com.indref.industrial_reforged.registries.blocks.machines.BasicGeneratorBlock;
-import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeMachineBlock;
+import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.CraftingStationBlock;
 import com.indref.industrial_reforged.registries.blocks.machines.DrainBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.*;
@@ -64,13 +64,15 @@ public final class IRBlocks {
     public static final Supplier<Block> CERAMIC_CRUCIBLE_WALL = registerBlockAndItem("ceramic_crucible_wall",
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final Supplier<Block> CERAMIC_FAUCET = registerBlockAndItem("ceramic_faucet",
-            () -> new FaucetBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC, IRBlocks.TERRACOTTA_BRICK.get()));
+            () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.TERRACOTTA_BRICK.get()));
     public static final Supplier<Block> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",
-            () -> new FaucetBlock(BlockBehaviour.Properties.of(), CrucibleTiers.CERAMIC, IRBlocks.BLAST_FURNACE_BRICKS.get()));
+            () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final Supplier<Block> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
-            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion()));
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
+    public static final Supplier<Block> SANDY_CASTING_BASIN = registerBlockAndItem("sandy_casting_basin",
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final Supplier<Block> CENTRIFUGE = registerBlockAndItem("centrifuge",
-            () -> new CentrifugeMachineBlock(BlockBehaviour.Properties.of()));
+            () -> new CentrifugeBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> BASIC_GENERATOR = registerBlockAndItem("basic_generator",
             () -> new BasicGeneratorBlock(BlockBehaviour.Properties.of()));
     public static final Supplier<Block> DRAIN = registerBlockAndItem("drain",

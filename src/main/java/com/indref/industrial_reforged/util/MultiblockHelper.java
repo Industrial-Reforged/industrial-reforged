@@ -43,7 +43,7 @@ public final class MultiblockHelper {
      * @return first: isValid? second: Direction that multi is valid
      */
     public static Pair<Boolean, @Nullable MultiblockDirection> isUnformedValid(Multiblock multiblock, BlockPos controllerPos, Level level, Player player, boolean sendErrorMsg) {
-        List<List<Integer>> layout = multiblock.getLayout();
+        int[][] layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         MultiblockDirection direction = convDirectionToMultiblockDirection(player.getDirection());
@@ -75,7 +75,7 @@ public final class MultiblockHelper {
             // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
             BlockPos firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
             // Iterate over layers (Y)
-            for (List<Integer> layer : layout) {
+            for (int[] layer : layout) {
                 // Iterate over blocks in a layer (X, Z)
                 int x = 0;
                 int z = 0;
@@ -164,9 +164,9 @@ public final class MultiblockHelper {
     @Nullable
     public static Vec3i getRelativeControllerPos(Multiblock multiblock) {
         Map<Block, Integer> reverseDef = Utils.reverseMap(multiblock.getDefinition());
-        List<List<Integer>> layout = multiblock.getLayout();
+        int[][] layout = multiblock.getLayout();
         int y = 0;
-        for (List<Integer> layer : layout) {
+        for (int[] layer : layout) {
             int x = 0;
             int z = 0;
             int width = multiblock.getWidths().get(y).getFirst();
@@ -257,11 +257,11 @@ public final class MultiblockHelper {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
-        List<List<Integer>> layout = multiblock.getLayout();
+        int[][] layout = multiblock.getLayout();
         Map<Integer, Block> definition = multiblock.getDefinition();
         int yIndex = 0;
         int xIndex = 0;
-        for (List<Integer> layer : layout) {
+        for (int[] layer : layout) {
             // relative position
             int x = 0;
             // multiblock index
@@ -298,12 +298,12 @@ public final class MultiblockHelper {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
-        List<List<Integer>> layout = multiblock.getLayout();
+        int[][] layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
 
         int index = 0;
         int yIndex = 0;
-        for (List<Integer> layer : layout) {
+        for (int[] layer : layout) {
             int x = 0;
             int width = multiblock.getWidths().get(yIndex).getFirst();
             int z = 0;

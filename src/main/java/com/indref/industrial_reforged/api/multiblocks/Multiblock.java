@@ -27,7 +27,7 @@ public interface Multiblock {
      * <br>0, 1, 0
      * <br>0, 0, 0<br>]
      */
-    List<List<Integer>> getLayout();
+    int[][] getLayout();
 
     /**
      * Use this method to assign the numbers from getLayout() to a block
@@ -49,8 +49,8 @@ public interface Multiblock {
      */
     default List<Pair<Integer, Integer>> getWidths() {
         List<Pair<Integer, Integer>> widths = new ArrayList<>();
-        for (List<Integer> list : getLayout()) {
-            int width = (int) Math.sqrt(list.size());
+        for (int[] list : getLayout()) {
+            int width = (int) Math.sqrt(list.length);
             widths.add(Pair.of(width, width));
         }
         return widths;

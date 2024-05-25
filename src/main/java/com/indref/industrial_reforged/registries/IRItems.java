@@ -10,17 +10,13 @@ import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
-import com.indref.industrial_reforged.registries.items.storage.LunchBagItem;
-import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Supplier;

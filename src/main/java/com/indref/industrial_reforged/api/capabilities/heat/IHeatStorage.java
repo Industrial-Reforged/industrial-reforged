@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.capabilities.heat.storage;
+package com.indref.industrial_reforged.api.capabilities.heat;
 
 public interface IHeatStorage {
     int getHeatStored();

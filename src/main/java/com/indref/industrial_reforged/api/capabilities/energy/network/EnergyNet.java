@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.api.capabilities.energy.network;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -11,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 

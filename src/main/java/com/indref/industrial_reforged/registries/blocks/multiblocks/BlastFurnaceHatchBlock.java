@@ -11,7 +11,6 @@ import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -63,10 +62,11 @@ public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchabl
         if (blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
             BlockUtils.blockEntityAt(level, blockPos).ifPresent(be -> {
                 if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                    if (blastFurnaceBlockEntity.getActualBlockEntity().isPresent()
-                            && blastFurnaceBlockEntity.getActualBlockEntity().get() instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
-                        Utils.openMenu(player, blastFurnaceBlockEntity1);
-                    }
+                    blastFurnaceBlockEntity.getActualBlockEntity().ifPresent(actualBe -> {
+                        if (actualBe instanceof BlastFurnaceBlockEntity actualBe1) {
+                            Utils.openMenu(player, actualBe1);
+                        }
+                    });
                 }
             });
             return InteractionResult.SUCCESS;

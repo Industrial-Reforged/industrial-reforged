@@ -10,8 +10,8 @@
     }
   ],
   "result": {
-    "FluidName": "indref:molten_steel",
-    "Amount": 200
+    "id": "indref:molten_steel",
+    "amount": 200
   },
   "duration": 250
 }

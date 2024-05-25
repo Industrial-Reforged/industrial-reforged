@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;

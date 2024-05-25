@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util;
+package com.indref.industrial_reforged.util.recipes;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -6,10 +6,12 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.*;
 
-public class RecipeUtils {
+public final class RecipeUtils {
     public static final StreamCodec<RegistryFriendlyByteBuf, List<Ingredient>> INGREDIENT_STREAM_LIST_CODEC = Ingredient.CONTENTS_STREAM_CODEC.apply(
             ByteBufCodecs.collection(NonNullList::createWithCapacity)
     );
@@ -129,5 +131,14 @@ public class RecipeUtils {
 
             return false;
         }
+    }
+
+    public static<T extends Recipe<?>> RecipeType<T> newRecipeType(String name) {
+        return new RecipeType<>() {
+            @Override
+            public String toString() {
+                return name;
+            }
+        };
     }
 }

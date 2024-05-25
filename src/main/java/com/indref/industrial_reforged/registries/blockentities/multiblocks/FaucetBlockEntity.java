@@ -3,10 +3,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class FaucetBlockEntity extends ContainerBlockEntity {
     public FaucetBlockEntity(BlockPos p_155229_, BlockState p_155230_) {

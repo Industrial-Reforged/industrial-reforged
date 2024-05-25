@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util.recipes;
+package com.indref.industrial_reforged.util.recipes.crafting_station;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.ContainerHelper;

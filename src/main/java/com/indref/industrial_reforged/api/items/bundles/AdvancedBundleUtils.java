@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.api.items.bundles;
 import com.indref.industrial_reforged.api.items.container.IItemItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import org.apache.commons.lang3.math.Fraction;
 
