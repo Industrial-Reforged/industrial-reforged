@@ -6,6 +6,8 @@ import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyWrap
 import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
+import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
+import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
@@ -20,11 +22,13 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
+import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.registries.screen.*;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -32,6 +36,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -44,8 +49,11 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {
@@ -141,7 +149,7 @@ public class IREvents {
     }
 
     @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.MOD)
-    public static class ServerBus {
+    public static class CommonBus {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             IndustrialReforged.LOGGER.debug("Register caps");
@@ -156,18 +164,19 @@ public class IREvents {
                     event.registerItem(Capabilities.FluidHandler.ITEM,
                             (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity(stack)), item);
 
-                //if (item instanceof IItemItem itemItem)
-                //    event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ItemStackHandler(itemItem.getSlots(stack)));
+                if (item instanceof AdvancedBundleItem || item instanceof ToolboxItem)
+                    event.registerItem(Capabilities.ItemHandler.ITEM,
+                            (stack, ctx) -> new InvWrapper(new SimpleContainer(Utils.listToArray(stack.getOrDefault(IRDataComponents.ADVANCED_BUNDLE_CONTENTS, AdvancedBundleContents.EMPTY).items()))), item);
             }
 
             // Register all your block entity capabilities manually
-            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
-            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity, blockEntity.getEnergyCapacity()));
+            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity, blockEntity.getEnergyCapacity()));
 
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
 
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler().get());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler().get());

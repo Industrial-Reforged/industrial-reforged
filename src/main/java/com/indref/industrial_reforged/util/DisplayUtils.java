@@ -34,7 +34,7 @@ public final class DisplayUtils {
                     name.withStyle(ChatFormatting.WHITE),
                     Component.translatable("scanner_info.heat_block.heat_ratio")
                             .append(": ")
-                            .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(blockEntity), heatBlock.getHeatCapacity())))
+                            .append(Component.literal(String.format("%d/%d", heatBlock.getHeatStored(), heatBlock.getHeatCapacity())))
                             .append(Component.literal(","))
                             .withStyle(ChatFormatting.WHITE)
             );

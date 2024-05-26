@@ -73,7 +73,7 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, Tool
             Optional<IHeatBlock> heatBlock = BlockUtils.getHeatBlock(blockEntity);
             if (heatBlock.isPresent()) {
                 if (blockEntity != null) {
-                    setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.get().getHeatStored(blockEntity)));
+                    setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.get().getHeatStored()));
                 } else {
                     setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
                 }

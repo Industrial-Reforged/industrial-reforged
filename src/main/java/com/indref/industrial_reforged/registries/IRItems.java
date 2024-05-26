@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
+import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.ChatFormatting;
@@ -67,8 +68,8 @@ public final class IRItems {
             () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final Supplier<Item> ULTIMATE_BATTERY = registerItem("ultimate_battery",
             () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE));
-    //public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
-    //        () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
+    public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
+            () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
             () -> new UraniumFuelRod(new Item.Properties().stacksTo(1)));
 

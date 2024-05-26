@@ -28,6 +28,8 @@ public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, F
                                  int duration) implements IRRecipe<SimpleContainer> {
     public static final String NAME = "blast_furnace";
     public static final RecipeType<BlastFurnaceRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
+    public static final RecipeSerializer<BlastFurnaceRecipe> SERIALIZER =
+            RecipeUtils.newRecipeSerializer(IRRecipeSerializer.BlastFurnace.CODEC, IRRecipeSerializer.BlastFurnace.STREAM_CODEC);
 
     public BlastFurnaceRecipe(List<IngredientWithCount> ingredients, FluidStack resultFluid, int duration) {
         this(Utils.listToNonNullList(ingredients), resultFluid, duration);
@@ -52,7 +54,7 @@ public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, F
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return SERIALIZER;
     }
 
     @Override
@@ -62,36 +64,5 @@ public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, F
 
     public FluidStack resultFluid() {
         return resultFluid.copy();
-    }
-
-    public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
-        public static final BlastFurnaceRecipe.Serializer INSTANCE = new BlastFurnaceRecipe.Serializer();
-        private static final MapCodec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-                IngredientWithCount.CODEC.listOf().fieldOf("ingredients").forGetter(BlastFurnaceRecipe::ingredients),
-                FluidStack.CODEC.fieldOf("result").forGetter(BlastFurnaceRecipe::resultFluid),
-                Codec.INT.fieldOf("duration").forGetter(BlastFurnaceRecipe::duration)
-        ).apply(builder, BlastFurnaceRecipe::new));
-        private static final StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> STREAM_CODEC = StreamCodec.composite(
-                IngredientWithCount.STREAM_LIST_CODEC,
-                BlastFurnaceRecipe::ingredients,
-                FluidStack.STREAM_CODEC,
-                BlastFurnaceRecipe::resultFluid,
-                ByteBufCodecs.INT,
-                BlastFurnaceRecipe::duration,
-                BlastFurnaceRecipe::new
-        );
-
-        private Serializer() {
-        }
-
-        @Override
-        public @NotNull MapCodec<BlastFurnaceRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.api.data.components.ComponentTapeMeasure;
+import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -33,6 +34,8 @@ public final class IRDataComponents {
             () -> builder -> builder.persistent(ItemStack.CODEC.listOf()).networkSynchronized(ItemStack.LIST_STREAM_CODEC));
     public static final Supplier<DataComponentType<ComponentTapeMeasure>> TAPE_MEASURE_DATA = registerDataComponentType("tape_measure_data",
             () -> builder -> builder.persistent(ComponentTapeMeasure.CODEC).networkSynchronized(ComponentTapeMeasure.STREAM_CODEC));
+    public static final Supplier<DataComponentType<AdvancedBundleContents>> ADVANCED_BUNDLE_CONTENTS = registerDataComponentType("advanced_bundle_contents",
+            () -> builder -> builder.persistent(AdvancedBundleContents.CODEC).networkSynchronized(AdvancedBundleContents.STREAM_CODEC));
 
     // Data for capabilities
     public static final Supplier<DataComponentType<ComponentEnergyStorage>> ENERGY = registerDataComponentType("energy",

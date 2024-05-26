@@ -15,22 +15,28 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * are IHeatBlocks
  */
 public interface IHeatBlock {
-    default void setHeatStored(BlockEntity blockEntity, int value) {
-        int prev = getHeatStored(blockEntity);
-        if (prev == value) return;
+    default BlockEntity heatBlockEntity() {
+        if (this instanceof BlockEntity blockEntity) {
+            return blockEntity;
+        }
+        throw new Error(this.getClass()+ "is not an instanceof blockentity even though IEnergyBlock is implemented for the class");
+    }
 
-        IHeatStorage heatStorage = blockEntity.getLevel().getCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity.getBlockPos(), null);
+    default void setHeatStored(int value) {
+        if (getHeatStored() == value) return;
+
+        IHeatStorage heatStorage = heatBlockEntity().getLevel().getCapability(IRCapabilities.HeatStorage.BLOCK, heatBlockEntity().getBlockPos(), null);
         heatStorage.setHeatStored(value);
         onHeatChanged();
     }
 
-    default int getHeatStored(BlockEntity blockEntity) {
-        IHeatStorage heatStorage = blockEntity.getLevel().getCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity.getBlockPos(), null);
+    default int getHeatStored() {
+        IHeatStorage heatStorage = heatBlockEntity().getLevel().getCapability(IRCapabilities.HeatStorage.BLOCK, heatBlockEntity().getBlockPos(), null);
         return heatStorage.getHeatStored();
     }
 
-    default boolean canAcceptHeat(BlockEntity blockEntity, int amount) {
-        return getHeatStored(blockEntity) + amount < getHeatCapacity();
+    default boolean canAcceptHeat(int amount) {
+        return getHeatStored() + amount < getHeatCapacity();
     }
 
     int getHeatCapacity();
@@ -38,23 +44,23 @@ public interface IHeatBlock {
     default void onHeatChanged() {
     }
 
-    default int tryDrainHeat(BlockEntity blockEntity, int value) {
-        if (getHeatStored(blockEntity) - value >= 0) {
-            setHeatStored(blockEntity, getHeatStored(blockEntity) - value);
+    default int tryDrainHeat(int value) {
+        if (getHeatStored() - value >= 0) {
+            setHeatStored(getHeatStored() - value);
             return 0;
         }
-        int stored = getHeatStored(blockEntity);
-        setHeatStored(blockEntity, 0);
+        int stored = getHeatStored();
+        setHeatStored(0);
         return value - stored;
     }
 
-    default int tryFillHeat(BlockEntity blockEntity, int value) {
-        if (getHeatStored(blockEntity) + value <= getHeatCapacity()) {
-            setHeatStored(blockEntity, getHeatStored(blockEntity) + value);
+    default int tryFillHeat(int value) {
+        if (getHeatStored() + value <= getHeatCapacity()) {
+            setHeatStored(getHeatStored() + value);
             return 0;
         }
-        int stored = getHeatStored(blockEntity);
-        setHeatStored(blockEntity, getHeatCapacity());
+        int stored = getHeatStored();
+        setHeatStored(getHeatCapacity());
         return value - stored;
     }
 

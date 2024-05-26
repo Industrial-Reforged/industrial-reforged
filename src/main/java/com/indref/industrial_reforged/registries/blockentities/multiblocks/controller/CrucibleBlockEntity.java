@@ -70,8 +70,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
             if (controllerBlockEntity instanceof FireboxBlockEntity fireboxBlockEntity) {
                 int output = iFireboxMultiblock.getTier().getMaxHeatOutput();
-                if (fireboxBlockEntity.tryDrainHeat(fireboxBlockEntity, output) == 0) {
-                    this.tryFillHeat(this, output);
+                if (fireboxBlockEntity.tryDrainHeat(output) == 0) {
+                    this.tryFillHeat(output);
                 }
             }
         });
@@ -104,7 +104,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         getItemHandler().ifPresent(itemStackHandler -> {
             for (int i = 0; i < itemStackHandler.getSlots(); i++) {
                 Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
-                if (recipe.isPresent() && getHeatStored(this) >= recipe.get().heat()) {
+                if (recipe.isPresent() && getHeatStored() >= recipe.get().heat()) {
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.get().getIngredients().get(0).getItems()[0].getItem();
                     if (itemStack.is(input)) {

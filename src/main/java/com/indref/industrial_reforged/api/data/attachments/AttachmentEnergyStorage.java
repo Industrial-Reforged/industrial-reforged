@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged.api.data.attachments;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
 
-public final class AttachmentEnergyStorage implements INBTSerializable<Tag> {
+public final class AttachmentEnergyStorage implements INBTSerializable<CompoundTag> {
     private int energyStored;
     private int energyCapacity;
 
@@ -24,14 +23,16 @@ public final class AttachmentEnergyStorage implements INBTSerializable<Tag> {
     }
 
     @Override
-    public @UnknownNullability Tag serializeNBT(HolderLookup.Provider provider) {
-        return IntTag.valueOf(this.energyStored);
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("energy_stored", this.energyStored);
+        tag.putInt("energy_capacity", this.energyCapacity);
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, Tag tag) {
-        if (!(tag instanceof IntTag intNbt))
-            throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-        this.energyStored = intNbt.getAsInt();
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+        this.energyStored = tag.getInt("energy_stored");
+        this.energyCapacity = tag.getInt("energy_capacity");
     }
 }

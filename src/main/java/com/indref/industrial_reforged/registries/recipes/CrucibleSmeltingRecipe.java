@@ -25,6 +25,8 @@ public record CrucibleSmeltingRecipe(Ingredient ingredient, FluidStack resultFlu
                                      int heat) implements IRRecipe<SimpleContainer> {
     public static final String NAME = "crucible_melting";
     public static final RecipeType<CrucibleSmeltingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
+    public static final RecipeSerializer<CrucibleSmeltingRecipe> SERIALIZER =
+            RecipeUtils.newRecipeSerializer(IRRecipeSerializer.CrucibleMelting.CODEC, IRRecipeSerializer.CrucibleMelting.STREAM_CODEC);
 
     public CrucibleSmeltingRecipe(List<Ingredient> input, FluidStack output, int duration, int heat) {
         this(input.get(0), output, duration, heat);
@@ -56,47 +58,11 @@ public record CrucibleSmeltingRecipe(Ingredient ingredient, FluidStack resultFlu
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return SERIALIZER;
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
         return TYPE;
-    }
-
-    public static class Serializer implements RecipeSerializer<CrucibleSmeltingRecipe> {
-        public static final Serializer INSTANCE = new Serializer();
-
-        private static final MapCodec<CrucibleSmeltingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter((recipe) -> recipe.getIngredients().stream().toList()),
-                FluidStack.CODEC.fieldOf("result").forGetter(CrucibleSmeltingRecipe::resultFluid),
-                Codec.INT.fieldOf("duration").forGetter(recipe -> recipe.duration),
-                Codec.INT.fieldOf("heat").forGetter(recipe -> recipe.heat)
-        ).apply(builder, CrucibleSmeltingRecipe::new));
-
-        private static final StreamCodec<RegistryFriendlyByteBuf, CrucibleSmeltingRecipe> STREAM_CODEC = StreamCodec.composite(
-                RecipeUtils.INGREDIENT_STREAM_LIST_CODEC,
-                recipe -> recipe.getIngredients().stream().toList(),
-                FluidStack.STREAM_CODEC,
-                CrucibleSmeltingRecipe::resultFluid,
-                ByteBufCodecs.INT,
-                CrucibleSmeltingRecipe::duration,
-                ByteBufCodecs.INT,
-                CrucibleSmeltingRecipe::heat,
-                CrucibleSmeltingRecipe::new
-        );
-
-        private Serializer() {
-        }
-
-        @Override
-        public @NotNull MapCodec<CrucibleSmeltingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, CrucibleSmeltingRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

@@ -27,6 +27,8 @@ public record CrucibleCastingRecipe(FluidStack fluidStack, ItemStack castItem, I
                                     boolean consumeCast) implements IRRecipe<SimpleContainer> {
     public static final String NAME = "crucible_casting";
     public static final RecipeType<CrucibleCastingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
+    public static final RecipeSerializer<CrucibleCastingRecipe> SERIALIZER =
+            RecipeUtils.newRecipeSerializer(IRRecipeSerializer.Casting.CODEC, IRRecipeSerializer.Casting.STREAM_CODEC);
 
     @Override
     public boolean matches(SimpleContainer simpleContainer, Level level) {
@@ -56,7 +58,7 @@ public record CrucibleCastingRecipe(FluidStack fluidStack, ItemStack castItem, I
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return SERIALIZER;
     }
 
     @Override
@@ -66,42 +68,5 @@ public record CrucibleCastingRecipe(FluidStack fluidStack, ItemStack castItem, I
 
     public FluidStack fluidStack() {
         return fluidStack.copy();
-    }
-
-    public static class Serializer implements RecipeSerializer<CrucibleCastingRecipe> {
-        public static final CrucibleCastingRecipe.Serializer INSTANCE = new CrucibleCastingRecipe.Serializer();
-        private static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                FluidStack.CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
-                ItemStack.CODEC.fieldOf("cast").forGetter(CrucibleCastingRecipe::castItem),
-                ItemStack.CODEC.fieldOf("result").forGetter(CrucibleCastingRecipe::resultStack),
-                Codec.INT.fieldOf("duration").forGetter(CrucibleCastingRecipe::duration),
-                Codec.BOOL.fieldOf("consume_cast").forGetter(CrucibleCastingRecipe::consumeCast)
-        ).apply(builder, CrucibleCastingRecipe::new));
-        private static final StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> STREAM_CODEC = StreamCodec.composite(
-                FluidStack.STREAM_CODEC,
-                CrucibleCastingRecipe::fluidStack,
-                ItemStack.STREAM_CODEC,
-                CrucibleCastingRecipe::castItem,
-                ItemStack.STREAM_CODEC,
-                CrucibleCastingRecipe::resultStack,
-                ByteBufCodecs.INT,
-                CrucibleCastingRecipe::duration,
-                ByteBufCodecs.BOOL,
-                CrucibleCastingRecipe::consumeCast,
-                CrucibleCastingRecipe::new
-        );
-
-        private Serializer() {
-        }
-
-        @Override
-        public @NotNull MapCodec<CrucibleCastingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

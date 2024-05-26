@@ -14,9 +14,9 @@ public final class IRRecipes {
             DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, IndustrialReforged.MODID);
 
     static {
-        SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.Serializer.INSTANCE);
-        SERIALIZERS.register(CrucibleCastingRecipe.NAME, () -> CrucibleCastingRecipe.Serializer.INSTANCE);
-        SERIALIZERS.register(BlastFurnaceRecipe.NAME, () -> BlastFurnaceRecipe.Serializer.INSTANCE);
-        SERIALIZERS.register(CentrifugeRecipe.NAME, () -> CentrifugeRecipe.Serializer.INSTANCE);
+        SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.SERIALIZER);
+        SERIALIZERS.register(CrucibleCastingRecipe.NAME, () -> CrucibleCastingRecipe.SERIALIZER);
+        SERIALIZERS.register(BlastFurnaceRecipe.NAME, () -> BlastFurnaceRecipe.SERIALIZER);
+        SERIALIZERS.register(CentrifugeRecipe.NAME, () -> CentrifugeRecipe.SERIALIZER);
     }
 }

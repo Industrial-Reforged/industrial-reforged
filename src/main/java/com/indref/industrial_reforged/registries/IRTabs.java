@@ -53,7 +53,7 @@ public final class IRTabs {
                 addItem(output, IRItems.BLUEPRINT);
 
                 // Storage items
-                //addItem(output, IRItems.TOOLBOX);
+                addItem(output, IRItems.TOOLBOX);
                 //addItem(output, IRItems.LUNCH_BAG);
                 addVariantForAllFluids(output, IRItems.FLUID_CELL);
 

@@ -30,6 +30,7 @@ public record ComponentHeatStorage(int heatStored, int heatCapacity) {
             byteBuf.writeInt(hs.heatCapacity);
         }
     };
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

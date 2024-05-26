@@ -18,7 +18,7 @@ import java.util.Optional;
  * are IEnergyBlocks
  */
 public interface IEnergyBlock {
-    default BlockEntity self() {
+    default BlockEntity energyBlockEntity() {
         if (this instanceof BlockEntity blockEntity) {
             return blockEntity;
         }
@@ -29,13 +29,13 @@ public interface IEnergyBlock {
         int prev = getEnergyStored();
         if (prev == value) return;
 
-        IEnergyStorage energyStorage = self().getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, self().getBlockPos(), null);
+        IEnergyStorage energyStorage = energyBlockEntity().getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, energyBlockEntity().getBlockPos(), null);
         energyStorage.setEnergyStored(value);
         onEnergyChanged();
     }
 
     default int getEnergyStored() {
-        IEnergyStorage energyStorage = self().getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, self().getBlockPos(), null);
+        IEnergyStorage energyStorage = energyBlockEntity().getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, energyBlockEntity().getBlockPos(), null);
         return energyStorage.getEnergyStored();
     }
 

@@ -12,11 +12,12 @@ import org.jetbrains.annotations.NotNull;
 public record CastingGhostItemPayload(ItemStack itemStack, BlockPos blockPos) implements CustomPacketPayload {
     public static final Type<CastingGhostItemPayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "casting_ghost_item_payload"));
     public static final StreamCodec<RegistryFriendlyByteBuf, CastingGhostItemPayload> STREAM_CODEC = StreamCodec.composite(
-            ItemStack.STREAM_CODEC,
+            ItemStack.OPTIONAL_STREAM_CODEC,
             CastingGhostItemPayload::itemStack,
             BlockPos.STREAM_CODEC,
             CastingGhostItemPayload::blockPos,
-            CastingGhostItemPayload::new);
+            CastingGhostItemPayload::new
+    );
 
     @Override
     public @NotNull Type<? extends CustomPacketPayload> type() {

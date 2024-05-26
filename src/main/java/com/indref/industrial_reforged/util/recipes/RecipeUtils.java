@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.util.recipes;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -7,7 +8,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -133,11 +136,25 @@ public final class RecipeUtils {
         }
     }
 
-    public static<T extends Recipe<?>> RecipeType<T> newRecipeType(String name) {
+    public static <T extends Recipe<?>> RecipeType<T> newRecipeType(String name) {
         return new RecipeType<>() {
             @Override
             public String toString() {
                 return name;
+            }
+        };
+    }
+
+    public static<T extends Recipe<?>>RecipeSerializer<T> newRecipeSerializer(MapCodec<T> mapCodec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) {
+        return new RecipeSerializer<T>() {
+            @Override
+            public @NotNull MapCodec<T> codec() {
+                return mapCodec;
+            }
+
+            @Override
+            public @NotNull StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
+                return streamCodec;
             }
         };
     }

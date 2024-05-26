@@ -67,11 +67,12 @@ public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
         }
     }
 
+    // TODO: Extract to gui component
     private void renderHeatDisplay(GuiGraphics guiGraphics) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        int temperature = menu.getBlockEntity().getHeatStored(menu.getBlockEntity());
+        int temperature = menu.getBlockEntity().getHeatStored();
 
         guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("Temperature: " + temperature + "°C").withStyle(ChatFormatting.WHITE), x + imageWidth - 95, y + 5, 0);
     }

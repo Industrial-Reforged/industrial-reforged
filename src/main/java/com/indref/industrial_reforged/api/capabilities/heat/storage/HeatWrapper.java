@@ -9,16 +9,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class HeatWrapper {
-    public static class Item implements IHeatStorage {
-        private final ItemStack itemStack;
-
-        public Item(ItemStack itemStack) {
-            this.itemStack = itemStack;
+    public record Item(ItemStack itemStack) implements IHeatStorage {
+        public Item(ItemStack itemStack, int initialCapacity) {
+            this(itemStack);
+            this.setHeatCapacity(initialCapacity);
         }
 
         @Override
         public int getHeatStored() {
-            return itemStack.get(IRDataComponents.HEAT).heatStored();
+            ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+            if (componentHeatStorage != null)
+                return componentHeatStorage.heatStored();
+            else
+                throw new NullPointerException("Failed to get heat component for item: "
+                        + itemStack.getItem()
+                        + " please add it under the item properties using .component(...) or preferably inherit one of the heat item classes");
         }
 
         @Override
@@ -28,7 +33,13 @@ public class HeatWrapper {
 
         @Override
         public int getHeatCapacity() {
-            return itemStack.get(IRDataComponents.HEAT).heatCapacity();
+            ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+            if (componentHeatStorage != null)
+                return componentHeatStorage.heatCapacity();
+            else
+                throw new NullPointerException("Failed to get heat component for item: "
+                        + itemStack.getItem()
+                        + " please add it under the item properties using .component(...) or preferably inherit one of the heat item classes");
         }
 
         @Override
@@ -37,11 +48,10 @@ public class HeatWrapper {
         }
     }
 
-    public static class Block implements IHeatStorage {
-        private final BlockEntity blockEntity;
-
-        public Block(BlockEntity blockEntity) {
-            this.blockEntity = blockEntity;
+    public record Block(BlockEntity blockEntity) implements IHeatStorage {
+        public Block(BlockEntity blockEntity, int initialCapacity) {
+            this(blockEntity);
+            this.setHeatCapacity(initialCapacity);
         }
 
         @Override

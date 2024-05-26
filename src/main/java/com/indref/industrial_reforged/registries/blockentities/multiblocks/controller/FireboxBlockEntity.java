@@ -41,7 +41,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
                 return switch (pIndex) {
                     case 0 -> burnTime;
                     case 1 -> maxBurnTime;
-                    default -> -1;
+                    default -> 0;
                 };
             }
 
@@ -90,7 +90,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         if (this.burnTime > 0) {
             burnTime--;
             if (burnTime % 10 == 0) {
-                this.tryFillHeat(this, 1);
+                this.setHeatStored(getHeatStored()+1);
             }
         } else {
             this.maxBurnTime = 0;

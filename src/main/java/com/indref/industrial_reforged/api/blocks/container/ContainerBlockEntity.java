@@ -26,9 +26,9 @@ import java.util.Optional;
 public abstract class ContainerBlockEntity extends BlockEntity implements IEnergyBlock, IHeatBlock {
     private int energyCapacity;
     private int heatCapacity;
-    private Optional<ItemStackHandler> itemHandler = Optional.empty();
-    private Optional<FluidTank> fluidTank = Optional.empty();
-    private Optional<EnergyTier> energyTier = Optional.empty();
+    private ItemStackHandler itemHandler;
+    private FluidTank fluidTank;
+    private EnergyTier energyTier;
 
     public ContainerBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
         super(p_155228_, p_155229_, p_155230_);
@@ -53,15 +53,15 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
 
     @Override
     public Optional<EnergyTier> getEnergyTier() {
-        return energyTier;
+        return Optional.ofNullable(energyTier);
     }
 
     public Optional<ItemStackHandler> getItemHandler() {
-        return itemHandler;
+        return Optional.ofNullable(itemHandler);
     }
 
     public Optional<ItemStack[]> getItemHandlerStacks() {
-        return this.itemHandler.map(handler -> {
+        return getItemHandler().map(handler -> {
             ItemStack[] itemStacks = new ItemStack[handler.getSlots()];
             for (int i = 0; i < handler.getSlots(); i++) {
                 itemStacks[i] = handler.getStackInSlot(i);
@@ -71,7 +71,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     public Optional<FluidTank> getFluidTank() {
-        return fluidTank;
+        return Optional.ofNullable(fluidTank);
     }
 
     @Override
@@ -105,7 +105,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     protected final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
-        this.itemHandler = Optional.of(new ItemStackHandler(slots) {
+        this.itemHandler = new ItemStackHandler(slots) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
@@ -117,7 +117,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 return validation.itemValid(slot, stack);
             }
-        });
+        };
     }
 
     private void update() {
@@ -126,7 +126,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     protected final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
-        this.fluidTank = Optional.of(new FluidTank(capacityInMb) {
+        this.fluidTank = new FluidTank(capacityInMb) {
             @Override
             protected void onContentsChanged() {
                 setChanged();
@@ -138,7 +138,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
             public boolean isFluidValid(FluidStack stack) {
                 return validation.fluidValid(stack);
             }
-        });
+        };
     }
 
     protected void onItemsChanged(int slot) {
@@ -162,12 +162,12 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     protected final void addEnergyStorage(@NotNull EnergyTier energyTier, int capacity) {
-        this.energyTier = Optional.of(energyTier);
+        this.energyTier = energyTier;
         this.energyCapacity = capacity;
     }
 
     protected final void addEnergyStorage(@NotNull EnergyTier energyTier) {
-        this.energyTier = Optional.of(energyTier);
+        this.energyTier = energyTier;
         this.energyCapacity = energyTier.getDefaultCapacity();
     }
 
@@ -178,7 +178,7 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         return saveWithoutMetadata(provider);
     }
 

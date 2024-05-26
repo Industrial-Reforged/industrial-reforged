@@ -1,14 +1,12 @@
 package com.indref.industrial_reforged.api.data.attachments;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
-
-import java.util.Objects;
 
 /**
  * Class for saving and loading heat values of item/block/entity
@@ -16,32 +14,34 @@ import java.util.Objects;
  * Should not be use directly,
  * only for attaching data/accessing it through capabilities
  */
-public final class AttachmentHeatStorage implements INBTSerializable<Tag> {
-    private int heat;
-    private int maxHeat;
+public final class AttachmentHeatStorage implements INBTSerializable<CompoundTag> {
+    private int heatStored;
+    private int heatCapacity;
 
-    public AttachmentHeatStorage(int heat, int maxHeat) {
-        this.heat = heat;
-        this.maxHeat = maxHeat;
+    public AttachmentHeatStorage(int heatStored, int heatCapacity) {
+        this.heatStored = heatStored;
+        this.heatCapacity = heatCapacity;
     }
 
     public int getHeatStored() {
-        return heat;
+        return heatStored;
     }
 
     public int getHeatCapacity() {
-        return maxHeat;
+        return heatCapacity;
     }
 
     @Override
-    public @UnknownNullability Tag serializeNBT(HolderLookup.Provider provider) {
-        return IntTag.valueOf(this.heat);
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("heat_stored", this.heatStored);
+        tag.putInt("heat_capacity", this.heatCapacity);
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, Tag tag) {
-        if (!(tag instanceof IntTag intNbt))
-            throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-        this.heat = intNbt.getAsInt();
+    public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag tag) {
+        this.heatStored = tag.getInt("heat_stored");
+        this.heatCapacity = tag.getInt("heat_capacity");
     }
 }

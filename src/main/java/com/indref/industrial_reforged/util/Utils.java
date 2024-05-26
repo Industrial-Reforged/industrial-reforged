@@ -110,6 +110,10 @@ public final class Utils {
         return nnl;
     }
 
+    public static <T> T[] listToArray(List<T> list) {
+        return (T[]) list.toArray();
+    }
+
     public static <T> void arrayAdd(T[] arr, T elem) {
         arr[arr.length-1] = elem;
     }

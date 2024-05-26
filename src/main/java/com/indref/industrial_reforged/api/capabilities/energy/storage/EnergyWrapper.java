@@ -13,16 +13,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * methods related to the heat storage capability
  */
 public class EnergyWrapper {
-    public static class Item implements IEnergyStorage {
-        private final ItemStack itemStack;
-
-        public Item(ItemStack itemStack) {
-            this.itemStack = itemStack;
+    public record Item(ItemStack itemStack) implements IEnergyStorage {
+        public Item(ItemStack itemStack, int initialCapacity) {
+            this(itemStack);
+            this.setEnergyCapacity(initialCapacity);
         }
 
         @Override
         public int getEnergyStored() {
-            return itemStack.get(IRDataComponents.ENERGY).energyStored();
+            ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
+            if (componentEnergyStorage != null)
+                return componentEnergyStorage.energyStored();
+            else
+                throw new NullPointerException("Failed to get energy component for item: "
+                        + itemStack.getItem()
+                        + " please add it under the item properties using .component(...) or preferably inherit one of the electric item classes");
         }
 
         @Override
@@ -32,7 +37,13 @@ public class EnergyWrapper {
 
         @Override
         public int getEnergyCapacity() {
-            return itemStack.get(IRDataComponents.ENERGY).energyCapacity();
+            ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
+            if (componentEnergyStorage != null)
+                return componentEnergyStorage.energyCapacity();
+            else
+                throw new NullPointerException("Failed to get energy component for item: "
+                        + itemStack.getItem()
+                        + " please add it under the item properties using .component(...) or preferably inherit one of the electric item classes");
         }
 
         @Override
@@ -41,11 +52,10 @@ public class EnergyWrapper {
         }
     }
 
-    public static class Block implements IEnergyStorage {
-        private final BlockEntity blockEntity;
-
-        public Block(BlockEntity blockEntity) {
-            this.blockEntity = blockEntity;
+    public record Block(BlockEntity blockEntity) implements IEnergyStorage {
+        public Block(BlockEntity blockEntity, int initialCapacity) {
+            this(blockEntity);
+            this.setEnergyCapacity(initialCapacity);
         }
 
         @Override

@@ -23,6 +23,8 @@ public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> r
                                int duration) implements IRRecipe<SimpleContainer> {
     public static final String NAME = "centrifuge";
     public static final RecipeType<CentrifugeRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
+    public static final RecipeSerializer<CentrifugeRecipe> SERIALIZER =
+            RecipeUtils.newRecipeSerializer(IRRecipeSerializer.Centrifuge.CODEC, IRRecipeSerializer.Centrifuge.STREAM_CODEC);
 
     @Override
     public boolean matches(SimpleContainer simpleContainer, Level level) {
@@ -38,42 +40,11 @@ public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> r
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return SERIALIZER;
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
         return TYPE;
-    }
-
-    public static class Serializer implements RecipeSerializer<CentrifugeRecipe> {
-        public static final CentrifugeRecipe.Serializer INSTANCE = new CentrifugeRecipe.Serializer();
-        private static final MapCodec<CentrifugeRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                IngredientWithCount.CODEC.fieldOf("ingredient").forGetter(CentrifugeRecipe::ingredient),
-                ItemStack.CODEC.listOf().fieldOf("results").forGetter(CentrifugeRecipe::results),
-                Codec.INT.fieldOf("duration").forGetter(CentrifugeRecipe::duration)
-        ).apply(builder, CentrifugeRecipe::new));
-        private static final StreamCodec<RegistryFriendlyByteBuf, CentrifugeRecipe> STREAM_CODEC = StreamCodec.composite(
-                IngredientWithCount.STREAM_CODEC,
-                CentrifugeRecipe::ingredient,
-                ItemStack.LIST_STREAM_CODEC,
-                CentrifugeRecipe::results,
-                ByteBufCodecs.INT,
-                CentrifugeRecipe::duration,
-                CentrifugeRecipe::new
-        );
-
-        private Serializer() {
-        }
-
-        @Override
-        public @NotNull MapCodec<CentrifugeRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, CentrifugeRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

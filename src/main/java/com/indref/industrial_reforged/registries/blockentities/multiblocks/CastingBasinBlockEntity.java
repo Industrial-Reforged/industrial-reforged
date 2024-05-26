@@ -92,7 +92,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public void updateRenderedStack() {
         IndustrialReforged.LOGGER.debug("Updating render stack");
-        this.resultItem = getCurrentRecipe().get().value().getResultItem(level.registryAccess());
+        this.resultItem = getCurrentRecipe().get().getResultItem(level.registryAccess());
         PacketDistributor.sendToAllPlayers(new CastingGhostItemPayload(this.resultItem, getBlockPos()));
     }
 
@@ -102,9 +102,9 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public void castItem() {
-        Optional<RecipeHolder<CrucibleCastingRecipe>> rawRecipe = getCurrentRecipe();
-        if (rawRecipe.isPresent() && getFluidTank().isPresent() && getItemHandler().isPresent()) {
-            CrucibleCastingRecipe recipe = rawRecipe.get().value();
+        Optional<CrucibleCastingRecipe> optionalRecipe = getCurrentRecipe();
+        if (optionalRecipe.isPresent() && getFluidTank().isPresent() && getItemHandler().isPresent()) {
+            CrucibleCastingRecipe recipe = optionalRecipe.get();
 
             getFluidTank().get().drain(recipe.fluidStack(), IFluidHandler.FluidAction.EXECUTE);
             if (recipe.shouldConsumeCast())
@@ -139,17 +139,17 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public boolean hasProgressFinished() {
-        return getCurrentRecipe().isPresent() && this.duration >= getCurrentRecipe().get().value().getDuration();
+        return getCurrentRecipe().isPresent() && this.duration >= getCurrentRecipe().get().getDuration();
     }
 
     public boolean hasRecipe() {
-        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = getCurrentRecipe();
+        Optional<CrucibleCastingRecipe> recipe = getCurrentRecipe();
 
         return recipe.filter(crucibleCastingRecipeRecipeHolder ->
-                canInsertIntoOutput(crucibleCastingRecipeRecipeHolder.value().getResultItem(level.registryAccess()))).isPresent();
+                canInsertIntoOutput(crucibleCastingRecipeRecipeHolder.getResultItem(level.registryAccess()))).isPresent();
     }
 
-    private Optional<RecipeHolder<CrucibleCastingRecipe>> getCurrentRecipe() {
+    private Optional<CrucibleCastingRecipe> getCurrentRecipe() {
         if (level.isClientSide() || getFluidTank().isEmpty() || getItemHandler().isEmpty()) return Optional.empty();
 
         SimpleContainer inventory = new SimpleContainer(1);
@@ -167,7 +167,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
         boolean matchesFluid = recipe.get().value().matchesFluids(getFluidTank().get().getFluidInTank(0), level);
 
-        return matchesFluid ? recipe : Optional.empty();
+        return matchesFluid ? recipe.map(RecipeHolder::value) : Optional.empty();
     }
 
     private boolean canInsertIntoOutput(ItemStack outputItem) {
