@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -36,7 +37,7 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
         return 1;
     }
 

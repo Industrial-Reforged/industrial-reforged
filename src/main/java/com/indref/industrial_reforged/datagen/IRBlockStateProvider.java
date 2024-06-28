@@ -36,7 +36,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 		fenceGateBlock((FenceGateBlock) IRBlocks.RUBBER_TREE_FENCE_GATE.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		pressurePlateBlock((PressurePlateBlock) IRBlocks.RUBBER_TREE_PRESSURE_PLATE.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		trapdoorBlock((TrapDoorBlock) IRBlocks.RUBBER_TREE_TRAPDOOR.get(), blockTexture(IRBlocks.RUBBER_TREE_TRAPDOOR.get(), treeFolder), false);
-		slabBlock((SlabBlock) IRBlocks.RUBBER_TREE_SLAB.get(), new ResourceLocation("indref:block/rubber_tree_planks"),
+		slabBlock((SlabBlock) IRBlocks.RUBBER_TREE_SLAB.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "block/rubber_tree_planks"),
 			blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		stairsBlock((StairBlock) IRBlocks.RUBBER_TREE_STAIRS.get(), blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), treeFolder));
 		
@@ -58,7 +58,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
 	private void inventoryModel(Block block, String parentModel, ResourceLocation texture) {
 		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
-		models().getBuilder(name.getPath() + "_inventory").parent(models().getExistingFile(new ResourceLocation(parentModel))).texture("texture", texture);
+		models().getBuilder(name.getPath() + "_inventory").parent(models().getExistingFile(ResourceLocation.parse(parentModel))).texture("texture", texture);
 	}
 
 	private ResourceLocation blockTexture(Block block, String textureFolder) {
@@ -68,8 +68,8 @@ public class IRBlockStateProvider extends BlockStateProvider {
 	private ResourceLocation blockTexture(Block block, String textureFolder, String suffix) {
 		ResourceLocation name = BuiltInRegistries.BLOCK.getKey(block);
 		if (textureFolder == null || textureFolder.trim().isEmpty())
-			return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath() + suffix);
-		return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + textureFolder + "/" + name.getPath() + suffix);
+			return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath() + suffix);
+		return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + textureFolder + "/" + name.getPath() + suffix);
 	}
 
 	private ModelFile cubeAll(Block block, String textureFolder) {
@@ -83,7 +83,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
 	private void simpleBlock(Block block, String modelName, String textureKey, String textureFolder) {
 		simpleBlock(block, models().singleTexture(
-			BuiltInRegistries.BLOCK.getKey(block).getPath(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + modelName),
+			BuiltInRegistries.BLOCK.getKey(block).getPath(), ResourceLocation.parse(ModelProvider.BLOCK_FOLDER + "/" + modelName),
 			textureKey, blockTexture(block, textureFolder)));
 	}
 

@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.networking.CrucibleMeltingProgressPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
@@ -13,7 +14,10 @@ import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.screen.CrucibleMenu;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.recipes.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -22,17 +26,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
@@ -86,9 +95,11 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     IndustrialReforged.LOGGER.debug("Recipe: {}", recipe);
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.ingredient().getItems()[0].getItem();
-                    if (itemStack.is(input) && ItemUtils.getTag(itemStack).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
+                    CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
+                    if (itemStack.is(input) && tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
                         itemStack.shrink(1);
-                        ItemUtils.getTag(itemStack).putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
+                        tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
+                        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                         if (getFluidTank().isPresent()) {
                             FluidStack resultFluid = recipe.resultFluid();
                             this.getFluidTank().get().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
@@ -99,7 +110,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         });
     }
 
-
     private void increaseCraftingProgress() {
         getItemHandler().ifPresent(itemStackHandler -> {
             for (int i = 0; i < itemStackHandler.getSlots(); i++) {
@@ -108,12 +118,17 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                     Item input = recipe.get().getIngredients().get(0).getItems()[0].getItem();
                     if (itemStack.is(input)) {
-                        if (!ItemUtils.getTag(itemStack).getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY))
-                            ItemUtils.getTag(itemStack).putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
-                        float pValue = ItemUtils.getTag(itemStack).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().duration()) * 6;
+                        CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
+                        if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
+                            tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
+                            itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                        }
+                        float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().duration()) * 6;
                         if (pValue < 0) pValue = 0;
                         IndustrialReforged.LOGGER.info("Progress: {}", pValue);
-                        ItemUtils.getTag(itemStack).putInt(CrucibleProgressRenderer.BARWIDTH_KEY, (int) pValue);
+                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+                        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                        PacketDistributor.sendToAllPlayers(new CrucibleMeltingProgressPayload(worldPosition, i, pValue));
                     }
                 }
             }
@@ -139,12 +154,12 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private Optional<CrucibleSmeltingRecipe> getCurrentRecipe(int slot) {
         if (getItemHandler().isPresent()) {
-            SimpleContainer inventory = new SimpleContainer(1);
+            List<ItemStack> itemStacks = new ArrayList<>();
             ItemStack stackInSlot = this.getItemHandler().get().getStackInSlot(slot);
             if (!stackInSlot.isEmpty())
-                inventory.setItem(0, stackInSlot);
+                itemStacks.addFirst(stackInSlot);
 
-            return this.level.getRecipeManager().getRecipeFor(CrucibleSmeltingRecipe.TYPE, inventory, level).map(RecipeHolder::value);
+            return this.level.getRecipeManager().getRecipeFor(CrucibleSmeltingRecipe.TYPE, new ItemRecipeInput(itemStacks), level).map(RecipeHolder::value);
         }
         return Optional.empty();
     }

@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.screen.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
+import com.indref.industrial_reforged.util.recipes.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -124,7 +125,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     public Optional<BlastFurnaceRecipe> getCurrentRecipe() {
         return level.getRecipeManager()
                 .getRecipeFor(BlastFurnaceRecipe.TYPE,
-                        new SimpleContainer(getItemHandlerStacks().orElse(new ItemStack[0])), level)
+                        new ItemRecipeInput(List.of(getItemHandlerStacks().orElse(new ItemStack[0]))), level)
                 .map(RecipeHolder::value);
     }
 

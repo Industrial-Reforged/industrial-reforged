@@ -13,7 +13,7 @@ import org.joml.Vector3f;
 import java.util.function.Supplier;
 
 public final class IRFluidTypes {
-    public static final ResourceLocation SOAP_OVERLAY_RL = new ResourceLocation(IndustrialReforged.MODID, "misc/in_soap_water");
+    public static final ResourceLocation SOAP_OVERLAY_RL = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "misc/in_soap_water");
 
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, IndustrialReforged.MODID);
@@ -32,8 +32,8 @@ public final class IRFluidTypes {
     }
 
     public enum FluidTemplate {
-        LAVA(new ResourceLocation("block/water_still"), new ResourceLocation("block/water_flow")),
-        WATER(new ResourceLocation("block/water_still"), new ResourceLocation("block/water_flow"));
+        LAVA(ResourceLocation.parse("block/water_still"), ResourceLocation.parse("block/water_flow")),
+        WATER(ResourceLocation.parse("block/water_still"), ResourceLocation.parse("block/water_flow"));
 
         private final ResourceLocation still, flowing;
 

@@ -19,7 +19,7 @@ public class RockCutterItem extends ElectricDiggerItem {
 
     @Override
     public void onCraftedBy(ItemStack pStack, Level pLevel, Player pPlayer) {
-        pStack.enchant(Enchantments.SILK_TOUCH, 1);
+        //pStack.enchant(Enchantments.SILK_TOUCH, 1);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.recipes;
 
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
+import com.indref.industrial_reforged.util.recipes.ItemRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record CrucibleSmeltingRecipe(Ingredient ingredient, FluidStack resultFluid, int duration,
-                                     int heat) implements IRRecipe<SimpleContainer> {
+                                     int heat) implements IRRecipe<ItemRecipeInput> {
     public static final String NAME = "crucible_melting";
     public static final RecipeType<CrucibleSmeltingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CrucibleSmeltingRecipe> SERIALIZER =
@@ -33,12 +34,12 @@ public record CrucibleSmeltingRecipe(Ingredient ingredient, FluidStack resultFlu
     }
 
     @Override
-    public boolean matches(SimpleContainer simpleContainer, Level level) {
-        return ingredient.test(simpleContainer.getItem(0));
+    public boolean matches(ItemRecipeInput recipeInput, Level level) {
+        return ingredient.test(recipeInput.getItem(0));
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull SimpleContainer simpleContainer, HolderLookup.Provider provider) {
+    public @NotNull ItemStack assemble(@NotNull ItemRecipeInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CraftingStationScreen extends AbstractContainerScreen<CraftingStationMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/crafting_station.png");
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/crafting_station.png");
 
     public CraftingStationScreen(CraftingStationMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
@@ -55,9 +55,9 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
 
     private void addImageButton(int x, int y, String path, SimpleFunction onClick) {
         addRenderableWidget(new ImageButton(x, y, 20, 20, new WidgetSprites(
-                new ResourceLocation("indref", "widget/" + path),
-                new ResourceLocation("indref", "widget/" + path),
-                new ResourceLocation("indref", "widget/" + path + "_highlighted")
+                ResourceLocation.fromNamespaceAndPath("indref", "widget/" + path),
+                ResourceLocation.fromNamespaceAndPath("indref", "widget/" + path),
+                ResourceLocation.fromNamespaceAndPath("indref", "widget/" + path + "_highlighted")
         ), (button) -> onClick.call(), Component.empty()));
     }
 }

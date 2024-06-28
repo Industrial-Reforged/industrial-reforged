@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.registries.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.screen.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
+import com.indref.industrial_reforged.util.recipes.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +68,6 @@ public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuP
     }
 
     public Optional<RecipeHolder<CentrifugeRecipe>> getCurrentRecipe() {
-        return level.getRecipeManager().getRecipeFor(CentrifugeRecipe.TYPE, new SimpleContainer(getItemHandlerStacks().orElseThrow()[0]), level);
+        return level.getRecipeManager().getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(Collections.singletonList(getItemHandlerStacks().orElseThrow()[0])), level);
     }
 }

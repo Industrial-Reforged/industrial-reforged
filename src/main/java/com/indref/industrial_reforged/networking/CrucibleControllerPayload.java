@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public record CrucibleControllerPayload(BlockPos wallPos, BlockPos controllerPos) implements CustomPacketPayload {
-    public static final Type<CrucibleControllerPayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "crucible_controller_sync_payload"));
+    public static final Type<CrucibleControllerPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_controller_sync_payload"));
     public static final StreamCodec<RegistryFriendlyByteBuf, CrucibleControllerPayload> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
             CrucibleControllerPayload::wallPos,

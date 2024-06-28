@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(IndustrialReforged.MODID, "textures/gui/centrifuge.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/centrifuge.png");
 
     public CentrifugeScreen(CentrifugeMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);

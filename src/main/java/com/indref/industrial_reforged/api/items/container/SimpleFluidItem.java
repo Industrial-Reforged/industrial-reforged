@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -29,8 +30,9 @@ public abstract class SimpleFluidItem extends Item implements IFluidItem {
         return this.capacity;
     }
 
+
     @Override
-    public int getUseDuration(ItemStack p_41454_) {
+    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
         return 1;
     }
 

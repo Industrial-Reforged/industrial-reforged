@@ -12,6 +12,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -197,7 +198,7 @@ public final class IRTabs {
 
     public static void addRockCutter(CreativeModeTab.Output output, Supplier<Item> item) {
         ItemStack stack = new ItemStack(item.get());
-        stack.enchant(Enchantments.SILK_TOUCH, 1);
+        //stack.enchant(Enchantments.SILK_TOUCH., 1);
 
         output.accept(stack);
         ItemStack energyStack = stack.copy();

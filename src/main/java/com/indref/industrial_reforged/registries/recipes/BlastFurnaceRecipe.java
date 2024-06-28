@@ -1,9 +1,7 @@
 package com.indref.industrial_reforged.registries.recipes;
 
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
-import com.indref.industrial_reforged.util.recipes.IngredientUtils;
-import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.indref.industrial_reforged.util.recipes.RecipeUtils;
+import com.indref.industrial_reforged.util.recipes.*;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -25,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, FluidStack resultFluid,
-                                 int duration) implements IRRecipe<SimpleContainer> {
+                                 int duration) implements IRRecipe<ItemRecipeInput> {
     public static final String NAME = "blast_furnace";
     public static final RecipeType<BlastFurnaceRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<BlastFurnaceRecipe> SERIALIZER =
@@ -36,10 +34,10 @@ public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, F
     }
 
     @Override
-    public boolean matches(SimpleContainer simpleContainer, Level level) {
+    public boolean matches(ItemRecipeInput recipeInput, Level level) {
         if (level.isClientSide) return false;
 
-        return RecipeUtils.compareItems(simpleContainer.getItems(), ingredients);
+        return RecipeUtils.compareItems(recipeInput.items(), ingredients);
     }
 
     @Override

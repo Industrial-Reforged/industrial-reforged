@@ -42,11 +42,11 @@ public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
 	}
 
 	public static ResourceKey<ConfiguredFeature<?, ?>> registerConfigKey(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(IndustrialReforged.MODID, name));
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, name));
 	}
 
 	public static ResourceKey<PlacedFeature> registerPlaceKey(String name) {
-		return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(IndustrialReforged.MODID, name));
+		return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, name));
 	}
 
 	public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()

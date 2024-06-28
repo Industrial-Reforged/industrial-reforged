@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class CrucibleScreen extends AbstractContainerScreen<CrucibleMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/crucible.png");
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/crucible.png");
 
     private FluidTankRenderer renderer;
     private final CrucibleMenu menu;

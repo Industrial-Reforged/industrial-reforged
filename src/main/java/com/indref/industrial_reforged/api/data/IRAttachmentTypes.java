@@ -16,6 +16,7 @@ public final class IRAttachmentTypes {
 
     // Do not try to access these directly! Use capabilities or preferably cast to container block/item/heat
 
+    // TODO: Use codecs for this
     public static final Supplier<AttachmentType<AttachmentEnergyStorage>> ENERGY = ATTACHMENT_TYPES.register(
             "energy", () -> AttachmentType.serializable(() -> new AttachmentEnergyStorage(0, 0)).build());
 

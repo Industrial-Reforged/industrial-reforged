@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,7 +16,7 @@ public class ToolItem extends Item implements com.indref.industrial_reforged.api
     }
 
     @Override
-    public int getUseDuration(ItemStack itemStack) {
+    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
         return 1;
     }
 

@@ -34,6 +34,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
@@ -61,7 +62,7 @@ public class IREvents {
     public static class ClientBus {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
-            event.registerAboveAll(new ResourceLocation(IndustrialReforged.MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
+            event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
         }
 
         @SubscribeEvent
@@ -90,17 +91,17 @@ public class IREvents {
         @SubscribeEvent
         public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
-                ItemProperties.register(IRItems.TAPE_MEASURE.get(), new ResourceLocation(IndustrialReforged.MODID, TapeMeasureItem.EXTENDED_KEY),
+                ItemProperties.register(IRItems.TAPE_MEASURE.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, TapeMeasureItem.EXTENDED_KEY),
                         (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
-                ItemProperties.register(IRItems.NANO_SABER.get(), new ResourceLocation(IndustrialReforged.MODID, ItemUtils.ACTIVE_KEY),
+                ItemProperties.register(IRItems.NANO_SABER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ItemUtils.ACTIVE_KEY),
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
-                ItemProperties.register(IRItems.BLUEPRINT.get(), new ResourceLocation(IndustrialReforged.MODID, BlueprintItem.HAS_RECIPE_KEY),
+                ItemProperties.register(IRItems.BLUEPRINT.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, BlueprintItem.HAS_RECIPE_KEY),
                         (stack, level, living, id) -> BlueprintItem.hasRecipe(stack));
-                ItemProperties.register(IRItems.THERMOMETER.get(), new ResourceLocation(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),
+                ItemProperties.register(IRItems.THERMOMETER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),
                         (stack, level, living, id) -> ThermometerItem.getTemperature(stack));
                 for (Item item : BuiltInRegistries.ITEM) {
                     if (item instanceof BatteryItem) {
-                        ItemProperties.register(item, new ResourceLocation(IndustrialReforged.MODID, BatteryItem.ENERGY_STAGE_KEY),
+                        ItemProperties.register(item, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, BatteryItem.ENERGY_STAGE_KEY),
                                 (stack, level, living, id) -> BatteryItem.getEnergyStage(stack));
                     }
                 }
@@ -138,10 +139,11 @@ public class IREvents {
         @SubscribeEvent
         public static void appendTooltips(ItemTooltipEvent event) {
             ItemStack item = event.getItemStack();
-            if (ItemUtils.getTag(item).getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
+            CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
+            if (tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
-                        .append(String.valueOf(ItemUtils.getTag(item)))
+                        .append(String.valueOf(tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY)))
                         .append("/10")
                         .withStyle(ChatFormatting.GRAY));
             }
@@ -204,6 +206,7 @@ public class IREvents {
             registrar.playToClient(CastingDurationPayload.TYPE, CastingDurationPayload.STREAM_CODEC, PayloadActions::castingDurationSync);
             registrar.playToClient(CastingGhostItemPayload.TYPE, CastingGhostItemPayload.STREAM_CODEC, PayloadActions::castingGhostItemSync);
             registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, PayloadActions::crucibleControllerSync);
+            registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, PayloadActions::crucibleMeltingProgressSync);
         }
     }
 }

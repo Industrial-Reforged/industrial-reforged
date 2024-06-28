@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.gui.components;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.util.GuiUtils;
+import com.indref.industrial_reforged.util.renderer.GuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,8 +13,8 @@ import org.joml.Vector2i;
 import java.util.List;
 
 public class EnergyGuiComponent extends TooltipGuiComponent {
-    private static final ResourceLocation ENERGY_BAR = new ResourceLocation(IndustrialReforged.MODID, "textures/gui/energy_bar.png");
-    private static final ResourceLocation ENERGY_BAR_EMPTY = new ResourceLocation(IndustrialReforged.MODID, "textures/gui/energy_bar_empty.png");
+    private static final ResourceLocation ENERGY_BAR = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/energy_bar.png");
+    private static final ResourceLocation ENERGY_BAR_EMPTY = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/energy_bar_empty.png");
 
     private final boolean addBatterySlot;
 

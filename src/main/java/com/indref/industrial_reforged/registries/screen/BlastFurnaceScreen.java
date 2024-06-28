@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/blast_furnace.png");
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/blast_furnace.png");
 
     private FluidTankRenderer renderer;
 

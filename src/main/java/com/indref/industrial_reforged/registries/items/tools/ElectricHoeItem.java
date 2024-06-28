@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.ItemAbilities;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -48,7 +50,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack p_41454_) {
+    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
         return 1;
     }
 
@@ -56,7 +58,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     public InteractionResult useOn(UseOnContext p_41341_) {
         Level level = p_41341_.getLevel();
         BlockPos blockpos = p_41341_.getClickedPos();
-        BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(p_41341_, net.neoforged.neoforge.common.ToolActions.HOE_TILL, false);
+        BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(p_41341_, ItemAbilities.HOE_TILL, false);
         Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
         if (pair == null) {
             return InteractionResult.PASS;

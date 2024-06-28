@@ -11,12 +11,15 @@ import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -51,15 +54,19 @@ public class NeoforgeEvents {
 
             NonNullList<ItemStack> items = player.getInventory().items;
             for (ItemStack item : items) {
-                if (ItemUtils.getTag(item).getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
+                CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
+                if (tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
                     if (level.getGameTime() % 20 == 0) {
-                        ItemUtils.getTag(item).putInt(CrucibleProgressRenderer.BARWIDTH_KEY, ItemUtils.getTag(item).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
+                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
+                        item.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                         Registry<DamageType> damageTypes = player.damageSources().damageTypes;
                         player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 4);
                     }
 
-                    if (ItemUtils.getTag(item).getInt(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0)
-                        ItemUtils.getTag(item).putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
+                    if (tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0) {
+                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
+                        item.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                    }
                 }
             }
         }

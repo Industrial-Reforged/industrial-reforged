@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.entity.player.BonemealEvent;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -60,28 +62,31 @@ public class FertilizerItem extends BoneMealItem {
         }
     }
 
-    public static boolean applyFertilizer(ItemStack itemStack, Level level, BlockPos blockPos, Player player) {
-        Random random = new Random();
-        int randomNumber = random.nextInt(0, 4);
-        BlockState blockstate = level.getBlockState(blockPos);
-        int hook = net.neoforged.neoforge.event.EventHooks.onApplyBonemeal(player, level, blockPos, blockstate, itemStack);
-        if (hook != 0) return hook > 0;
-        Block block = blockstate.getBlock();
-        if (block instanceof BonemealableBlock bonemealableblock && bonemealableblock.isValidBonemealTarget(level, blockPos, blockstate)) {
-            if (level instanceof ServerLevel) {
-                if (bonemealableblock.isBonemealSuccess(level, level.random, blockPos, blockstate)) {
-                    bonemealableblock.performBonemeal((ServerLevel)level, level.random, blockPos, blockstate);
-                }
+    public static boolean applyFertilizer(ItemStack p_40628_, Level p_40629_, BlockPos p_40630_, @Nullable Player player) {
+        BlockState blockstate = p_40629_.getBlockState(p_40630_);
+        BonemealEvent event = EventHooks.fireBonemealEvent(player, p_40629_, p_40630_, blockstate, p_40628_);
+        int randomInt = p_40629_.getRandom().nextInt(0, 4);
+        if (event.isCanceled()) {
+            return event.isSuccessful();
+        } else {
+            Block var7 = blockstate.getBlock();
+            if (var7 instanceof BonemealableBlock bonemealableblock) {
+                if (bonemealableblock.isValidBonemealTarget(p_40629_, p_40630_, blockstate)) {
+                    if (p_40629_ instanceof ServerLevel) {
+                        if (bonemealableblock.isBonemealSuccess(p_40629_, p_40629_.random, p_40630_, blockstate)) {
+                            bonemealableblock.performBonemeal((ServerLevel) p_40629_, p_40629_.random, p_40630_, blockstate);
+                        }
 
-                if (randomNumber == 0) {
-                    itemStack.shrink(1);
+                        if (randomInt == 0)
+                            p_40628_.shrink(1);
+                    }
+
+                    return true;
                 }
             }
 
-            return true;
+            return false;
         }
-
-        return false;
     }
 
     public static boolean growWaterPlant(ItemStack itemStack, Level level, BlockPos blockPos, @Nullable Direction direction) {

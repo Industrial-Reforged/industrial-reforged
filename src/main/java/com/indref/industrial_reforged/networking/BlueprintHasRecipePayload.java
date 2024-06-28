@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 // FIXME: Itemstack might not work
 public record BlueprintHasRecipePayload(ItemStack itemStack, boolean hasRecipe) implements CustomPacketPayload {
-    public static final Type<BlueprintHasRecipePayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "item_has_recipe_payload"));
+    public static final Type<BlueprintHasRecipePayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "item_has_recipe_payload"));
     public static final StreamCodec<RegistryFriendlyByteBuf, BlueprintHasRecipePayload> STREAM_CODEC = StreamCodec.composite(
             ItemStack.STREAM_CODEC,
             BlueprintHasRecipePayload::itemStack,

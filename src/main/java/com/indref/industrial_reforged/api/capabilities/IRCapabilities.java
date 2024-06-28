@@ -35,7 +35,7 @@ public final class IRCapabilities {
     }
 
     private static ResourceLocation create(String path) {
-        return new ResourceLocation(IndustrialReforged.MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, path);
     }
 
 }

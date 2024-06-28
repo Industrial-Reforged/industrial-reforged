@@ -34,7 +34,7 @@ public final class IRArmorMaterials {
 
 
     private static Holder<ArmorMaterial> register(String p_323589_, EnumMap<ArmorItem.Type, Integer> p_323819_, int p_323636_, Holder<SoundEvent> p_323958_, float p_323937_, float p_323731_, Supplier<Ingredient> p_323970_) {
-        List<ArmorMaterial.Layer> list = List.of(new ArmorMaterial.Layer(new ResourceLocation(p_323589_)));
+        List<ArmorMaterial.Layer> list = List.of(new ArmorMaterial.Layer(ResourceLocation.parse(p_323589_)));
         return register(p_323589_, p_323819_, p_323636_, p_323958_, p_323937_, p_323731_, p_323970_, list);
     }
 
@@ -46,6 +46,6 @@ public final class IRArmorMaterials {
             enummap.put(armoritem$type, p_324599_.get(armoritem$type));
         }
 
-        return Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL, new ResourceLocation(p_323865_), new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, p_323990_, p_323494_, p_324549_));
+        return Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL, ResourceLocation.parse(p_323865_), new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, p_323990_, p_323494_, p_324549_));
     }
 }

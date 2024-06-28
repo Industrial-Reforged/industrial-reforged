@@ -4,9 +4,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.NotNull;
 
-public interface IRRecipe<T extends Container> extends Recipe<T> {
+public interface IRRecipe<T extends RecipeInput> extends Recipe<T> {
     @Override
     default @NotNull ItemStack assemble(@NotNull T container, HolderLookup.Provider provider) {
         return getResultItem(provider).copy();

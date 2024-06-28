@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public record CastingDurationPayload(int duration, int maxDuration, BlockPos blockPos) implements CustomPacketPayload {
-    public static final Type<CastingDurationPayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "casting_duration_payload"));
+    public static final Type<CastingDurationPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "casting_duration_payload"));
     public static final StreamCodec<RegistryFriendlyByteBuf, CastingDurationPayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT,
             CastingDurationPayload::duration,

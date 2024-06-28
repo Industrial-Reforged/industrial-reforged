@@ -10,7 +10,7 @@ public final class IRTags {
     public static class Blocks {
         public static final TagKey<Block> MINEABLE_WITH_DRILL = create("mineable/drill");
         private static TagKey<Block> create(String p_203847_) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(IndustrialReforged.MODID, p_203847_));
+            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, p_203847_));
         }
     }
 }

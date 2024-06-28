@@ -54,11 +54,6 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
         return super.mineBlock(itemStack, p_40999_, p_41000_, p_41001_, p_41002_);
     }
 
-    @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-        return false;
-    }
-
     public int getEnergyUsage(ItemStack itemStack) {
         return energyUsage;
     }

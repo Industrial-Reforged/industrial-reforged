@@ -14,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class FireBoxScreen extends AbstractContainerScreen<FireBoxMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(IndustrialReforged.MODID, "textures/gui/firebox.png");
-    private static final ResourceLocation LIT_PROGRESS_SPRITE = new ResourceLocation("container/smoker/lit_progress");
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/firebox.png");
+    private static final ResourceLocation LIT_PROGRESS_SPRITE = ResourceLocation.parse("container/smoker/lit_progress");
 
     public FireBoxScreen(FireBoxMenu fireBoxMenu, Inventory inventory, Component component) {
         super(fireBoxMenu, inventory, component);

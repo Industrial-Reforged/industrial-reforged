@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -24,6 +25,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStationBlockEntity> {
@@ -63,27 +65,29 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
             ItemStack itemStack = itemHandler.getStackInSlot(i+18);
             this.craftSlots.setItem(i, itemStack);
         }
-        this.access.execute((level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots));
-        IndustrialReforged.LOGGER.debug("Craftslots 1: "+this.craftSlots.getItems());
+        this.access.execute((level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots, null));
+        IndustrialReforged.LOGGER.debug("Craftslots 1: {}", this.craftSlots.getItems());
     }
 
     @Override
-    public void slotsChanged(Container container) {
-        this.access.execute((level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots));
+    public void slotsChanged(Container inventory) {
+            this.access.execute((p_344363_, p_344364_) -> slotChangedCraftingGrid(this, p_344363_, this.player, this.craftSlots, this.resultSlots, null));
     }
 
+
     protected static void slotChangedCraftingGrid(
-            AbstractContainerMenu menu, Level level, Player player, CraftingContainer craftingContainer, ResultContainer container
+            AbstractContainerMenu menu, Level level, Player player, CraftingContainer container, ResultContainer result, @Nullable RecipeHolder<CraftingRecipe> p_345124_
     ) {
         if (!level.isClientSide) {
+            CraftingInput craftinginput = container.asCraftInput();
             ServerPlayer serverplayer = (ServerPlayer)player;
             ItemStack itemstack = ItemStack.EMPTY;
-            Optional<RecipeHolder<CraftingRecipe>> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level);
+            Optional<RecipeHolder<CraftingRecipe>> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftinginput, level);
             if (optional.isPresent()) {
                 RecipeHolder<CraftingRecipe> recipeholder = optional.get();
                 CraftingRecipe craftingrecipe = recipeholder.value();
-                if (container.setRecipeUsed(level, serverplayer, recipeholder)) {
-                    ItemStack itemstack1 = craftingrecipe.assemble(craftingContainer, level.registryAccess());
+                if (result.setRecipeUsed(level, serverplayer, recipeholder)) {
+                    ItemStack itemstack1 = craftingrecipe.assemble(craftinginput, level.registryAccess());
                     if (itemstack1.isItemEnabled(level.enabledFeatures())) {
                         itemstack = itemstack1;
                     }

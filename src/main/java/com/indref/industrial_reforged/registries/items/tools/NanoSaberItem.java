@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -36,14 +37,14 @@ public class NanoSaberItem extends ElectricSwordItem {
                 ItemAttributeModifiers.Builder modifiers = ItemAttributeModifiers.builder();
 
                 if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
-                    modifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Nano modifier", 19, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-                    modifiers.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Speed modifier", 1.2F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    modifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "attack_modifier"), 19, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    modifiers.add(Attributes.ATTACK_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "attack_speed"), 1.2F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
                 }
 
                 return modifiers.build();
             }
         }
-        return super.getAttributeModifiers(stack);
+        return ItemAttributeModifiers.EMPTY;
     }
 
     @Override

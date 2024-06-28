@@ -135,8 +135,8 @@ public final class ItemUtils {
         }
     }
 
-    public static CompoundTag getTag(ItemStack itemStack) {
-        return itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).getUnsafe();
+    public static CustomData getImmutableTag(ItemStack itemStack) {
+        return itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
     }
 
     public static List<ItemStack> copyItems(List<ItemStack> itemStacks) {

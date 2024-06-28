@@ -38,7 +38,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 			folder = "";
 		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
-			.texture("layer0", new ResourceLocation(name.getNamespace(), "item/" + folder + name.getPath()));
+			.texture("layer0", ResourceLocation.fromNamespaceAndPath(name.getNamespace(), "item/" + folder + name.getPath()));
 	}
 
 	public ItemModelBuilder basicItemBlock(Item item) {
@@ -51,7 +51,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 			folder = "";
 		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
-			.texture("layer0", new ResourceLocation(name.getNamespace(), "block/" + folder + name.getPath()));
+			.texture("layer0", ResourceLocation.fromNamespaceAndPath(name.getNamespace(), "block/" + folder + name.getPath()));
 	}
 
 	public ItemModelBuilder parentItemBlock(Item item) {
@@ -61,6 +61,6 @@ public class IRItemModelProvider extends ItemModelProvider {
 	public ItemModelBuilder parentItemBlock(Item item, String suffix) {
 		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString())
-			.parent(new ModelFile.UncheckedModelFile(new ResourceLocation(name.getNamespace(), "block/" + name.getPath() + suffix)));
+			.parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(name.getNamespace(), "block/" + name.getPath() + suffix)));
 	}
 }

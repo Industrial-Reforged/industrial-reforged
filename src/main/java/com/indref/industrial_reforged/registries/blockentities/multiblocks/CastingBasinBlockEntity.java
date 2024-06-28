@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.networking.CastingDurationPayload;
 import com.indref.industrial_reforged.networking.CastingGhostItemPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.util.recipes.ItemAndFluidRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class CastingBasinBlockEntity extends ContainerBlockEntity {
@@ -152,22 +155,22 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     private Optional<CrucibleCastingRecipe> getCurrentRecipe() {
         if (level.isClientSide() || getFluidTank().isEmpty() || getItemHandler().isEmpty()) return Optional.empty();
 
-        SimpleContainer inventory = new SimpleContainer(1);
+        List<ItemStack> itemStacks = new ArrayList<>();
         ItemStack stackInSlot = this.getItemHandler().get().getStackInSlot(CAST_SLOT);
 
         if (!stackInSlot.isEmpty()) {
-            inventory.setItem(CAST_SLOT, stackInSlot);
+            itemStacks.add(CAST_SLOT, stackInSlot);
         }
 
-        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(CrucibleCastingRecipe.TYPE, inventory, level);
+        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(CrucibleCastingRecipe.TYPE,
+                new ItemAndFluidRecipeInput(itemStacks, getFluidTank().get().getFluidInTank(0)),
+                level);
 
         if (recipe.isEmpty()) return Optional.empty();
 
         this.maxDuration = recipe.get().value().getDuration();
 
-        boolean matchesFluid = recipe.get().value().matchesFluids(getFluidTank().get().getFluidInTank(0), level);
-
-        return matchesFluid ? recipe.map(RecipeHolder::value) : Optional.empty();
+        return recipe.map(RecipeHolder::value);
     }
 
     private boolean canInsertIntoOutput(ItemStack outputItem) {

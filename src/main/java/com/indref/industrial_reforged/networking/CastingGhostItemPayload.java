@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public record CastingGhostItemPayload(ItemStack itemStack, BlockPos blockPos) implements CustomPacketPayload {
-    public static final Type<CastingGhostItemPayload> TYPE = new Type<>(new ResourceLocation(IndustrialReforged.MODID, "casting_ghost_item_payload"));
+    public static final Type<CastingGhostItemPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "casting_ghost_item_payload"));
     public static final StreamCodec<RegistryFriendlyByteBuf, CastingGhostItemPayload> STREAM_CODEC = StreamCodec.composite(
             ItemStack.OPTIONAL_STREAM_CODEC,
             CastingGhostItemPayload::itemStack,

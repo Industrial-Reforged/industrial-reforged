@@ -9,6 +9,7 @@
 package com.indref.industrial_reforged.util.renderer;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import org.jetbrains.annotations.NotNull;
 
 public class TintedVertexBuilder implements VertexConsumer {
     /** Base vertex builder */
@@ -25,48 +26,32 @@ public class TintedVertexBuilder implements VertexConsumer {
     }
 
     @Override
-    public VertexConsumer vertex(double x, double y, double z) {
-        return inner.vertex(x, y, z);
+    public @NotNull VertexConsumer addVertex(float v, float v1, float v2) {
+        return inner.addVertex(v, v1, v2);
     }
 
     @Override
-    public VertexConsumer color(int red, int green, int blue, int alpha) {
-        return inner.color((red * tintRed) / 0xFF, (green * tintGreen) / 0xFF, (blue * tintBlue) / 0xFF, (alpha * tintAlpha) / 0xFF);
+    public @NotNull VertexConsumer setColor(int red, int green, int blue, int alpha) {
+        return inner.setColor((red * tintRed) / 0xFF, (green * tintGreen) / 0xFF, (blue * tintBlue) / 0xFF, (alpha * tintAlpha) / 0xFF);
     }
 
     @Override
-    public void defaultColor(int red, int green, int blue, int alpha) {
-        // TODO: is setting the default color here correct?
-        inner.defaultColor((red * tintRed) / 0xFF, (green * tintGreen) / 0xFF, (blue * tintBlue) / 0xFF, (alpha * tintAlpha) / 0xFF);
+    public @NotNull VertexConsumer setUv(float u, float v) {
+        return inner.setUv(u, v);
     }
 
     @Override
-    public void unsetDefaultColor() {
-        inner.unsetDefaultColor();
+    public @NotNull VertexConsumer setUv1(int i, int i1) {
+        return inner.setUv1(i, i1);
     }
 
     @Override
-    public VertexConsumer uv(float u, float v) {
-        return inner.uv(u, v);
+    public @NotNull VertexConsumer setUv2(int i, int i1) {
+        return inner.setUv2(i, i1);
     }
 
     @Override
-    public VertexConsumer overlayCoords(int u, int v) {
-        return inner.overlayCoords(u, v);
-    }
-
-    @Override
-    public VertexConsumer uv2(int u, int v) {
-        return inner.uv2(u, v);
-    }
-
-    @Override
-    public VertexConsumer normal(float x, float y, float z) {
-        return inner.normal(x, y, z);
-    }
-
-    @Override
-    public void endVertex() {
-        inner.endVertex();
+    public @NotNull VertexConsumer setNormal(float v, float v1, float v2) {
+        return inner.setNormal(v, v1, v2);
     }
 }
