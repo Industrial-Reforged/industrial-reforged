@@ -3,8 +3,7 @@ package com.indref.industrial_reforged.api.capabilities.heat.storage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.attachments.AttachmentHeatStorage;
-import com.indref.industrial_reforged.api.data.components.ComponentHeatStorage;
+import com.indref.industrial_reforged.api.data.HeatStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -17,9 +16,9 @@ public class HeatWrapper {
 
         @Override
         public int getHeatStored() {
-            ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
-            if (componentHeatStorage != null)
-                return componentHeatStorage.heatStored();
+            HeatStorage heatStorage = itemStack.get(IRDataComponents.HEAT);
+            if (heatStorage != null)
+                return heatStorage.heatStored();
             else
                 throw new NullPointerException("Failed to get heat component for item: "
                         + itemStack.getItem()
@@ -28,14 +27,14 @@ public class HeatWrapper {
 
         @Override
         public void setHeatStored(int value) {
-            itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getHeatCapacity()));
+            itemStack.set(IRDataComponents.HEAT, new HeatStorage(value, getHeatCapacity()));
         }
 
         @Override
         public int getHeatCapacity() {
-            ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
-            if (componentHeatStorage != null)
-                return componentHeatStorage.heatCapacity();
+            HeatStorage heatStorage = itemStack.get(IRDataComponents.HEAT);
+            if (heatStorage != null)
+                return heatStorage.heatCapacity();
             else
                 throw new NullPointerException("Failed to get heat component for item: "
                         + itemStack.getItem()
@@ -44,7 +43,7 @@ public class HeatWrapper {
 
         @Override
         public void setHeatCapacity(int value) {
-            itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), value));
+            itemStack.set(IRDataComponents.HEAT, new HeatStorage(getHeatStored(), value));
         }
     }
 
@@ -56,22 +55,22 @@ public class HeatWrapper {
 
         @Override
         public int getHeatStored() {
-            return blockEntity.getData(IRAttachmentTypes.HEAT.get()).getHeatStored();
+            return blockEntity.getData(IRAttachmentTypes.HEAT.get()).heatStored();
         }
 
         @Override
         public void setHeatStored(int value) {
-            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new AttachmentHeatStorage(value, getHeatCapacity()));
+            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new HeatStorage(value, getHeatCapacity()));
         }
 
         @Override
         public int getHeatCapacity() {
-            return blockEntity.getData(IRAttachmentTypes.HEAT.get()).getHeatCapacity();
+            return blockEntity.getData(IRAttachmentTypes.HEAT.get()).heatCapacity();
         }
 
         @Override
         public void setHeatCapacity(int value) {
-            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new AttachmentHeatStorage(getHeatStored(), value));
+            blockEntity.setData(IRAttachmentTypes.HEAT.get(), new HeatStorage(getHeatStored(), value));
         }
     }
 }

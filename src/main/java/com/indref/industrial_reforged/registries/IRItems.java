@@ -7,157 +7,136 @@ import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.registries.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.registries.items.misc.MoldItem;
-import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRod;
+import com.indref.industrial_reforged.registries.items.reactor.UraniumFuelRodItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, IndustrialReforged.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IndustrialReforged.MODID);
 
     // Tools
-    public static final Supplier<Item> WRENCH = registerItem("wrench",
+    public static final DeferredItem<WrenchItem> WRENCH = registerItem("wrench",
             () -> new WrenchItem(new Item.Properties()));
-    public static final Supplier<Item> HAMMER = registerItem("hammer",
+    public static final DeferredItem<HammerItem> HAMMER = registerItem("hammer",
             () -> new HammerItem(new Item.Properties()));
-    public static final Supplier<Item> THERMOMETER = registerItem("thermometer",
+    public static final DeferredItem<ThermometerItem> THERMOMETER = registerItem("thermometer",
             () -> new ThermometerItem(new Item.Properties()));
-    public static final Supplier<Item> TREE_TAP = registerItem("tree_tap",
+    public static final DeferredItem<TreeTapItem> TREE_TAP = registerItem("tree_tap",
             () -> new TreeTapItem(new Item.Properties()));
-    public static final Supplier<Item> NANO_SABER = registerItem("nano_saber",
+    public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
             () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
-    public static final Supplier<Item> SCANNER = registerItem("scanner",
+    public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM));
-    public static final Supplier<Item> ELECTRIC_WRENCH = registerItem("electric_wrench",
+    public static final DeferredItem<ElectricWrenchItem> ELECTRIC_WRENCH = registerItem("electric_wrench",
             () -> new ElectricWrenchItem(new Item.Properties(), EnergyTiers.LOW));
-    public static final Supplier<Item> ELECTRIC_HOE = registerItem("electric_hoe",
+    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(EnergyTiers.LOW, Tiers.IRON, 0, 0, new Item.Properties()));
-    public static final Supplier<Item> ROCK_CUTTER = registerItem("rock_cutter",
+    public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
             () -> new RockCutterItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
-    public static final Supplier<Item> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
+    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
-    public static final Supplier<Item> ELECTRIC_DRILL = registerItem("electric_drill",
+    public static final DeferredItem<ElectricDrillItem> ELECTRIC_DRILL = registerItem("electric_drill",
             () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
-    public static final Supplier<Item> ADVANCED_DRILL = registerItem("advanced_drill",
+    public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
-    public static final Supplier<Item> TAPE_MEASURE = registerItem("tape_measure",
+    public static final DeferredItem<TapeMeasureItem> TAPE_MEASURE = registerItem("tape_measure",
             () -> new TapeMeasureItem(new Item.Properties()));
-    public static final Supplier<Item> BLUEPRINT = registerItem("blueprint",
+    public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
             () -> new BlueprintItem(new Item.Properties()));
 
     // Item storages
     //public static final Supplier<Item> LUNCH_BAG = registerItem("lunch_bag",
     //        () -> new LunchBagItem(new Item.Properties().stacksTo(1)));
-    public static final Supplier<Item> FLUID_CELL = registerItem("fluid_cell",
+    public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
-    public static final Supplier<Item> ANTENNA = registerStandardItem("antenna");
-    public static final Supplier<Item> PLANT_BALL = registerStandardItem("plant_ball");
-    public static final Supplier<Item> BASIC_BATTERY = registerItem("basic_battery",
+    public static final DeferredItem<Item> ANTENNA = registerStandardItem("antenna");
+    public static final DeferredItem<Item> PLANT_BALL = registerStandardItem("plant_ball");
+    public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",
             () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW));
-    public static final Supplier<Item> ADVANCED_BATTERY = registerItem("advanced_battery",
+    public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = registerItem("advanced_battery",
             () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH));
-    public static final Supplier<Item> ULTIMATE_BATTERY = registerItem("ultimate_battery",
+    public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = registerItem("ultimate_battery",
             () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE));
-    public static final Supplier<Item> TOOLBOX = registerItem("toolbox",
+    public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
             () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
-    public static final Supplier<Item> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
-            () -> new UraniumFuelRod(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<UraniumFuelRodItem> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
+            () -> new UraniumFuelRodItem(new Item.Properties().stacksTo(1)));
 
     // armor
-    public static final Supplier<Item> HAZMAT_BOOTS = registerItem("hazmat_boots",
+    public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",
             () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties()));
-    public static final Supplier<Item> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
+    public static final DeferredItem<HazmatSuiteItem> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
             () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
-    public static final Supplier<Item> HAZMAT_CHESTPLATE = registerItem("hazmat_chestplate",
+    public static final DeferredItem<HazmatSuiteItem> HAZMAT_CHESTPLATE = registerItem("hazmat_chestplate",
             () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final Supplier<Item> HAZMAT_HELMET = registerItem("hazmat_helmet",
+    public static final DeferredItem<HazmatSuiteItem> HAZMAT_HELMET = registerItem("hazmat_helmet",
             () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final Supplier<Item> JETPACK = registerItem("jetpack",
+    public static final DeferredItem<JetpackItem> JETPACK = registerItem("jetpack",
             () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
 
     //misc
-    public static final Supplier<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
-    public static final Supplier<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
-    public static final Supplier<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
-    public static final Supplier<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
-    public static final Supplier<Item> BIOMASS = registerItem("biomass",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
-    public static final Supplier<Item> FERTILIZER = registerItem("fertilizer",
+    public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
+    public static final DeferredItem<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
+    public static final DeferredItem<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
+    public static final DeferredItem<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
+    public static final DeferredItem<Item> BIOMASS = registerStandardItem("biomass");
+    public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
+    public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
-    public static final Supplier<Item> CLAY_MOLD = registerItem("clay_mold", MoldItem::new);
-    public static final Supplier<Item> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot", MoldItem::new);
+    public static final DeferredItem<MoldItem> CLAY_MOLD_BLANK = registerItem("clay_mold", MoldItem::new);
+    public static final DeferredItem<MoldItem> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot", MoldItem::new);
 
     // Needs to be registered manual for custom placement
-    public static final Supplier<Item> MINING_PIPE = registerItem("mining_pipe",
+    public static final DeferredItem<Item> MINING_PIPE = registerItem("mining_pipe",
             () -> new MiningPipeBlockItem(new Item.Properties()));
 
     //ores
-    public static final Supplier<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");
-    public static final Supplier<Item> RAW_CHROMIUM = registerStandardItem("raw_chromium");
-    public static final Supplier<Item> RAW_IRIDIUM = registerItem("raw_iridium",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> RAW_LEAD = registerItem("raw_lead",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> RAW_NICKEL = registerItem("raw_nickel",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> RAW_TIN = registerItem("raw_tin",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> RAW_URANIUM = registerItem("raw_uranium",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");
+    public static final DeferredItem<Item> RAW_CHROMIUM = registerStandardItem("raw_chromium");
+    public static final DeferredItem<Item> RAW_IRIDIUM = registerStandardItem("raw_iridium");
+    public static final DeferredItem<Item> RAW_LEAD = registerStandardItem("raw_lead");
+    public static final DeferredItem<Item> RAW_NICKEL = registerStandardItem("raw_nickel");
+    public static final DeferredItem<Item> RAW_TIN = registerStandardItem("raw_tin");
+    public static final DeferredItem<Item> RAW_URANIUM = registerStandardItem("raw_uranium");
 
     // ingots
-    public static final Supplier<Item> ALUMINUM_INGOT = registerItem("aluminum_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> TITANIUM_INGOT = registerItem("titanium_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> CHROMIUM_INGOT = registerItem("chromium_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> IRIDIUM_INGOT = registerItem("iridium_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> LEAD_INGOT = registerItem("lead_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> NICKEL_INGOT = registerItem("nickel_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> TIN_INGOT = registerItem("tin_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> URANIUM_INGOT = registerItem("uranium_ingot",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> STEEL_INGOT = registerItem("steel_ingot",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> ALUMINUM_INGOT = registerStandardItem("aluminum_ingot");
+    public static final DeferredItem<Item> TITANIUM_INGOT = registerStandardItem("titanium_ingot");
+    public static final DeferredItem<Item> CHROMIUM_INGOT = registerStandardItem("chromium_ingot");
+    public static final DeferredItem<Item> IRIDIUM_INGOT = registerStandardItem("iridium_ingot");
+    public static final DeferredItem<Item> LEAD_INGOT = registerStandardItem("lead_ingot");
+    public static final DeferredItem<Item> NICKEL_INGOT = registerStandardItem("nickel_ingot");
+    public static final DeferredItem<Item> TIN_INGOT = registerStandardItem("tin_ingot");
+    public static final DeferredItem<Item> URANIUM_INGOT = registerStandardItem("uranium_ingot");
+    public static final DeferredItem<Item> STEEL_INGOT = registerStandardItem("steel_ingot");
 
     // Plates
-    public static final Supplier<Item> IRON_PLATE = registerItem("iron_plate",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> COPPER_PLATE = registerItem("copper_plate",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> STEEL_PLATE = registerItem("steel_plate",
-            () -> new Item(new Item.Properties()));
-    public static final Supplier<Item> TIN_PLATE = registerItem("tin_plate",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> IRON_PLATE = registerStandardItem("iron_plate");
+    public static final DeferredItem<Item> COPPER_PLATE = registerStandardItem("copper_plate");
+    public static final DeferredItem<Item> STEEL_PLATE = registerStandardItem("steel_plate");
+    public static final DeferredItem<Item> TIN_PLATE = registerStandardItem("tin_plate");
 
     // Rods
-    public static final Supplier<Item> IRON_ROD = registerItem("iron_rod",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> IRON_ROD = registerStandardItem("iron_rod");
 
     // Wires
-    public static final Supplier<Item> COPPER_WIRE = registerItem("copper_wire",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> COPPER_WIRE = registerStandardItem("copper_wire");
 
-    public static final Supplier<Item> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
+    public static final DeferredItem<BucketItem> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
             () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-    public static final Supplier<Item> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
+    public static final DeferredItem<BucketItem> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
             () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
                 @Override
                 public void appendHoverText(ItemStack p_41421_, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
@@ -172,11 +151,11 @@ public final class IRItems {
      * @param item the item you want to add and configure using `new {@link net.minecraft.world.item.Item.Properties}()`
      * @return returns the item-registry-object built from the parameters
      */
-    private static Supplier<Item> registerItem(String name, Supplier<Item> item) {
+    private static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
         return ITEMS.register(name, item);
     }
 
-    private static Supplier<Item> registerStandardItem(String name) {
+    private static DeferredItem<Item> registerStandardItem(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 

@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries.blockentities.machines;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.screen.CraftingStationMenu;
+import com.indref.industrial_reforged.registries.gui.menus.CraftingStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;

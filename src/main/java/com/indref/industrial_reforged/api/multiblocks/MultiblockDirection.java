@@ -9,7 +9,7 @@ public enum MultiblockDirection {
     SOUTH,
     WEST;
 
-    public Direction toMCDir() {
+    public Direction toRegularDirection() {
         return switch (this) {
             case NORTH -> Direction.NORTH;
             case EAST -> Direction.EAST;
@@ -18,7 +18,7 @@ public enum MultiblockDirection {
         };
     }
 
-    public static @Nullable MultiblockDirection fromMCDir(Direction direction) {
+    public static @Nullable MultiblockDirection fromRegularDirection(Direction direction) {
         return switch (direction) {
             case NORTH -> NORTH;
             case EAST -> EAST;

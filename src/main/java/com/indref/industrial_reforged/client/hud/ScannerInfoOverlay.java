@@ -8,8 +8,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class ScannerInfoOverlay {
-    // TODO: 10/17/2023 implement off-hand
-
     public static final LayeredDraw.Layer HUD_SCANNER_INFO = (guiGraphics, var1) -> {
         Minecraft minecraft = Minecraft.getInstance();
         int lineOffset = 0;

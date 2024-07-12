@@ -1,0 +1,14 @@
+{
+  "type": "indref:crucible_melting",
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  ],
+  "result": {
+      "id": "minecraft:lava",
+      "amount": 100
+  },
+  "heat": 0,
+  "duration": 250
+}

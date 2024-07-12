@@ -3,8 +3,7 @@ package com.indref.industrial_reforged.api.capabilities.energy.storage;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.attachments.AttachmentEnergyStorage;
-import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.api.data.EnergyStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -21,9 +20,9 @@ public class EnergyWrapper {
 
         @Override
         public int getEnergyStored() {
-            ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
-            if (componentEnergyStorage != null)
-                return componentEnergyStorage.energyStored();
+            EnergyStorage energyStorage = itemStack.get(IRDataComponents.ENERGY);
+            if (energyStorage != null)
+                return energyStorage.energyStored();
             else
                 throw new NullPointerException("Failed to get energy component for item: "
                         + itemStack.getItem()
@@ -32,14 +31,14 @@ public class EnergyWrapper {
 
         @Override
         public void setEnergyStored(int value) {
-            itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(value, getEnergyCapacity()));
+            itemStack.set(IRDataComponents.ENERGY, new EnergyStorage(value, getEnergyCapacity()));
         }
 
         @Override
         public int getEnergyCapacity() {
-            ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
-            if (componentEnergyStorage != null)
-                return componentEnergyStorage.energyCapacity();
+            EnergyStorage energyStorage = itemStack.get(IRDataComponents.ENERGY);
+            if (energyStorage != null)
+                return energyStorage.energyCapacity();
             else
                 throw new NullPointerException("Failed to get energy component for item: "
                         + itemStack.getItem()
@@ -48,7 +47,7 @@ public class EnergyWrapper {
 
         @Override
         public void setEnergyCapacity(int value) {
-            itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(getEnergyStored(), value));
+            itemStack.set(IRDataComponents.ENERGY, new EnergyStorage(getEnergyStored(), value));
         }
     }
 
@@ -60,22 +59,22 @@ public class EnergyWrapper {
 
         @Override
         public int getEnergyStored() {
-            return blockEntity.getData(IRAttachmentTypes.ENERGY.get()).getEnergyStored();
+            return blockEntity.getData(IRAttachmentTypes.ENERGY.get()).energyStored();
         }
 
         @Override
         public void setEnergyStored(int value) {
-            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new AttachmentEnergyStorage(value, getEnergyCapacity()));
+            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new EnergyStorage(value, getEnergyCapacity()));
         }
 
         @Override
         public int getEnergyCapacity() {
-            return blockEntity.getData(IRAttachmentTypes.ENERGY.get()).getEnergyCapacity();
+            return blockEntity.getData(IRAttachmentTypes.ENERGY.get()).energyCapacity();
         }
 
         @Override
         public void setEnergyCapacity(int value) {
-            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new AttachmentEnergyStorage(getEnergyStored(), value));
+            blockEntity.setData(IRAttachmentTypes.ENERGY.get(), new EnergyStorage(getEnergyStored(), value));
         }
     }
 

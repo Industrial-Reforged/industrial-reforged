@@ -144,20 +144,18 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, Di
     }
 
     @Override
-    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+    public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
         BlockEntity wallBlockEntity = level.getBlockEntity(scannedBlockPos);
         IndustrialReforged.LOGGER.debug("Wall entity pos: {}, is wall: {}", wallBlockEntity.getBlockPos(), wallBlockEntity instanceof CrucibleWallBlockEntity);
         if (wallBlockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
             Optional<BlockPos> controllerPos = crucibleWallBlockEntity.getControllerPos();
             if (controllerPos.isPresent()) {
                 CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos.get());
-                return DisplayUtils.displayHeatInfo(controllerBlockEntity, scannedBlock, Component.literal("Crucible"));
+                displayText.addAll(DisplayUtils.displayHeatInfo(controllerBlockEntity, scannedBlock, Component.literal("Crucible")));
+                return;
             }
             IndustrialReforged.LOGGER.error("Issue with controllerPos of crucible wall at {}", crucibleWallBlockEntity.getBlockPos());
-            return List.of();
         }
-
-        return List.of();
     }
 
     @Override

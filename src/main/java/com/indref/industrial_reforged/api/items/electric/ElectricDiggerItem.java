@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.electric;
 
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.api.data.EnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -28,7 +27,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, int energyUsage, EnergyTier energyTier, Tier tier, TagKey<Block> mineableBlocks, Properties properties) {
         super(tier, mineableBlocks, properties
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new EnergyStorage(0, energyTier.getDefaultCapacity())));
         this.energyUsage = energyUsage;
         this.blocks = mineableBlocks;
         this.energyTier = energyTier;

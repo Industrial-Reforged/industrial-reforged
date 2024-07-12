@@ -1,17 +1,11 @@
 package com.indref.industrial_reforged.registries.recipes;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
-import com.indref.industrial_reforged.util.recipes.ItemRecipeInput;
+import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -35,6 +29,7 @@ public record CrucibleSmeltingRecipe(Ingredient ingredient, FluidStack resultFlu
 
     @Override
     public boolean matches(ItemRecipeInput recipeInput, Level level) {
+        IndustrialReforged.LOGGER.debug("in: {}, existing: {}", recipeInput.getItem(0), ingredient);
         return ingredient.test(recipeInput.getItem(0));
     }
 

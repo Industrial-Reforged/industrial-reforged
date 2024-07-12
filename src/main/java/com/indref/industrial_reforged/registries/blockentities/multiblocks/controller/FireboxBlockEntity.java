@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.screen.FireBoxMenu;
+import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

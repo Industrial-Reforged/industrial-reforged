@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.api.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.data.attachments.AttachmentEnergyStorage;
-import com.indref.industrial_reforged.api.data.attachments.AttachmentHeatStorage;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -16,10 +14,9 @@ public final class IRAttachmentTypes {
 
     // Do not try to access these directly! Use capabilities or preferably cast to container block/item/heat
 
-    // TODO: Use codecs for this
-    public static final Supplier<AttachmentType<AttachmentEnergyStorage>> ENERGY = ATTACHMENT_TYPES.register(
-            "energy", () -> AttachmentType.serializable(() -> new AttachmentEnergyStorage(0, 0)).build());
+    public static final Supplier<AttachmentType<EnergyStorage>> ENERGY = ATTACHMENT_TYPES.register(
+            "energy", () -> AttachmentType.builder(() -> EnergyStorage.EMPTY).serialize(EnergyStorage.CODEC).build());
 
-    public static final Supplier<AttachmentType<AttachmentHeatStorage>> HEAT = ATTACHMENT_TYPES.register(
-            "heat", () -> AttachmentType.serializable(() -> new AttachmentHeatStorage(0, 0)).build());
+    public static final Supplier<AttachmentType<HeatStorage>> HEAT = ATTACHMENT_TYPES.register(
+            "heat", () -> AttachmentType.builder(() -> HeatStorage.EMPTY).serialize(HeatStorage.CODEC).build());
 }

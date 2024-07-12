@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.recipes;
 
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
-import com.indref.industrial_reforged.util.recipes.ItemAndFluidRecipeInput;
+import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemAndFluidRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;

@@ -16,7 +16,7 @@ public abstract class IRAbstractContainerScreen<T extends IRAbstractContainerMen
     public final void initComponents(GuiComponent ...components) {
         this.components = components;
         for (GuiComponent component : this.components) {
-            component.initScreen(this);
+            component.init(this);
         }
     }
 

@@ -7,26 +7,25 @@ import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
-import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleItem;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
-import com.indref.industrial_reforged.client.renderer.blocks.CastingBasinRenderer;
-import com.indref.industrial_reforged.client.renderer.items.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.client.renderer.items.MultiBarRenderer;
+import com.indref.industrial_reforged.registries.blockentities.renderer.CastingBasinRenderer;
+import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.item_bars.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
+import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
-import com.indref.industrial_reforged.registries.screen.*;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -53,8 +52,6 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {
@@ -143,8 +140,8 @@ public class IREvents {
             if (tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
-                        .append(String.valueOf(tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY)))
-                        .append("/10")
+                        .append(String.format("%.1f", tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY)))
+                        .append("/10.0")
                         .withStyle(ChatFormatting.GRAY));
             }
         }
@@ -166,7 +163,7 @@ public class IREvents {
                     event.registerItem(Capabilities.FluidHandler.ITEM,
                             (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity(stack)), item);
 
-                if (item instanceof AdvancedBundleItem || item instanceof ToolboxItem)
+                if (item instanceof ToolboxItem)
                     event.registerItem(Capabilities.ItemHandler.ITEM,
                             (stack, ctx) -> new InvWrapper(new SimpleContainer(Utils.listToArray(stack.getOrDefault(IRDataComponents.ADVANCED_BUNDLE_CONTENTS, AdvancedBundleContents.EMPTY).items()))), item);
             }

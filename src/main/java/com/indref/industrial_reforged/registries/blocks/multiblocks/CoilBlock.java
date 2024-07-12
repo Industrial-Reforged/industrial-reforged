@@ -91,11 +91,12 @@ public class CoilBlock extends BaseEntityBlock implements Wrenchable, DisplayBlo
     }
 
     @Override
-    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+    public void displayOverlay(List<Component> components, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
         if (scannedBlock.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED))
-            return List.of();
+            return;
 
-        return DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.translatable("Firebox"));
+        // TODO: Fix translation
+        components.addAll(DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.translatable("Firebox")));
     }
 
     @Override

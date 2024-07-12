@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.electric;
 
 import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.api.data.EnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
@@ -20,7 +20,7 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     public ElectricSwordItem(EnergyTier energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
         super(tier, properties
                 .attributes(SwordItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new EnergyStorage(0, energyTier.getDefaultCapacity())));
         this.energyTier = energyTier;
     }
 

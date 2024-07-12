@@ -31,6 +31,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
+import javax.swing.plaf.LabelUI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +52,11 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, Tool
         if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
             if (!displayBlock.getCompatibleItems().contains((DisplayItem) IRItems.THERMOMETER.get())) return;
 
-            for (Component component : displayBlock.displayOverlay(blockstate, blockPos, level)) {
+            List<Component> displayText = new ArrayList<>();
+
+            displayBlock.displayOverlay(displayText, blockstate, blockPos, level);
+
+            for (Component component : displayText) {
                 guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
                 lineOffset += font.lineHeight + 3;
             }

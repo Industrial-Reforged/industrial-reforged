@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.registries;
 
-import com.google.errorprone.annotations.InlineMe;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
@@ -12,11 +11,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Map;
@@ -81,7 +79,7 @@ public final class IRTabs {
 
                 addItem(output, IRItems.FERTILIZER);
                 addItem(output, IRItems.STICKY_RESIN);
-                addItem(output, IRItems.CLAY_MOLD);
+                addItem(output, IRItems.CLAY_MOLD_BLANK);
                 addItem(output, IRItems.CLAY_MOLD_INGOT);
 
                 // Raw ore items
@@ -183,11 +181,11 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
             }).build());
 
-    private static void addItem(CreativeModeTab.Output output, Supplier<Item> item) {
+    private static void addItem(CreativeModeTab.Output output, DeferredItem<?> item) {
         output.accept(item.get());
     }
 
-    public static void addPoweredItem(CreativeModeTab.Output output, Supplier<Item> item) {
+    public static void addPoweredItem(CreativeModeTab.Output output, DeferredItem<?> item) {
         output.accept(item.get().getDefaultInstance());
         ItemStack stack = new ItemStack(item.get());
         IEnergyItem energyItem = (IEnergyItem) stack.getItem();
@@ -196,7 +194,7 @@ public final class IRTabs {
         output.accept(stack);
     }
 
-    public static void addRockCutter(CreativeModeTab.Output output, Supplier<Item> item) {
+    public static void addRockCutter(CreativeModeTab.Output output, DeferredItem<?> item) {
         ItemStack stack = new ItemStack(item.get());
         //stack.enchant(Enchantments.SILK_TOUCH., 1);
 
@@ -208,7 +206,7 @@ public final class IRTabs {
         output.accept(energyStack);
     }
 
-    public static void addVariantForAllFluids(CreativeModeTab.Output output, Supplier<Item> item) {
+    public static void addVariantForAllFluids(CreativeModeTab.Output output, DeferredItem<?> item) {
         // Add base item
         output.accept(item.get().getDefaultInstance());
         Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = BuiltInRegistries.FLUID.entrySet();

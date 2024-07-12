@@ -61,17 +61,16 @@ public class RefractoryBrickBlock extends Block implements Wrenchable, DisplayBl
     }
 
     @Override
-    public List<Component> displayOverlay(BlockState scannedBlock, BlockPos blockPos, Level level) {
+    public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos blockPos, Level level) {
         if (scannedBlock.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED))
-            return List.of();
+            return;
 
         for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
             BlockEntity fireBoxBlockEntity = level.getBlockEntity(pos);
             if (fireBoxBlockEntity instanceof FireboxBlockEntity) {
-                return DisplayUtils.displayHeatInfo(fireBoxBlockEntity, scannedBlock, Component.literal("Firebox"));
+                displayText.addAll(DisplayUtils.displayHeatInfo(fireBoxBlockEntity, scannedBlock, Component.literal("Firebox")));
             }
         }
-        return List.of();
     }
 
     @Override
