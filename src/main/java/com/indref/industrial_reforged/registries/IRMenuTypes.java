@@ -24,6 +24,8 @@ public final class IRMenuTypes {
             registerMenuType("crafting_station_menu", CraftingStationMenu::new);
     public static final Supplier<MenuType<CentrifugeMenu>> CENTRIFUGE_MENU =
             registerMenuType("centrifuge_menu", CentrifugeMenu::new);
+    public static final Supplier<MenuType<BasicGeneratorMenu>> BASIC_GENERATOR_MENU =
+            registerMenuType("basic_generator_menu", BasicGeneratorMenu::new);
 
     private static <T extends AbstractContainerMenu>Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

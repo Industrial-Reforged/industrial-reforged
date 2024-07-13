@@ -38,15 +38,15 @@ public class IRRecipeSerializer {
 
     protected static final class CrucibleMelting {
         static final MapCodec<CrucibleSmeltingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter((recipe) -> recipe.getIngredients().stream().toList()),
+                IngredientWithCount.CODEC.fieldOf("ingredient").forGetter(CrucibleSmeltingRecipe::ingredient),
                 FluidStack.CODEC.fieldOf("result").forGetter(CrucibleSmeltingRecipe::resultFluid),
                 Codec.INT.fieldOf("duration").forGetter(CrucibleSmeltingRecipe::duration),
                 Codec.INT.fieldOf("heat").forGetter(CrucibleSmeltingRecipe::heat)
         ).apply(builder, CrucibleSmeltingRecipe::new));
 
         static final StreamCodec<RegistryFriendlyByteBuf, CrucibleSmeltingRecipe> STREAM_CODEC = StreamCodec.composite(
-                RecipeUtils.INGREDIENT_STREAM_LIST_CODEC,
-                recipe -> recipe.getIngredients().stream().toList(),
+                IngredientWithCount.STREAM_CODEC,
+                CrucibleSmeltingRecipe::ingredient,
                 FluidStack.STREAM_CODEC,
                 CrucibleSmeltingRecipe::resultFluid,
                 ByteBufCodecs.INT,

@@ -67,8 +67,8 @@ public final class BlockUtils {
     public static Optional<IHeatBlock> getHeatBlock(final BlockEntity blockEntity) {
         BlockEntity blockEntity1 = blockEntity;
         if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
-            if (fakeBlockEntity.getActualBlockEntity().isPresent())
-                blockEntity1 = fakeBlockEntity.getActualBlockEntity().get();
+            if (fakeBlockEntity.getActualBlockEntityPos().isPresent())
+                blockEntity1 = blockEntity.getLevel().getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());
         if (BlockUtils.isHeatBlock(blockEntity1))
             return Optional.of((IHeatBlock) blockEntity1);
         return Optional.empty();
@@ -77,8 +77,8 @@ public final class BlockUtils {
     public static Optional<IEnergyBlock> getEnergyBlock(BlockEntity blockEntity) {
         BlockEntity blockEntity1 = blockEntity;
         if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
-            if (fakeBlockEntity.getActualBlockEntity().isPresent())
-                blockEntity1 = fakeBlockEntity.getActualBlockEntity().get();
+            if (fakeBlockEntity.getActualBlockEntityPos().isPresent())
+                blockEntity1 = blockEntity.getLevel().getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());
         if (BlockUtils.isEnergyBlock(blockEntity1))
             return Optional.of((IEnergyBlock) blockEntity1);
         return Optional.empty();

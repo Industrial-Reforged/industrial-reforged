@@ -34,8 +34,8 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
     }
 
     private void assignFluidRenderer() {
-        Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
-        fluidTank.ifPresent(tank -> renderer = new FluidTankRenderer(tank.getCapacity(), true, 52, 52));
+        FluidTank fluidTank = menu.blockEntity.getFluidTank();
+        renderer = new FluidTankRenderer(fluidTank.getCapacity(), true, 52, 52);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
-        fluidTank.ifPresent(tank -> renderer.render(guiGraphics.pose(), x + 98, y + 18, tank.getFluid()));
+        FluidTank fluidTank = menu.blockEntity.getFluidTank();
+        renderer.render(guiGraphics.pose(), x + 98, y + 18, fluidTank.getFluid());
     }
 
     @Override
@@ -53,14 +53,14 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        renderFluidAreaTooltips(pGuiGraphics, pMouseX, pMouseY, x + 98 - renderer.getWidth() - 4, y+3);
+        renderFluidAreaTooltips(pGuiGraphics, pMouseX, pMouseY, x + 98 - renderer.getWidth() - 4, y + 3);
     }
 
     private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
-            Optional<FluidTank> fluidTank = menu.blockEntity.getFluidTank();
-            fluidTank.ifPresent(tank -> guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(tank.getFluid()),
-                    Optional.empty(), pMouseX - x + 45, pMouseY - y));
+            FluidTank fluidTank = menu.blockEntity.getFluidTank();
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(fluidTank.getFluid()),
+                    Optional.empty(), pMouseX - x + 45, pMouseY - y);
         }
     }
 

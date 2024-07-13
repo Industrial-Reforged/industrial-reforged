@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class DrainBlockEntity extends ContainerBlockEntity {
     public DrainBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
@@ -17,16 +18,17 @@ public class DrainBlockEntity extends ContainerBlockEntity {
         addFluidTank(16000);
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        FluidState fluidOnTop = level.getFluidState(blockPos.above());
+    @Override
+    public void commonTick() {
+        super.commonTick();
+        FluidState fluidOnTop = level.getFluidState(worldPosition.above());
         if (fluidOnTop.is(FluidTags.WATER) && fluidOnTop.isSource()) {
             if (level.getGameTime() % 40 == 0) {
-                getFluidTank().ifPresent(fluidTank -> {
-                    if (fluidTank.getFluidInTank(0).getAmount() < fluidTank.getTankCapacity(0)) {
-                        level.setBlockAndUpdate(blockPos.above(), Blocks.AIR.defaultBlockState());
-                        fluidTank.fill(new FluidStack(fluidOnTop.getType(), 1000), IFluidHandler.FluidAction.EXECUTE);
-                    }
-                });
+                FluidTank fluidTank = getFluidTank();
+                if (fluidTank.getFluidInTank(0).getAmount() < fluidTank.getTankCapacity(0)) {
+                    level.setBlockAndUpdate(worldPosition.above(), Blocks.AIR.defaultBlockState());
+                    fluidTank.fill(new FluidStack(fluidOnTop.getType(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ public class EnetsSavedData extends SavedData {
     }
 
     public static SavedData.Factory<EnetsSavedData> factory(ServerLevel pLevel) {
-        return new SavedData.Factory<>(() -> new EnetsSavedData(pLevel), (p_294039_, p_324123_) -> load(p_294039_, pLevel));
+        return new SavedData.Factory<>(() -> new EnetsSavedData(pLevel), (tag, provider) -> load(tag, pLevel));
     }
 
     public EnetsSavedData(EnergyNets enets) {

@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface IFireboxMultiblock extends Multiblock {
     FireboxTier getTier();
-    // TODO: Remove this once we have saved data for multis
 
     /**
      * @param multiblockPos the blockpos of a block that is part of the multi

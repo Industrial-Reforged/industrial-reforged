@@ -38,19 +38,15 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         addDataSlots(data);
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);
-        Optional<ItemStackHandler> itemHandler = this.getBlockEntity().getItemHandler();
-        if (itemHandler.isPresent()) {
-            // Battery slot
-            // addSlot(new SlotItemHandler(itemHandler.get(), 0, 9, 67));
-            // Centrifuge slots
-            addSlot(new SlotItemHandler(itemHandler.get(), 0, 80, 41));
-            addSlot(new SlotItemHandler(itemHandler.get(), 1, 44, 41));
-            addSlot(new SlotItemHandler(itemHandler.get(), 2, 116, 41));
-            addSlot(new SlotItemHandler(itemHandler.get(), 3, 80, 5));
-            addSlot(new SlotItemHandler(itemHandler.get(), 4, 80, 77));
-        } else {
-            IndustrialReforged.LOGGER.error("Centrifuge itemhandler does not exist. Was not able to add slots");
-        }
+        ItemStackHandler itemHandler = this.getBlockEntity().getItemHandler();
+        // Battery slot
+        // addSlot(new SlotItemHandler(itemHandler.get(), 0, 9, 67));
+        // Centrifuge slots
+        addSlot(new SlotItemHandler(itemHandler, 0, 80, 41));
+        addSlot(new SlotItemHandler(itemHandler, 1, 44, 41));
+        addSlot(new SlotItemHandler(itemHandler, 2, 116, 41));
+        addSlot(new SlotItemHandler(itemHandler, 3, 80, 5));
+        addSlot(new SlotItemHandler(itemHandler, 4, 80, 77));
     }
 
     @Override

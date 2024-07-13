@@ -30,13 +30,13 @@ public class FluidTankGuiComponent extends TooltipGuiComponent {
     protected void onInit() {
         super.onInit();
         // Need to initialize it here, since in the constructor we can't access the screen yet
-        this.renderer = new FluidTankRenderer(screen.getMenu().getBlockEntity().getFluidTank().get().getCapacity(), true, textureWidth()-2, textureHeight()-2);
+        this.renderer = new FluidTankRenderer(screen.getMenu().getBlockEntity().getFluidTank().getCapacity(), true, textureWidth()-2, textureHeight()-2);
     }
 
     @Override
     public List<Component> getTooltip() {
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        return renderer.getTooltip(blockEntity.getFluidTank().get().getFluid());
+        return renderer.getTooltip(blockEntity.getFluidTank().getFluid());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FluidTankGuiComponent extends TooltipGuiComponent {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         super.render(guiGraphics, mouseX, mouseY, delta);
-        renderer.render(guiGraphics.pose(), position.x + 1, position.y + 1, screen.getMenu().getBlockEntity().getFluidTank().get().getFluid());
+        renderer.render(guiGraphics.pose(), position.x + 1, position.y + 1, screen.getMenu().getBlockEntity().getFluidTank().getFluid());
     }
 
     @Override

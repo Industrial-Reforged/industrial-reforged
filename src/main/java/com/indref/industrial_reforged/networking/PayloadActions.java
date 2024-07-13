@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.networking;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
@@ -74,14 +75,14 @@ public final class PayloadActions {
             if (level instanceof ClientLevel clientLevel) {
                 BlockEntity blockEntity = clientLevel.getBlockEntity(payload.pos());
                 if (blockEntity instanceof CrucibleBlockEntity crucibleBlockEntity) {
-                    ItemStackHandler stackHandler = crucibleBlockEntity.getItemHandler()
-                            .orElseThrow(() -> new NullPointerException("Failed to get itemhandler for crucible"));
+                    ItemStackHandler stackHandler = crucibleBlockEntity.getItemHandler();
                     ItemStack stackInSlot = stackHandler.getStackInSlot(payload.slotIndex());
                     CompoundTag tag = ItemUtils.getImmutableTag(stackInSlot).copyTag();
                     tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, payload.progress());
                     stackInSlot.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                 }
             }
+
         }
     }
 }

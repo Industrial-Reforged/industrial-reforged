@@ -137,10 +137,12 @@ public class EnergyNets {
         }
     }
 
+    @SuppressWarnings("OptionalIsPresent")
     public void removeNetwork(BlockPos pos) {
-        getNetwork(pos).ifPresent(net -> {
-            enets.remove(net);
-        });
+        Optional<EnergyNet> network = getNetwork(pos);
+        if (network.isPresent()) {
+            enets.remove(network.get());
+        }
     }
 
     public void removeNetwork(int index) {
@@ -172,15 +174,10 @@ public class EnergyNets {
     }
 
     public boolean is(EnergyNet.EnergyTypes type, BlockPos blockPos) {
-        switch (type) {
-            case TRANSMITTERS -> {
-                return level.getBlockState(blockPos).getBlock() instanceof CableBlock;
-            }
-            case INTERACTORS -> {
-                return BlockUtils.isEnergyBlock(level.getBlockEntity(blockPos));
-            }
-        }
-        throw new IllegalStateException("Unreachable! Energy type did not match! Energy-type: " + type);
+        return switch (type) {
+            case TRANSMITTERS -> level.getBlockState(blockPos).getBlock() instanceof CableBlock;
+            case INTERACTORS -> BlockUtils.isEnergyBlock(level.getBlockEntity(blockPos));
+        };
     }
 
     @Override

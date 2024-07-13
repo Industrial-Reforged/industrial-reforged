@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
 
-public class RefractoryBrickBlock extends Block implements Wrenchable, DisplayBlock {
+public class RefractoryBrickBlock extends Block implements WrenchableBlock, DisplayBlock {
     public RefractoryBrickBlock(Properties properties) {
         super(properties);
     }

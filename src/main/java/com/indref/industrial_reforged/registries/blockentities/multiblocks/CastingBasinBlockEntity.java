@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -59,29 +61,24 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public ItemStack[] getRenderStacks() {
-        if (getItemHandler().isPresent()) {
-            ItemStack[] itemStacks = new ItemStack[2];
-            itemStacks[0] = getItemHandler().get().getStackInSlot(0);
+        ItemStack[] itemStacks = new ItemStack[2];
+        itemStacks[0] = getItemHandler().getStackInSlot(0);
 
-            ItemStack resultStack = getItemHandler().get().getStackInSlot(1);
-            if (!resultStack.isEmpty()) {
-                resetRenderedStack();
-                itemStacks[1] = resultStack;
-                IndustrialReforged.LOGGER.debug("real item");
-            } else {
-                itemStacks[1] = resultItem;
-                IndustrialReforged.LOGGER.debug("Ghost item");
-            }
-
-            return itemStacks;
+        ItemStack resultStack = getItemHandler().getStackInSlot(1);
+        if (!resultStack.isEmpty()) {
+            resetRenderedStack();
+            itemStacks[1] = resultStack;
+        } else {
+            itemStacks[1] = resultItem;
         }
-        return new ItemStack[0];
+
+        return itemStacks;
     }
 
-    public void tick(BlockPos blockPos, BlockState blockState) {
+    public void commonTick() {
         if (hasRecipe()) {
             increaseCraftingProgress();
-            setChanged(level, blockPos, blockState);
+            setChanged(level, worldPosition, getBlockState());
             updateRenderedStack();
 
             if (hasProgressFinished()) {
@@ -105,13 +102,17 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public void castItem() {
         Optional<CrucibleCastingRecipe> optionalRecipe = getCurrentRecipe();
-        if (optionalRecipe.isPresent() && getFluidTank().isPresent() && getItemHandler().isPresent()) {
-            CrucibleCastingRecipe recipe = optionalRecipe.get();
+        FluidTank fluidTank = getFluidTank();
+        ItemStackHandler itemHandler = getItemHandler();
 
-            getFluidTank().get().drain(recipe.fluidStack(), IFluidHandler.FluidAction.EXECUTE);
+        if (optionalRecipe.isPresent()) {
+            CrucibleCastingRecipe recipe = optionalRecipe.get();
+            fluidTank.drain(recipe.fluidStack(), IFluidHandler.FluidAction.EXECUTE);
+
             if (recipe.shouldConsumeCast())
-                getItemHandler().get().setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
-            getItemHandler().get().insertItem(1, recipe.getResultItem(level.registryAccess()), false);
+                itemHandler.setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
+
+            itemHandler.insertItem(1, recipe.getResultItem(level.registryAccess()), false);
             resetProgress();
         }
     }
@@ -127,7 +128,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         PacketDistributor.sendToAllPlayers(new CastingDurationPayload(duration, maxDuration, worldPosition));
     }
 
-    // TODO: Use container data to sync these
+    // TODO: Run ticking code on server and client
     public int getDuration() {
         return duration;
     }
@@ -152,30 +153,26 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     private Optional<CrucibleCastingRecipe> getCurrentRecipe() {
-        if (level.isClientSide() || getFluidTank().isEmpty() || getItemHandler().isEmpty()) return Optional.empty();
-
         List<ItemStack> itemStacks = new ArrayList<>();
-        ItemStack stackInSlot = this.getItemHandler().get().getStackInSlot(CAST_SLOT);
+        ItemStack stackInSlot = this.getItemHandler().getStackInSlot(CAST_SLOT);
 
         if (!stackInSlot.isEmpty()) {
             itemStacks.add(CAST_SLOT, stackInSlot);
         }
 
-        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(CrucibleCastingRecipe.TYPE,
-                new ItemAndFluidRecipeInput(itemStacks, getFluidTank().get().getFluidInTank(0)),
-                level);
+        Optional<CrucibleCastingRecipe> recipe = this.level.getRecipeManager()
+                .getRecipeFor(CrucibleCastingRecipe.TYPE, new ItemAndFluidRecipeInput(itemStacks, getFluidTank().getFluidInTank(0)), level)
+                .map(RecipeHolder::value);
 
         if (recipe.isEmpty()) return Optional.empty();
 
-        this.maxDuration = recipe.get().value().getDuration();
+        this.maxDuration = recipe.get().getDuration();
 
-        return recipe.map(RecipeHolder::value);
+        return recipe;
     }
 
     private boolean canInsertIntoOutput(ItemStack outputItem) {
-        if (getItemHandler().isEmpty()) return false;
-
-        ItemStack itemStack = getItemHandler().get().getStackInSlot(1);
+        ItemStack itemStack = getItemHandler().getStackInSlot(1);
         return itemStack.isEmpty()
                 || (ItemStack.isSameItemSameComponents(itemStack, outputItem)
                 && itemStack.getCount() + outputItem.getCount() <= outputItem.getMaxStackSize());

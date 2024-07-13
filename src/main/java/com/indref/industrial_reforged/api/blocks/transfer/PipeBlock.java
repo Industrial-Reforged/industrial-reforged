@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.blocks.transfer;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class PipeBlock extends Block implements Wrenchable {
+public abstract class PipeBlock extends Block implements WrenchableBlock {
     public static final BooleanProperty[] CONNECTION = new BooleanProperty[6];
     public final int border;
     public final VoxelShape shapeCenter;

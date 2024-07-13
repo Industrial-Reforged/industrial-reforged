@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-// TODO: manually determine controllerpos based on blockstate
-@Deprecated
 public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPos {
     private Optional<BlockPos> controllerPos = Optional.empty();
 

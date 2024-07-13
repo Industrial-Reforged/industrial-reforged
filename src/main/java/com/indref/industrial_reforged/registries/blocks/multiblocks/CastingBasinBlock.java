@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
@@ -34,13 +36,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
 
 import static com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity.CAST_SLOT;
 
-@SuppressWarnings("deprecation")
-public class CastingBasinBlock extends BaseEntityBlock {
-    private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
+public class CastingBasinBlock extends ContainerBlock {
+    private static final ConcurrentMap<Block, Block> ALTERNATE_VERSIONS = new ConcurrentHashMap<>();
 
     public static final VoxelShape SHAPE = Stream.of(
             Block.box(2, 2, 0, 16, 6, 2),
@@ -62,26 +65,23 @@ public class CastingBasinBlock extends BaseEntityBlock {
         return simpleCodec(properties1 -> new CastingBasinBlock(properties1, null));
     }
 
-
-    @Override
-    public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
-        return RenderShape.MODEL;
-
-    }
-
     @Override
     public @NotNull VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return SHAPE;
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new CastingBasinBlockEntity(blockPos, blockState);
+    public boolean tickingEnabled() {
+        return true;
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+        return IRBlockEntityTypes.CASTING_BASIN.get();
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
         Optional<IFluidHandler> fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
@@ -120,7 +120,6 @@ public class CastingBasinBlock extends BaseEntityBlock {
         }
     }
 
-    // TODO: Remove loop and only insert into slot 0
     private static boolean canInsert(IItemHandler itemHandler, ItemStack toInsert) {
         return itemHandler.getStackInSlot(CAST_SLOT).isEmpty()
                 || (itemHandler.getStackInSlot(CAST_SLOT).is(toInsert.getItem())
@@ -135,14 +134,5 @@ public class CastingBasinBlock extends BaseEntityBlock {
             }
         }
         return -1;
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-        if (level.isClientSide()) return null;
-
-        return createTickerHelper(p_153214_, IRBlockEntityTypes.CASTING_BASIN.get(),
-                (level1, blockPos, blockState, blockEntity) -> blockEntity.tick(blockPos, blockState));
     }
 }

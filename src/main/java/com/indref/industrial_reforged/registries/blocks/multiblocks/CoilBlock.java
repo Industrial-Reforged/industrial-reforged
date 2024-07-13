@@ -1,7 +1,9 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -14,6 +16,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,13 +36,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CoilBlock extends BaseEntityBlock implements Wrenchable, DisplayBlock {
+public class CoilBlock extends ContainerBlock implements WrenchableBlock, DisplayBlock {
     public CoilBlock(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    public boolean tickingEnabled() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+        return IRBlockEntityTypes.FIREBOX.get();
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(CoilBlock::new);
     }
 
@@ -52,13 +65,8 @@ public class CoilBlock extends BaseEntityBlock implements Wrenchable, DisplayBlo
         }
 
         if (level.getBlockEntity(blockPos) instanceof FireboxBlockEntity fireboxBlockEntity && newState.is(Blocks.AIR)) {
-            fireboxBlockEntity.drops();
+            fireboxBlockEntity.drop();
         }
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.MODEL;
     }
 
     @Override
@@ -66,28 +74,12 @@ public class CoilBlock extends BaseEntityBlock implements Wrenchable, DisplayBlo
         pBuilder.add(FireboxMultiblock.FIREBOX_PART);
     }
 
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide()) return null;
-
-        return createTickerHelper(blockEntityType, IRBlockEntityTypes.FIREBOX.get(),
-                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
-    }
-
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new FireboxBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand p_316595_, BlockHitResult p_316140_) {
-        BlockEntity fireBoxBlockEntity = level.getBlockEntity(blockPos);
-        if (!level.isClientSide() && !blockState.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED)) {
-            player.openMenu((FireboxBlockEntity) fireBoxBlockEntity, blockPos);
-            return ItemInteractionResult.SUCCESS;
+    protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, BlockHitResult p_60508_) {
+        if (!p_60503_.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED)) {
+            return super.useWithoutItem(p_60503_, p_60504_, p_60505_, p_60506_, p_60508_);
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
@@ -95,12 +87,11 @@ public class CoilBlock extends BaseEntityBlock implements Wrenchable, DisplayBlo
         if (scannedBlock.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED))
             return;
 
-        // TODO: Fix translation
-        components.addAll(DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.translatable("Firebox")));
+        components.addAll(DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.translatable("title.indref.firebox")));
     }
 
     @Override
     public List<DisplayItem> getCompatibleItems() {
-        return List.of((DisplayItem) IRItems.THERMOMETER.get());
+        return List.of(IRItems.THERMOMETER.get());
     }
 }

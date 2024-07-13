@@ -2,6 +2,8 @@ package com.indref.industrial_reforged.registries.recipes;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
+import com.indref.industrial_reforged.util.Utils;
+import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import net.minecraft.core.HolderLookup;
@@ -16,31 +18,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record CrucibleSmeltingRecipe(Ingredient ingredient, FluidStack resultFluid, int duration,
-                                     int heat) implements IRRecipe<ItemRecipeInput> {
+public record CrucibleSmeltingRecipe(IngredientWithCount ingredient, FluidStack resultFluid, int duration,
+                                     int heat) implements IRRecipe<CrucibleSmeltingInput> {
     public static final String NAME = "crucible_melting";
     public static final RecipeType<CrucibleSmeltingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CrucibleSmeltingRecipe> SERIALIZER =
             RecipeUtils.newRecipeSerializer(IRRecipeSerializer.CrucibleMelting.CODEC, IRRecipeSerializer.CrucibleMelting.STREAM_CODEC);
 
-    public CrucibleSmeltingRecipe(List<Ingredient> input, FluidStack output, int duration, int heat) {
-        this(input.get(0), output, duration, heat);
+    @Override
+    public boolean matches(CrucibleSmeltingInput recipeInput, Level level) {
+        return ingredient.test(recipeInput.toSmelt()) && this.heat <= recipeInput.heat();
     }
 
     @Override
-    public boolean matches(ItemRecipeInput recipeInput, Level level) {
-        IndustrialReforged.LOGGER.debug("in: {}, existing: {}", recipeInput.getItem(0), ingredient);
-        return ingredient.test(recipeInput.getItem(0));
-    }
-
-    @Override
-    public @NotNull ItemStack assemble(@NotNull ItemRecipeInput recipeInput, HolderLookup.Provider provider) {
+    public @NotNull ItemStack assemble(@NotNull CrucibleSmeltingInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
-        return NonNullList.withSize(1, ingredient);
+        return NonNullList.withSize(1, RecipeUtils.iWCToIngredientSaveCount(ingredient));
     }
 
     @Override

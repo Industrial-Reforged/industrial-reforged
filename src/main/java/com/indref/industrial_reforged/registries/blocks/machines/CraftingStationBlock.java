@@ -33,9 +33,7 @@ public class CraftingStationBlock extends RotatableEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         CraftingStationBlockEntity craftingStationBE = (CraftingStationBlockEntity) level.getBlockEntity(blockPos);
-        if (!level.isClientSide())
-            player.openMenu(craftingStationBE, blockPos);
-
+        player.openMenu(craftingStationBE, blockPos);
         return InteractionResult.SUCCESS;
     }
 }

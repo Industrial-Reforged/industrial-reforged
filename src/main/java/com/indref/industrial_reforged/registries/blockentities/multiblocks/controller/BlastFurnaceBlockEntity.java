@@ -67,8 +67,8 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
-    public Optional<BlockEntity> getActualBlockEntity() {
-        return BlockUtils.blockEntityAt(level, getMainControllerPos().orElseThrow(NullPointerException::new));
+    public Optional<BlockPos> getActualBlockEntityPos() {
+        return getMainControllerPos();
     }
 
     @Override
@@ -81,48 +81,44 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         this.mainController = tag.getBoolean("isController");
         long mainControllerPos1 = tag.getLong("mainControllerPos");
-        IndustrialReforged.LOGGER.debug("Controller pos long: {}", mainControllerPos1);
         if (mainControllerPos1 != 0) {
             this.mainControllerPos = BlockPos.of(mainControllerPos1);
         }
     }
 
-    public void tick() {
+    public void commonTick() {
         if (isMainController()) {
             Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
-            optRecipe.ifPresent(recipe -> {
+            if (optRecipe.isPresent()) {
+                BlastFurnaceRecipe recipe = optRecipe.get();
                 int maxDuration = recipe.duration();
                 if (duration >= maxDuration) {
                     IndustrialReforged.LOGGER.debug("Recipe has finished");
-                    Optional<ItemStackHandler> itemHandler = getItemHandler();
-                    itemHandler.ifPresent(handler -> {
-                        IngredientWithCount ingredient0 = recipe.ingredients().get(0);
-                        IngredientWithCount ingredient1 = recipe.ingredients().get(1);
-                        ItemStack firstStack = handler.getStackInSlot(0);
-                        ItemStack secondStack = handler.getStackInSlot(1);
-                        if (ingredient0.test(firstStack)) {
-                            // Ingredient refers to slot 0
-                            firstStack.shrink(ingredient0.count());
-                            secondStack.shrink(ingredient1.count());
-                        } else {
-                            // Ingredient refers to slot 1
-                            secondStack.shrink(ingredient0.count());
-                            firstStack.shrink(ingredient1.count());
-                        }
-                    });
-                    Optional<FluidTank> optionalFluidTank = getFluidTank();
-                    optionalFluidTank.ifPresent(fluidTank -> fluidTank.fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE));
+                    ItemStackHandler itemHandler = getItemHandler();
+                    IngredientWithCount ingredient0 = recipe.ingredients().get(0);
+                    IngredientWithCount ingredient1 = recipe.ingredients().get(1);
+                    ItemStack firstStack = itemHandler.getStackInSlot(0);
+                    ItemStack secondStack = itemHandler.getStackInSlot(1);
+                    if (ingredient0.test(firstStack)) {
+                        // Ingredient refers to slot 0
+                        firstStack.shrink(ingredient0.count());
+                        secondStack.shrink(ingredient1.count());
+                    } else {
+                        // Ingredient refers to slot 1
+                        secondStack.shrink(ingredient0.count());
+                        firstStack.shrink(ingredient1.count());
+                    }
+                    getFluidTank().fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE);
                 } else {
                     duration++;
                 }
-            });
+            }
         }
     }
 
     public Optional<BlastFurnaceRecipe> getCurrentRecipe() {
         return level.getRecipeManager()
-                .getRecipeFor(BlastFurnaceRecipe.TYPE,
-                        new ItemRecipeInput(List.of(getItemHandlerStacks().orElse(new ItemStack[0]))), level)
+                .getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(List.of(getItemHandlerStacks())), level)
                 .map(RecipeHolder::value);
     }
 

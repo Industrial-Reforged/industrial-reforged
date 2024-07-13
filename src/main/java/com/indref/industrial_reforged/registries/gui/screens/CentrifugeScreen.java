@@ -20,19 +20,17 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
 
     @Override
     protected void init() {
-        super.init();
-        this.inventoryLabelY = 10000;
-        this.titleLabelY = 10000;
         this.imageHeight = 185;
+        this.inventoryLabelY = inventoryLabelY + 9;
+        super.init();
         initComponents(
                 new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true)
         );
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
-        guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        super.renderBg(guiGraphics, delta, mouseX, mouseY);
+    public @NotNull ResourceLocation getBackgroundTexture() {
+        return TEXTURE;
     }
 
     @Override

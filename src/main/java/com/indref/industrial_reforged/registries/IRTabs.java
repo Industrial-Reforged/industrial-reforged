@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -228,7 +229,7 @@ public final class IRTabs {
      * @param output Specify the creative tab
      * @param block  Specify the item to add
      */
-    private static void addBlock(CreativeModeTab.Output output, Supplier<Block> block) {
+    private static <T extends Block> void addBlock(CreativeModeTab.Output output, DeferredBlock<T> block) {
         output.accept(block.get());
     }
 }

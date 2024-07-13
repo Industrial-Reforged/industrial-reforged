@@ -1,7 +1,9 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -9,6 +11,7 @@ import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -41,9 +44,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("deprecation")
-public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchable, DisplayBlock {
-    public static final MapCodec<CrucibleControllerBlock> CODEC = simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, CrucibleTiers.CERAMIC));
+public class CrucibleControllerBlock extends ContainerBlock implements DisplayBlock {
+    public static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
     private final CrucibleTier tier;
 
     public CrucibleControllerBlock(Properties properties, CrucibleTier crucibleTier) {
@@ -62,57 +64,34 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchab
 
     @Override
     public @NotNull VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
-        return Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
+        return SHAPE;
     }
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
-    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide()) {
-            Utils.openMenu(player, (CrucibleBlockEntity) level.getBlockEntity(blockPos));
-            return InteractionResult.SUCCESS;
-        }
-
-        return InteractionResult.FAIL;
+        return simpleCodec((properties1) -> new CrucibleControllerBlock(properties1, tier));
     }
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        super.onRemove(blockState, level, blockPos, newState, p_60519_);
         MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
 
-        if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity crucibleBlockEntity && newState.is(Blocks.AIR)) {
-            crucibleBlockEntity.drops();
-        }
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return new CrucibleBlockEntity(p_153215_, p_153216_);
+        super.onRemove(blockState, level, blockPos, newState, p_60519_);
     }
 
     @Override
-    public Optional<Item> getDropItem() {
-        return Optional.of(IRBlocks.TERRACOTTA_BRICK_SLAB.get().asItem());
+    public boolean tickingEnabled() {
+        return true;
     }
 
-    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide()) return null;
+    public boolean canWrench(Level level, BlockPos blockPos, BlockState blockState) {
+        return false;
+    }
 
-        return createTickerHelper(blockEntityType, IRBlockEntityTypes.CRUCIBLE.get(),
-                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick(pLevel1, pPos, pState1));
+    @Override
+    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+        return IRBlockEntityTypes.CRUCIBLE.get();
     }
 
     @Override
@@ -122,6 +101,6 @@ public class CrucibleControllerBlock extends BaseEntityBlock implements Wrenchab
 
     @Override
     public List<DisplayItem> getCompatibleItems() {
-        return List.of((DisplayItem) IRItems.THERMOMETER.get());
+        return List.of(IRItems.THERMOMETER.get());
     }
 }

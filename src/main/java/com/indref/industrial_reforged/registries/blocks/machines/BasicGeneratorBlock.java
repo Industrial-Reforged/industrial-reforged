@@ -1,15 +1,22 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.machines.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +39,13 @@ public class BasicGeneratorBlock extends GeneratorBlock {
     }
 
     @Override
-    public Optional<BlockEntityType<? extends GeneratorBlockEntity>> getBlockEntity() {
-        return Optional.of(IRBlockEntityTypes.BASIC_GENERATOR.get());
+    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+        return IRBlockEntityTypes.BASIC_GENERATOR.get();
+    }
+
+    @Override
+    protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
+        player.openMenu((BasicGeneratorBlockEntity) level.getBlockEntity(blockPos), blockPos);
+        return InteractionResult.SUCCESS;
     }
 }

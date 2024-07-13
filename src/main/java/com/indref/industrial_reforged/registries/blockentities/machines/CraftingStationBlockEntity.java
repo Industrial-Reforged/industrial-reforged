@@ -20,7 +20,7 @@ public class CraftingStationBlockEntity extends ContainerBlockEntity implements 
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("Test");
     }
 

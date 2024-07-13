@@ -158,4 +158,24 @@ public final class RecipeUtils {
             }
         };
     }
+
+    public static List<IngredientWithCount> ingredientsToIWC(List<Ingredient> ingredients) {
+        return ingredients.stream().map(ingredient -> new IngredientWithCount(ingredient, 1)).toList();
+    }
+
+    public static List<Ingredient> iWCToIngredients(List<IngredientWithCount> ingredientsWithCount) {
+        return ingredientsWithCount.stream().map(IngredientWithCount::ingredient).toList();
+    }
+
+    public static List<Ingredient> iWCToIngredientsSaveCount(List<IngredientWithCount> ingredientsWithCount) {
+        return ingredientsWithCount.stream().map(RecipeUtils::iWCToIngredientSaveCount).toList();
+    }
+
+    public static @NotNull Ingredient iWCToIngredientSaveCount(IngredientWithCount ingredientWithCount) {
+        Ingredient ingredient = ingredientWithCount.ingredient();
+        for (ItemStack itemStack : ingredient.getItems()) {
+            itemStack.setCount(ingredientWithCount.count());
+        }
+        return ingredient;
+    }
 }

@@ -51,6 +51,7 @@ public class EnergyWrapper {
         }
     }
 
+    // Move this from a wrapper to a regular capability
     public record Block(BlockEntity blockEntity) implements IEnergyStorage {
         public Block(BlockEntity blockEntity, int initialCapacity) {
             this(blockEntity);

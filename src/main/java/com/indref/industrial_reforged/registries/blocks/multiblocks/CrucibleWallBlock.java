@@ -1,8 +1,9 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -17,6 +18,7 @@ import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
@@ -45,7 +47,7 @@ import java.util.Optional;
 import static com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
 @SuppressWarnings("deprecation")
-public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, DisplayBlock {
+public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock, CanAttachFaucetBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
 
@@ -161,5 +163,11 @@ public class CrucibleWallBlock extends BaseEntityBlock implements Wrenchable, Di
     @Override
     public List<DisplayItem> getCompatibleItems() {
         return List.of((DisplayItem) IRItems.THERMOMETER.get());
+    }
+
+    @Override
+    public boolean canAttachFaucetToBlock(BlockState blockState, BlockPos blockPos, Level level, Direction facing) {
+        return blockState.getValue(CrucibleMultiblock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.WALL_BOTTOM)
+                || blockState.getValue(CrucibleMultiblock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.EDGE_BOTTOM);
     }
 }

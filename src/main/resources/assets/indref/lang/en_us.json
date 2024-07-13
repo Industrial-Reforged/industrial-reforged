@@ -143,6 +143,9 @@
   "block.indref.uranium_ore": "Uranium Ore",
   "block.indref.deepslate_uranium_ore": "Deepslate Uranium Ore",
 
+  "title.indref.firebox": "Firebox",
+  "title.indref.basic_generator": "Basic Generator",
+
   "drain.desc.0": "A simple device for collecting fluids",
   "drain.info.0": "Fluid stored: ",
 

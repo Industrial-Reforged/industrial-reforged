@@ -1,35 +1,39 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
-import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
-public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchable {
+public class BlastFurnaceHatchBlock extends ContainerBlock implements CanAttachFaucetBlock {
     public BlastFurnaceHatchBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public boolean tickingEnabled() {
+        return true;
+    }
+
+    @Override
+    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+        return IRBlockEntityTypes.BLAST_FURNACE.get();
     }
 
     @Override
@@ -43,14 +47,8 @@ public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchabl
     }
 
     @Override
-    public @NotNull RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
-            IndustrialReforged.LOGGER.debug("formed, now unforming");
             MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blockPos, level);
         }
 
@@ -58,34 +56,15 @@ public class BlastFurnaceHatchBlock extends BaseEntityBlock implements Wrenchabl
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
         if (blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
-            BlockUtils.blockEntityAt(level, blockPos).ifPresent(be -> {
-                if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                    blastFurnaceBlockEntity.getActualBlockEntity().ifPresent(actualBe -> {
-                        if (actualBe instanceof BlastFurnaceBlockEntity actualBe1) {
-                            Utils.openMenu(player, actualBe1);
-                        }
-                    });
-                }
-            });
-            return InteractionResult.SUCCESS;
+            return super.useWithoutItem(blockState, level, blockPos, player, hitResult);
         }
         return InteractionResult.FAIL;
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BlastFurnaceBlockEntity(blockPos, blockState);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide()) return null;
-
-        return createTickerHelper(blockEntityType, IRBlockEntityTypes.BLAST_FURNACE.get(),
-                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick());
+    public boolean canAttachFaucetToBlock(BlockState blockState, BlockPos blockPos, Level level, Direction facing) {
+        return blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE) == BlastFurnaceMultiblock.BrickStates.FORMED;
     }
 }

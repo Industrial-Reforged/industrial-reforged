@@ -92,18 +92,18 @@ public record BlastFurnaceMultiblock() implements Multiblock {
 
     private static Direction getCorrectDirection(int index, MultiblockDirection direction) {
         return switch (direction) {
-            case WEST -> switch (index) {
-                case 0 -> Direction.WEST;
-                case 1 -> Direction.NORTH;
-                case 2 -> Direction.SOUTH;
-                case 3 -> Direction.EAST;
-                default -> null;
-            };
             case NORTH -> switch (index) {
                 case 0 -> Direction.NORTH;
                 case 1 -> Direction.EAST;
                 case 2 -> Direction.WEST;
                 case 3 -> Direction.SOUTH;
+                default -> null;
+            };
+            case EAST -> switch (index) {
+                case 0 -> Direction.EAST;
+                case 1 -> Direction.SOUTH;
+                case 2 -> Direction.NORTH;
+                case 3 -> Direction.WEST;
                 default -> null;
             };
             case SOUTH -> switch (index) {
@@ -113,11 +113,11 @@ public record BlastFurnaceMultiblock() implements Multiblock {
                 case 3 -> Direction.NORTH;
                 default -> null;
             };
-            case EAST -> switch (index) {
-                case 0 -> Direction.EAST;
-                case 1 -> Direction.SOUTH;
-                case 2 -> Direction.NORTH;
-                case 3 -> Direction.WEST;
+            case WEST -> switch (index) {
+                case 0 -> Direction.WEST;
+                case 1 -> Direction.NORTH;
+                case 2 -> Direction.SOUTH;
+                case 3 -> Direction.EAST;
                 default -> null;
             };
         };

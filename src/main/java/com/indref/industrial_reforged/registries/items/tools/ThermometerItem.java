@@ -31,7 +31,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import javax.swing.plaf.LabelUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,8 +71,8 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, Tool
             BlockPos blockPos = blockHitResult.getBlockPos();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof FakeBlockEntity fakeBlockEntity) {
-                if (fakeBlockEntity.getActualBlockEntity().isPresent()) {
-                    blockEntity = fakeBlockEntity.getActualBlockEntity().get();
+                if (fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
+                    blockEntity = level.getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());;
                 }
             }
             Optional<IHeatBlock> heatBlock = BlockUtils.getHeatBlock(blockEntity);

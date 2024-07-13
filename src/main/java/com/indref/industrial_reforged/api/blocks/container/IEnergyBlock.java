@@ -6,6 +6,8 @@ import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -44,10 +46,7 @@ public interface IEnergyBlock {
     }
 
     default int getEnergyCapacity() {
-        if (getEnergyTier().isPresent())
-            return getEnergyTier().get().getDefaultCapacity();
-        IndustrialReforged.LOGGER.error("{} does not provide a correct heat type (heat type is null) unable to get Capacity", this.getClass().getName());
-        return -1;
+        return getEnergyTier().getDefaultCapacity();
     }
 
     default void onEnergyChanged() {
@@ -71,7 +70,8 @@ public interface IEnergyBlock {
         return false;
     }
 
-    Optional<EnergyTier> getEnergyTier();
+    @NotNull
+    EnergyTier getEnergyTier();
 
     static boolean canAcceptEnergyFromSide(BlockEntity blockEntity, Direction direction) {
         IndustrialReforged.LOGGER.debug("Cap: " + blockEntity.getLevel().getCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), direction));

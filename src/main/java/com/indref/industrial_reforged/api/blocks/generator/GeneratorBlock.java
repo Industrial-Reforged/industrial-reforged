@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -13,24 +15,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class GeneratorBlock extends RotatableEntityBlock {
-
+public abstract class GeneratorBlock extends ContainerBlock {
     public GeneratorBlock(Properties properties) {
         super(properties);
     }
 
-    public abstract Optional<BlockEntityType<? extends GeneratorBlockEntity>> getBlockEntity();
-
-    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (level.isClientSide()) return null;
-
-        if (getBlockEntity().isEmpty())
-            return null;
-
-        return createTickerHelper(blockEntityType, getBlockEntity().get(),
-                (pLevel1, pPos, pState1, pBlockEntity) -> pBlockEntity.tick());
+    public boolean tickingEnabled() {
+        return true;
     }
 
     public static boolean isPartOfEnet(ServerLevel level, BlockPos blockPos) {

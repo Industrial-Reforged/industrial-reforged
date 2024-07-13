@@ -21,22 +21,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private int duration;
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
-        addEnergyStorage(getEnergyTier().get());
+        addEnergyStorage(getEnergyTier());
         addItemHandler(7, ((slot, itemStack) -> slot != 0));
     }
 
     @Override
-    public Optional<EnergyTier> getEnergyTier() {
-        return Optional.of(EnergyTiers.LOW);
+    public @NotNull EnergyTier getEnergyTier() {
+        return EnergyTiers.LOW;
     }
 
     @Override
@@ -50,11 +48,13 @@ public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuP
         return new CentrifugeMenu(i, inventory, this, new SimpleContainerData(6));
     }
 
-    public void tick() {
-        Optional<RecipeHolder<CentrifugeRecipe>> optionalRecipe = getCurrentRecipe();
+    @Override
+    public void commonTick() {
+        super.commonTick();
+        Optional<CentrifugeRecipe> optionalRecipe = getCurrentRecipe();
 
-        optionalRecipe.ifPresent(recipeHolder -> {
-            CentrifugeRecipe recipe = recipeHolder.value();
+        if (optionalRecipe.isPresent()) {
+            CentrifugeRecipe recipe = optionalRecipe.get();
             int duration = recipe.duration();
             List<ItemStack> results = recipe.results();
             IngredientWithCount ingredient = recipe.ingredient();
@@ -63,10 +63,12 @@ public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuP
             } else {
                 this.duration++;
             }
-        });
+        }
     }
 
-    public Optional<RecipeHolder<CentrifugeRecipe>> getCurrentRecipe() {
-        return level.getRecipeManager().getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(Collections.singletonList(getItemHandlerStacks().orElseThrow()[0])), level);
+    public Optional<CentrifugeRecipe> getCurrentRecipe() {
+        return level.getRecipeManager()
+                .getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(List.of(getItemHandlerStacks())), level)
+                .map(RecipeHolder::value);
     }
 }

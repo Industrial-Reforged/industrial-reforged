@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -70,12 +71,14 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     @Override
     public void onItemsChanged(int slot) {
-        ItemStack stack = getItemHandler().get().getStackInSlot(slot);
-        int burnTime = stack.getBurnTime(RecipeType.SMELTING);
-        if (burnTime > 0 && this.burnTime <= 0) {
-            this.burnTime = burnTime;
-            this.maxBurnTime = burnTime;
-            stack.shrink(1);
+        if (getItemHandler() != null) {
+            ItemStack stack = getItemHandler().getStackInSlot(slot);
+            int burnTime = stack.getBurnTime(RecipeType.SMELTING);
+            if (burnTime > 0 && this.burnTime <= 0) {
+                this.burnTime = burnTime;
+                this.maxBurnTime = burnTime;
+                stack.shrink(1);
+            }
         }
     }
 
@@ -84,17 +87,15 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         return Component.literal("Firebox");
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        if (getItemHandler().isEmpty()) return;
-
+    public void commonTick() {
         if (this.burnTime > 0) {
             burnTime--;
             if (burnTime % 10 == 0) {
-                this.setHeatStored(getHeatStored()+1);
+                this.setHeatStored(getHeatStored() + 1);
             }
         } else {
             this.maxBurnTime = 0;
-            ItemStack stack = getItemHandler().get().getStackInSlot(INPUT_SLOT);
+            ItemStack stack = getItemHandler().getStackInSlot(INPUT_SLOT);
             int burnTime = stack.getBurnTime(RecipeType.SMELTING);
             if (burnTime > 0) {
                 this.burnTime = burnTime;

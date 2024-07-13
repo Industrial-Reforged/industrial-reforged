@@ -29,22 +29,20 @@ public class CrucibleMenu extends IRAbstractContainerMenu<CrucibleBlockEntity> {
         checkContainerSize(inv, 1);
         this.level = inv.player.level();
 
-        Optional<ItemStackHandler> itemHandler = getBlockEntity().getItemHandler();
+        ItemStackHandler itemHandler = getBlockEntity().getItemHandler();
 
-        itemHandler.ifPresent(handler -> {
-            int x = 26;
-            int y = 18;
-            int index = 0;
-            for (int yIndex = 0; yIndex < 3; yIndex++) {
-                for (int xIndex = 0; xIndex < 3; xIndex++) {
-                    this.addSlot(new SlotItemHandler(handler, index, x + xIndex * 18, y + yIndex * 18));
-                    index++;
-                }
+        int x = 26;
+        int y = 18;
+        int index = 0;
+        for (int yIndex = 0; yIndex < 3; yIndex++) {
+            for (int xIndex = 0; xIndex < 3; xIndex++) {
+                this.addSlot(new SlotItemHandler(itemHandler, index, x + xIndex * 18, y + yIndex * 18));
+                index++;
             }
+        }
 
-            addPlayerHotbar(inv);
-            addPlayerInventory(inv);
-        });
+        addPlayerHotbar(inv);
+        addPlayerInventory(inv);
     }
 
     @Override
@@ -58,10 +56,7 @@ public class CrucibleMenu extends IRAbstractContainerMenu<CrucibleBlockEntity> {
                 player, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get());
     }
 
-    public Optional<FluidStack> getFluidStack() {
-         if (this.getBlockEntity().getFluidTank().isPresent()) {
-             return Optional.of(this.getBlockEntity().getFluidTank().get().getFluid());
-         }
-         return Optional.empty();
+    public FluidStack getFluidStack() {
+        return this.getBlockEntity().getFluidTank().getFluid();
     }
 }

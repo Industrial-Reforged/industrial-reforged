@@ -22,7 +22,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
     }
 
     @Override
-    public Optional<BlockEntity> getActualBlockEntity() {
+    public Optional<BlockPos> getActualBlockEntityPos() {
         return Optional.empty();
     }
 }

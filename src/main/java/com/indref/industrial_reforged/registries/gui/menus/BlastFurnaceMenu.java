@@ -20,8 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class BlastFurnaceMenu extends IRAbstractContainerMenu<BlastFurnaceBlockEntity> {
-    public final BlastFurnaceBlockEntity blockEntity;
-    private final Level level;
     private final ContainerData data;
 
     public BlastFurnaceMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
@@ -30,36 +28,25 @@ public class BlastFurnaceMenu extends IRAbstractContainerMenu<BlastFurnaceBlockE
 
     public BlastFurnaceMenu(int pContainerId, Inventory inv, BlastFurnaceBlockEntity entity, ContainerData data) {
         super(IRMenuTypes.BLAST_FURNACE_MENU.get(), pContainerId, inv, entity);
-        checkContainerSize(inv, 1);
-        blockEntity = (BlastFurnaceBlockEntity) entity;
-        this.level = inv.player.level();
+        checkContainerSize(inv, 2);
         this.data = data;
 
-        Optional<ItemStackHandler> itemHandler = blockEntity.getItemHandler();
+        ItemStackHandler itemHandler = blockEntity.getItemHandler();
 
-        itemHandler.ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 44, 37));
-            this.addSlot(new SlotItemHandler(handler, 1, 18, 37));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 37));
+        this.addSlot(new SlotItemHandler(itemHandler, 1, 18, 37));
 
-            addPlayerHotbar(inv);
-            addPlayerInventory(inv);
-        });
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int slotId) {
-        return ItemStack.EMPTY;
+        addPlayerHotbar(inv);
+        addPlayerInventory(inv);
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
+        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()),
                 player, IRBlocks.BLAST_FURNACE_HATCH.get());
     }
 
     public Optional<FluidStack> getFluidStack() {
-         if (this.blockEntity.getFluidTank().isPresent())
-             return Optional.of(this.blockEntity.getFluidTank().get().getFluid());
-         return Optional.empty();
+        return Optional.of(this.blockEntity.getFluidTank().getFluid());
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO: Add a saved data for multiblocks so we can store stuff like blockposes
 public interface Multiblock {
     // Returns the block that is the controller
     Block getController();

@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
-import com.indref.industrial_reforged.api.tiers.CrucibleTier;
-import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -32,7 +31,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
-public class FaucetBlock extends Block implements Wrenchable {
+public class FaucetBlock extends Block implements WrenchableBlock {
     public static final BooleanProperty ATTACHED_TO_CRUCIBLE = BooleanProperty.create("attached_to_crucible");
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
@@ -96,15 +95,14 @@ public class FaucetBlock extends Block implements Wrenchable {
         return RenderShape.MODEL;
     }
 
-    // TODO: Make attaching dynamic
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().relative(context.getHorizontalDirection()));
-        BlockState toReturn = super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
-        if (blockState.getBlock() instanceof CrucibleWallBlock &&
-                (blockState.getValue(CrucibleMultiblock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.WALL_BOTTOM) ||
-                        blockState.getValue(CrucibleMultiblock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.EDGE_BOTTOM))) {
+        Direction facing = context.getHorizontalDirection().getOpposite();
+        BlockState toReturn = super.getStateForPlacement(context).setValue(FACING, facing);
+        if (blockState.getBlock() instanceof CanAttachFaucetBlock canAttachFaucetBlock
+                && canAttachFaucetBlock.canAttachFaucetToBlock(blockState, context.getClickedPos(), context.getLevel(), facing)) {
             return toReturn.setValue(ATTACHED_TO_CRUCIBLE, true);
         }
 

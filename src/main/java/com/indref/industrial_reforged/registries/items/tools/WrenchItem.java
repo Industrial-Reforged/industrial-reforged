@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
-import com.indref.industrial_reforged.api.blocks.Wrenchable;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -48,15 +48,16 @@ public class WrenchItem extends ToolItem {
         BlockPos clickPos = useOnContext.getClickedPos();
         BlockState wrenchableBlock = level.getBlockState(clickPos);
         ItemStack itemInHand = useOnContext.getItemInHand();
-        assert player != null;
 
         if (!level.isClientSide) {
-            if (wrenchableBlock instanceof Wrenchable iWrenchableBlock && player.isShiftKeyDown()) {
-                if (iWrenchableBlock.getDropItem().isEmpty()) {
+            if (wrenchableBlock instanceof WrenchableBlock iWrenchableBlockBlock
+                    && ((WrenchableBlock) wrenchableBlock).canWrench(level, clickPos, wrenchableBlock)
+                    && player.isShiftKeyDown()) {
+                if (iWrenchableBlockBlock.getDropItem().isEmpty()) {
                     ItemStack dropItem = wrenchableBlock.getBlock().asItem().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 } else {
-                    ItemStack dropItem = iWrenchableBlock.getDropItem().get().getDefaultInstance();
+                    ItemStack dropItem = iWrenchableBlockBlock.getDropItem().get().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
                 if (isDamageable(itemInHand)) {
@@ -65,8 +66,8 @@ public class WrenchItem extends ToolItem {
                 level.removeBlock(clickPos, false);
             } else {
                 for (Property<?> prop : wrenchableBlock.getProperties()) {
-                    if (prop instanceof DirectionProperty && prop.getName().equals("facing")) {
-                        BlockState rotatedState = rotateBlock(wrenchableBlock, (DirectionProperty) prop, wrenchableBlock.getValue(prop));
+                    if (prop instanceof DirectionProperty directionProperty && prop.getName().equals("facing")) {
+                        BlockState rotatedState = rotateBlock(wrenchableBlock, directionProperty, wrenchableBlock.getValue(directionProperty));
                         level.setBlock(clickPos, rotatedState, 3);
                         level.playSound(null, clickPos, SoundEvents.ITEM_FRAME_ROTATE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
                         return InteractionResult.SUCCESS;

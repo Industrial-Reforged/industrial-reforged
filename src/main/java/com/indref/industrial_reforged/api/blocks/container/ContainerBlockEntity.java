@@ -21,8 +21,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
+// TODO: Remove optionals
 public abstract class ContainerBlockEntity extends BlockEntity implements IEnergyBlock, IHeatBlock {
     private int energyCapacity;
     private int heatCapacity;
@@ -30,15 +29,23 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     private FluidTank fluidTank;
     private EnergyTier energyTier;
 
-    public ContainerBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
-        super(p_155228_, p_155229_, p_155230_);
+    public ContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+        super(blockEntityType, blockPos, blockState);
     }
 
-    public void drops() {
-        getItemHandlerStacks().ifPresent(stacks -> {
-            SimpleContainer inventory = new SimpleContainer(stacks);
-            Containers.dropContents(this.level, this.worldPosition, inventory);
-        });
+    public void drop() {
+        ItemStack[] stacks = getItemHandlerStacks();
+        SimpleContainer inventory = new SimpleContainer(stacks);
+        Containers.dropContents(this.level, this.worldPosition, inventory);
+    }
+
+    public void clientTick() {
+    }
+
+    public void serverTick() {
+    }
+
+    public void commonTick() {
     }
 
     @Override
@@ -52,41 +59,44 @@ public abstract class ContainerBlockEntity extends BlockEntity implements IEnerg
     }
 
     @Override
-    public Optional<EnergyTier> getEnergyTier() {
-        return Optional.ofNullable(energyTier);
+    public @NotNull EnergyTier getEnergyTier() {
+        return energyTier;
     }
 
-    public Optional<ItemStackHandler> getItemHandler() {
-        return Optional.ofNullable(itemHandler);
+    public @Nullable ItemStackHandler getItemHandler() {
+        return itemHandler;
     }
 
-    public Optional<ItemStack[]> getItemHandlerStacks() {
-        return getItemHandler().map(handler -> {
-            ItemStack[] itemStacks = new ItemStack[handler.getSlots()];
-            for (int i = 0; i < handler.getSlots(); i++) {
-                itemStacks[i] = handler.getStackInSlot(i);
-            }
-            return itemStacks;
-        });
+    public @Nullable ItemStack[] getItemHandlerStacks() {
+        ItemStackHandler itemStackHandler = getItemHandler();
+        if (itemStackHandler == null) return null;
+
+        ItemStack[] itemStacks = new ItemStack[itemStackHandler.getSlots()];
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            itemStacks[i] = itemStackHandler.getStackInSlot(i);
+        }
+        return itemStacks;
+
     }
 
-    public Optional<FluidTank> getFluidTank() {
-        return Optional.ofNullable(fluidTank);
+    public @Nullable FluidTank getFluidTank() {
+        return fluidTank;
     }
 
     @Override
     protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.loadAdditional(nbt, provider);
-        getFluidTank().ifPresent(fluidTank1 -> fluidTank1.readFromNBT(provider, nbt));
-        getItemHandler().ifPresent(itemStackHandler -> itemStackHandler.deserializeNBT(provider, nbt.getCompound("itemhandler")));
+        if (this.getFluidTank() != null) this.getFluidTank().readFromNBT(provider, nbt);
+        if (this.getItemHandler() != null)
+            this.getItemHandler().deserializeNBT(provider, nbt.getCompound("itemhandler"));
         loadData(nbt, provider);
     }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(nbt, provider);
-        getFluidTank().ifPresent(fluidTank1 -> fluidTank1.writeToNBT(provider, nbt));
-        getItemHandler().ifPresent(itemStackHandler -> nbt.put("itemhandler", itemStackHandler.serializeNBT(provider)));
+        if (getFluidTank() != null) getFluidTank().writeToNBT(provider, nbt);
+        if (getItemHandler() != null) nbt.put("itemhandler", getItemHandler().serializeNBT(provider));
         saveData(nbt, provider);
     }
 

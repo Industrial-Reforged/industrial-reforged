@@ -1,22 +1,26 @@
 package com.indref.industrial_reforged.api.gui;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> extends AbstractContainerMenu {
-    private final T blockEntity;
+    public final @NotNull T blockEntity;
+    protected final @NotNull Inventory inv;
+    protected int slotAmount;
 
-    public T getBlockEntity() {
+    public @NotNull T getBlockEntity() {
         return blockEntity;
     }
 
-    protected IRAbstractContainerMenu(@Nullable MenuType<?> menuType, int containerId, Inventory inv, T blockEntity) {
+    protected IRAbstractContainerMenu(MenuType<?> menuType, int containerId, @NotNull Inventory inv, @NotNull T blockEntity) {
         super(menuType, containerId);
         this.blockEntity = blockEntity;
+        this.inv = inv;
     }
 
     protected void addPlayerInventory(Inventory playerInventory) {
@@ -45,5 +49,65 @@ public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> ex
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, y));
         }
+    }
+
+    @Override
+    protected @NotNull Slot addSlot(@NotNull Slot slot) {
+        this.slotAmount++;
+        return super.addSlot(slot);
+    }
+
+    private static final int HOTBAR_SLOT_COUNT = 9;
+    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
+    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
+    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
+    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
+    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
+    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+
+    @Override
+    public @NotNull ItemStack quickMoveStack(Player playerIn, int pIndex) {
+        try {
+            Slot sourceSlot = slots.get(pIndex);
+
+            if (!sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+
+            ItemStack sourceStack = sourceSlot.getItem();
+            ItemStack copyOfSourceStack = sourceStack.copy();
+
+            // Check if the slot clicked is one of the vanilla container slots
+            int endIndex = TE_INVENTORY_FIRST_SLOT_INDEX + this.slotAmount - VANILLA_SLOT_COUNT;
+            IndustrialReforged.LOGGER.debug("End index: {}", endIndex);
+            if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
+                // This is a vanilla container slot so merge the stack into the tile inventory
+                IndustrialReforged.LOGGER.debug("inv slot: {}", TE_INVENTORY_FIRST_SLOT_INDEX);
+                if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, endIndex, false)) {
+                    return ItemStack.EMPTY;  // EMPTY_ITEM
+                }
+            } else if (pIndex < endIndex) {
+                // This is a TE slot so merge the stack into the players inventory
+                if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                System.out.println("Invalid slotIndex:" + pIndex);
+                return ItemStack.EMPTY;
+            }
+            // If stack size == 0 (the entire stack was moved) set slot contents to null
+            if (sourceStack.getCount() == 0) {
+                sourceSlot.set(ItemStack.EMPTY);
+            } else {
+                sourceSlot.setChanged();
+            }
+            sourceSlot.onTake(playerIn, sourceStack);
+            return copyOfSourceStack;
+        } catch (Exception e) {
+            IndustrialReforged.LOGGER.error("Encountered error: ", e);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public @NotNull Inventory getInv() {
+        return inv;
     }
 }
