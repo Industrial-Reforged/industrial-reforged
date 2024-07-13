@@ -46,11 +46,6 @@ public class CrucibleMenu extends IRAbstractContainerMenu<CrucibleBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int slotId) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, getBlockEntity().getBlockPos()),
                 player, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get());

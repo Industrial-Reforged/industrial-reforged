@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyWrapper;
-import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatWrapper;
+import com.indref.industrial_reforged.api.capabilities.energy.storage.ItemEnergyWrapper;
+import com.indref.industrial_reforged.api.capabilities.heat.storage.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
@@ -155,10 +155,10 @@ public class IREvents {
             IndustrialReforged.LOGGER.debug("Register caps");
             for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof IEnergyItem)
-                    event.registerItem(IRCapabilities.EnergyStorage.ITEM, (stack, ctx) -> new EnergyWrapper.Item(stack), item);
+                    event.registerItem(IRCapabilities.EnergyStorage.ITEM, (stack, ctx) -> new ItemEnergyWrapper(stack), item);
 
                 if (item instanceof IHeatItem)
-                    event.registerItem(IRCapabilities.HeatStorage.ITEM, (stack, ctx) -> new HeatWrapper.Item(stack), item);
+                    event.registerItem(IRCapabilities.HeatStorage.ITEM, (stack, ctx) -> new ItemHeatWrapper(stack), item);
 
                 if (item instanceof IFluidItem fluidItem)
                     event.registerItem(Capabilities.FluidHandler.ITEM,
@@ -170,13 +170,13 @@ public class IREvents {
             }
 
             // Register all your block entity capabilities manually
-            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity, blockEntity.getEnergyCapacity()));
-            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> new EnergyWrapper.Block(blockEntity, blockEntity.getEnergyCapacity()));
+            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> blockEntity.getEnergyStorage());
+            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> blockEntity.getEnergyStorage());
 
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> new HeatWrapper.Block(blockEntity, blockEntity.getHeatCapacity()));
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getHeatStorage());
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getHeatStorage());
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getHeatStorage());
+            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getHeatStorage());
 
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());

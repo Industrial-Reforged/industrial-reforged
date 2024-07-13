@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CastingBasinBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -87,10 +88,10 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         }
 
         try {
-            Optional<IFluidHandler> fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, castingTableBlockEntity);
-            if (fluidHandler.isPresent()) {
-                FluidStack fluidStack = fluidHandler.get().getFluidInTank(0);
-                int fluidCapacity = fluidHandler.get().getTankCapacity(0);
+            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(castingTableBlockEntity);
+            if (fluidHandler != null) {
+                FluidStack fluidStack = fluidHandler.getFluidInTank(0);
+                int fluidCapacity = fluidHandler.getTankCapacity(0);
                 int alpha = 1;
 
                 if (fluidStack.isEmpty())

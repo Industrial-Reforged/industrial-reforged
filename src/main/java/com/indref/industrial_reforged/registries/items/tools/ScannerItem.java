@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import com.indref.industrial_reforged.api.blocks.DisplayBlock;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -16,6 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScannerItem extends SimpleElectricItem implements ToolItem, DisplayItem {
     public ScannerItem(Properties p_41383_, EnergyTier energyTier) {
@@ -33,13 +39,25 @@ public class ScannerItem extends SimpleElectricItem implements ToolItem, Display
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         BlockState blockstate = level.getBlockState(blockPos);
         ItemStack mainHandStack = player.getMainHandItem();
-        if (BlockUtils.isEnergyBlock(blockEntity)) {
-            for (Component component : DisplayUtils.displayEnergyInfo(blockEntity, blockstate)) {
-                guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
-                lineOffset += font.lineHeight + 3;
-            }
-            if (level.getGameTime() % 20 == 0 && !player.isCreative()) {
-                //this.tryDrainEnergy(mainHandStack, 1);
+        if (blockEntity != null) {
+            IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+            if (energyStorage != null) {
+                List<Component> components = new ArrayList<>();
+                // Is block display block
+                if (blockstate.getBlock() instanceof DisplayBlock displayBlock && displayBlock.getCompatibleItems().contains(this)) {
+                    displayBlock.displayOverlay(components, blockstate, blockPos, level);
+                }
+                // Render display if there is one
+                if (!components.isEmpty()) {
+                    for (Component component : components) {
+                        guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
+                        lineOffset += font.lineHeight + 3;
+                    }
+                }
+                // Drain energy
+                if (level.getGameTime() % 20 == 0 && !player.isCreative()) {
+                    this.tryDrainEnergy(mainHandStack, 1);
+                }
             }
         }
     }

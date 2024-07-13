@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
-import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -43,57 +41,6 @@ public final class BlockUtils {
                 selfPos.offset(1, 0, 1),
                 selfPos.offset(-1, 0, -1),
         };
-    }
-
-    public static <T, C> Optional<T> getBlockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
-        return Optional.ofNullable(getBlockEntityCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null, blockEntity.getLevel()));
-    }
-
-    private static <T, C> @Nullable T getBlockEntityCapability(BlockCapability<T, C> cap, BlockPos pos, @Nullable BlockState state, @Nullable BlockEntity blockEntity, C context, Level level) {
-        return level.getCapability(cap, pos, state, blockEntity, context);
-    }
-
-    public static Optional<IItemHandler> getClientItemHandler(BlockPos blockPos) {
-        Level level = Minecraft.getInstance().level;
-        if (level != null) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity != null) {
-                return BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
-            }
-        }
-        return Optional.empty();
-    }
-
-    public static Optional<IHeatBlock> getHeatBlock(final BlockEntity blockEntity) {
-        BlockEntity blockEntity1 = blockEntity;
-        if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
-            if (fakeBlockEntity.getActualBlockEntityPos().isPresent())
-                blockEntity1 = blockEntity.getLevel().getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());
-        if (BlockUtils.isHeatBlock(blockEntity1))
-            return Optional.of((IHeatBlock) blockEntity1);
-        return Optional.empty();
-    }
-
-    public static Optional<IEnergyBlock> getEnergyBlock(BlockEntity blockEntity) {
-        BlockEntity blockEntity1 = blockEntity;
-        if (blockEntity instanceof FakeBlockEntity fakeBlockEntity)
-            if (fakeBlockEntity.getActualBlockEntityPos().isPresent())
-                blockEntity1 = blockEntity.getLevel().getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());
-        if (BlockUtils.isEnergyBlock(blockEntity1))
-            return Optional.of((IEnergyBlock) blockEntity1);
-        return Optional.empty();
-    }
-
-    public static boolean isEnergyBlock(BlockEntity blockEntity) {
-        return blockEntity != null && getBlockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity).isPresent();
-    }
-
-    public static boolean isHeatBlock(BlockEntity blockEntity) {
-        return blockEntity != null && getBlockEntityCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity).isPresent();
-    }
-
-    public static Optional<BlockEntity> blockEntityAt(LevelAccessor level, BlockPos blockPos) {
-        return Optional.ofNullable(level.getBlockEntity(blockPos));
     }
 
     public static BlockState rotateBlock(BlockState state, DirectionProperty prop, Comparable<?> currentValue) {

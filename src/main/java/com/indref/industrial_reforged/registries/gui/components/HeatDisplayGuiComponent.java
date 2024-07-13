@@ -1,7 +1,10 @@
 package com.indref.industrial_reforged.registries.gui.components;
 
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.gui.components.GuiComponent;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -45,12 +48,16 @@ public class HeatDisplayGuiComponent extends GuiComponent {
     }
 
     private void renderHeatDisplay(GuiGraphics guiGraphics) {
-        int temperature = screen.getMenu().getBlockEntity().getHeatStored();
+        ContainerBlockEntity blockEntity = screen.getMenu().getBlockEntity();
+        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
+        if (heatStorage != null) {
+            int temperature = heatStorage.getHeatStored();
 
-        guiGraphics.drawString(Minecraft.getInstance().font,
-                Component.literal("Temperature: " + temperature + "°C").withStyle(ChatFormatting.WHITE),
-                position.y + screen.getImageWidth() - 95,
-                position.x + 5,
-                0);
+            guiGraphics.drawString(Minecraft.getInstance().font,
+                    Component.literal("Temperature: " + temperature + "°C").withStyle(ChatFormatting.WHITE),
+                    position.y + screen.getImageWidth() - 95,
+                    position.x + 5,
+                    0);
+        }
     }
 }

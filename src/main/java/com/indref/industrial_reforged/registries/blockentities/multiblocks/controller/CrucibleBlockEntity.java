@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
@@ -14,6 +16,7 @@ import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingInput;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
@@ -34,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -56,11 +60,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     @Override
-    public int getHeatCapacity() {
-        return tier.getHeatCapacity();
-    }
-
-    @Override
     public @NotNull Component getDisplayName() {
         return Component.literal("Crucible");
     }
@@ -78,10 +77,13 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         if (fireboxMultiblock.isPresent()) {
             BlockPos controllerPos = this.worldPosition.offset(0, -1, 0);
             BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
-            if (controllerBlockEntity instanceof FireboxBlockEntity fireboxBlockEntity) {
+            if (controllerBlockEntity instanceof FireboxBlockEntity) {
                 int output = fireboxMultiblock.get().getTier().getMaxHeatOutput();
-                if (fireboxBlockEntity.tryDrainHeat(output) == 0) {
-                    this.tryFillHeat(output);
+                IHeatStorage thisHeatStorage = CapabilityUtils.heatStorageCapability(this);
+                IHeatStorage fireBoxHeatStorage = CapabilityUtils.heatStorageCapability(controllerBlockEntity);
+                // FIXME: Not working
+                if (fireBoxHeatStorage.tryDrainHeat(output) == 0) {
+                    thisHeatStorage.tryFillHeat(output);
                 }
             }
         }
@@ -109,10 +111,14 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     private void increaseCraftingProgress() {
-        ItemStackHandler itemStackHandler = getItemHandler();
+        IItemHandler itemStackHandler = CapabilityUtils.itemHandlerCapability(this);
+        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
+
+        if (itemStackHandler == null || heatStorage == null) return;
+
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
-            if (recipe.isPresent() && getHeatStored() >= recipe.get().heat()) {
+            if (recipe.isPresent() && heatStorage.getHeatStored() >= recipe.get().heat()) {
                 ItemStack itemStack = itemStackHandler.getStackInSlot(i);
                 Item input = recipe.get().getIngredients().get(0).getItems()[0].getItem();
                 if (itemStack.is(input)) {
@@ -149,11 +155,12 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private Optional<CrucibleSmeltingRecipe> getCurrentRecipe(int slot) {
         ItemStack stackInSlot = getItemHandler().getStackInSlot(slot);
+        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
 
-        if (stackInSlot.isEmpty()) return Optional.empty();
+        if (stackInSlot.isEmpty() || heatStorage == null) return Optional.empty();
 
         return this.level.getRecipeManager()
-                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingInput(stackInSlot, this.getHeatStored()), level)
+                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingInput(stackInSlot, heatStorage.getHeatStored()), level)
                 .map(RecipeHolder::value);
     }
 

@@ -30,7 +30,6 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity {
             tickBatterySlot();
     }
 
-
     private void tickBatterySlot() {
         ItemStack itemStack = this.batterySlot.getItem();
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {

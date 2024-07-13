@@ -5,4 +5,6 @@ public interface IHeatStorage {
     void setHeatStored(int value);
     int getHeatCapacity();
     void setHeatCapacity(int value);
+    int tryDrainHeat(int value);
+    int tryFillHeat(int value);
 }

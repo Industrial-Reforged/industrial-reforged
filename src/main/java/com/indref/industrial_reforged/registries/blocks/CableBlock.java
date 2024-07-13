@@ -1,10 +1,12 @@
 package com.indref.industrial_reforged.registries.blocks;
 
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,17 +38,20 @@ public class CableBlock extends PipeBlock {
             // Adds the net
             EnergyNet net = nets.getEnets().getOrCreateNetAndPush(blockPos);
             nets.setDirty();
-            for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
-                Block block = level.getBlockState(pos).getBlock();
+            for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+                Block block = level.getBlockState(offsetPos).getBlock();
                 if (block instanceof CableBlock) {
-                    Optional<EnergyNet> network = nets.getEnets().getNetwork(pos);
+                    Optional<EnergyNet> network = nets.getEnets().getNetwork(offsetPos);
                     if (network.isPresent() && network.get() != net) {
                         nets.getEnets().mergeNets(net, network.get());
                         nets.setDirty();
                     }
-                } else if (BlockUtils.isEnergyBlock(level.getBlockEntity(pos))) {
-                    Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
-                    network.ifPresent(energyNet -> energyNet.add(pos, EnergyNet.EnergyTypes.INTERACTORS));
+                } else {
+                    IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(level.getBlockEntity(offsetPos));
+                    if (energyStorage != null) {
+                        Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
+                        network.ifPresent(energyNet -> energyNet.add(offsetPos, EnergyNet.EnergyTypes.INTERACTORS));
+                    }
                 }
             }
         }
@@ -69,7 +74,7 @@ public class CableBlock extends PipeBlock {
     public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         if (level instanceof ServerLevel serverLevel) {
             Optional<EnergyNet> network = EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos);
-            if (BlockUtils.isEnergyBlock(level.getBlockEntity(facingBlockPos))) {
+            if (CapabilityUtils.energyStorageCapability(level.getBlockEntity(facingBlockPos)) != null) {
                 network.ifPresent(net -> net.add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS));
             } else if (network.isPresent() && network.get().get(EnergyNet.EnergyTypes.INTERACTORS).contains(facingBlockPos)) {
                 if (facingBlockState.isEmpty()) {
@@ -91,6 +96,7 @@ public class CableBlock extends PipeBlock {
 
     @Override
     public boolean canConnectTo(BlockEntity connectTo) {
-        return BlockUtils.isEnergyBlock(connectTo) || BlockUtils.getBlockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo).isPresent();
+        return CapabilityUtils.energyStorageCapability(connectTo) != null
+                || CapabilityUtils.blockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo) != null;
     }
 }

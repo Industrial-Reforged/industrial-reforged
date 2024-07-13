@@ -1,10 +1,12 @@
 package com.indref.industrial_reforged.api.capabilities.energy.network;
 
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
 import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -87,6 +89,7 @@ public class EnergyNet {
      * Get all blockpositions of interactors
      * that can accept energy
      */
+    /*
     public List<BlockPos> getEnergyAcceptors() {
         for (BlockPos blockPos : interactors) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
@@ -99,6 +102,7 @@ public class EnergyNet {
         }
         return List.of();
     }
+     */
 
     /**
      * Distribute energy evenly in this energynet
@@ -124,8 +128,9 @@ public class EnergyNet {
         for (int i = 0; i < consumers.size(); i++) {
             BlockPos blockPos = consumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (BlockUtils.isEnergyBlock(blockEntity)) {
-                if (((IEnergyBlock) blockEntity).canAcceptEnergy(initialAmount[i]))
+            IEnergyStorage energyStorage = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity);
+            if (energyStorage != null) {
+                if (energyStorage.canAcceptEnergy(initialAmount[i]))
                     finalConsumers.add(blockPos);
             }
         }
@@ -138,8 +143,9 @@ public class EnergyNet {
         for (int i = 0; i < finalConsumers.size(); i++) {
             BlockPos blockPos = finalConsumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (BlockUtils.isEnergyBlock(blockEntity))
-                ((IEnergyBlock) blockEntity).tryFillEnergy(finalAmount[i]);
+            IEnergyStorage energyStorage = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity);
+            if (energyStorage != null)
+                energyStorage.tryFillEnergy(finalAmount[i]);
         }
 
         return true;

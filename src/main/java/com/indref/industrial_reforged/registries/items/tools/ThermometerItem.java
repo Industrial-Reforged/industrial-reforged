@@ -2,13 +2,14 @@ package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.IHeatBlock;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,13 +73,13 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, Tool
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof FakeBlockEntity fakeBlockEntity) {
                 if (fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
-                    blockEntity = level.getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());;
+                    blockEntity = level.getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());
                 }
             }
-            Optional<IHeatBlock> heatBlock = BlockUtils.getHeatBlock(blockEntity);
-            if (heatBlock.isPresent()) {
-                if (blockEntity != null) {
-                    setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatBlock.get().getHeatStored()));
+            if (blockEntity != null) {
+                IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
+                if (heatStorage != null) {
+                    setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatStorage.getHeatStored()));
                 } else {
                     setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
                 }
@@ -97,7 +98,7 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, Tool
         player.playSound(SoundEvents.GLASS_BREAK);
         Registry<DamageType> damageTypes = player.damageSources().damageTypes;
         player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.ON_FIRE)), 4);
-        itemStack.setCount(0);
+        itemStack.shrink(1);
         ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.GLASS_PANE, 3), player.getInventory().selected);
     }
 

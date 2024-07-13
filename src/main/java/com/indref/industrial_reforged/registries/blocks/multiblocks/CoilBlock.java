@@ -71,7 +71,7 @@ public class CoilBlock extends ContainerBlock implements WrenchableBlock, Displa
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FireboxMultiblock.FIREBOX_PART);
+        super.createBlockStateDefinition(pBuilder.add(FireboxMultiblock.FIREBOX_PART));
     }
 
     @Override

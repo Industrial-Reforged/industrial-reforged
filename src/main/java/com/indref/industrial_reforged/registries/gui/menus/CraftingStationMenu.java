@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.crafting_station.ItemhandlerCraftingContainer;
 import com.indref.industrial_reforged.util.recipes.crafting_station.SmartItemHandlerSlot;
 import net.minecraft.network.FriendlyByteBuf;
@@ -49,7 +50,7 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
         this.level = inv.player.level();
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(level, entity.getBlockPos());
-        this.itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, entity).get();
+        this.itemHandler = CapabilityUtils.itemHandlerCapability(entity);
         this.craftSlots = new ItemhandlerCraftingContainer(itemHandler, this, 3, 3);
 
         addCraftingSlots(itemHandler);
@@ -71,7 +72,7 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
 
     @Override
     public void slotsChanged(Container inventory) {
-            this.access.execute((p_344363_, p_344364_) -> slotChangedCraftingGrid(this, p_344363_, this.player, this.craftSlots, this.resultSlots, null));
+            //this.access.execute((p_344363_, p_344364_) -> slotChangedCraftingGrid(this, p_344363_, this.player, this.craftSlots, this.resultSlots, null));
     }
 
     protected static void slotChangedCraftingGrid(

@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -83,12 +84,11 @@ public class CastingBasinBlock extends ContainerBlock {
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, blockEntity);
-        Optional<IFluidHandler> fluidHandler = BlockUtils.getBlockEntityCapability(Capabilities.FluidHandler.BLOCK, blockEntity);
-        if (!level.isClientSide() && itemHandler.isPresent() && fluidHandler.isPresent()) {
-            insertAndExtract(player, hand, itemHandler.get(), (CastingBasinBlockEntity) blockEntity);
-            fluidHandler.get().fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
-            blockEntity.setChanged();
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(blockEntity);
+        IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(blockEntity);
+        if (!level.isClientSide() && itemHandler != null && fluidHandler != null) {
+            insertAndExtract(player, hand, itemHandler, (CastingBasinBlockEntity) blockEntity);
+            fluidHandler.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
         }
 
         for (Block key : ALTERNATE_VERSIONS.keySet()) {

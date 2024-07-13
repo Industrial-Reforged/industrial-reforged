@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 public enum EnergyTiers implements EnergyTier {
+    NONE(Component.translatable("indref.energy.tier.none").withStyle(ChatFormatting.GRAY), 0, 0, 0),
     LOW(Component.translatable("indref.energy.tier.low").withStyle(ChatFormatting.WHITE), 32, 32, 32_000),
     MEDIUM(Component.translatable("indref.energy.tier.medium").withStyle(ChatFormatting.GOLD),64, 64, 64_000),
     HIGH(Component.translatable("indref.energy.tier.high").withStyle(ChatFormatting.BLUE),128, 128, 128_000),

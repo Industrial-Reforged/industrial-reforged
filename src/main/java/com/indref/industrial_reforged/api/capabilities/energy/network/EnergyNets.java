@@ -1,8 +1,10 @@
 package com.indref.industrial_reforged.api.capabilities.energy.network;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -176,7 +178,7 @@ public class EnergyNets {
     public boolean is(EnergyNet.EnergyTypes type, BlockPos blockPos) {
         return switch (type) {
             case TRANSMITTERS -> level.getBlockState(blockPos).getBlock() instanceof CableBlock;
-            case INTERACTORS -> BlockUtils.isEnergyBlock(level.getBlockEntity(blockPos));
+            case INTERACTORS -> CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, level.getBlockEntity(blockPos)) != null;
         };
     }
 

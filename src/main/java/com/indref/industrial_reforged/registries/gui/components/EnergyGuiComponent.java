@@ -2,7 +2,9 @@ package com.indref.industrial_reforged.registries.gui.components;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.gui.components.TooltipGuiComponent;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.GuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -14,8 +16,8 @@ import org.joml.Vector2i;
 import java.util.List;
 
 public class EnergyGuiComponent extends TooltipGuiComponent {
-    private static final ResourceLocation ENERGY_BAR = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/energy_bar.png");
-    private static final ResourceLocation ENERGY_BAR_EMPTY = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/energy_bar_empty.png");
+    private static final ResourceLocation ENERGY_BAR = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/energy_bar.png");
+    private static final ResourceLocation ENERGY_BAR_EMPTY = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/energy_bar_empty.png");
 
     private final boolean addBatterySlot;
 
@@ -27,9 +29,14 @@ public class EnergyGuiComponent extends TooltipGuiComponent {
     @Override
     public List<Component> getTooltip() {
         ContainerBlockEntity blockEntity = screen.getMenu().getBlockEntity();
-        return List.of(
-                Component.literal(blockEntity.getEnergyStored() + "/" + blockEntity.getEnergyCapacity())
-        );
+        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+        if (energyStorage != null) {
+            return List.of(
+                    Component.literal(energyStorage.getEnergyStored() + "/" + energyStorage.getEnergyCapacity())
+            );
+        } else {
+            return List.of();
+        }
     }
 
     @Override
@@ -52,12 +59,15 @@ public class EnergyGuiComponent extends TooltipGuiComponent {
         GuiUtils.drawImg(guiGraphics, ENERGY_BAR, position.x, position.y, textureWidth(), textureHeight());
 
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        int energyStored = blockEntity.getEnergyStored();
-        int maxStored = blockEntity.getEnergyCapacity();
+        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+        if (energyStorage != null) {
+            int energyStored = energyStorage.getEnergyStored();
+            int maxStored = energyStorage.getEnergyCapacity();
 
-        float percentage = 1f - (float) energyStored / maxStored;
-        int j1 = Mth.ceil(percentage * textureHeight());
-        guiGraphics.blit(ENERGY_BAR_EMPTY, position.x, position.y, textureWidth(), j1, 0, 0, textureWidth(), j1, textureWidth(), textureHeight());
+            float percentage = 1f - (float) energyStored / maxStored;
+            int j1 = Mth.ceil(percentage * textureHeight());
+            guiGraphics.blit(ENERGY_BAR_EMPTY, position.x, position.y, textureWidth(), j1, 0, 0, textureWidth(), j1, textureWidth(), textureHeight());
+        }
     }
 
     @Override

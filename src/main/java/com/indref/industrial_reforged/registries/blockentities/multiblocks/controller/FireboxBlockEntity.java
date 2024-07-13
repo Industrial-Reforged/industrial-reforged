@@ -2,10 +2,12 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -88,19 +90,22 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     public void commonTick() {
-        if (this.burnTime > 0) {
-            burnTime--;
-            if (burnTime % 10 == 0) {
-                this.setHeatStored(getHeatStored() + 1);
-            }
-        } else {
-            this.maxBurnTime = 0;
-            ItemStack stack = getItemHandler().getStackInSlot(INPUT_SLOT);
-            int burnTime = stack.getBurnTime(RecipeType.SMELTING);
-            if (burnTime > 0) {
-                this.burnTime = burnTime;
-                this.maxBurnTime = burnTime;
-                stack.shrink(1);
+        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
+        if (heatStorage != null) {
+            if (this.burnTime > 0) {
+                burnTime--;
+                if (burnTime % 5 == 0) {
+                    heatStorage.tryFillHeat(1);
+                }
+            } else {
+                this.maxBurnTime = 0;
+                ItemStack stack = getItemHandler().getStackInSlot(INPUT_SLOT);
+                int burnTime = stack.getBurnTime(RecipeType.SMELTING);
+                if (burnTime > 0) {
+                    this.burnTime = burnTime;
+                    this.maxBurnTime = burnTime;
+                    stack.shrink(1);
+                }
             }
         }
     }

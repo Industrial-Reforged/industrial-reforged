@@ -2,10 +2,11 @@ package com.indref.industrial_reforged.api.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.data.components.ComponentTapeMeasure;
+import com.indref.industrial_reforged.api.data.components.EnergyStorage;
+import com.indref.industrial_reforged.api.data.components.HeatStorage;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;

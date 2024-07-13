@@ -1,13 +1,14 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.IEnergyBlock;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNets;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -23,10 +24,13 @@ public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
         addEnergyStorage(getEnergyTier());
     }
 
+    public abstract EnergyTier getEnergyTier();
+
     @Override
     public void serverTick() {
         EnergyNets energyNets = EnergyNetUtils.getEnergyNets((ServerLevel) level).getEnets();
-        tryFillEnergy(getGenerationAmount());
+        IEnergyStorage thisEnergyStorage = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, this);
+        thisEnergyStorage.tryFillEnergy(getGenerationAmount());
 
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(worldPosition)) {
             BlockEntity blockEntity1 = level.getBlockEntity(offsetPos);
@@ -35,11 +39,16 @@ public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
             if (block.getBlock() instanceof CableBlock) {
                 Optional<EnergyNet> enet = energyNets.getNetwork(offsetPos);
                 if (enet.isPresent() && enet.get().distributeEnergy(getGenerationAmount())) {
-                    tryDrainEnergy(tier.getMaxOutput());
+                    thisEnergyStorage.tryDrainEnergy(tier.getMaxOutput());
                 }
-            } else if (blockEntity1 instanceof IEnergyBlock energyBlock1) {
-                tryDrainEnergy(tier.getMaxOutput());
-                energyBlock1.tryFillEnergy(tier.getMaxOutput());
+            } else {
+                if (blockEntity1 != null) {
+                    IEnergyStorage energyStorage1 = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity1);
+                    if (energyStorage1 != null) {
+                        thisEnergyStorage.tryDrainEnergy(tier.getMaxOutput());
+                        energyStorage1.tryFillEnergy(tier.getMaxOutput());
+                    }
+                }
             }
         }
     }

@@ -28,13 +28,8 @@ public class CentrifugeBlockEntity extends ContainerBlockEntity implements MenuP
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
-        addEnergyStorage(getEnergyTier());
+        addEnergyStorage(EnergyTiers.LOW);
         addItemHandler(7, ((slot, itemStack) -> slot != 0));
-    }
-
-    @Override
-    public @NotNull EnergyTier getEnergyTier() {
-        return EnergyTiers.LOW;
     }
 
     @Override

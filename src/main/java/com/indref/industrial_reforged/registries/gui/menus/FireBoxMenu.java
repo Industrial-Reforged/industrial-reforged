@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -35,12 +36,14 @@ public class FireBoxMenu extends IRAbstractContainerMenu<FireboxBlockEntity> {
 
         checkContainerSize(inv, 1);
 
-        Optional<IItemHandler> itemHandler = BlockUtils.getBlockEntityCapability(Capabilities.ItemHandler.BLOCK, entity);
-        itemHandler.ifPresent(handler -> this.addSlot(new SlotItemHandler(handler, 0, 80, 36)));
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
+        if (itemHandler != null) {
+            this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
+        }
 
-        addDataSlots(data);
-        addPlayerHotbar(inv);
-        addPlayerInventory(inv);
+        this.addDataSlots(data);
+        this.addPlayerHotbar(inv);
+        this.addPlayerInventory(inv);
     }
 
     @Override
