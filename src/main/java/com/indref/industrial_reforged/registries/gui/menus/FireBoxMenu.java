@@ -26,22 +26,19 @@ public class FireBoxMenu extends IRAbstractContainerMenu<FireboxBlockEntity> {
     private final Player player;
 
     public FireBoxMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, (FireboxBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, (FireboxBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public FireBoxMenu(int pContainerId, Inventory inv, FireboxBlockEntity entity, ContainerData data) {
+    public FireBoxMenu(int pContainerId, Inventory inv, FireboxBlockEntity entity) {
         super(IRMenuTypes.FIREBOX_MENU.get(), pContainerId, inv, entity);
         this.level = inv.player.level();
         this.player = inv.player;
 
         checkContainerSize(inv, 1);
 
-        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
-        if (itemHandler != null) {
-            this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
-        }
+        IItemHandler itemHandler = entity.getItemHandler();
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
 
-        this.addDataSlots(data);
         this.addPlayerHotbar(inv);
         this.addPlayerInventory(inv);
     }

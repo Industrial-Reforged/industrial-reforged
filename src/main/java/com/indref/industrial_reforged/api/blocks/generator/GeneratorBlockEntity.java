@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.blocks.generator;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
+public abstract class GeneratorBlockEntity extends MachineBlockEntity {
     public GeneratorBlockEntity(BlockEntityType<?> blockEntityType, BlockPos p_155229_, BlockState p_155230_) {
         super(blockEntityType, p_155229_, p_155230_);
         addEnergyStorage(getEnergyTier());
@@ -29,7 +29,7 @@ public abstract class GeneratorBlockEntity extends ContainerBlockEntity {
     @Override
     public void serverTick() {
         EnergyNets energyNets = EnergyNetUtils.getEnergyNets((ServerLevel) level).getEnets();
-        IEnergyStorage thisEnergyStorage = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, this);
+        IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
         thisEnergyStorage.tryFillEnergy(getGenerationAmount());
 
         for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(worldPosition)) {

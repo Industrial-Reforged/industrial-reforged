@@ -30,7 +30,6 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     private int burnTime;
     private int maxBurnTime;
-    private final ContainerData data;
     private final FireboxTier fireboxTier;
 
     public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, int heatCapacity) {
@@ -38,29 +37,6 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
         addHeatStorage(heatCapacity);
         this.fireboxTier = fireboxTier;
-        this.data = new ContainerData() {
-            @Override
-            public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> burnTime;
-                    case 1 -> maxBurnTime;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case 0 -> burnTime = pValue;
-                    case 1 -> maxBurnTime = pValue;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        };
     }
 
     public FireboxBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -90,7 +66,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     public void commonTick() {
-        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
+        IHeatStorage heatStorage = getHeatStorage();
         if (heatStorage != null) {
             if (this.burnTime > 0) {
                 burnTime--;
@@ -113,7 +89,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
-        return new FireBoxMenu(containerId, inventory, this, this.data);
+        return new FireBoxMenu(containerId, inventory, this);
     }
 
     @Override

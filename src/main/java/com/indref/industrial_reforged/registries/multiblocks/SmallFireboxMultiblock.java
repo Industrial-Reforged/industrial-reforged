@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -50,25 +51,26 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 0) {
-            return Optional.of(blockState.setValue(SmallFireboxHatchBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED));
+            return Optional.of(blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED));
         }
         return Optional.of(blockState);
     }
 
-    private static Direction getCorrectDirection(int index, MultiblockDirection direction) {
+    @SuppressWarnings("DataFlowIssue")
+    private static @NotNull Direction getCorrectDirection(int index, MultiblockDirection direction) {
         return switch (direction) {
-            case WEST -> switch (index) {
-                case 0 -> Direction.EAST;
-                case 1 -> Direction.SOUTH;
-                case 2 -> Direction.NORTH;
-                case 3 -> Direction.WEST;
-                default -> null;
-            };
             case NORTH -> switch (index) {
                 case 0 -> Direction.SOUTH;
                 case 1 -> Direction.WEST;
                 case 2 -> Direction.EAST;
                 case 3 -> Direction.NORTH;
+                default -> null;
+            };
+            case EAST -> switch (index) {
+                case 0 -> Direction.WEST;
+                case 1 -> Direction.NORTH;
+                case 2 -> Direction.SOUTH;
+                case 3 -> Direction.EAST;
                 default -> null;
             };
             case SOUTH -> switch (index) {
@@ -78,11 +80,11 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
                 case 3 -> Direction.SOUTH;
                 default -> null;
             };
-            case EAST -> switch (index) {
-                case 0 -> Direction.WEST;
-                case 1 -> Direction.NORTH;
-                case 2 -> Direction.SOUTH;
-                case 3 -> Direction.EAST;
+            case WEST -> switch (index) {
+                case 0 -> Direction.EAST;
+                case 1 -> Direction.SOUTH;
+                case 2 -> Direction.NORTH;
+                case 3 -> Direction.WEST;
                 default -> null;
             };
         };

@@ -1,8 +1,10 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
+import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlockEntity;
 import com.mojang.serialization.MapCodec;
@@ -28,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DrainBlock extends ContainerBlock {
+public class DrainBlock extends RotatableContainerBlock implements WrenchableBlock {
     public DrainBlock(Properties p_49224_) {
         super(p_49224_);
     }
@@ -44,7 +46,7 @@ public class DrainBlock extends ContainerBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(DrainBlock::new);
     }
 
@@ -55,7 +57,7 @@ public class DrainBlock extends ContainerBlock {
             FluidTank fluidTank = blockEntity.getFluidTank();
             Fluid fluid = fluidTank.getFluid().getFluid();
             int fluidAmount = fluidTank.getFluid().getAmount();
-            player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType() + ", " + fluidAmount + "mb"));
+            player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType().getDescription().getString() + ", " + fluidAmount + "mb"));
         }
         return InteractionResult.SUCCESS;
     }

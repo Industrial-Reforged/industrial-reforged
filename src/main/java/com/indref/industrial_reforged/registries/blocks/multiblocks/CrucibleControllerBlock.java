@@ -85,11 +85,6 @@ public class CrucibleControllerBlock extends ContainerBlock implements DisplayBl
     }
 
     @Override
-    public boolean canWrench(Level level, BlockPos blockPos, BlockState blockState) {
-        return false;
-    }
-
-    @Override
     public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.CRUCIBLE.get();
     }

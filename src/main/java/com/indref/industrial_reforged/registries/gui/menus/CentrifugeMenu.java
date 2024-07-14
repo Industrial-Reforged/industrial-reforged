@@ -1,10 +1,12 @@
 package com.indref.industrial_reforged.registries.gui.menus;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.gui.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +15,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -38,20 +41,15 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         addDataSlots(data);
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);
-        ItemStackHandler itemHandler = this.getBlockEntity().getItemHandler();
-        // Battery slot
-        // addSlot(new SlotItemHandler(itemHandler.get(), 0, 9, 67));
+        IItemHandler itemHandler = blockEntity.getItemHandler();
         // Centrifuge slots
         addSlot(new SlotItemHandler(itemHandler, 0, 80, 41));
         addSlot(new SlotItemHandler(itemHandler, 1, 44, 41));
         addSlot(new SlotItemHandler(itemHandler, 2, 116, 41));
         addSlot(new SlotItemHandler(itemHandler, 3, 80, 5));
         addSlot(new SlotItemHandler(itemHandler, 4, 80, 77));
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(Player player, int i) {
-        return ItemStack.EMPTY;
+        // Battery slot
+        addSlot(new ChargingSlot(itemHandler, 5, ChargingSlot.ChargeMode.CHARGE, 9, 67));
     }
 
     @Override

@@ -1,22 +1,15 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public final class BlockUtils {
     public static BlockPos[] getBlocksAroundSelf(BlockPos selfPos) {
@@ -49,6 +42,15 @@ public final class BlockUtils {
         int nextDirectionIndex = (currentDirectionIndex + 1) % directions.size();
         Direction nextDirection = directions.get(nextDirectionIndex);
         return state.setValue(prop, nextDirection);
+    }
+
+    public static BlockState stateForFacingPlacement(Block block, BlockPlaceContext ctx) {
+        return block.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getPlayer().getDirection());
+    }
+
+    public static StateDefinition.Builder<Block, BlockState> createFacingDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.HORIZONTAL_FACING);
+        return builder;
     }
 
     /*

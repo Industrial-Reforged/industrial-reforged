@@ -63,10 +63,6 @@ public class CoilBlock extends ContainerBlock implements WrenchableBlock, Displa
         if (!blockState.getValue(FireboxMultiblock.FIREBOX_PART).equals(FireboxMultiblock.PartIndex.UNFORMED)) {
             MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
         }
-
-        if (level.getBlockEntity(blockPos) instanceof FireboxBlockEntity fireboxBlockEntity && newState.is(Blocks.AIR)) {
-            fireboxBlockEntity.drop();
-        }
     }
 
     @Override

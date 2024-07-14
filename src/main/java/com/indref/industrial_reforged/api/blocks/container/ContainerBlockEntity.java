@@ -93,7 +93,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     }
 
     @SuppressWarnings("unchecked")
-    public <T, C> T getCap(BlockCapability<T, C> capability) {
+    public <T, C> T getCapFromCache(BlockCapability<T, C> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) return this.itemCapCache != null ? (T) this.itemCapCache.getCapability() : null;
         else if (capability == Capabilities.FluidHandler.BLOCK) return this.fluidCapCache != null ? (T) this.fluidCapCache.getCapability() : null;
         else if (capability == IRCapabilities.EnergyStorage.BLOCK) return this.energyCapCache != null ? (T) this.energyCapCache.getCapability() : null;

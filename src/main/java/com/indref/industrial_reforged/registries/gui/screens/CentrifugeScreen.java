@@ -21,7 +21,7 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
     @Override
     protected void init() {
         this.imageHeight = 185;
-        this.inventoryLabelY = inventoryLabelY + 9;
+        this.inventoryLabelY = inventoryLabelY + 20;
         super.init();
         initComponents(
                 new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true)

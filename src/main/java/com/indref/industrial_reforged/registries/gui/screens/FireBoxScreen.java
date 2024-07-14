@@ -48,12 +48,10 @@ public class FireBoxScreen extends IRAbstractContainerScreen<FireBoxMenu> {
     protected void renderLitProgress(GuiGraphics pGuiGraphics) {
         int i = this.leftPos;
         int j = this.topPos;
-        boolean i1;
-        int j1;
         if (this.menu.getBlockEntity().isActive()) {
             float burnTime = ((float) this.menu.getBlockEntity().getBurnTime() / this.menu.getBlockEntity().getMaxBurnTime());
-            j1 = Mth.ceil(burnTime * 13F);
-            pGuiGraphics.blitSprite(LIT_PROGRESS_SPRITE, 14, 14, 0, 14 - j1, i + 80, j + 20 + 14 - j1, 14, j1);
+            int j1 = Mth.ceil(burnTime * 13F);
+            pGuiGraphics.blitSprite(LIT_PROGRESS_SPRITE, 14, 14, 0, 14 - j1, i + 80, j + 20 + 14 - j1 - 1, 14, j1);
         }
     }
 }

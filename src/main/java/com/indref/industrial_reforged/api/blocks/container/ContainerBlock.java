@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -18,9 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-
-public abstract class ContainerBlock extends RotatableEntityBlock implements WrenchableBlock {
+public abstract class ContainerBlock extends BaseEntityBlock {
     public ContainerBlock(Properties properties) {
         super(properties);
     }
@@ -53,14 +52,15 @@ public abstract class ContainerBlock extends RotatableEntityBlock implements Wre
                     } else {
                         entity1.serverTick();
                     }
-                });
+                }
+        );
     }
 
     @Override
     public void onRemove(BlockState p_60515_, Level level, BlockPos pos, BlockState p_60518_, boolean p_60519_) {
         if (!p_60515_.is(p_60518_.getBlock())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ContainerBlockEntity containerBlockEntity) {
+            if (blockEntity instanceof ContainerBlockEntity containerBlockEntity && containerBlockEntity.getItemHandler() != null) {
                 containerBlockEntity.drop();
             }
         }

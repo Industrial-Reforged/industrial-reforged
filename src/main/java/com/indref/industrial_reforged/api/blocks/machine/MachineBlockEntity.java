@@ -26,8 +26,9 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity {
     @Override
     public void commonTick() {
         super.commonTick();
-        if (this.batterySlot != null)
+        if (this.batterySlot != null) {
             tickBatterySlot();
+        }
     }
 
     private void tickBatterySlot() {
