@@ -51,25 +51,6 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
     public void onEnergyChanged() {
     }
 
-    // TODO: Proper return values & types
-    @Override
-    public boolean tryDrainEnergy(int value) {
-        if (getEnergyStored() - value >= 0) {
-            setEnergyStored(getEnergyStored() - value);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean tryFillEnergy(int value) {
-        if (getEnergyStored() + value <= getEnergyCapacity()) {
-            setEnergyStored(getEnergyStored() + value);
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public @NotNull CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();

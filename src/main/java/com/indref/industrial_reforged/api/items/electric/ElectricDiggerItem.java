@@ -49,7 +49,8 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
 
     @Override
     public boolean mineBlock(ItemStack itemStack, Level p_40999_, BlockState p_41000_, BlockPos p_41001_, LivingEntity p_41002_) {
-        this.tryDrainEnergy(itemStack, getEnergyUsage(itemStack));
+        // TODO: Prevent from mining block if not enough energy
+        int drained = this.tryDrainEnergy(itemStack, getEnergyUsage(itemStack));
         return super.mineBlock(itemStack, p_40999_, p_41000_, p_41001_, p_41002_);
     }
 

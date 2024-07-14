@@ -109,7 +109,7 @@ public class EnergyNet {
      * @param amount specify the amount of energy that should be distributed
      * @return whether the energy was distributed
      */
-    public boolean distributeEnergy(int amount) {
+    public int distributeEnergy(int amount) {
         List<BlockPos> interactors = this.interactors.stream().toList();
         List<BlockPos> consumers = new ArrayList<>();
         // check for potential consumers
@@ -119,7 +119,7 @@ public class EnergyNet {
             }
         }
 
-        if (consumers.isEmpty()) return false;
+        if (consumers.isEmpty()) return 0;
 
         List<BlockPos> finalConsumers = new ArrayList<>();
         int[] initialAmount = Utils.splitNumberEvenly(amount, consumers.size());
@@ -128,15 +128,19 @@ public class EnergyNet {
         for (int i = 0; i < consumers.size(); i++) {
             BlockPos blockPos = consumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
-            if (energyStorage != null) {
-                if (energyStorage.canAcceptEnergy(initialAmount[i])) {
-                    finalConsumers.add(blockPos);
+            if (blockEntity != null) {
+                IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+                if (energyStorage != null) {
+                    if (canAcceptEnergy(energyStorage, initialAmount[i])) {
+                        finalConsumers.add(blockPos);
+                    }
                 }
             }
         }
 
-        if (finalConsumers.isEmpty()) return false;
+        if (finalConsumers.isEmpty()) return 0;
+
+        int energyFilled = 0;
 
         int[] finalAmount = Utils.splitNumberEvenly(amount, finalConsumers.size());
 
@@ -144,12 +148,20 @@ public class EnergyNet {
         for (int i = 0; i < finalConsumers.size(); i++) {
             BlockPos blockPos = finalConsumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            IEnergyStorage energyStorage = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity);
-            if (energyStorage != null)
-                energyStorage.tryFillEnergy(finalAmount[i]);
+            IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+            if (energyStorage != null) {
+                int filled = energyStorage.tryFillEnergy(finalAmount[i]);
+                energyFilled += filled;
+            }
         }
 
-        return true;
+        IndustrialReforged.LOGGER.debug("Filled: {}, consumers: {}", energyFilled, finalConsumers);
+
+        return energyFilled;
+    }
+
+    private static boolean canAcceptEnergy(IEnergyStorage energyStorage, int amount) {
+        return energyStorage.canFillEnergy() && energyStorage.getEnergyStored() < energyStorage.getEnergyCapacity();
     }
 
     public CompoundTag serializeNBT() {

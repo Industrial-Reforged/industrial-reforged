@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.gui.ChargingSlot;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -33,8 +34,10 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity {
 
     private void tickBatterySlot() {
         ItemStack itemStack = this.batterySlot.getItem();
+        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {
-            energyItem.tryFillEnergy(itemStack, 0);
+            // TODO: Check if we can even drain energy
+            int filled = energyItem.tryFillEnergy(itemStack, Math.max(IEnergyItem.getCap(itemStack).getMaxInput(), energyStorage.getMaxOutput()));
         }
     }
 }

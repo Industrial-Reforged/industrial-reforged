@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.gui.menus;
 
+import com.indref.industrial_reforged.api.gui.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -23,7 +24,7 @@ public class BasicGeneratorMenu extends IRAbstractContainerMenu<BasicGeneratorBl
         ItemStackHandler itemHandler = blockEntity.getItemHandler();
 
         this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 53));
-        this.addSlot(new SlotItemHandler(itemHandler, 1, 9, 67));
+        this.addSlot(new ChargingSlot(itemHandler, 1, ChargingSlot.ChargeMode.CHARGE, 9, 67));
 
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);

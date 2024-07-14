@@ -71,7 +71,10 @@ public class NanoSaberItem extends ElectricSwordItem {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean b) {
         if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
             if (level.getGameTime() % 20 == 0) {
-                tryDrainEnergy(stack, getUsageAmount(stack));
+                int drained = tryDrainEnergy(stack, getUsageAmount(stack));
+                if (drained == 0) {
+                    stack.set(IRDataComponents.ACTIVE, false);
+                }
             }
         }
     }

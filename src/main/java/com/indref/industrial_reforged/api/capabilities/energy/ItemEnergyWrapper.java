@@ -17,16 +17,6 @@ public record ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier) impl
     }
 
     @Override
-    public boolean tryDrainEnergy(int value) {
-        return false;
-    }
-
-    @Override
-    public boolean tryFillEnergy(int value) {
-        return false;
-    }
-
-    @Override
     public int getEnergyStored() {
         EnergyStorage energyStorage = itemStack.get(IRDataComponents.ENERGY);
         if (energyStorage != null)

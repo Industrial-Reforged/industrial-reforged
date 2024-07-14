@@ -56,7 +56,8 @@ public class ScannerItem extends SimpleElectricItem implements ToolItem, Display
                 }
                 // Drain energy
                 if (level.getGameTime() % 20 == 0 && !player.isCreative()) {
-                    this.tryDrainEnergy(mainHandStack, 1);
+                    // TODO: Make scanner only work when it has enough energy
+                    int drained = this.tryDrainEnergy(mainHandStack, 1);
                 }
             }
         }

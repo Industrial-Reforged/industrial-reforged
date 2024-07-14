@@ -54,11 +54,11 @@ public class BatteryItem extends SimpleElectricItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && pStack.getOrDefault(IRDataComponents.ACTIVE, false)) {
             for (ItemStack itemStack : player.getInventory().items) {
-                if (pLevel.getGameTime() % 10 == 0) {
+                if (pLevel.getGameTime() % 3 == 0) {
                     if (itemStack.getItem() instanceof IEnergyItem item) {
-                        if (this.tryDrainEnergy(pStack, getEnergyTier().getMaxOutput())) {
-                            item.tryFillEnergy(itemStack, getEnergyTier().getMaxOutput());
-                        }
+                        // TODO: Possibly round robin this?
+                        int drained = this.tryDrainEnergy(pStack, getEnergyTier().getMaxOutput());
+                        item.tryFillEnergy(itemStack, drained);
                     } else {
                         IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (energyStorage == null) continue;
