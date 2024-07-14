@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
@@ -47,10 +48,13 @@ public class CableBlock extends PipeBlock {
                         nets.setDirty();
                     }
                 } else {
-                    IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(level.getBlockEntity(offsetPos));
-                    if (energyStorage != null) {
-                        Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
-                        network.ifPresent(energyNet -> energyNet.add(offsetPos, EnergyNet.EnergyTypes.INTERACTORS));
+                    BlockEntity blockEntity = level.getBlockEntity(offsetPos);
+                    if (blockEntity != null) {
+                        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+                        if (energyStorage != null) {
+                            Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
+                            network.ifPresent(energyNet -> energyNet.add(offsetPos, EnergyNet.EnergyTypes.INTERACTORS));
+                        }
                     }
                 }
             }
@@ -59,9 +63,9 @@ public class CableBlock extends PipeBlock {
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        // perform this check to ensure that block is actually removed and not just block states updating
-        if (newState.is(Blocks.AIR) && level instanceof ServerLevel serverLevel) {
-            super.onRemove(blockState, level, blockPos, newState, p_60519_);
+        super.onRemove(blockState, level, blockPos, newState, p_60519_);
+        // perform this check to ensure that block was actually removed and not just block states updating
+        if (!newState.is(blockState.getBlock()) && level instanceof ServerLevel serverLevel) {
             EnetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
             nets.getEnets().splitNets(blockPos);
             nets.getEnets().removeNetwork(blockPos);
@@ -70,12 +74,16 @@ public class CableBlock extends PipeBlock {
         }
     }
 
+    @SuppressWarnings("OptionalIsPresent")
     @Override
     public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
         if (level instanceof ServerLevel serverLevel) {
             Optional<EnergyNet> network = EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos);
-            if (CapabilityUtils.energyStorageCapability(level.getBlockEntity(facingBlockPos)) != null) {
-                network.ifPresent(net -> net.add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS));
+            BlockEntity entity = level.getBlockEntity(facingBlockPos);
+            if (entity != null && CapabilityUtils.energyStorageCapability(entity) != null) {
+                if (network.isPresent()) {
+                    network.get().add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
+                }
             } else if (network.isPresent() && network.get().get(EnergyNet.EnergyTypes.INTERACTORS).contains(facingBlockPos)) {
                 if (facingBlockState.isEmpty()) {
                     network.get().remove(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);

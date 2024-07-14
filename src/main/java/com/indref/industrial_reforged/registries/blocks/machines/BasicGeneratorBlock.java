@@ -1,14 +1,12 @@
 package com.indref.industrial_reforged.registries.blocks.machines;
 
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
-import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
+import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.machines.BasicGeneratorBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -27,9 +25,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class BasicGeneratorBlock extends GeneratorBlock implements WrenchableBlock {
+public class BasicGeneratorBlock extends RotatableContainerBlock implements WrenchableBlock {
     public BasicGeneratorBlock(Properties p_49224_) {
         super(p_49224_);
+    }
+
+    @Override
+    public boolean tickingEnabled() {
+        return true;
     }
 
     @Override

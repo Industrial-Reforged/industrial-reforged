@@ -32,6 +32,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -52,6 +53,7 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {
@@ -154,11 +156,13 @@ public class IREvents {
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             IndustrialReforged.LOGGER.debug("Register caps");
             for (Item item : BuiltInRegistries.ITEM) {
-                if (item instanceof IEnergyItem)
-                    event.registerItem(IRCapabilities.EnergyStorage.ITEM, (stack, ctx) -> new ItemEnergyWrapper(stack), item);
+                if (item instanceof IEnergyItem energyItem)
+                    event.registerItem(IRCapabilities.EnergyStorage.ITEM,
+                            (stack, ctx) -> new ItemEnergyWrapper(stack, energyItem.getEnergyTier(), energyItem.getEnergyCapacity(stack)), item);
 
-                if (item instanceof IHeatItem)
-                    event.registerItem(IRCapabilities.HeatStorage.ITEM, (stack, ctx) -> new ItemHeatWrapper(stack), item);
+                if (item instanceof IHeatItem heatItem)
+                    event.registerItem(IRCapabilities.HeatStorage.ITEM,
+                            (stack, ctx) -> new ItemHeatWrapper(stack, heatItem.getHeatCapacity(stack)), item);
 
                 if (item instanceof IFluidItem fluidItem)
                     event.registerItem(Capabilities.FluidHandler.ITEM,

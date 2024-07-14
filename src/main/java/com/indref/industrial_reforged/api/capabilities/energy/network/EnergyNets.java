@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.*;
 
@@ -178,7 +179,10 @@ public class EnergyNets {
     public boolean is(EnergyNet.EnergyTypes type, BlockPos blockPos) {
         return switch (type) {
             case TRANSMITTERS -> level.getBlockState(blockPos).getBlock() instanceof CableBlock;
-            case INTERACTORS -> CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, level.getBlockEntity(blockPos)) != null;
+            case INTERACTORS -> {
+                BlockEntity blockEntity = level.getBlockEntity(blockPos);
+                yield blockEntity != null && CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity) != null;
+            }
         };
     }
 

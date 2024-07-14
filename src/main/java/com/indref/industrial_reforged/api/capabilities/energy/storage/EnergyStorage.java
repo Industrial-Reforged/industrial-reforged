@@ -44,6 +44,7 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
         }
     }
 
+    @Override
     public EnergyTier getEnergyTier() {
         return energyTier;
     }

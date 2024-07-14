@@ -52,7 +52,7 @@ public abstract class PipeBlock extends Block implements WrenchableBlock {
                 .setValue(CONNECTION[4], false)
                 .setValue(CONNECTION[5], false)
         );
-        border = (16 - width)/2;
+        border = (16 - width) / 2;
         int B0 = border;
         int B1 = 16 - border;
         shapeCenter = box(B0, B0, B0, B1, B1, B1);
@@ -117,9 +117,10 @@ public abstract class PipeBlock extends Block implements WrenchableBlock {
         BlockEntity blockEntity = level.getBlockEntity(facingBlockPos);
         if (canConnectToPipe(facingBlockState) || (blockEntity != null && canConnectTo(blockEntity))) {
             return blockState.setValue(CONNECTION[connectionIndex], true);
-        } else if (facingBlockState.is(Blocks.AIR)) {
+        } else if (facingBlockState.isEmpty()) {
             return blockState.setValue(CONNECTION[connectionIndex], false);
         }
+
         return blockState;
     }
 
@@ -140,8 +141,6 @@ public abstract class PipeBlock extends Block implements WrenchableBlock {
                 blockState = blockState.setValue(CONNECTION[connectionIndex], true);
             }
         }
-
-        IndustrialReforged.LOGGER.info("Cable: {}", blockState);
 
         return blockState;
     }

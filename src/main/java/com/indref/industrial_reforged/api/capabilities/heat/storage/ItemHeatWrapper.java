@@ -4,9 +4,10 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.components.HeatStorage;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public record ItemHeatWrapper(ItemStack itemStack) implements IHeatStorage {
-    public ItemHeatWrapper(ItemStack itemStack, int initialCapacity) {
+public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStorage {
+    public ItemHeatWrapper(@NotNull ItemStack itemStack, int initialCapacity) {
         this(itemStack);
         this.setHeatCapacity(initialCapacity);
     }

@@ -1,11 +1,10 @@
 package com.indref.industrial_reforged.api.capabilities.energy.network;
 
-import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlock;
+import com.indref.industrial_reforged.api.blocks.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.blocks.CableBlock;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -114,7 +113,7 @@ public class EnergyNet {
         List<BlockPos> consumers = new ArrayList<>();
         // check for potential consumers
         for (BlockPos blockPos : interactors) {
-            if (!(level.getBlockState(blockPos).getBlock() instanceof GeneratorBlock)) {
+            if (!(level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity)) {
                 consumers.add(blockPos);
             }
         }

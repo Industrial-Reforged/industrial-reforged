@@ -22,8 +22,8 @@ public class BasicGeneratorMenu extends IRAbstractContainerMenu<BasicGeneratorBl
 
         ItemStackHandler itemHandler = blockEntity.getItemHandler();
 
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 37));
-        this.addSlot(new SlotItemHandler(itemHandler, 1, 18, 37));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 53));
+        this.addSlot(new SlotItemHandler(itemHandler, 1, 9, 67));
 
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);

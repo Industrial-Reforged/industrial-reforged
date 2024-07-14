@@ -3,16 +3,18 @@ package com.indref.industrial_reforged.api.capabilities.energy.storage;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.components.EnergyStorage;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * Basic Capability Interface used for handling
- * methods related to the heat storage capability
- */
-public record ItemEnergyWrapper(ItemStack itemStack) implements IEnergyStorage {
-    public ItemEnergyWrapper(ItemStack itemStack, int initialCapacity) {
-        this(itemStack);
+public record ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier) implements IEnergyStorage {
+    public ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier, int initialCapacity) {
+        this(itemStack, energyTier);
         this.setEnergyCapacity(initialCapacity);
+    }
+
+    @Override
+    public EnergyTier getEnergyTier() {
+        return energyTier;
     }
 
     @Override

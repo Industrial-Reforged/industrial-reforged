@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blockentities.machines;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -31,7 +32,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
         addEnergyStorage(EnergyTiers.LOW);
-        addItemHandler(7, ((slot, itemStack) -> slot == 0 || (slot == 5 && itemStack.getItem() instanceof IEnergyItem)));
+        addItemHandler(7, ((slot, itemStack) -> slot == 0
+                || (slot  == 1 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
     }
 
     @Override
