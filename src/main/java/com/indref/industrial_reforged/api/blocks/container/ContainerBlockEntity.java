@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.api.util.ValidationFunctions;
@@ -159,6 +160,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 setChanged();
                 onItemsChanged(slot);
                 level.invalidateCapabilities(worldPosition);
+                update();
             }
 
             @Override
@@ -175,6 +177,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 setChanged();
                 onFluidChanged();
                 level.invalidateCapabilities(worldPosition);
+                update();
             }
 
             @Override
@@ -195,6 +198,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 setChanged();
                 ContainerBlockEntity.this.onEnergyChanged();
                 level.invalidateCapabilities(worldPosition);
+                update();
             }
         };
         this.energyStorage.setEnergyCapacity(energyCapacity);
@@ -207,9 +211,16 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 setChanged();
                 ContainerBlockEntity.this.onHeatChanged();
                 level.invalidateCapabilities(worldPosition);
+                update();
             }
         };
         this.heatStorage.setHeatCapacity(capacity);
+    }
+
+    private void update() {
+        if (!level.isClientSide()) {
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
     }
 
     protected void onItemsChanged(int slot) {

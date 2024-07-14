@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.api.capabilities.heat.storage;
+package com.indref.industrial_reforged.api.capabilities.heat;
 
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.components.HeatStorage;
 import net.minecraft.world.item.ItemStack;

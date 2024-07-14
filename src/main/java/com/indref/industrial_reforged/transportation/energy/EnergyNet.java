@@ -1,5 +1,6 @@
-package com.indref.industrial_reforged.api.capabilities.energy.network;
+package com.indref.industrial_reforged.transportation.energy;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -127,10 +128,11 @@ public class EnergyNet {
         for (int i = 0; i < consumers.size(); i++) {
             BlockPos blockPos = consumers.get(i);
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            IEnergyStorage energyStorage = CapabilityUtils.blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity);
+            IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
             if (energyStorage != null) {
-                if (energyStorage.canAcceptEnergy(initialAmount[i]))
+                if (energyStorage.canAcceptEnergy(initialAmount[i])) {
                     finalConsumers.add(blockPos);
+                }
             }
         }
 

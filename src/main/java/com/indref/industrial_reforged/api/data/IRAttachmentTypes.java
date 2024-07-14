@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.energy.storage.EnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.heat.storage.HeatStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;

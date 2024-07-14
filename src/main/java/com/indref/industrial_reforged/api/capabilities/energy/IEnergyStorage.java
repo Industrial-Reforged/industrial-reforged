@@ -18,6 +18,6 @@ public interface IEnergyStorage {
     void setEnergyCapacity(int value);
 
     default boolean canAcceptEnergy(int amount) {
-        return getEnergyStored() + amount < getEnergyCapacity();
+        return getEnergyStored() + amount <= getEnergyCapacity();
     }
 }

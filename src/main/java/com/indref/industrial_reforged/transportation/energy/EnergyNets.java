@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.capabilities.energy.network;
+package com.indref.industrial_reforged.transportation.energy;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -55,7 +55,7 @@ public class EnergyNets {
 
         for (EnergyNet enet : getNetworks()) {
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
-                if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(pos))
+                if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(pos) || enet.get(EnergyNet.EnergyTypes.INTERACTORS).contains(pos))
                     return Optional.of(enet);
             }
         }

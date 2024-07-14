@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.api.capabilities.energy.storage;
+package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.HolderLookup;
@@ -67,8 +66,6 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
         if (getEnergyStored() + value <= getEnergyCapacity()) {
             setEnergyStored(getEnergyStored() + value);
             return true;
-        } else {
-            setEnergyStored(getEnergyCapacity());
         }
         return false;
     }

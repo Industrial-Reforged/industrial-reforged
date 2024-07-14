@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
+import com.indref.industrial_reforged.transportation.energy.EnetsSavedData;
 import net.minecraft.server.level.ServerLevel;
 
 public final class EnergyNetUtils {

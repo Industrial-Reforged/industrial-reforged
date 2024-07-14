@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.capabilities.energy.network;
+package com.indref.industrial_reforged.transportation.energy;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

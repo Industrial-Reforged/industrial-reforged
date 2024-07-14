@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.api.capabilities.heat.storage;
+package com.indref.industrial_reforged.api.capabilities.heat;
 
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;

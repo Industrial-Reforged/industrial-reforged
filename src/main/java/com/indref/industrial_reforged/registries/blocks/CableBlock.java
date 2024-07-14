@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.registries.blocks;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
+import com.indref.industrial_reforged.transportation.energy.EnergyNet;
+import com.indref.industrial_reforged.transportation.energy.EnetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;

@@ -1,12 +1,12 @@
 package com.indref.industrial_reforged.registries.blockentities.machines;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnergyNet;
-import com.indref.industrial_reforged.api.capabilities.energy.network.EnetsSavedData;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.transportation.energy.EnergyNet;
+import com.indref.industrial_reforged.transportation.energy.EnetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -96,12 +96,14 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     @Override
     public void serverTick() {
         super.serverTick();
-        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
+        IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
         if (level instanceof ServerLevel serverLevel) {
             EnetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
             Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
-            if (enet.isPresent() && enet.get().distributeEnergy(energyStorage.getEnergyTier().getMaxOutput())) {
-                energyStorage.tryDrainEnergy(energyStorage.getEnergyTier().getMaxOutput());
+            if (enet.isPresent() && thisEnergyStorage.getEnergyStored() - thisEnergyStorage.getEnergyTier().getMaxOutput() >= 0) {
+                if (enet.get().distributeEnergy(thisEnergyStorage.getEnergyTier().getMaxOutput())) {
+                    thisEnergyStorage.tryDrainEnergy(thisEnergyStorage.getEnergyTier().getMaxOutput());
+                }
             }
         }
     }

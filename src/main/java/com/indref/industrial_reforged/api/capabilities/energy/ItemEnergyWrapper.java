@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.api.capabilities.energy.storage;
+package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.data.IRDataComponents;
 import com.indref.industrial_reforged.api.data.components.EnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
