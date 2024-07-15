@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ItemhandlerCraftingContainer implements CraftingContainer {
     }
 
     @Override
-    public List<ItemStack> getItems() {
+    public @NotNull List<ItemStack> getItems() {
         return items;
     }
 
@@ -73,7 +74,7 @@ public class ItemhandlerCraftingContainer implements CraftingContainer {
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int p_18951_) {
+    public @NotNull ItemStack removeItemNoUpdate(int p_18951_) {
         return ContainerHelper.takeItem(this.items, p_18951_);
     }
 

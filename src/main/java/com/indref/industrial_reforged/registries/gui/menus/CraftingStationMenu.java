@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.crafting_station.ItemhandlerCraftingContainer;
 import com.indref.industrial_reforged.util.recipes.crafting_station.SmartItemHandlerSlot;
@@ -21,16 +20,13 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStationBlockEntity> {
-    // TODO: Throw out useless classes
     public static final int BLUEPRINT_SLOT = 28;
 
     private final Level level;
@@ -53,7 +49,7 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
         this.itemHandler = CapabilityUtils.itemHandlerCapability(entity);
         this.craftSlots = new ItemhandlerCraftingContainer(itemHandler, this, 3, 3);
 
-        addCraftingSlots(itemHandler);
+        addCraftingSlots();
         addStorageSlots(itemHandler);
         // Output slot
         this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 29));
@@ -61,47 +57,47 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
         this.addSlot(new SlotItemHandler(itemHandler, BLUEPRINT_SLOT, 154, 29));
         addPlayerHotbar(inv, 185);
         addPlayerInventory(inv, 127);
-        IndustrialReforged.LOGGER.debug("Craftslots 0: "+this.craftSlots.getItems());
+        IndustrialReforged.LOGGER.debug("Craftslots 0: " + this.craftSlots.getItems());
         for (int i = 0; i < 9; i++) {
-            ItemStack itemStack = itemHandler.getStackInSlot(i+18);
+            ItemStack itemStack = itemHandler.getStackInSlot(i + 18);
             this.craftSlots.setItem(i, itemStack);
         }
-        this.access.execute((level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots, null));
         IndustrialReforged.LOGGER.debug("Craftslots 1: {}", this.craftSlots.getItems());
     }
 
     @Override
     public void slotsChanged(Container inventory) {
-            //this.access.execute((p_344363_, p_344364_) -> slotChangedCraftingGrid(this, p_344363_, this.player, this.craftSlots, this.resultSlots, null));
+        this.access.execute(
+                (level, blockPos) -> slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots)
+        );
     }
 
     protected static void slotChangedCraftingGrid(
-            AbstractContainerMenu menu, Level level, Player player, CraftingContainer container, ResultContainer result, @Nullable RecipeHolder<CraftingRecipe> p_345124_
+            AbstractContainerMenu menu, Level level, Player player, CraftingContainer container, ResultContainer result
     ) {
         if (!level.isClientSide) {
             CraftingInput craftinginput = container.asCraftInput();
-            ServerPlayer serverplayer = (ServerPlayer)player;
+            ServerPlayer serverplayer = (ServerPlayer) player;
             ItemStack itemstack = ItemStack.EMPTY;
             Optional<RecipeHolder<CraftingRecipe>> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftinginput, level);
             if (optional.isPresent()) {
                 RecipeHolder<CraftingRecipe> recipeholder = optional.get();
                 CraftingRecipe craftingrecipe = recipeholder.value();
                 if (result.setRecipeUsed(level, serverplayer, recipeholder)) {
-                    ItemStack itemstack1 = craftingrecipe.assemble(craftinginput, level.registryAccess());
-                    if (itemstack1.isItemEnabled(level.enabledFeatures())) {
-                        itemstack = itemstack1;
+                    ItemStack itemStack1 = craftingrecipe.assemble(craftinginput, level.registryAccess());
+                    if (itemStack1.isItemEnabled(level.enabledFeatures())) {
+                        itemstack = itemStack1;
                     }
                 }
             }
 
-            container.setItem(0, itemstack);
+            result.setItem(0, itemstack);
             menu.setRemoteSlot(0, itemstack);
         }
     }
 
 
-
-    private void addCraftingSlots(IItemHandler itemHandler) {
+    private void addCraftingSlots() {
         int x = 37;
         int y = 10;
         int index = 0;
