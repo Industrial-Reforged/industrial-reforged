@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultibl
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,11 +45,20 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     private boolean mainController;
     private BlockPos mainControllerPos;
     private int duration;
+    private int maxDuration;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
         addItemHandler(2);
         addFluidTank(9000);
+    }
+
+    public int getProgress() {
+        return duration;
+    }
+
+    public int getMaxProgress() {
+        return maxDuration;
     }
 
     public void setMainController(boolean mainController) {
@@ -92,9 +103,10 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
             if (optRecipe.isPresent()) {
                 BlastFurnaceRecipe recipe = optRecipe.get();
                 int maxDuration = recipe.duration();
+                this.maxDuration = maxDuration;
                 if (duration >= maxDuration) {
-                    IndustrialReforged.LOGGER.debug("Recipe has finished");
-                    ItemStackHandler itemHandler = getItemHandler();
+                    IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(this);
+                    IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
                     IngredientWithCount ingredient0 = recipe.ingredients().get(0);
                     IngredientWithCount ingredient1 = recipe.ingredients().get(1);
                     ItemStack firstStack = itemHandler.getStackInSlot(0);
@@ -108,7 +120,9 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                         secondStack.shrink(ingredient0.count());
                         firstStack.shrink(ingredient1.count());
                     }
-                    getFluidTank().fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE);
+                    fluidHandler.fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE);
+                    this.duration = 0;
+                    this.maxDuration = 0;
                 } else {
                     duration++;
                 }

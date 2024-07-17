@@ -29,8 +29,6 @@ public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, F
 
     @Override
     public boolean matches(ItemRecipeInput recipeInput, Level level) {
-        if (level.isClientSide) return false;
-
         return RecipeUtils.compareItems(recipeInput.items(), ingredients);
     }
 

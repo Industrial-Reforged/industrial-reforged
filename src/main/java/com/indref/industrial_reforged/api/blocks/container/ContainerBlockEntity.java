@@ -174,10 +174,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         this.fluidTank = new FluidTank(capacityInMb) {
             @Override
             protected void onContentsChanged() {
+                update();
                 setChanged();
                 onFluidChanged();
                 level.invalidateCapabilities(worldPosition);
-                update();
             }
 
             @Override

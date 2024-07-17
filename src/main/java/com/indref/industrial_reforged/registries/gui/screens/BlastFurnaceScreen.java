@@ -1,25 +1,22 @@
 package com.indref.industrial_reforged.registries.gui.screens;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.gui.FluidTankRenderer;
+import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
+import com.indref.industrial_reforged.registries.gui.components.FluidTankGuiComponent;
+import com.indref.industrial_reforged.registries.gui.components.HeatDisplayGuiComponent;
 import com.indref.industrial_reforged.registries.gui.menus.BlastFurnaceMenu;
-import com.indref.industrial_reforged.util.MouseUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2i;
 
-import java.util.Optional;
-
-public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu> {
+public class BlastFurnaceScreen extends IRAbstractContainerScreen<BlastFurnaceMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/blast_furnace.png");
-
-    private FluidTankRenderer renderer;
+    private static final ResourceLocation PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
 
     public BlastFurnaceScreen(BlastFurnaceMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
@@ -28,48 +25,24 @@ public class BlastFurnaceScreen extends AbstractContainerScreen<BlastFurnaceMenu
     @Override
     protected void init() {
         super.init();
-        this.inventoryLabelY = 10000;
-        this.titleLabelY = 10000;
-        assignFluidRenderer();
-    }
-
-    private void assignFluidRenderer() {
-        FluidTank fluidTank = menu.blockEntity.getFluidTank();
-        renderer = new FluidTankRenderer(fluidTank.getCapacity(), true, 52, 52);
+        initComponents(
+                new FluidTankGuiComponent(new Vector2i(this.leftPos + 97, this.topPos + 17), FluidTankGuiComponent.TankVariants.LARGE),
+                // TODO: Heat display working
+                new HeatDisplayGuiComponent(new Vector2i(this.leftPos, this.topPos), false)
+        );
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-
-        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        FluidTank fluidTank = menu.blockEntity.getFluidTank();
-        renderer.render(guiGraphics.pose(), x + 98, y + 18, fluidTank.getFluid());
+    public @NotNull ResourceLocation getBackgroundTexture() {
+        return TEXTURE;
     }
 
     @Override
-    protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-
-        renderFluidAreaTooltips(pGuiGraphics, pMouseX, pMouseY, x + 98 - renderer.getWidth() - 4, y + 3);
-    }
-
-    private void renderFluidAreaTooltips(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y) {
-        if (isMouseAboveArea(pMouseX, pMouseY, x, y, 55, 15)) {
-            FluidTank fluidTank = menu.blockEntity.getFluidTank();
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, renderer.getTooltip(fluidTank.getFluid()),
-                    Optional.empty(), pMouseX - x + 45, pMouseY - y);
-        }
-    }
-
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, renderer.getWidth(), renderer.getHeight());
-    }
-
-    private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
-        return MouseUtil.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
+    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+        super.renderBg(guiGraphics, delta, mouseX, mouseY);
+        float progress = (float) this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress();
+        int scaledProgress = Mth.ceil(progress * 24.0F);
+        guiGraphics.blitSprite(PROGRESS_SPRITE, 24, 16, 0, 0, this.leftPos + 67, this.topPos + 38, scaledProgress, 16);
     }
 
     @Override
