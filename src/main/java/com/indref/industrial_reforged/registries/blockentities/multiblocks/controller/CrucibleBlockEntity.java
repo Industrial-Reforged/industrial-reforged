@@ -18,6 +18,7 @@ import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.Utils;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -66,6 +67,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public void serverTick() {
         if (hasRecipe()) {
+            IndustrialReforged.LOGGER.debug("Has repice");
             increaseCraftingProgress();
             setChanged(level, worldPosition, getBlockState());
 
@@ -81,10 +83,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 int output = fireboxMultiblock.get().getTier().getMaxHeatOutput();
                 IHeatStorage thisHeatStorage = CapabilityUtils.heatStorageCapability(this);
                 IHeatStorage fireBoxHeatStorage = CapabilityUtils.heatStorageCapability(controllerBlockEntity);
-                // FIXME: Not working
-                if (fireBoxHeatStorage.tryDrainHeat(output) == 0) {
-                    thisHeatStorage.tryFillHeat(output);
-                }
+                int drained = fireBoxHeatStorage.tryDrainHeat(Math.min(output, thisHeatStorage.getHeatCapacity() - thisHeatStorage.getHeatStored()), false);
+                thisHeatStorage.tryFillHeat(drained, false);
             }
         }
     }
@@ -141,12 +141,18 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     public boolean hasRecipe() {
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
+
+            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(this);
+
             if (recipe.isEmpty())
                 continue;
 
             FluidStack result = recipe.get().resultFluid();
+            FluidStack fluidInTank = fluidHandler.getFluidInTank(0);
 
-            if (canInsertAmountIntoOutput(result.getAmount()) && canInsertFluidIntoOutput(result.getFluid()))
+            if ((fluidInTank.is(result.getFluid()) || fluidInTank.isEmpty())
+                    && fluidInTank.getAmount() + result.getAmount() <= fluidHandler.getTankCapacity(0)
+                    && fluidHandler.isFluidValid(0, result))
                 return true;
         }
 
@@ -159,9 +165,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
         if (stackInSlot.isEmpty() || heatStorage == null) return Optional.empty();
 
-        return this.level.getRecipeManager()
+        Optional<CrucibleSmeltingRecipe> crucibleSmeltingRecipe = this.level.getRecipeManager()
                 .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingInput(stackInSlot, heatStorage.getHeatStored()), level)
                 .map(RecipeHolder::value);
+        return crucibleSmeltingRecipe;
     }
 
     @Nullable

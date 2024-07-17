@@ -106,16 +106,11 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
-        try {
-            CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
-            blockEntity.getControllerPos().ifPresent(pos -> {
-                IndustrialReforged.LOGGER.debug("client: {}", Minecraft.getInstance().level.getBlockEntity(pos).getPersistentData());
-                CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
-                IndustrialReforged.LOGGER.debug("server: {}", controllerBlockEntity.getPersistentData());
-                Utils.openMenu(player, controllerBlockEntity);
-            });
-        } catch (Exception ignored) {
-        }
+        CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
+        blockEntity.getControllerPos().ifPresent(pos -> {
+            CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
+            Utils.openMenu(player, controllerBlockEntity);
+        });
         return InteractionResult.SUCCESS;
     }
 
@@ -147,22 +142,19 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
-        BlockEntity wallBlockEntity = level.getBlockEntity(scannedBlockPos);
-        IndustrialReforged.LOGGER.debug("Wall entity pos: {}, is wall: {}", wallBlockEntity.getBlockPos(), wallBlockEntity instanceof CrucibleWallBlockEntity);
-        if (wallBlockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
-            Optional<BlockPos> controllerPos = crucibleWallBlockEntity.getControllerPos();
-            if (controllerPos.isPresent()) {
-                CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos.get());
-                displayText.addAll(DisplayUtils.displayHeatInfo(controllerBlockEntity, scannedBlock, Component.literal("Crucible")));
-                return;
-            }
-            IndustrialReforged.LOGGER.error("Issue with controllerPos of crucible wall at {}", crucibleWallBlockEntity.getBlockPos());
+        CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(scannedBlockPos);
+        if (blockEntity.getControllerPos().isPresent()) {
+            BlockPos pos = blockEntity.getControllerPos().get();
+            CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
+            displayText.addAll(DisplayUtils.displayHeatInfo(controllerBlockEntity, level.getBlockState(pos), Component.literal("Crucible")));
+        } else {
+            IndustrialReforged.LOGGER.debug("No controller present");
         }
     }
 
     @Override
     public List<DisplayItem> getCompatibleItems() {
-        return List.of((DisplayItem) IRItems.THERMOMETER.get());
+        return List.of(IRItems.THERMOMETER.get());
     }
 
     @Override

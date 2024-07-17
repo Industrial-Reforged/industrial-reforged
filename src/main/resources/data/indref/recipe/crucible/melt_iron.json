@@ -1,13 +1,11 @@
 {
   "type": "indref:crucible_melting",
-  "ingredients": [
-    {
-      "item": "minecraft:iron_ingot"
-    }
-  ],
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
   "result": {
-      "id": "minecraft:lava",
-      "amount": 100
+    "id": "minecraft:lava",
+    "amount": 100
   },
   "heat": 100,
   "duration": 100

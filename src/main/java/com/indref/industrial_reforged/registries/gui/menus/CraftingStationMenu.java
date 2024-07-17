@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.registries.gui.menus;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -29,12 +28,10 @@ import java.util.Optional;
 public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStationBlockEntity> {
     public static final int BLUEPRINT_SLOT = 28;
 
-    private final Level level;
-    private ItemhandlerCraftingContainer craftSlots;
+    private final ItemhandlerCraftingContainer craftSlots;
     private final ResultContainer resultSlots = new ResultContainer();
     private final ContainerLevelAccess access;
     private final Player player;
-    private final IItemHandler itemHandler;
 
     public CraftingStationMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv, (CraftingStationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));
@@ -43,10 +40,9 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
     public CraftingStationMenu(int pContainerId, Inventory inv, CraftingStationBlockEntity entity) {
         super(IRMenuTypes.CRAFTING_STATION_MENU.get(), pContainerId, inv, entity);
         checkContainerSize(inv, 1);
-        this.level = inv.player.level();
         this.player = inv.player;
-        this.access = ContainerLevelAccess.create(level, entity.getBlockPos());
-        this.itemHandler = CapabilityUtils.itemHandlerCapability(entity);
+        this.access = ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos());
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
         this.craftSlots = new ItemhandlerCraftingContainer(itemHandler, this, 3, 3);
 
         addCraftingSlots();
@@ -57,12 +53,11 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
         this.addSlot(new SlotItemHandler(itemHandler, BLUEPRINT_SLOT, 154, 29));
         addPlayerHotbar(inv, 185);
         addPlayerInventory(inv, 127);
-        IndustrialReforged.LOGGER.debug("Craftslots 0: " + this.craftSlots.getItems());
+
         for (int i = 0; i < 9; i++) {
             ItemStack itemStack = itemHandler.getStackInSlot(i + 18);
             this.craftSlots.setItem(i, itemStack);
         }
-        IndustrialReforged.LOGGER.debug("Craftslots 1: {}", this.craftSlots.getItems());
     }
 
     @Override

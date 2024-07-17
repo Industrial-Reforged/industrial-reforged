@@ -44,12 +44,12 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
     }
 
     @Override
-    public int tryDrainHeat(int value) {
-        return 0;
+    public int getMaxInput() {
+        return 100;
     }
 
     @Override
-    public int tryFillHeat(int value) {
-        return 0;
+    public int getMaxOutput() {
+        return 100;
     }
 }

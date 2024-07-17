@@ -71,7 +71,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
             if (this.burnTime > 0) {
                 burnTime--;
                 if (burnTime % 5 == 0) {
-                    heatStorage.tryFillHeat(1);
+                    heatStorage.tryFillHeat(1, false);
                 }
             } else {
                 this.maxBurnTime = 0;

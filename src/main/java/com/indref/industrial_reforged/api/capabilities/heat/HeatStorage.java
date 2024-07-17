@@ -40,25 +40,13 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
     }
 
     @Override
-    public int tryDrainHeat(int value) {
-        if (getHeatStored() - value >= 0) {
-            setHeatStored(getHeatStored() - value);
-            return 0;
-        }
-        int stored = getHeatStored();
-        setHeatStored(0);
-        return value - stored;
+    public int getMaxInput() {
+        return 20;
     }
 
     @Override
-    public int tryFillHeat(int value) {
-        if (getHeatStored() + value <= getHeatCapacity()) {
-            setHeatStored(getHeatStored() + value);
-            return 0;
-        }
-        int stored = getHeatStored();
-        setHeatStored(getHeatCapacity());
-        return value - stored;
+    public int getMaxOutput() {
+        return 20;
     }
 
     @Override
