@@ -3,12 +3,11 @@ package com.indref.industrial_reforged.registries.items.tools;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.ToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -34,7 +33,6 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ThermometerItem extends SimpleHeatItem implements DisplayItem, ToolItem {
     public static final String DISPLAY_TEMPERATURE_KEY = "thermometer_temperature";

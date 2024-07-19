@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.storage;
 
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;

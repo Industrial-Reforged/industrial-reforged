@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.data;
+package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;

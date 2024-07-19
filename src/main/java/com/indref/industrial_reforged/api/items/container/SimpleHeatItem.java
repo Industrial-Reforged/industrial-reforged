@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.data.IRDataComponents;
-import com.indref.industrial_reforged.api.data.components.HeatStorage;
+import com.indref.industrial_reforged.registries.IRDataComponents;
+import com.indref.industrial_reforged.registries.data.components.HeatStorage;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;

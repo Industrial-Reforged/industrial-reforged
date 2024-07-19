@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.multiblocks.SmallFireboxMultiblock;
@@ -21,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SmallFireboxHatchBlock extends ContainerBlock {
+public class SmallFireboxHatchBlock extends RotatableContainerBlock {
     public SmallFireboxHatchBlock(Properties properties) {
         super(properties);
         registerDefaultState(this.defaultBlockState().setValue(SmallFireboxMultiblock.FIREBOX_STATE, SmallFireboxMultiblock.FireboxState.UNFORMED));

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "fence_gates",
+  "key": {
+    "#": {
+      "item": "indref:rubber_tree_planks"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:rubber_tree_fence_gate"
+  }
+}

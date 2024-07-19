@@ -101,6 +101,11 @@ public final class IRTabs {
                 addItem(output, IRItems.URANIUM_INGOT);
                 addItem(output, IRItems.TIN_INGOT);
                 addItem(output, IRItems.STEEL_INGOT);
+                addItem(output, IRItems.STEEL_DUST);
+                addItem(output, IRItems.COPPER_DUST);
+                addItem(output, IRItems.COPPER_WIRE);
+                addItem(output, IRItems.GOLD_WIRE);
+                addItem(output, IRItems.STEEL_WIRE);
             }).build());
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref.blocks"))

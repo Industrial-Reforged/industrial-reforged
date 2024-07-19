@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.misc;
 
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.networking.BlueprintHasRecipePayload;
 import com.indref.industrial_reforged.networking.BlueprintStoredRecipePayload;
 import com.indref.industrial_reforged.registries.gui.menus.CraftingStationMenu;

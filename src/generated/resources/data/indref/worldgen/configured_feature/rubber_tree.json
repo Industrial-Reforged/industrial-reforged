@@ -10,7 +10,6 @@
     },
     "foliage_placer": {
       "type": "indref:rubber_tree_foliage_placer",
-      "height": 4,
       "offset": 1,
       "radius": 2
     },
@@ -19,12 +18,14 @@
       "state": {
         "Name": "indref:rubber_tree_leaves",
         "Properties": {
-          "distance": "5",
+          "distance": "7",
           "persistent": "false",
           "waterlogged": "false"
         }
       }
     },
+    "force_dirt": false,
+    "ignore_vines": false,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
       "limit": 2,

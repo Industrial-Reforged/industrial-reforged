@@ -35,8 +35,10 @@ public class FireBoxScreen extends IRAbstractContainerScreen<FireBoxMenu> {
     @Override
     protected void init() {
         super.init();
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
         initComponents(
-                new HeatDisplayGuiComponent(new Vector2i((width - imageWidth) / 2, (height - imageHeight) / 2), true)
+                new HeatDisplayGuiComponent(new Vector2i(x + imageWidth - 95, y + 5), true)
         );
     }
 

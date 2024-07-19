@@ -1,9 +1,9 @@
-package com.indref.industrial_reforged.api.data;
+package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.data.components.ComponentTapeMeasure;
-import com.indref.industrial_reforged.api.data.components.EnergyStorage;
-import com.indref.industrial_reforged.api.data.components.HeatStorage;
+import com.indref.industrial_reforged.registries.data.components.ComponentTapeMeasure;
+import com.indref.industrial_reforged.registries.data.components.EnergyStorage;
+import com.indref.industrial_reforged.registries.data.components.HeatStorage;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;

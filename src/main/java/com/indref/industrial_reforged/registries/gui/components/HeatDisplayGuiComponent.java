@@ -55,8 +55,8 @@ public class HeatDisplayGuiComponent extends GuiComponent {
 
             guiGraphics.drawString(Minecraft.getInstance().font,
                     Component.literal("Temperature: " + temperature + "°C").withStyle(ChatFormatting.WHITE),
-                    position.y + screen.getImageWidth() - 95,
-                    position.x + 5,
+                    position.x,
+                    position.y,
                     0);
         }
     }

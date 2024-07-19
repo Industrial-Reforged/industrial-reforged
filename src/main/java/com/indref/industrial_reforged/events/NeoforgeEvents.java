@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.ArmorActivityPayload;
 import com.indref.industrial_reforged.registries.IRItems;

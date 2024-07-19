@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.electric.ElectricSwordItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;

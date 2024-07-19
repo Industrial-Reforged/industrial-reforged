@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged;
 
-import com.indref.industrial_reforged.api.data.IRAttachmentTypes;
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRAttachmentTypes;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.registries.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;

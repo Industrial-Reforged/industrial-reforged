@@ -131,18 +131,17 @@ public final class IRItems {
     public static final DeferredItem<Item> IRON_ROD = registerStandardItem("iron_rod");
 
     // Wires
+    public static final DeferredItem<Item> TIN_WIRE = registerStandardItem("tin_wire");
     public static final DeferredItem<Item> COPPER_WIRE = registerStandardItem("copper_wire");
+    public static final DeferredItem<Item> GOLD_WIRE = registerStandardItem("gold_wire");
+    public static final DeferredItem<Item> STEEL_WIRE = registerStandardItem("steel_wire");
 
-    public static final DeferredItem<BucketItem> SOAP_WATER_BUCKET = registerItem("soap_water_bucket",
-            () -> new BucketItem(IRFluids.SOURCE_SOAP_WATER.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    // Wires
+    public static final DeferredItem<Item> STEEL_DUST = registerStandardItem("steel_dust");
+    public static final DeferredItem<Item> COPPER_DUST = registerStandardItem("copper_dust");
 
     public static final DeferredItem<BucketItem> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
-            () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
-                @Override
-                public void appendHoverText(ItemStack p_41421_, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
-                    tooltip.add(Component.literal("Only for testing").withStyle(ChatFormatting.RED));
-                }
-            });
+            () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
     /**
      * Registers a new item

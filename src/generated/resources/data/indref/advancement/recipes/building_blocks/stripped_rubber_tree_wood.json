@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "indref:stripped_rubber_tree_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "indref:stripped_rubber_tree_wood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "indref:stripped_rubber_tree_wood"
+    ]
+  }
+}

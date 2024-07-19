@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
-import com.indref.industrial_reforged.api.data.IRDataComponents;
+import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
