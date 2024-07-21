@@ -20,16 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class BlastFurnaceMenu extends IRAbstractContainerMenu<BlastFurnaceBlockEntity> {
-    private final ContainerData data;
 
     public BlastFurnaceMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, (BlastFurnaceBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(1));
+        this(containerId, inv, (BlastFurnaceBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public BlastFurnaceMenu(int pContainerId, Inventory inv, BlastFurnaceBlockEntity entity, ContainerData data) {
+    public BlastFurnaceMenu(int pContainerId, Inventory inv, BlastFurnaceBlockEntity entity) {
         super(IRMenuTypes.BLAST_FURNACE_MENU.get(), pContainerId, inv, entity);
         checkContainerSize(inv, 2);
-        this.data = data;
 
         ItemStackHandler itemHandler = blockEntity.getItemHandler();
 

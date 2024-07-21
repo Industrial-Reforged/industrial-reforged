@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 
 import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
@@ -38,18 +39,20 @@ import java.util.Optional;
  * is the actual blockentity that handles the
  * logic and the others just point to that block.
  */
-public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity {
-    private boolean mainController;
+public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPos {
     private BlockPos mainControllerPos;
-    private ObjectSet<BlockPos> otherFakePositions;
     private int duration;
     private int maxDuration;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
-        this.otherFakePositions = new ObjectOpenHashSet<>();
         addItemHandler(2);
         addFluidTank(9000);
+    }
+
+    @Override
+    public Optional<BlockPos> getActualBlockEntityPos() {
+        return Optional.ofNullable(mainControllerPos);
     }
 
     public int getProgress() {
@@ -60,45 +63,24 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         return maxDuration;
     }
 
-    public void setMainController(boolean mainController) {
-        this.mainController = mainController;
-    }
-
-    public boolean isMainController() {
-        return mainController;
-    }
-
-    public void setMainControllerPos(BlockPos mainControllerPos) {
-        this.mainControllerPos = mainControllerPos;
-    }
-
-    public void addFakePosition(BlockPos fakePos) {
-        this.otherFakePositions.add(fakePos);
-    }
-
     @Override
-    public Optional<BlockPos> getActualBlockEntityPos() {
-        return Optional.ofNullable(mainControllerPos);
-    }
-
-    @Override
-    public ObjectSet<BlockPos> getFakePositions() {
-        return this.otherFakePositions;
+    public void setControllerPos(BlockPos blockPos) {
+        this.mainControllerPos = blockPos;
     }
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.putBoolean("isController", isMainController());
         getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
+    }
+
+    private boolean isMainController() {
+        return worldPosition.equals(mainControllerPos);
     }
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        this.mainController = tag.getBoolean("isController");
         long mainControllerPos1 = tag.getLong("mainControllerPos");
-        if (mainControllerPos1 != 0) {
-            this.mainControllerPos = BlockPos.of(mainControllerPos1);
-        }
+        this.mainControllerPos = BlockPos.of(mainControllerPos1);
     }
 
     public void commonTick() {
@@ -152,7 +134,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-        // TODO: Replace NULL
-        return new BlastFurnaceMenu(containerId, inventory, this, null);
+        return new BlastFurnaceMenu(containerId, inventory, this);
     }
+
 }

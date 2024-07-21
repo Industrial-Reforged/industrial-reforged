@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
@@ -15,11 +18,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class BlastFurnaceHatchBlock extends ContainerBlock implements CanAttachFaucetBlock {
     public BlastFurnaceHatchBlock(Properties properties) {
@@ -58,7 +64,14 @@ public class BlastFurnaceHatchBlock extends ContainerBlock implements CanAttachF
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
         if (blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
-            return super.useWithoutItem(blockState, level, blockPos, player, hitResult);
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof BlastFurnaceBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
+                BlockPos mainControllerPos = fakeBlockEntity.getActualBlockEntityPos().get();
+                BlockEntity blastFurnaceBE = level.getBlockEntity(mainControllerPos);
+                player.openMenu((BlastFurnaceBlockEntity) blastFurnaceBE, mainControllerPos);
+                return InteractionResult.SUCCESS;
+            }
+
         }
         return InteractionResult.FAIL;
     }

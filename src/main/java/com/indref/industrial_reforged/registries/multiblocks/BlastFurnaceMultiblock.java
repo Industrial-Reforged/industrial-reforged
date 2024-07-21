@@ -1,11 +1,13 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricksBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
+import io.netty.util.internal.shaded.org.jctools.queues.IndexedQueueSizeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -19,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
+// Why is this a record, you might ask yourself...
+// The answer is: So my icons for multiblock classes all look the same :>
 public record BlastFurnaceMultiblock() implements Multiblock {
     public static final EnumProperty<BrickStates> BRICK_STATE = EnumProperty.create("brick_state", BlastFurnaceMultiblock.BrickStates.class);
 
@@ -61,26 +65,6 @@ public record BlastFurnaceMultiblock() implements Multiblock {
             return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));
         } else {
             return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.FORMED));
-        }
-    }
-
-    @Override
-    public void afterFormBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY) {
-        // Check if the formed block is a hatch
-        if (level.getBlockEntity(blockPos) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-            for (BlockPos blockPos1 : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
-                if (level.getBlockEntity(blockPos1) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
-                    Optional<BlockPos> mainControllerPos = blastFurnaceBlockEntity1.getActualBlockEntityPos();
-                    if (mainControllerPos.isPresent()) {
-                        blastFurnaceBlockEntity.setMainControllerPos(mainControllerPos.get());
-                        blastFurnaceBlockEntity.setMainController(false);
-                        return;
-                    }
-                }
-            }
-
-            blastFurnaceBlockEntity.setMainControllerPos(blockPos);
-            blastFurnaceBlockEntity.setMainController(true);
         }
     }
 

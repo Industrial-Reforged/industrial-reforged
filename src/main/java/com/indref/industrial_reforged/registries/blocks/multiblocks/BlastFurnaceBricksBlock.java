@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
@@ -64,7 +65,6 @@ public class BlastFurnaceBricksBlock extends Block implements WrenchableBlock {
             if (blockEntity instanceof BlastFurnaceBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
                 BlockPos mainControllerPos = fakeBlockEntity.getActualBlockEntityPos().get();
                 BlockEntity blastFurnaceBE = level.getBlockEntity(mainControllerPos);
-                IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(blastFurnaceBE);
                 player.openMenu((BlastFurnaceBlockEntity) blastFurnaceBE, mainControllerPos);
                 return InteractionResult.SUCCESS;
             }

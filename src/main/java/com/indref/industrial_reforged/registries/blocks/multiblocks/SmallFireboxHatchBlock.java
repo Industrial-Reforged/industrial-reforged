@@ -5,6 +5,9 @@ import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
+import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
@@ -15,12 +18,15 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class SmallFireboxHatchBlock extends RotatableContainerBlock {
     public SmallFireboxHatchBlock(Properties properties) {
@@ -55,9 +61,16 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
-        if (blockState.getValue(SmallFireboxMultiblock.FIREBOX_STATE) == SmallFireboxMultiblock.FireboxState.FORMED) {
-            return super.useWithoutItem(blockState, level, blockPos, player, hitResult);
+        if(blockState.getValue(SmallFireboxMultiblock.FIREBOX_STATE) != SmallFireboxMultiblock.FireboxState.UNFORMED) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof SmallFireboxBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
+                BlockPos mainControllerPos = fakeBlockEntity.getActualBlockEntityPos().get();
+                BlockEntity blastFurnaceBE = level.getBlockEntity(mainControllerPos);
+                player.openMenu((SmallFireboxBlockEntity) blastFurnaceBE, mainControllerPos);
+                return InteractionResult.SUCCESS;
+            }
         }
+
         return InteractionResult.FAIL;
     }
 
