@@ -92,7 +92,8 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        return !level.getBlockState(blockPos).getValue(FIREBOX_STATE).equals(FireboxState.UNFORMED);
+        BlockState state = level.getBlockState(blockPos);
+        return state.hasProperty(FIREBOX_STATE) && !state.getValue(FIREBOX_STATE).equals(FireboxState.UNFORMED);
     }
 
     @Override

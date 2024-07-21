@@ -70,7 +70,7 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         if (level.getBlockEntity(blockPos) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
             for (BlockPos blockPos1 : BlockUtils.getBlocksAroundSelf3x3(blockPos)) {
                 if (level.getBlockEntity(blockPos1) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity1) {
-                    Optional<BlockPos> mainControllerPos = blastFurnaceBlockEntity1.getMainControllerPos();
+                    Optional<BlockPos> mainControllerPos = blastFurnaceBlockEntity1.getActualBlockEntityPos();
                     if (mainControllerPos.isPresent()) {
                         blastFurnaceBlockEntity.setMainControllerPos(mainControllerPos.get());
                         blastFurnaceBlockEntity.setMainController(false);

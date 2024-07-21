@@ -1,25 +1,30 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.RefractoryBrickBlock;
 import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ParticleUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +61,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
                 this.burnTime = burnTime;
                 this.maxBurnTime = burnTime;
                 stack.shrink(1);
+                setBlockActive(true);
             }
         }
     }
@@ -81,8 +87,18 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
                     this.burnTime = burnTime;
                     this.maxBurnTime = burnTime;
                     stack.shrink(1);
+                    setBlockActive(true);
+                } else {
+                    setBlockActive(false);
                 }
             }
+        }
+    }
+
+    public void setBlockActive(boolean value) {
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelfHorizontal(worldPosition)) {
+            BlockState blockState = level.getBlockState(pos);
+            level.setBlockAndUpdate(pos, blockState.setValue(RefractoryBrickBlock.HATCH_ACTIVE, value));
         }
     }
 

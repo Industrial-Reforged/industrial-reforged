@@ -36,6 +36,15 @@ public final class BlockUtils {
         };
     }
 
+    public static BlockPos[] getBlocksAroundSelfHorizontal(BlockPos selfPos) {
+        return new BlockPos[]{
+                selfPos.offset(1, 0, 0),
+                selfPos.offset(-1, 0, 0),
+                selfPos.offset(0, 0, 1),
+                selfPos.offset(0, 0, -1),
+        };
+    }
+
     public static BlockState rotateBlock(BlockState state, DirectionProperty prop, Comparable<?> currentValue) {
         List<Direction> directions = prop.getPossibleValues().stream().toList();
         int currentDirectionIndex = directions.indexOf(currentValue);

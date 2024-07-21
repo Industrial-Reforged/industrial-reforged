@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "indref:block/multiblock/firebox/formed/top_bottom_middle",
-    "side": "indref:block/multiblock/firebox/formed/hatch"
-  }
-}

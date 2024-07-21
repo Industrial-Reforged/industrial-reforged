@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;

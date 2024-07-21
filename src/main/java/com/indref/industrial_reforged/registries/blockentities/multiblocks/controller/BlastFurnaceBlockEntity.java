@@ -1,16 +1,16 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.BlastFurnaceMenu;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -21,12 +21,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,11 +41,13 @@ import java.util.Optional;
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity {
     private boolean mainController;
     private BlockPos mainControllerPos;
+    private ObjectSet<BlockPos> otherFakePositions;
     private int duration;
     private int maxDuration;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
+        this.otherFakePositions = new ObjectOpenHashSet<>();
         addItemHandler(2);
         addFluidTank(9000);
     }
@@ -73,19 +72,24 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         this.mainControllerPos = mainControllerPos;
     }
 
-    public Optional<BlockPos> getMainControllerPos() {
-        return Optional.ofNullable(mainControllerPos);
+    public void addFakePosition(BlockPos fakePos) {
+        this.otherFakePositions.add(fakePos);
     }
 
     @Override
     public Optional<BlockPos> getActualBlockEntityPos() {
-        return getMainControllerPos();
+        return Optional.ofNullable(mainControllerPos);
+    }
+
+    @Override
+    public ObjectSet<BlockPos> getFakePositions() {
+        return this.otherFakePositions;
     }
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.putBoolean("isController", isMainController());
-        getMainControllerPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
+        getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
     }
 
     @Override

@@ -1,13 +1,22 @@
 {
   "variants": {
-    "firebox_part=unformed": {
+    "firebox_part=unformed,hatch_active=false": {
       "model": "indref:block/refractory_brick"
     },
-    "firebox_part=brick": {
+    "firebox_part=brick,hatch_active=false": {
       "model": "indref:block/refractory_brick"
     },
-    "firebox_part=hatch": {
+    "firebox_part=hatch,hatch_active=false": {
       "model": "indref:block/multiblock/firebox/hatch"
+    },
+    "firebox_part=unformed,hatch_active=true": {
+      "model": "indref:block/refractory_brick"
+    },
+    "firebox_part=brick,hatch_active=true": {
+      "model": "indref:block/refractory_brick"
+    },
+    "firebox_part=hatch,hatch_active=true": {
+      "model": "indref:block/multiblock/firebox/hatch_active"
     }
   }
 }

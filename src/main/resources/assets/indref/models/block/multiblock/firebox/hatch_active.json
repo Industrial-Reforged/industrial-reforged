@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column",
   "textures": {
     "end": "indref:block/refractory_brick",
-    "side": "indref:block/multiblock/firebox/formed/hatch_brick"
+    "side": "indref:block/multiblock/firebox/formed/hatch_brick_active"
   }
 }

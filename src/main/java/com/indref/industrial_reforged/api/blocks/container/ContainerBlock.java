@@ -1,9 +1,6 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
-import com.indref.industrial_reforged.api.blocks.FakeBlockEntity;
-import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.util.Utils;
+import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
