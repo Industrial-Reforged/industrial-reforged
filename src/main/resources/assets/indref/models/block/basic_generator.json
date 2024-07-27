@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "indref:block/machines/basic_generator_top",
-    "east": "indref:block/machines/basic_generator_side",
+    "down": "indref:block/basic_machine_frame",
+    "east": "indref:block/basic_machine_frame",
     "north": "indref:block/machines/basic_generator_front",
-    "particle": "indref:block/machines/basic_generator_side",
-    "south": "indref:block/machines/basic_generator_side",
-    "up": "indref:block/machines/basic_generator_top",
-    "west": "indref:block/machines/basic_generator_side"
+    "particle": "indref:block/basic_machine_frame",
+    "south": "indref:block/basic_machine_frame",
+    "up": "indref:block/basic_machine_frame",
+    "west": "indref:block/basic_machine_frame"
   }
 }

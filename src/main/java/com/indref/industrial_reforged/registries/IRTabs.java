@@ -74,6 +74,7 @@ public final class IRTabs {
                 addPoweredItem(output, IRItems.ADVANCED_BATTERY);
                 addPoweredItem(output, IRItems.ULTIMATE_BATTERY);
                 addItem(output, IRItems.RUBBER_SHEET);
+                addItem(output, IRItems.RUBBER);
                 addItem(output, IRItems.BIOMASS);
                 addItem(output, IRItems.PLANT_BALL);
                 addItem(output, IRItems.ANTENNA);
@@ -216,13 +217,11 @@ public final class IRTabs {
         // Add base item
         output.accept(item.get().getDefaultInstance());
         Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = BuiltInRegistries.FLUID.entrySet();
-        IndustrialReforged.LOGGER.info(fluids.toString());
         for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
             ItemStack stack = new ItemStack(item.get());
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
                 if (item.get() instanceof IFluidItem fluidContainerItem)
                     fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
-                IndustrialReforged.LOGGER.info("Registering fluid cell: " + fluid.getValue());
                 output.accept(stack);
             }
         }

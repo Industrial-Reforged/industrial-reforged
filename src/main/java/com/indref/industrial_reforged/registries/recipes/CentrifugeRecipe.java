@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> results,
-                               int duration) implements IRRecipe<ItemRecipeInput> {
+                               int duration, int energy) implements IRRecipe<ItemRecipeInput> {
     public static final String NAME = "centrifuge";
     public static final RecipeType<CentrifugeRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CentrifugeRecipe> SERIALIZER =
@@ -22,8 +22,6 @@ public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> r
 
     @Override
     public boolean matches(ItemRecipeInput recipeInput, Level level) {
-        if (level.isClientSide()) return false;
-
         return ingredient.test(recipeInput.getItem(0));
     }
 

@@ -146,7 +146,7 @@ public final class RecipeUtils {
     }
 
     public static<T extends Recipe<?>>RecipeSerializer<T> newRecipeSerializer(MapCodec<T> mapCodec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) {
-        return new RecipeSerializer<T>() {
+        return new RecipeSerializer<>() {
             @Override
             public @NotNull MapCodec<T> codec() {
                 return mapCodec;

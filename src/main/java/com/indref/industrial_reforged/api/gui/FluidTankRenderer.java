@@ -75,6 +75,8 @@ public class FluidTankRenderer {
         TextureAtlasSprite fluidStillSprite = getStillFluidSprite(fluidStack);
         int fluidColor = getColorTint(fluidStack);
 
+        IndustrialReforged.LOGGER.debug(String.format("tintcolor: %x", fluidColor));
+
         long amount = fluidStack.getAmount();
         long scaledAmount = (amount * height) / capacity;
 
@@ -93,11 +95,8 @@ public class FluidTankRenderer {
         IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);
         ResourceLocation fluidStill = renderProperties.getStillTexture(fluidStack);
 
-        IndustrialReforged.LOGGER.debug("Fluid: {}", fluidStill);
-
         Minecraft minecraft = Minecraft.getInstance();
         TextureAtlasSprite atlasSprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);
-        IndustrialReforged.LOGGER.debug("atlas: {}", atlasSprite);
         return atlasSprite;
     }
 

@@ -77,10 +77,8 @@ public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> ex
 
             // Check if the slot clicked is one of the vanilla container slots
             int endIndex = TE_INVENTORY_FIRST_SLOT_INDEX + this.slotAmount - VANILLA_SLOT_COUNT;
-            IndustrialReforged.LOGGER.debug("End index: {}", endIndex);
             if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
                 // This is a vanilla container slot so merge the stack into the tile inventory
-                IndustrialReforged.LOGGER.debug("inv slot: {}", TE_INVENTORY_FIRST_SLOT_INDEX);
                 if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, endIndex, false)) {
                     return ItemStack.EMPTY;  // EMPTY_ITEM
                 }
@@ -90,7 +88,7 @@ public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> ex
                     return ItemStack.EMPTY;
                 }
             } else {
-                System.out.println("Invalid slotIndex:" + pIndex);
+                IndustrialReforged.LOGGER.error("Invalid slotIndex: {}", pIndex);
                 return ItemStack.EMPTY;
             }
             // If stack size == 0 (the entire stack was moved) set slot contents to null

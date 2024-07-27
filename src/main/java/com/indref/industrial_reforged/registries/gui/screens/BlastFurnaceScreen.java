@@ -27,7 +27,6 @@ public class BlastFurnaceScreen extends IRAbstractContainerScreen<BlastFurnaceMe
         super.init();
         initComponents(
                 new FluidTankGuiComponent(new Vector2i(this.leftPos + 97, this.topPos + 17), FluidTankGuiComponent.TankVariants.LARGE),
-                // TODO: Heat display working
                 new HeatDisplayGuiComponent(new Vector2i(this.leftPos, this.topPos), false)
         );
     }

@@ -5,13 +5,14 @@ import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemAndFluidRec
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
-public record CrucibleCastingRecipe(FluidStack fluidStack, ItemStack castItem, ItemStack resultStack, int duration,
+public record CrucibleCastingRecipe(FluidStack fluidStack, Ingredient castItem, ItemStack resultStack, int duration,
                                     boolean consumeCast) implements IRRecipe<ItemAndFluidRecipeInput> {
     public static final String NAME = "crucible_casting";
     public static final RecipeType<CrucibleCastingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
@@ -20,9 +21,7 @@ public record CrucibleCastingRecipe(FluidStack fluidStack, ItemStack castItem, I
 
     @Override
     public boolean matches(ItemAndFluidRecipeInput recipeInput, Level level) {
-        if (level.isClientSide) return false;
-
-        return castItem.is(recipeInput.getItem(0).getItem())
+        return castItem.test(recipeInput.getItem(0))
                 && recipeInput.fluidStack().is(this.fluidStack.getFluid())
                 && recipeInput.fluidStack().getAmount() >= this.fluidStack.getAmount();
     }

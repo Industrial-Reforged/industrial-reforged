@@ -31,7 +31,6 @@ public class NanoSaberItem extends ElectricSwordItem {
     }
 
     public @NotNull ItemAttributeModifiers createAttributes(ItemStack stack) {
-        IndustrialReforged.LOGGER.debug("Get attr mods");
         if (stack.is(this)) {
             if (stack.has(IRDataComponents.ACTIVE) && stack.has(IRDataComponents.ENERGY)) {
                 ItemAttributeModifiers.Builder modifiers = ItemAttributeModifiers.builder();

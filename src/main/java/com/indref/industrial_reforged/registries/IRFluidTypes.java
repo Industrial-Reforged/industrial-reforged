@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.FastColor;
 import net.neoforged.neoforge.common.SoundAction;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -21,7 +22,7 @@ public final class IRFluidTypes {
                     SoundEvents.HONEY_DRINK), new Vector3f(224f / 255f, 56f / 255f, 208f / 255f), 0xA1E038D0, FluidTemplate.WATER);
     public static final Supplier<FluidType> MOLTEN_STEEL_FLUID_TYPE = register("molten_steel_fluid",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), new Vector3f(109f / 255f, 109f / 255f, 109f / 255f), 0x6D6D6D, FluidTemplate.MOLTEN_METAL);
+                    SoundEvents.HONEY_DRINK), new Vector3f(109f / 255f, 109f / 255f, 109f / 255f), FastColor.ARGB32.color(102, 102, 102), FluidTemplate.MOLTEN_METAL);
 
 
     private static Supplier<FluidType> register(String name, FluidType.Properties properties, Vector3f color, int tintColor, FluidTemplate template) {

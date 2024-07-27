@@ -43,11 +43,14 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         addPlayerHotbar(inv, 141 + 20);
         IItemHandler itemHandler = blockEntity.getItemHandler();
         // Centrifuge slots
+        // Input slot
         addSlot(new SlotItemHandler(itemHandler, 0, 80, 41));
-        addSlot(new SlotItemHandler(itemHandler, 1, 44, 41));
+
+        // Output slots
+        addSlot(new SlotItemHandler(itemHandler, 1, 80, 5));
         addSlot(new SlotItemHandler(itemHandler, 2, 116, 41));
-        addSlot(new SlotItemHandler(itemHandler, 3, 80, 5));
-        addSlot(new SlotItemHandler(itemHandler, 4, 80, 77));
+        addSlot(new SlotItemHandler(itemHandler, 3, 80, 77));
+        addSlot(new SlotItemHandler(itemHandler, 4, 44, 41));
         // Battery slot
         addSlot(new ChargingSlot(itemHandler, 5, ChargingSlot.ChargeMode.CHARGE, 9, 67));
     }

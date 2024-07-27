@@ -41,6 +41,7 @@ import java.util.Optional;
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPos {
     private BlockPos mainControllerPos;
+    // TODO: Serialize this
     private int duration;
     private int maxDuration;
 

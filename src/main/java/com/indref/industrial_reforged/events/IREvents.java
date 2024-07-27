@@ -152,7 +152,6 @@ public class IREvents {
     public static class CommonBus {
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-            IndustrialReforged.LOGGER.debug("Register caps");
             for (Item item : BuiltInRegistries.ITEM) {
                 if (item instanceof IEnergyItem energyItem)
                     event.registerItem(IRCapabilities.EnergyStorage.ITEM,

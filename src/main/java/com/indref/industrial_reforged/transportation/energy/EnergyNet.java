@@ -155,8 +155,6 @@ public class EnergyNet {
             }
         }
 
-        IndustrialReforged.LOGGER.debug("Filled: {}, consumers: {}", energyFilled, finalConsumers);
-
         return energyFilled;
     }
 

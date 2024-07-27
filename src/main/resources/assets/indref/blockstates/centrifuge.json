@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "active=true": {
+      "model": "indref:block/centrifuge_active"
+    },
+    "active=false": {
       "model": "indref:block/centrifuge"
     }
   }

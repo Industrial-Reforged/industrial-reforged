@@ -1,17 +1,20 @@
 package com.indref.industrial_reforged.registries.blockentities.machines;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeBlock;
 import com.indref.industrial_reforged.registries.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,12 +31,21 @@ import java.util.*;
 
 public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuProvider {
     private int duration;
+    private int maxDuration;
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
         addEnergyStorage(EnergyTiers.LOW);
-        addItemHandler(7, ((slot, itemStack) -> slot == 0
-                || (slot  == 1 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
+        addItemHandler(6, ((slot, itemStack) -> slot == 0
+                || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
+    }
+
+    public int getProgress() {
+        return duration;
+    }
+
+    public int getMaxProgress() {
+        return maxDuration;
     }
 
     @Override
@@ -54,20 +66,76 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
         if (optionalRecipe.isPresent()) {
             CentrifugeRecipe recipe = optionalRecipe.get();
-            int duration = recipe.duration();
+            int energy = recipe.energy();
+            int maxDuration = recipe.duration();
+            this.maxDuration = maxDuration;
             List<ItemStack> results = recipe.results();
             IngredientWithCount ingredient = recipe.ingredient();
-            if (this.duration >= duration) {
+            if (canInsertItems(results) && getEnergyStorage().getEnergyStored() - energy >= 0) {
+                setActive(true);
+                getEnergyStorage().tryDrainEnergy(energy);
+                if (this.duration >= maxDuration) {
+                    for (int i = 0; i < results.size(); i++) {
+                        ItemStack result = results.get(i).copy();
+                        ItemStack prev = getItemHandler().getStackInSlot(i + 1);
+                        result.grow(prev.getCount());
 
+                        getItemHandler().setStackInSlot(i + 1, result);
+                    }
+                    getItemHandler().extractItem(0, ingredient.count(), false);
+                    resetRecipe();
+                } else {
+                    this.duration++;
+                }
             } else {
-                this.duration++;
+                resetRecipe();
             }
         }
     }
 
+    private void resetRecipe() {
+        this.duration = 0;
+        this.maxDuration = 0;
+        setActive(false);
+    }
+
+    // TODO: Expensive operation, cache this
+    private boolean canInsertItems(List<ItemStack> results) {
+        IntList slots = new IntArrayList();
+        for (int slotIndex = 0; slotIndex < getItemHandler().getSlots(); slotIndex++) {
+            ItemStack slot = getItemHandler().getStackInSlot(slotIndex);
+            for (ItemStack item : results) {
+                if (slot.isEmpty() || (slot.is(item.getItem()) && slot.getCount() + item.getCount() <= item.getMaxStackSize())) {
+                    slots.add(slotIndex);
+                }
+            }
+        }
+        return slots.size() >= results.size();
+    }
+
     public Optional<CentrifugeRecipe> getCurrentRecipe() {
         return level.getRecipeManager()
-                .getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(List.of(getItemHandlerStacks())), level)
+                .getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(Collections.singletonList(getItemHandler().getStackInSlot(0))), level)
                 .map(RecipeHolder::value);
+    }
+
+    public void setActive(boolean active) {
+        if (getBlockState().getValue(CentrifugeBlock.ACTIVE) != active) {
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(CentrifugeBlock.ACTIVE, active));
+        }
+    }
+
+    @Override
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
+        tag.putInt("duration", duration);
+        tag.putInt("max_duration", maxDuration);
+    }
+
+    @Override
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadData(tag, provider);
+        this.duration = tag.getInt("duration");
+        this.maxDuration = tag.getInt("max_duration");
     }
 }

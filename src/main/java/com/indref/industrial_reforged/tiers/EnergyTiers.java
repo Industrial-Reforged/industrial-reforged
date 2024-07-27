@@ -5,12 +5,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 public enum EnergyTiers implements EnergyTier {
+    // TODO: Adjust these values
     NONE(Component.translatable("indref.energy.tier.none").withStyle(ChatFormatting.GRAY), 0, 0, 0),
-    LOW(Component.translatable("indref.energy.tier.low").withStyle(ChatFormatting.WHITE), 32, 32, 32_000),
-    MEDIUM(Component.translatable("indref.energy.tier.medium").withStyle(ChatFormatting.GOLD),64, 64, 64_000),
-    HIGH(Component.translatable("indref.energy.tier.high").withStyle(ChatFormatting.BLUE),128, 128, 128_000),
-    EXTREME(Component.translatable("indref.energy.tier.extreme").withStyle(ChatFormatting.GREEN), 512, 512, 512_000),
-    INSANE(Component.translatable("indref.energy.tier.insane").withStyle(ChatFormatting.RED), 1024, 1024, 1_024_000),
+    LOW(Component.translatable("indref.energy.tier.low").withStyle(ChatFormatting.WHITE), 16, 16, 4_000),
+    MEDIUM(Component.translatable("indref.energy.tier.medium").withStyle(ChatFormatting.GOLD),64, 64, 16_000),
+    HIGH(Component.translatable("indref.energy.tier.high").withStyle(ChatFormatting.BLUE),128, 128, 32_000),
+    EXTREME(Component.translatable("indref.energy.tier.extreme").withStyle(ChatFormatting.GREEN), 512, 512, 256_000),
+    INSANE(Component.translatable("indref.energy.tier.insane").withStyle(ChatFormatting.RED), 1024, 1024, 512_000),
     CREATIVE(Component.translatable("indref.energy.tier.creative").withStyle(ChatFormatting.LIGHT_PURPLE), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     private final int maxInput;

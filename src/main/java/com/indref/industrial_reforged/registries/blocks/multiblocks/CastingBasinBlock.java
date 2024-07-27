@@ -86,9 +86,28 @@ public class CastingBasinBlock extends ContainerBlock {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(blockEntity);
         IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(blockEntity);
-        if (!level.isClientSide() && itemHandler != null && fluidHandler != null) {
-            insertAndExtract(player, hand, itemHandler, (CastingBasinBlockEntity) blockEntity);
-            fluidHandler.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
+        if (itemHandler != null && fluidHandler != null) {
+            IFluidHandler itemFluidHandler = itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+            if (itemFluidHandler != null && !itemFluidHandler.getFluidInTank(0).isEmpty()) {
+                int drainAmount = fluidHandler.getTankCapacity(0) - fluidHandler.getFluidInTank(0).getAmount();
+                FluidStack drained = itemFluidHandler.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
+                fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+            } else if (itemFluidHandler != null) {
+                int drainAmount = itemFluidHandler.getTankCapacity(0) - itemFluidHandler.getFluidInTank(0).getAmount();
+                FluidStack drained = fluidHandler.drain(drainAmount, IFluidHandler.FluidAction.EXECUTE);
+                itemFluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+            } else if (itemStack.isEmpty()) {
+                ItemStack removed = itemHandler.extractItem(1, itemHandler.getStackInSlot(1).getMaxStackSize(), false);
+                if (removed.isEmpty()) {
+                    ItemStack removedCast = itemHandler.extractItem(0, itemHandler.getStackInSlot(0).getMaxStackSize(), false);
+                    ItemHandlerHelper.giveItemToPlayer(player, removedCast, player.getInventory().selected);
+                } else {
+                    ItemHandlerHelper.giveItemToPlayer(player, removed);
+                }
+            } else {
+                ItemStack insertedCastAmount = itemHandler.insertItem(0, itemStack.copy(), false);
+                itemStack.setCount(insertedCastAmount.getCount());
+            }
         }
 
         for (Block key : ALTERNATE_VERSIONS.keySet()) {
@@ -98,41 +117,5 @@ public class CastingBasinBlock extends ContainerBlock {
             }
         }
         return ItemInteractionResult.SUCCESS;
-    }
-
-    private static void insertAndExtract(Player player, InteractionHand interactionHand, IItemHandler itemHandler, CastingBasinBlockEntity blockEntity) {
-        if (!player.getItemInHand(interactionHand).isEmpty()) {
-            if (canInsert(itemHandler, player.getItemInHand(interactionHand))) {
-                int count = player.getItemInHand(interactionHand).getCount();
-                ItemStack itemStack = player.getItemInHand(interactionHand).copyAndClear();
-                itemStack.setCount(count);
-                itemHandler.insertItem(CAST_SLOT, itemStack, false);
-            }
-        } else if (player.getItemInHand(interactionHand).isEmpty()) {
-            // TODO: Prevent extracting items when casting is going on
-            int extractIndex = getFirstForExtract(itemHandler);
-            if (extractIndex != -1) {
-                ItemStack stack = itemHandler.getStackInSlot(extractIndex);
-                ItemHandlerHelper.giveItemToPlayer(player, stack.copy());
-                itemHandler.extractItem(extractIndex, stack.getCount(), false);
-                blockEntity.resetRenderedStack();
-            }
-        }
-    }
-
-    private static boolean canInsert(IItemHandler itemHandler, ItemStack toInsert) {
-        return itemHandler.getStackInSlot(CAST_SLOT).isEmpty()
-                || (itemHandler.getStackInSlot(CAST_SLOT).is(toInsert.getItem())
-                && itemHandler.getStackInSlot(CAST_SLOT).getCount() + toInsert.getCount() <= toInsert.getMaxStackSize());
-    }
-
-    // TODO: Make slot 1 preferred for extraction
-    private static int getFirstForExtract(IItemHandler itemHandler) {
-        for (int i = itemHandler.getSlots() - 1; i >= 0; i--) {
-            if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

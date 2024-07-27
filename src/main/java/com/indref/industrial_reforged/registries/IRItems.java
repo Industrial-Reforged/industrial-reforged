@@ -13,13 +13,10 @@ import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRItems {
@@ -87,6 +84,7 @@ public final class IRItems {
 
     //misc
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
+    public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
     public static final DeferredItem<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
     public static final DeferredItem<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
     public static final DeferredItem<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");

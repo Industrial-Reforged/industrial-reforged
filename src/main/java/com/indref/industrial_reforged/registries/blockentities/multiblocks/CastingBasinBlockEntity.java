@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.networking.CastingDurationPayload;
 import com.indref.industrial_reforged.networking.CastingGhostItemPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemAndFluidRecipeInput;
 import net.minecraft.core.BlockPos;
@@ -33,7 +34,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public CastingBasinBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CASTING_BASIN.get(), p_155229_, p_155230_);
-        addItemHandler(2);
+        addItemHandler(2, (slot, item) -> slot == 0 && item.getItem() instanceof MoldItem);
         addFluidTank(1000);
         this.data = new ContainerData() {
             @Override
@@ -90,7 +91,6 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public void updateRenderedStack() {
-        IndustrialReforged.LOGGER.debug("Updating render stack");
         this.resultItem = getCurrentRecipe().get().getResultItem(level.registryAccess());
         PacketDistributor.sendToAllPlayers(new CastingGhostItemPayload(this.resultItem, getBlockPos()));
     }
@@ -109,10 +109,15 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
             CrucibleCastingRecipe recipe = optionalRecipe.get();
             fluidTank.drain(recipe.fluidStack(), IFluidHandler.FluidAction.EXECUTE);
 
-            if (recipe.shouldConsumeCast())
+            if (recipe.shouldConsumeCast()) {
                 itemHandler.setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
+            }
 
-            itemHandler.insertItem(1, recipe.getResultItem(level.registryAccess()), false);
+            ItemStack resultItem1 = recipe.getResultItem(level.registryAccess());
+
+            resultItem1.grow(itemHandler.getStackInSlot(1).getCount());
+
+            itemHandler.setStackInSlot(1, resultItem1);
             resetProgress();
         }
     }

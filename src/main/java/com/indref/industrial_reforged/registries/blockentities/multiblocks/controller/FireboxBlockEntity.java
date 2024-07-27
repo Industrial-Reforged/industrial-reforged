@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
@@ -98,7 +99,9 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     public void setBlockActive(boolean value) {
         for (BlockPos pos : BlockUtils.getBlocksAroundSelfHorizontal(worldPosition)) {
             BlockState blockState = level.getBlockState(pos);
-            level.setBlockAndUpdate(pos, blockState.setValue(RefractoryBrickBlock.HATCH_ACTIVE, value));
+            if (blockState.hasProperty(RefractoryBrickBlock.HATCH_ACTIVE)) {
+                level.setBlockAndUpdate(pos, blockState.setValue(RefractoryBrickBlock.HATCH_ACTIVE, value));
+            }
         }
     }
 

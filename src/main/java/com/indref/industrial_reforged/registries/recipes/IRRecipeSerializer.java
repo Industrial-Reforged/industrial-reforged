@@ -12,11 +12,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-public class IRRecipeSerializer {
+public final class IRRecipeSerializer {
     protected static final class Casting {
         static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 FluidStack.CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
-                ItemStack.CODEC.fieldOf("cast").forGetter(CrucibleCastingRecipe::castItem),
+                Ingredient.CODEC.fieldOf("cast").forGetter(CrucibleCastingRecipe::castItem),
                 ItemStack.CODEC.fieldOf("result").forGetter(CrucibleCastingRecipe::resultStack),
                 Codec.INT.fieldOf("duration").forGetter(CrucibleCastingRecipe::duration),
                 Codec.BOOL.fieldOf("consume_cast").forGetter(CrucibleCastingRecipe::consumeCast)
@@ -24,7 +24,7 @@ public class IRRecipeSerializer {
         static final StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> STREAM_CODEC = StreamCodec.composite(
                 FluidStack.STREAM_CODEC,
                 CrucibleCastingRecipe::fluidStack,
-                ItemStack.STREAM_CODEC,
+                Ingredient.CONTENTS_STREAM_CODEC,
                 CrucibleCastingRecipe::castItem,
                 ItemStack.STREAM_CODEC,
                 CrucibleCastingRecipe::resultStack,
@@ -61,7 +61,8 @@ public class IRRecipeSerializer {
         static final MapCodec<CentrifugeRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 IngredientWithCount.CODEC.fieldOf("ingredient").forGetter(CentrifugeRecipe::ingredient),
                 ItemStack.CODEC.listOf().fieldOf("results").forGetter(CentrifugeRecipe::results),
-                Codec.INT.fieldOf("duration").forGetter(CentrifugeRecipe::duration)
+                Codec.INT.fieldOf("duration").forGetter(CentrifugeRecipe::duration),
+                Codec.INT.fieldOf("energy").forGetter(CentrifugeRecipe::energy)
         ).apply(builder, CentrifugeRecipe::new));
         static final StreamCodec<RegistryFriendlyByteBuf, CentrifugeRecipe> STREAM_CODEC = StreamCodec.composite(
                 IngredientWithCount.STREAM_CODEC,
@@ -70,6 +71,8 @@ public class IRRecipeSerializer {
                 CentrifugeRecipe::results,
                 ByteBufCodecs.INT,
                 CentrifugeRecipe::duration,
+                ByteBufCodecs.INT,
+                CentrifugeRecipe::energy,
                 CentrifugeRecipe::new
         );
     }

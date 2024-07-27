@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "indref:block/machines/centrifuge_bottom",
+    "down": "indref:block/basic_machine_frame",
     "east": "indref:block/machines/centrifuge_side",
     "north": "indref:block/machines/centrifuge_side",
     "particle": "indref:block/machines/centrifuge_side",

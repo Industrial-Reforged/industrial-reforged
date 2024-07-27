@@ -133,7 +133,6 @@ public class EnergyNets {
                 if (is(EnergyNet.EnergyTypes.TRANSMITTERS, offSetPos)) {
                     recheckConnections(offSetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enet, alreadyCheckedTracker);
                 } else if (is(EnergyNet.EnergyTypes.INTERACTORS, offSetPos)) {
-                    IndustrialReforged.LOGGER.debug("Found interactor: {}", offSetPos);
                     recheckConnections(offSetPos, EnergyNet.EnergyTypes.INTERACTORS, enet, alreadyCheckedTracker);
                 }
             }

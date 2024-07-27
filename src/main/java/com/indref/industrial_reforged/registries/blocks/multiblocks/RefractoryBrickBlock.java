@@ -70,6 +70,7 @@ public class RefractoryBrickBlock extends Block implements WrenchableBlock, Disp
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;

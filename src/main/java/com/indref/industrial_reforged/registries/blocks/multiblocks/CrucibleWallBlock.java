@@ -147,8 +147,6 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
             BlockPos pos = blockEntity.getControllerPos().get();
             CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
             displayText.addAll(DisplayUtils.displayHeatInfo(controllerBlockEntity, level.getBlockState(pos), Component.literal("Crucible")));
-        } else {
-            IndustrialReforged.LOGGER.debug("No controller present");
         }
     }
 

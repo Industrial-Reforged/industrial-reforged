@@ -61,7 +61,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public void serverTick() {
         if (hasRecipe()) {
-            IndustrialReforged.LOGGER.debug("Has repice");
             increaseCraftingProgress();
             setChanged(level, worldPosition, getBlockState());
 
@@ -87,10 +86,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         ItemStackHandler handler = getItemHandler();
         for (int i = 0; i < handler.getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipeOptional = this.getCurrentRecipe(i);
-            IndustrialReforged.LOGGER.debug("Optional recipe: {}", recipeOptional);
             if (recipeOptional.isPresent()) {
                 CrucibleSmeltingRecipe recipe = recipeOptional.get();
-                IndustrialReforged.LOGGER.debug("Recipe: {}", recipe);
                 ItemStack itemStack = handler.getStackInSlot(i);
                 CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
                 if (recipe.ingredient().test(itemStack) && tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
@@ -123,7 +120,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     }
                     float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().duration()) * 6;
                     if (pValue < 0) pValue = 0;
-                    IndustrialReforged.LOGGER.info("Progress: {}", pValue);
                     tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
                     itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                     PacketDistributor.sendToAllPlayers(new CrucibleMeltingProgressPayload(worldPosition, i, pValue));
