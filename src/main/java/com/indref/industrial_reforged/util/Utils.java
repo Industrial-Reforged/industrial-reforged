@@ -117,4 +117,8 @@ public final class Utils {
     public static <T> void arrayAdd(T[] arr, T elem) {
         arr[arr.length-1] = elem;
     }
+
+    public static Vector3f copyVec3f(Vector3f old) {
+        return new Vector3f(old.x, old.y, old.z);
+    }
 }
