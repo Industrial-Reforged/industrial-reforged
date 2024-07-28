@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
+import com.indref.industrial_reforged.api.blocks.FaucetInteractBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -43,7 +44,7 @@ import java.util.stream.Stream;
 
 import static com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity.CAST_SLOT;
 
-public class CastingBasinBlock extends ContainerBlock {
+public class CastingBasinBlock extends ContainerBlock implements FaucetInteractBlock {
     private static final ConcurrentMap<Block, Block> ALTERNATE_VERSIONS = new ConcurrentHashMap<>();
 
     public static final VoxelShape SHAPE = Stream.of(
@@ -117,5 +118,10 @@ public class CastingBasinBlock extends ContainerBlock {
             }
         }
         return ItemInteractionResult.SUCCESS;
+    }
+
+    @Override
+    public float getShapeMaxY(BlockGetter blockGetter, BlockPos blockPos) {
+        return (float) 2 / 16;
     }
 }
