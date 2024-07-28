@@ -34,9 +34,9 @@ import org.joml.Matrix4f;
 import java.util.Optional;
 
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
-    private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f,
-            MIN_Y = 2.1f / 16f,
-            MAX_Y = 0.4f - MIN_Y;
+    private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f;
+    public static final float MIN_Y = 2.1f / 16f;
+    public static final float MAX_Y = 0.4f - MIN_Y;
 
     public CastingBasinRenderer(BlockEntityRendererProvider.Context ignored) {
     }
@@ -45,6 +45,8 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
     public void render(CastingBasinBlockEntity castingTableBlockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, int combinedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack[] itemStacks = castingTableBlockEntity.getRenderStacks();
+
+        IndustrialReforged.LOGGER.debug("Margin: {}", SIDE_MARGIN);
 
         // This code for fading item and fluid texture is from Tinkers construct.
         // Thank you to the tinkers construct devs for implementing this
@@ -86,6 +88,7 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
             poseStack.popPose();
         }
 
+        // TODO: Remove this try
         try {
             IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(castingTableBlockEntity);
             if (fluidHandler != null) {

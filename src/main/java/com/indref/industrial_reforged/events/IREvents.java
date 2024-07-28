@@ -19,6 +19,7 @@ import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
+import com.indref.industrial_reforged.registries.blockentities.renderer.FaucetRenderer;
 import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
@@ -127,8 +128,8 @@ public class IREvents {
 
         @SubscribeEvent
         public static void registerBERenderer(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_BASIN.get(),
-                    CastingBasinRenderer::new);
+            event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_BASIN.get(), CastingBasinRenderer::new);
+            event.registerBlockEntityRenderer(IRBlockEntityTypes.FAUCET.get(), FaucetRenderer::new);
         }
     }
 

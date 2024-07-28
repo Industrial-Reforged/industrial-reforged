@@ -2,6 +2,11 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -11,9 +16,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -31,9 +38,8 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
-public class FaucetBlock extends Block implements WrenchableBlock {
+public class FaucetBlock extends RotatableContainerBlock implements WrenchableBlock {
     public static final BooleanProperty ATTACHED_TO_CRUCIBLE = BooleanProperty.create("attached_to_crucible");
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
     private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
 
     public FaucetBlock(Properties properties, Block ingredient) {
@@ -43,7 +49,7 @@ public class FaucetBlock extends Block implements WrenchableBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
-        return switch (p_60555_.getValue(FACING)) {
+        return switch (p_60555_.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> Stream.of(
                     Block.box(5, 5, 12, 11, 6, 16),
                     Block.box(5, 6, 12, 6, 9, 16),
@@ -70,14 +76,14 @@ public class FaucetBlock extends Block implements WrenchableBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        Direction direction = blockState.getValue(FACING);
+        Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         boolean attached = blockState.getValue(ATTACHED_TO_CRUCIBLE);
 
         for (Block key : ALTERNATE_VERSIONS.keySet()) {
             Block val = ALTERNATE_VERSIONS.get(key);
             if (itemStack.is(key.asItem()) && !blockState.is(val)) {
                 level.setBlockAndUpdate(blockPos, val.defaultBlockState()
-                        .setValue(FACING, direction)
+                        .setValue(BlockStateProperties.HORIZONTAL_FACING, direction)
                         .setValue(ATTACHED_TO_CRUCIBLE, attached));
                 return ItemInteractionResult.SUCCESS;
             }
@@ -87,7 +93,22 @@ public class FaucetBlock extends Block implements WrenchableBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
-        p_49915_.add(ATTACHED_TO_CRUCIBLE, FACING);
+        p_49915_.add(ATTACHED_TO_CRUCIBLE, BlockStateProperties.HORIZONTAL_FACING);
+    }
+
+    @Override
+    public boolean tickingEnabled() {
+        return false;
+    }
+
+    @Override
+    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+        return IRBlockEntityTypes.FAUCET.get();
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(props -> new FaucetBlock(props, null));
     }
 
     @Override
@@ -100,17 +121,12 @@ public class FaucetBlock extends Block implements WrenchableBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().relative(context.getHorizontalDirection()));
         Direction facing = context.getHorizontalDirection().getOpposite();
-        BlockState toReturn = super.getStateForPlacement(context).setValue(FACING, facing);
+        BlockState toReturn = super.getStateForPlacement(context).setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
         if (blockState.getBlock() instanceof CanAttachFaucetBlock canAttachFaucetBlock
                 && canAttachFaucetBlock.canAttachFaucetToBlock(blockState, context.getClickedPos(), context.getLevel(), facing)) {
             return toReturn.setValue(ATTACHED_TO_CRUCIBLE, true);
         }
 
         return toReturn.setValue(ATTACHED_TO_CRUCIBLE, false);
-    }
-
-    @Nullable
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return null;
     }
 }
