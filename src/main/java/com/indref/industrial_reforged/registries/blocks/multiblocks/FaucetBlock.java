@@ -112,8 +112,8 @@ public class FaucetBlock extends RotatableContainerBlock implements WrenchableBl
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_49232_) {
-        return RenderShape.MODEL;
+    public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
+        return RenderShape.INVISIBLE;
     }
 
     @Nullable

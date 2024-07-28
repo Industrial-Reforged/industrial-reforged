@@ -46,8 +46,6 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack[] itemStacks = castingTableBlockEntity.getRenderStacks();
 
-        IndustrialReforged.LOGGER.debug("Margin: {}", SIDE_MARGIN);
-
         // This code for fading item and fluid texture is from Tinkers construct.
         // Thank you to the tinkers construct devs for implementing this
         int duration = castingTableBlockEntity.getData().get(0);
