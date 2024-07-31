@@ -73,15 +73,17 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
         float minY = (2.1f / 16f) - 0.125f - yOffset;
         float maxY = 0.4f - minY + 0.2f + - 0.125f - yOffset;
         float height = minY + (maxY - minY);
+        float topMinV = sprite.getV(0);
+        float topMaxV = sprite.getV(0.625f);
         float minV = sprite.getV(0);
         float maxV = sprite.getV(1);
         IndustrialReforged.LOGGER.debug("H: {}, min: {}", height, minY);
         //float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
         // top
-        buffer.addVertex(matrix, 0.375f, height, 0).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.375f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.625f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.625f, height, 0).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.375f, height, 0).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.375f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.625f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.625f, height, 0).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, 1, 0);
 
         // back
         buffer.addVertex(matrix, 0.625f, height, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, -1);
