@@ -75,8 +75,6 @@ public class FluidTankRenderer {
         TextureAtlasSprite fluidStillSprite = getStillFluidSprite(fluidStack);
         int fluidColor = getColorTint(fluidStack);
 
-        IndustrialReforged.LOGGER.debug(String.format("tintcolor: %x", fluidColor));
-
         long amount = fluidStack.getAmount();
         long scaledAmount = (amount * height) / capacity;
 

@@ -43,8 +43,4 @@ public class BlastFurnaceMenu extends IRAbstractContainerMenu<BlastFurnaceBlockE
         return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()),
                 player, IRBlocks.BLAST_FURNACE_HATCH.get());
     }
-
-    public Optional<FluidStack> getFluidStack() {
-        return Optional.of(this.blockEntity.getFluidTank().getFluid());
-    }
 }

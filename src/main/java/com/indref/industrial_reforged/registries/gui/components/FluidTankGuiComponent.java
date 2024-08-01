@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.gui.FluidTankRenderer;
 import com.indref.industrial_reforged.api.gui.components.TooltipGuiComponent;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.GuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -29,14 +30,15 @@ public class FluidTankGuiComponent extends TooltipGuiComponent {
     @Override
     protected void onInit() {
         super.onInit();
+        ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
         // Need to initialize it here, since in the constructor we can't access the screen yet
-        this.renderer = new FluidTankRenderer(screen.getMenu().getBlockEntity().getFluidTank().getCapacity(), true, textureWidth()-2, textureHeight()-2);
+        this.renderer = new FluidTankRenderer(CapabilityUtils.fluidHandlerCapability(blockEntity).getTankCapacity(0), true, textureWidth()-2, textureHeight()-2);
     }
 
     @Override
     public List<Component> getTooltip() {
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        return renderer.getTooltip(blockEntity.getFluidTank().getFluid());
+        return renderer.getTooltip(CapabilityUtils.fluidHandlerCapability(blockEntity).getFluidInTank(0));
     }
 
     @Override
@@ -52,7 +54,8 @@ public class FluidTankGuiComponent extends TooltipGuiComponent {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         super.render(guiGraphics, mouseX, mouseY, delta);
-        renderer.render(guiGraphics.pose(), position.x + 1, position.y + 1, screen.getMenu().getBlockEntity().getFluidTank().getFluid());
+        ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
+        renderer.render(guiGraphics.pose(), position.x + 1, position.y + 1, CapabilityUtils.fluidHandlerCapability(blockEntity).getFluidInTank(0));
     }
 
     @Override

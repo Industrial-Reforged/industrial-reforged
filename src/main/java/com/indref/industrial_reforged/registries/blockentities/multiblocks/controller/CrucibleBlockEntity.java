@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.fluid.MultiFluidTank;
 import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -44,14 +45,19 @@ import java.util.Optional;
 
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private final CrucibleTier tier;
+    private final MultiFluidTank tank;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
-        addFluidTank(9000);
         addItemHandler(9);
         addHeatStorage(2000);
+        this.tank = new MultiFluidTank(9000, 2);
 
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
+    }
+
+    public MultiFluidTank getMultiFluidTank() {
+        return this.tank;
     }
 
     @Override
@@ -95,7 +101,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
                     itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                     FluidStack resultFluid = recipe.resultFluid();
-                    this.getFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
+                    this.getMultiFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
@@ -168,10 +174,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     private boolean canInsertFluidIntoOutput(Fluid fluid) {
-        if (getFluidTank().isEmpty()) return false;
+        if (getMultiFluidTank().isEmpty()) return false;
 
-        for (int i = 0; i < getFluidTank().getTanks(); i++) {
-            FluidStack fluidStack = getFluidTank().getFluidInTank(i);
+        for (int i = 0; i < getMultiFluidTank().getTanks(); i++) {
+            FluidStack fluidStack = getMultiFluidTank().getFluidInTank(i);
             if (fluidStack.isEmpty() || fluidStack.getFluid().equals(fluid)) {
                 return true;
             }
@@ -180,11 +186,11 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     private boolean canInsertAmountIntoOutput(int count) {
-        if (getFluidTank().isEmpty()) return false;
+        if (getMultiFluidTank().isEmpty()) return false;
 
-        for (int i = 0; i < getFluidTank().getTanks(); i++) {
-            FluidStack fluidStack = getFluidTank().getFluidInTank(i);
-            if (fluidStack.getAmount() + count <= getFluidTank().getTankCapacity(i))
+        for (int i = 0; i < getMultiFluidTank().getTanks(); i++) {
+            FluidStack fluidStack = getMultiFluidTank().getFluidInTank(i);
+            if (fluidStack.getAmount() + count <= getMultiFluidTank().getTankCapacity(i))
                 return true;
         }
         return false;

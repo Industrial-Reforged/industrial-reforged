@@ -50,8 +50,4 @@ public class CrucibleMenu extends IRAbstractContainerMenu<CrucibleBlockEntity> {
         return stillValid(ContainerLevelAccess.create(level, getBlockEntity().getBlockPos()),
                 player, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get());
     }
-
-    public FluidStack getFluidStack() {
-        return this.getBlockEntity().getFluidTank().getFluid();
-    }
 }
