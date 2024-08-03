@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
 import com.indref.industrial_reforged.registries.gui.components.FluidTankGuiComponent;
 import com.indref.industrial_reforged.registries.gui.components.HeatDisplayGuiComponent;
+import com.indref.industrial_reforged.registries.gui.components.MultiFluidTankGuiComponent;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,7 @@ public class CrucibleScreen extends IRAbstractContainerScreen<CrucibleMenu> {
     protected void init() {
         super.init();
         initComponents(
-                new FluidTankGuiComponent(new Vector2i(leftPos + 98, this.topPos + 17), FluidTankGuiComponent.TankVariants.LARGE),
+                new MultiFluidTankGuiComponent(new Vector2i(leftPos + 98, this.topPos + 17), FluidTankGuiComponent.TankVariants.LARGE, 2),
                 new HeatDisplayGuiComponent(new Vector2i((width - imageWidth) / 2, (height - imageHeight) / 2), true)
         );
     }

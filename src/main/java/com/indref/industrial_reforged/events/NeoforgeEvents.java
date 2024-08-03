@@ -64,8 +64,7 @@ public class NeoforgeEvents {
                     }
 
                     if (tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0) {
-                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, false);
-                        item.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                        item.remove(DataComponents.CUSTOM_DATA);
                     }
                 }
             }

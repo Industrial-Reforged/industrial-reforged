@@ -26,6 +26,9 @@ public class MultiFluidTank implements IFluidHandler, INBTSerializable<CompoundT
         this.fluids = new ArrayList<>();
         this.tanks = tanks;
         this.capacity = capacity;
+        for (int i = 0; i < this.tanks; i++) {
+            fluids.add(FluidStack.EMPTY);
+        }
     }
 
     @Override
@@ -35,7 +38,7 @@ public class MultiFluidTank implements IFluidHandler, INBTSerializable<CompoundT
 
     @Override
     public @NotNull FluidStack getFluidInTank(int i) {
-        return this.fluids.get(i) != null ? this.fluids.get(i) : FluidStack.EMPTY;
+        return i < this.tanks && i < this.fluids.size() ? this.fluids.get(i) : FluidStack.EMPTY;
     }
 
     public int getTankCapacity() {
@@ -46,6 +49,10 @@ public class MultiFluidTank implements IFluidHandler, INBTSerializable<CompoundT
     @Deprecated
     public int getTankCapacity(int i) {
         return this.getTankCapacity();
+    }
+
+    public void setTankCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     @Override
@@ -157,7 +164,7 @@ public class MultiFluidTank implements IFluidHandler, INBTSerializable<CompoundT
         CompoundTag fluids = tag.getCompound("fluids");
         for (int i = 0; i < fluidsAmount; i++) {
             FluidStack fluidStack = FluidStack.parseOptional(provider, fluids.getCompound(String.valueOf(i)));
-            this.fluids.add(fluidStack);
+            this.fluids.set(i, fluidStack);
         }
         this.capacity = tag.getInt("capacity");
         this.tanks = tag.getInt("tanks");

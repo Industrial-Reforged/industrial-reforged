@@ -3,11 +3,13 @@ package com.indref.industrial_reforged.registries.blockentities.machines;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeBlock;
 import com.indref.industrial_reforged.registries.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -24,6 +26,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,20 +72,23 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
             int energy = recipe.energy();
             int maxDuration = recipe.duration();
             this.maxDuration = maxDuration;
+            IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+            IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
+
             List<ItemStack> results = recipe.results();
             IngredientWithCount ingredient = recipe.ingredient();
-            if (canInsertItems(results) && getEnergyStorage().getEnergyStored() - energy >= 0) {
+            if (canInsertItems(results) && energyStorage.getEnergyStored() - energy >= 0) {
                 setActive(true);
-                getEnergyStorage().tryDrainEnergy(energy);
+                energyStorage.tryDrainEnergy(energy);
                 if (this.duration >= maxDuration) {
                     for (int i = 0; i < results.size(); i++) {
                         ItemStack result = results.get(i).copy();
-                        ItemStack prev = getItemHandler().getStackInSlot(i + 1);
+                        ItemStack prev = itemHandler.getStackInSlot(i + 1);
                         result.grow(prev.getCount());
 
-                        getItemHandler().setStackInSlot(i + 1, result);
+                        getItemStackHandler().setStackInSlot(i + 1, result);
                     }
-                    getItemHandler().extractItem(0, ingredient.count(), false);
+                    itemHandler.extractItem(0, ingredient.count(), false);
                     resetRecipe();
                 } else {
                     this.duration++;
@@ -102,8 +108,9 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     // TODO: Expensive operation, cache this
     private boolean canInsertItems(List<ItemStack> results) {
         IntList slots = new IntArrayList();
-        for (int slotIndex = 0; slotIndex < getItemHandler().getSlots(); slotIndex++) {
-            ItemStack slot = getItemHandler().getStackInSlot(slotIndex);
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+        for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+            ItemStack slot = itemHandler.getStackInSlot(slotIndex);
             for (ItemStack item : results) {
                 if (slot.isEmpty() || (slot.is(item.getItem()) && slot.getCount() + item.getCount() <= item.getMaxStackSize())) {
                     slots.add(slotIndex);
@@ -114,8 +121,10 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     public Optional<CentrifugeRecipe> getCurrentRecipe() {
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+
         return level.getRecipeManager()
-                .getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(Collections.singletonList(getItemHandler().getStackInSlot(0))), level)
+                .getRecipeFor(CentrifugeRecipe.TYPE, new ItemRecipeInput(Collections.singletonList(itemHandler.getStackInSlot(0))), level)
                 .map(RecipeHolder::value);
     }
 

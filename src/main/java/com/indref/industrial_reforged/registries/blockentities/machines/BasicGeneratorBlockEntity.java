@@ -12,6 +12,7 @@ import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
+import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +63,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     public void onItemsChanged(int slot) {
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
         if (itemHandler != null) {
-            ItemStack stack = getItemHandler().getStackInSlot(slot);
+            ItemStack stack = itemHandler.getStackInSlot(slot);
             int burnTime = stack.getBurnTime(RecipeType.SMELTING);
             if (burnTime > 0 && this.burnTime <= 0) {
                 this.burnTime = burnTime;
@@ -75,7 +76,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     @Override
     public void commonTick() {
         super.commonTick();
-        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
+        IEnergyStorage energyStorage = getEnergyStorage();
         if (energyStorage != null) {
             if (this.burnTime > 0) {
                 burnTime--;
@@ -84,7 +85,8 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 }
             } else {
                 this.maxBurnTime = 0;
-                ItemStack stack = getItemHandler().getStackInSlot(0);
+                IItemHandler itemHandler = getItemHandler();
+                ItemStack stack = itemHandler.getStackInSlot(0);
                 int burnTime = stack.getBurnTime(RecipeType.SMELTING);
                 if (burnTime > 0) {
                     this.burnTime = burnTime;

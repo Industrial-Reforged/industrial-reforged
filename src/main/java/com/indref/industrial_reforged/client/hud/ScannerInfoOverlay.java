@@ -16,9 +16,9 @@ public class ScannerInfoOverlay {
         Level level = minecraft.level;
         Player player = minecraft.player;
         if (minecraft.hitResult instanceof BlockHitResult blockHitResult) {
-            if (minecraft.player.getMainHandItem().getItem() instanceof DisplayItem displayItem) {
+            if (player.getMainHandItem().getItem() instanceof DisplayItem displayItem) {
                 displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos());
-            } else if (minecraft.player.getOffhandItem().getItem() instanceof DisplayItem displayItem) {
+            } else if (player.getOffhandItem().getItem() instanceof DisplayItem displayItem) {
                 displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos());
             }
         }

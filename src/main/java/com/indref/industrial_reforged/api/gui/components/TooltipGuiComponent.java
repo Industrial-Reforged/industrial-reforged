@@ -14,7 +14,7 @@ public abstract class TooltipGuiComponent extends GuiComponent {
         super(position);
     }
 
-    public abstract List<Component> getTooltip();
+    public abstract List<Component> getTooltip(int mouseX, int mouseY);
 
     private boolean shouldRenderTooltip(int mouseX, int mouseY) {
         int width = textureWidth();
@@ -29,7 +29,7 @@ public abstract class TooltipGuiComponent extends GuiComponent {
         boolean shouldRenderTooltip = shouldRenderTooltip(mouseX, mouseY);
         if (shouldRenderTooltip) {
             Font font = Minecraft.getInstance().font;
-            guiGraphics.renderComponentTooltip(font, getTooltip(), mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(font, getTooltip(mouseX, mouseY), mouseX, mouseY);
         }
     }
 }

@@ -41,7 +41,7 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         addDataSlots(data);
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);
-        IItemHandler itemHandler = blockEntity.getItemHandler();
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(blockEntity);
         // Centrifuge slots
         // Input slot
         addSlot(new SlotItemHandler(itemHandler, 0, 80, 41));

@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
@@ -74,7 +76,7 @@ public final class PayloadActions {
             if (level instanceof ClientLevel clientLevel) {
                 BlockEntity blockEntity = clientLevel.getBlockEntity(payload.pos());
                 if (blockEntity instanceof CrucibleBlockEntity crucibleBlockEntity) {
-                    ItemStackHandler stackHandler = crucibleBlockEntity.getItemHandler();
+                    IItemHandler stackHandler = CapabilityUtils.itemHandlerCapability(crucibleBlockEntity);
                     ItemStack stackInSlot = stackHandler.getStackInSlot(payload.slotIndex());
                     CompoundTag tag = ItemUtils.getImmutableTag(stackInSlot).copyTag();
                     tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, payload.progress());

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +31,7 @@ public class BlastFurnaceMenu extends IRAbstractContainerMenu<BlastFurnaceBlockE
         super(IRMenuTypes.BLAST_FURNACE_MENU.get(), pContainerId, inv, entity);
         checkContainerSize(inv, 2);
 
-        ItemStackHandler itemHandler = blockEntity.getItemHandler();
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
 
         this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 37));
         this.addSlot(new SlotItemHandler(itemHandler, 1, 18, 37));

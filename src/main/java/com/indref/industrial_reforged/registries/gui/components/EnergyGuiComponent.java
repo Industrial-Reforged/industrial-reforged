@@ -27,7 +27,7 @@ public class EnergyGuiComponent extends TooltipGuiComponent {
     }
 
     @Override
-    public List<Component> getTooltip() {
+    public List<Component> getTooltip(int mouseX, int mouseY) {
         ContainerBlockEntity blockEntity = screen.getMenu().getBlockEntity();
         IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
         if (energyStorage != null) {

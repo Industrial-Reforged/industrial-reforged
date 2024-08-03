@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.registries.blocks.multiblocks.RefractoryBr
 import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -28,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,8 +57,9 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     @Override
     public void onItemsChanged(int slot) {
-        if (getItemHandler() != null) {
-            ItemStack stack = getItemHandler().getStackInSlot(slot);
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+        if (itemHandler != null) {
+            ItemStack stack = itemHandler.getStackInSlot(slot);
             int burnTime = stack.getBurnTime(RecipeType.SMELTING);
             if (burnTime > 0 && this.burnTime <= 0) {
                 this.burnTime = burnTime;
@@ -73,7 +76,8 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     public void commonTick() {
-        IHeatStorage heatStorage = getHeatStorage();
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
         if (heatStorage != null) {
             if (this.burnTime > 0) {
                 burnTime--;
@@ -82,7 +86,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
                 }
             } else {
                 this.maxBurnTime = 0;
-                ItemStack stack = getItemHandler().getStackInSlot(INPUT_SLOT);
+                ItemStack stack = itemHandler.getStackInSlot(INPUT_SLOT);
                 int burnTime = stack.getBurnTime(RecipeType.SMELTING);
                 if (burnTime > 0) {
                     this.burnTime = burnTime;

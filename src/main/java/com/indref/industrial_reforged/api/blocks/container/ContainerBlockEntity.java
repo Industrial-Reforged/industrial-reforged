@@ -58,19 +58,35 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     public void commonTick() {
     }
 
-    public @Nullable ItemStackHandler getItemHandler() {
+    public IItemHandler getItemHandler() {
         return itemHandler;
     }
 
-    public @Nullable FluidTank getFluidTank() {
+    public IFluidHandler getFluidHandler() {
         return fluidTank;
     }
 
-    public @Nullable EnergyStorage getEnergyStorage() {
+    public IEnergyStorage getEnergyStorage() {
         return energyStorage;
     }
 
-    public @Nullable HeatStorage getHeatStorage() {
+    public IHeatStorage getHeatStorage() {
+        return heatStorage;
+    }
+
+    protected ItemStackHandler getItemStackHandler() {
+        return itemHandler;
+    }
+
+    protected FluidTank getFluidTank() {
+        return fluidTank;
+    }
+
+    protected EnergyStorage getEnergyStorageImpl() {
+        return energyStorage;
+    }
+
+    protected HeatStorage getHeatStorageImpl() {
         return heatStorage;
     }
 
@@ -95,10 +111,14 @@ public abstract class ContainerBlockEntity extends BlockEntity {
 
     @SuppressWarnings("unchecked")
     public <T, C> T getCapFromCache(BlockCapability<T, C> capability) {
-        if (capability == Capabilities.ItemHandler.BLOCK) return this.itemCapCache != null ? (T) this.itemCapCache.getCapability() : null;
-        else if (capability == Capabilities.FluidHandler.BLOCK) return this.fluidCapCache != null ? (T) this.fluidCapCache.getCapability() : null;
-        else if (capability == IRCapabilities.EnergyStorage.BLOCK) return this.energyCapCache != null ? (T) this.energyCapCache.getCapability() : null;
-        else if (capability == IRCapabilities.HeatStorage.BLOCK) return  this.heatCapCache != null ? (T) this.heatCapCache.getCapability() : null;
+        if (capability == Capabilities.ItemHandler.BLOCK)
+            return this.itemCapCache != null ? (T) this.itemCapCache.getCapability() : null;
+        else if (capability == Capabilities.FluidHandler.BLOCK)
+            return this.fluidCapCache != null ? (T) this.fluidCapCache.getCapability() : null;
+        else if (capability == IRCapabilities.EnergyStorage.BLOCK)
+            return this.energyCapCache != null ? (T) this.energyCapCache.getCapability() : null;
+        else if (capability == IRCapabilities.HeatStorage.BLOCK)
+            return this.heatCapCache != null ? (T) this.heatCapCache.getCapability() : null;
         else return null;
     }
 
@@ -116,12 +136,12 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         super.loadAdditional(nbt, provider);
         if (this.getFluidTank() != null)
             this.getFluidTank().readFromNBT(provider, nbt);
-        if (this.getItemHandler() != null)
-            this.getItemHandler().deserializeNBT(provider, nbt.getCompound("itemhandler"));
-        if (this.getEnergyStorage() != null)
-            this.getEnergyStorage().deserializeNBT(provider, nbt.getCompound("energy_storage"));
-        if (this.getHeatStorage() != null)
-            this.getHeatStorage().deserializeNBT(provider, nbt.getCompound("heat_storage"));
+        if (this.getItemStackHandler() != null)
+            this.getItemStackHandler().deserializeNBT(provider, nbt.getCompound("itemhandler"));
+        if (this.getEnergyStorageImpl() != null)
+            this.getEnergyStorageImpl().deserializeNBT(provider, nbt.getCompound("energy_storage"));
+        if (this.getHeatStorageImpl() != null)
+            this.getHeatStorageImpl().deserializeNBT(provider, nbt.getCompound("heat_storage"));
         loadData(nbt, provider);
     }
 
@@ -130,12 +150,12 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         super.saveAdditional(nbt, provider);
         if (getFluidTank() != null)
             getFluidTank().writeToNBT(provider, nbt);
-        if (getItemHandler() != null)
-            nbt.put("itemhandler", getItemHandler().serializeNBT(provider));
-        if (getEnergyStorage() != null)
-            nbt.put("energy_storage", getEnergyStorage().serializeNBT(provider));
-        if (getHeatStorage() != null)
-            nbt.put("heat_storage", getHeatStorage().serializeNBT(provider));
+        if (getItemStackHandler() != null)
+            nbt.put("itemhandler", getItemStackHandler().serializeNBT(provider));
+        if (getEnergyStorageImpl() != null)
+            nbt.put("energy_storage", getEnergyStorageImpl().serializeNBT(provider));
+        if (getHeatStorageImpl() != null)
+            nbt.put("heat_storage", getHeatStorageImpl().serializeNBT(provider));
         saveData(nbt, provider);
     }
 
@@ -149,11 +169,19 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         addItemHandler(slots, (slot, itemStack) -> true);
     }
 
+    protected final void addItemHandler(int slots, int slotLimit) {
+        addItemHandler(slots, slotLimit, (slot, itemStack) -> true);
+    }
+
+    protected final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
+        addItemHandler(slots, 64, validation);
+    }
+
     protected final void addFluidTank(int capacityInMb) {
         addFluidTank(capacityInMb, fluidStack -> true);
     }
 
-    protected final void addItemHandler(int slots, ValidationFunctions.ItemValid validation) {
+    protected final void addItemHandler(int slots, int slotLimit, ValidationFunctions.ItemValid validation) {
         this.itemHandler = new ItemStackHandler(slots) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -166,6 +194,11 @@ public abstract class ContainerBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 return validation.itemValid(slot, stack);
+            }
+
+            @Override
+            public int getSlotLimit(int slot) {
+                return slotLimit;
             }
         };
     }
@@ -242,7 +275,8 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     }
 
     public @Nullable ItemStack[] getItemHandlerStacks() {
-        ItemStackHandler itemStackHandler = getItemHandler();
+        IItemHandler itemStackHandler = getItemHandler();
+
         if (itemStackHandler == null) return null;
 
         ItemStack[] itemStacks = new ItemStack[itemStackHandler.getSlots()];

@@ -18,6 +18,7 @@ import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -49,14 +51,32 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
-        addItemHandler(9);
+        addItemHandler(9, 1);
         addHeatStorage(2000);
-        this.tank = new MultiFluidTank(9000, 2);
-
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
+        this.tank = new MultiFluidTank(9000, 2) {
+            @Override
+            protected void onContentsChanged() {
+                update();
+                setChanged();
+                onFluidChanged();
+                level.invalidateCapabilities(worldPosition);
+            }
+
+            private void update() {
+                if (!level.isClientSide()) {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                }
+            }
+        };
     }
 
     public MultiFluidTank getMultiFluidTank() {
+        return this.tank;
+    }
+
+    @Override
+    public IFluidHandler getFluidHandler() {
         return this.tank;
     }
 
@@ -65,7 +85,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return Component.literal("Crucible");
     }
 
-    public void serverTick() {
+    public void commonTick() {
         if (hasRecipe()) {
             increaseCraftingProgress();
             setChanged(level, worldPosition, getBlockState());
@@ -80,7 +100,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
             if (controllerBlockEntity instanceof FireboxBlockEntity) {
                 int output = fireboxMultiblock.get().getTier().getMaxHeatOutput();
-                IHeatStorage thisHeatStorage = CapabilityUtils.heatStorageCapability(this);
+                IHeatStorage thisHeatStorage = getHeatStorage();
                 IHeatStorage fireBoxHeatStorage = CapabilityUtils.heatStorageCapability(controllerBlockEntity);
                 int drained = fireBoxHeatStorage.tryDrainHeat(Math.min(output, thisHeatStorage.getHeatCapacity() - thisHeatStorage.getHeatStored()), false);
                 thisHeatStorage.tryFillHeat(drained, false);
@@ -89,7 +109,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     private void tryMeltItem() {
-        ItemStackHandler handler = getItemHandler();
+        IItemHandler handler = getItemHandler();
         for (int i = 0; i < handler.getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipeOptional = this.getCurrentRecipe(i);
             if (recipeOptional.isPresent()) {
@@ -101,15 +121,18 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
                     itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                     FluidStack resultFluid = recipe.resultFluid();
-                    this.getMultiFluidTank().fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
+                    if (!level.isClientSide()) {
+                        IFluidHandler fluidHandler = getFluidHandler();
+                        fluidHandler.fill(resultFluid.copy(), IFluidHandler.FluidAction.EXECUTE);
+                    }
                 }
             }
         }
     }
 
     private void increaseCraftingProgress() {
-        IItemHandler itemStackHandler = CapabilityUtils.itemHandlerCapability(this);
-        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
+        IItemHandler itemStackHandler = getItemHandler();
+        IHeatStorage heatStorage = getHeatStorage();
 
         if (itemStackHandler == null || heatStorage == null) return;
 
@@ -146,25 +169,25 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             FluidStack result = recipe.get().resultFluid();
             FluidStack fluidInTank = fluidHandler.getFluidInTank(0);
 
-            if ((fluidInTank.is(result.getFluid()) || fluidInTank.isEmpty())
-                    && fluidInTank.getAmount() + result.getAmount() <= fluidHandler.getTankCapacity(0)
-                    && fluidHandler.isFluidValid(0, result))
-                return true;
+//            if ((fluidInTank.is(result.getFluid()) || fluidInTank.isEmpty())
+//                    && fluidInTank.getAmount() + result.getAmount() <= fluidHandler.getTankCapacity(0)
+//                    && fluidHandler.isFluidValid(0, result))
+//                return true;
         }
 
-        return false;
+        return true;
     }
 
     private Optional<CrucibleSmeltingRecipe> getCurrentRecipe(int slot) {
-        ItemStack stackInSlot = getItemHandler().getStackInSlot(slot);
         IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+        ItemStack stackInSlot = itemHandler.getStackInSlot(slot);
 
         if (stackInSlot.isEmpty() || heatStorage == null) return Optional.empty();
 
-        Optional<CrucibleSmeltingRecipe> crucibleSmeltingRecipe = this.level.getRecipeManager()
+        return this.level.getRecipeManager()
                 .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingInput(stackInSlot, heatStorage.getHeatStored()), level)
                 .map(RecipeHolder::value);
-        return crucibleSmeltingRecipe;
     }
 
     @Nullable
@@ -214,5 +237,17 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadData(tag, provider);
+        this.getMultiFluidTank().deserializeNBT(provider, tag.getCompound("multi_fluid_tank"));
+    }
+
+    @Override
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
+        tag.put("multi_fluid_tank", this.getMultiFluidTank().serializeNBT(provider));
     }
 }

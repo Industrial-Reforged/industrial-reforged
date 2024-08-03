@@ -4,7 +4,7 @@
     "item": "minecraft:iron_ingot"
   },
   "result": {
-    "id": "minecraft:lava",
+    "id": "minecraft:water",
     "amount": 100
   },
   "heat": 100,

@@ -103,7 +103,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     public void castItem() {
         Optional<CrucibleCastingRecipe> optionalRecipe = getCurrentRecipe();
         FluidTank fluidTank = getFluidTank();
-        ItemStackHandler itemHandler = getItemHandler();
+        ItemStackHandler itemHandler = getItemStackHandler();
 
         if (optionalRecipe.isPresent()) {
             CrucibleCastingRecipe recipe = optionalRecipe.get();

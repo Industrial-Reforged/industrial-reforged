@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,9 +55,9 @@ public class DrainBlock extends RotatableContainerBlock implements WrenchableBlo
     protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         if (!level.isClientSide()) {
             DrainBlockEntity blockEntity = (DrainBlockEntity) level.getBlockEntity(blockPos);
-            FluidTank fluidTank = blockEntity.getFluidTank();
-            Fluid fluid = fluidTank.getFluid().getFluid();
-            int fluidAmount = fluidTank.getFluid().getAmount();
+            IFluidHandler fluidTank = blockEntity.getFluidHandler();
+            Fluid fluid = fluidTank.getFluidInTank(0).getFluid();
+            int fluidAmount = fluidTank.getFluidInTank(0).getAmount();
             player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType().getDescription().getString() + ", " + fluidAmount + "mb"));
         }
         return InteractionResult.SUCCESS;

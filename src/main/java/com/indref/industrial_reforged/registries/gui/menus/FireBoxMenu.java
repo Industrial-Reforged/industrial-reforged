@@ -36,7 +36,7 @@ public class FireBoxMenu extends IRAbstractContainerMenu<FireboxBlockEntity> {
 
         checkContainerSize(inv, 1);
 
-        IItemHandler itemHandler = entity.getItemHandler();
+        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
         this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
 
         this.addPlayerHotbar(inv);

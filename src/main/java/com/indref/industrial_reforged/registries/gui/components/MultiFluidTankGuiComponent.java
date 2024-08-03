@@ -9,22 +9,24 @@ import com.indref.industrial_reforged.util.renderer.GuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class FluidTankGuiComponent extends TooltipGuiComponent {
-    private static final ResourceLocation SMALL_TANK = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/small_tank.png");
-    private static final ResourceLocation NORMAL_TANK = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/normal_tank.png");
-    private static final ResourceLocation LARGE_TANK = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/large_tank.png");
-
-    private final TankVariants variant;
+public class MultiFluidTankGuiComponent extends TooltipGuiComponent {
+    private final FluidTankGuiComponent.TankVariants variant;
     private FluidTankRenderer renderer;
+    private int tanks;
 
-    public FluidTankGuiComponent(@NotNull Vector2i position, TankVariants variant) {
+    public MultiFluidTankGuiComponent(@NotNull Vector2i position, FluidTankGuiComponent.TankVariants variant, int tanks) {
         super(position);
         this.variant = variant;
+        this.tanks = tanks;
     }
 
     @Override
@@ -32,13 +34,16 @@ public class FluidTankGuiComponent extends TooltipGuiComponent {
         super.onInit();
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
         // Need to initialize it here, since in the constructor we can't access the screen yet
-        this.renderer = new FluidTankRenderer(CapabilityUtils.fluidHandlerCapability(blockEntity).getTankCapacity(0), true, textureWidth()-2, textureHeight()-2);
+        this.renderer = new FluidTankRenderer(CapabilityUtils.fluidHandlerCapability(blockEntity).getTankCapacity(0),
+                true,
+                textureWidth() - 2,
+                textureHeight() - 2
+        );
     }
 
     @Override
     public List<Component> getTooltip(int mouseX, int mouseY) {
-        ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        return renderer.getTooltip(CapabilityUtils.fluidHandlerCapability(blockEntity).getFluidInTank(0));
+        return Collections.emptyList();
     }
 
     @Override
@@ -51,32 +56,29 @@ public class FluidTankGuiComponent extends TooltipGuiComponent {
         return variant.textureHeight;
     }
 
+    public int fluidHeight() {
+        return 0;
+    }
+
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         super.render(guiGraphics, mouseX, mouseY, delta);
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        renderer.render(guiGraphics.pose(), position.x + 1, position.y + 1, CapabilityUtils.fluidHandlerCapability(blockEntity).getFluidInTank(0));
+        int fluidHeight = 0;
+        for (int i = 0; i < this.tanks; i++) {
+            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(blockEntity);
+            FluidStack fluid = fluidHandler.getFluidInTank(i);
+            renderer.render(guiGraphics.pose(), position.x + 1, position.y + 1 + fluidHeight, fluid);
+            int amount = fluid.getAmount();
+            int capacity = fluidHandler.getTankCapacity(0);
+            int height = textureHeight() - 2;
+            fluidHeight -= (amount * height) / capacity;
+        }
     }
 
     @Override
     public void renderInBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         super.renderInBackground(guiGraphics, mouseX, mouseY, delta);
         GuiUtils.drawImg(guiGraphics, variant.location, position.x, position.y, textureWidth(), textureHeight());
-    }
-
-    public enum TankVariants {
-        SMALL(18, 54, SMALL_TANK),
-        NORMAL(36, 54, NORMAL_TANK),
-        LARGE(54, 54, LARGE_TANK);
-
-        final int textureWidth;
-        final int textureHeight;
-        final ResourceLocation location;
-
-        TankVariants(int textureWidth, int textureHeight, ResourceLocation location) {
-            this.textureWidth = textureWidth;
-            this.textureHeight = textureHeight;
-            this.location = location;
-        }
     }
 }
