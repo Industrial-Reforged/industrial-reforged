@@ -1,9 +1,7 @@
-package com.indref.industrial_reforged.registries.blockentities.renderer;
+package com.indref.industrial_reforged.client.renderer.blockentity;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CastingBasinBlock;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,13 +23,10 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
-
-import java.util.Optional;
 
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
     private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f;

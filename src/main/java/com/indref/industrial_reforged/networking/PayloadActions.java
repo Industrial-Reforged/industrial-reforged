@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.renderer.item.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
@@ -18,7 +18,6 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public final class PayloadActions {

@@ -70,6 +70,14 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
+    public IFluidHandler getFluidHandler() {
+        if (!isMainController()) {
+            return CapabilityUtils.fluidHandlerCapability(level.getBlockEntity(mainControllerPos));
+        }
+        return super.getFluidHandler();
+    }
+
+    @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
     }

@@ -98,7 +98,7 @@ public class FaucetBlock extends RotatableContainerBlock implements WrenchableBl
 
     @Override
     public boolean tickingEnabled() {
-        return false;
+        return true;
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
+import com.indref.industrial_reforged.client.model.CrucibleModel;
+import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
@@ -12,14 +14,14 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
-import com.indref.industrial_reforged.registries.blockentities.renderer.CastingBasinRenderer;
-import com.indref.industrial_reforged.client.item_bars.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.client.item_bars.MultiBarRenderer;
+import com.indref.industrial_reforged.client.renderer.blockentity.CastingBasinRenderer;
+import com.indref.industrial_reforged.client.renderer.item.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.renderer.item.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.registries.blockentities.renderer.FaucetRenderer;
+import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
 import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
@@ -127,9 +129,15 @@ public class IREvents {
         }
 
         @SubscribeEvent
-        public static void registerBERenderer(EntityRenderersEvent.RegisterRenderers event) {
+        public static void registerBERenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(IRBlockEntityTypes.CRUCIBLE.get(), CrucibleRenderer::new);
             event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_BASIN.get(), CastingBasinRenderer::new);
             event.registerBlockEntityRenderer(IRBlockEntityTypes.FAUCET.get(), FaucetRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerModels(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            event.registerLayerDefinition(CrucibleModel.LAYER_LOCATION, CrucibleModel::createBodyLayer);
         }
     }
 
@@ -194,6 +202,7 @@ public class IREvents {
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE_WALL.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
         }
 
         @SubscribeEvent

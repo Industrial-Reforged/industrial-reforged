@@ -11,7 +11,6 @@ group = mod_group_id
 
 repositories {
     maven {
-        // location of the maven that hosts JEI files since January 2023
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
     }
@@ -22,34 +21,18 @@ base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 21 to end users in 1.20.5+, so your mod should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-//minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
-
-// Default run configurations.
-// These can be tweaked, removed, or duplicated as needed.
 runs {
-    // applies to all the run configs below
     configureEach {
-        // Recommended logging data for a userdev environment
-        // The markers can be added/remove as needed separated by commas.
-        // "SCAN": For mods scan.
-        // "REGISTRIES": For firing of registry events.
-        // "REGISTRYDUMP": For getting the contents of all registries.
         systemProperty 'forge.logging.markers', 'REGISTRIES'
 
-        // Recommended logging level for the console
-        // You can set various levels here.
-        // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
         systemProperty 'forge.logging.console.level', 'debug'
 
         modSource project.sourceSets.main
     }
 
     client {
-        // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
     }
 
@@ -58,32 +41,25 @@ runs {
         programArgument '--nogui'
     }
 
-    // This run config launches GameTestServer and runs all registered gametests, then exits.
-    // By default, the server will crash when no gametests are provided.
-    // The gametest system is also enabled by default for other run configs under the /test command.
     gameTestServer {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
     }
 
     data {
-        // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-        // workingDirectory project.file('run-data')
-
-        // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
         programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
 minecraft {
-  accessTransformers {
-    file('src/main/resources/META-INF/accesstransformer.cfg')
-  }
+    accessTransformers {
+        file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
 }
 
 subsystems {
     parchment {
         minecraftVersion = "1.21"
-        mappingsVersion = "2024.07.07"
+        mappingsVersion = "2024.07.28"
     }
 }
 
@@ -94,7 +70,7 @@ dependencies {
 
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    // at runtime, use the full JEI jar for Forge
+
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 }
 
@@ -113,7 +89,6 @@ tasks.withType(ProcessResources).configureEach {
     }
 }
 
-// Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
@@ -128,5 +103,12 @@ publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

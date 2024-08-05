@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +12,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,11 +45,21 @@ public class CrucibleWallBlockEntity extends BlockEntity implements SavesControl
     @Override
     public void setControllerPos(BlockPos blockPos) {
         this.controllerPos = Optional.ofNullable(blockPos);
-        // NetworkingHelper.sendToClient(new CrucibleControllerSyncData(this.worldPosition, blockPos));
     }
 
     public Optional<BlockPos> getControllerPos() {
         return controllerPos;
+    }
+
+    public IFluidHandler getFluidHandler() {
+        Optional<BlockPos> controllerPos = getControllerPos();
+        if (controllerPos.isPresent()) {
+            BlockEntity blockEntity = level.getBlockEntity(controllerPos.get());
+            if (blockEntity != null) {
+                return CapabilityUtils.fluidHandlerCapability(blockEntity);
+            }
+        }
+        return null;
     }
 
     @Nullable
