@@ -29,7 +29,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         poseStack.pushPose();
         this.model.setupAnimation(partialTick);
         VertexConsumer vertexconsumer = CRUCIBLE_LOCATION.buffer(bufferSource, RenderType::entitySolid);
-        this.model.render(poseStack, vertexconsumer, packedLight, packedOverlay, -1);
+        this.model.render(poseStack, vertexconsumer, packedLight, packedOverlay, -1, partialTick);
         poseStack.popPose();
     }
 
