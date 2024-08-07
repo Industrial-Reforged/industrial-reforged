@@ -62,16 +62,31 @@ public class CrucibleModel extends Model {
         } else {
             this.rotation += 0.025f;
         }
-        poseStack.pushPose();
-        poseStack.translate(0, 1.75, 0.125);
-        poseStack.mulPose(Axis.XP.rotation(this.rotation));
-        poseStack.translate(0, -1.75, -0.125);
 
-        poseStack.translate(0, -1, 0.125);
-        this.crucible.render(poseStack, buffer, packedLight, packedOverlay, color);
+        poseStack.pushPose();
+        {
+            poseStack.translate(0, 1.75, 0.55 - 1f / 16f);
+            poseStack.mulPose(Axis.XP.rotation(this.rotation));
+            poseStack.translate(0, -1.75, -(0.55 - 1f / 16f));
+
+            poseStack.translate(0, -1, 0.55 - 1f / 16f);
+            this.crucible.render(poseStack, buffer, packedLight, packedOverlay, color);
+        }
         poseStack.popPose();
-        this.leg0.render(poseStack, buffer, packedLight, packedOverlay, color);
-        this.leg1.render(poseStack, buffer, packedLight, packedOverlay, color);
+
+        poseStack.pushPose();
+        {
+            poseStack.translate(0, 0, 0.5 - 1f / 16f);
+            this.leg0.render(poseStack, buffer, packedLight, packedOverlay, color);
+        }
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        {
+            poseStack.translate(0, 0, 0.5 - 1f / 16f);
+            this.leg1.render(poseStack, buffer, packedLight, packedOverlay, color);
+        }
+        poseStack.popPose();
     }
 
     public void setupAnimation(float time) {
