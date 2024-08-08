@@ -15,9 +15,6 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.AABB;
 
 public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity> {
-    public static final Material CRUCIBLE_LOCATION = new Material(
-            InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "entity/crucible")
-    );
     private final CrucibleModel model;
 
     public CrucibleRenderer(BlockEntityRendererProvider.Context context) {
@@ -28,7 +25,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     public void render(CrucibleBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         poseStack.pushPose();
         this.model.setupAnimation(partialTick);
-        VertexConsumer vertexconsumer = CRUCIBLE_LOCATION.buffer(bufferSource, RenderType::entitySolid);
+        VertexConsumer vertexconsumer = CrucibleModel.CRUCIBLE_LOCATION.buffer(bufferSource, RenderType::entitySolid);
         this.model.render(poseStack, vertexconsumer, packedLight, packedOverlay, -1, partialTick);
         poseStack.popPose();
     }

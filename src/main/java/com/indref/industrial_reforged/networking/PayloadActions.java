@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.client.renderer.item.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;

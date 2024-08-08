@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
-import com.indref.industrial_reforged.client.renderer.item.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.CrucibleMeltingProgressPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRRegistries;

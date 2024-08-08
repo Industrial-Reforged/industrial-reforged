@@ -58,6 +58,11 @@ public class CrucibleControllerBlock extends ContainerBlock implements DisplayBl
     }
 
     @Override
+    public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
     public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return tier.getController().asItem().getDefaultInstance();
     }

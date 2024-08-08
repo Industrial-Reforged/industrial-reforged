@@ -6,7 +6,8 @@ import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
-import com.indref.industrial_reforged.registries.IRDataComponents;
+import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
+import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
@@ -15,12 +16,9 @@ import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.renderer.blockentity.CastingBasinRenderer;
-import com.indref.industrial_reforged.client.renderer.item.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.client.renderer.item.MultiBarRenderer;
+import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.client.renderer.item.bar.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
 import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
@@ -34,6 +32,7 @@ import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -49,20 +48,36 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientBus {
+
+        public static final CrucibleItemRenderer RENDERER = new CrucibleItemRenderer();
+
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
             event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
+        }
+
+        @SubscribeEvent
+        public static void onClientSetup(RegisterClientExtensionsEvent event) {
+            event.registerItem(new IClientItemExtensions() {
+                @Override
+                public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                    return RENDERER;
+                }
+            }, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().asItem());
         }
 
         @SubscribeEvent
