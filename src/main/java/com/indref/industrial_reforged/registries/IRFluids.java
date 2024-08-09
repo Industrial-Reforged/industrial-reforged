@@ -13,13 +13,23 @@ public final class IRFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
             DeferredRegister.create(Registries.FLUID, IndustrialReforged.MODID);
 
-    public static final Supplier<FlowingFluid> MOLTEN_STEEL_SOURCE = FLUIDS.register("molten_steel",
+    public static final Supplier<FlowingFluid> MOLTEN_STEEL_SOURCE = FLUIDS.register("molten_steel_still",
             () -> new BaseFlowingFluid.Source(IRFluids.MOLTEN_STEEL_PROPERTIES));
     public static final Supplier<FlowingFluid> MOLTEN_STEEL_FLOWING = FLUIDS.register("molten_steel_flowing",
             () -> new BaseFlowingFluid.Flowing(IRFluids.MOLTEN_STEEL_PROPERTIES));
 
+    public static final Supplier<FlowingFluid> OIL_SOURCE = FLUIDS.register("oil_still",
+            () -> new BaseFlowingFluid.Source(IRFluids.OIL_PROPERTIES));
+    public static final Supplier<FlowingFluid> OIL_FLOWING = FLUIDS.register("oil_flowing",
+            () -> new BaseFlowingFluid.Flowing(IRFluids.OIL_PROPERTIES));
+
     public static final BaseFlowingFluid.Properties MOLTEN_STEEL_PROPERTIES = new BaseFlowingFluid.Properties(
             IRFluidTypes.MOLTEN_STEEL_FLUID_TYPE, MOLTEN_STEEL_SOURCE, MOLTEN_STEEL_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(IRBlocks.MOLTEN_STEEL_BLOCK)
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(IRBlocks.MOLTEN_STEEL_FLUID_BLOCK)
             .bucket(IRItems.MOLTEN_STEEL_BUCKET);
+
+    public static final BaseFlowingFluid.Properties OIL_PROPERTIES = new BaseFlowingFluid.Properties(
+            IRFluidTypes.OIL_FLUID_TYPE, OIL_SOURCE, OIL_FLOWING)
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(IRBlocks.OIL_FLUID_BLOCK)
+            .bucket(IRItems.OIL_BUCKET);
 }

@@ -3,6 +3,11 @@
     {
       "type": "single",
       "resource": "indref:entity/crucible"
+    },
+    {
+      "type": "directory",
+      "source": "fluid",
+      "prefix": "fluid/"
     }
   ]
 }

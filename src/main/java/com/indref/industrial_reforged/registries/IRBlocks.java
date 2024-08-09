@@ -162,8 +162,10 @@ public final class IRBlocks {
     public static final DeferredBlock<RawOreStorageBlock> RAW_URANIUM_BLOCK = registerBlockAndItem("raw_uranium_block", RawOreStorageBlock::new);
     public static final DeferredBlock<MetalStorageBlock> STEEL_BLOCK = registerBlockAndItem("steel_block", MetalStorageBlock::new);
 
-    public static final DeferredBlock<LiquidBlock> MOLTEN_STEEL_BLOCK = BLOCKS.register("molten_steel_block",
+    public static final DeferredBlock<LiquidBlock> MOLTEN_STEEL_FLUID_BLOCK = BLOCKS.register("molten_steel_block",
             () -> new LiquidBlock(IRFluids.MOLTEN_STEEL_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
+    public static final DeferredBlock<LiquidBlock> OIL_FLUID_BLOCK = BLOCKS.register("oil_block",
+            () -> new LiquidBlock(IRFluids.OIL_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
 
     /**
      * Registers a new block and item

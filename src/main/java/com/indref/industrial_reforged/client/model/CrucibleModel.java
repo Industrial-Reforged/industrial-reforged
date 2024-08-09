@@ -20,8 +20,8 @@ public class CrucibleModel extends Model {
     );
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible"), "main");
     public final ModelPart crucible;
-    private final ModelPart leg0;
-    private final ModelPart leg1;
+    public final ModelPart leg0;
+    public final ModelPart leg1;
     private float rotation;
 
     public CrucibleModel(ModelPart root) {
@@ -35,23 +35,29 @@ public class CrucibleModel extends Model {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition crucible = partdefinition.addOrReplaceChild("crucible", CubeListBuilder.create().texOffs(38, 64).addBox(13.0F, -32.0F, -17.0F, 3.0F, 30.0F, 32.0F, new CubeDeformation(0.0F))
+        partdefinition.addOrReplaceChild("crucible", CubeListBuilder.create()
+                .texOffs(38, 64).addBox(13.0F, -32.0F, -17.0F, 3.0F, 30.0F, 32.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 0).addBox(-16.0F, -2.0F, -17.0F, 32.0F, 2.0F, 32.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 34).addBox(-16.0F, -32.0F, -17.0F, 3.0F, 30.0F, 32.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 12).addBox(16.0F, -27.0F, -4.0F, 8.0F, 6.0F, 6.0F, new CubeDeformation(0.0F))
                 .texOffs(76, 34).addBox(-13.0F, -32.0F, 12.0F, 26.0F, 30.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(108, 67).addBox(-13.0F, -32.0F, -17.0F, 26.0F, 30.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(76, 67).addBox(-13.0F, -27.0F, -17.0F, 26.0F, 25.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 34).addBox(-13.0F, -32.0F, -17.0F, 9.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 24).addBox(4.0F, -32.0F, -17.0F, 9.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 50).addBox(-4.0F, -32.0F, -20.0F, 2.0F, 5.0F, 6.0F, new CubeDeformation(0.0F))
+                .texOffs(38, 34).addBox(-2.0F, -29.0F, -20.0F, 4.0F, 2.0F, 6.0F, new CubeDeformation(0.0F))
+                .texOffs(14, 44).addBox(2.0F, -32.0F, -20.0F, 2.0F, 5.0F, 6.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 0).addBox(-24.0F, -27.0F, -4.0F, 8.0F, 6.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 1.0F));
 
-        PartDefinition leg0 = partdefinition.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(108, 100).addBox(-24.0F, -13.0F, -6.0F, 4.0F, 25.0F, 10.0F, new CubeDeformation(0.0F))
-                .texOffs(12, 44).addBox(-24.0F, -21.0F, 2.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 34).addBox(-24.0F, -21.0F, -4.0F, 4.0F, 2.0F, 6.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 42).addBox(-24.0F, -21.0F, -6.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 12.0F, 1.0F));
+        partdefinition.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(108, 95).addBox(-24.0F, -13.0F, -6.0F, 4.0F, 25.0F, 10.0F, new CubeDeformation(0.0F))
+                .texOffs(58, 34).addBox(-24.0F, -21.0F, 2.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(38, 42).addBox(-24.0F, -21.0F, -4.0F, 4.0F, 2.0F, 6.0F, new CubeDeformation(0.0F))
+                .texOffs(16, 55).addBox(-24.0F, -21.0F, -6.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 12.0F, 1.0F));
 
-        PartDefinition leg1 = partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 96).addBox(-26.0F, -13.0F, -6.0F, 4.0F, 25.0F, 10.0F, new CubeDeformation(0.0F))
-                .texOffs(38, 34).addBox(-26.0F, -21.0F, 2.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 24).addBox(-26.0F, -21.0F, -4.0F, 4.0F, 2.0F, 6.0F, new CubeDeformation(0.0F))
-                .texOffs(20, 34).addBox(-26.0F, -21.0F, -6.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(44.0F, 12.0F, 1.0F));
+        partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 96).addBox(-26.0F, -13.0F, -6.0F, 4.0F, 25.0F, 10.0F, new CubeDeformation(0.0F))
+                .texOffs(50, 50).addBox(-26.0F, -21.0F, 2.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 42).addBox(-26.0F, -21.0F, -4.0F, 4.0F, 2.0F, 6.0F, new CubeDeformation(0.0F))
+                .texOffs(38, 50).addBox(-26.0F, -21.0F, -6.0F, 4.0F, 8.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(44.0F, 12.0F, 1.0F));
 
         return LayerDefinition.create(meshdefinition, 256, 256);
     }

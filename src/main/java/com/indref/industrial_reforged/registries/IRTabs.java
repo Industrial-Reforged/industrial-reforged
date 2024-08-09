@@ -84,6 +84,9 @@ public final class IRTabs {
                 addItem(output, IRItems.CLAY_MOLD_BLANK);
                 addItem(output, IRItems.CLAY_MOLD_INGOT);
 
+                addItem(output, IRItems.OIL_BUCKET);
+                addItem(output, IRItems.MOLTEN_STEEL_BUCKET);
+
                 // Raw ore items
                 addItem(output, IRItems.RAW_BAUXITE);
                 addItem(output, IRItems.RAW_CHROMIUM);
