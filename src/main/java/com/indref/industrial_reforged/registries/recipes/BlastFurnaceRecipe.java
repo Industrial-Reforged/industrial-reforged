@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.recipes;
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.util.recipes.*;
 import com.indref.industrial_reforged.util.Utils;
-import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
+import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;

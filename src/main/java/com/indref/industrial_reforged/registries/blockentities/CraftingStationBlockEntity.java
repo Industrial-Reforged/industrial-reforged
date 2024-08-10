@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.machines;
+package com.indref.industrial_reforged.registries.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;

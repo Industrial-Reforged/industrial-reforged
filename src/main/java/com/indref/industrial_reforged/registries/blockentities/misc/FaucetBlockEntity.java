@@ -1,11 +1,8 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks;
+package com.indref.industrial_reforged.registries.blockentities.misc;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.util.CapabilityUtils;
-import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

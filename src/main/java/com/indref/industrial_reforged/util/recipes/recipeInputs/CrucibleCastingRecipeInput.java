@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util.recipes.recipe_inputs;
+package com.indref.industrial_reforged.util.recipes.recipeInputs;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record ItemAndFluidRecipeInput(List<ItemStack> itemStacks, FluidStack fluidStack) implements RecipeInput {
+public record CrucibleCastingRecipeInput(List<ItemStack> itemStacks, FluidStack fluidStack) implements RecipeInput {
     @Override
     public @NotNull ItemStack getItem(int i) {
         return itemStacks.get(i);

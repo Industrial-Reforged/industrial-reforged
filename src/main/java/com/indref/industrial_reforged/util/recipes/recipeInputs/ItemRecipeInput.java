@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util.recipes.recipe_inputs;
+package com.indref.industrial_reforged.util.recipes.recipeInputs;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;

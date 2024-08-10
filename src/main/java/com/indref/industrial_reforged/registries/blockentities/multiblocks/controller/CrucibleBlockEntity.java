@@ -11,7 +11,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
-import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingInput;
+import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleSmeltingRecipeInput;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.CapabilityUtils;
@@ -157,7 +157,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         if (stackInSlot.isEmpty() || heatStorage == null) return Optional.empty();
 
         return this.level.getRecipeManager()
-                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingInput(stackInSlot, heatStorage.getHeatStored()), level)
+                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingRecipeInput(stackInSlot, heatStorage.getHeatStored()), level)
                 .map(RecipeHolder::value);
     }
 

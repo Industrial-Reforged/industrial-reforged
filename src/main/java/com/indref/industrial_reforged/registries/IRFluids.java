@@ -13,12 +13,12 @@ public final class IRFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
             DeferredRegister.create(Registries.FLUID, IndustrialReforged.MODID);
 
-    public static final Supplier<FlowingFluid> MOLTEN_STEEL_SOURCE = FLUIDS.register("molten_steel_still",
+    public static final Supplier<FlowingFluid> MOLTEN_STEEL_SOURCE = FLUIDS.register("molten_steel",
             () -> new BaseFlowingFluid.Source(IRFluids.MOLTEN_STEEL_PROPERTIES));
     public static final Supplier<FlowingFluid> MOLTEN_STEEL_FLOWING = FLUIDS.register("molten_steel_flowing",
             () -> new BaseFlowingFluid.Flowing(IRFluids.MOLTEN_STEEL_PROPERTIES));
 
-    public static final Supplier<FlowingFluid> OIL_SOURCE = FLUIDS.register("oil_still",
+    public static final Supplier<FlowingFluid> OIL_SOURCE = FLUIDS.register("oil",
             () -> new BaseFlowingFluid.Source(IRFluids.OIL_PROPERTIES));
     public static final Supplier<FlowingFluid> OIL_FLOWING = FLUIDS.register("oil_flowing",
             () -> new BaseFlowingFluid.Flowing(IRFluids.OIL_PROPERTIES));

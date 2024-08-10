@@ -1,13 +1,10 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks;
+package com.indref.industrial_reforged.registries.blockentities;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.networking.CastingDurationPayload;
-import com.indref.industrial_reforged.networking.CastingGhostItemPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
-import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemAndFluidRecipeInput;
+import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleCastingRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,12 +88,10 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public void updateRenderedStack() {
         this.resultItem = getCurrentRecipe().get().getResultItem(level.registryAccess());
-        PacketDistributor.sendToAllPlayers(new CastingGhostItemPayload(this.resultItem, getBlockPos()));
     }
 
     public void resetRenderedStack() {
         this.resultItem = ItemStack.EMPTY;
-        PacketDistributor.sendToAllPlayers(new CastingGhostItemPayload(this.resultItem, getBlockPos()));
     }
 
     public void castItem() {
@@ -124,13 +118,11 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public void increaseCraftingProgress() {
         this.duration++;
-        PacketDistributor.sendToAllPlayers(new CastingDurationPayload(duration, maxDuration, worldPosition));
     }
 
     public void resetProgress() {
         this.duration = 0;
         this.maxDuration = 0;
-        PacketDistributor.sendToAllPlayers(new CastingDurationPayload(duration, maxDuration, worldPosition));
     }
 
     // TODO: Run ticking code on server and client
@@ -166,7 +158,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         }
 
         Optional<CrucibleCastingRecipe> recipe = this.level.getRecipeManager()
-                .getRecipeFor(CrucibleCastingRecipe.TYPE, new ItemAndFluidRecipeInput(itemStacks, getFluidTank().getFluidInTank(0)), level)
+                .getRecipeFor(CrucibleCastingRecipe.TYPE, new CrucibleCastingRecipeInput(itemStacks, getFluidTank().getFluidInTank(0)), level)
                 .map(RecipeHolder::value);
 
         if (recipe.isEmpty()) return Optional.empty();

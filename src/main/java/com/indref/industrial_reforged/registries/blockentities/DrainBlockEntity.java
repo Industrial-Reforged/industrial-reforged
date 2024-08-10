@@ -1,17 +1,15 @@
-package com.indref.industrial_reforged.registries.blockentities.machines;
+package com.indref.industrial_reforged.registries.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class DrainBlockEntity extends ContainerBlockEntity {
     public DrainBlockEntity(BlockPos p_155229_, BlockState p_155230_) {

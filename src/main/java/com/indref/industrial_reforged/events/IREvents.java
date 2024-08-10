@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
+import com.indref.industrial_reforged.api.fluids.BaseFluidType;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
@@ -31,14 +32,21 @@ import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.shaders.FogShape;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -49,15 +57,20 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class IREvents {
@@ -73,7 +86,8 @@ public class IREvents {
         }
 
         @SubscribeEvent
-        public static void onClientSetup(RegisterClientExtensionsEvent event) {
+        public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+            // Custom item renderers
             event.registerItem(new IClientItemExtensions() {
                 @Override
                 public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
@@ -86,6 +100,46 @@ public class IREvents {
                     return CRUCIBLE_LEGS_ITEM_RENDERER;
                 }
             }, IRBlocks.CERAMIC_CRUCIBLE_LEGS.get().asItem());
+
+            // Fluid renderers
+            for (FluidType fluidType : NeoForgeRegistries.FLUID_TYPES) {
+                if (fluidType instanceof BaseFluidType baseFluidType) {
+                    event.registerFluidType(new IClientFluidTypeExtensions() {
+                        @Override
+                        public @NotNull ResourceLocation getStillTexture() {
+                            return baseFluidType.getStillTexture();
+                        }
+
+                        @Override
+                        public @NotNull ResourceLocation getFlowingTexture() {
+                            return baseFluidType.getFlowingTexture();
+                        }
+
+                        @Override
+                        public @Nullable ResourceLocation getOverlayTexture() {
+                            return baseFluidType.getOverlayTexture();
+                        }
+
+                        @Override
+                        public int getTintColor() {
+                            Vec3i color = baseFluidType.getColor();
+                            return FastColor.ARGB32.color(color.getX(), color.getY(), color.getZ());
+                        }
+
+                        @Override
+                        public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                            Vec3i color = baseFluidType.getColor();
+                            return new Vector3f(color.getX() / 255f, color.getY() / 255f, color.getZ() / 255f);
+                        }
+
+                        @Override
+                        public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+                            RenderSystem.setShaderFogStart(1f);
+                            RenderSystem.setShaderFogEnd(6f); // distance when the fog starts
+                        }
+                    }, baseFluidType);
+                }
+            }
         }
 
         @SubscribeEvent
@@ -236,8 +290,6 @@ public class IREvents {
             registrar.playToServer(ItemActivityPayload.TYPE, ItemActivityPayload.STREAM_CODEC, PayloadActions::itemActivitySync);
             registrar.playToServer(ArmorActivityPayload.TYPE, ArmorActivityPayload.STREAM_CODEC, PayloadActions::armorActivitySync);
 
-            registrar.playToClient(CastingDurationPayload.TYPE, CastingDurationPayload.STREAM_CODEC, PayloadActions::castingDurationSync);
-            registrar.playToClient(CastingGhostItemPayload.TYPE, CastingGhostItemPayload.STREAM_CODEC, PayloadActions::castingGhostItemSync);
             registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, PayloadActions::crucibleControllerSync);
             registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, PayloadActions::crucibleMeltingProgressSync);
         }

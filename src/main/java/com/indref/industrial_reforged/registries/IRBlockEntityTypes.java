@@ -1,13 +1,13 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.blockentities.machines.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.machines.CraftingStationBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.machines.DrainBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.FaucetBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;

@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
@@ -38,29 +38,6 @@ public final class PayloadActions {
         if (level != null) {
             if (level.getBlockEntity(payload.wallPos()) instanceof CrucibleWallBlockEntity crucibleWallBlockEntity)
                 crucibleWallBlockEntity.setControllerPos(payload.controllerPos());
-        }
-    }
-
-    public static void castingGhostItemSync(CastingGhostItemPayload payload, IPayloadContext ctx) {
-        ClientLevel level = Minecraft.getInstance().level;
-        if (level != null) {
-            BlockEntity blockEntity = level.getBlockEntity(payload.blockPos());
-
-            if (blockEntity instanceof CastingBasinBlockEntity castingBasinBlockEntity) {
-                castingBasinBlockEntity.resultItem = payload.itemStack();
-            }
-        }
-    }
-
-    public static void castingDurationSync(CastingDurationPayload payload, IPayloadContext ctx) {
-        Level level = Minecraft.getInstance().level;
-        if (level != null) {
-            BlockEntity blockEntity = level.getBlockEntity(payload.blockPos());
-
-            if (blockEntity instanceof CastingBasinBlockEntity castingBasinBlockEntity) {
-                castingBasinBlockEntity.duration = payload.duration();
-                castingBasinBlockEntity.maxDuration = payload.maxDuration();
-            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks;
+package com.indref.industrial_reforged.registries.blockentities.multiblocks.misc;
 
 import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;

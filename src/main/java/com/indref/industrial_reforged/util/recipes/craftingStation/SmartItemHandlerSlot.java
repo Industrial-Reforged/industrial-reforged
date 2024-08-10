@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util.recipes.crafting_station;
+package com.indref.industrial_reforged.util.recipes.craftingStation;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

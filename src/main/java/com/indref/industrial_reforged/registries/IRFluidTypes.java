@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FastColor;
@@ -17,18 +18,18 @@ public final class IRFluidTypes {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, IndustrialReforged.MODID);
 
-    public static final Supplier<FluidType> SOAP_WATER_FLUID_TYPE = register("soap_water_fluid",
+    public static final Supplier<FluidType> SOAP_WATER_FLUID_TYPE = register("soap_water",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), new Vector3f(224f / 255f, 56f / 255f, 208f / 255f), 0xA1E038D0, FluidTemplate.WATER);
-    public static final Supplier<FluidType> OIL_FLUID_TYPE = register("oil_fluid",
+                    SoundEvents.HONEY_DRINK), new Vec3i(224, 56, 208), FluidTemplate.WATER);
+    public static final Supplier<FluidType> OIL_FLUID_TYPE = register("oil",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), new Vector3f(0 / 255f, 0 / 255f, 0 / 255f), 0xFFFFFF, FluidTemplate.OIL);
-    public static final Supplier<FluidType> MOLTEN_STEEL_FLUID_TYPE = register("molten_steel_fluid",
+                    SoundEvents.HONEY_DRINK), new Vec3i(255, 255, 255), FluidTemplate.OIL);
+    public static final Supplier<FluidType> MOLTEN_STEEL_FLUID_TYPE = register("molten_steel",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), new Vector3f(109f / 255f, 109f / 255f, 109f / 255f), FastColor.ARGB32.color(102, 102, 102), FluidTemplate.MOLTEN_METAL);
+                    SoundEvents.HONEY_DRINK), new Vec3i(109, 109, 109), FluidTemplate.MOLTEN_METAL);
 
-    private static Supplier<FluidType> register(String name, FluidType.Properties properties, Vector3f color, int tintColor, FluidTemplate template) {
-        return FLUID_TYPES.register(name, () -> new BaseFluidType(template.still, template.flowing, template.overlay, tintColor, color, properties));
+    private static Supplier<FluidType> register(String name, FluidType.Properties properties, Vec3i color, FluidTemplate template) {
+        return FLUID_TYPES.register(name, () -> new BaseFluidType(template.still, template.flowing, template.overlay, color, properties));
     }
 
     public enum FluidTemplate {

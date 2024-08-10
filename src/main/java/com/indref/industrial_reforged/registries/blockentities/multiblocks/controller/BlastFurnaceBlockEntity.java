@@ -1,17 +1,17 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRFluidTypes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
+import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -93,6 +93,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     public void commonTick() {
+        IndustrialReforged.LOGGER.debug(IRFluidTypes.MOLTEN_STEEL_FLUID_TYPE.get().toString());
         if (isMainController()) {
             Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
             if (optRecipe.isPresent()) {

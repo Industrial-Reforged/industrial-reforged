@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.CastingBasinBlock;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;

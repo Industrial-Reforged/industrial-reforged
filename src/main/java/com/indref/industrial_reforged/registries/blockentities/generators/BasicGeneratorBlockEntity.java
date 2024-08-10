@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.registries.blockentities.machines;
+package com.indref.industrial_reforged.registries.blockentities.generators;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -12,7 +11,6 @@ import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
-import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

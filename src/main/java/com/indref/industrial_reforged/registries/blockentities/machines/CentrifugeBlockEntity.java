@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.registries.blockentities.machines;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -11,7 +10,7 @@ import com.indref.industrial_reforged.registries.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.indref.industrial_reforged.util.recipes.recipe_inputs.ItemRecipeInput;
+import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
