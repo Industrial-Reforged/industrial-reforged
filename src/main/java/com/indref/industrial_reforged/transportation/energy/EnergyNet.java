@@ -1,11 +1,9 @@
 package com.indref.industrial_reforged.transportation.energy;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.GeneratorBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.registries.blocks.CableBlock;
+import com.indref.industrial_reforged.registries.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -150,7 +148,7 @@ public class EnergyNet {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
             if (energyStorage != null) {
-                int filled = energyStorage.tryFillEnergy(finalAmount[i]);
+                int filled = energyStorage.tryFillEnergy(finalAmount[i], false);
                 energyFilled += filled;
             }
         }

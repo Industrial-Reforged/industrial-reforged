@@ -5,35 +5,42 @@ import net.minecraft.util.Mth;
 
 public interface IEnergyStorage {
     EnergyTier getEnergyTier();
+
     /**
      * Removes energy from the storage. Returns the amount of energy that was removed.
      *
-     * @param value The amount of energy being drained.
+     * @param value    The amount of energy being drained.
+     * @param simulate whether the draining should only be simulated
      * @return Amount of energy that was extracted from the storage.
      */
-    default int tryDrainEnergy(int value) {
+    default int tryDrainEnergy(int value, boolean simulate) {
         if (!canDrainEnergy() || value <= 0) {
             return 0;
         }
 
         int energyExtracted = Math.min(getEnergyStored(), Math.min(getMaxOutput(), value));
-        setEnergyStored(getEnergyStored() - energyExtracted);
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() - energyExtracted);
+        }
         return energyExtracted;
     }
 
     /**
      * Adds energy to the storage. Returns the amount of energy that was accepted.
      *
-     * @param value The amount of energy being filled.
+     * @param value    The amount of energy being filled.
+     * @param simulate whether the filling should only be simulated
      * @return Amount of energy that was accepted by the storage.
      */
-    default int tryFillEnergy(int value) {
+    default int tryFillEnergy(int value, boolean simulate) {
         if (!canFillEnergy() || value <= 0) {
             return 0;
         }
 
         int energyReceived = Mth.clamp(getEnergyCapacity() - getEnergyStored(), 0, Math.min(getMaxInput(), value));
-        setEnergyStored(getEnergyStored() + energyReceived);
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() + energyReceived);
+        }
         return energyReceived;
     }
 

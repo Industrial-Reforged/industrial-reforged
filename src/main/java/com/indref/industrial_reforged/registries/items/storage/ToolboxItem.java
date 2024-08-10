@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-// TODO: Refactor this into api and use caps
 // TODO: Make it dyeable
 public class ToolboxItem extends BundleItem {
     private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);

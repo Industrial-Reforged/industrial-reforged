@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.api.items.tools.IToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.CapabilityUtils;
@@ -34,7 +34,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThermometerItem extends SimpleHeatItem implements DisplayItem, ToolItem {
+public class ThermometerItem extends SimpleHeatItem implements DisplayItem, IToolItem {
     public static final String DISPLAY_TEMPERATURE_KEY = "thermometer_temperature";
 
     public ThermometerItem(Properties properties) {

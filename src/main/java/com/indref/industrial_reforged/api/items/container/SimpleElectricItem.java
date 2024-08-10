@@ -49,10 +49,6 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, ctx, tooltip, flag);
-        int x = switch (stack.getItem()) {
-            case ScannerItem scannerItem -> 0;
-            default -> 0;
-        };
         ItemUtils.addEnergyTooltip(tooltip, stack);
     }
 

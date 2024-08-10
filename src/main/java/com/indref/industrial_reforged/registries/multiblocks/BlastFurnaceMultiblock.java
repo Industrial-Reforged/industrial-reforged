@@ -1,13 +1,9 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.BlastFurnaceBricksBlock;
-import com.indref.industrial_reforged.util.BlockUtils;
-import io.netty.util.internal.shaded.org.jctools.queues.IndexedQueueSizeUtil;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -70,8 +66,11 @@ public record BlastFurnaceMultiblock() implements Multiblock {
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        // TODO: Add actual check
-        return true;
+        BlockState blockState = level.getBlockState(blockPos);
+
+        if (!getDefinition().containsValue(blockState.getBlock())) return false;
+
+        return !blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED);
     }
 
     private static Direction getCorrectDirection(int index, MultiblockDirection direction) {

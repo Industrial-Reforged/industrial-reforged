@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import com.indref.industrial_reforged.api.items.tools.ToolItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;

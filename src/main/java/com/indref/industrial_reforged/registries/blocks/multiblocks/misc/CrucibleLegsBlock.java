@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks;
+package com.indref.industrial_reforged.registries.blocks.multiblocks.misc;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;

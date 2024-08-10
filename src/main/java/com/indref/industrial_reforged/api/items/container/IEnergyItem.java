@@ -33,10 +33,10 @@ public interface IEnergyItem {
     EnergyTier getEnergyTier();
 
     default int tryDrainEnergy(ItemStack itemStack, int value) {
-        return getCap(itemStack).tryDrainEnergy(value);
+        return getCap(itemStack).tryDrainEnergy(value, false);
     }
 
     default int tryFillEnergy(ItemStack itemStack, int value) {
-        return getCap(itemStack).tryFillEnergy(value);
+        return getCap(itemStack).tryFillEnergy(value, false);
     }
 }

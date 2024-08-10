@@ -78,7 +78,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
             IngredientWithCount ingredient = recipe.ingredient();
             if (canInsertItems(results) && energyStorage.getEnergyStored() - energy >= 0) {
                 setActive(true);
-                energyStorage.tryDrainEnergy(energy);
+                energyStorage.tryDrainEnergy(energy, false);
                 if (this.duration >= maxDuration) {
                     for (int i = 0; i < results.size(); i++) {
                         ItemStack result = results.get(i).copy();

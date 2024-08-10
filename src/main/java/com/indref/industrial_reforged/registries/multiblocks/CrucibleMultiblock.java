@@ -3,10 +3,7 @@ package com.indref.industrial_reforged.registries.multiblocks;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
-import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleWallBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -64,7 +61,9 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
-        return true;
+        BlockState blockState = level.getBlockState(blockPos);
+
+        return !blockState.hasProperty(CRUCIBLE_WALL);
     }
 
     public enum WallStates implements StringRepresentable {

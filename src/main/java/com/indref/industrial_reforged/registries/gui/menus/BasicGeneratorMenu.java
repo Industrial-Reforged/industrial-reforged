@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.gui.menus;
 
-import com.indref.industrial_reforged.api.gui.ChargingSlot;
+import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;

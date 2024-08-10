@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.transportation.energy;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.registries.blocks.CableBlock;
+import com.indref.industrial_reforged.registries.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;

@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.items.bundles;
 
 import com.google.common.collect.Lists;
 import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.api.items.tools.IToolItem;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -147,7 +147,7 @@ public record AdvancedBundleContents(List<ItemStack> items, Fraction weight) imp
         }
 
         public boolean isValid(ItemStack itemStack) {
-            return (itemStack.getItem() instanceof ToolItem || itemStack.getItem() instanceof PickaxeItem || itemStack.getItem() instanceof AxeItem || itemStack.getItem() instanceof ShovelItem);
+            return (itemStack.getItem() instanceof IToolItem || itemStack.getItem() instanceof PickaxeItem || itemStack.getItem() instanceof AxeItem || itemStack.getItem() instanceof ShovelItem);
         }
 
         public int tryTransfer(Slot p_330834_, Player p_331924_) {

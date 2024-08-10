@@ -125,7 +125,6 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         this.maxDuration = 0;
     }
 
-    // TODO: Run ticking code on server and client
     public int getDuration() {
         return duration;
     }

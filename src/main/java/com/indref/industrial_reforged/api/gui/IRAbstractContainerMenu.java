@@ -2,6 +2,8 @@ package com.indref.industrial_reforged.api.gui;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -53,6 +55,9 @@ public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> ex
 
     @Override
     protected @NotNull Slot addSlot(@NotNull Slot slot) {
+        if (slot instanceof ChargingSlot chargingSlot && this.blockEntity instanceof MachineBlockEntity machineBlockEntity) {
+            machineBlockEntity.addBatterySlot(chargingSlot);
+        }
         this.slotAmount++;
         return super.addSlot(slot);
     }

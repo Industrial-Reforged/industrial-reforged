@@ -1,7 +1,8 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.CastingBasinBlock;
+import com.indref.industrial_reforged.registries.blocks.misc.CastingBasinBlock;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -81,25 +82,21 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
             poseStack.popPose();
         }
 
-        // TODO: Remove this try
-        try {
-            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(castingTableBlockEntity);
-            if (fluidHandler != null) {
-                FluidStack fluidStack = fluidHandler.getFluidInTank(0);
-                int fluidCapacity = fluidHandler.getTankCapacity(0);
-                int alpha = 1;
+        IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(castingTableBlockEntity);
+        if (fluidHandler != null) {
+            FluidStack fluidStack = fluidHandler.getFluidInTank(0);
+            int fluidCapacity = fluidHandler.getTankCapacity(0);
+            int alpha = 1;
 
-                if (fluidStack.isEmpty())
-                    return;
+            if (fluidStack.isEmpty())
+                return;
 
-                float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
+            float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
 
-                if (fluidStack.getFluid().getFluidType().isLighterThanAir())
-                    renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
-                else
-                    renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
-            }
-        } catch (Exception ignored) {
+            if (fluidStack.getFluid().getFluidType().isLighterThanAir())
+                renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
+            else
+                renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
         }
     }
 

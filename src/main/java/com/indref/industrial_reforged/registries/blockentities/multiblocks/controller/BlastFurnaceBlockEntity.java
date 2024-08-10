@@ -41,7 +41,6 @@ import java.util.Optional;
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPos {
     private BlockPos mainControllerPos;
-    // TODO: Serialize this
     private int duration;
     private int maxDuration;
 
@@ -80,6 +79,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
+        tag.putInt("duration", this.duration);
     }
 
     private boolean isMainController() {
@@ -90,10 +90,10 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
+        this.duration = tag.getInt("duration");
     }
 
     public void commonTick() {
-        IndustrialReforged.LOGGER.debug(IRFluidTypes.MOLTEN_STEEL_FLUID_TYPE.get().toString());
         if (isMainController()) {
             Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
             if (optRecipe.isPresent()) {

@@ -12,7 +12,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.contr
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.FaucetBlock;
+import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;

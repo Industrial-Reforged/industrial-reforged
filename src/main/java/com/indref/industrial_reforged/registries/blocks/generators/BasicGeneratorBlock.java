@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.machines;
+package com.indref.industrial_reforged.registries.blocks.generators;
 
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;

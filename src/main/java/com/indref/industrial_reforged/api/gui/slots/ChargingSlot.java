@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.gui;
+package com.indref.industrial_reforged.api.gui.slots;
 
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;

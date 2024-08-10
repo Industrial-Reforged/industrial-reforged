@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
-import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.api.items.tools.IToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -17,7 +17,7 @@ import java.util.Random;
 
 import static com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
-public class ElectricTreeTapItem extends SimpleElectricItem implements ToolItem {
+public class ElectricTreeTapItem extends SimpleElectricItem implements IToolItem {
     public ElectricTreeTapItem(Properties properties, EnergyTier energyTier) {
         super(properties, energyTier);
     }

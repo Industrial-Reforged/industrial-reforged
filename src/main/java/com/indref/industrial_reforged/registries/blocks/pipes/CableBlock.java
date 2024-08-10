@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks;
+package com.indref.industrial_reforged.registries.blocks.pipes;
 
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;

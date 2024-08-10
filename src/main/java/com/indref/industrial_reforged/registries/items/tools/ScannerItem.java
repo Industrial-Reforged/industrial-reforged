@@ -3,12 +3,10 @@ package com.indref.industrial_reforged.registries.items.tools;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.items.ToolItem;
+import com.indref.industrial_reforged.api.items.tools.IToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
-import com.indref.industrial_reforged.util.DisplayUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -23,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScannerItem extends SimpleElectricItem implements ToolItem, DisplayItem {
+public class ScannerItem extends SimpleElectricItem implements IToolItem, DisplayItem {
     public ScannerItem(Properties p_41383_, EnergyTier energyTier) {
         super(p_41383_, energyTier);
     }

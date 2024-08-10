@@ -79,7 +79,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
             if (this.burnTime > 0) {
                 burnTime--;
                 if (!level.isClientSide()) {
-                    energyStorage.tryFillEnergy(GENERATION_AMOUNT);
+                    energyStorage.tryFillEnergy(GENERATION_AMOUNT, remove);
                 }
             } else {
                 this.maxBurnTime = 0;
@@ -104,7 +104,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
             Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
             if (enet.isPresent()) {
                 int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().getMaxOutput(), thisEnergyStorage.getEnergyStored()));
-                thisEnergyStorage.tryDrainEnergy(filled);
+                thisEnergyStorage.tryDrainEnergy(filled, false);
             }
         }
     }

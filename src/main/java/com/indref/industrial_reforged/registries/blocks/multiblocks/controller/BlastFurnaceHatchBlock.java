@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks;
+package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;

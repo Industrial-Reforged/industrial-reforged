@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.gui;
+package com.indref.industrial_reforged.api.gui.util;
 
 import com.google.common.base.Preconditions;
 import com.indref.industrial_reforged.IndustrialReforged;

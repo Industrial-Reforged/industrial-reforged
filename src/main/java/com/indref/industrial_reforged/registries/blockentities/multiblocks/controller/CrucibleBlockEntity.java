@@ -9,7 +9,7 @@ import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressR
 import com.indref.industrial_reforged.networking.CrucibleMeltingProgressPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRRegistries;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.CrucibleControllerBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleSmeltingRecipeInput;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
