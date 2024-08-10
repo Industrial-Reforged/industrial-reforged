@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -18,6 +19,7 @@ import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -34,23 +36,55 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CrucibleControllerBlock extends ContainerBlock implements DisplayBlock {
+public class CrucibleControllerBlock extends RotatableContainerBlock implements DisplayBlock {
     public static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
     private final CrucibleTier tier;
 
     public CrucibleControllerBlock(Properties properties, CrucibleTier crucibleTier) {
         super(properties);
         this.tier = crucibleTier;
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        if (!state.is(oldState.getBlock())) {
+            Direction facing =  state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            BlockPos prevPos = pos.relative(facing);
+            for (int i = 0; i < 4; i++) {
+                placeBlocks(level, prevPos, facing, i != 3);
+                prevPos = prevPos.relative(facing.getClockWise());
+                facing = facing.getClockWise();
+            }
+
+        }
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+    }
+
+    private static void placeBlocks(Level level, BlockPos pos, Direction facing, boolean replaceController) {
+        if (replaceController) {
+            level.setBlockAndUpdate(pos, IRBlocks.CERAMIC_CRUCIBLE_WALL.get().defaultBlockState()
+                    .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
+                    .setValue(CrucibleMultiblock.CRUCIBLE_WALL, CrucibleMultiblock.WallStates.BOTTOM));
+        }
+        level.setBlockAndUpdate(pos.above(), IRBlocks.CERAMIC_CRUCIBLE_WALL.get().defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
+                .setValue(CrucibleMultiblock.CRUCIBLE_WALL, CrucibleMultiblock.WallStates.MIDDLE));
+        level.setBlockAndUpdate(pos.above(2), IRBlocks.CERAMIC_CRUCIBLE_WALL.get().defaultBlockState()
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
+                .setValue(CrucibleMultiblock.CRUCIBLE_WALL, CrucibleMultiblock.WallStates.TOP));
     }
 
     public CrucibleTier getTier() {
@@ -68,8 +102,14 @@ public class CrucibleControllerBlock extends ContainerBlock implements DisplayBl
     }
 
     @Override
-    public @NotNull VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
-        return SHAPE;
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING).getCounterClockWise()) {
+            case NORTH -> CrucibleWallBlock.VoxelShapes.BOTTOM_NORTH;
+            case EAST -> CrucibleWallBlock.VoxelShapes.BOTTOM_EAST;
+            case SOUTH -> CrucibleWallBlock.VoxelShapes.BOTTOM_SOUTH;
+            case WEST -> CrucibleWallBlock.VoxelShapes.BOTTOM_WEST;
+            default -> super.getShape(state, level, pos, context);
+        };
     }
 
     @Override

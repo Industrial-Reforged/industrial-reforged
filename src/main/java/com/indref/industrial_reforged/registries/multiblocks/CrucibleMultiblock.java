@@ -59,30 +59,6 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
 
     @Override
     public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
-        BlockState currentBlock = level.getBlockState(blockPos);
-        if (currentBlock.is(tier.getCrucibleWallBlock()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_WALL.get())) {
-            return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
-                    .defaultBlockState()
-                    .setValue(CRUCIBLE_WALL, switch (index) {
-                        case 0, 2, 6, 8 -> switch (indexY) {
-                            case 0 -> WallStates.EDGE_BOTTOM;
-                            default -> WallStates.EDGE_TOP;
-                        };
-                        case 1, 3, 5, 7 -> switch (indexY) {
-                            case 0 -> WallStates.WALL_BOTTOM;
-                            default -> WallStates.WALL_TOP;
-                        };
-                        default -> WallStates.WALL_TOP;
-                    })
-                    .setValue(CrucibleWallBlock.FACING, switch (index) {
-                        case 1, 2 -> Direction.EAST;
-                        case 5, 8 -> Direction.SOUTH;
-                        case 6, 7 -> Direction.WEST;
-                        default -> Direction.NORTH;
-                    }));
-        } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
-            return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState());
-        }
         return Optional.empty();
     }
 
@@ -92,10 +68,9 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     public enum WallStates implements StringRepresentable {
-        EDGE_BOTTOM("edge_bottom"),
-        EDGE_TOP("edge_top"),
-        WALL_BOTTOM("wall_bottom"),
-        WALL_TOP("wall_top");
+        TOP("top"),
+        MIDDLE("middle"),
+        BOTTOM("bottom");
 
         private final String name;
 

@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -38,6 +39,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,8 +50,9 @@ import java.util.Optional;
 
 import static com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
-@SuppressWarnings("deprecation")
-public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock, CanAttachFaucetBlock {
+public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock {
+    public static final VoxelShape SHAPE_TOP = Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
+    public static final VoxelShape SHAPE_BOTTOM = Block.box(0.0, 4.0, 0.0, 16.0, 16.0, 16.0);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
 
@@ -57,17 +62,11 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
     }
 
     public CrucibleWallBlock(Properties properties) {
-        super(properties);
-        this.tier = null;
+        this(properties, null);
     }
 
     public CrucibleTier getTier() {
         return tier;
-    }
-
-    @Override
-    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return IRBlocks.TERRACOTTA_BRICK.get().asItem().getDefaultInstance();
     }
 
     @Override
@@ -83,29 +82,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Player player = context.getPlayer();
-        if (player.hasEffect(MobEffects.ABSORPTION)) {
-            return defaultBlockState()
-                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.WALL_BOTTOM);
-        } else if (player.hasEffect(MobEffects.BAD_OMEN)) {
-            return defaultBlockState()
-                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.WALL_TOP);
-        } else if (player.hasEffect(MobEffects.CONDUIT_POWER)) {
-            return defaultBlockState()
-                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.EDGE_BOTTOM);
-        } else {
-            return defaultBlockState()
-                    .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                    .setValue(CRUCIBLE_WALL, CrucibleMultiblock.WallStates.EDGE_TOP);
-        }
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
         blockEntity.getControllerPos().ifPresent(pos -> {
             CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
@@ -116,7 +93,34 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     public @NotNull RenderShape getRenderShape(BlockState p_49232_) {
-        return RenderShape.MODEL;
+        return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    protected @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(CRUCIBLE_WALL)) {
+            case TOP -> switch (state.getValue(FACING)) {
+                case NORTH -> VoxelShapes.TOP_NORTH;
+                case EAST -> VoxelShapes.TOP_EAST;
+                case SOUTH -> VoxelShapes.TOP_SOUTH;
+                case WEST -> VoxelShapes.TOP_WEST;
+                default -> super.getShape(state, level, pos, context);
+            };
+            case MIDDLE -> switch (state.getValue(FACING)) {
+                case NORTH -> VoxelShapes.MIDDLE_NORTH;
+                case EAST -> VoxelShapes.MIDDLE_EAST;
+                case SOUTH -> VoxelShapes.MIDDLE_SOUTH;
+                case WEST -> VoxelShapes.MIDDLE_WEST;
+                default -> super.getShape(state, level, pos, context);
+            };
+            case BOTTOM -> switch (state.getValue(FACING)) {
+                case NORTH -> VoxelShapes.BOTTOM_NORTH;
+                case EAST -> VoxelShapes.BOTTOM_EAST;
+                case SOUTH -> VoxelShapes.BOTTOM_SOUTH;
+                case WEST -> VoxelShapes.BOTTOM_WEST;
+                default -> super.getShape(state, level, pos, context);
+            };
+        };
     }
 
     @Override
@@ -125,7 +129,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(CrucibleWallBlock::new);
     }
 
@@ -155,9 +159,22 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
         return List.of(IRItems.THERMOMETER.get());
     }
 
-    @Override
-    public boolean canAttachFaucetToBlock(BlockState blockState, BlockPos blockPos, Level level, Direction facing) {
-        return blockState.getValue(CrucibleMultiblock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.WALL_BOTTOM)
-                || blockState.getValue(CrucibleMultiblock.CRUCIBLE_WALL).equals(CrucibleMultiblock.WallStates.EDGE_BOTTOM);
+    public static final class VoxelShapes {
+        public static final VoxelShape TOP_NORTH = Shapes.or(Block.box(0, 0, 0, 16, 4, 3), Block.box(0, 0, 3, 3, 4, 16));
+        public static final VoxelShape TOP_EAST = Shapes.or(Block.box(13, 0, 0, 16, 4, 16), Block.box(0, 0, 0, 13, 4, 3));
+        public static final VoxelShape TOP_SOUTH = Shapes.or(Block.box(0, 0, 13, 16, 4, 16), Block.box(13, 0, 0, 16, 4, 13));
+        public static final VoxelShape TOP_WEST = Shapes.or(Block.box(0, 0, 0, 3, 4, 16), Block.box(3, 0, 13, 16, 4, 16));
+
+        public static final VoxelShape MIDDLE_NORTH = Shapes.or(Block.box(0, 0, 0, 16, 16, 3), Block.box(0, 0, 3, 3, 16, 16));
+        public static final VoxelShape MIDDLE_EAST = Shapes.or(Block.box(13, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 13, 16, 3));
+        public static final VoxelShape MIDDLE_SOUTH = Shapes.or(Block.box(0, 0, 13, 16, 16, 16), Block.box(13, 0, 0, 16, 16, 13));
+        public static final VoxelShape MIDDLE_WEST = Shapes.or(Block.box(0, 0, 0, 3, 16, 16), Block.box(3, 0, 13, 16, 16, 16));
+
+        public static final VoxelShape BOTTOM_BASE = Block.box(0, 4, 0, 16, 6, 16);
+
+        public static final VoxelShape BOTTOM_NORTH = Shapes.or(BOTTOM_BASE, Block.box(0, 4, 0, 16, 16, 3), Block.box(0, 4, 3, 3, 16, 16));
+        public static final VoxelShape BOTTOM_EAST = Shapes.or(BOTTOM_BASE, Block.box(13, 4, 0, 16, 16, 16), Block.box(0, 4, 0, 13, 16, 3));
+        public static final VoxelShape BOTTOM_SOUTH = Shapes.or(BOTTOM_BASE, Block.box(0, 4, 13, 16, 16, 16), Block.box(13, 4, 0, 16, 16, 13));
+        public static final VoxelShape BOTTOM_WEST = Shapes.or(BOTTOM_BASE, Block.box(0, 4, 0, 3, 16, 16), Block.box(3, 4, 13, 16, 16, 16));
     }
 }

@@ -61,6 +61,8 @@ public final class IRBlocks {
             () -> new Block(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<CrucibleControllerBlock> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
+    public static final DeferredBlock<CrucibleLegsBlock> CERAMIC_CRUCIBLE_LEGS = registerBlockAndItem("ceramic_crucible_legs",
+            () -> new CrucibleLegsBlock(BlockBehaviour.Properties.of().noOcclusion()));
     public static final DeferredBlock<CrucibleWallBlock> CERAMIC_CRUCIBLE_WALL = registerBlockAndItem("ceramic_crucible_wall",
             () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final DeferredBlock<FaucetBlock> CERAMIC_FAUCET = registerBlockAndItem("ceramic_faucet",

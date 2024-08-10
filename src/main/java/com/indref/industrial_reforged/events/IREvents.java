@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
+import com.indref.industrial_reforged.client.renderer.item.CrucibleLegsItemRenderer;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
@@ -63,7 +64,8 @@ public class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientBus {
 
-        public static final CrucibleItemRenderer RENDERER = new CrucibleItemRenderer();
+        public static final CrucibleItemRenderer CRUCIBLE_ITEM_RENDERER = new CrucibleItemRenderer();
+        public static final CrucibleLegsItemRenderer CRUCIBLE_LEGS_ITEM_RENDERER = new CrucibleLegsItemRenderer();
 
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
@@ -75,9 +77,15 @@ public class IREvents {
             event.registerItem(new IClientItemExtensions() {
                 @Override
                 public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                    return RENDERER;
+                    return CRUCIBLE_ITEM_RENDERER;
                 }
             }, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().asItem());
+            event.registerItem(new IClientItemExtensions() {
+                @Override
+                public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                    return CRUCIBLE_LEGS_ITEM_RENDERER;
+                }
+            }, IRBlocks.CERAMIC_CRUCIBLE_LEGS.get().asItem());
         }
 
         @SubscribeEvent
