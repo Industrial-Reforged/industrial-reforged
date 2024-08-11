@@ -44,35 +44,6 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
         this.tier = crucibleTier;
     }
 
-    @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        if (!state.is(oldState.getBlock())) {
-            Direction facing =  state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            BlockPos prevPos = pos.relative(facing);
-            for (int i = 0; i < 4; i++) {
-                placeBlocks(level, prevPos, facing, i != 3);
-                prevPos = prevPos.relative(facing.getClockWise());
-                facing = facing.getClockWise();
-            }
-
-        }
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-    }
-
-    private static void placeBlocks(Level level, BlockPos pos, Direction facing, boolean replaceController) {
-        if (replaceController) {
-            level.setBlockAndUpdate(pos, IRBlocks.CERAMIC_CRUCIBLE_WALL.get().defaultBlockState()
-                    .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
-                    .setValue(CrucibleMultiblock.CRUCIBLE_WALL, CrucibleMultiblock.WallStates.BOTTOM));
-        }
-        level.setBlockAndUpdate(pos.above(), IRBlocks.CERAMIC_CRUCIBLE_WALL.get().defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
-                .setValue(CrucibleMultiblock.CRUCIBLE_WALL, CrucibleMultiblock.WallStates.MIDDLE));
-        level.setBlockAndUpdate(pos.above(2), IRBlocks.CERAMIC_CRUCIBLE_WALL.get().defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, facing)
-                .setValue(CrucibleMultiblock.CRUCIBLE_WALL, CrucibleMultiblock.WallStates.TOP));
-    }
-
     public CrucibleTier getTier() {
         return tier;
     }
@@ -89,13 +60,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING).getCounterClockWise()) {
-            case NORTH -> CrucibleWallBlock.VoxelShapes.BOTTOM_NORTH;
-            case EAST -> CrucibleWallBlock.VoxelShapes.BOTTOM_EAST;
-            case SOUTH -> CrucibleWallBlock.VoxelShapes.BOTTOM_SOUTH;
-            case WEST -> CrucibleWallBlock.VoxelShapes.BOTTOM_WEST;
-            default -> super.getShape(state, level, pos, context);
-        };
+        return SHAPE;
     }
 
     @Override

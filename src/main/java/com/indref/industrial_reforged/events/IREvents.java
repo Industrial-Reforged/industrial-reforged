@@ -6,7 +6,6 @@ import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
-import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleLegsRenderer;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleLegsItemRenderer;
@@ -95,12 +94,6 @@ public class IREvents {
                     return CRUCIBLE_ITEM_RENDERER;
                 }
             }, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().asItem());
-            event.registerItem(new IClientItemExtensions() {
-                @Override
-                public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                    return CRUCIBLE_LEGS_ITEM_RENDERER;
-                }
-            }, IRBlocks.CERAMIC_CRUCIBLE_LEGS.get().asItem());
 
             // Fluid renderers
             for (FluidType fluidType : NeoForgeRegistries.FLUID_TYPES) {
@@ -209,7 +202,6 @@ public class IREvents {
         @SubscribeEvent
         public static void registerBERenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(IRBlockEntityTypes.CRUCIBLE.get(), CrucibleRenderer::new);
-            event.registerBlockEntityRenderer(IRBlockEntityTypes.CRUCIBLE_LEGS.get(), CrucibleLegsRenderer::new);
             event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_BASIN.get(), CastingBasinRenderer::new);
             event.registerBlockEntityRenderer(IRBlockEntityTypes.FAUCET.get(), FaucetRenderer::new);
         }

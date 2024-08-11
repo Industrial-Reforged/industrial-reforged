@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFu
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,7 +56,7 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 3) {
             return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));

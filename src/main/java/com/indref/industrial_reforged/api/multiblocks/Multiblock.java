@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.api.multiblocks;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,7 +56,7 @@ public interface Multiblock {
         return widths;
     }
 
-    Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY);
+    Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, @Nullable Player player);
 
     /**
      * This gets called after the block at `blockpos` is formed

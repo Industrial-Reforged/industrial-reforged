@@ -22,7 +22,7 @@ public enum CrucibleTiers implements CrucibleTier {
 
     @Override
     public Block getController() {
-        return IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get();
+        return IRBlocks.TERRACOTTA_BRICK_SLAB.get();
     }
 
     @Override

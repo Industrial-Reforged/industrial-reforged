@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.contr
 import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,7 +59,7 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY) {
+    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
             return Optional.of(currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,

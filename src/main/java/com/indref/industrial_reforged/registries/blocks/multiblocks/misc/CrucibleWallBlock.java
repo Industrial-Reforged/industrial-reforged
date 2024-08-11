@@ -64,6 +64,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
+        // FIXME: Unforming not working
         if (blockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
             crucibleWallBlockEntity.getControllerPos().ifPresent(pos -> MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), pos, level));
         } else {
@@ -90,27 +91,28 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
     @Override
     protected @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(CRUCIBLE_WALL)) {
-            case TOP -> switch (state.getValue(FACING)) {
-                case NORTH -> VoxelShapes.TOP_NORTH;
-                case EAST -> VoxelShapes.TOP_EAST;
-                case SOUTH -> VoxelShapes.TOP_SOUTH;
-                case WEST -> VoxelShapes.TOP_WEST;
-                default -> super.getShape(state, level, pos, context);
-            };
-            case MIDDLE -> switch (state.getValue(FACING)) {
+//            case EDGE_TOP -> switch (state.getValue(FACING)) {
+//                case NORTH -> VoxelShapes.TOP_NORTH;
+//                case EAST -> VoxelShapes.TOP_EAST;
+//                case SOUTH -> VoxelShapes.TOP_SOUTH;
+//                case WEST -> VoxelShapes.TOP_WEST;
+//                default -> super.getShape(state, level, pos, context);
+//            };
+            case EDGE_TOP -> switch (state.getValue(FACING)) {
                 case NORTH -> VoxelShapes.MIDDLE_NORTH;
                 case EAST -> VoxelShapes.MIDDLE_EAST;
                 case SOUTH -> VoxelShapes.MIDDLE_SOUTH;
                 case WEST -> VoxelShapes.MIDDLE_WEST;
                 default -> super.getShape(state, level, pos, context);
             };
-            case BOTTOM -> switch (state.getValue(FACING)) {
+            case EDGE_BOTTOM -> switch (state.getValue(FACING)) {
                 case NORTH -> VoxelShapes.BOTTOM_NORTH;
                 case EAST -> VoxelShapes.BOTTOM_EAST;
                 case SOUTH -> VoxelShapes.BOTTOM_SOUTH;
                 case WEST -> VoxelShapes.BOTTOM_WEST;
                 default -> super.getShape(state, level, pos, context);
             };
+            default -> super.getShape(state, level, pos, context);
         };
     }
 
