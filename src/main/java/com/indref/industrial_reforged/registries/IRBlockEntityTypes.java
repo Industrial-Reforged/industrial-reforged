@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.registries.blockentities.machines.Centrifu
 import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleLegsBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
@@ -13,6 +14,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.contr
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.CrucibleLegsBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
@@ -42,6 +44,10 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("crucible_wall", () ->
                     BlockEntityType.Builder.of(CrucibleWallBlockEntity::new,
                             IRBlocks.CERAMIC_CRUCIBLE_WALL.get()).build(null));
+    public static final Supplier<BlockEntityType<CrucibleLegsBlockEntity>> CRUCIBLE_LEGS =
+            BLOCK_ENTITIES.register("crucible_legs", () ->
+                    BlockEntityType.Builder.of(CrucibleLegsBlockEntity::new,
+                            IRBlocks.CERAMIC_CRUCIBLE_LEGS.get()).build(null));
     public static final Supplier<BlockEntityType<FaucetBlockEntity>> FAUCET =
             BLOCK_ENTITIES.register("faucet", () ->
                     BlockEntityType.Builder.of(FaucetBlockEntity::new, getFaucetBlocks()).build(null));
