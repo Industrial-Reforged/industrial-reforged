@@ -1,9 +1,9 @@
-package com.indref.industrial_reforged.api.multiblocks;
+package com.indref.industrial_reforged.api.util;
 
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
 
-public enum MultiblockDirection {
+public enum HorizontalDirection {
     NORTH,
     EAST,
     SOUTH,
@@ -18,7 +18,7 @@ public enum MultiblockDirection {
         };
     }
 
-    public static @Nullable MultiblockDirection fromRegularDirection(Direction direction) {
+    public static @Nullable HorizontalDirection fromRegularDirection(Direction direction) {
         return switch (direction) {
             case NORTH -> NORTH;
             case EAST -> EAST;

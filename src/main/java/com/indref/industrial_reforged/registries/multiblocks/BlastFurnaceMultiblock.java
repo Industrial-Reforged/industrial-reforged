@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.DynamicMultiblock;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
+import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -13,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,13 +34,13 @@ public record BlastFurnaceMultiblock() implements DynamicMultiblock {
     }
 
     @Override
-    public int[][] getLayout() {
-        return new int[][]{
-                {
+    public MultiblockLayer[] getLayout() {
+        return new MultiblockLayer[]{
+                layer(
                         1, 1,
                         1, 1
-                },
-                dynamicLayer(5,
+                ),
+                dynamicLayer(IntegerRange.of(3, 6),
                         0, 0,
                         0, 0
                 )
@@ -44,12 +48,15 @@ public record BlastFurnaceMultiblock() implements DynamicMultiblock {
     }
 
     @Override
-    public Map<Integer, @Nullable Block> getDefinition() {
-        return Map.of(0, IRBlocks.BLAST_FURNACE_BRICKS.get(), 1, IRBlocks.BLAST_FURNACE_HATCH.get());
+    public Int2ObjectMap<Block> getDefinition() {
+        Int2ObjectOpenHashMap<Block> map = new Int2ObjectOpenHashMap<>();
+        map.put(0, IRBlocks.BLAST_FURNACE_BRICKS.get());
+        map.put(1, IRBlocks.BLAST_FURNACE_HATCH.get());
+        return map;
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 3) {
             return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));
@@ -67,7 +74,7 @@ public record BlastFurnaceMultiblock() implements DynamicMultiblock {
         return !blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED);
     }
 
-    private static Direction getCorrectDirection(int index, MultiblockDirection direction) {
+    private static Direction getCorrectDirection(int index, HorizontalDirection direction) {
         return switch (direction) {
             case NORTH -> switch (index) {
                 case 0 -> Direction.NORTH;

@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
+import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.CrucibleWallBlock;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -30,24 +33,24 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public int[][] getLayout() {
-        return new int[][]{
-                {
+    public MultiblockLayer[] getLayout() {
+        return new MultiblockLayer[]{
+                layer(
                         0, 0, 0,
                         0, 2, 0,
                         0, 0, 0
-                },
-                {
+                ),
+                layer(
                         0, 0, 0,
                         0, 1, 0,
                         0, 0, 0
-                }
+                )
         };
     }
 
     @Override
-    public Map<Integer, @Nullable Block> getDefinition() {
-        Map<Integer, Block> def = new HashMap<>();
+    public Int2ObjectMap<Block> getDefinition() {
+        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
         def.put(0, tier.getCrucibleWallBlock());
         def.put(1, null);
         def.put(2, tier.getController());
@@ -55,12 +58,12 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public Optional<MultiblockDirection> getFixedDirection() {
-        return Optional.of(MultiblockDirection.NORTH);
+    public Optional<HorizontalDirection> getFixedDirection() {
+        return Optional.of(HorizontalDirection.NORTH);
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, @Nullable Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getCrucibleWallBlock()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_WALL.get())) {
             return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_WALL.get()

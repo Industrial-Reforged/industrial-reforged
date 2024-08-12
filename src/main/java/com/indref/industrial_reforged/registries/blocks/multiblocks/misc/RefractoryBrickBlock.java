@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks.misc;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
@@ -44,7 +44,7 @@ public class RefractoryBrickBlock extends Block implements WrenchableBlock, Disp
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (state.getValue(FireboxMultiblock.FIREBOX_PART) != FireboxMultiblock.PartIndex.HATCH || !state.getValue(HATCH_ACTIVE)) return;
 
-        for (MultiblockDirection dir : MultiblockDirection.values()) {
+        for (HorizontalDirection dir : HorizontalDirection.values()) {
             Direction direction = dir.toRegularDirection();
             BlockPos relativePos = pos.relative(direction);
             if (!level.getBlockState(relativePos).canOcclude()) {

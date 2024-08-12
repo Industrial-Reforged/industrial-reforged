@@ -1,9 +1,12 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
 import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
+import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -28,12 +31,12 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public int[][] getLayout() {
-        return new int[][]{
-                {
+    public MultiblockLayer[] getLayout() {
+        return new MultiblockLayer[]{
+                layer(
                         0, 0,
                         0, 0
-                }
+                )
         };
     }
 
@@ -43,12 +46,14 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public Map<Integer, @Nullable Block> getDefinition() {
-        return Map.of(0, IRBlocks.SMALL_FIREBOX_HATCH.get());
+    public Int2ObjectMap<@Nullable Block> getDefinition() {
+        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
+        def.put(0, IRBlocks.SMALL_FIREBOX_HATCH.get());
+        return def;
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 0) {
             return Optional.of(blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED));
@@ -57,7 +62,7 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private static @NotNull Direction getCorrectDirection(int index, MultiblockDirection direction) {
+    private static @NotNull Direction getCorrectDirection(int index, HorizontalDirection direction) {
         return switch (direction) {
             case NORTH -> switch (index) {
                 case 0 -> Direction.SOUTH;

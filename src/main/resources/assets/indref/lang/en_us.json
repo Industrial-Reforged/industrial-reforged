@@ -151,10 +151,10 @@
 
   "tape_measure.block_difference": "Distance measured:",
 
-  "multiblock.info.failed_to_construct": "Missing or invalid block:",
-  "multiblock.info.actual_block": "Block",
-  "multiblock.info.expected_block": "Expected",
-  "multiblock.info.block_pos": "Coords",
+  "multiblock.info.failed_to_construct": "Missing or invalid block",
+  "multiblock.info.actual_block": "Block: %s",
+  "multiblock.info.expected_block": "Expected: %s",
+  "multiblock.info.block_pos": "Coordinates: %d, %d, %d",
 
   "scanner_info.heat_block.heat_ratio": "Heat stored",
   "scanner_info.energy_block.energy_ratio": "Energy stored",

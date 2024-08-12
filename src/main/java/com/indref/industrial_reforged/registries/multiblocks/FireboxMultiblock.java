@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
+import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -26,27 +29,27 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public int[][] getLayout() {
-        return new int[][]{
-                {
+    public MultiblockLayer[] getLayout() {
+        return new MultiblockLayer[]{
+                layer(
                         0, 0, 0,
                         0, 1, 0,
                         0, 0, 0
-                }
+                )
         };
     }
 
     @Override
-    public Map<Integer, Block> getDefinition() {
-        return Map.of(
-                0, IRBlocks.REFRACTORY_BRICK.get(),
-                1, getController()
-        );
+    public Int2ObjectMap<Block> getDefinition() {
+        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
+        def.put(0, IRBlocks.REFRACTORY_BRICK.get());
+        def.put(1, getController());
+        return def;
     }
 
     @Override
-    public Optional<MultiblockDirection> getFixedDirection() {
-        return Optional.of(MultiblockDirection.SOUTH);
+    public Optional<HorizontalDirection> getFixedDirection() {
+        return Optional.of(HorizontalDirection.SOUTH);
     }
 
     @Override
@@ -59,7 +62,7 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, MultiblockDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
             return Optional.of(currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
