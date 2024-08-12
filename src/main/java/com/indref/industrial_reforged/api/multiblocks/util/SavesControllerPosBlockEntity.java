@@ -1,10 +1,10 @@
-package com.indref.industrial_reforged.api.multiblocks;
+package com.indref.industrial_reforged.api.multiblocks.util;
 
 import net.minecraft.core.BlockPos;
 
 /**
  * This interface allows your blockentity to set a controller pos
  */
-public interface SavesControllerPos {
+public interface SavesControllerPosBlockEntity {
     void setControllerPos(BlockPos blockPos);
 }

@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
+import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -12,10 +11,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Optional;
 
-public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPos {
+public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPosBlockEntity {
     private BlockPos mainControllerPos;
 
     public SmallFireboxBlockEntity(BlockPos p_155229_, BlockState p_155230_) {

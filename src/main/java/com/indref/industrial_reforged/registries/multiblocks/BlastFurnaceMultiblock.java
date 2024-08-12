@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.api.multiblocks.DynamicMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 // Why is this a record, you might ask yourself...
 // The answer is: So my icons for multiblock classes all look the same :>
-public record BlastFurnaceMultiblock() implements Multiblock {
+public record BlastFurnaceMultiblock() implements DynamicMultiblock {
     public static final EnumProperty<BrickStates> BRICK_STATE = EnumProperty.create("brick_state", BlastFurnaceMultiblock.BrickStates.class);
 
     @Override
@@ -35,18 +36,10 @@ public record BlastFurnaceMultiblock() implements Multiblock {
                         1, 1,
                         1, 1
                 },
-                {
+                dynamicLayer(5,
                         0, 0,
                         0, 0
-                },
-                {
-                        0, 0,
-                        0, 0
-                },
-                {
-                        0, 0,
-                        0, 0
-                }
+                )
         };
     }
 

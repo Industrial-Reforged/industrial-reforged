@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.events;
 
+import com.google.common.base.Preconditions;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
+import com.indref.industrial_reforged.api.multiblocks.DynamicMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
@@ -41,6 +44,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -50,6 +54,7 @@ import net.minecraft.util.FastColor;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -68,10 +73,13 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Map;
 
 public class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
@@ -230,6 +238,25 @@ public class IREvents {
 
     @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.MOD)
     public static class CommonBus {
+        @SubscribeEvent
+        public static void onRegister(RegisterEvent event) {
+            IndustrialReforged.LOGGER.debug("Register event");
+            Registry<Multiblock> registry = event.getRegistry(IRRegistries.MULTIBLOCK.key());
+            if (registry != null) {
+                for (Multiblock multiblock : registry) {
+                    if (!(multiblock instanceof DynamicMultiblock)) {
+                        IndustrialReforged.LOGGER.debug("multiblock: {}", multiblock);
+                        Map<Integer, @Nullable Block> def = multiblock.getDefinition();
+                        for (Map.Entry<Integer, @Nullable Block> entry : def.entrySet()) {
+                            IndustrialReforged.LOGGER.debug("Entry: {}, {}", entry.getKey(), entry.getValue());
+                            Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero as negatives are reserved for dynamic multiblocks. Affected multiblock: "
+                                    + multiblock + ", affected key: " + entry.getKey() + ", " + entry.getValue());
+                        }
+                    }
+                }
+            }
+        }
+
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             for (Item item : BuiltInRegistries.ITEM) {

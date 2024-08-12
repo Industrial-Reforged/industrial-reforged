@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockDirection;
-import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
+import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -81,8 +81,6 @@ public final class MultiblockHelper {
                 int z = 0;
                 int width = multiblock.getWidths().get(y).getFirst();
                 for (int blockIndex : layer) {
-                    // Increase index
-
                     // Define position-related variables
                     BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y, z), mDirection);
 
@@ -321,7 +319,7 @@ public final class MultiblockHelper {
                     multiblock.afterFormBlock(level, direction, curBlockPos, controllerPos, index, yIndex);
 
                     BlockEntity blockEntity = level.getBlockEntity(curBlockPos);
-                    if (blockEntity instanceof SavesControllerPos savesControllerPosBE) {
+                    if (blockEntity instanceof SavesControllerPosBlockEntity savesControllerPosBE) {
                         savesControllerPosBE.setControllerPos(controllerPos);
                     }
                 }

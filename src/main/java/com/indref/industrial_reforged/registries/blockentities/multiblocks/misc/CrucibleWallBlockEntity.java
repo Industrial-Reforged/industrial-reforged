@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.misc;
 
-import com.indref.industrial_reforged.api.multiblocks.SavesControllerPos;
+import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPos {
+public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPosBlockEntity {
     private Optional<BlockPos> controllerPos = Optional.empty();
 
     public CrucibleWallBlockEntity(BlockPos blockPos, BlockState blockState) {

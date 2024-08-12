@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
-import com.indref.industrial_reforged.api.multiblocks.FakeBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.multiblocks;
+package com.indref.industrial_reforged.api.multiblocks.util;
 
 import net.minecraft.core.BlockPos;
 
