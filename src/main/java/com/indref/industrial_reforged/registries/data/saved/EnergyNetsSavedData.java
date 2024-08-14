@@ -1,23 +1,24 @@
-package com.indref.industrial_reforged.transportation.energy;
+package com.indref.industrial_reforged.registries.data.saved;
 
+import com.indref.industrial_reforged.transportation.energy.EnergyNets;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
-public class EnetsSavedData extends SavedData {
-    private EnergyNets enets;
+public class EnergyNetsSavedData extends SavedData {
+    private final EnergyNets enets;
 
-    public EnetsSavedData(ServerLevel level) {
+    public EnergyNetsSavedData(ServerLevel level) {
         this.enets = new EnergyNets(level);
     }
 
-    public static SavedData.Factory<EnetsSavedData> factory(ServerLevel pLevel) {
-        return new SavedData.Factory<>(() -> new EnetsSavedData(pLevel), (tag, provider) -> load(tag, pLevel));
+    public static SavedData.Factory<EnergyNetsSavedData> factory(ServerLevel pLevel) {
+        return new SavedData.Factory<>(() -> new EnergyNetsSavedData(pLevel), (tag, provider) -> load(tag, pLevel));
     }
 
-    public EnetsSavedData(EnergyNets enets) {
+    public EnergyNetsSavedData(EnergyNets enets) {
         this.enets = enets;
     }
 
@@ -25,10 +26,10 @@ public class EnetsSavedData extends SavedData {
         return enets;
     }
 
-    public static EnetsSavedData load(CompoundTag nbt, ServerLevel level) {
+    public static EnergyNetsSavedData load(CompoundTag nbt, ServerLevel level) {
         EnergyNets enets = new EnergyNets(level);
         enets.deserializeNBT(nbt.getCompound("enets"));
-        return new EnetsSavedData(enets);
+        return new EnergyNetsSavedData(enets);
     }
 
     @Override

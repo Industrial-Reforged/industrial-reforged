@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.api.multiblocks.DynamicMultiblock;
+import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,14 +17,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Optional;
 
 // Why is this a record, you might ask yourself...
 // The answer is: So my icons for multiblock classes all look the same :>
-public record BlastFurnaceMultiblock() implements DynamicMultiblock {
+public record BlastFurnaceMultiblock() implements Multiblock {
     public static final EnumProperty<BrickStates> BRICK_STATE = EnumProperty.create("brick_state", BlastFurnaceMultiblock.BrickStates.class);
 
     @Override
@@ -40,7 +37,7 @@ public record BlastFurnaceMultiblock() implements DynamicMultiblock {
                         1, 1,
                         1, 1
                 ),
-                dynamicLayer(IntegerRange.of(3, 6),
+                dynLayer(IntegerRange.of(3, 6),
                         0, 0,
                         0, 0
                 )
@@ -56,7 +53,7 @@ public record BlastFurnaceMultiblock() implements DynamicMultiblock {
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 3) {
             return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));

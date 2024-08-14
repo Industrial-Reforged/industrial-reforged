@@ -6,7 +6,6 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
-import com.indref.industrial_reforged.api.multiblocks.DynamicMultiblock;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
@@ -240,18 +239,14 @@ public class IREvents {
     public static class CommonBus {
         @SubscribeEvent
         public static void onRegister(RegisterEvent event) {
-            IndustrialReforged.LOGGER.debug("Register event");
             Registry<Multiblock> registry = event.getRegistry(IRRegistries.MULTIBLOCK.key());
             if (registry != null) {
                 for (Multiblock multiblock : registry) {
-                    if (!(multiblock instanceof DynamicMultiblock)) {
-                        IndustrialReforged.LOGGER.debug("multiblock: {}", multiblock);
-                        Map<Integer, @Nullable Block> def = multiblock.getDefinition();
-                        for (Map.Entry<Integer, @Nullable Block> entry : def.entrySet()) {
-                            IndustrialReforged.LOGGER.debug("Entry: {}, {}", entry.getKey(), entry.getValue());
-                            Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero as negatives are reserved for dynamic multiblocks. Affected multiblock: "
-                                    + multiblock + ", affected key: " + entry.getKey() + ", " + entry.getValue());
-                        }
+                    Map<Integer, @Nullable Block> def = multiblock.getDefinition();
+                    for (Map.Entry<Integer, @Nullable Block> entry : def.entrySet()) {
+                        IndustrialReforged.LOGGER.debug("Entry: {}, {}", entry.getKey(), entry.getValue());
+                        Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero as negatives are reserved for dynamic multiblocks. Affected multiblock: "
+                                + multiblock + ", affected key: " + entry.getKey() + ", " + entry.getValue());
                     }
                 }
             }

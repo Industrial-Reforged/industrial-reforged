@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
 import java.util.Optional;
 
 public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
@@ -62,7 +61,7 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
             return Optional.of(currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,

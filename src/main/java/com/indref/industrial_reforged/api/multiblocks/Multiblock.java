@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -39,26 +40,30 @@ public interface Multiblock {
     Int2ObjectMap<Block> getDefinition();
 
     /**
-     * !!! IMPORTANT: override this if your
+     * IMPORTANT: override this if your
      * multi-block's layers are not quadratic
-     * <br>
-     * First Integer is the x direction ([0, 0, 0...)
-     * Second Integer is the z direction
-     * <br>[<br>0,...
-     * <br>                                0,...
-     * <br>                                0,...
-     * <br>]
+     * <p>
+     * The list this returns needs to have a size of
+     * {@link Multiblock#getMaxSize()} and needs to
+     * contain the widths for all possible layers
+     *
+     * @return left is x and right is z width
      */
-    default List<Pair<Integer, Integer>> getWidths() {
-        List<Pair<Integer, Integer>> widths = new ArrayList<>();
+    default List<IntIntPair> getWidths() {
+        List<IntIntPair> widths = new ArrayList<>(getMaxSize());
         for (MultiblockLayer layer : getLayout()) {
-            int width = (int) Math.sqrt(layer.layer().length);
-            widths.add(Pair.of(width, width));
+            if (layer.dynamic()) {
+                for (int i = 0; i < layer.range().getMaximum(); i++) {
+                    widths.add(layer.getWidths());
+                }
+            } else {
+                widths.add(layer.getWidths());
+            }
         }
         return widths;
     }
 
-    Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, @Nullable Player player);
+    Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, @Nullable Player player);
 
     /**
      * This gets called after the block at `blockpos` is formed
@@ -68,7 +73,7 @@ public interface Multiblock {
      * @param indexX Current multiblock index on the x-axis
      * @param indexY Current multiblock index on the y-axis
      */
-    default void afterFormBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY) {
+    default void afterFormBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY, boolean dynamic) {
     }
 
     /**
@@ -90,5 +95,18 @@ public interface Multiblock {
 
     default MultiblockLayer layer(int... layer) {
         return new MultiblockLayer(false, IntegerRange.of(1, 1), layer);
+    }
+
+
+    default MultiblockLayer dynLayer(IntegerRange minMaxSize, int ...layer) {
+        return new MultiblockLayer(true, minMaxSize, layer);
+    }
+
+    default int getMaxSize() {
+        int maxSize = 0;
+        for (MultiblockLayer layer : getLayout()) {
+            maxSize += layer.range().getMaximum();
+        }
+        return maxSize;
     }
 }

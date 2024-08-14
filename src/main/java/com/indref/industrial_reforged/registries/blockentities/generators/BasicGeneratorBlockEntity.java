@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.transportation.energy.EnergyNet;
-import com.indref.industrial_reforged.transportation.energy.EnetsSavedData;
+import com.indref.industrial_reforged.registries.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -100,7 +100,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         super.serverTick();
         IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
         if (level instanceof ServerLevel serverLevel) {
-            EnetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
+            EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
             Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
             if (enet.isPresent()) {
                 int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().getMaxOutput(), thisEnergyStorage.getEnergyStored()));

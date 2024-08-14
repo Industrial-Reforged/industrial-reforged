@@ -20,8 +20,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
@@ -63,7 +61,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, @Nullable Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getCrucibleWallBlock()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_WALL.get())) {
             return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_WALL.get()

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Optional;
 
 public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
@@ -53,7 +52,7 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, Player player) {
+    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 0) {
             return Optional.of(blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED));

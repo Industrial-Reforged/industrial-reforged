@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.pipes;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.transportation.energy.EnergyNet;
-import com.indref.industrial_reforged.transportation.energy.EnetsSavedData;
+import com.indref.industrial_reforged.registries.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.CapabilityUtils;
@@ -34,7 +34,7 @@ public class CableBlock extends PipeBlock {
     public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState oldState, boolean p_60570_) {
         // perform this check to ensure that block is actually placed and not just block states updating
         if (oldState.is(Blocks.AIR) && level instanceof ServerLevel serverLevel) {
-            EnetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
+            EnergyNetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
             // Adds the net
             EnergyNet net = nets.getEnets().getOrCreateNetAndPush(blockPos);
             nets.setDirty();
@@ -65,7 +65,7 @@ public class CableBlock extends PipeBlock {
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
         // perform this check to ensure that block was actually removed and not just block states updating
         if (!newState.is(blockState.getBlock()) && level instanceof ServerLevel serverLevel) {
-            EnetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
+            EnergyNetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
             nets.getEnets().splitNets(blockPos);
             nets.getEnets().removeNetwork(blockPos);
             // Tell the level to save it

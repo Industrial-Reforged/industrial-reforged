@@ -110,6 +110,7 @@ public final class Utils {
         return nnl;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] listToArray(List<T> list) {
         return (T[]) list.toArray();
     }
