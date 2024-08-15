@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -52,12 +53,12 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
+    public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (indexY == 0) {
-            return Optional.of(blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(index, direction)).setValue(FIREBOX_STATE, FireboxState.FORMED));
+        if (layoutIndex == 0) {
+            return blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(layerIndex, unformedMultiblock.direction())).setValue(FIREBOX_STATE, FireboxState.FORMED);
         }
-        return Optional.of(blockState);
+        return blockState;
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -95,7 +96,7 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+    public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState state = level.getBlockState(blockPos);
         return state.hasProperty(FIREBOX_STATE) && !state.getValue(FIREBOX_STATE).equals(FireboxState.UNFORMED);
     }

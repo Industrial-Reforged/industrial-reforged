@@ -91,7 +91,7 @@ public final class MultiblockHelper {
                         BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y, z), mDirection);
 
                         // Check if block is correct
-                        if ((def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) && !multiblock.isFormed(level, curBlockPos, controllerPos) || def.get(blockIndex) == null)) {
+                        if ((def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) && !multiblock.isFormed(level, curBlockPos) || def.get(blockIndex) == null)) {
                             multiblockIndexList.add(true);
                         } else {
                             firstMissingBlockPoses.putIfAbsent(mDirection, Pair.of(curBlockPos, blockIndex));
@@ -127,7 +127,7 @@ public final class MultiblockHelper {
                             BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y + i, z), mDirection);
 
                             // Check if block is correct
-                            if ((def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) && !multiblock.isFormed(level, curBlockPos, controllerPos)) || def.get(blockIndex) == null) {
+                            if ((def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) && !multiblock.isFormed(level, curBlockPos)) || def.get(blockIndex) == null) {
                                 multiblockIndexList.add(true);
                             } else {
                                 if (i >= minSize) {
@@ -269,14 +269,14 @@ public final class MultiblockHelper {
     public static boolean form(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
         UnformedMultiblock unformedMultiblock = getUnformedMultiblock(multiblock, controllerPos, level, player, true);
         HorizontalDirection direction = unformedMultiblock.direction();
-        if (multiblock.getFixedDirection().isPresent()) {
-            direction = multiblock.getFixedDirection().get();
+        if (multiblock.getFixedDirection() != null) {
+            direction = multiblock.getFixedDirection();
         }
         if (unformedMultiblock.valid()) {
             if (direction != null) {
                 boolean formingCancelled = IRHooks.preMultiblockFormed(multiblock, player, controllerPos, unformedMultiblock);
                 if (!formingCancelled) {
-                    formBlocks(multiblock, unformedMultiblock.layers(), direction, controllerPos, level, player);
+                    formBlocks(multiblock, unformedMultiblock, controllerPos, level, player);
                     IRHooks.postMultiblockFormed(multiblock, player, controllerPos);
                     return true;
                 }
@@ -289,7 +289,10 @@ public final class MultiblockHelper {
         return form(multiblock, controllerPos, level, null);
     }
 
-    private static void formBlocks(Multiblock multiblock, MultiblockLayer[] layout, HorizontalDirection direction, BlockPos controllerPos, Level level, @Nullable Player player) {
+    private static void formBlocks(Multiblock multiblock, UnformedMultiblock unformedMultiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
+        HorizontalDirection direction = unformedMultiblock.direction;
+        MultiblockLayer[] layout = unformedMultiblock.layers;
+
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
@@ -308,10 +311,12 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    Optional<BlockState> newState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, index, yIndex, layer.dynamic(), player);
-                    newState.ifPresent(blockState -> level.setBlockAndUpdate(curBlockPos, blockState));
+                    BlockState newState = multiblock.formBlock(level, curBlockPos, controllerPos, index, yIndex, unformedMultiblock, player);
+                    if (newState != null) {
+                        level.setBlockAndUpdate(curBlockPos, newState);
+                    }
 
-                    multiblock.afterFormBlock(level, direction, curBlockPos, controllerPos, index, yIndex, layer.dynamic());
+                    multiblock.afterFormBlock(level, curBlockPos, controllerPos, index, yIndex, unformedMultiblock, player);
 
                     BlockEntity blockEntity = level.getBlockEntity(curBlockPos);
                     if (blockEntity instanceof SavesControllerPosBlockEntity savesControllerPosBE) {
@@ -341,7 +346,7 @@ public final class MultiblockHelper {
      * @return Whether the unforming was successful
      */
     public static boolean unform(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
-        if (multiblock.getFixedDirection().isEmpty()) {
+        if (multiblock.getFixedDirection() == null) {
             for (HorizontalDirection direction : HorizontalDirection.values()) {
                 boolean unformingCancelled = IRHooks.preMultiblockUnformed(multiblock, player, controllerPos);
                 if (!unformingCancelled) {
@@ -357,7 +362,7 @@ public final class MultiblockHelper {
             boolean unformingCancelled = IRHooks.preMultiblockUnformed(multiblock, player, controllerPos);
             if (!unformingCancelled) {
                 try {
-                    unformBlocks(multiblock, multiblock.getFixedDirection().get(), controllerPos, level, player);
+                    unformBlocks(multiblock, multiblock.getFixedDirection(), controllerPos, level, player);
                 } catch (Exception ignored) {
                 }
                 IRHooks.postMultiblockUnformed(multiblock, player, controllerPos);
@@ -394,11 +399,11 @@ public final class MultiblockHelper {
 
                 BlockState blockState = level.getBlockState(curBlockPos);
                 if (!level.getBlockState(curBlockPos).isEmpty()) {
-                    Optional<BlockState> expectedState = multiblock.formBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex, layer.dynamic(), player);
-                    if (expectedState.isPresent()) {
-                        if (blockState.is(expectedState.get().getBlock()) && multiblock.isFormed(level, curBlockPos, controllerPos)) {
+                    BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, null /*TODO: construct an unformed multi here*/, player);
+                    if (expectedState != null) {
+                        if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos)) {
                             level.setBlockAndUpdate(curBlockPos, definedBlock.defaultBlockState());
-                            multiblock.afterUnformBlock(level, direction, curBlockPos, controllerPos, xIndex, yIndex);
+                            multiblock.afterUnformBlock(level, curBlockPos, controllerPos, xIndex, yIndex, direction, player);
                         }
                     }
                 }

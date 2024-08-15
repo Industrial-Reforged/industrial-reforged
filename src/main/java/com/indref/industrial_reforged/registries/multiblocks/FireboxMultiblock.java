@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -47,12 +49,12 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Optional<HorizontalDirection> getFixedDirection() {
-        return Optional.of(HorizontalDirection.SOUTH);
+    public HorizontalDirection getFixedDirection() {
+        return HorizontalDirection.NORTH;
     }
 
     @Override
-    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+    public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
         if (!getDefinition().containsValue(blockState.getBlock())) return false;
@@ -61,17 +63,18 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
+    public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
-            return Optional.of(currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
-                    switch (index) {
+            return currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
+                    switch (layerIndex) {
                         case 1, 3, 5, 7 -> PartIndex.HATCH;
                         case 4 -> PartIndex.COIL;
                         default -> PartIndex.BRICK;
-                    }));
+                    }
+            );
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public interface Multiblock {
     /**
@@ -34,15 +33,12 @@ public interface Multiblock {
      * It consists of an array of multiblock layers. Each layer
      * is constructed with a method call.
      * <br>
-     * For this, you will use
-     * {@link Multiblock#layer(int...)} or {@link Multiblock#dynLayer(IntegerRange, int...)}
-     * for dynamically sized layers.
+     * For this, you can use {@link Multiblock#layer(int...)}
      * <br>
      * Each of these methods ask you to provide you a list of integers.
      * These integers represent the actual blocks used.
      * Nonetheless, you still need to provide the actual blocks using
      * the {@link Multiblock#getDefinition()} method.
-     * In the {@link Multiblock#dynLayer(IntegerRange, int...)} method you also need to provide an integer range.
      * This provides the minimum and maximum height for this multiblock.
      * <br>
      * Example: {@code IntegerRange.of(1, 3)}
@@ -108,46 +104,73 @@ public interface Multiblock {
     }
 
     /**
-     *
-     * @param level
-     * @param blockPos
-     * @param controllerPos
-     * @param xIndex
-     * @param yIndex
-     * @param unformedMultiblock
-     * @param player
-     * @return
+     * This method is used to form a block. It is called for that block and also when unforming the multi.
+     * This is why this should only return the blockState, not perform any interactions on the level/player....
+     * For interactions with the world/player..., use {@link Multiblock#afterFormBlock(Level, BlockPos, BlockPos, int, int, MultiblockHelper.UnformedMultiblock, Player)}
+     * @param level Level of the multiblock, should only be used for reading things, not setting new things.
+     * @param blockPos BlockPos of the block that is being formed
+     * @param controllerPos BlockPos of this multiblocks controller
+     * @param layerIndex index of the current layers block (array of integer)
+     * @param layoutIndex index of the current multiblock layer (array of multiblock layer)
+     * @param unformedMultiblock Information about the unformed multiblock, like the layers of the concrete multiblock and the direction it is formed in.
+     * @param player Player that is trying to form this multiblock. Note that there does not necessarily have to be a player that is responsible for forming the multiblock
+     * @return Formed BlockState. This will replace the unformed block in the multiblock. Return {@code null} if you do not want to change the block.
      */
-    @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int xIndex, int yIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player);
+    @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player);
 
     /**
-     * This gets called after the block at `blockpos` is formed
-     * @param direction Direction of the multiblock
-     * @param blockPos BlockPos of the block that was unformed
-     * @param controllerPos BlockPos of the controller block of this multi
-     * @param indexX Current multiblock index on the x-axis
-     * @param indexY Current multiblock index on the y-axis
+     * This method is called after the block is formed. It can be used to interact with the level/player...
+     * as it is only called, when the multiblock is formed.
+     * @param level Level of the multiblock
+     * @param blockPos BlockPos of the block that is being formed
+     * @param controllerPos BlockPos of this multiblocks controller
+     * @param layerIndex index of the current layers block (array of integer)
+     * @param layoutIndex index of the current multiblock layer (array of multiblock layer)
+     * @param unformedMultiblock Information about the unformed multiblock, like the layers of the concrete multiblock and the direction it is formed in.
+     * @param player Player that is trying to form this multiblock. Note that there does not necessarily have to be a player that is responsible for forming the multiblock
      */
-    default void afterFormBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int xIndex, int yIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
+    default void afterFormBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
     }
 
     /**
-     * This gets called after the block at `blockpos` is unformed
+     * This method is called after the block is unformed. It can be used to interact with the level/player...
+     * as it is only called, when the multiblock is unformed.
+     * @param level Level of the multiblock
      * @param direction Direction of the multiblock
-     * @param blockPos BlockPos of the block that was unformed
-     * @param controllerPos BlockPos of the controller block of this multi
-     * @param indexX Current multiblock index on the x-axis
-     * @param indexY Current multiblock index on the y-axis
+     * @param blockPos BlockPos of the block that is being unformed
+     * @param controllerPos BlockPos of this multiblocks controller
+     * @param layerIndex index of the current layers block (array of integer)
+     * @param layoutIndex index of the current multiblock layer (array of multiblock layer)
+     * @param player Player that is trying to unform this multiblock. Note that there does not necessarily have to be a player that is responsible for unforming the multiblock
      */
-    default void afterUnformBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int indexX, int indexY) {
+    default void afterUnformBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, HorizontalDirection direction, @Nullable Player player) {
     }
 
-    boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos);
+    /**
+     * This method determines whether the block at the specified position
+     * is a formed part of this multiblock.
+     * @param level Level of the multiblock
+     * @param blockPos BlockPos that needs to be checked if it is formed.
+     * @return Whether the block at this position is formed
+     */
+    boolean isFormed(Level level, BlockPos blockPos);
 
+    /**
+     * This method can make the direction of this multiblock fixed. This only works,
+     * if the multiblock cannot be rotated, like the crucible or firebox.
+     * Providing a fixed direction can improve performance while forming the multiblock
+     * by a bit.
+     * @return a horizontal direction, if the direction can be fixed.
+     */
     default @Nullable HorizontalDirection getFixedDirection() {
         return null;
     }
 
+    /**
+     * This method provides the maximum possible
+     * size for this multiblock.
+     * @return the maximum possible size
+     */
     default int getMaxSize() {
         int maxSize = 0;
         for (MultiblockLayer layer : getLayout()) {
@@ -156,12 +179,12 @@ public interface Multiblock {
         return maxSize;
     }
 
+    /**
+     * Create a new layer for your multiblock
+     * @param layer The block indices for your multiblock layer
+     * @return the newly created layer
+     */
     default MultiblockLayer layer(int... layer) {
         return new MultiblockLayer(false, IntegerRange.of(1, 1), layer);
-    }
-
-
-    default MultiblockLayer dynLayer(IntegerRange minMaxSize, int ...layer) {
-        return new MultiblockLayer(true, minMaxSize, layer);
     }
 }

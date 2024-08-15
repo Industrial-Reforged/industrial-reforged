@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.CrucibleWallBlock;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -57,37 +58,37 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public Optional<HorizontalDirection> getFixedDirection() {
-        return Optional.of(HorizontalDirection.NORTH);
-    }
-
-    @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, @Nullable Player player) {
+    public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getCrucibleWallBlock()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_WALL.get())) {
-            return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
+            return IRBlocks.CERAMIC_CRUCIBLE_WALL.get()
                     .defaultBlockState()
-                    .setValue(CRUCIBLE_WALL, switch (index) {
-                        case 0, 2, 6, 8 -> indexY == 0 ? WallStates.EDGE_BOTTOM : WallStates.EDGE_TOP;
-                        case 1, 3, 5, 7 -> indexY == 0 ? WallStates.WALL_BOTTOM : WallStates.WALL_TOP;
+                    .setValue(CRUCIBLE_WALL, switch (layerIndex) {
+                        case 0, 2, 6, 8 -> layoutIndex == 0 ? WallStates.EDGE_BOTTOM : WallStates.EDGE_TOP;
+                        case 1, 3, 5, 7 -> layoutIndex == 0 ? WallStates.WALL_BOTTOM : WallStates.WALL_TOP;
                         default -> WallStates.WALL_TOP;
                     })
-                    .setValue(CrucibleWallBlock.FACING, switch (index) {
+                    .setValue(CrucibleWallBlock.FACING, switch (layerIndex) {
                         case 1, 2 -> Direction.EAST;
                         case 5, 8 -> Direction.SOUTH;
                         case 6, 7 -> Direction.WEST;
                         default -> Direction.NORTH;
-                    })
+                    }
             );
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
-            return Optional.of(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState()
-                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection(): direction.toRegularDirection()));
+            return IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState()
+                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection(): unformedMultiblock.direction().toRegularDirection());
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override
-    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+    public @NotNull HorizontalDirection getFixedDirection() {
+        return HorizontalDirection.NORTH;
+    }
+
+    @Override
+    public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
         return blockState.hasProperty(CRUCIBLE_WALL);

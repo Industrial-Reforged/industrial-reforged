@@ -190,13 +190,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         if (level.getBlockEntity(fireboxPos) instanceof FireboxBlockEntity fireBox) {
             for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
                 if (multiblock instanceof IFireboxMultiblock fireboxMultiblock) {
-                    BlockPos controllerPos = fireboxPos;
-                    if (fireBox instanceof FakeBlockEntity fakeBlockEntity) {
-                        if (fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
-                            controllerPos = fakeBlockEntity.getActualBlockEntityPos().get();
-                        }
-                    }
-                    if (multiblock.isFormed(level, fireboxPos, controllerPos)) {
+                    if (multiblock.isFormed(level, fireboxPos)) {
                         return Optional.of(fireboxMultiblock);
                     }
                 }

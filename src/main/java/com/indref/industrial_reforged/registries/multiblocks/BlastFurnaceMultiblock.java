@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -46,10 +48,10 @@ public record BlastFurnaceMultiblock() implements Multiblock {
                         1, 1,
                         1, 1
                 ),
-                dynLayer(IntegerRange.of(3, 6),
+                layer(
                         0, 0,
                         0, 0
-                )
+                ).setDynamic(IntegerRange.of(3, 6)),
         };
     }
 
@@ -68,18 +70,17 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
-        IndustrialReforged.LOGGER.debug("index y: {}", indexY);
+    public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (indexY == 3) {
-            return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));
+        if (layoutIndex == unformedMultiblock.layers().length - 1) {
+            return blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(layerIndex, unformedMultiblock.direction()));
         } else {
-            return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.FORMED));
+            return blockState.setValue(BRICK_STATE, BrickStates.FORMED);
         }
     }
 
     @Override
-    public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
+    public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
         if (!getDefinition().containsValue(blockState.getBlock())) return false;
