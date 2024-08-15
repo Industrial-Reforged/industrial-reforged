@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
@@ -30,8 +31,16 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         return IRBlocks.BLAST_FURNACE_HATCH.get();
     }
 
+    // Note: This method is heavily documented as it serves as an
+    // example on how to create multiblock layouts
     @Override
     public MultiblockLayer[] getLayout() {
+        // Create a new array of multiblock layers
+        // each layer is created by calling the `layer(..)`
+        // method. Alternatively you can also use `dynLayer(..)`
+        // to create a dynamically sized layer.
+        // Note that the first member of this array
+        // is the lowest layer in game.
         return new MultiblockLayer[]{
                 layer(
                         1, 1,
@@ -44,16 +53,23 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         };
     }
 
+    // Note: This method is heavily documented as it serves as an
+    // example on how to create multiblock definitions
     @Override
     public Int2ObjectMap<Block> getDefinition() {
-        Int2ObjectOpenHashMap<Block> map = new Int2ObjectOpenHashMap<>();
-        map.put(0, IRBlocks.BLAST_FURNACE_BRICKS.get());
-        map.put(1, IRBlocks.BLAST_FURNACE_HATCH.get());
-        return map;
+        // Create new map to store the integer keys and their block values
+        Int2ObjectOpenHashMap<Block> def = new Int2ObjectOpenHashMap<>();
+        // Assign each integer to a block
+        // The first arguement is the integer key, the second is the block.
+        def.put(0, IRBlocks.BLAST_FURNACE_BRICKS.get());
+        def.put(1, IRBlocks.BLAST_FURNACE_HATCH.get());
+        // return the map of definitions we created
+        return def;
     }
 
     @Override
     public Optional<BlockState> formBlock(Level level, HorizontalDirection direction, BlockPos blockPos, BlockPos controllerPos, int index, int indexY, boolean dynamic, Player player) {
+        IndustrialReforged.LOGGER.debug("index y: {}", indexY);
         BlockState blockState = level.getBlockState(blockPos);
         if (indexY == 3) {
             return Optional.of(blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(index, direction)));

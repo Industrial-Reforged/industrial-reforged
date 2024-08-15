@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.tools.ToolItem;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.registries.IRRegistries;
@@ -20,9 +21,13 @@ public class HammerItem extends ToolItem {
         if (!useOnContext.getPlayer().isCrouching()) {
             for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
                 if (controllerState.is(multiblock.getController())) {
-                    return MultiblockHelper.form(multiblock, useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer())
-                            ? InteractionResult.SUCCESS
-                            : InteractionResult.FAIL;
+                    try {
+                        return MultiblockHelper.form(multiblock, useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer())
+                                ? InteractionResult.SUCCESS
+                                : InteractionResult.FAIL;
+                    } catch (Exception e) {
+                        IndustrialReforged.LOGGER.error("Encountered err", e);
+                    }
                 }
             }
         } else {

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
@@ -89,7 +90,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     public boolean isFormed(Level level, BlockPos blockPos, BlockPos controllerPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
-        return !blockState.hasProperty(CRUCIBLE_WALL);
+        return blockState.hasProperty(CRUCIBLE_WALL);
     }
 
     public enum WallStates implements StringRepresentable {

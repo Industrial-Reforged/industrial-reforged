@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
+import com.indref.industrial_reforged.api.multiblocks.util.DynamicMultiBlockEntity;
 import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
@@ -37,15 +39,17 @@ import java.util.Optional;
  * is the actual blockentity that handles the
  * logic and the others just point to that block.
  */
-public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity {
+public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, DynamicMultiBlockEntity {
     private BlockPos mainControllerPos;
     private int duration;
     private int maxDuration;
+    private MultiblockLayer[] layers;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
         addItemHandler(2);
         addFluidTank(9000);
+        this.layers = new MultiblockLayer[0];
     }
 
     @Override
@@ -76,6 +80,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.put("multiblockLayers", saveDynamicMulti());
         getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
         tag.putInt("duration", this.duration);
     }
@@ -86,6 +91,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        this.layers = loadDynamicMulti(tag);
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
         this.duration = tag.getInt("duration");
@@ -145,4 +151,13 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         return new BlastFurnaceMenu(containerId, inventory, this);
     }
 
+    @Override
+    public MultiblockLayer[] getExpandedLayers() {
+        return layers;
+    }
+
+    @Override
+    public void setExpandedLayers(MultiblockLayer[] layers) {
+        this.layers = layers;
+    }
 }
