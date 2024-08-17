@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.multiblocks.util.DynamicMultiBlockEntity;
 import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
@@ -9,10 +10,12 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.BlastFurnaceMenu;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -83,6 +87,21 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         tag.put("multiblockLayers", saveDynamicMulti());
         getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
         tag.putInt("duration", this.duration);
+    }
+
+    // TODO: Export this through the bricks block
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return Map.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of(
+                Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0}));
     }
 
     private boolean isMainController() {

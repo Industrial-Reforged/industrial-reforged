@@ -2,10 +2,9 @@ package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

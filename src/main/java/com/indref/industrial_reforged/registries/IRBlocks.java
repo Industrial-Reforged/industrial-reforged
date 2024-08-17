@@ -74,10 +74,10 @@ public final class IRBlocks {
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.TERRACOTTA_BRICK.get()));
     public static final DeferredBlock<FaucetBlock> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
-    public static final DeferredBlock<CastingBasinBlock> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
-            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
-    public static final DeferredBlock<CastingBasinBlock> SANDY_CASTING_BASIN = registerBlockAndItem("sandy_casting_basin",
-            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
+    public static final DeferredBlock<CastingBasinBlockCustom> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
+            () -> new CastingBasinBlockCustom(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
+    public static final DeferredBlock<CastingBasinBlockCustom> SANDY_CASTING_BASIN = registerBlockAndItem("sandy_casting_basin",
+            () -> new CastingBasinBlockCustom(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = registerBlockAndItem("centrifuge",
             () -> new CentrifugeBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR = registerBlockAndItem("basic_generator",

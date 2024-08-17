@@ -6,7 +6,7 @@ import com.indref.industrial_reforged.transportation.energy.EnergyNet;
 import com.indref.industrial_reforged.registries.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

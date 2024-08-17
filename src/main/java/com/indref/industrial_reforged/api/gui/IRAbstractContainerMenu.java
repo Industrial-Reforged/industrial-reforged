@@ -80,7 +80,7 @@ public abstract class IRAbstractContainerMenu<T extends ContainerBlockEntity> ex
             ItemStack sourceStack = sourceSlot.getItem();
             ItemStack copyOfSourceStack = sourceStack.copy();
 
-            // Check if the slot clicked is one of the vanilla container slots
+            // Check if the slot clicked is one of the vanilla container tanks
             int endIndex = TE_INVENTORY_FIRST_SLOT_INDEX + this.slotAmount - VANILLA_SLOT_COUNT;
             if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
                 // This is a vanilla container slot so merge the stack into the tile inventory

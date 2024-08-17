@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;

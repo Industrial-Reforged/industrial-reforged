@@ -8,7 +8,7 @@ import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.items.tools.IToolItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;

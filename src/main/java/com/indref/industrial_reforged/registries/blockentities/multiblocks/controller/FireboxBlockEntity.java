@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -8,8 +9,10 @@ import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.Refract
 import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,6 +27,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private static final int INPUT_SLOT = 0;
@@ -60,6 +65,22 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
                 setBlockActive(true);
             }
         }
+    }
+
+    // TODO: Export through refractory bricks
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return Map.of(
+                Direction.NORTH, Pair.of(IOActions.INSERT, new int[]{0}),
+                Direction.EAST, Pair.of(IOActions.INSERT, new int[]{0}),
+                Direction.SOUTH, Pair.of(IOActions.INSERT, new int[]{0}),
+                Direction.WEST, Pair.of(IOActions.INSERT, new int[]{0})
+        );
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of();
     }
 
     @Override

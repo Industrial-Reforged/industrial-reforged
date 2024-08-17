@@ -1,11 +1,14 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.items.misc.MoldItem;
 import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleCastingRecipeInput;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.ContainerData;
@@ -18,6 +21,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class CastingBasinBlockEntity extends ContainerBlockEntity {
@@ -183,6 +187,17 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
             this.resultItem.save(provider);
         }
         tag.put("resultItem", itemTag);
+    }
+
+    // TODO: Think about how to implement this
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return Map.of();
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of();
     }
 
     @Override

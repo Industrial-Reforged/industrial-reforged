@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.misc;
 
-import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;

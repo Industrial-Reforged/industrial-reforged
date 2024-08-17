@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.FaucetInteractBlock;
+import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -42,7 +42,7 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
         BlockState belowState = level.getBlockState(blockPos);
 
         float maxY;
-        if (belowState.getBlock() instanceof FaucetInteractBlock faucetInteractBlock) {
+        if (belowState.getBlock() instanceof CustomFaucetInteractBlock faucetInteractBlock) {
             maxY = faucetInteractBlock.getShapeMaxY(level, blockPos);
         } else {
             maxY = (float) belowState.getShape(level, blockPos).move(0.5, 0, 0.5).max(Direction.Axis.Y);

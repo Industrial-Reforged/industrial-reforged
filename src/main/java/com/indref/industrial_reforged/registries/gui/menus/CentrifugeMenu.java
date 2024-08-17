@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.registries.blockentities.machines.CentrifugeBlockEntity;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,11 +36,11 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(blockEntity);
-        // Centrifuge slots
+        // Centrifuge tanks
         // Input slot
         addSlot(new SlotItemHandler(itemHandler, 0, 80, 41));
 
-        // Output slots
+        // Output tanks
         addSlot(new SlotItemHandler(itemHandler, 1, 80, 5));
         addSlot(new SlotItemHandler(itemHandler, 2, 116, 41));
         addSlot(new SlotItemHandler(itemHandler, 3, 80, 77));

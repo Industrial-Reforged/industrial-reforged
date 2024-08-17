@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 public final class GuiUtils {
-    public static final ResourceLocation BATTERY_SLOT = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/slots/battery_slot.png");
+    public static final ResourceLocation BATTERY_SLOT = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/tanks/battery_slot.png");
 
     public static void drawImg(GuiGraphics guiGraphics, ResourceLocation texturePath, int x, int y, int width, int height) {
         guiGraphics.blit(texturePath, x, y, 0, 0, 0, width, height, width, height);

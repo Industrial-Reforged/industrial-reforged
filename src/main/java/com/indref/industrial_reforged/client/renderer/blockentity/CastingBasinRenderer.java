@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.misc.CastingBasinBlock;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.registries.blocks.misc.CastingBasinBlockCustom;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,7 +15,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +29,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
 
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
-    private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f;
+    private static final float SIDE_MARGIN = (float) CastingBasinBlockCustom.SHAPE.min(Direction.Axis.X) + 0.1f;
     public static final float MIN_Y = 2.1f / 16f;
     public static final float MAX_Y = 0.4f - MIN_Y;
 

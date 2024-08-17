@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.blocks;
+package com.indref.industrial_reforged.api.blocks.misc;
 
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.BaseEntityBlock;

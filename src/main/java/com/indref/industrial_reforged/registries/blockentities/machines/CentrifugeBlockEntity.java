@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.machines;
 
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -8,12 +9,14 @@ import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeBlock
 import com.indref.industrial_reforged.registries.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -138,6 +141,23 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         super.saveData(tag, provider);
         tag.putInt("duration", duration);
         tag.putInt("max_duration", maxDuration);
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return Map.of(
+                Direction.UP, Pair.of(IOActions.INSERT, new int[]{0}),
+                Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4})
+        );
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of();
     }
 
     @Override

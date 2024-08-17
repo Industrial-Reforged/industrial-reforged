@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.registries.blocks.misc;
 
-import com.indref.industrial_reforged.api.blocks.FaucetInteractBlock;
+import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Stream;
 
-public class CastingBasinBlock extends ContainerBlock implements FaucetInteractBlock {
+public class CastingBasinBlockCustom extends ContainerBlock implements CustomFaucetInteractBlock {
     private static final ConcurrentMap<Block, Block> ALTERNATE_VERSIONS = new ConcurrentHashMap<>();
 
     public static final VoxelShape SHAPE = Stream.of(
@@ -44,7 +44,7 @@ public class CastingBasinBlock extends ContainerBlock implements FaucetInteractB
             Block.box(0, 2, 14, 14, 6, 16)
     ).reduce(Shapes::or).get();
 
-    public CastingBasinBlock(Properties p_49224_, Block ingredient) {
+    public CastingBasinBlockCustom(Properties p_49224_, Block ingredient) {
         super(p_49224_);
         if (ingredient != null) {
             ALTERNATE_VERSIONS.put(ingredient, this);
@@ -53,7 +53,7 @@ public class CastingBasinBlock extends ContainerBlock implements FaucetInteractB
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(properties1 -> new CastingBasinBlock(properties1, null));
+        return simpleCodec(properties1 -> new CastingBasinBlockCustom(properties1, null));
     }
 
     @Override

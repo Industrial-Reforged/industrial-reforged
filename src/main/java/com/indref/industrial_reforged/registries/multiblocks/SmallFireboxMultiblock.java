@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.RotatableEntityBlock;
+import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;

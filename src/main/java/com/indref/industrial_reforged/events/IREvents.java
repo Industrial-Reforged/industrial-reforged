@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.events;
 
 import com.google.common.base.Preconditions;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
@@ -78,6 +79,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class IREvents {
@@ -267,9 +270,14 @@ public class IREvents {
                     event.registerItem(Capabilities.FluidHandler.ITEM,
                             (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity(stack)), item);
 
-                if (item instanceof ToolboxItem)
+                if (item instanceof ToolboxItem) {
                     event.registerItem(Capabilities.ItemHandler.ITEM,
-                            (stack, ctx) -> new InvWrapper(new SimpleContainer(Utils.listToArray(stack.getOrDefault(IRDataComponents.ADVANCED_BUNDLE_CONTENTS, AdvancedBundleContents.EMPTY).items()))), item);
+                            (stack, ctx) -> {
+                                List<ItemStack> toolBoxItems = stack.getOrDefault(IRDataComponents.ADVANCED_BUNDLE_CONTENTS, AdvancedBundleContents.EMPTY).items();
+                                ItemStack[] items = new ItemStack[toolBoxItems.size()];
+                                return new InvWrapper(new SimpleContainer(toolBoxItems.toArray(items)));
+                            }, item);
+                }
             }
 
             // Register all your block entity capabilities manually
@@ -281,21 +289,20 @@ public class IREvents {
             event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getHeatStorage());
             event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getHeatStorage());
 
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> blockEntity.getItemHandler());
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), ContainerBlockEntity::getItemHandlerOnSide);
 
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE_WALL.get(), (blockEntity, ctx) -> blockEntity.getFluidHandler());
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), ContainerBlockEntity::getFluidHandlerOnSide);
         }
 
         @SubscribeEvent

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util;
+package com.indref.industrial_reforged.util.capabilities;
 
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;

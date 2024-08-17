@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.misc
 
 import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.util.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -12,14 +11,11 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPosBlockEntity {
-    private Optional<BlockPos> controllerPos = Optional.empty();
+    private @Nullable BlockPos controllerPos;
 
     public CrucibleWallBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE_WALL.get(), blockPos, blockState);
@@ -27,39 +23,28 @@ public class CrucibleWallBlockEntity extends BlockEntity implements SavesControl
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        controllerPos.ifPresent(pos -> {
-            tag.putLong("controllerPos", pos.asLong());
-        });
+        if (controllerPos != null) {
+            tag.putLong("controllerPos", controllerPos.asLong());
+        }
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         long rawPos = tag.getLong("controllerPos");
         if (rawPos != 0) {
-            this.controllerPos = Optional.of(BlockPos.of(rawPos));
+            this.controllerPos = BlockPos.of(rawPos);
         } else {
-            this.controllerPos = Optional.empty();
+            this.controllerPos = null;
         }
     }
 
     @Override
     public void setControllerPos(BlockPos blockPos) {
-        this.controllerPos = Optional.ofNullable(blockPos);
+        this.controllerPos = blockPos;
     }
 
-    public Optional<BlockPos> getControllerPos() {
+    public @Nullable BlockPos getControllerPos() {
         return controllerPos;
-    }
-
-    public IFluidHandler getFluidHandler() {
-        Optional<BlockPos> controllerPos = getControllerPos();
-        if (controllerPos.isPresent()) {
-            BlockEntity blockEntity = level.getBlockEntity(controllerPos.get());
-            if (blockEntity != null) {
-                return CapabilityUtils.fluidHandlerCapability(blockEntity);
-            }
-        }
-        return null;
     }
 
     @Nullable

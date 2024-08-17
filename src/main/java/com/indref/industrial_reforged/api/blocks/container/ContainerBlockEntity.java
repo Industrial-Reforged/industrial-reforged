@@ -1,13 +1,17 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
-import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.fluid.SidedFluidHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.item.SidedItemHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.api.util.ValidationFunctions;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -30,9 +34,12 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public abstract class ContainerBlockEntity extends BlockEntity {
     private @Nullable ItemStackHandler itemHandler;
@@ -285,6 +292,78 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         }
         return itemStacks;
     }
+
+    public IItemHandlerModifiable getItemHandlerOnSide(Direction direction) {
+        if (direction == null) {
+            return itemHandler;
+        }
+
+        Map<Direction, Pair<IOActions, int[]>> ioPorts = getItemIO();
+        if (ioPorts.containsKey(direction)) {
+
+            if (direction == Direction.UP || direction == Direction.DOWN) {
+                return new SidedItemHandler(itemHandler, ioPorts.get(direction));
+            }
+
+            if (!this.getBlockState().hasProperty(RotatableEntityBlock.FACING)) return null;
+
+            Direction localDir = this.getBlockState().getValue(RotatableEntityBlock.FACING);
+
+            return switch (localDir) {
+                case NORTH -> new SidedItemHandler(itemHandler, ioPorts.get(direction.getOpposite()));
+                case EAST -> new SidedItemHandler(itemHandler, ioPorts.get(direction.getClockWise()));
+                case SOUTH -> new SidedItemHandler(itemHandler, ioPorts.get(direction));
+                case WEST -> new SidedItemHandler(itemHandler, ioPorts.get(direction.getCounterClockWise()));
+                default -> null;
+            };
+        }
+
+        return null;
+    }
+
+    public IFluidHandler getFluidHandlerOnSide(Direction direction) {
+        if (direction == null) {
+            return fluidTank;
+        }
+
+        Map<Direction, Pair<IOActions, int[]>> ioPorts = getFluidIO();
+        if (ioPorts.containsKey(direction)) {
+
+            if (direction == Direction.UP || direction == Direction.DOWN) {
+                return new SidedFluidHandler(fluidTank, ioPorts.get(direction));
+            }
+
+            if (!this.getBlockState().hasProperty(RotatableEntityBlock.FACING)) return null;
+
+            Direction localDir = this.getBlockState().getValue(RotatableEntityBlock.FACING);
+
+            return switch (localDir) {
+                case NORTH -> new SidedFluidHandler(fluidTank, ioPorts.get(direction.getOpposite()));
+                case EAST -> new SidedFluidHandler(fluidTank, ioPorts.get(direction.getClockWise()));
+                case SOUTH -> new SidedFluidHandler(fluidTank, ioPorts.get(direction));
+                case WEST -> new SidedFluidHandler(fluidTank, ioPorts.get(direction.getCounterClockWise()));
+                default -> null;
+            };
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the input/output config for the blockenitity.
+     * If directions are not defined in the map, they are assumed to be {@link  IOActions#NONE} and do not affect any slot.
+     *
+     * @return Map of directions that each map to a pair that defines the IOAction as well as the tanks that are affected. Return an empty map if you do not have an itemhandler
+     */
+    public abstract Map<Direction, Pair<IOActions, int[]>> getItemIO();
+
+    /**
+     * Get the input/output config for the blockenitity.
+     * If directions are not defined in the map, they are assumed to be {@link  IOActions#NONE} and do not affect any tank.
+     *
+     * @return Map of directions that each map to a pair that defines the IOAction as well as the tanks that are affected. Return an empty map if you do not have a fluidhandler
+     */
+    public abstract Map<Direction, Pair<IOActions, int[]>> getFluidIO();
 
     @Nullable
     @Override

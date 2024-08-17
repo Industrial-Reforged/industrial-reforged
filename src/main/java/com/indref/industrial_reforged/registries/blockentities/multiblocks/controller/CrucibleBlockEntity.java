@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -14,13 +14,16 @@ import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleSmeltingRecipeInput;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -31,13 +34,18 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
@@ -57,6 +65,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     public void commonTick() {
+        // Recipe
         if (hasRecipe()) {
             increaseCraftingProgress();
             setChanged(level, worldPosition, getBlockState());
@@ -64,19 +73,58 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             tryMeltItem();
         }
 
-        Optional<IFireboxMultiblock> fireboxMultiblock = getFireBox();
+        // Firebox
+        // TODO: Move this to firebox blockentity class
+        IFireboxMultiblock fireboxMultiblock = getFireBox();
 
-        if (fireboxMultiblock.isPresent()) {
-            BlockPos controllerPos = this.worldPosition.offset(0, -1, 0);
-            BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
-            if (controllerBlockEntity instanceof FireboxBlockEntity) {
-                int output = fireboxMultiblock.get().getTier().getMaxHeatOutput();
-                IHeatStorage thisHeatStorage = getHeatStorage();
-                IHeatStorage fireBoxHeatStorage = CapabilityUtils.heatStorageCapability(controllerBlockEntity);
-                int drained = fireBoxHeatStorage.tryDrainHeat(Math.min(output, thisHeatStorage.getHeatCapacity() - thisHeatStorage.getHeatStored()), false);
-                thisHeatStorage.tryFillHeat(drained, false);
+        if (fireboxMultiblock != null) {
+            fillHeat(fireboxMultiblock);
+        }
+
+        // Item sucking in
+        List<ItemEntity> items = getItemsInside();
+        suckInItems(items);
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return Map.of();
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of();
+    }
+
+    private void suckInItems(List<ItemEntity> items) {
+        ItemStackHandler handler = getItemStackHandler();
+        for (ItemEntity itemEntity : items) {
+            ItemStack itemStack = itemEntity.getItem();
+            for (int i = 0; i < handler.getSlots(); i++) {
+                if (handler.getStackInSlot(i).isEmpty()) {
+                    handler.setStackInSlot(i, itemStack.copyWithCount(1));
+                    itemStack.shrink(1);
+                }
             }
         }
+    }
+
+    private List<ItemEntity> getItemsInside() {
+        AABB area = new AABB(-1, 0.25, -1, 2, 1, 2).move(worldPosition);
+        return level != null ? level.getEntitiesOfClass(ItemEntity.class, area) : Collections.emptyList();
+    }
+
+    private void fillHeat(IFireboxMultiblock fireboxMultiblock) {
+        BlockPos controllerPos = this.worldPosition.offset(0, -1, 0);
+        BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
+        if (controllerBlockEntity instanceof FireboxBlockEntity) {
+            int output = fireboxMultiblock.getTier().getMaxHeatOutput();
+            IHeatStorage thisHeatStorage = getHeatStorage();
+            IHeatStorage fireBoxHeatStorage = CapabilityUtils.heatStorageCapability(controllerBlockEntity);
+            int drained = fireBoxHeatStorage.tryDrainHeat(Math.min(output, thisHeatStorage.getHeatCapacity() - thisHeatStorage.getHeatStored()), false);
+            thisHeatStorage.tryFillHeat(drained, false);
+        }
+
     }
 
     private void tryMeltItem() {
@@ -185,17 +233,17 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return false;
     }
 
-    public Optional<IFireboxMultiblock> getFireBox() {
+    public @Nullable IFireboxMultiblock getFireBox() {
         BlockPos fireboxPos = worldPosition.below();
         if (level.getBlockEntity(fireboxPos) instanceof FireboxBlockEntity fireBox) {
             for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
                 if (multiblock instanceof IFireboxMultiblock fireboxMultiblock) {
                     if (multiblock.isFormed(level, fireboxPos)) {
-                        return Optional.of(fireboxMultiblock);
+                        return fireboxMultiblock;
                     }
                 }
             }
         }
-        return Optional.empty();
+        return null;
     }
 }

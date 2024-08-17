@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.util;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
@@ -110,16 +112,19 @@ public final class Utils {
         return nnl;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T[] listToArray(List<T> list) {
-        return (T[]) list.toArray();
-    }
-
     public static <T> void arrayAdd(T[] arr, T elem) {
         arr[arr.length-1] = elem;
     }
 
     public static Vector3f copyVec3f(Vector3f old) {
         return new Vector3f(old.x, old.y, old.z);
+    }
+
+    public static IntList intArrayToList(int[] array) {
+        IntList list = new IntArrayList();
+        for (int i : array) {
+            list.add(i);
+        }
+        return list;
     }
 }

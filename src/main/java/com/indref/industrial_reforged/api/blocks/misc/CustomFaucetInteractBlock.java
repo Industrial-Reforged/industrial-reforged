@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.blocks;
+package com.indref.industrial_reforged.api.blocks.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -8,7 +8,7 @@ import net.minecraft.world.level.BlockGetter;
  * want the molten metal of your faucet to go down further
  * than the max y
  */
-public interface FaucetInteractBlock {
+public interface CustomFaucetInteractBlock {
     /**
      * @return the y pos the molten metal should reach down to
      */

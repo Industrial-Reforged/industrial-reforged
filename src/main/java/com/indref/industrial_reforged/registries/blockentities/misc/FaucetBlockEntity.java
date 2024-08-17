@@ -1,13 +1,17 @@
 package com.indref.industrial_reforged.registries.blockentities.misc;
 
-import com.indref.industrial_reforged.api.blocks.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
+import java.util.Map;
 
 public class FaucetBlockEntity extends ContainerBlockEntity {
     public FaucetBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
@@ -25,5 +29,15 @@ public class FaucetBlockEntity extends ContainerBlockEntity {
             if (blockEntity.getBlockState().getBlock() instanceof CanAttachFaucetBlock) {
             }
         }
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return Map.of();
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of();
     }
 }

@@ -1,7 +1,8 @@
 package com.indref.industrial_reforged.registries.blockentities.generators;
 
-import com.indref.industrial_reforged.api.blocks.GeneratorBlockEntity;
+import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.transportation.energy.EnergyNet;
@@ -9,9 +10,12 @@ import com.indref.industrial_reforged.registries.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.util.CapabilityUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
+import com.indref.industrial_reforged.util.capabilities.SidedCapUtils;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -27,6 +31,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class BasicGeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, GeneratorBlockEntity {
@@ -69,6 +74,16 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 stack.shrink(1);
             }
         }
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+        return SidedCapUtils.allInsert(0);
+    }
+
+    @Override
+    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+        return Map.of();
     }
 
     @Override
