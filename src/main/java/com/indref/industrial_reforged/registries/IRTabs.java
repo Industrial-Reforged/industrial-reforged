@@ -189,6 +189,8 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.RUBBER_TREE_WOOD);
                 addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_LOG);
                 addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
+
+                addBlock(output, IRBlocks.REINFORCED_PLANKS);
             }).build());
 
     private static void addItem(CreativeModeTab.Output output, DeferredItem<?> item) {

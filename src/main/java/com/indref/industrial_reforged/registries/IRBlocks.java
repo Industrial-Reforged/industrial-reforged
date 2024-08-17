@@ -56,6 +56,8 @@ public final class IRBlocks {
             () -> new SmallFireboxHatchBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL)));
     public static final DeferredBlock<Block> REFRACTORY_STONE = registerBlockAndItem("refractory_stone",
             () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> REINFORCED_PLANKS = registerBlockAndItem("reinforced_planks",
+            () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.WOOD)));
     public static final DeferredBlock<CoilBlock> COIL = registerBlockAndItem("coil",
             () -> new CoilBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<MachineFrameBlock> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",

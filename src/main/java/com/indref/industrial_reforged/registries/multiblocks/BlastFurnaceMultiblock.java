@@ -85,7 +85,7 @@ public record BlastFurnaceMultiblock() implements Multiblock {
 
         if (!getDefinition().containsValue(blockState.getBlock())) return false;
 
-        return !blockState.getValue(BRICK_STATE).equals(BrickStates.UNFORMED);
+        return blockState.getValue(BRICK_STATE) != BrickStates.UNFORMED;
     }
 
     private static Direction getCorrectDirection(int index, HorizontalDirection direction) {

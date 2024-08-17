@@ -245,7 +245,7 @@ public class IREvents {
                     Map<Integer, @Nullable Block> def = multiblock.getDefinition();
                     for (Map.Entry<Integer, @Nullable Block> entry : def.entrySet()) {
                         IndustrialReforged.LOGGER.debug("Entry: {}, {}", entry.getKey(), entry.getValue());
-                        Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero as negatives are reserved for dynamic multiblocks. Affected multiblock: "
+                        Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero. Affected multiblock: "
                                 + multiblock + ", affected key: " + entry.getKey() + ", " + entry.getValue());
                     }
                 }

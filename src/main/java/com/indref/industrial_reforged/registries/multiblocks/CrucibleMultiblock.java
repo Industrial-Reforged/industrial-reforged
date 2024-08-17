@@ -69,22 +69,17 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
                         default -> WallStates.WALL_TOP;
                     })
                     .setValue(CrucibleWallBlock.FACING, switch (layerIndex) {
-                        case 1, 2 -> Direction.EAST;
-                        case 5, 8 -> Direction.SOUTH;
-                        case 6, 7 -> Direction.WEST;
-                        default -> Direction.NORTH;
+                        case 1, 2 -> Direction.WEST;
+                        case 5, 8 -> Direction.NORTH;
+                        case 6, 7 -> Direction.EAST;
+                        default -> Direction.SOUTH;
                     }
             );
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
             return IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().defaultBlockState()
-                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection(): unformedMultiblock.direction().toRegularDirection());
+                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection() : unformedMultiblock.direction().toRegularDirection());
         }
         return null;
-    }
-
-    @Override
-    public @NotNull HorizontalDirection getFixedDirection() {
-        return HorizontalDirection.NORTH;
     }
 
     @Override
@@ -92,6 +87,11 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
         BlockState blockState = level.getBlockState(blockPos);
 
         return blockState.hasProperty(CRUCIBLE_WALL);
+    }
+
+    @Override
+    public @NotNull HorizontalDirection getFixedDirection() {
+        return HorizontalDirection.NORTH;
     }
 
     public enum WallStates implements StringRepresentable {

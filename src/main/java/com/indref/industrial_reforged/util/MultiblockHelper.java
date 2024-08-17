@@ -46,12 +46,22 @@ public final class MultiblockHelper {
         MultiblockLayer[] actualLayout = new MultiblockLayer[multiblock.getMaxSize()];
         Map<Integer, Block> def = multiblock.getDefinition();
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
-        HorizontalDirection direction = player != null ? HorizontalDirection.fromRegularDirection(player.getDirection()) : HorizontalDirection.NORTH;
+        HorizontalDirection direction;
+        if (multiblock.getFixedDirection() != null) {
+            IndustrialReforged.LOGGER.debug("Fixed dir found");
+            direction = multiblock.getFixedDirection();
+        } else {
+            direction = player != null
+                    ? HorizontalDirection.fromRegularDirection(player.getDirection())
+                    : HorizontalDirection.NORTH;
+        }
 
         // Make player direction first entry of Set to prioritize
         Set<HorizontalDirection> directions = new HashSet<>();
         directions.add(direction);
-        directions.addAll(List.of(HorizontalDirection.values()));
+        if (multiblock.getFixedDirection() == null) {
+            directions.addAll(List.of(HorizontalDirection.values()));
+        }
 
         // Indexing (Positions)
         int y = 0;
@@ -112,8 +122,6 @@ public final class MultiblockHelper {
                     int minSize = layer.range().getMinimum();
                     int maxSize = layer.range().getMaximum();
 
-                    IndustrialReforged.LOGGER.debug("min {}, max {}", minSize, maxSize);
-
                     outer:
                     for (int i = 0; i < maxSize; i++) {
                         int x = 0;
@@ -131,7 +139,6 @@ public final class MultiblockHelper {
                                 multiblockIndexList.add(true);
                             } else {
                                 if (i >= minSize) {
-                                    IndustrialReforged.LOGGER.debug("Dyn height: {}, invalid pos: {}", i, curBlockPos);
                                     break outer;
                                 } else {
                                     firstMissingBlockPoses.putIfAbsent(mDirection, Pair.of(curBlockPos, blockIndex));
@@ -155,7 +162,6 @@ public final class MultiblockHelper {
             }
 
             if (!multiblockIndexList.contains(false)) {
-                IndustrialReforged.LOGGER.debug("actual: {}", Arrays.toString(actualLayout));
                 return new UnformedMultiblock(true, mDirection, Arrays.copyOf(actualLayout, actualLayoutSize));
             }
             for (int i = multiblockIndexList.size() - 1; i >= 0; i--) {
@@ -290,15 +296,13 @@ public final class MultiblockHelper {
     }
 
     private static void formBlocks(Multiblock multiblock, UnformedMultiblock unformedMultiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
-        HorizontalDirection direction = unformedMultiblock.direction;
-        MultiblockLayer[] layout = unformedMultiblock.layers;
+        HorizontalDirection direction = unformedMultiblock.direction();
+        MultiblockLayer[] layout = unformedMultiblock.layers();
 
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         Int2ObjectMap<Block> def = multiblock.getDefinition();
-
-        IndustrialReforged.LOGGER.debug("Layout: {}", Arrays.toString(layout));
 
         int index = 0;
         int yIndex = 0;
@@ -311,6 +315,7 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
+                    IndustrialReforged.LOGGER.debug("index: {}, yIndex: {}", index, yIndex);
                     BlockState newState = multiblock.formBlock(level, curBlockPos, controllerPos, index, yIndex, unformedMultiblock, player);
                     if (newState != null) {
                         level.setBlockAndUpdate(curBlockPos, newState);
@@ -385,6 +390,10 @@ public final class MultiblockHelper {
         MultiblockLayer[] layout = multiblock.getLayout();
         Map<Integer, Block> def = multiblock.getDefinition();
 
+        if (level.getBlockEntity(controllerPos) instanceof DynamicMultiBlockEntity dynamicMultiBlockEntity) {
+            layout = dynamicMultiBlockEntity.getExpandedLayers();
+        }
+
         int yIndex = 0;
         int xIndex = 0;
         for (MultiblockLayer layer : layout) {
@@ -394,12 +403,13 @@ public final class MultiblockHelper {
             int width = multiblock.getWidths().get(yIndex).leftInt();
             int z = 0;
             for (int blockIndex : layer.layer()) {
+                // FIXME: Unforming does not work for blast furnace multiblock
                 Block definedBlock = def.get(blockIndex);
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 BlockState blockState = level.getBlockState(curBlockPos);
                 if (!level.getBlockState(curBlockPos).isEmpty()) {
-                    BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, null /*TODO: construct an unformed multi here*/, player);
+                    BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, new UnformedMultiblock(true, direction, layout), player);
                     if (expectedState != null) {
                         if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos)) {
                             level.setBlockAndUpdate(curBlockPos, definedBlock.defaultBlockState());
