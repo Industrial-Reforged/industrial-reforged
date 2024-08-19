@@ -160,5 +160,6 @@
   "scanner_info.energy_block.energy_ratio": "Energy stored",
   "indref.tooltip.liquid.amount_with_capacity": "%s/%s",
   "indref.tooltip.liquid.amount": "%s",
-  "indref.energy.tier.none": "None"
+  "indref.energy.tier.none": "None",
+  "*.desc.melting_not_possible": "Melting not possible"
 }

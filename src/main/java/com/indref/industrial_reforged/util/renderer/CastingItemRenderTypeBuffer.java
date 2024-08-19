@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class CastingItemRenderTypeBuffer implements MultiBufferSource {
     }
 
     @Override
-    public VertexConsumer getBuffer(RenderType type) {
+    public @NotNull VertexConsumer getBuffer(@NotNull RenderType type) {
         if (alpha < 255 && MAKE_TRANSPARENT.contains(type.toString()) && type instanceof RenderType.CompositeRenderType composite && composite.state.textureState instanceof RenderStateShard.TextureStateShard textureState) {
             ResourceLocation texture = textureState.texture.orElse(InventoryMenu.BLOCK_ATLAS);
             type = RenderType.entityTranslucentCull(texture);

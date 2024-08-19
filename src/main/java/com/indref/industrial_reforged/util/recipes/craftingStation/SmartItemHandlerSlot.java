@@ -73,9 +73,7 @@ public class SmartItemHandlerSlot extends Slot {
 
         IItemHandler handler = this.getItemHandler();
         ItemStack currentStack = handler.getStackInSlot(itemhandlerIndex);
-        if (handler instanceof IItemHandlerModifiable) {
-            IItemHandlerModifiable handlerModifiable = (IItemHandlerModifiable) handler;
-
+        if (handler instanceof IItemHandlerModifiable handlerModifiable) {
             handlerModifiable.setStackInSlot(itemhandlerIndex, ItemStack.EMPTY);
 
             ItemStack remainder = handlerModifiable.insertItem(itemhandlerIndex, maxAdd, true);

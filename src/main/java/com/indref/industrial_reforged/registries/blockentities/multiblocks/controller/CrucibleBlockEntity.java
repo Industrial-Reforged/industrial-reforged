@@ -11,6 +11,8 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
+import com.indref.industrial_reforged.util.recipes.IngredientUtils;
+import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleSmeltingRecipeInput;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
@@ -30,7 +32,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -131,7 +135,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         IItemHandler handler = getItemHandler();
         for (int i = 0; i < handler.getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipeOptional = this.getCurrentRecipe(i);
-            if (recipeOptional.isPresent()) {
+            if (recipeOptional.isPresent() && this.getHeatStorage().getHeatStored() >= recipeOptional.get().heat()) {
                 CrucibleSmeltingRecipe recipe = recipeOptional.get();
                 ItemStack itemStack = handler.getStackInSlot(i);
                 CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
@@ -155,22 +159,30 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
         if (itemStackHandler == null || heatStorage == null) return;
 
+        // TODO: Clean this up to reduce amount of logic
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
-            if (recipe.isPresent() && heatStorage.getHeatStored() >= recipe.get().heat()) {
-                ItemStack itemStack = itemStackHandler.getStackInSlot(i);
-                Item input = recipe.get().getIngredients().get(0).getItems()[0].getItem();
-                if (itemStack.is(input)) {
-                    CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
-                    if (!tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
-                        tag.putBoolean(CrucibleProgressRenderer.IS_MELTING_KEY, true);
+            ItemStack itemStack = itemStackHandler.getStackInSlot(i);
+            CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
+            if (recipe.isPresent()) {
+                if (heatStorage.getHeatStored() >= recipe.get().heat()) {
+                    IngredientWithCount input = recipe.get().ingredient();
+                    if (input.test(itemStack)) {
+                        if (tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY) == 0) {
+                            tag.putInt(CrucibleProgressRenderer.IS_MELTING_KEY, 1);
+                            itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                        }
+                        float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().duration()) * 6;
+                        if (pValue < 0) pValue = 0;
+                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
                         itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                        PacketDistributor.sendToAllPlayers(new CrucibleMeltingProgressPayload(worldPosition, i, pValue));
                     }
-                    float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().duration()) * 6;
-                    if (pValue < 0) pValue = 0;
-                    tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+                }
+            } else if (!itemStack.isEmpty()) {
+                if (tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY) == 0) {
+                    tag.putInt(CrucibleProgressRenderer.IS_MELTING_KEY, 2);
                     itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-                    PacketDistributor.sendToAllPlayers(new CrucibleMeltingProgressPayload(worldPosition, i, pValue));
                 }
             }
         }
@@ -205,7 +217,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         if (stackInSlot.isEmpty() || heatStorage == null) return Optional.empty();
 
         return this.level.getRecipeManager()
-                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new CrucibleSmeltingRecipeInput(stackInSlot, heatStorage.getHeatStored()), level)
+                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new SingleRecipeInput(stackInSlot), level)
                 .map(RecipeHolder::value);
     }
 

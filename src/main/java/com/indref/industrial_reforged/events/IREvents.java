@@ -228,12 +228,15 @@ public class IREvents {
         public static void appendTooltips(ItemTooltipEvent event) {
             ItemStack item = event.getItemStack();
             CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
-            if (tag.getBoolean(CrucibleProgressRenderer.IS_MELTING_KEY)) {
+            int meltingType = tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY);
+            if (meltingType == 1) {
                 event.getToolTip().add(Component.translatable("*.desc.melting_progress")
                         .append(": ")
                         .append(String.format("%.1f", tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY)))
                         .append("/10.0")
                         .withStyle(ChatFormatting.GRAY));
+            } else if (meltingType == 2) {
+                event.getToolTip().add(Component.translatable("*.desc.melting_not_possible").withStyle(ChatFormatting.GRAY));
             }
         }
     }
@@ -245,6 +248,7 @@ public class IREvents {
             Registry<Multiblock> registry = event.getRegistry(IRRegistries.MULTIBLOCK.key());
             if (registry != null) {
                 for (Multiblock multiblock : registry) {
+                    // Check non negative integers in definition
                     Map<Integer, @Nullable Block> def = multiblock.getDefinition();
                     for (Map.Entry<Integer, @Nullable Block> entry : def.entrySet()) {
                         IndustrialReforged.LOGGER.debug("Entry: {}, {}", entry.getKey(), entry.getValue());
