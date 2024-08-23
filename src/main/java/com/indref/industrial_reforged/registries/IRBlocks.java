@@ -7,9 +7,11 @@ import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeBlock
 import com.indref.industrial_reforged.registries.blocks.misc.*;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.BlastFurnaceHatchBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.CrucibleControllerBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.FireboxControllerBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.SmallFireboxHatchBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.CrucibleWallBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.CruciblePartBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.FireboxPartBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.RefractoryBrickBlock;
 import com.indref.industrial_reforged.registries.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLeavesBlock;
@@ -17,6 +19,7 @@ import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeLogBlock
 import com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.tiers.FireboxTiers;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -46,8 +49,6 @@ public final class IRBlocks {
             () -> new CableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOL), 6, EnergyTiers.EXTREME));
     public static final DeferredBlock<MiningPipeBlock> MINING_PIPE = registerBlock("mining_pipe",
             () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()));
-    public static final DeferredBlock<RefractoryBrickBlock> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",
-            () -> new RefractoryBrickBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS = registerBlockAndItem("blast_furnace_bricks",
             () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = registerBlockAndItem("blast_furnace_hatch",
@@ -60,6 +61,12 @@ public final class IRBlocks {
             () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.WOOD)));
     public static final DeferredBlock<CoilBlock> COIL = registerBlockAndItem("coil",
             () -> new CoilBlock(BlockBehaviour.Properties.of()));
+    public static final DeferredBlock<RefractoryBrickBlock> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",
+            () -> new RefractoryBrickBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final DeferredBlock<FireboxControllerBlock> FIREBOX_CONTROLLER = registerBlockAndItem("firebox_controller",
+            () -> new FireboxControllerBlock(BlockBehaviour.Properties.of(), FireboxTiers.REFRACTORY));
+    public static final DeferredBlock<FireboxPartBlock> FIREBOX_PART = registerBlockAndItem("firebox_part",
+            () -> new FireboxPartBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<MachineFrameBlock> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",
             () -> new MachineFrameBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<SlabBlock> TERRACOTTA_BRICK_SLAB = registerBlockAndItem("terracotta_brick_slab",
@@ -68,16 +75,16 @@ public final class IRBlocks {
             () -> new Block(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<CrucibleControllerBlock> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
-    public static final DeferredBlock<CrucibleWallBlock> CERAMIC_CRUCIBLE_WALL = registerBlockAndItem("ceramic_crucible_wall",
-            () -> new CrucibleWallBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
+    public static final DeferredBlock<CruciblePartBlock> CERAMIC_CRUCIBLE_PART = registerBlockAndItem("ceramic_crucible_wall",
+            () -> new CruciblePartBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final DeferredBlock<FaucetBlock> CERAMIC_FAUCET = registerBlockAndItem("ceramic_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.TERRACOTTA_BRICK.get()));
     public static final DeferredBlock<FaucetBlock> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
-    public static final DeferredBlock<CastingBasinBlockCustom> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
-            () -> new CastingBasinBlockCustom(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
-    public static final DeferredBlock<CastingBasinBlockCustom> SANDY_CASTING_BASIN = registerBlockAndItem("sandy_casting_basin",
-            () -> new CastingBasinBlockCustom(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
+    public static final DeferredBlock<CastingBasinBlock> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
+    public static final DeferredBlock<CastingBasinBlock> SANDY_CASTING_BASIN = registerBlockAndItem("sandy_casting_basin",
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = registerBlockAndItem("centrifuge",
             () -> new CentrifugeBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR = registerBlockAndItem("basic_generator",

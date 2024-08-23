@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.gui.menus.CraftingStationMenu;
@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,14 +36,8 @@ public class CraftingStationBlockEntity extends ContainerBlockEntity implements 
         return new CraftingStationMenu(containerId, inventory, this);
     }
 
-    // TODO: Think about how to implement this
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return Map.of();
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         return Map.of();
     }
 }

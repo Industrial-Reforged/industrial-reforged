@@ -1,12 +1,17 @@
 package com.indref.industrial_reforged.registries.blocks.generators;
 
+import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
+import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.blockentities.generators.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -18,7 +23,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BasicGeneratorBlock extends RotatableContainerBlock implements WrenchableBlock {
+import java.util.List;
+
+public class BasicGeneratorBlock extends RotatableContainerBlock implements WrenchableBlock, DisplayBlock {
     public BasicGeneratorBlock(Properties p_49224_) {
         super(p_49224_);
     }
@@ -48,5 +55,15 @@ public class BasicGeneratorBlock extends RotatableContainerBlock implements Wren
     protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
         player.openMenu((BasicGeneratorBlockEntity) level.getBlockEntity(blockPos), blockPos);
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+        DisplayUtils.displayEnergyInfo(displayText, scannedBlock, scannedBlockPos, level);
+    }
+
+    @Override
+    public @Nullable List<DisplayItem> getCompatibleItems() {
+        return List.of(IRItems.SCANNER.get());
     }
 }

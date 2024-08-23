@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
@@ -11,8 +11,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -38,18 +41,16 @@ public class DrainBlockEntity extends ContainerBlockEntity {
     }
 
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        if (capability == Capabilities.FluidHandler.BLOCK) {
+            return Map.of(
+                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{0})
+            );
+        }
         return Map.of();
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
-        return Map.of(
-                Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{0})
-        );
     }
 }

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.gui.components;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.gui.components.TooltipGuiComponent;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;

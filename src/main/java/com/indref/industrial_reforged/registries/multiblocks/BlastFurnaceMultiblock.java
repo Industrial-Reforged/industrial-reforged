@@ -28,8 +28,13 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     public static final EnumProperty<BrickStates> BRICK_STATE = EnumProperty.create("brick_state", BlastFurnaceMultiblock.BrickStates.class);
 
     @Override
-    public Block getController() {
+    public Block getUnformedController() {
         return IRBlocks.BLAST_FURNACE_HATCH.get();
+    }
+
+    @Override
+    public Block getFormedController() {
+        return getUnformedController();
     }
 
     // Note: This method is heavily documented as it serves as an

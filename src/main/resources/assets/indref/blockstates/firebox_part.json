@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "firebox_part=brick,hatch_active=false": {
+      "model": "indref:block/refractory_brick"
+    },
+    "firebox_part=hatch,hatch_active=false": {
+      "model": "indref:block/multiblock/firebox/hatch"
+    },
+    "firebox_part=brick,hatch_active=true": {
+      "model": "indref:block/refractory_brick"
+    },
+    "firebox_part=hatch,hatch_active=true": {
+      "model": "indref:block/multiblock/firebox/hatch_active"
+    }
+  }
+}

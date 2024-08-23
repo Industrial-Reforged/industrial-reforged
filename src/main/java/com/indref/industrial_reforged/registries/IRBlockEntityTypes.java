@@ -6,12 +6,13 @@ import com.indref.industrial_reforged.registries.blockentities.machines.Centrifu
 import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
 import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -29,7 +30,11 @@ public final class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<FireboxBlockEntity>> FIREBOX =
             BLOCK_ENTITIES.register("firebox", () ->
                     BlockEntityType.Builder.of(FireboxBlockEntity::new,
-                            IRBlocks.COIL.get()).build(null));
+                            IRBlocks.FIREBOX_CONTROLLER.get()).build(null));
+    public static final Supplier<BlockEntityType<FireboxPartBlockEntity>> FIREBOX_PART =
+            BLOCK_ENTITIES.register("firebox_part", () ->
+                    BlockEntityType.Builder.of(FireboxPartBlockEntity::new,
+                            IRBlocks.FIREBOX_PART.get()).build(null));
     public static final Supplier<BlockEntityType<SmallFireboxBlockEntity>> SMALL_FIREBOX =
             BLOCK_ENTITIES.register("small_firebox", () ->
                     BlockEntityType.Builder.of(SmallFireboxBlockEntity::new,
@@ -38,10 +43,10 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("crucible", () ->
                     BlockEntityType.Builder.of(CrucibleBlockEntity::new,
                             IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()).build(null));
-    public static final Supplier<BlockEntityType<CrucibleWallBlockEntity>> CRUCIBLE_WALL =
-            BLOCK_ENTITIES.register("crucible_wall", () ->
-                    BlockEntityType.Builder.of(CrucibleWallBlockEntity::new,
-                            IRBlocks.CERAMIC_CRUCIBLE_WALL.get()).build(null));
+    public static final Supplier<BlockEntityType<CruciblePartBlockEntity>> CRUCIBLE_PART =
+            BLOCK_ENTITIES.register("crucible_part", () ->
+                    BlockEntityType.Builder.of(CruciblePartBlockEntity::new,
+                            IRBlocks.CERAMIC_CRUCIBLE_PART.get()).build(null));
     public static final Supplier<BlockEntityType<FaucetBlockEntity>> FAUCET =
             BLOCK_ENTITIES.register("faucet", () ->
                     BlockEntityType.Builder.of(FaucetBlockEntity::new, getFaucetBlocks()).build(null));

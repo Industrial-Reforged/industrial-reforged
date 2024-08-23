@@ -1,7 +1,8 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -11,9 +12,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.multiblocks.IFireboxMultiblock;
-import com.indref.industrial_reforged.util.recipes.IngredientUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleSmeltingRecipeInput;
 import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
@@ -29,16 +28,14 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -52,15 +49,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+// TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
     private final CrucibleTier tier;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
-        addItemHandler(9, 1);
-        addHeatStorage(2000);
-        addFluidTank(9000);
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
+        addItemHandler(9, 1);
+        addFluidTank(9000);
+        addHeatStorage(tier.getHeatCapacity());
     }
 
     @Override
@@ -77,26 +75,18 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             tryMeltItem();
         }
 
-        // Firebox
-        // TODO: Move this to firebox blockentity class
-        IFireboxMultiblock fireboxMultiblock = getFireBox();
-
-        if (fireboxMultiblock != null) {
-            fillHeat(fireboxMultiblock);
-        }
-
         // Item sucking in
         List<ItemEntity> items = getItemsInside();
         suckInItems(items);
     }
 
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return Map.of();
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        if (capability == IRCapabilities.HeatStorage.BLOCK) {
+            return Map.of(
+                    Direction.DOWN, Pair.of(IOActions.INSERT, new int[0])
+            );
+        }
         return Map.of();
     }
 
@@ -116,19 +106,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     private List<ItemEntity> getItemsInside() {
         AABB area = new AABB(-1, 0.25, -1, 2, 1, 2).move(worldPosition);
         return level != null ? level.getEntitiesOfClass(ItemEntity.class, area) : Collections.emptyList();
-    }
-
-    private void fillHeat(IFireboxMultiblock fireboxMultiblock) {
-        BlockPos controllerPos = this.worldPosition.offset(0, -1, 0);
-        BlockEntity controllerBlockEntity = level.getBlockEntity(controllerPos);
-        if (controllerBlockEntity instanceof FireboxBlockEntity) {
-            int output = fireboxMultiblock.getTier().getMaxHeatOutput();
-            IHeatStorage thisHeatStorage = getHeatStorage();
-            IHeatStorage fireBoxHeatStorage = CapabilityUtils.heatStorageCapability(controllerBlockEntity);
-            int drained = fireBoxHeatStorage.tryDrainHeat(Math.min(output, thisHeatStorage.getHeatCapacity() - thisHeatStorage.getHeatStored()), false);
-            thisHeatStorage.tryFillHeat(drained, false);
-        }
-
     }
 
     private void tryMeltItem() {
@@ -192,10 +169,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
             Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
 
-            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(this);
-
             if (recipe.isEmpty())
                 continue;
+
+            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(this);
 
             FluidStack result = recipe.get().resultFluid();
             FluidStack fluidInTank = fluidHandler.getFluidInTank(0);

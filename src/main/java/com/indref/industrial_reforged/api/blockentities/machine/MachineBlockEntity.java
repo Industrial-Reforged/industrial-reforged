@@ -1,6 +1,6 @@
-package com.indref.industrial_reforged.api.blocks.machine;
+package com.indref.industrial_reforged.api.blockentities.machine;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;

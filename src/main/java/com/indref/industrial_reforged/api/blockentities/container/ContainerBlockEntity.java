@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.blocks.container;
+package com.indref.industrial_reforged.api.blockentities.container;
 
 import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.api.capabilities.fluid.SidedFluidHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.heat.SidedHeatHandler;
 import com.indref.industrial_reforged.api.capabilities.item.SidedItemHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.api.util.ValidationFunctions;
@@ -34,7 +35,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,12 +54,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
 
     public ContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-    }
-
-    public void clientTick() {
-    }
-
-    public void serverTick() {
     }
 
     public void commonTick() {
@@ -116,6 +110,24 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         }
     }
 
+    protected @NotNull <T> BlockCapabilityCache<T, @Nullable Direction> createCache(BlockCapability<T, @Nullable Direction> capability, ServerLevel serverLevel) {
+        return BlockCapabilityCache.create(
+                capability,
+                serverLevel,
+                worldPosition,
+                null
+        );
+    }
+
+    protected @NotNull <T> BlockCapabilityCache<T, @Nullable Direction> createCache(BlockCapability<T, @Nullable Direction> capability, ServerLevel serverLevel, @Nullable Direction dir) {
+        return BlockCapabilityCache.create(
+                capability,
+                serverLevel,
+                worldPosition,
+                dir
+        );
+    }
+
     @SuppressWarnings("unchecked")
     public <T, C> T getCapFromCache(BlockCapability<T, C> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK)
@@ -127,15 +139,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         else if (capability == IRCapabilities.HeatStorage.BLOCK)
             return this.heatCapCache != null ? (T) this.heatCapCache.getCapability() : null;
         else return null;
-    }
-
-    private @NotNull <T> BlockCapabilityCache<T, @Nullable Direction> createCache(BlockCapability<T, @Nullable Direction> capability, ServerLevel serverLevel) {
-        return BlockCapabilityCache.create(
-                capability,
-                serverLevel,
-                worldPosition,
-                null
-        );
     }
 
     @Override
@@ -192,10 +195,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         this.itemHandler = new ItemStackHandler(slots) {
             @Override
             protected void onContentsChanged(int slot) {
+                update();
                 setChanged();
                 onItemsChanged(slot);
-                level.invalidateCapabilities(worldPosition);
-                update();
+                invalidateCapabilities();
             }
 
             @Override
@@ -217,7 +220,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 update();
                 setChanged();
                 onFluidChanged();
-                level.invalidateCapabilities(worldPosition);
+                invalidateCapabilities();
             }
 
             @Override
@@ -235,10 +238,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         this.energyStorage = new EnergyStorage(energyTier) {
             @Override
             public void onEnergyChanged() {
+                update();
                 setChanged();
                 ContainerBlockEntity.this.onEnergyChanged();
-                level.invalidateCapabilities(worldPosition);
-                update();
+                invalidateCapabilities();
             }
         };
         this.energyStorage.setEnergyCapacity(energyCapacity);
@@ -250,7 +253,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
             public void onHeatChanged() {
                 setChanged();
                 ContainerBlockEntity.this.onHeatChanged();
-                level.invalidateCapabilities(worldPosition);
+                invalidateCapabilities();
                 update();
             }
         };
@@ -293,16 +296,16 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         return itemStacks;
     }
 
-    public IItemHandlerModifiable getItemHandlerOnSide(Direction direction) {
+    public <T> T getHandlerOnSide(BlockCapability<T, @Nullable Direction> capability, SidedHandlerSupplier<T> handlerSupplier, Direction direction, T baseHandler) {
         if (direction == null) {
-            return itemHandler;
+            return baseHandler;
         }
 
-        Map<Direction, Pair<IOActions, int[]>> ioPorts = getItemIO();
+        Map<Direction, Pair<IOActions, int[]>> ioPorts = getSidedInteractions(capability);
         if (ioPorts.containsKey(direction)) {
 
             if (direction == Direction.UP || direction == Direction.DOWN) {
-                return new SidedItemHandler(itemHandler, ioPorts.get(direction));
+                return handlerSupplier.get(baseHandler, ioPorts.get(direction));
             }
 
             if (!this.getBlockState().hasProperty(RotatableEntityBlock.FACING)) return null;
@@ -310,60 +313,51 @@ public abstract class ContainerBlockEntity extends BlockEntity {
             Direction localDir = this.getBlockState().getValue(RotatableEntityBlock.FACING);
 
             return switch (localDir) {
-                case NORTH -> new SidedItemHandler(itemHandler, ioPorts.get(direction.getOpposite()));
-                case EAST -> new SidedItemHandler(itemHandler, ioPorts.get(direction.getClockWise()));
-                case SOUTH -> new SidedItemHandler(itemHandler, ioPorts.get(direction));
-                case WEST -> new SidedItemHandler(itemHandler, ioPorts.get(direction.getCounterClockWise()));
+                case NORTH -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getOpposite()));
+                case EAST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getClockWise()));
+                case SOUTH -> handlerSupplier.get(baseHandler, ioPorts.get(direction));
+                case WEST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getCounterClockWise()));
                 default -> null;
             };
         }
 
         return null;
+    }
+
+    public IItemHandler getItemHandlerOnSide(Direction direction) {
+        return getHandlerOnSide(
+                Capabilities.ItemHandler.BLOCK,
+                SidedItemHandler::new,
+                direction,
+                getItemHandler()
+        );
     }
 
     public IFluidHandler getFluidHandlerOnSide(Direction direction) {
-        if (direction == null) {
-            return fluidTank;
-        }
+        return getHandlerOnSide(
+                Capabilities.FluidHandler.BLOCK,
+                SidedFluidHandler::new,
+                direction,
+                getFluidHandler()
+        );
+    }
 
-        Map<Direction, Pair<IOActions, int[]>> ioPorts = getFluidIO();
-        if (ioPorts.containsKey(direction)) {
-
-            if (direction == Direction.UP || direction == Direction.DOWN) {
-                return new SidedFluidHandler(fluidTank, ioPorts.get(direction));
-            }
-
-            if (!this.getBlockState().hasProperty(RotatableEntityBlock.FACING)) return null;
-
-            Direction localDir = this.getBlockState().getValue(RotatableEntityBlock.FACING);
-
-            return switch (localDir) {
-                case NORTH -> new SidedFluidHandler(fluidTank, ioPorts.get(direction.getOpposite()));
-                case EAST -> new SidedFluidHandler(fluidTank, ioPorts.get(direction.getClockWise()));
-                case SOUTH -> new SidedFluidHandler(fluidTank, ioPorts.get(direction));
-                case WEST -> new SidedFluidHandler(fluidTank, ioPorts.get(direction.getCounterClockWise()));
-                default -> null;
-            };
-        }
-
-        return null;
+    public IHeatStorage getHeatHandlerOnSide(Direction direction) {
+        return getHandlerOnSide(
+                IRCapabilities.HeatStorage.BLOCK,
+                ((handler, supportedActions) -> new SidedHeatHandler(handler, supportedActions.left())),
+                direction,
+                getHeatStorage()
+        );
     }
 
     /**
      * Get the input/output config for the blockenitity.
-     * If directions are not defined in the map, they are assumed to be {@link  IOActions#NONE} and do not affect any slot.
+     * If directions are not defined in the map, they are assumed to be {@link IOActions#NONE} and do not affect any slot.
      *
      * @return Map of directions that each map to a pair that defines the IOAction as well as the tanks that are affected. Return an empty map if you do not have an itemhandler
      */
-    public abstract Map<Direction, Pair<IOActions, int[]>> getItemIO();
-
-    /**
-     * Get the input/output config for the blockenitity.
-     * If directions are not defined in the map, they are assumed to be {@link  IOActions#NONE} and do not affect any tank.
-     *
-     * @return Map of directions that each map to a pair that defines the IOAction as well as the tanks that are affected. Return an empty map if you do not have a fluidhandler
-     */
-    public abstract Map<Direction, Pair<IOActions, int[]>> getFluidIO();
+    public abstract <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability);
 
     @Nullable
     @Override
@@ -379,5 +373,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         super.onDataPacket(net, pkt, lookupProvider);
+    }
+
+    @FunctionalInterface
+    public interface SidedHandlerSupplier<T> {
+        T get(T handler, Pair<IOActions, int[]> supportedActions);
     }
 }

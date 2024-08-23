@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
-import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -44,11 +45,6 @@ public abstract class ContainerBlock extends BaseEntityBlock {
         return createTickerHelper(blockEntityType, getBlockEntityType(),
                 (level1, pos1, state1, entity1) -> {
                     entity1.commonTick();
-                    if (level.isClientSide()) {
-                        entity1.clientTick();
-                    } else {
-                        entity1.serverTick();
-                    }
                 }
         );
     }

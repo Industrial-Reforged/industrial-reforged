@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +21,22 @@ public interface Multiblock {
      * Your multiblock needs at least one of these in its structure.
      * <br>
      * <br>
-     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getController() BlastFurnaceMultiblock.getController()}
+     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getUnformedController() BlastFurnaceMultiblock.getUnformedController()}
      * <br>
      * @return The controller block of your unformed multiblock
      */
-    Block getController();
+    Block getUnformedController();
+
+    /**
+     * This method provides the controller block of your formed multiblock.
+     * Your multiblock needs at least one of these in its structure.
+     * <br>
+     * <br>
+     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getUnformedController() BlastFurnaceMultiblock.getFormedController()}
+     * <br>
+     * @return The controller block of your formed multiblock
+     */
+    Block getFormedController();
 
     /**
      * This method provides the layout of your unformed multiblock.

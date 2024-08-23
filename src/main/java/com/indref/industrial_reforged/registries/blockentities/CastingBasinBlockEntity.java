@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.items.misc.MoldItem;
@@ -15,9 +15,11 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,12 +193,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     // TODO: Think about how to implement this
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return Map.of();
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         return Map.of();
     }
 

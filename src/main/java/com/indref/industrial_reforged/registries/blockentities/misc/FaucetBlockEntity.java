@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.misc;
 
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import it.unimi.dsi.fastutil.Pair;
@@ -10,6 +10,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -32,12 +34,7 @@ public class FaucetBlockEntity extends ContainerBlockEntity {
     }
 
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return Map.of();
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         return Map.of();
     }
 }

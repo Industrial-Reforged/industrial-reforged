@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.multiblocks.util;
+package com.indref.industrial_reforged.api.multiblocks.blockentities;
 
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import net.minecraft.nbt.CompoundTag;

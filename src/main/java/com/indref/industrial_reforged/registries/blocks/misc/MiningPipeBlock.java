@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.BOTTOM;
 
-@SuppressWarnings("deprecation")
 public class MiningPipeBlock extends Block implements WrenchableBlock {
     private static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 0, 512);
 

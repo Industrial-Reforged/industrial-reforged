@@ -42,12 +42,12 @@ public record SidedFluidHandler(IFluidHandler innerHandler,
     }
 
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction fAction) {
+    public @NotNull FluidStack drain(FluidStack resource, FluidAction fAction) {
         return action == IOActions.EXTRACT ? innerHandler.drain(resource, fAction) : FluidStack.EMPTY;
     }
 
     @Override
-    public FluidStack drain(int maxDrain, FluidAction fAction) {
+    public @NotNull FluidStack drain(int maxDrain, FluidAction fAction) {
         return action == IOActions.EXTRACT ? innerHandler.drain(maxDrain, fAction) : FluidStack.EMPTY;
     }
 }

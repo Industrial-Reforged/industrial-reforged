@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.gui;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

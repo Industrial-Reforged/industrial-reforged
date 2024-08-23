@@ -2,10 +2,10 @@ package com.indref.industrial_reforged.registries.blockentities.multiblocks.cont
 
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.multiblocks.util.DynamicMultiBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.DynamicMultiBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
@@ -26,6 +26,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -91,17 +93,18 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     // TODO: Export this through the bricks block
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return Map.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
-        return Map.of(
-                Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0}));
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        if (capability == Capabilities.ItemHandler.BLOCK) {
+            return Map.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
+        } else if (capability == Capabilities.FluidHandler.BLOCK) {
+            return Map.of(
+                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0})
+            );
+        }
+        return Map.of();
     }
 
     private boolean isMainController() {

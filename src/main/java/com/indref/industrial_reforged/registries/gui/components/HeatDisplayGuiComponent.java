@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.gui.components;
 
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.gui.components.GuiComponent;
 import com.indref.industrial_reforged.registries.IRItems;

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
@@ -44,11 +44,9 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, IToo
     @Override
     public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos) {
         Font font = Minecraft.getInstance().font;
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
         BlockState blockstate = level.getBlockState(blockPos);
-        ItemStack mainHandStack = player.getMainHandItem();
         if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
-            if (!displayBlock.getCompatibleItems().contains((DisplayItem) IRItems.THERMOMETER.get())) return;
+            if (!displayBlock.getCompatibleItems().contains(IRItems.THERMOMETER.get())) return;
 
             List<Component> displayText = new ArrayList<>();
 
@@ -85,7 +83,7 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, IToo
         } else {
             setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
         }
-        itemStack.set(IRDataComponents.THERMOMETER_STAGE, Math.round((float) getHeatStored(itemStack) / 1000));
+        itemStack.set(IRDataComponents.THERMOMETER_STAGE, Math.round(getHeatStored(itemStack) / 1000f));
 
         if (getHeatStored(itemStack) >= getHeatCapacity(itemStack)) {
             explodeThermometer(player, itemStack);

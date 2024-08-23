@@ -1,7 +1,5 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks.misc;
+package com.indref.industrial_reforged.api.multiblocks.blockentities;
 
-import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -10,15 +8,25 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CrucibleWallBlockEntity extends BlockEntity implements SavesControllerPosBlockEntity {
-    private @Nullable BlockPos controllerPos;
+public abstract class MultiblockPartBlockEntity extends BlockEntity implements SavesControllerPosBlockEntity {
+    private BlockPos controllerPos;
 
-    public CrucibleWallBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(IRBlockEntityTypes.CRUCIBLE_WALL.get(), blockPos, blockState);
+    public MultiblockPartBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+        super(blockEntityType, blockPos, blockState);
+    }
+
+    @Override
+    public void setControllerPos(BlockPos controllerPos) {
+        this.controllerPos = controllerPos;
+    }
+
+    public BlockPos getControllerPos() {
+        return controllerPos;
     }
 
     @Override
@@ -36,15 +44,6 @@ public class CrucibleWallBlockEntity extends BlockEntity implements SavesControl
         } else {
             this.controllerPos = null;
         }
-    }
-
-    @Override
-    public void setControllerPos(BlockPos blockPos) {
-        this.controllerPos = blockPos;
-    }
-
-    public @Nullable BlockPos getControllerPos() {
-        return controllerPos;
     }
 
     @Nullable

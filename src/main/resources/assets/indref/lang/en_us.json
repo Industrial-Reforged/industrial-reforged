@@ -158,6 +158,7 @@
 
   "scanner_info.heat_block.heat_ratio": "Heat stored",
   "scanner_info.energy_block.energy_ratio": "Energy stored",
+  "scanner_info.fluid_ratio": "Fluid ",
   "indref.tooltip.liquid.amount_with_capacity": "%s/%s",
   "indref.tooltip.liquid.amount": "%s",
   "indref.energy.tier.none": "None",

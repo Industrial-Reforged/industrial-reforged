@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.multiblocks.util.FakeBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import net.minecraft.core.BlockPos;

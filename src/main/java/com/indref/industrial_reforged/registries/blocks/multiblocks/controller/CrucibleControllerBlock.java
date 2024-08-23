@@ -1,14 +1,14 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.CrucibleWallBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
@@ -49,12 +49,12 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
     @Override
     public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return tier.getController().asItem().getDefaultInstance();
+        return tier.getUnformedController().asItem().getDefaultInstance();
     }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return CrucibleWallBlock.VoxelShapes.BOTTOM_EDGE_BASE;
+        return CruciblePartBlock.VoxelShapes.BOTTOM_EDGE_BASE;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
     @Override
     public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
-        displayText.addAll(DisplayUtils.displayHeatInfo(level.getBlockEntity(scannedBlockPos), scannedBlock, Component.literal("Crucible")));
+        DisplayUtils.displayHeatInfo(displayText, scannedBlock, scannedBlockPos, level);
     }
 
     @Override

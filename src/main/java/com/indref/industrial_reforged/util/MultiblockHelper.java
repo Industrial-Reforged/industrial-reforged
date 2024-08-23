@@ -3,9 +3,9 @@ package com.indref.industrial_reforged.util;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.multiblocks.util.DynamicMultiBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.DynamicMultiBlockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
-import com.indref.industrial_reforged.api.multiblocks.util.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.multiblocks.blockentities.SavesControllerPosBlockEntity;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.booleans.BooleanArrayList;
 import it.unimi.dsi.fastutil.booleans.BooleanList;
@@ -19,7 +19,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,8 +34,8 @@ public final class MultiblockHelper {
     /**
      * Check if all multiblock parts are placed correctly
      *
-     * @param multiblock    multiblock's controller (multiblock to check)
-     * @param controllerPos blockpos of the multiblock controller
+     * @param multiblock    multiblocks controller (multiblock to check)
+     * @param controllerPos blockPos of the multiblock controller
      * @param level         level of the controller block
      * @param player        player that is trying to form the multi
      * @return first: isValid? second: Direction that multi is valid
@@ -234,7 +233,7 @@ public final class MultiblockHelper {
             int z = 0;
             int width = multiblock.getWidths().get(y).leftInt();
             for (int blockIndex : layer.layer()) {
-                if (blockIndex == revDef.getInt(multiblock.getController())) {
+                if (blockIndex == revDef.getInt(multiblock.getUnformedController())) {
                     return new Vec3i(x, y, z);
                 }
                 if (x + 1 < width) {
@@ -368,6 +367,7 @@ public final class MultiblockHelper {
             if (!unformingCancelled) {
                 try {
                     unformBlocks(multiblock, multiblock.getFixedDirection(), controllerPos, level, player);
+                    return true;
                 } catch (Exception ignored) {
                 }
                 IRHooks.postMultiblockUnformed(multiblock, player, controllerPos);
@@ -411,9 +411,11 @@ public final class MultiblockHelper {
                 if (!level.getBlockState(curBlockPos).isEmpty()) {
                     BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, new UnformedMultiblock(true, direction, layout), player);
                     if (expectedState != null) {
-                        if (blockState.is(expectedState.getBlock()) && multiblock.isFormed(level, curBlockPos)) {
-                            level.setBlockAndUpdate(curBlockPos, definedBlock.defaultBlockState());
-                            multiblock.afterUnformBlock(level, curBlockPos, controllerPos, xIndex, yIndex, direction, player);
+                        if (blockState.is(expectedState.getBlock())) {
+                            if (multiblock.isFormed(level, curBlockPos)) {
+                                level.setBlockAndUpdate(curBlockPos, definedBlock.defaultBlockState());
+                                multiblock.afterUnformBlock(level, curBlockPos, controllerPos, xIndex, yIndex, direction, player);
+                            }
                         }
                     }
                 }

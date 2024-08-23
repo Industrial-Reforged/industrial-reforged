@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
-import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -19,14 +19,25 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
-    public static final EnumProperty<FireboxMultiblock.PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", FireboxMultiblock.PartIndex.class);
+    public static final EnumProperty<PartIndex> FIREBOX_PART = EnumProperty.create("firebox_part", PartIndex.class);
 
     @Override
-    public Block getController() {
+    public Block getUnformedController() {
         return IRBlocks.COIL.get();
+    }
+
+    @Override
+    public Block getFormedController() {
+        return IRBlocks.FIREBOX_CONTROLLER.get();
+    }
+
+    public Block getUnformedPart() {
+        return IRBlocks.REFRACTORY_BRICK.get();
+    }
+
+    public Block getFormedPart() {
+        return IRBlocks.FIREBOX_PART.get();
     }
 
     @Override
@@ -43,8 +54,8 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     @Override
     public Int2ObjectMap<Block> getDefinition() {
         Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
-        def.put(0, IRBlocks.REFRACTORY_BRICK.get());
-        def.put(1, getController());
+        def.put(0, getUnformedPart());
+        def.put(1, getUnformedController());
         return def;
     }
 
@@ -57,22 +68,17 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
-        if (!getDefinition().containsValue(blockState.getBlock())) return false;
+        if (blockState.is(getUnformedController()) || blockState.is(getUnformedPart()) || getDefinition().containsValue(blockState.getBlock())) return false;
 
-        return !blockState.getValue(FIREBOX_PART).equals(PartIndex.UNFORMED);
+        return blockState.hasProperty(FIREBOX_PART);
     }
 
     @Override
     public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
-        BlockState currentBlock = level.getBlockState(blockPos);
-        if (currentBlock.is(IRBlocks.REFRACTORY_BRICK.get()) || currentBlock.is(IRBlocks.COIL.get())) {
-            return currentBlock.setValue(FireboxMultiblock.FIREBOX_PART,
-                    switch (layerIndex) {
-                        case 1, 3, 5, 7 -> PartIndex.HATCH;
-                        case 4 -> PartIndex.COIL;
-                        default -> PartIndex.BRICK;
-                    }
-            );
+        if (layerIndex == 4) {
+            return getFormedController().defaultBlockState().setValue(FIREBOX_PART, PartIndex.COIL);
+        } else if (layerIndex >= 0 && layerIndex <= 8) {
+            return getFormedPart().defaultBlockState().setValue(FIREBOX_PART, layerIndex % 2 == 0 ? PartIndex.BRICK : PartIndex.HATCH);
         }
         return null;
     }
@@ -83,23 +89,19 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Optional<BlockPos> getControllerPos(BlockPos multiblockPos, Level level) {
-        if (level.getBlockEntity(multiblockPos) instanceof FireboxBlockEntity)
-            return Optional.of(multiblockPos);
-
-        for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(multiblockPos)) {
-            if (level.getBlockEntity(pos) instanceof FireboxBlockEntity) {
-                return Optional.of(pos);
-            }
-        }
-        return Optional.empty();
+    public @Nullable BlockPos getControllerPos(BlockPos multiblockPos, Level level) {
+        return switch (level.getBlockEntity(multiblockPos)) {
+            case FireboxBlockEntity ignored -> multiblockPos;
+            case FireboxPartBlockEntity fireboxPart -> fireboxPart.getControllerPos();
+            case null, default -> null;
+        };
     }
 
     public enum PartIndex implements StringRepresentable {
-        UNFORMED("unformed"),
         BRICK("brick"),
         HATCH("hatch"),
         COIL("coil");
+
         private final String name;
 
         PartIndex(String name) {

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Implement this interface for your block entity
  * to display a custom info message when the
- * player hovers over the block with a scanner
+ * player hovers over the block with a scanner item
  */
 public interface DisplayBlock {
     /**
@@ -27,7 +27,5 @@ public interface DisplayBlock {
      */
     void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level);
 
-
-    @Nullable
     List<DisplayItem> getCompatibleItems();
 }

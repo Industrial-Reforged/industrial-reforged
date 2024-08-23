@@ -20,7 +20,7 @@ public class HammerItem extends ToolItem {
         BlockState controllerState = useOnContext.getLevel().getBlockState(useOnContext.getClickedPos());
         if (!useOnContext.getPlayer().isCrouching()) {
             for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
-                if (controllerState.is(multiblock.getController())) {
+                if (controllerState.is(multiblock.getUnformedController())) {
                     try {
                         return MultiblockHelper.form(multiblock, useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer())
                                 ? InteractionResult.SUCCESS
@@ -31,7 +31,7 @@ public class HammerItem extends ToolItem {
                 }
             }
         } else {
-
+            // TODO: Multiblock unforming
         }
         return InteractionResult.FAIL;
     }

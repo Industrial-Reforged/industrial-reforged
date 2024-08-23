@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.misc.CastingBasinBlockCustom;
+import com.indref.industrial_reforged.registries.blocks.misc.CastingBasinBlock;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,7 +29,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
 
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
-    private static final float SIDE_MARGIN = (float) CastingBasinBlockCustom.SHAPE.min(Direction.Axis.X) + 0.1f;
+    private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f;
     public static final float MIN_Y = 2.1f / 16f;
     public static final float MAX_Y = 0.4f - MIN_Y;
 

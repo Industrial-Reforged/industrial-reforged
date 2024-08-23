@@ -5,19 +5,15 @@ import com.indref.industrial_reforged.util.Utils;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
-public record SidedItemHandler(IItemHandlerModifiable innerHandler,
+public record SidedItemHandler(IItemHandler innerHandler,
                                IOActions action,
-                               IntList slots) implements IItemHandlerModifiable {
-    public SidedItemHandler(IItemHandlerModifiable innerHandler, Pair<IOActions, int[]> actionSlotsPair) {
+                               IntList slots) implements IItemHandler {
+    public SidedItemHandler(IItemHandler innerHandler, Pair<IOActions, int[]> actionSlotsPair) {
         this(innerHandler, actionSlotsPair != null ? actionSlotsPair.left() : IOActions.NONE, actionSlotsPair != null ? Utils.intArrayToList(actionSlotsPair.right()) : IntList.of());
-    }
-
-    @Override
-    public void setStackInSlot(int i, @NotNull ItemStack itemStack) {
-        innerHandler.setStackInSlot(i, itemStack);
     }
 
     @Override

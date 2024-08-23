@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.machines;
 
-import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -28,6 +28,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -144,19 +146,17 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return Map.of(
-                Direction.UP, Pair.of(IOActions.INSERT, new int[]{0}),
-                Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
-                Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
-                Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
-                Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
-                Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4})
-        );
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        if (capability == Capabilities.ItemHandler.BLOCK) {
+            return Map.of(
+                    Direction.UP, Pair.of(IOActions.INSERT, new int[]{0}),
+                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
+                    Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4})
+            );
+        }
         return Map.of();
     }
 

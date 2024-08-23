@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
@@ -35,8 +35,8 @@ public final class PayloadActions {
     public static void crucibleControllerSync(CrucibleControllerPayload payload, IPayloadContext ctx) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null) {
-            if (level.getBlockEntity(payload.wallPos()) instanceof CrucibleWallBlockEntity crucibleWallBlockEntity)
-                crucibleWallBlockEntity.setControllerPos(payload.controllerPos());
+            if (level.getBlockEntity(payload.wallPos()) instanceof CruciblePartBlockEntity cruciblePartBlockEntity)
+                cruciblePartBlockEntity.setControllerPos(payload.controllerPos());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.generators;
 
-import com.indref.industrial_reforged.api.blocks.generator.GeneratorBlockEntity;
-import com.indref.industrial_reforged.api.blocks.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.generator.GeneratorBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -27,6 +27,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -77,12 +79,10 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     }
 
     @Override
-    public Map<Direction, Pair<IOActions, int[]>> getItemIO() {
-        return SidedCapUtils.allInsert(0);
-    }
-
-    @Override
-    public Map<Direction, Pair<IOActions, int[]>> getFluidIO() {
+    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        if (capability == Capabilities.ItemHandler.BLOCK) {
+            return SidedCapUtils.allInsert(0);
+        }
         return Map.of();
     }
 
@@ -108,18 +108,16 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 }
             }
         }
-    }
 
-    @Override
-    public void serverTick() {
-        super.serverTick();
-        IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
-        if (level instanceof ServerLevel serverLevel) {
-            EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
-            Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
-            if (enet.isPresent()) {
-                int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().getMaxOutput(), thisEnergyStorage.getEnergyStored()));
-                thisEnergyStorage.tryDrainEnergy(filled, false);
+        if (!level.isClientSide()) {
+            IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
+            if (level instanceof ServerLevel serverLevel) {
+                EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
+                Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
+                if (enet.isPresent()) {
+                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().getMaxOutput(), thisEnergyStorage.getEnergyStored()));
+                    thisEnergyStorage.tryDrainEnergy(filled, false);
+                }
             }
         }
     }

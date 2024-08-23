@@ -26,8 +26,13 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
             SmallFireboxMultiblock.FireboxState.class);
 
     @Override
-    public Block getController() {
+    public Block getUnformedController() {
         return IRBlocks.SMALL_FIREBOX_HATCH.get();
+    }
+
+    @Override
+    public Block getFormedController() {
+        return getUnformedController();
     }
 
     @Override
@@ -40,9 +45,10 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
         };
     }
 
+    // TODO: implement this
     @Override
-    public Optional<BlockPos> getControllerPos(BlockPos multiblockPos, Level level) {
-        return Optional.empty();
+    public @Nullable BlockPos getControllerPos(BlockPos multiblockPos, Level level) {
+        return null;
     }
 
     @Override

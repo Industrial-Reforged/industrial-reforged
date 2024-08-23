@@ -1,15 +1,14 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks.misc;
+package com.indref.industrial_reforged.registries.blocks.multiblocks.parts;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.DisplayItem;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.misc.CrucibleWallBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -42,16 +41,16 @@ import java.util.Optional;
 
 import static com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
-public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock {
+public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
 
-    public CrucibleWallBlock(Properties properties, CrucibleTier crucibleTier) {
+    public CruciblePartBlock(Properties properties, CrucibleTier crucibleTier) {
         super(properties);
         this.tier = crucibleTier;
     }
 
-    public CrucibleWallBlock(Properties properties) {
+    public CruciblePartBlock(Properties properties) {
         this(properties, null);
     }
 
@@ -64,8 +63,8 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
         // FIXME: Unforming not working
-        if (blockEntity instanceof CrucibleWallBlockEntity crucibleWallBlockEntity) {
-            BlockPos controllerPos = crucibleWallBlockEntity.getControllerPos();
+        if (blockEntity instanceof CruciblePartBlockEntity cruciblePartBlockEntity) {
+            BlockPos controllerPos = cruciblePartBlockEntity.getControllerPos();
             if (controllerPos != null) {
                 MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), controllerPos, level);
             }
@@ -77,7 +76,7 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
-        CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(blockPos);
+        CruciblePartBlockEntity blockEntity = (CruciblePartBlockEntity) level.getBlockEntity(blockPos);
         BlockPos controllerPos = blockEntity.getControllerPos();
         if (controllerPos != null) {
             CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos);
@@ -139,13 +138,13 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(CrucibleWallBlock::new);
+        return simpleCodec(CruciblePartBlock::new);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new CrucibleWallBlockEntity(blockPos, blockState);
+        return new CruciblePartBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -155,11 +154,14 @@ public class CrucibleWallBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
-        CrucibleWallBlockEntity blockEntity = (CrucibleWallBlockEntity) level.getBlockEntity(scannedBlockPos);
-        if (blockEntity.getControllerPos() != null) {
-            BlockPos pos = blockEntity.getControllerPos();
-            CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(pos);
-            displayText.addAll(DisplayUtils.displayHeatInfo(controllerBlockEntity, level.getBlockState(pos), Component.literal("Crucible")));
+        BlockEntity blockEntity = level.getBlockEntity(scannedBlockPos);
+
+        if (blockEntity instanceof CruciblePartBlockEntity fireboxPartBlockEntity) {
+            BlockPos controllerPos = fireboxPartBlockEntity.getControllerPos();
+            BlockEntity crucibleBlockEntity = level.getBlockEntity(controllerPos);
+            if (crucibleBlockEntity instanceof CrucibleBlockEntity) {
+                DisplayUtils.displayHeatInfo(displayText, crucibleBlockEntity.getBlockState(), crucibleBlockEntity.getBlockPos(), level);
+            }
         }
     }
 
