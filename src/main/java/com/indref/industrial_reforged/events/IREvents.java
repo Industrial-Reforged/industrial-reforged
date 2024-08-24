@@ -86,7 +86,6 @@ import java.util.Map;
 public class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientBus {
-
         // TODO: Remove these
         public static final CrucibleItemRenderer CRUCIBLE_ITEM_RENDERER = new CrucibleItemRenderer();
         public static final CrucibleLegsItemRenderer CRUCIBLE_LEGS_ITEM_RENDERER = new CrucibleLegsItemRenderer();

@@ -102,4 +102,9 @@ public class NanoSaberItem extends ElectricSwordItem {
         }
         super.appendHoverText(stack, ctx, tooltip, p41424);
     }
+
+    @Override
+    public int getEnergyUsage(ItemStack itemStack, Player player) {
+        return getUsageAmount(itemStack);
+    }
 }

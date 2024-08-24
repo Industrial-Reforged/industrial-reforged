@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -11,14 +13,20 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -44,7 +52,7 @@ public final class IRTabs {
                 addPoweredItem(output, IRItems.SCANNER);
                 addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
                 addPoweredItem(output, IRItems.ELECTRIC_HOE);
-                addRockCutter(output, IRItems.ROCK_CUTTER);
+                addRockCutter(output, parameters, IRItems.ROCK_CUTTER);
                 addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addPoweredItem(output, IRItems.ELECTRIC_DRILL);
                 addPoweredItem(output, IRItems.ADVANCED_DRILL);
@@ -206,9 +214,10 @@ public final class IRTabs {
         output.accept(stack);
     }
 
-    public static void addRockCutter(CreativeModeTab.Output output, DeferredItem<?> item) {
+    public static void addRockCutter(CreativeModeTab.Output output, CreativeModeTab.ItemDisplayParameters parameters, DeferredItem<?> item) {
         ItemStack stack = new ItemStack(item.get());
-        //stack.enchant(Enchantments.SILK_TOUCH., 1);
+        Holder.Reference<Enchantment> enchantment = parameters.holders().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
+        stack.enchant(enchantment, 1);
 
         output.accept(stack);
         ItemStack energyStack = stack.copy();

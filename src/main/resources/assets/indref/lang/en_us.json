@@ -162,5 +162,7 @@
   "indref.tooltip.liquid.amount_with_capacity": "%s/%s",
   "indref.tooltip.liquid.amount": "%s",
   "indref.energy.tier.none": "None",
-  "*.desc.melting_not_possible": "Melting not possible"
+  "*.desc.melting_not_possible": "Melting not possible",
+  "creative_tab.indref.items": "Industrial Reforged Items",
+  "creative_tab.indref.blocks": "Industrial Reforged Blocks"
 }

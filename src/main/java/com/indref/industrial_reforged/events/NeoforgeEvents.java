@@ -1,16 +1,14 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.events.MultiblockFormEvent;
-import com.indref.industrial_reforged.api.events.MultiblockUnformEvent;
-import com.indref.industrial_reforged.api.tiers.FireboxTier;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.items.tools.ElectricToolItem;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.ArmorActivityPayload;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
-import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
-import com.indref.industrial_reforged.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.InputUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.Minecraft;
@@ -31,6 +29,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 

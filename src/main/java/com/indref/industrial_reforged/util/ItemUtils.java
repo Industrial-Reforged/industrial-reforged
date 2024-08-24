@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -90,15 +91,11 @@ public final class ItemUtils {
     }
 
     public static ItemStack itemStackFromInteractionHand(InteractionHand interactionHand, Player player) {
-        switch (interactionHand) {
-            case MAIN_HAND -> {
-                return player.getMainHandItem();
-            }
-            case OFF_HAND -> {
-                return player.getOffhandItem();
-            }
-        }
-        return ItemStack.EMPTY;
+        return switch (interactionHand) {
+            case MAIN_HAND -> player.getMainHandItem();
+            case OFF_HAND -> player.getOffhandItem();
+            case null -> ItemStack.EMPTY;
+        };
     }
 
     public static void addEnergyTooltip(List<Component> tooltip, ItemStack itemStack) {
@@ -107,14 +104,14 @@ public final class ItemUtils {
             item = iEnergyItem;
         else return;
         tooltip.add(
-                Component.translatable("indref.energy.desc.stored").withStyle(ChatFormatting.GRAY)
-                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                Component.translatable("indref.energy.desc.stored").withStyle(ChatFormatting.GOLD)
+                        .append(Component.literal(": "))
                         .append(Component.literal(String.format("%s / %s", item.getEnergyStored(itemStack),
-                                item.getEnergyCapacity(itemStack))).withStyle(ChatFormatting.AQUA))
+                                item.getEnergyCapacity(itemStack))).withColor(FastColor.ARGB32.color(196, 196, 196)))
         );
         tooltip.add(
-                Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GRAY)
-                        .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GOLD)
+                        .append(Component.literal(": "))
                         .append(item.getEnergyTier().getName())
         );
     }

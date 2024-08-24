@@ -13,6 +13,7 @@ import com.indref.industrial_reforged.registries.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.registries.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -40,11 +41,11 @@ public final class IRItems {
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(EnergyTiers.LOW, Tiers.IRON, 0, 0, new Item.Properties()));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
-            () -> new RockCutterItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
+            () -> new RockCutterItem(1, -2.8F, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
     public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
     public static final DeferredItem<ElectricDrillItem> ELECTRIC_DRILL = registerItem("electric_drill",
-            () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
     public static final DeferredItem<TapeMeasureItem> TAPE_MEASURE = registerItem("tape_measure",
@@ -53,8 +54,6 @@ public final class IRItems {
             () -> new BlueprintItem(new Item.Properties()));
 
     // Item storages
-    //public static final Supplier<Item> LUNCH_BAG = registerItem("lunch_bag",
-    //        () -> new LunchBagItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
     public static final DeferredItem<Item> ANTENNA = registerStandardItem("antenna");
