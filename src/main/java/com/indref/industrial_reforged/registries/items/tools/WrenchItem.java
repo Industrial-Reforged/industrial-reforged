@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -50,33 +51,37 @@ public class WrenchItem extends ToolItem {
         BlockState wrenchableBlock = level.getBlockState(clickPos);
         ItemStack itemInHand = useOnContext.getItemInHand();
 
-        if (!level.isClientSide) {
-            if (wrenchableBlock instanceof WrenchableBlock iWrenchableBlockBlock
-                    && ((WrenchableBlock) wrenchableBlock).canWrench(level, clickPos, wrenchableBlock)
-                    && player.isShiftKeyDown()) {
-                if (iWrenchableBlockBlock.getDropItem().isEmpty()) {
-                    ItemStack dropItem = wrenchableBlock.getBlock().asItem().getDefaultInstance();
+        if (wrenchableBlock.getBlock() instanceof WrenchableBlock iWrenchableBlockBlock
+                && iWrenchableBlockBlock.canWrench(level, clickPos, wrenchableBlock)
+                && player.isShiftKeyDown()) {
+            if (iWrenchableBlockBlock.getDropItem().isEmpty()) {
+                if (wrenchableBlock.hasBlockEntity()) {
+                    BlockEntity blockEntity = level.getBlockEntity(clickPos);
+                    ItemStack dropItem = new ItemStack(wrenchableBlock.getBlock().asItem());
+                    blockEntity.saveToItem(dropItem, level.registryAccess());
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 } else {
-                    ItemStack dropItem = iWrenchableBlockBlock.getDropItem().get().getDefaultInstance();
+                    ItemStack dropItem = wrenchableBlock.getBlock().asItem().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
-                if (isDamageable(itemInHand)) {
-                    itemInHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(useOnContext.getHand()));
-                }
-                level.removeBlock(clickPos, false);
             } else {
-                for (Property<?> prop : wrenchableBlock.getProperties()) {
-                    if (prop instanceof DirectionProperty directionProperty && prop.getName().equals("facing")) {
-                        BlockState rotatedState = rotateBlock(wrenchableBlock, directionProperty, wrenchableBlock.getValue(directionProperty));
-                        level.setBlock(clickPos, rotatedState, 3);
-                        level.playSound(null, clickPos, SoundEvents.ITEM_FRAME_ROTATE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        return InteractionResult.SUCCESS;
-                    }
+                ItemStack dropItem = iWrenchableBlockBlock.getDropItem().get().getDefaultInstance();
+                ItemHandlerHelper.giveItemToPlayer(player, dropItem);
+            }
+            if (isDamageable(itemInHand)) {
+                itemInHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(useOnContext.getHand()));
+            }
+            level.removeBlock(clickPos, false);
+        } else {
+            for (Property<?> prop : wrenchableBlock.getProperties()) {
+                if (prop instanceof DirectionProperty directionProperty && prop.getName().equals("facing")) {
+                    BlockState rotatedState = rotateBlock(wrenchableBlock, directionProperty, wrenchableBlock.getValue(directionProperty));
+                    level.setBlock(clickPos, rotatedState, 3);
+                    level.playSound(null, clickPos, SoundEvents.ITEM_FRAME_ROTATE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.FAIL;
+        return InteractionResult.SUCCESS;
     }
 }
