@@ -58,11 +58,13 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
         if(blockState.getValue(SmallFireboxMultiblock.FIREBOX_STATE) != SmallFireboxMultiblock.FireboxState.UNFORMED) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof SmallFireboxBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
-                BlockPos mainControllerPos = fakeBlockEntity.getActualBlockEntityPos().get();
-                BlockEntity blastFurnaceBE = level.getBlockEntity(mainControllerPos);
-                player.openMenu((SmallFireboxBlockEntity) blastFurnaceBE, mainControllerPos);
-                return InteractionResult.SUCCESS;
+            if (blockEntity instanceof SmallFireboxBlockEntity fakeBlockEntity) {
+                BlockPos actualBlockEntityPos = fakeBlockEntity.getActualBlockEntityPos();
+                if (actualBlockEntityPos != null) {
+                    BlockEntity blastFurnaceBE = level.getBlockEntity(actualBlockEntityPos);
+                    player.openMenu((SmallFireboxBlockEntity) blastFurnaceBE, actualBlockEntityPos);
+                    return InteractionResult.SUCCESS;
+                }
             }
         }
 

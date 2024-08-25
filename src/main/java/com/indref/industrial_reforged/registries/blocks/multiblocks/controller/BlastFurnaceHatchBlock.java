@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
@@ -51,7 +52,12 @@ public class BlastFurnaceHatchBlock extends ContainerBlock implements CanAttachF
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
-            MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blockPos, level);
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                IndustrialReforged.LOGGER.debug("BLaStFurnacEBE");
+                boolean succes =MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blastFurnaceBlockEntity.getActualBlockEntityPos(), level);
+                IndustrialReforged.LOGGER.debug("Successful: {}", succes);
+            }
         }
 
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
@@ -61,8 +67,8 @@ public class BlastFurnaceHatchBlock extends ContainerBlock implements CanAttachF
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
         if (blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.FORMED)) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof BlastFurnaceBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
-                BlockPos mainControllerPos = fakeBlockEntity.getActualBlockEntityPos().get();
+            if (blockEntity instanceof BlastFurnaceBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos() != null) {
+                BlockPos mainControllerPos = fakeBlockEntity.getActualBlockEntityPos();
                 BlockEntity blastFurnaceBE = level.getBlockEntity(mainControllerPos);
                 player.openMenu((BlastFurnaceBlockEntity) blastFurnaceBE, mainControllerPos);
                 return InteractionResult.SUCCESS;

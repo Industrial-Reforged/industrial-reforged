@@ -80,7 +80,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
     }
 
     @Override
-    public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+    public void displayOverlay(List<Component> displayText, Player player, Level level, ItemStack itemStack, BlockPos scannedBlockPos, BlockState scannedBlock) {
         DisplayUtils.displayHeatInfo(displayText, scannedBlock, scannedBlockPos, level);
     }
 

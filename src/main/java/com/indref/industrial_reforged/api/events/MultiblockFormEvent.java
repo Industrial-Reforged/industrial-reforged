@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.events;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.ICancellableEvent;
@@ -12,15 +12,15 @@ public abstract class MultiblockFormEvent extends MultiblockEvent {
     }
 
     public static class Pre extends MultiblockFormEvent implements ICancellableEvent {
-        private final MultiblockHelper.UnformedMultiblock unformedMultiblock;
+        private final MultiblockData multiblockData;
 
-        public Pre(Player player, BlockPos controllerPos, Multiblock multiblock, MultiblockHelper.UnformedMultiblock unformedMultiblock) {
+        public Pre(Player player, BlockPos controllerPos, Multiblock multiblock, MultiblockData multiblockData) {
             super(player, controllerPos, multiblock);
-            this.unformedMultiblock = unformedMultiblock;
+            this.multiblockData = multiblockData;
         }
 
-        public MultiblockHelper.UnformedMultiblock getUnformedMultiblock() {
-            return unformedMultiblock;
+        public MultiblockData getMultiblockData() {
+            return multiblockData;
         }
     }
 

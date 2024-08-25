@@ -8,9 +8,7 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.misc.CoilBlock;
 import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
@@ -23,6 +21,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -119,7 +118,7 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
     }
 
     @Override
-    public void displayOverlay(List<Component> displayText, BlockState scannedBlock, BlockPos blockPos, Level level) {
+    public void displayOverlay(List<Component> displayText, Player player, Level level, ItemStack itemStack, BlockPos blockPos, BlockState scannedBlock) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
         if (blockEntity instanceof FireboxPartBlockEntity fireboxPartBlockEntity) {

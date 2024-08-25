@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.multiblocks.blockentities;
+package com.indref.industrial_reforged.api.blockentities.multiblock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

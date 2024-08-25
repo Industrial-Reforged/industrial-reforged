@@ -1,8 +1,11 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -14,13 +17,13 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 // Why is this a record, you might ask yourself...
 // The answer is: So my icons for multiblock classes all look the same :>
@@ -37,14 +40,23 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         return getUnformedController();
     }
 
+    private Block getUnformedPart() {
+        return IRBlocks.BLAST_FURNACE_BRICKS.get();
+    }
+
+    private Block getFormedPart() {
+        return IRBlocks.BLAST_FURNACE_PART.get();
+    }
+
     // Note: This method is heavily documented as it serves as an
     // example on how to create multiblock layouts
     @Override
     public MultiblockLayer[] getLayout() {
         // Create a new array of multiblock layers
         // each layer is created by calling the `layer(..)`
-        // method. Alternatively you can also use `dynLayer(..)`
-        // to create a dynamically sized layer.
+        // method. This returns a new multiblock layer.
+        // You can call methods like setDynamic(IntegerRange)
+        // on it to make the layer dynamic.
         // Note that the first member of this array
         // is the lowest layer in game.
         return new MultiblockLayer[]{
@@ -64,9 +76,9 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     @Override
     public Int2ObjectMap<Block> getDefinition() {
         // Create new map to store the integer keys and their block values
-        Int2ObjectOpenHashMap<Block> def = new Int2ObjectOpenHashMap<>();
+        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
         // Assign each integer to a block
-        // The first arguement is the integer key, the second is the block.
+        // The first argument is the integer key, the second is the block.
         def.put(0, IRBlocks.BLAST_FURNACE_BRICKS.get());
         def.put(1, IRBlocks.BLAST_FURNACE_HATCH.get());
         // return the map of definitions we created
@@ -74,22 +86,27 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
-        BlockState blockState = level.getBlockState(blockPos);
-        if (layoutIndex == unformedMultiblock.layers().length - 1) {
-            return blockState.setValue(BRICK_STATE, BrickStates.TOP).setValue(BlastFurnaceBricksBlock.FACING, getCorrectDirection(layerIndex, unformedMultiblock.direction()));
-        } else {
-            return blockState.setValue(BRICK_STATE, BrickStates.FORMED);
+    public BlockEntityType<? extends MultiblockEntity> getMultiBlockEntityType() {
+        return IRBlockEntityTypes.BLAST_FURNACE.get();
+    }
+
+    @Override
+    public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
+        if (layoutIndex == multiblockData.layers().length - 1) {
+            return getFormedPart().defaultBlockState().setValue(BRICK_STATE, BrickStates.TOP).setValue(BlockStateProperties.HORIZONTAL_FACING, getCorrectDirection(layerIndex, multiblockData.direction()));
+        } else if (layoutIndex == 0) {
+            return getFormedController().defaultBlockState().setValue(BRICK_STATE, BrickStates.FORMED);
         }
+        return getFormedPart().defaultBlockState().setValue(BRICK_STATE, BrickStates.FORMED);
     }
 
     @Override
     public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
-        if (!getDefinition().containsValue(blockState.getBlock())) return false;
+        if (blockState.is(getUnformedPart())) return false;
 
-        return blockState.getValue(BRICK_STATE) != BrickStates.UNFORMED;
+        return blockState.hasProperty(BRICK_STATE) && blockState.getValue(BRICK_STATE) != BrickStates.UNFORMED;
     }
 
     private static Direction getCorrectDirection(int index, HorizontalDirection direction) {

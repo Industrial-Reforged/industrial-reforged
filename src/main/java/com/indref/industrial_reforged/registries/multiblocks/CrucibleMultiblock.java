@@ -1,9 +1,12 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
@@ -15,6 +18,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -60,7 +64,12 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
+    public @Nullable BlockEntityType<? extends MultiblockEntity> getMultiBlockEntityType() {
+        return IRBlockEntityTypes.CRUCIBLE.get();
+    }
+
+    @Override
+    public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
         if (currentBlock.is(tier.getUnformedPart()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_PART.get())) {
             return tier.getFormedPart()
@@ -79,7 +88,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
             );
         } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
             return tier.getFormedController().defaultBlockState()
-                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection() : unformedMultiblock.direction().toRegularDirection());
+                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection() : multiblockData.direction().toRegularDirection());
         }
         return null;
     }

@@ -3,13 +3,14 @@ package com.indref.industrial_reforged.util;
 import com.indref.industrial_reforged.api.events.MultiblockFormEvent;
 import com.indref.industrial_reforged.api.events.MultiblockUnformEvent;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
 
 public final class IRHooks {
-    public static boolean preMultiblockFormed(Multiblock multiblock, Player player, BlockPos controllerPos, MultiblockHelper.UnformedMultiblock unformedMultiblock) {
-        return NeoForge.EVENT_BUS.post(new MultiblockFormEvent.Pre(player, controllerPos, multiblock, unformedMultiblock)).isCanceled();
+    public static boolean preMultiblockFormed(Multiblock multiblock, Player player, BlockPos controllerPos, MultiblockData multiblockData) {
+        return NeoForge.EVENT_BUS.post(new MultiblockFormEvent.Pre(player, controllerPos, multiblock, multiblockData)).isCanceled();
     }
     
     public static void postMultiblockFormed(Multiblock multiblock, Player player, BlockPos controllerPos) {

@@ -1,11 +1,12 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.DynamicMultiBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
@@ -36,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * This is the blockentity for the blast furnace.
@@ -45,22 +47,27 @@ import java.util.Optional;
  * is the actual blockentity that handles the
  * logic and the others just point to that block.
  */
-public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, DynamicMultiBlockEntity {
+public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
     private BlockPos mainControllerPos;
     private int duration;
     private int maxDuration;
-    private MultiblockLayer[] layers;
+    private MultiblockData multiblockData;
 
     public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
         addItemHandler(2);
         addFluidTank(9000);
-        this.layers = new MultiblockLayer[0];
+        this.multiblockData = MultiblockData.EMPTY;
     }
 
     @Override
-    public Optional<BlockPos> getActualBlockEntityPos() {
-        return Optional.ofNullable(mainControllerPos);
+    public BlockPos getActualBlockEntityPos() {
+        return mainControllerPos;
+    }
+
+    @Override
+    public boolean actualBlockEntity() {
+        return worldPosition.equals(mainControllerPos);
     }
 
     public int getProgress() {
@@ -86,8 +93,11 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("multiblockLayers", saveDynamicMulti());
-        getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
+        tag.put("multiblockData", saveMBData());
+        BlockPos actualBlockEntityPos = getActualBlockEntityPos();
+        if (actualBlockEntityPos != null) {
+            tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());
+        }
         tag.putInt("duration", this.duration);
     }
 
@@ -113,7 +123,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        this.layers = loadDynamicMulti(tag);
+        this.multiblockData = loadMBData(tag);
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
         this.duration = tag.getInt("duration");
@@ -174,12 +184,12 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
-    public MultiblockLayer[] getExpandedLayers() {
-        return layers;
+    public MultiblockData getMultiblockData() {
+        return this.multiblockData;
     }
 
     @Override
-    public void setExpandedLayers(MultiblockLayer[] layers) {
-        this.layers = layers;
+    public void setMultiblockData(MultiblockData data) {
+        this.multiblockData = data;
     }
 }

@@ -142,13 +142,6 @@ public final class IRItems {
     public static final DeferredItem<BucketItem> OIL_BUCKET = registerItem("oil_bucket",
             () -> new BucketItem(IRFluids.OIL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-    /**
-     * Registers a new item
-     *
-     * @param name the item name referred to as id in-game
-     * @param item the item you want to add and configure using `new {@link net.minecraft.world.item.Item.Properties}()`
-     * @return returns the item-registry-object built from the parameters
-     */
     private static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
         return ITEMS.register(name, item);
     }

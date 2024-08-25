@@ -1,8 +1,11 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
@@ -14,6 +17,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +64,11 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
+    public BlockEntityType<? extends MultiblockEntity> getMultiBlockEntityType() {
+        return IRBlockEntityTypes.FIREBOX.get();
+    }
+
+    @Override
     public HorizontalDirection getFixedDirection() {
         return HorizontalDirection.NORTH;
     }
@@ -74,7 +83,7 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
+    public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         if (layerIndex == 4) {
             return getFormedController().defaultBlockState().setValue(FIREBOX_PART, PartIndex.COIL);
         } else if (layerIndex >= 0 && layerIndex <= 8) {

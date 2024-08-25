@@ -32,18 +32,17 @@ public class ScannerItem extends SimpleElectricItem implements IToolItem, Displa
     }
 
     @Override
-    public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos) {
+    public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos, ItemStack itemStack) {
         Font font = Minecraft.getInstance().font;
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         BlockState blockstate = level.getBlockState(blockPos);
-        ItemStack mainHandStack = player.getMainHandItem();
         if (blockEntity != null) {
             IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
             if (energyStorage != null) {
                 List<Component> components = new ArrayList<>();
-                // Is block display block
+                // Collect display text
                 if (blockstate.getBlock() instanceof DisplayBlock displayBlock && displayBlock.getCompatibleItems().contains(this)) {
-                    displayBlock.displayOverlay(components, blockstate, blockPos, level);
+                    displayBlock.displayOverlay(components, player, level, itemStack, blockPos, blockstate);
                 }
                 // Render display if there is one
                 if (!components.isEmpty()) {
@@ -55,7 +54,7 @@ public class ScannerItem extends SimpleElectricItem implements IToolItem, Displa
                 // Drain energy
                 if (level.getGameTime() % 20 == 0 && !player.isCreative()) {
                     // TODO: Make scanner only work when it has enough energy
-                    int drained = this.tryDrainEnergy(mainHandStack, 1);
+                    int drained = this.tryDrainEnergy(itemStack, 1);
                 }
             }
         }

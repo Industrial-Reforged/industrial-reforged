@@ -1,11 +1,13 @@
 package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.DynamicMultiBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.booleans.BooleanArrayList;
 import it.unimi.dsi.fastutil.booleans.BooleanList;
@@ -40,7 +42,7 @@ public final class MultiblockHelper {
      * @param player        player that is trying to form the multi
      * @return first: isValid? second: Direction that multi is valid
      */
-    public static UnformedMultiblock getUnformedMultiblock(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player, boolean sendErrorMsg) {
+    public static MultiblockData getUnformedMultiblock(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player, boolean sendErrorMsg) {
         MultiblockLayer[] layout = multiblock.getLayout();
         MultiblockLayer[] actualLayout = new MultiblockLayer[multiblock.getMaxSize()];
         Map<Integer, Block> def = multiblock.getDefinition();
@@ -68,12 +70,6 @@ public final class MultiblockHelper {
         // Debugging
         BooleanList multiblockIndexList = new BooleanArrayList();
 
-        // Check if controller exists
-        if (relativeControllerPos == null) {
-            // TODO: Move this to a registry check in the IREvents class
-            throw new NullPointerException("Relative controller pos is not available. May be caused due to a multiblock layout without a controller");
-        }
-
         Pair<BooleanList, HorizontalDirection> prioritizedDirectionLayout = Pair.of(BooleanLists.emptyList(), HorizontalDirection.NORTH);
         // Direction, blockPos, blockDefinitionIndex
         Map<HorizontalDirection, Pair<BlockPos, Integer>> firstMissingBlockPoses = new HashMap<>();
@@ -100,7 +96,7 @@ public final class MultiblockHelper {
                         BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, y, z), mDirection);
 
                         // Check if block is correct
-                        if ((def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) && !multiblock.isFormed(level, curBlockPos) || def.get(blockIndex) == null)) {
+                        if (def.get(blockIndex) != null && level.getBlockState(curBlockPos).is(def.get(blockIndex)) && !multiblock.isFormed(level, curBlockPos) || def.get(blockIndex) == null) {
                             multiblockIndexList.add(true);
                         } else {
                             firstMissingBlockPoses.putIfAbsent(mDirection, Pair.of(curBlockPos, blockIndex));
@@ -161,7 +157,7 @@ public final class MultiblockHelper {
             }
 
             if (!multiblockIndexList.contains(false)) {
-                return new UnformedMultiblock(true, mDirection, Arrays.copyOf(actualLayout, actualLayoutSize));
+                return new MultiblockData(true, mDirection, Arrays.copyOf(actualLayout, actualLayoutSize));
             }
             for (int i = multiblockIndexList.size() - 1; i >= 0; i--) {
                 if (!multiblockIndexList.getBoolean(i)) {
@@ -181,7 +177,7 @@ public final class MultiblockHelper {
             sendFailureMsg(player, level, firstMissingBlockPoses.get(prioritizedDirection).getFirst(), def, firstMissingBlockPoses.get(prioritizedDirection).getSecond());
         }
 
-        return new UnformedMultiblock(false, null, null);
+        return new MultiblockData(false, null, null);
     }
 
     private static BlockPos getCurPos(Vec3i firstPos, Vec3i relativePos, HorizontalDirection direction) {
@@ -219,7 +215,6 @@ public final class MultiblockHelper {
     /**
      * @return x, y, z
      */
-    @Nullable
     public static Vec3i getRelativeControllerPos(Multiblock multiblock) {
         Object2IntMap<Block> revDef = new Object2IntOpenHashMap<>();
         for (var entry : multiblock.getDefinition().int2ObjectEntrySet()) {
@@ -245,7 +240,7 @@ public final class MultiblockHelper {
             }
             y++;
         }
-        return null;
+        throw new IllegalStateException("Multiblock pre checks failed, controller not found");
     }
 
     private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
@@ -272,16 +267,16 @@ public final class MultiblockHelper {
      * @return Whether the forming was successful
      */
     public static boolean form(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
-        UnformedMultiblock unformedMultiblock = getUnformedMultiblock(multiblock, controllerPos, level, player, true);
-        HorizontalDirection direction = unformedMultiblock.direction();
+        MultiblockData multiblockData = getUnformedMultiblock(multiblock, controllerPos, level, player, true);
+        HorizontalDirection direction = multiblockData.direction();
         if (multiblock.getFixedDirection() != null) {
             direction = multiblock.getFixedDirection();
         }
-        if (unformedMultiblock.valid()) {
+        if (multiblockData.valid()) {
             if (direction != null) {
-                boolean formingCancelled = IRHooks.preMultiblockFormed(multiblock, player, controllerPos, unformedMultiblock);
+                boolean formingCancelled = IRHooks.preMultiblockFormed(multiblock, player, controllerPos, multiblockData);
                 if (!formingCancelled) {
-                    formBlocks(multiblock, unformedMultiblock, controllerPos, level, player);
+                    formBlocks(multiblock, multiblockData, controllerPos, level, player);
                     IRHooks.postMultiblockFormed(multiblock, player, controllerPos);
                     return true;
                 }
@@ -294,9 +289,10 @@ public final class MultiblockHelper {
         return form(multiblock, controllerPos, level, null);
     }
 
-    private static void formBlocks(Multiblock multiblock, UnformedMultiblock unformedMultiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
-        HorizontalDirection direction = unformedMultiblock.direction();
-        MultiblockLayer[] layout = unformedMultiblock.layers();
+    private static void formBlocks(Multiblock multiblock, MultiblockData multiblockData, BlockPos controllerPos, Level level, @Nullable Player player) {
+        HorizontalDirection direction = multiblockData.direction();
+        IndustrialReforged.LOGGER.debug("Multiblock direction: {}", direction);
+        MultiblockLayer[] layout = multiblockData.layers();
 
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
@@ -314,21 +310,24 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 if (def.get(blockIndex) != null) {
-                    IndustrialReforged.LOGGER.debug("index: {}, yIndex: {}", index, yIndex);
-                    BlockState newState = multiblock.formBlock(level, curBlockPos, controllerPos, index, yIndex, unformedMultiblock, player);
+                    BlockState newState = multiblock.formBlock(level, curBlockPos, controllerPos, index, yIndex, multiblockData, player);
                     if (newState != null) {
                         level.setBlockAndUpdate(curBlockPos, newState);
                     }
 
-                    multiblock.afterFormBlock(level, curBlockPos, controllerPos, index, yIndex, unformedMultiblock, player);
+                    multiblock.afterFormBlock(level, curBlockPos, controllerPos, index, yIndex, multiblockData, player);
 
                     BlockEntity blockEntity = level.getBlockEntity(curBlockPos);
                     if (blockEntity instanceof SavesControllerPosBlockEntity savesControllerPosBE) {
                         savesControllerPosBE.setControllerPos(controllerPos);
                     }
 
-                    if (blockEntity instanceof DynamicMultiBlockEntity entity) {
-                        entity.setExpandedLayers(layout);
+                    if (blockEntity instanceof FakeBlockEntity fakeBE) {
+                        blockEntity = level.getBlockEntity(fakeBE.getActualBlockEntityPos());
+                    }
+
+                    if (blockEntity instanceof MultiblockEntity entity) {
+                        entity.setMultiblockData(multiblockData);
                     }
                 }
 
@@ -350,28 +349,11 @@ public final class MultiblockHelper {
      * @return Whether the unforming was successful
      */
     public static boolean unform(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
-        if (multiblock.getFixedDirection() == null) {
-            for (HorizontalDirection direction : HorizontalDirection.values()) {
-                boolean unformingCancelled = IRHooks.preMultiblockUnformed(multiblock, player, controllerPos);
-                if (!unformingCancelled) {
-                    try {
-                        unformBlocks(multiblock, direction, controllerPos, level, player);
-                        return true;
-                    } catch (Exception ignored) {
-                    }
-                    IRHooks.postMultiblockUnformed(multiblock, player, controllerPos);
-                }
-            }
-        } else {
-            boolean unformingCancelled = IRHooks.preMultiblockUnformed(multiblock, player, controllerPos);
-            if (!unformingCancelled) {
-                try {
-                    unformBlocks(multiblock, multiblock.getFixedDirection(), controllerPos, level, player);
-                    return true;
-                } catch (Exception ignored) {
-                }
-                IRHooks.postMultiblockUnformed(multiblock, player, controllerPos);
-            }
+        boolean unformingCancelled = IRHooks.preMultiblockUnformed(multiblock, player, controllerPos);
+        if (!unformingCancelled) {
+            unformBlocks(multiblock, controllerPos, level, player);
+            IRHooks.postMultiblockUnformed(multiblock, player, controllerPos);
+            return true;
         }
         return false;
     }
@@ -383,16 +365,27 @@ public final class MultiblockHelper {
         return unform(multiblock, controllerPos, level, null);
     }
 
-    private static void unformBlocks(Multiblock multiblock, HorizontalDirection direction, BlockPos controllerPos, Level level, @Nullable Player player) {
+    private static void unformBlocks(Multiblock multiblock, BlockPos controllerPos, Level level, @Nullable Player player) {
+        MultiblockData data;
+
+        BlockPos controllerPos1 = controllerPos;
+
+        if (level.getBlockEntity(controllerPos1) instanceof FakeBlockEntity fakeBE) {
+            controllerPos1 = fakeBE.getActualBlockEntityPos();
+        }
+
+        if (level.getBlockEntity(controllerPos1) instanceof MultiblockEntity multiblockEntity) {
+            data = multiblockEntity.getMultiblockData();
+        } else {
+            throw new IllegalStateException(multiblock + " multiblock controller does not have a blockentity");
+        }
+
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
+        HorizontalDirection direction = data.direction();
         // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
-        MultiblockLayer[] layout = multiblock.getLayout();
+        MultiblockLayer[] layout = data.layers();
         Map<Integer, Block> def = multiblock.getDefinition();
-
-        if (level.getBlockEntity(controllerPos) instanceof DynamicMultiBlockEntity dynamicMultiBlockEntity) {
-            layout = dynamicMultiBlockEntity.getExpandedLayers();
-        }
 
         int yIndex = 0;
         int xIndex = 0;
@@ -403,13 +396,12 @@ public final class MultiblockHelper {
             int width = multiblock.getWidths().get(yIndex).leftInt();
             int z = 0;
             for (int blockIndex : layer.layer()) {
-                // FIXME: Unforming does not work for blast furnace multiblock
                 Block definedBlock = def.get(blockIndex);
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 BlockState blockState = level.getBlockState(curBlockPos);
                 if (!level.getBlockState(curBlockPos).isEmpty()) {
-                    BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, new UnformedMultiblock(true, direction, layout), player);
+                    BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, data, player);
                     if (expectedState != null) {
                         if (blockState.is(expectedState.getBlock())) {
                             if (multiblock.isFormed(level, curBlockPos)) {
@@ -431,9 +423,5 @@ public final class MultiblockHelper {
             xIndex = 0;
             yIndex++;
         }
-    }
-
-    public record UnformedMultiblock(boolean valid, @Nullable HorizontalDirection direction,
-                                     @Nullable MultiblockLayer[] layers) {
     }
 }

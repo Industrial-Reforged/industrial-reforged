@@ -74,7 +74,7 @@ public class FireboxControllerBlock extends ContainerBlock implements DisplayBlo
     }
 
     @Override
-    public void displayOverlay(List<Component> components, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
+    public void displayOverlay(List<Component> components, Player player, Level level, ItemStack itemStack, BlockPos scannedBlockPos, BlockState scannedBlock) {
         DisplayUtils.displayHeatInfo(components, scannedBlock, scannedBlockPos, level);
     }
 

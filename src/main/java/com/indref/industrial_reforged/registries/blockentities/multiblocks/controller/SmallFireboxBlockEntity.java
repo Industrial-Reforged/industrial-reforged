@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import net.minecraft.core.BlockPos;
@@ -10,11 +10,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.UUID;
 
 public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPosBlockEntity {
     private BlockPos mainControllerPos;
+    private UUID uuid;
 
     public SmallFireboxBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.SMALL_FIREBOX.get(), p_155229_, p_155230_, FireboxTiers.SMALL, 1800);
@@ -25,13 +27,14 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
         return Component.literal("Small Firebox");
     }
 
-    public boolean isMainController() {
+    @Override
+    public boolean actualBlockEntity() {
         return worldPosition.equals(mainControllerPos);
     }
 
     @Override
-    public Optional<BlockPos> getActualBlockEntityPos() {
-        return Optional.ofNullable(mainControllerPos);
+    public @Nullable BlockPos getActualBlockEntityPos() {
+        return mainControllerPos;
     }
 
     @Override
@@ -45,11 +48,17 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        getActualBlockEntityPos().ifPresent(pos -> tag.putLong("mainControllerPos", pos.asLong()));
+        super.saveAdditional(tag, provider);
+        BlockPos controllerPos = getActualBlockEntityPos();
+        if (controllerPos != null) {
+            tag.putLong("mainControllerPos", controllerPos.asLong());
+        }
     }
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        this.mainControllerPos = BlockPos.of(tag.getLong("mainControllerPos"));
+        super.loadAdditional(tag, provider);
+        long mainControllerPos1 = tag.getLong("mainControllerPos");
+        this.mainControllerPos = BlockPos.of(mainControllerPos1);
     }
 }

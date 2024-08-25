@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.part;
 
-import com.indref.industrial_reforged.api.multiblocks.blockentities.MultiblockPartBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockPartBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;

@@ -1,9 +1,11 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.FireboxPartBlock;
@@ -34,12 +36,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.UUID;
 
-public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider {
+public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
     private static final int INPUT_SLOT = 0;
 
     private int burnTime;
     private int maxBurnTime;
+    private MultiblockData multiblockData;
     private final FireboxTier fireboxTier;
 
     private BlockCapabilityCache<IHeatStorage, Direction> aboveBlockCapCache;
@@ -49,6 +53,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
         addHeatStorage(heatCapacity);
         this.fireboxTier = fireboxTier;
+        this.multiblockData = MultiblockData.EMPTY;
     }
 
     public FireboxBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -172,25 +177,37 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     @Override
     protected void saveData(CompoundTag pTag, HolderLookup.Provider provider) {
-        pTag.putInt("burnTime", burnTime);
-        pTag.putInt("maxBurnTime", maxBurnTime);
+        pTag.putInt("burnTime", this.burnTime);
+        pTag.putInt("maxBurnTime", this.maxBurnTime);
+        pTag.put("multiblockData", saveMBData());
     }
 
     @Override
     protected void loadData(CompoundTag pTag, HolderLookup.Provider provider) {
-        burnTime = pTag.getInt("burnTime");
-        maxBurnTime = pTag.getInt("maxBurnTime");
+        this.burnTime = pTag.getInt("burnTime");
+        this.maxBurnTime = pTag.getInt("maxBurnTime");
+        this.multiblockData = loadMBData(pTag.getCompound("multiblockData"));
     }
 
     public int getBurnTime() {
-        return burnTime;
+        return this.burnTime;
     }
 
     public int getMaxBurnTime() {
-        return maxBurnTime;
+        return this.maxBurnTime;
     }
 
     public FireboxTier getFireboxTier() {
-        return fireboxTier;
+        return this.fireboxTier;
+    }
+
+    @Override
+    public MultiblockData getMultiblockData() {
+        return this.multiblockData;
+    }
+
+    @Override
+    public void setMultiblockData(MultiblockData data) {
+        this.multiblockData = data;
     }
 }

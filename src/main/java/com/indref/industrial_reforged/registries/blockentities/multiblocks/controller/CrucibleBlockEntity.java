@@ -1,10 +1,12 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.CrucibleMeltingProgressPayload;
@@ -20,6 +22,7 @@ import com.indref.industrial_reforged.util.ItemUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,14 +47,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 // TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
-public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider {
+public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
     private final CrucibleTier tier;
+    private MultiblockData multiblockData;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
@@ -59,6 +60,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         addItemHandler(9, 1);
         addFluidTank(9000);
         addHeatStorage(tier.getHeatCapacity());
+        this.multiblockData = MultiblockData.EMPTY;
     }
 
     @Override
@@ -204,6 +206,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return new CrucibleMenu(containerId, inventory, this);
     }
 
+    // TODO: Refactor these two methods using FluidHandler extract methods
     private boolean canInsertFluidIntoOutput(Fluid fluid) {
         if (getFluidTank().isEmpty()) return false;
 
@@ -222,17 +225,25 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return false;
     }
 
-    public @Nullable IFireboxMultiblock getFireBox() {
-        BlockPos fireboxPos = worldPosition.below();
-        if (level.getBlockEntity(fireboxPos) instanceof FireboxBlockEntity fireBox) {
-            for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
-                if (multiblock instanceof IFireboxMultiblock fireboxMultiblock) {
-                    if (multiblock.isFormed(level, fireboxPos)) {
-                        return fireboxMultiblock;
-                    }
-                }
-            }
-        }
-        return null;
+    @Override
+    protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
+        super.loadAdditional(nbt, provider);
+        this.multiblockData = loadMBData(nbt.getCompound("multiblockData"));
+    }
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
+        super.saveAdditional(nbt, provider);
+        nbt.put("multiblockData", saveMBData());
+    }
+
+    @Override
+    public MultiblockData getMultiblockData() {
+        return multiblockData;
+    }
+
+    @Override
+    public void setMultiblockData(MultiblockData data) {
+        this.multiblockData = data;
     }
 }

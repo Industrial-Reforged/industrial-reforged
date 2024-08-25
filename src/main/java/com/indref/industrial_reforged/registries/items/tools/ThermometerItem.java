@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.api.items.DisplayItem;
@@ -42,7 +42,7 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, IToo
     }
 
     @Override
-    public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos) {
+    public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos, ItemStack itemStack) {
         Font font = Minecraft.getInstance().font;
         BlockState blockstate = level.getBlockState(blockPos);
         if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
@@ -50,7 +50,7 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, IToo
 
             List<Component> displayText = new ArrayList<>();
 
-            displayBlock.displayOverlay(displayText, blockstate, blockPos, level);
+            displayBlock.displayOverlay(displayText, player, level, itemStack, blockPos, blockstate);
 
             for (Component component : displayText) {
                 guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
@@ -68,8 +68,8 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem, IToo
             BlockPos blockPos = blockHitResult.getBlockPos();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof FakeBlockEntity fakeBlockEntity) {
-                if (fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
-                    blockEntity = level.getBlockEntity(fakeBlockEntity.getActualBlockEntityPos().get());
+                if (fakeBlockEntity.getActualBlockEntityPos() != null) {
+                    blockEntity = level.getBlockEntity(fakeBlockEntity.getActualBlockEntityPos());
                 }
             }
             if (blockEntity != null) {

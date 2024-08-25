@@ -8,10 +8,9 @@ import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
-import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
-import com.indref.industrial_reforged.client.renderer.item.CrucibleLegsItemRenderer;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
@@ -26,7 +25,6 @@ import com.indref.industrial_reforged.client.renderer.item.bar.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.RefractoryBrickBlock;
 import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
@@ -35,14 +33,15 @@ import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Registry;
@@ -64,7 +63,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -86,9 +84,6 @@ import java.util.Map;
 public class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientBus {
-        // TODO: Remove these
-        public static final CrucibleItemRenderer CRUCIBLE_ITEM_RENDERER = new CrucibleItemRenderer();
-        public static final CrucibleLegsItemRenderer CRUCIBLE_LEGS_ITEM_RENDERER = new CrucibleLegsItemRenderer();
 
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
@@ -97,14 +92,6 @@ public class IREvents {
 
         @SubscribeEvent
         public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-            // Custom item renderers
-            event.registerItem(new IClientItemExtensions() {
-                @Override
-                public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                    return CRUCIBLE_ITEM_RENDERER;
-                }
-            }, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get().asItem());
-
             // Fluid renderers
             for (FluidType fluidType : NeoForgeRegistries.FLUID_TYPES) {
                 if (fluidType instanceof BaseFluidType baseFluidType) {
@@ -248,11 +235,33 @@ public class IREvents {
             Registry<Multiblock> registry = event.getRegistry(IRRegistries.MULTIBLOCK.key());
             if (registry != null) {
                 for (Multiblock multiblock : registry) {
-                    // Check non negative integers in definition
-                    Map<Integer, @Nullable Block> def = multiblock.getDefinition();
-                    for (Map.Entry<Integer, @Nullable Block> entry : def.entrySet()) {
+                    // Check non-negative integers in definition
+                    Int2ObjectMap<@Nullable Block> def = multiblock.getDefinition();
+                    for (Map.Entry<Integer, @Nullable Block> entry : def.int2ObjectEntrySet()) {
                         Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero. Affected multiblock: "
                                 + multiblock + ", affected key: " + entry.getKey() + ", " + entry.getValue());
+                    }
+
+                    // Check that multiblock has controller
+                    Map<@Nullable Block, Integer> revDef = Utils.reverseMap(def);
+                    int controllerKey = revDef.get(multiblock.getUnformedController());
+                    boolean hasController = false;
+                    for (MultiblockLayer layer : multiblock.getLayout()) {
+                        for (int i : layer.layer()) {
+                            if (i == controllerKey) {
+                                hasController = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!hasController) {
+                        throw new IllegalStateException("Every multiblock needs to have at least one controller in it's layout. The controller is the block returned by Multiblock#getUnformedController(). Affected multiblock: "
+                                + multiblock);
+                    }
+
+                    // Check that multiblocks have block entity types
+                    if (multiblock.getMultiBlockEntityType() == null) {
+                        throw new IllegalStateException("Every multiblocks controller needs to have blockentity that keeps track of data relevant for formed multiblocks. The blockentity type however is null. Affected multiblock: "+multiblock);
                     }
                 }
             }

@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.registries.blockentities.machines.Centrifu
 import com.indref.industrial_reforged.registries.blockentities.CraftingStationBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
@@ -74,6 +75,10 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("blast_furnace", () ->
                     BlockEntityType.Builder.of(BlastFurnaceBlockEntity::new,
                             IRBlocks.BLAST_FURNACE_HATCH.get()).build(null));
+    public static final Supplier<BlockEntityType<BlastFurnacePartBlockEntity>> BLAST_FURNACE_PART =
+            BLOCK_ENTITIES.register("blast_furnace_part", () ->
+                    BlockEntityType.Builder.of(BlastFurnacePartBlockEntity::new,
+                            IRBlocks.BLAST_FURNACE_PART.get()).build(null));
 
     private static Block[] getFaucetBlocks() {
         List<Block> blocks = new ArrayList<>();

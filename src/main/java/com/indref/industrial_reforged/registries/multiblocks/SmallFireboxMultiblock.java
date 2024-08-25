@@ -1,10 +1,14 @@
 package com.indref.industrial_reforged.registries.multiblocks;
 
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
+import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -14,12 +18,12 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
     public static final EnumProperty<SmallFireboxMultiblock.FireboxState> FIREBOX_STATE = EnumProperty.create("firebox_state",
@@ -45,9 +49,12 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
         };
     }
 
-    // TODO: implement this
     @Override
     public @Nullable BlockPos getControllerPos(BlockPos multiblockPos, Level level) {
+        BlockEntity be = level.getBlockEntity(multiblockPos);
+        if (be instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
+            return smallFireboxBlockEntity.getActualBlockEntityPos();
+        }
         return null;
     }
 
@@ -59,10 +66,15 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
+    public BlockEntityType<? extends MultiblockEntity> getMultiBlockEntityType() {
+        return IRBlockEntityTypes.SMALL_FIREBOX.get();
+    }
+
+    @Override
+    public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (layoutIndex == 0) {
-            return blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(layerIndex, unformedMultiblock.direction())).setValue(FIREBOX_STATE, FireboxState.FORMED);
+            return blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(layerIndex, multiblockData.direction())).setValue(FIREBOX_STATE, FireboxState.FORMED);
         }
         return blockState;
     }

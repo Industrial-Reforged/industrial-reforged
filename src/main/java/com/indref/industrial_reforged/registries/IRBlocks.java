@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.C
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.FireboxControllerBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.controller.SmallFireboxHatchBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
+import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.BlastFurnacePartBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.FireboxPartBlock;
 import com.indref.industrial_reforged.registries.blocks.multiblocks.misc.RefractoryBrickBlock;
@@ -53,6 +54,8 @@ public final class IRBlocks {
             () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = registerBlockAndItem("blast_furnace_hatch",
             () -> new BlastFurnaceHatchBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final DeferredBlock<BlastFurnacePartBlock> BLAST_FURNACE_PART = registerBlockAndItem("blast_furnace_part",
+            () -> new BlastFurnacePartBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<SmallFireboxHatchBlock> SMALL_FIREBOX_HATCH = registerBlockAndItem("small_firebox_hatch",
             () -> new SmallFireboxHatchBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL)));
     public static final DeferredBlock<Block> REFRACTORY_STONE = registerBlockAndItem("refractory_stone",

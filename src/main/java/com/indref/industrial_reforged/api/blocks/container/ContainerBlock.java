@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.blocks.container;
 
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.multiblocks.blockentities.FakeBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -65,8 +65,8 @@ public abstract class ContainerBlock extends BaseEntityBlock {
         BlockEntity blockEntity = p_60504_.getBlockEntity(p_60505_);
         if (blockEntity instanceof MenuProvider menuProvider) {
             BlockPos pos = p_60505_;
-            if (blockEntity instanceof FakeBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos().isPresent()) {
-                pos = fakeBlockEntity.getActualBlockEntityPos().get();
+            if (blockEntity instanceof FakeBlockEntity fakeBlockEntity && fakeBlockEntity.getActualBlockEntityPos() != null) {
+                pos = fakeBlockEntity.getActualBlockEntityPos();
             }
             p_60506_.openMenu(menuProvider, pos);
             return InteractionResult.SUCCESS;

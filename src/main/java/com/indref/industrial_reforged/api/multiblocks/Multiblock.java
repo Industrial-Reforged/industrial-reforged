@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.multiblocks;
 
+import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -8,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.Nullable;
@@ -83,6 +85,12 @@ public interface Multiblock {
     Int2ObjectMap<Block> getDefinition();
 
     /**
+     * This method provides the block entity type for the controller of your multiblock.
+     * @return the blockentity type of your controllers blockentity
+     */
+    BlockEntityType<? extends MultiblockEntity> getMultiBlockEntityType();
+
+    /**
      * This method provides a list of widths for every layer
      * of your multiblock.
      * <br>
@@ -117,17 +125,17 @@ public interface Multiblock {
     /**
      * This method is used to form a block. It is called for that block and also when unforming the multi.
      * This is why this should only return the blockState, not perform any interactions on the level/player....
-     * For interactions with the world/player..., use {@link Multiblock#afterFormBlock(Level, BlockPos, BlockPos, int, int, MultiblockHelper.UnformedMultiblock, Player)}
+     * For interactions with the world/player..., use {@link Multiblock#afterFormBlock(Level, BlockPos, BlockPos, int, int, MultiblockData, Player)}
      * @param level Level of the multiblock, should only be used for reading things, not setting new things.
      * @param blockPos BlockPos of the block that is being formed
      * @param controllerPos BlockPos of this multiblocks controller
      * @param layerIndex index of the current layers block (array of integer)
      * @param layoutIndex index of the current multiblock layer (array of multiblock layer)
-     * @param unformedMultiblock Information about the unformed multiblock, like the layers of the concrete multiblock and the direction it is formed in.
+     * @param multiblockData Information about the unformed multiblock, like the layers of the concrete multiblock and the direction it is formed in.
      * @param player Player that is trying to form this multiblock. Note that there does not necessarily have to be a player that is responsible for forming the multiblock
      * @return Formed BlockState. This will replace the unformed block in the multiblock. Return {@code null} if you do not want to change the block.
      */
-    @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player);
+    @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player);
 
     /**
      * This method is called after the block is formed. It can be used to interact with the level/player...
@@ -137,10 +145,10 @@ public interface Multiblock {
      * @param controllerPos BlockPos of this multiblocks controller
      * @param layerIndex index of the current layers block (array of integer)
      * @param layoutIndex index of the current multiblock layer (array of multiblock layer)
-     * @param unformedMultiblock Information about the unformed multiblock, like the layers of the concrete multiblock and the direction it is formed in.
+     * @param multiblockData Information about the unformed multiblock, like the layers of the concrete multiblock and the direction it is formed in.
      * @param player Player that is trying to form this multiblock. Note that there does not necessarily have to be a player that is responsible for forming the multiblock
      */
-    default void afterFormBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockHelper.UnformedMultiblock unformedMultiblock, @Nullable Player player) {
+    default void afterFormBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
     }
 
     /**
