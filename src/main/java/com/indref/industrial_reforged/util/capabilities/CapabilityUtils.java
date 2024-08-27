@@ -13,12 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 public final class CapabilityUtils {
     public static <T, C> @Nullable T blockEntityCapability(BlockCapability<T, C> cap, BlockEntity blockEntity) {
-        if (blockEntity instanceof ContainerBlockEntity containerBlockEntity) {
-            T capability = containerBlockEntity.getCapFromCache(cap);
-            if (capability != null) {
-                return capability;
-            }
-        }
         return blockEntity.getLevel().getCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
     }
 

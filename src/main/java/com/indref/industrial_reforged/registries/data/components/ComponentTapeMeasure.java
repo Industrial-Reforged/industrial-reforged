@@ -6,10 +6,11 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public record ComponentTapeMeasure(BlockPos firstPos, boolean tapeMeasureExtended) {
+public record ComponentTapeMeasure(@Nullable BlockPos firstPos, boolean tapeMeasureExtended) {
     public static final ComponentTapeMeasure EMPTY = new ComponentTapeMeasure(BlockPos.ZERO, false);
     public static final Codec<ComponentTapeMeasure> CODEC = RecordCodecBuilder.create(builder -> builder.group(
                     BlockPos.CODEC.fieldOf("first_pos").forGetter(ComponentTapeMeasure::firstPos),

@@ -78,7 +78,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     @Override
     public void onItemsChanged(int slot) {
-        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
+        IItemHandler itemHandler = getItemHandler();
         if (itemHandler != null) {
             ItemStack stack = itemHandler.getStackInSlot(slot);
             int burnTime = stack.getBurnTime(RecipeType.SMELTING);

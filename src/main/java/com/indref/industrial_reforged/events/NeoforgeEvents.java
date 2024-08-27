@@ -98,10 +98,10 @@ public class NeoforgeEvents {
 
         @SubscribeEvent
         public static void onClientTickPre(ClientTickEvent.Pre event) {
-            if (JETPACK_ASCEND.get().isDown()) {
-                Player player = Minecraft.getInstance().player;
-                InputUtils.update(player, true, false, false, false, false, false, false);
-            }
+//            if (JETPACK_ASCEND.get().isDown()) {
+//                Player player = Minecraft.getInstance().player;
+//                InputUtils.update(player, true, false, false, false, false, false, false);
+//            }
         }
     }
 }

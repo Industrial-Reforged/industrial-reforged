@@ -14,6 +14,7 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.contr
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
+import com.indref.industrial_reforged.registries.blocks.misc.CastingBasinBlock;
 import com.indref.industrial_reforged.registries.blocks.misc.FaucetBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -70,7 +71,7 @@ public final class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<CastingBasinBlockEntity>> CASTING_BASIN =
             BLOCK_ENTITIES.register("casting_basin", () ->
                     BlockEntityType.Builder.of(CastingBasinBlockEntity::new,
-                            IRBlocks.CERAMIC_CASTING_BASIN.get()).build(null));
+                            getCastingBasinBlocks()).build(null));
     public static final Supplier<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
             BLOCK_ENTITIES.register("blast_furnace", () ->
                     BlockEntityType.Builder.of(BlastFurnaceBlockEntity::new,
@@ -84,6 +85,18 @@ public final class IRBlockEntityTypes {
         List<Block> blocks = new ArrayList<>();
         for (Block block : BuiltInRegistries.BLOCK) {
             if (block instanceof FaucetBlock) {
+                blocks.add(block);
+            }
+        }
+        Block[] blocks1 = new Block[blocks.size()];
+        blocks.toArray(blocks1);
+        return blocks1;
+    }
+
+    private static Block[] getCastingBasinBlocks() {
+        List<Block> blocks = new ArrayList<>();
+        for (Block block : BuiltInRegistries.BLOCK) {
+            if (block instanceof CastingBasinBlock) {
                 blocks.add(block);
             }
         }

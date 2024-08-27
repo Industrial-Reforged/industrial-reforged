@@ -78,10 +78,10 @@ public class TapeMeasureItem extends ToolItem {
                 }
             }
 
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(null, false));
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(null, false));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
@@ -94,7 +94,7 @@ public class TapeMeasureItem extends ToolItem {
             if (player.getMainHandItem().is(IRItems.TAPE_MEASURE.get())) {
                 ItemStack useItem = player.getMainHandItem();
                 BlockPos blockPos = useItem.get(IRDataComponents.TAPE_MEASURE_DATA).firstPos();
-                BlockPos playerPos = new BlockPos(player.getOnPos().getX(), player.getOnPos().getY(), player.getOnPos().getZ());
+                BlockPos playerPos = player.getOnPos();
                 if (!blockPos.equals(new BlockPos(0, 0, 0))) {
                     double d0 = (double) blockPos.getX() + 0.5D + (0.5D - randomSource.nextDouble());
                     double d1 = (double) blockPos.getY() + 1.0D + (0.5D - randomSource.nextDouble());

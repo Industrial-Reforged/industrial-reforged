@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -19,8 +20,10 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
 
 public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
@@ -32,6 +35,9 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
 
     @Override
     public void render(FaucetBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        FluidStack fluidInTank = CapabilityUtils.fluidHandlerCapability(blockEntity).getFluidInTank(0);
+        if (fluidInTank.isEmpty()) return;
+
         Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         poseStack.translate(.5f, .5f, .5f);
         poseStack.mulPose(Axis.YN.rotationDegrees(direction.toYRot()));
@@ -47,8 +53,7 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
         } else {
             maxY = (float) belowState.getShape(level, blockPos).move(0.5, 0, 0.5).max(Direction.Axis.Y);
         }
-
-        renderFluid(poseStack, bufferSource, new FluidStack(IRFluids.MOLTEN_STEEL_FLOWING.get(), 1000), maxY, packedLight);
+        renderFluid(poseStack, bufferSource, fluidInTank, maxY, packedLight);
     }
 
     private static void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float belowMaxY, int combinedLight) {
@@ -76,7 +81,6 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
         float topMaxV = sprite.getV(0.625f);
         float minV = sprite.getV(0);
         float maxV = sprite.getV(1);
-        IndustrialReforged.LOGGER.debug("H: {}, min: {}", height, minY);
         //float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
         // top
         buffer.addVertex(matrix, 0.375f, height, 0).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blockentities.container;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
@@ -13,6 +14,7 @@ import com.indref.industrial_reforged.api.capabilities.item.SidedItemHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.api.util.ValidationFunctions;
 import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -308,7 +310,12 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 return handlerSupplier.get(baseHandler, ioPorts.get(direction));
             }
 
-            if (!this.getBlockState().hasProperty(RotatableEntityBlock.FACING)) return null;
+            if (!this.getBlockState().hasProperty(RotatableEntityBlock.FACING)) {
+                if (SharedConstants.IS_RUNNING_IN_IDE) {
+                    IndustrialReforged.LOGGER.error("Cannot get Capability for a specific direction if the block does not have the facing blockstate. Affected be: {}", this);
+                }
+                return null;
+            }
 
             Direction localDir = this.getBlockState().getValue(RotatableEntityBlock.FACING);
 
@@ -317,10 +324,14 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 case EAST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getClockWise()));
                 case SOUTH -> handlerSupplier.get(baseHandler, ioPorts.get(direction));
                 case WEST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getCounterClockWise()));
-                default -> null;
+                default -> {
+                    IndustrialReforged.LOGGER.debug("Unreachable");
+                    yield null;
+                }
             };
         }
 
+        IndustrialReforged.LOGGER.debug("Handler is null :O");
         return null;
     }
 

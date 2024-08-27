@@ -42,11 +42,7 @@ public abstract class ContainerBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (!tickingEnabled()) return null;
 
-        return createTickerHelper(blockEntityType, getBlockEntityType(),
-                (level1, pos1, state1, entity1) -> {
-                    entity1.commonTick();
-                }
-        );
+        return createTickerHelper(blockEntityType, getBlockEntityType(), (level1, pos1, state1, entity1) -> entity1.commonTick());
     }
 
     @Override

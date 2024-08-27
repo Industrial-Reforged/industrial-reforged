@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
-public class BlastFurnaceHatchBlock extends ContainerBlock implements CanAttachFaucetBlock {
+public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements CanAttachFaucetBlock {
     public BlastFurnaceHatchBlock(Properties properties) {
         super(properties);
     }

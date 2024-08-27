@@ -20,9 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.indref.industrial_reforged.util.BlockUtils.rotateBlock;
 
-
-// TODO: 10/8/2023 add sounds for pickup make picked up blocks keep their nbt
-
 public class WrenchItem extends ToolItem {
     public WrenchItem(Properties properties) {
         super(properties);

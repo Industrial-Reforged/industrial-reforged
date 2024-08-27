@@ -1,7 +1,10 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.item.SidedItemHandler;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
@@ -26,6 +29,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -84,14 +88,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
-    public IFluidHandler getFluidHandler() {
-        if (!isMainController()) {
-            return CapabilityUtils.fluidHandlerCapability(level.getBlockEntity(mainControllerPos));
-        }
-        return super.getFluidHandler();
-    }
-
-    @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.put("multiblockData", saveMBData());
         BlockPos actualBlockEntityPos = getActualBlockEntityPos();
@@ -101,9 +97,21 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         tag.putInt("duration", this.duration);
     }
 
+    @Override
+    public IFluidHandler getFluidHandlerOnSide(Direction direction) {
+        if (!isMainController()) {
+            BlockEntity be = level.getBlockEntity(mainControllerPos);
+            if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                return blastFurnaceBlockEntity.getFluidHandlerOnSide(direction);
+            }
+        }
+        return super.getFluidHandlerOnSide(direction);
+    }
+
     // TODO: Export this through the bricks block
     @Override
     public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        IndustrialReforged.LOGGER.debug("getting sided interaction");
         if (capability == Capabilities.ItemHandler.BLOCK) {
             return Map.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
         } else if (capability == Capabilities.FluidHandler.BLOCK) {

@@ -11,6 +11,7 @@ import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
+import com.indref.industrial_reforged.mixins.LevelRendererAccess;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
@@ -24,7 +25,9 @@ import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressR
 import com.indref.industrial_reforged.client.renderer.item.bar.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
+import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
+import com.indref.industrial_reforged.registries.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
@@ -41,9 +44,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -52,9 +58,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -64,6 +76,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.common.extensions.IPlayerListExtension;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -226,7 +239,47 @@ public class IREvents {
                 event.getToolTip().add(Component.translatable("*.desc.melting_not_possible").withStyle(ChatFormatting.GRAY));
             }
         }
+
+        @SubscribeEvent
+        public static void renderOutline(RenderLevelStageEvent event) {
+            if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES)) {
+                if (event.getCamera().getEntity() instanceof LivingEntity living) {
+                    Level world = living.level();
+                    Vec3 renderView = event.getCamera().getPosition();
+                    // TODO: Implement off hand
+                    ItemStack itemStack = living.getMainHandItem();
+
+                    if (!(itemStack.getItem() instanceof TapeMeasureItem)) {
+                        itemStack = living.getOffhandItem();
+                    }
+
+                    if (itemStack.getItem() instanceof TapeMeasureItem) {
+                        ComponentTapeMeasure tapeMeasureData = itemStack.get(IRDataComponents.TAPE_MEASURE_DATA);
+                        if (tapeMeasureData.tapeMeasureExtended()) {
+                            BlockPos firstPos = tapeMeasureData.firstPos();
+                            if (firstPos != null) {
+                                BlockState targetBlock = world.getBlockState(firstPos);
+                                ((LevelRendererAccess) event.getLevelRenderer()).callRenderShape(
+                                        event.getPoseStack(),
+                                        Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines()),
+                                        targetBlock.getShape(world, firstPos, CollisionContext.of(living)),
+                                        firstPos.getX() - renderView.x,
+                                        firstPos.getY() - renderView.y,
+                                        firstPos.getZ() - renderView.z,
+                                        0,
+                                        1,
+                                        0,
+                                        0.4f
+                                );
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
     }
+
 
     @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.MOD)
     public static class CommonBus {
@@ -261,7 +314,7 @@ public class IREvents {
 
                     // Check that multiblocks have block entity types
                     if (multiblock.getMultiBlockEntityType() == null) {
-                        throw new IllegalStateException("Every multiblocks controller needs to have blockentity that keeps track of data relevant for formed multiblocks. The blockentity type however is null. Affected multiblock: "+multiblock);
+                        throw new IllegalStateException("Every multiblocks controller needs to have blockentity that keeps track of data relevant for formed multiblocks. The blockentity type however is null. Affected multiblock: " + multiblock);
                     }
                 }
             }
@@ -306,7 +359,7 @@ public class IREvents {
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), ContainerBlockEntity::getItemHandlerOnSide);
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), ContainerBlockEntity::getItemHandlerOnSide);
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), ContainerBlockEntity::getItemHandlerOnSide);
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), BlastFurnaceBlockEntity::getItemHandlerOnSide);
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), ContainerBlockEntity::getItemHandlerOnSide);
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), ContainerBlockEntity::getItemHandlerOnSide);
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), ContainerBlockEntity::getItemHandlerOnSide);

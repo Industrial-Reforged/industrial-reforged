@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.indref.industrial_reforged.mixins",
+  "refmap": "mixins.indref.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "LevelRendererAccess"
+  ]
+}
