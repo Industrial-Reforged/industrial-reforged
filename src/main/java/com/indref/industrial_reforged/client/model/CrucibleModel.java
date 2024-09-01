@@ -58,31 +58,18 @@ public class CrucibleModel extends Model {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        renderCrucibleBody(poseStack, buffer, packedLight, packedOverlay, color, 0);
+        renderCrucibleBody(poseStack, buffer, packedLight, packedOverlay, color);
     }
 
-    public void renderCrucibleBody(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color, float partialTick) {
-        if (this.rotation == 90) {
-            this.rotation = 0;
-        } else {
-            //this.rotation += 0.025f;
-        }
-
+    public void renderCrucibleBody(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
         {
-            poseStack.translate(0.5, 2.125, -0.5);
-            poseStack.mulPose(Axis.XP.rotation(this.rotation));
-            poseStack.translate(-0.5, -2.125, 0.5);
-
-            poseStack.translate(0.5, -1.5, 0.5);
             this.crucible.render(poseStack, buffer, packedLight, packedOverlay, color);
         }
         poseStack.popPose();
-
-        renderCrucibleLegs(poseStack, buffer, packedLight, packedOverlay, color);
     }
 
-    private void renderCrucibleLegs(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+    public void renderCrucibleLegs(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
         {
             poseStack.translate(0.5, -1.5, 0.5);

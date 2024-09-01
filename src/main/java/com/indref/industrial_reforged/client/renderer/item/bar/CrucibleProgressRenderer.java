@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Display;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.IItemDecorator;
 
@@ -34,7 +33,7 @@ public class CrucibleProgressRenderer implements IItemDecorator {
             guiGraphics.fill(RenderType.guiOverlay(), j, k + 2, j + 2, k - 10, -16777216);
             guiGraphics.fill(RenderType.guiOverlay(), j, k + 1, j + width, k - barWidth, i | 0xFF000000);
         } else if (meltingType == 2) {
-            GuiUtils.drawSpecial(guiGraphics, DISABLED_TEXTURE, xOffset, yOffset, 200, 16, 16);
+            GuiUtils.drawWithZ(guiGraphics, DISABLED_TEXTURE, xOffset, yOffset, 200, 16, 16);
         }
         return true;
     }

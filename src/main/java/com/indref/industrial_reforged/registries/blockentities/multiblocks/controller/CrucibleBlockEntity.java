@@ -54,13 +54,31 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     private final CrucibleTier tier;
     private MultiblockData multiblockData;
 
+    public float independentAngle;
+    public float chasingVelocity;
+    public int inUse;
+    public int speed;
+
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
+        this.multiblockData = MultiblockData.EMPTY;
         addItemHandler(9, 1);
         addFluidTank(9000);
         addHeatStorage(tier.getHeatCapacity());
-        this.multiblockData = MultiblockData.EMPTY;
+    }
+
+    public void turn() {
+        this.inUse = 100;
+        this.speed = 100;
+    }
+
+    private float getSpeed() {
+        return speed;
+    }
+
+    public float getIndependentAngle(float partialTicks) {
+        return (independentAngle + partialTicks * chasingVelocity) / 360;
     }
 
     @Override
@@ -80,6 +98,22 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         // Item sucking in
         List<ItemEntity> items = getItemsInside();
         suckInItems(items);
+
+        turnCrucible();
+    }
+
+    private void turnCrucible() {
+        float actualSpeed = getSpeed();
+        chasingVelocity += ((actualSpeed * 10 / 3f) - chasingVelocity) * .25f;
+        independentAngle += chasingVelocity;
+
+        if (inUse > 0) {
+            inUse--;
+
+            if (inUse == 0) {
+                this.speed = 0;
+            }
+        }
     }
 
     @Override

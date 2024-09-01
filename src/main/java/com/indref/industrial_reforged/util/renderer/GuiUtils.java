@@ -15,7 +15,7 @@ public final class GuiUtils {
         guiGraphics.blit(texturePath, x, y, 0, 0, 0, width, height, width, height);
     }
 
-    public static void drawSpecial(GuiGraphics guiGraphics, ResourceLocation texturePath, int x, int y, int z, int width, int height) {
+    public static void drawWithZ(GuiGraphics guiGraphics, ResourceLocation texturePath, int x, int y, int z, int width, int height) {
         RenderSystem.setShaderTexture(0, texturePath);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         PoseStack poseStack = guiGraphics.pose();
