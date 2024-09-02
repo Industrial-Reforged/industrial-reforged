@@ -20,14 +20,14 @@ public final class RenderUtils {
         poseStack.translate(-.5f, -.5f, -.5f);
     }
 
-    public static Axis rotAxisFromDir(Direction dir) {
-        return switch (dir) {
-            case DOWN -> Axis.YN;
-            case UP -> Axis.YP;
-            case NORTH -> Axis.ZN;
-            case EAST -> Axis.ZP;
-            case SOUTH -> Axis.XN;
-            case WEST -> Axis.XP;
-        };
+    public static String axisToString(Axis axis) {
+        if (axis == Axis.XN) return "xn";
+        else if (axis == Axis.XP) return "xp";
+        else if (axis == Axis.ZN) return "zn";
+        else if (axis == Axis.ZP) return "zp";
+        else if (axis == Axis.YN) return "yn";
+        else if (axis == Axis.YP) return "yp";
+        else throw new IllegalArgumentException("Invalid axis");
     }
+
 }

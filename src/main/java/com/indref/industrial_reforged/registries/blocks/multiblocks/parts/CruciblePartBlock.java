@@ -81,9 +81,14 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         BlockPos controllerPos = blockEntity.getControllerPos();
         if (controllerPos != null) {
             CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos);
-            //Utils.openMenu(player, controllerBlockEntity);
-            controllerBlockEntity.turn();
+            if (player.isShiftKeyDown()) {
+                controllerBlockEntity.reset();
+            } else {
+                //Utils.openMenu(player, controllerBlockEntity);
+                controllerBlockEntity.turn();
+            }
         }
+
         return InteractionResult.SUCCESS;
     }
 
@@ -197,7 +202,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
 
         public static final VoxelShape BOTTOM_SIDE_WEST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 0, 16, 16, 4));
         public static final VoxelShape BOTTOM_SIDE_NORTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 4, 0, 16, 16, 16));
-        public static final VoxelShape BOTTOM_SIDE_EAST= Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 12, 16, 16, 16));
+        public static final VoxelShape BOTTOM_SIDE_EAST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 12, 16, 16, 16));
         public static final VoxelShape BOTTOM_SIDE_SOUTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 0, 4, 16, 16));
     }
 }

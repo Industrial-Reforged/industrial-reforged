@@ -27,6 +27,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +52,7 @@ import java.util.*;
 
 // TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
+    public static final AABB AABB = new AABB(-1, 0.25, -1, 2, 1, 2);
     private final CrucibleTier tier;
     private MultiblockData multiblockData;
 
@@ -69,8 +71,24 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     public void turn() {
-        this.inUse = 100;
-        this.speed = 100;
+        if (this.inUse == 0) {
+            this.inUse = 70;
+            this.speed = 70;
+        }
+    }
+
+    public void turnBack() {
+        if (this.inUse == 0) {
+            this.inUse = 70;
+            this.speed = -70;
+        }
+    }
+
+    public void reset() {
+        this.inUse = 0;
+        this.speed = 0;
+        this.independentAngle = 0;
+        this.chasingVelocity = 0;
     }
 
     private float getSpeed() {
@@ -99,7 +117,37 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         List<ItemEntity> items = getItemsInside();
         suckInItems(items);
 
+        List<LivingEntity> entities = getEntitiesInside();
+        meltEntities(entities);
+
         turnCrucible();
+    }
+
+    private void meltEntities(List<LivingEntity> entities) {
+        // TODO: Use actual values
+        if (getHeatStorage().getHeatStored() > 100) {
+            for (LivingEntity entity : entities) {
+                if (getHeatStorage().getHeatStored() > 100) {
+                    entity.hurt(level.damageSources().lava(), 7);
+                    getHeatStorage().tryDrainHeat(12, false);
+                } else {
+                    return;
+                }
+            }
+        }
+    }
+
+    private void suckInItems(List<ItemEntity> items) {
+        ItemStackHandler handler = getItemStackHandler();
+        for (ItemEntity itemEntity : items) {
+            ItemStack itemStack = itemEntity.getItem();
+            for (int i = 0; i < handler.getSlots(); i++) {
+                if (handler.getStackInSlot(i).isEmpty()) {
+                    handler.setStackInSlot(i, itemStack.copyWithCount(1));
+                    itemStack.shrink(1);
+                }
+            }
+        }
     }
 
     private void turnCrucible() {
@@ -126,22 +174,14 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return Map.of();
     }
 
-    private void suckInItems(List<ItemEntity> items) {
-        ItemStackHandler handler = getItemStackHandler();
-        for (ItemEntity itemEntity : items) {
-            ItemStack itemStack = itemEntity.getItem();
-            for (int i = 0; i < handler.getSlots(); i++) {
-                if (handler.getStackInSlot(i).isEmpty()) {
-                    handler.setStackInSlot(i, itemStack.copyWithCount(1));
-                    itemStack.shrink(1);
-                }
-            }
-        }
+    private List<ItemEntity> getItemsInside() {
+        AABB area = AABB.move(worldPosition);
+        return level != null ? level.getEntitiesOfClass(ItemEntity.class, area) : Collections.emptyList();
     }
 
-    private List<ItemEntity> getItemsInside() {
-        AABB area = new AABB(-1, 0.25, -1, 2, 1, 2).move(worldPosition);
-        return level != null ? level.getEntitiesOfClass(ItemEntity.class, area) : Collections.emptyList();
+    private List<LivingEntity> getEntitiesInside() {
+        AABB area = AABB.move(worldPosition);
+        return level != null ? level.getEntitiesOfClass(LivingEntity.class, area) : Collections.emptyList();
     }
 
     private void tryMeltItem() {
