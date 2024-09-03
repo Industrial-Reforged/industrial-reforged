@@ -1,18 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "group": "fences",
+  "category": "misc",
   "key": {
     "#": {
-      "item": "indref:rubber_tree_planks"
+      "item": "minecraft:stick"
     },
-    "S": {
-      "tag": "c:rods/wooden"
+    "W": {
+      "item": "indref:rubber_tree_planks"
     }
   },
   "pattern": [
-    "#S#",
-    "#S#"
+    "W#W",
+    "W#W"
   ],
   "result": {
     "count": 3,

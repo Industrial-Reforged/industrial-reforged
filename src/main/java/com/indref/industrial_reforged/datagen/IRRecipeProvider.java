@@ -1,14 +1,31 @@
 package com.indref.industrial_reforged.datagen;
 
+import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRTags;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
 
 public class IRRecipeProvider extends RecipeProvider {
+    private static final ImmutableList<ItemLike> TIN_SMELTABLES = ImmutableList.of(IRItems.RAW_TIN, IRBlocks.TIN_ORE, IRBlocks.DEEPSLATE_TIN_ORE);
+    private static final ImmutableList<ItemLike> NICKEL_SMELTABLES = ImmutableList.of(IRItems.RAW_NICKEL, IRBlocks.NICKEL_ORE, IRBlocks.DEEPSLATE_NICKEL_ORE);
+    private static final ImmutableList<ItemLike> LEAD_SMELTABLES = ImmutableList.of(IRItems.RAW_LEAD, IRBlocks.LEAD_ORE, IRBlocks.DEEPSLATE_LEAD_ORE);
+    private static final ImmutableList<ItemLike> URANIUM_SMELTABLES = ImmutableList.of(IRItems.RAW_URANIUM, IRBlocks.URANIUM_ORE, IRBlocks.DEEPSLATE_URANIUM_ORE);
+    private static final ImmutableList<ItemLike> CHROMIUM_SMELTABLES = ImmutableList.of(IRItems.RAW_CHROMIUM, IRBlocks.CHROMIUM_ORE, IRBlocks.DEEPSLATE_CHROMIUM_ORE);
+
+    private RecipeOutput output;
 
     public IRRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookUpProvider) {
         super(output, lookUpProvider);
@@ -16,90 +33,93 @@ public class IRRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput output) {
-        rubberWoodRecipes(output);
+        this.output = output;
+        craftingRecipes();
+        smeltingRecipes();
     }
 
-    private static void rubberWoodRecipes(RecipeOutput output) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_PLANKS.get(), 4)
-                .requires(IRBlocks.RUBBER_TREE_LOG.get())
-                .group("planks")
-                .unlockedBy("has_log", has(IRBlocks.RUBBER_TREE_LOG.get()))
+    private void craftingRecipes() {
+        rubberWoodRecipes();
+        toolRecipes();
+
+        // Compacting recipes
+        rawOreToBlockRecipes();
+        ingotToBlockRecipes();
+    }
+
+    private void smeltingRecipes() {
+        ingotSmeltingRecipes();
+    }
+
+    private void toolRecipes() {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.HAMMER.get())
+                .pattern(" # ")
+                .pattern(" S#")
+                .pattern("S  ")
+                .define('S', Tags.Items.RODS_WOODEN)
+                .define('#', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_SLAB.get(), 6)
-                .pattern("###")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .group("slabs")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
-                .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_STAIRS.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.WRENCH.get())
+                .pattern(" # ")
+                .pattern(" ##")
                 .pattern("#  ")
-                .pattern("## ")
-                .pattern("###")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .group("stairs")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
+                .define('#', Tags.Items.INGOTS_COPPER)
+                .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .save(output);
+        // TODO: Other tool recipes
+    }
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, IRBlocks.RUBBER_TREE_BUTTON.get())
-                .requires(IRBlocks.RUBBER_TREE_PLANKS.get())
-                .group("buttons")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
-                .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, IRBlocks.RUBBER_TREE_PRESSURE_PLATE.get())
-                .pattern("##")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .group("pressure_plates")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
-                .save(output);
+    private void rawOreToBlockRecipes() {
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_BAUXITE.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_BAUXITE_BLOCK.get());
+        // TODO: Other raw blocks
+    }
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_WOOD.get(), 3)
-                .pattern("##")
-                .pattern("##")
-                .define('#', IRBlocks.RUBBER_TREE_LOG.get())
-                .group("barks")
-                .unlockedBy("has_log", has(IRBlocks.RUBBER_TREE_LOG.get()))
-                .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.STRIPPED_RUBBER_TREE_WOOD.get(), 3)
-                .pattern("##")
-                .pattern("##")
-                .define('#', IRBlocks.STRIPPED_RUBBER_TREE_LOG.get())
-                .group("barks")
-                .unlockedBy("has_stripped_log", has(IRBlocks.STRIPPED_RUBBER_TREE_LOG.get()))
-                .save(output);
+    private void ingotToBlockRecipes() {
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.STEEL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.STEEL_BLOCK.get());
+        // TODO: Other metal blocks
+    }
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_FENCE.get(), 3)
-                .pattern("#S#")
-                .pattern("#S#")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .define('S', Tags.Items.RODS_WOODEN)
-                .group("fences")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
+    private void rubberWoodRecipes() {
+        planksFromLog(output, IRBlocks.RUBBER_TREE_PLANKS, IRTags.Items.RUBBER_LOG, 4);
+        slab(this.output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_SLAB, IRBlocks.RUBBER_TREE_PLANKS);
+        pressurePlate(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE, IRBlocks.RUBBER_TREE_PLANKS);
+        woodFromLogs(output, IRBlocks.RUBBER_TREE_WOOD, IRBlocks.RUBBER_TREE_LOG);
+        woodFromLogs(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
+        stairBuilder(IRBlocks.RUBBER_TREE_STAIRS, Ingredient.of(IRBlocks.RUBBER_TREE_PLANKS))
+                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS))
                 .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_FENCE_GATE.get())
-                .pattern("S#S")
-                .pattern("S#S")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .define('S', Tags.Items.RODS_WOODEN)
-                .group("fence_gates")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
+        buttonBuilder(IRBlocks.RUBBER_TREE_BUTTON, Ingredient.of(IRBlocks.RUBBER_TREE_PLANKS))
+                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS))
                 .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_TRAPDOOR.get(), 2)
-                .pattern("###")
-                .pattern("###")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .group("trapdoors")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
+        fenceBuilder(IRBlocks.RUBBER_TREE_FENCE, Ingredient.of(IRBlocks.RUBBER_TREE_PLANKS))
+                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS))
                 .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_DOOR.get(), 3)
-                .pattern("##")
-                .pattern("##")
-                .pattern("##")
-                .define('#', IRBlocks.RUBBER_TREE_PLANKS.get())
-                .group("doors")
-                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS.get()))
+        fenceGateBuilder(IRBlocks.RUBBER_TREE_FENCE_GATE, Ingredient.of(IRBlocks.RUBBER_TREE_PLANKS))
+                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS))
+                .save(output);
+        trapdoorBuilder(IRBlocks.RUBBER_TREE_TRAPDOOR, Ingredient.of(IRBlocks.RUBBER_TREE_PLANKS))
+                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS))
+                .save(output);
+        doorBuilder(IRBlocks.RUBBER_TREE_DOOR, Ingredient.of(IRBlocks.RUBBER_TREE_DOOR))
+                .unlockedBy("has_planks", has(IRBlocks.RUBBER_TREE_PLANKS))
                 .save(output);
     }
+
+    private void ingotSmeltingRecipes() {
+        oreSmelting(output, TIN_SMELTABLES, RecipeCategory.MISC, IRItems.TIN_INGOT, 0.7f, 200, "tin_ingot");
+        oreSmelting(output, NICKEL_SMELTABLES, RecipeCategory.MISC, IRItems.NICKEL_INGOT, 0.7f, 200, "nickel_ingot");
+        oreSmelting(output, LEAD_SMELTABLES, RecipeCategory.MISC, IRItems.LEAD_INGOT, 0.7f, 200, "lead_ingot");
+        oreSmelting(output, CHROMIUM_SMELTABLES, RecipeCategory.MISC, IRItems.CHROMIUM_INGOT, 1f, 200, "chromium_ingot");
+        oreSmelting(output, URANIUM_SMELTABLES, RecipeCategory.MISC, IRItems.URANIUM_INGOT, 1f, 200, "uranium_ingot");
+
+        oreBlasting(output, TIN_SMELTABLES, RecipeCategory.MISC, IRItems.TIN_INGOT, 0.7f, 100, "tin_ingot");
+        oreBlasting(output, NICKEL_SMELTABLES, RecipeCategory.MISC, IRItems.NICKEL_INGOT, 0.7f, 100, "nickel_ingot");
+        oreBlasting(output, LEAD_SMELTABLES, RecipeCategory.MISC, IRItems.LEAD_INGOT, 0.7f, 100, "lead_ingot");
+        oreBlasting(output, CHROMIUM_SMELTABLES, RecipeCategory.MISC, IRItems.CHROMIUM_INGOT, 1f, 100, "chromium_ingot");
+        oreBlasting(output, URANIUM_SMELTABLES, RecipeCategory.MISC, IRItems.URANIUM_INGOT, 1f, 100, "uranium_ingot");
+    }
+
+    // -- HELPER METHODS --
+
 }

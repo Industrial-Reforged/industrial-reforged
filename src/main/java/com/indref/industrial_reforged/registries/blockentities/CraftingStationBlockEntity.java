@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -37,7 +38,7 @@ public class CraftingStationBlockEntity extends ContainerBlockEntity implements 
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        return Map.of();
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        return ImmutableMap.of();
     }
 }

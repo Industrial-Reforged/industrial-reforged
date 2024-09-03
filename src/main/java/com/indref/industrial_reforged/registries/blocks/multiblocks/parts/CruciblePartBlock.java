@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.multiblocks.parts;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.items.DisplayItem;
+import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -12,7 +12,6 @@ import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
-import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -60,6 +59,11 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     }
 
     @Override
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return getPartShape(state, level, pos, context);
+    }
+
+    @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
@@ -97,16 +101,8 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         return RenderShape.INVISIBLE;
     }
 
-    @Override
-    protected @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    protected @NotNull VoxelShape getPartShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(CRUCIBLE_WALL)) {
-//            case EDGE_TOP -> switch (state.getValue(FACING)) {
-//                case NORTH -> VoxelShapes.TOP_NORTH;
-//                case EAST -> VoxelShapes.TOP_EAST;
-//                case SOUTH -> VoxelShapes.TOP_SOUTH;
-//                case WEST -> VoxelShapes.TOP_WEST;
-//                default -> super.getShape(state, level, pos, context);
-//            };
             case EDGE_TOP -> switch (state.getValue(FACING)) {
                 case NORTH -> VoxelShapes.MIDDLE_EDGE_NORTH;
                 case EAST -> VoxelShapes.MIDDLE_EDGE_EAST;

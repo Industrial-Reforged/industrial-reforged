@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -26,6 +28,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -37,9 +40,12 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -56,10 +62,17 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     private final CrucibleTier tier;
     private MultiblockData multiblockData;
 
+    // Block that can be filled when turning crucible
+    private BlockCapabilityCache<IFluidHandler, Direction> fillBlockCache;
+
     public float independentAngle;
     public float chasingVelocity;
     public int inUse;
     public int speed;
+
+    private boolean turnedOver;
+
+    private int tempTimer;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
@@ -71,9 +84,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     public void turn() {
-        if (this.inUse == 0) {
+        if (!this.turnedOver) {
             this.inUse = 70;
             this.speed = 70;
+            this.turnedOver = true;
         }
     }
 
@@ -81,6 +95,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         if (this.inUse == 0) {
             this.inUse = 70;
             this.speed = -70;
+            this.turnedOver = false;
+            this.tempTimer = 0;
         }
     }
 
@@ -89,6 +105,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         this.speed = 0;
         this.independentAngle = 0;
         this.chasingVelocity = 0;
+        this.turnedOver = false;
     }
 
     private float getSpeed() {
@@ -97,6 +114,24 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public float getIndependentAngle(float partialTicks) {
         return (independentAngle + partialTicks * chasingVelocity) / 360;
+    }
+
+    public boolean isTurnedOver() {
+        return turnedOver;
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (level instanceof ServerLevel serverLevel) {
+            Direction direction = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+            this.fillBlockCache = BlockCapabilityCache.create(
+                    Capabilities.FluidHandler.BLOCK,
+                    serverLevel,
+                    worldPosition.relative(direction, 2),
+                    Direction.UP
+            );
+        }
     }
 
     @Override
@@ -161,17 +196,22 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             if (inUse == 0) {
                 this.speed = 0;
             }
+        } else if (this.turnedOver) {
+            if (this.tempTimer >= 300) {
+                turnBack();
+            }
+            this.tempTimer++;
         }
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == IRCapabilities.HeatStorage.BLOCK) {
-            return Map.of(
+            return ImmutableMap.of(
                     Direction.DOWN, Pair.of(IOActions.INSERT, new int[0])
             );
         }
-        return Map.of();
+        return ImmutableMap.of();
     }
 
     private List<ItemEntity> getItemsInside() {

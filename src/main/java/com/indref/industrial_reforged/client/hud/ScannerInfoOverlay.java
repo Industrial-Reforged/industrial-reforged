@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.client.hud;
 
-import com.indref.industrial_reforged.api.items.DisplayItem;
+import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.player.Player;

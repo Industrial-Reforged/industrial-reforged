@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blockentities.container;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -23,7 +24,6 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -48,11 +47,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     private @Nullable FluidTank fluidTank;
     private @Nullable EnergyStorage energyStorage;
     private @Nullable HeatStorage heatStorage;
-
-    private BlockCapabilityCache<IItemHandler, @Nullable Direction> itemCapCache;
-    private BlockCapabilityCache<IFluidHandler, @Nullable Direction> fluidCapCache;
-    private BlockCapabilityCache<IEnergyStorage, @Nullable Direction> energyCapCache;
-    private BlockCapabilityCache<IHeatStorage, @Nullable Direction> heatCapCache;
 
     public ContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -91,56 +85,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
 
     protected HeatStorage getHeatStorageImpl() {
         return heatStorage;
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        if (level instanceof ServerLevel serverLevel) {
-            if (getItemHandler() != null) {
-                this.itemCapCache = createCache(Capabilities.ItemHandler.BLOCK, serverLevel);
-            }
-            if (getFluidTank() != null) {
-                this.fluidCapCache = createCache(Capabilities.FluidHandler.BLOCK, serverLevel);
-            }
-            if (getEnergyStorage() != null) {
-                this.energyCapCache = createCache(IRCapabilities.EnergyStorage.BLOCK, serverLevel);
-            }
-            if (getHeatStorage() != null) {
-                this.heatCapCache = createCache(IRCapabilities.HeatStorage.BLOCK, serverLevel);
-            }
-        }
-    }
-
-    protected @NotNull <T> BlockCapabilityCache<T, @Nullable Direction> createCache(BlockCapability<T, @Nullable Direction> capability, ServerLevel serverLevel) {
-        return BlockCapabilityCache.create(
-                capability,
-                serverLevel,
-                worldPosition,
-                null
-        );
-    }
-
-    protected @NotNull <T> BlockCapabilityCache<T, @Nullable Direction> createCache(BlockCapability<T, @Nullable Direction> capability, ServerLevel serverLevel, @Nullable Direction dir) {
-        return BlockCapabilityCache.create(
-                capability,
-                serverLevel,
-                worldPosition,
-                dir
-        );
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T, C> T getCapFromCache(BlockCapability<T, C> capability) {
-        if (capability == Capabilities.ItemHandler.BLOCK)
-            return this.itemCapCache != null ? (T) this.itemCapCache.getCapability() : null;
-        else if (capability == Capabilities.FluidHandler.BLOCK)
-            return this.fluidCapCache != null ? (T) this.fluidCapCache.getCapability() : null;
-        else if (capability == IRCapabilities.EnergyStorage.BLOCK)
-            return this.energyCapCache != null ? (T) this.energyCapCache.getCapability() : null;
-        else if (capability == IRCapabilities.HeatStorage.BLOCK)
-            return this.heatCapCache != null ? (T) this.heatCapCache.getCapability() : null;
-        else return null;
     }
 
     @Override
@@ -368,7 +312,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
      *
      * @return Map of directions that each map to a pair that defines the IOAction as well as the tanks that are affected. Return an empty map if you do not have an itemhandler
      */
-    public abstract <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability);
+    public abstract <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability);
 
     @Nullable
     @Override

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -110,19 +111,19 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     // TODO: Export this through the bricks block
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         IndustrialReforged.LOGGER.debug("getting sided interaction");
         if (capability == Capabilities.ItemHandler.BLOCK) {
-            return Map.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
+            return ImmutableMap.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
         } else if (capability == Capabilities.FluidHandler.BLOCK) {
-            return Map.of(
+            return ImmutableMap.of(
                     Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
                     Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
                     Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
                     Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0})
             );
         }
-        return Map.of();
+        return ImmutableMap.of();
     }
 
     private boolean isMainController() {

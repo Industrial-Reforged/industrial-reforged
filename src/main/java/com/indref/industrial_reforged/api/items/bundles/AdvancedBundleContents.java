@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.items.bundles;
 
 import com.google.common.collect.Lists;
 import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.api.items.tools.IToolItem;
+import com.indref.industrial_reforged.registries.IRTags;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.component.BundleContents;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.apache.commons.lang3.math.Fraction;
 
 import javax.annotation.Nullable;
@@ -147,7 +149,10 @@ public record AdvancedBundleContents(List<ItemStack> items, Fraction weight) imp
         }
 
         public boolean isValid(ItemStack itemStack) {
-            return (itemStack.getItem() instanceof IToolItem || itemStack.getItem() instanceof PickaxeItem || itemStack.getItem() instanceof AxeItem || itemStack.getItem() instanceof ShovelItem);
+            return (itemStack.getTags().anyMatch(tag -> tag == IRTags.Items.TOOL)
+                    || itemStack.canPerformAction(ItemAbilities.PICKAXE_DIG)
+                    || itemStack.canPerformAction(ItemAbilities.AXE_DIG)
+                    || itemStack.canPerformAction(ItemAbilities.SHOVEL_DIG));
         }
 
         public int tryTransfer(Slot p_330834_, Player p_331924_) {

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.machines;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -146,9 +147,9 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
-            return Map.of(
+            return ImmutableMap.of(
                     Direction.UP, Pair.of(IOActions.INSERT, new int[]{0}),
                     Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
                     Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4}),
@@ -157,7 +158,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                     Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{1, 2, 3, 4})
             );
         }
-        return Map.of();
+        return ImmutableMap.of();
     }
 
     @Override

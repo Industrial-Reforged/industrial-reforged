@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -191,10 +193,22 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         tag.put("resultItem", itemTag);
     }
 
-    // TODO: Think about how to implement this
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        return Map.of();
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+        if (capability == Capabilities.FluidHandler.BLOCK) {
+            return ImmutableMap.of(
+                    Direction.UP, Pair.of(IOActions.INSERT, new int[]{0})
+            );
+        } else if (capability == Capabilities.ItemHandler.BLOCK) {
+            return ImmutableMap.of(
+                    Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{1}),
+                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
+                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0})
+            );
+        }
+        return ImmutableMap.of();
     }
 
     @Override

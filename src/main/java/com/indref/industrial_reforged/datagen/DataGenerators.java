@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.registries.IRTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -24,5 +25,8 @@ public class DataGenerators {
         generator.addProvider(true, new IRItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(true, new IRRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new IRWorldGenProvider(packOutput, lookupProvider));
+        IRTagsProvider.BlocksProvider blocks = new IRTagsProvider.BlocksProvider(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(event.includeClient(), blocks);
+        generator.addProvider(event.includeClient(), new IRTagsProvider.ItemsProvider(packOutput, lookupProvider, blocks.contentsGetter()));
     }
 }

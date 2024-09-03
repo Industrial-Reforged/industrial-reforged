@@ -1,18 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "group": "fence_gates",
+  "category": "redstone",
   "key": {
     "#": {
-      "item": "indref:rubber_tree_planks"
+      "item": "minecraft:stick"
     },
-    "S": {
-      "tag": "c:rods/wooden"
+    "W": {
+      "item": "indref:rubber_tree_planks"
     }
   },
   "pattern": [
-    "S#S",
-    "S#S"
+    "#W#",
+    "#W#"
   ],
   "result": {
     "count": 1,

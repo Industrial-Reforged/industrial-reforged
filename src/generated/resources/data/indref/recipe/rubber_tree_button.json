@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "redstone",
-  "group": "buttons",
   "ingredients": [
     {
       "item": "indref:rubber_tree_planks"

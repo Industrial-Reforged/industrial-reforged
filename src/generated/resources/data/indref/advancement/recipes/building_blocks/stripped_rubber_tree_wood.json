@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_stripped_log": {
+    "has_log": {
       "conditions": {
         "items": [
           {
-            "items": "indref:stripped_rubber_tree_log"
+            "items": "indref:stripped_rubber_tree_wood"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_stripped_log"
+      "has_log"
     ]
   ],
   "rewards": {

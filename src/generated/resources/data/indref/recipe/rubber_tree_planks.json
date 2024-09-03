@@ -4,7 +4,7 @@
   "group": "planks",
   "ingredients": [
     {
-      "item": "indref:rubber_tree_log"
+      "tag": "minecraft:rubber_logs"
     }
   ],
   "result": {

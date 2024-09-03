@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -41,9 +42,9 @@ public class DrainBlockEntity extends ContainerBlockEntity {
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.FluidHandler.BLOCK) {
-            return Map.of(
+            return ImmutableMap.of(
                     Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
                     Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
                     Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
@@ -51,6 +52,6 @@ public class DrainBlockEntity extends ContainerBlockEntity {
                     Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{0})
             );
         }
-        return Map.of();
+        return ImmutableMap.of();
     }
 }

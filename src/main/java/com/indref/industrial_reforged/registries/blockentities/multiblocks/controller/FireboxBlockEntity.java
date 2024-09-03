@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -92,16 +93,16 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
-            return Map.of(
+            return ImmutableMap.of(
                     Direction.NORTH, Pair.of(IOActions.INSERT, new int[]{0}),
                     Direction.EAST, Pair.of(IOActions.INSERT, new int[]{0}),
                     Direction.SOUTH, Pair.of(IOActions.INSERT, new int[]{0}),
                     Direction.WEST, Pair.of(IOActions.INSERT, new int[]{0})
             );
         }
-        return Map.of();
+        return ImmutableMap.of();
     }
 
     @Override

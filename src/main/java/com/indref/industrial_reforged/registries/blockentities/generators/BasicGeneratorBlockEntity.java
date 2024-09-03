@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries.blockentities.generators;
 
+import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -79,11 +80,11 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
             return SidedCapUtils.allInsert(0);
         }
-        return Map.of();
+        return ImmutableMap.of();
     }
 
     @Override

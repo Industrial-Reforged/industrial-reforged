@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "chromium_ingot",
+  "ingredient": {
+    "item": "indref:raw_chromium"
+  },
+  "result": {
+    "count": 1,
+    "id": "indref:chromium_ingot"
+  }
+}

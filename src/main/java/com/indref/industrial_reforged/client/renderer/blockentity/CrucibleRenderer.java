@@ -41,6 +41,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
             poseStack.translate(0.5, 0.5, 0.5);
             poseStack.mulPose(Axis.YN.rotationDegrees(oppositeFacing.toYRot()));
             poseStack.translate(-0.5, -0.5, -0.5);
+            // TODO: Maybe we can move this to the constructor
             this.model.setupAnimation(partialTick);
             VertexConsumer vertexconsumer = CrucibleModel.CRUCIBLE_LOCATION.buffer(bufferSource, RenderType::entitySolid);
             // Fluid top
@@ -72,12 +73,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle)));
         poseStack.translate(-0.5, -2.15, -0.5);
 
-        poseStack.pushPose();
-        {
-            poseStack.translate(0.5, -1.5, 0.5);
-            this.model.renderCrucibleBody(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
-        }
-        poseStack.popPose();
+        this.model.renderCrucibleBody(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
     }
 
     private void renderCrucibleFluidTop(PoseStack poseStack, MultiBufferSource bufferSource, float angle, int packedLight, FluidStack fluidStack) {

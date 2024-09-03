@@ -1,10 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "barks",
+  "group": "bark",
   "key": {
     "#": {
-      "item": "indref:stripped_rubber_tree_log"
+      "item": "indref:stripped_rubber_tree_wood"
     }
   },
   "pattern": [

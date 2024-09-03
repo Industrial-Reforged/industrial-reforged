@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
-import com.indref.industrial_reforged.api.items.tools.ToolItem;
 import com.indref.industrial_reforged.registries.IRDataComponents;
 import com.indref.industrial_reforged.registries.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -15,12 +14,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 // TODO: 10/22/2023 Implement highlight for the first block pos
-public class TapeMeasureItem extends ToolItem {
+public class TapeMeasureItem extends Item {
     public static final String EXTENDED_KEY = "tape_measure_extended";
 
     public TapeMeasureItem(Properties properties) {

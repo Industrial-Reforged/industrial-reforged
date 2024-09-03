@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "slabs",
   "key": {
     "#": {
       "item": "indref:rubber_tree_planks"

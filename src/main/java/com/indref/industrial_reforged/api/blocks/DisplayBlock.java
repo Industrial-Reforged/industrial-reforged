@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.blocks;
 
-import com.indref.industrial_reforged.api.items.DisplayItem;
+import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;

@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "group": "doors",
+  "category": "redstone",
   "key": {
     "#": {
-      "item": "indref:rubber_tree_planks"
+      "item": "indref:rubber_tree_door"
     }
   },
   "pattern": [

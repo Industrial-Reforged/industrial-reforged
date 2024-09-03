@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "indref:rubber_tree_log"
+            "items": "#minecraft:rubber_logs"
           }
         ]
       },

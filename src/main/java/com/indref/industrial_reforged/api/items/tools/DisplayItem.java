@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.api.items.tools;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;

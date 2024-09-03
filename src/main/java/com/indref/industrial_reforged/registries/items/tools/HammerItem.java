@@ -1,16 +1,16 @@
 package com.indref.industrial_reforged.registries.items.tools;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.items.tools.ToolItem;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class HammerItem extends ToolItem {
+public class HammerItem extends Item {
     public HammerItem(Properties properties) {
         super(properties);
     }
