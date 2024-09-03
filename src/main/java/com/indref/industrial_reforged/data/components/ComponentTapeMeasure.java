@@ -1,11 +1,11 @@
-package com.indref.industrial_reforged.registries.data.components;
+package com.indref.industrial_reforged.data.components;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -17,18 +17,13 @@ public record ComponentTapeMeasure(@Nullable BlockPos firstPos, boolean tapeMeas
                     Codec.BOOL.fieldOf("tape_measure_extended").forGetter(ComponentTapeMeasure::tapeMeasureExtended)
             ).apply(builder, ComponentTapeMeasure::new)
     );
-    public static final StreamCodec<ByteBuf, ComponentTapeMeasure> STREAM_CODEC = new StreamCodec<>() {
-        @Override
-        public @NotNull ComponentTapeMeasure decode(ByteBuf byteBuf) {
-            return new ComponentTapeMeasure(BlockPos.STREAM_CODEC.decode(byteBuf), byteBuf.readBoolean());
-        }
-
-        @Override
-        public void encode(ByteBuf byteBuf, ComponentTapeMeasure tmd) {
-            BlockPos.STREAM_CODEC.encode(byteBuf, tmd.firstPos);
-            byteBuf.writeBoolean(tmd.tapeMeasureExtended);
-        }
-    };
+    public static final StreamCodec<ByteBuf, ComponentTapeMeasure> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC,
+            ComponentTapeMeasure::firstPos,
+            ByteBufCodecs.BOOL,
+            ComponentTapeMeasure::tapeMeasureExtended,
+            ComponentTapeMeasure::new
+    );
 
     @Override
     public boolean equals(Object o) {

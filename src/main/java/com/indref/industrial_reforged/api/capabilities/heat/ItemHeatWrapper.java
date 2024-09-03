@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities.heat;
 
-import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.registries.data.components.HeatStorage;
+import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.data.components.HeatStorage;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

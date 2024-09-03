@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.transportation.energy.EnergyNet;
-import com.indref.industrial_reforged.registries.data.saved.EnergyNetsSavedData;
+import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -34,7 +34,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Optional;
 
 public class BasicGeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, GeneratorBlockEntity {

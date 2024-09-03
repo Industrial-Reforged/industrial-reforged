@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.items.bundles;
 
 import com.google.common.collect.Lists;
-import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.registries.IRTags;
+import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.tags.IRTags;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -10,13 +10,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.component.BundleContents;
 import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.apache.commons.lang3.math.Fraction;
 
 import javax.annotation.Nullable;

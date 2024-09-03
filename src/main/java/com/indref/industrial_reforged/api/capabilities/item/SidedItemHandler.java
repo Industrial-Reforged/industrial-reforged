@@ -28,12 +28,12 @@ public record SidedItemHandler(IItemHandler innerHandler,
 
     @Override
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack itemStack, boolean simulate) {
-        return action == IOActions.INSERT && slots.contains(slot) ? innerHandler.insertItem(slot, itemStack, simulate) : itemStack;
+        return action == IOActions.INSERT || action == IOActions.BOTH && slots.contains(slot) ? innerHandler.insertItem(slot, itemStack, simulate) : itemStack;
     }
 
     @Override
     public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return action == IOActions.EXTRACT && slots.contains(slot) ? innerHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+        return action == IOActions.EXTRACT || action == IOActions.BOTH && slots.contains(slot) ? innerHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
     }
 
     @Override
@@ -43,6 +43,6 @@ public record SidedItemHandler(IItemHandler innerHandler,
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack itemStack) {
-        return action == IOActions.INSERT && slots.contains(slot) && innerHandler.isItemValid(slot, itemStack);
+        return action == IOActions.INSERT || action == IOActions.BOTH && slots.contains(slot) && innerHandler.isItemValid(slot, itemStack);
     }
 }

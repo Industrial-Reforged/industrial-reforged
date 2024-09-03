@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.registries.gui.screens;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.util.SimpleFunction;
-import com.indref.industrial_reforged.networking.BlueprintStoredRecipePayload;
 import com.indref.industrial_reforged.registries.gui.menus.CraftingStationMenu;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -41,10 +40,8 @@ public class CraftingStationScreen extends AbstractContainerScreen<CraftingStati
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         ItemStack itemStack = getMenu().getSlot(CraftingStationMenu.BLUEPRINT_SLOT).getItem();
-        addImageButton(x + 153, y + 46, "recipe_transfer", () -> PacketDistributor.sendToServer(
-                new BlueprintStoredRecipePayload(itemStack, List.of())
-        ));
-        addImageButton(x + 153, y + 62, "recipe_set", () -> BlueprintItem.setRecipe(CraftingStationMenu.BLUEPRINT_SLOT, menu));
+        addImageButton(x + 153, y + 46, "recipe_transfer", () -> {});
+        addImageButton(x + 153, y + 62, "recipe_set", () -> {});
     }
 
     @Override

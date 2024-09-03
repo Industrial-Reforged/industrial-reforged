@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.networking;
 
-import com.indref.industrial_reforged.registries.IRDataComponents;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
@@ -20,14 +20,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public final class PayloadActions {
-    public static void blueprintHasRecipe(BlueprintHasRecipePayload payload, IPayloadContext ctx) {
-        payload.itemStack().set(IRDataComponents.HAS_RECIPE, payload.hasRecipe());
-    }
-
-    public static void blueprintStoredRecipe(BlueprintStoredRecipePayload payload, IPayloadContext ctx) {
-        payload.itemStack().set(IRDataComponents.STORED_RECIPE, payload.itemStacks());
-    }
-
     public static void itemActivitySync(ItemActivityPayload payload, IPayloadContext ctx) {
         payload.itemStack().set(IRDataComponents.ACTIVE, payload.active());
     }

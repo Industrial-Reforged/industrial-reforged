@@ -35,11 +35,11 @@ public record SidedHeatHandler(IHeatStorage innerHandler, IOActions action) impl
 
     @Override
     public int tryDrainHeat(int value, boolean simulate) {
-        return action == IOActions.EXTRACT ? innerHandler.tryDrainHeat(value, simulate) : 0;
+        return action == IOActions.EXTRACT || action == IOActions.BOTH ? innerHandler.tryDrainHeat(value, simulate) : 0;
     }
 
     @Override
     public int tryFillHeat(int value, boolean simulate) {
-        return action == IOActions.INSERT ? innerHandler.tryFillHeat(value, simulate) : 0;
+        return action == IOActions.INSERT || action == IOActions.BOTH ? innerHandler.tryFillHeat(value, simulate) : 0;
     }
 }

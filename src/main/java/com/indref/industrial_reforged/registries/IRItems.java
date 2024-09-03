@@ -93,6 +93,7 @@ public final class IRItems {
             () -> new FertilizerItem(new Item.Properties()));
     public static final DeferredItem<MoldItem> CLAY_MOLD_BLANK = registerItem("clay_mold", MoldItem::new);
     public static final DeferredItem<MoldItem> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot", MoldItem::new);
+    public static final DeferredItem<MoldItem> CLAY_MOLD_WIRE = registerItem("clay_mold_wire", MoldItem::new);
 
     // Needs to be registered manual for custom placement
     public static final DeferredItem<Item> MINING_PIPE = registerItem("mining_pipe",

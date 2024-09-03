@@ -3,17 +3,15 @@ package com.indref.industrial_reforged.datagen;
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.IRTags;
+import com.indref.industrial_reforged.tags.CTags;
+import com.indref.industrial_reforged.tags.IRTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
@@ -41,6 +39,7 @@ public class IRRecipeProvider extends RecipeProvider {
     private void craftingRecipes() {
         rubberWoodRecipes();
         toolRecipes();
+        cableRecipes();
 
         // Compacting recipes
         rawOreToBlockRecipes();
@@ -80,8 +79,13 @@ public class IRRecipeProvider extends RecipeProvider {
         // TODO: Other metal blocks
     }
 
+    private void cableRecipes() {
+        cable(CTags.Items.TIN_INGOT, CTags.Items.TIN_WIRE, IRBlocks.TIN_CABLE.get());
+        // TODO: Other cables
+    }
+
     private void rubberWoodRecipes() {
-        planksFromLog(output, IRBlocks.RUBBER_TREE_PLANKS, IRTags.Items.RUBBER_LOG, 4);
+        planksFromLog(output, IRBlocks.RUBBER_TREE_PLANKS, IRTags.Items.RUBBER_LOGS, 4);
         slab(this.output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.RUBBER_TREE_SLAB, IRBlocks.RUBBER_TREE_PLANKS);
         pressurePlate(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE, IRBlocks.RUBBER_TREE_PLANKS);
         woodFromLogs(output, IRBlocks.RUBBER_TREE_WOOD, IRBlocks.RUBBER_TREE_LOG);
@@ -121,5 +125,19 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     // -- HELPER METHODS --
-
+    private void cable(TagKey<Item> cableMaterial, TagKey<Item> wireMaterial, ItemLike cable) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, cable, 6)
+                .pattern("###")
+                .pattern("WWW")
+                .pattern("###")
+                .define('#', CTags.Items.RUBBER_SHEET)
+                .define('W', cableMaterial)
+                .unlockedBy("has_rubber_sheet", has(CTags.Items.RUBBER_SHEET))
+                .save(output);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, cable)
+                .requires(CTags.Items.RUBBER_SHEET)
+                .requires(wireMaterial)
+                .unlockedBy("has_rubber_sheet", has(CTags.Items.RUBBER_SHEET))
+                .save(output);
+    }
 }

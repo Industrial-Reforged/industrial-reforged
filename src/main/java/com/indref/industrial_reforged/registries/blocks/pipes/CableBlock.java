@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.registries.blocks.pipes;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.transportation.energy.EnergyNet;
-import com.indref.industrial_reforged.registries.data.saved.EnergyNetsSavedData;
+import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;

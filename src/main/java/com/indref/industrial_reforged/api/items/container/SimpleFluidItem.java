@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.registries.IRDataComponents;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.network.chat.Component;

@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.items.electric;
 
 import com.indref.industrial_reforged.api.items.tools.ElectricToolItem;
-import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.registries.data.components.EnergyStorage;
+import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.data.components.EnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;

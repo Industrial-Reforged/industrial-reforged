@@ -180,7 +180,7 @@ public final class MultiblockHelper {
         return new MultiblockData(false, null, null);
     }
 
-    private static BlockPos getCurPos(Vec3i firstPos, Vec3i relativePos, HorizontalDirection direction) {
+    public static BlockPos getCurPos(Vec3i firstPos, Vec3i relativePos, HorizontalDirection direction) {
         int firstBlockPosX = firstPos.getX();
         int firstBlockPosY = firstPos.getY();
         int firstBlockPosZ = firstPos.getZ();
@@ -195,7 +195,7 @@ public final class MultiblockHelper {
         };
     }
 
-    private static BlockPos getFirstBlockPos(HorizontalDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
+    public static BlockPos getFirstBlockPos(HorizontalDirection direction, BlockPos controllerPos, Vec3i relativeControllerPos) {
         int firstBlockPosX = switch (direction) {
             case NORTH -> controllerPos.getX() - relativeControllerPos.getX();
             case EAST -> controllerPos.getX() + relativeControllerPos.getZ();

@@ -33,21 +33,21 @@ public record SidedFluidHandler(IFluidHandler innerHandler,
 
     @Override
     public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-        return action == IOActions.INSERT && tanks.contains(tank) && innerHandler.isFluidValid(tank, stack);
+        return action == IOActions.INSERT || action == IOActions.BOTH && tanks.contains(tank) && innerHandler.isFluidValid(tank, stack);
     }
 
     @Override
     public int fill(FluidStack resource, FluidAction fAction) {
-        return action == IOActions.INSERT ? innerHandler.fill(resource, fAction) : 0;
+        return action == IOActions.INSERT || action == IOActions.BOTH ? innerHandler.fill(resource, fAction) : 0;
     }
 
     @Override
     public @NotNull FluidStack drain(FluidStack resource, FluidAction fAction) {
-        return action == IOActions.EXTRACT ? innerHandler.drain(resource, fAction) : FluidStack.EMPTY;
+        return action == IOActions.EXTRACT || action == IOActions.BOTH ? innerHandler.drain(resource, fAction) : FluidStack.EMPTY;
     }
 
     @Override
     public @NotNull FluidStack drain(int maxDrain, FluidAction fAction) {
-        return action == IOActions.EXTRACT ? innerHandler.drain(maxDrain, fAction) : FluidStack.EMPTY;
+        return action == IOActions.EXTRACT || action == IOActions.BOTH ? innerHandler.drain(maxDrain, fAction) : FluidStack.EMPTY;
     }
 }

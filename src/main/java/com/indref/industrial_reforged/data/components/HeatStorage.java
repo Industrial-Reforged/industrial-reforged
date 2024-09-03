@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.data.components;
+package com.indref.industrial_reforged.data.components;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

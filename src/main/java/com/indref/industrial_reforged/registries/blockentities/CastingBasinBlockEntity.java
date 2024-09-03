@@ -202,10 +202,10 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         } else if (capability == Capabilities.ItemHandler.BLOCK) {
             return ImmutableMap.of(
                     Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{1}),
-                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0})
+                    Direction.NORTH, Pair.of(IOActions.BOTH, new int[]{0}),
+                    Direction.EAST, Pair.of(IOActions.BOTH, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOActions.BOTH, new int[]{0}),
+                    Direction.WEST, Pair.of(IOActions.BOTH, new int[]{0})
             );
         }
         return ImmutableMap.of();

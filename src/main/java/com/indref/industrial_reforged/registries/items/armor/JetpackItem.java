@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries.items.armor;
 
-import com.indref.industrial_reforged.registries.IRDataComponents;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.util.InputUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;

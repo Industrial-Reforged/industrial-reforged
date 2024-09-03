@@ -91,6 +91,7 @@ public final class IRTabs {
                 addItem(output, IRItems.STICKY_RESIN);
                 addItem(output, IRItems.CLAY_MOLD_BLANK);
                 addItem(output, IRItems.CLAY_MOLD_INGOT);
+                addItem(output, IRItems.CLAY_MOLD_WIRE);
 
                 addItem(output, IRItems.OIL_BUCKET);
                 addItem(output, IRItems.MOLTEN_STEEL_BUCKET);

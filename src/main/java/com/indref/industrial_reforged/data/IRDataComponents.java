@@ -1,11 +1,12 @@
-package com.indref.industrial_reforged.registries;
+package com.indref.industrial_reforged.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.data.components.ComponentTapeMeasure;
-import com.indref.industrial_reforged.registries.data.components.EnergyStorage;
-import com.indref.industrial_reforged.registries.data.components.HeatStorage;
+import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
+import com.indref.industrial_reforged.data.components.EnergyStorage;
+import com.indref.industrial_reforged.data.components.HeatStorage;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.ItemStack;
@@ -27,10 +28,8 @@ public final class IRDataComponents {
             () -> builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final Supplier<DataComponentType<Integer>> BATTERY_STAGE = registerDataComponentType("battery_stage",
             () -> builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final Supplier<DataComponentType<Boolean>> HAS_RECIPE = registerDataComponentType("has_recipe",
-            () -> builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
-    public static final Supplier<DataComponentType<List<ItemStack>>> STORED_RECIPE = registerDataComponentType("stored_recipe",
-            () -> builder -> builder.persistent(ItemStack.CODEC.listOf()).networkSynchronized(ItemStack.LIST_STREAM_CODEC));
+    public static final Supplier<DataComponentType<BlockPos>> BLUEPRINT_POS = registerDataComponentType("blueprint_pos",
+            () -> builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
     public static final Supplier<DataComponentType<ComponentTapeMeasure>> TAPE_MEASURE_DATA = registerDataComponentType("tape_measure_data",
             () -> builder -> builder.persistent(ComponentTapeMeasure.CODEC).networkSynchronized(ComponentTapeMeasure.STREAM_CODEC));
     public static final Supplier<DataComponentType<AdvancedBundleContents>> ADVANCED_BUNDLE_CONTENTS = registerDataComponentType("advanced_bundle_contents",

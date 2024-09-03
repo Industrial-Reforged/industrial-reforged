@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.registries.IRDataComponents;
-import com.indref.industrial_reforged.registries.data.components.EnergyStorage;
+import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.data.components.EnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.registries.items.tools.ScannerItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;

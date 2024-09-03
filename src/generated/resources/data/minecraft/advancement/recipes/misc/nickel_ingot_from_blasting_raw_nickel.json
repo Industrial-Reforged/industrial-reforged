@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_nickel_ingot": {
+    "has_raw_nickel": {
       "conditions": {
         "items": [
           {
-            "items": "indref:nickel_ingot"
+            "items": "indref:raw_nickel"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:nickel_ingot_from_smelting_nickel_ingot"
+        "recipe": "minecraft:nickel_ingot_from_blasting_raw_nickel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_nickel_ingot"
+      "has_raw_nickel"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:nickel_ingot_from_smelting_nickel_ingot"
+      "minecraft:nickel_ingot_from_blasting_raw_nickel"
     ]
   }
 }

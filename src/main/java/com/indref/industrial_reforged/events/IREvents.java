@@ -11,7 +11,7 @@ import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
-import com.indref.industrial_reforged.mixins.LevelRendererAccess;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
@@ -27,7 +27,6 @@ import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import com.indref.industrial_reforged.registries.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.registries.gui.screens.*;
 import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
@@ -41,32 +40,20 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -76,9 +63,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.common.extensions.IPlayerListExtension;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -94,9 +79,9 @@ import org.lwjgl.glfw.GLFW;
 import java.util.List;
 import java.util.Map;
 
-public class IREvents {
+public final class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-    public static class ClientBus {
+    public static final class ClientBus {
 
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
@@ -178,7 +163,7 @@ public class IREvents {
                 ItemProperties.register(IRItems.NANO_SABER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ItemUtils.ACTIVE_KEY),
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
                 ItemProperties.register(IRItems.BLUEPRINT.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, BlueprintItem.HAS_RECIPE_KEY),
-                        (stack, level, living, id) -> BlueprintItem.hasRecipe(stack));
+                        (stack, level, living, id) -> /*BlueprintItem.hasRecipe(stack)*/0);
                 ItemProperties.register(IRItems.THERMOMETER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),
                         (stack, level, living, id) -> ThermometerItem.getTemperature(stack));
                 for (Item item : BuiltInRegistries.ITEM) {
@@ -222,67 +207,8 @@ public class IREvents {
         }
     }
 
-    @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
-    public static class Client {
-        @SubscribeEvent
-        public static void appendTooltips(ItemTooltipEvent event) {
-            ItemStack item = event.getItemStack();
-            CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
-            int meltingType = tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY);
-            if (meltingType == 1) {
-                event.getToolTip().add(Component.translatable("*.desc.melting_progress")
-                        .append(": ")
-                        .append(String.format("%.1f", tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY)))
-                        .append("/10.0")
-                        .withStyle(ChatFormatting.GRAY));
-            } else if (meltingType == 2) {
-                event.getToolTip().add(Component.translatable("*.desc.melting_not_possible").withStyle(ChatFormatting.GRAY));
-            }
-        }
-
-        @SubscribeEvent
-        public static void renderOutline(RenderLevelStageEvent event) {
-            if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES)) {
-                if (event.getCamera().getEntity() instanceof LivingEntity living) {
-                    Level world = living.level();
-                    Vec3 renderView = event.getCamera().getPosition();
-                    // TODO: Implement off hand
-                    ItemStack itemStack = living.getMainHandItem();
-
-                    if (!(itemStack.getItem() instanceof TapeMeasureItem)) {
-                        itemStack = living.getOffhandItem();
-                    }
-
-                    if (itemStack.getItem() instanceof TapeMeasureItem) {
-                        ComponentTapeMeasure tapeMeasureData = itemStack.get(IRDataComponents.TAPE_MEASURE_DATA);
-                        if (tapeMeasureData.tapeMeasureExtended()) {
-                            BlockPos firstPos = tapeMeasureData.firstPos();
-                            if (firstPos != null) {
-                                BlockState targetBlock = world.getBlockState(firstPos);
-                                ((LevelRendererAccess) event.getLevelRenderer()).callRenderShape(
-                                        event.getPoseStack(),
-                                        Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines()),
-                                        targetBlock.getShape(world, firstPos, CollisionContext.of(living)),
-                                        firstPos.getX() - renderView.x,
-                                        firstPos.getY() - renderView.y,
-                                        firstPos.getZ() - renderView.z,
-                                        0,
-                                        1,
-                                        0,
-                                        0.4f
-                                );
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-
     @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.MOD)
-    public static class CommonBus {
+    public static final class CommonBus {
         @SubscribeEvent
         public static void onRegister(RegisterEvent event) {
             Registry<Multiblock> registry = event.getRegistry(IRRegistries.MULTIBLOCK.key());
@@ -374,8 +300,6 @@ public class IREvents {
         @SubscribeEvent
         public static void registerPayloads(RegisterPayloadHandlersEvent event) {
             PayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
-            registrar.playToServer(BlueprintHasRecipePayload.TYPE, BlueprintHasRecipePayload.STREAM_CODEC, PayloadActions::blueprintHasRecipe);
-            registrar.playToServer(BlueprintStoredRecipePayload.TYPE, BlueprintStoredRecipePayload.STREAM_CODEC, PayloadActions::blueprintStoredRecipe);
             registrar.playToServer(ItemActivityPayload.TYPE, ItemActivityPayload.STREAM_CODEC, PayloadActions::itemActivitySync);
             registrar.playToServer(ArmorActivityPayload.TYPE, ArmorActivityPayload.STREAM_CODEC, PayloadActions::armorActivitySync);
 

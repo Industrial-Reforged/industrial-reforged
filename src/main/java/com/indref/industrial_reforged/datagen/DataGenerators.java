@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.IRTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

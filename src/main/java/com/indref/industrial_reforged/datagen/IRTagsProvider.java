@@ -1,9 +1,11 @@
 package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.IRTags;
+import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.tags.CTags;
+import com.indref.industrial_reforged.tags.IRTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.TagKey;
@@ -15,8 +17,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class IRTagsProvider {
@@ -26,16 +26,88 @@ public class IRTagsProvider {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider provider) {
+        protected void addTags(HolderLookup.@NotNull Provider provider) {
+            tag(IRTags.Items.TOOL,
+                    IRItems.HAMMER,
+                    IRItems.WRENCH,
+                    IRItems.TREE_TAP,
+                    IRItems.SCANNER,
+                    IRItems.THERMOMETER,
+                    IRItems.TAPE_MEASURE
+            );
+            tag(IRTags.Items.RUBBER_LOGS,
+                    IRBlocks.RUBBER_TREE_LOG,
+                    IRBlocks.STRIPPED_RUBBER_TREE_LOG,
+                    IRBlocks.RUBBER_TREE_WOOD,
+                    IRBlocks.STRIPPED_RUBBER_TREE_WOOD
+            );
+            plates();
+            wires();
+            ingots();
+        }
+
+        private void ingots() {
+            tag(CTags.Items.INGOTS,
+                    CTags.Items.ALUMINUM_INGOT,
+                    CTags.Items.CHROMIUM_INGOT,
+                    CTags.Items.IRIDIUM_INGOT,
+                    CTags.Items.LEAD_INGOT,
+                    CTags.Items.NICKEL_INGOT,
+                    CTags.Items.STEEL_INGOT,
+                    CTags.Items.TIN_INGOT,
+                    CTags.Items.TITANIUM_INGOT,
+                    CTags.Items.URANIUM_INGOT
+            );
+            tag(CTags.Items.ALUMINUM_INGOT, IRItems.ALUMINUM_INGOT);
+            tag(CTags.Items.CHROMIUM_INGOT, IRItems.CHROMIUM_INGOT);
+            tag(CTags.Items.IRIDIUM_INGOT, IRItems.IRIDIUM_INGOT);
+            tag(CTags.Items.LEAD_INGOT, IRItems.LEAD_INGOT);
+            tag(CTags.Items.NICKEL_INGOT, IRItems.NICKEL_INGOT);
+            tag(CTags.Items.STEEL_INGOT, IRItems.STEEL_INGOT);
+            tag(CTags.Items.TIN_INGOT, IRItems.TIN_INGOT);
+            tag(CTags.Items.TITANIUM_INGOT, IRItems.TITANIUM_INGOT);
+            tag(CTags.Items.URANIUM_INGOT, IRItems.URANIUM_INGOT);
+        }
+
+        private void plates() {
+            tag(CTags.Items.PLATES,
+                    CTags.Items.RUBBER_SHEET
+            );
+            tag(CTags.Items.RUBBER_SHEET, IRItems.RUBBER_SHEET);
+            tag(CTags.Items.IRON_PLATE, IRItems.IRON_PLATE);
+            tag(CTags.Items.COPPER_PLATE, IRItems.COPPER_PLATE);
+            tag(CTags.Items.TIN_PLATE, IRItems.TIN_PLATE);
+            tag(CTags.Items.STEEL_PLATE, IRItems.STEEL_PLATE);
+        }
+
+        private void wires() {
+            tag(CTags.Items.WIRES,
+                    CTags.Items.TIN_WIRE,
+                    CTags.Items.COPPER_WIRE,
+                    CTags.Items.GOLD_WIRE,
+                    CTags.Items.STEEL_WIRE
+            );
+
+            tag(CTags.Items.TIN_WIRE, IRItems.TIN_WIRE);
+            tag(CTags.Items.COPPER_WIRE, IRItems.COPPER_WIRE);
+            tag(CTags.Items.GOLD_WIRE, IRItems.GOLD_WIRE);
+            tag(CTags.Items.STEEL_WIRE, IRItems.STEEL_WIRE);
         }
 
 
-        private @NotNull IntrinsicTagAppender<Item> tag(TagKey<Item> itemTagKey, ItemLike... items) {
+        private void tag(TagKey<Item> itemTagKey, ItemLike... items) {
             IntrinsicTagAppender<Item> tag = tag(itemTagKey);
             for (ItemLike item : items) {
                 tag.add(item.asItem());
             }
-            return tag;
+        }
+
+        @SafeVarargs
+        private void tag(TagKey<Item> itemTagKey, TagKey<Item>... items) {
+            IntrinsicTagAppender<Item> tag = tag(itemTagKey);
+            for (TagKey<Item> item : items) {
+                tag.addTag(item);
+            }
         }
     }
 

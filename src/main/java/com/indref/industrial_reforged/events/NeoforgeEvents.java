@@ -1,17 +1,27 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.IRDataComponents;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.ArmorActivityPayload;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -20,19 +30,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_TOGGLE;
 
-public class NeoforgeEvents {
+public final class NeoforgeEvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID)
-    public static class Common {
+    public static final class Common {
         @SubscribeEvent
         public static void onLivingFall(LivingFallEvent event) {
             if (event.getEntity().getItemBySlot(EquipmentSlot.FEET).is(IRItems.HAZMAT_BOOTS.get())) {
@@ -42,7 +55,7 @@ public class NeoforgeEvents {
     }
 
     @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.GAME)
-    public static class CommonBus {
+    public static final class CommonBus {
         @SubscribeEvent
         public static void playerTick(PlayerTickEvent.Pre event) {
             if (event.getEntity().level().isClientSide()) return;
@@ -75,8 +88,7 @@ public class NeoforgeEvents {
     }
 
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
-    public static class Client {
-
+    public static final class Client {
         @SubscribeEvent
         public static void onClientTickPost(ClientTickEvent.Post event) {
             Player player = Minecraft.getInstance().player;
