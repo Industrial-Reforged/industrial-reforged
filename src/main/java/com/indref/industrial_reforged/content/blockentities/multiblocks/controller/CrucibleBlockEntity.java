@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -59,7 +60,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     private MultiblockData multiblockData;
 
     // Block that can be filled when turning crucible
-    private BlockCapabilityCache<IFluidHandler, Direction> fillBlockCache;
+    public BlockCapabilityCache<IFluidHandler, Direction> fillBlockCache;
 
     public float independentAngle;
     public float chasingVelocity;
@@ -119,14 +120,22 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     @Override
     public void onLoad() {
         super.onLoad();
+        initCapCache();
+    }
+
+    private void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
-            Direction direction = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+            Direction direction = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+            BlockPos pos = worldPosition.relative(direction, 2);
             this.fillBlockCache = BlockCapabilityCache.create(
                     Capabilities.FluidHandler.BLOCK,
                     serverLevel,
-                    worldPosition.relative(direction, 2),
-                    Direction.UP
+                    pos,
+                    Direction.UP,
+                    () -> !this.isRemoved(),
+                    this::onInvalidateCaps
             );
+            IndustrialReforged.LOGGER.debug("created cache at: {}", pos);
         }
     }
 
@@ -152,6 +161,21 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         meltEntities(entities);
 
         turnCrucible();
+
+        fillBlock();
+    }
+
+    private void fillBlock() {
+        if (!level.isClientSide()) {
+            if (turnedOver && fillBlockCache != null) {
+                IFluidHandler fluidHandler = fillBlockCache.getCapability();
+
+                if (fluidHandler != null) {
+                    FluidStack drained = getFluidHandler().drain(20, IFluidHandler.FluidAction.EXECUTE);
+                    fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+                }
+            }
+        }
     }
 
     private void meltEntities(List<LivingEntity> entities) {
@@ -191,6 +215,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
             if (inUse == 0) {
                 this.speed = 0;
+                if (!turnedOver) {
+                    this.independentAngle = 0;
+                }
             }
         } else if (this.turnedOver) {
             if (this.tempTimer >= 300) {
@@ -198,6 +225,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             }
             this.tempTimer++;
         }
+    }
+
+    private void onInvalidateCaps() {
+        initCapCache();
     }
 
     @Override

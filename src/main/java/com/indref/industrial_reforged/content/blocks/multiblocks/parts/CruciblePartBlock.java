@@ -5,14 +5,17 @@ import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
+import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -21,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -165,6 +169,14 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
             if (crucibleBlockEntity instanceof CrucibleBlockEntity) {
                 DisplayUtils.displayHeatInfo(displayText, crucibleBlockEntity.getBlockState(), crucibleBlockEntity.getBlockPos(), level);
             }
+        }
+    }
+
+    @Override
+    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+        if (state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.WALL_BOTTOM) {
+            BlockPos controllerPos = BlockUtils.getBEOfClass(level, pos, CruciblePartBlockEntity.class).getControllerPos();
+            BlockUtils.getBEOfClass(level, controllerPos, CrucibleBlockEntity.class).invalidateCapabilities();
         }
     }
 

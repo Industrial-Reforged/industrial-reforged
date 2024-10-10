@@ -3,7 +3,11 @@ package com.indref.industrial_reforged.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -61,4 +65,13 @@ public final class BlockUtils {
         return null;
     }
      */
+
+    @SuppressWarnings("unchecked")
+    public static <T extends BlockEntity> T getBEOfClass(BlockGetter level, BlockPos blockPos, Class<T> clazz) {
+        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+        if (clazz.isInstance(blockEntity)) {
+            return (T) blockEntity;
+        }
+        return null;
+    }
 }

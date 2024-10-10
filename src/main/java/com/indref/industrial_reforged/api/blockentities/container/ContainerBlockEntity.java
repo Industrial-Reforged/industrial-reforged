@@ -145,7 +145,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 update();
                 setChanged();
                 onItemsChanged(slot);
-                invalidateCapabilities();
             }
 
             @Override
@@ -167,7 +166,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 update();
                 setChanged();
                 onFluidChanged();
-                invalidateCapabilities();
             }
 
             @Override
@@ -188,7 +186,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 update();
                 setChanged();
                 ContainerBlockEntity.this.onEnergyChanged();
-                invalidateCapabilities();
             }
         };
         this.energyStorage.setEnergyCapacity(energyCapacity);
@@ -200,7 +197,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
             public void onHeatChanged() {
                 setChanged();
                 ContainerBlockEntity.this.onHeatChanged();
-                invalidateCapabilities();
                 update();
             }
         };
@@ -269,14 +265,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 case EAST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getClockWise()));
                 case SOUTH -> handlerSupplier.get(baseHandler, ioPorts.get(direction));
                 case WEST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getCounterClockWise()));
-                default -> {
-                    IndustrialReforged.LOGGER.debug("Unreachable");
-                    yield null;
-                }
+                default -> null;
             };
         }
 
-        IndustrialReforged.LOGGER.debug("Handler is null :O");
         return null;
     }
 

@@ -57,6 +57,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
                 renderCrucibleBody(poseStack, vertexconsumer, angle, packedLight, packedOverlay);
 
                 if (!fluidInTank.isEmpty() && angle == 0) {
+                    poseStack.translate(0, 0.325, 0);
                     renderFluid(poseStack, bufferSource, fluidInTank, 1, packedLight, false);
                 }
             }
@@ -78,10 +79,11 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
 
     private void renderCrucibleFluidTop(PoseStack poseStack, MultiBufferSource bufferSource, float angle, int packedLight, FluidStack fluidStack) {
         poseStack.translate(0.5, 2.15, 0.5);
-        poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle) * 0.4f));
+        poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle) * 0.5f));
         poseStack.translate(-0.5, -2.15, -0.5);
 
         if (!fluidStack.isEmpty()) {
+            poseStack.translate(0, 0.325, 0);
             renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, true);
         }
     }

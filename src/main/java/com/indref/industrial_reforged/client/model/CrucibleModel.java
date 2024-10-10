@@ -35,28 +35,29 @@ public class CrucibleModel extends Model {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        partdefinition.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(62, 72).addBox(26.0F, -41.0F, -7.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 128).addBox(26.0F, -30.0F, -7.0F, 4.0F, 34.0F, 14.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(26.0F, -41.0F, 4.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(22, 0).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 0.0F));
+        PartDefinition leg0 = partdefinition.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(176, 114).addBox(26.0F, -41.0F, -7.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(104, 166).addBox(26.0F, -30.0F, -7.0F, 4.0F, 34.0F, 14.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 166).addBox(26.0F, -41.0F, 4.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 97).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 0.0F));
 
-        partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(48, 72).addBox(26.0F, -41.0F, -7.0F, 4.0F, 15.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(26.0F, -30.0F, -7.0F, 4.0F, 34.0F, 14.0F, new CubeDeformation(0.0F))
-                .texOffs(24, 66).addBox(26.0F, -41.0F, 4.0F, 4.0F, 15.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 66).addBox(26.0F, -41.0F, -4.0F, 4.0F, 7.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-56.0F, 20.0F, 0.0F));
+        PartDefinition leg1 = partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 178).addBox(26.0F, -41.0F, -7.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(140, 166).addBox(26.0F, -30.0F, -7.0F, 4.0F, 34.0F, 14.0F, new CubeDeformation(0.0F))
+                .texOffs(14, 178).addBox(26.0F, -41.0F, 4.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 82).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-56.0F, 20.0F, 0.0F));
 
-        partdefinition.addOrReplaceChild("crucible", CubeListBuilder.create().texOffs(0, 0).addBox(-24.0F, -6.0F, -24.0F, 48.0F, 2.0F, 48.0F, new CubeDeformation(0.0F))
-                .texOffs(96, 50).addBox(-24.0F, -44.0F, 20.0F, 48.0F, 38.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(136, 92).addBox(-24.0F, -40.0F, -24.0F, 48.0F, 34.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(36, 19).addBox(3.0F, -44.0F, -28.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(36, 11).addBox(-5.0F, -44.0F, -28.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 66).addBox(-5.0F, -40.0F, -28.0F, 10.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(136, 138).addBox(-24.0F, -44.0F, -24.0F, 21.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(136, 130).addBox(3.0F, -44.0F, -24.0F, 21.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 88).addBox(20.0F, -44.0F, -20.0F, 4.0F, 38.0F, 40.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 50).addBox(-24.0F, -44.0F, -20.0F, 4.0F, 38.0F, 40.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 50).addBox(-32.0F, -38.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 50).addBox(24.0F, -38.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 0.0F));
+        PartDefinition crucible = partdefinition.addOrReplaceChild("crucible", CubeListBuilder.create().texOffs(0, 0).addBox(-24.0F, -6.0F, -24.0F, 48.0F, 2.0F, 48.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 128).addBox(-24.0F, -44.0F, 20.0F, 48.0F, 38.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(104, 128).addBox(-24.0F, -40.0F, -24.0F, 48.0F, 34.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(28, 178).addBox(3.0F, -44.0F, -28.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 178).addBox(-5.0F, -44.0F, -28.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 108).addBox(-5.0F, -40.0F, -28.0F, 10.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 170).addBox(-24.0F, -44.0F, -24.0F, 21.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(50, 170).addBox(3.0F, -44.0F, -24.0F, 21.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 50).addBox(20.0F, -44.0F, -20.0F, 4.0F, 38.0F, 40.0F, new CubeDeformation(0.0F))
+                .texOffs(88, 50).addBox(-24.0F, -44.0F, -20.0F, 4.0F, 38.0F, 40.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 66).addBox(-32.0F, -38.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 50).addBox(24.0F, -38.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 0.0F));
+
         return LayerDefinition.create(meshdefinition, 256, 256);
     }
 
@@ -69,7 +70,7 @@ public class CrucibleModel extends Model {
     public void renderCrucibleBody(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
         {
-            poseStack.translate(0.5, -1 - 0.325, 0.5);
+            poseStack.translate(0.5, -1, 0.5);
             this.crucible.render(poseStack, buffer, packedLight, packedOverlay, color);
         }
         poseStack.popPose();
