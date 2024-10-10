@@ -1,10 +1,10 @@
-package com.indref.industrial_reforged.registries.blocks.misc;
+package com.indref.industrial_reforged.content.blocks.misc;
 
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blockentities.DrainBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.DrainBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

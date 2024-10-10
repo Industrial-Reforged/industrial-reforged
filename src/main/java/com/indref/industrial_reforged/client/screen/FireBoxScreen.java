@@ -1,19 +1,14 @@
-package com.indref.industrial_reforged.registries.gui.screens;
+package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.gui.components.HeatDisplayGuiComponent;
-import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.indref.industrial_reforged.content.gui.components.HeatDisplayGuiComponent;
+import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 

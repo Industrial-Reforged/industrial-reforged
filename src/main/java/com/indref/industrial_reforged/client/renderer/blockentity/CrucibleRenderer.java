@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.renderer.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -69,9 +69,9 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     }
 
     private void renderCrucibleBody(PoseStack poseStack, VertexConsumer vertexConsumer, float angle, int packedLight, int packedOverlay) {
-        poseStack.translate(0.5, 2.15, 0.5);
+        poseStack.translate(0.5, 2.15 + 0.1625, 0.5);
         poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle)));
-        poseStack.translate(-0.5, -2.15, -0.5);
+        poseStack.translate(-0.5, -2.15 - 0.1625, -0.5);
 
         this.model.renderCrucibleBody(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
     }

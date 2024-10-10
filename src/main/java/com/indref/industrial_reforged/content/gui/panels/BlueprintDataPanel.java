@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.gui.panels;
+package com.indref.industrial_reforged.content.gui.panels;
 
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;

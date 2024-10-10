@@ -10,7 +10,7 @@ import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.events.helper.MultiblockPreviewRenderer;
 import com.indref.industrial_reforged.events.helper.TapeMeasureRenderer;
-import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
+import com.indref.industrial_reforged.content.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.indref.industrial_reforged.util.renderer.IRRenderTypes;

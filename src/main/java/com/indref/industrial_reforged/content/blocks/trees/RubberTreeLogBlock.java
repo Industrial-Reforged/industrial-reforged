@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.trees;
+package com.indref.industrial_reforged.content.blocks.trees;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

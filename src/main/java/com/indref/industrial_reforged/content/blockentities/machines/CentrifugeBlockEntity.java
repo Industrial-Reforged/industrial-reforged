@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.machines;
+package com.indref.industrial_reforged.content.blockentities.machines;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
@@ -6,9 +6,9 @@ import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blocks.machines.CentrifugeBlock;
-import com.indref.industrial_reforged.registries.recipes.CentrifugeRecipe;
-import com.indref.industrial_reforged.registries.gui.menus.CentrifugeMenu;
+import com.indref.industrial_reforged.content.blocks.machines.CentrifugeBlock;
+import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
+import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;

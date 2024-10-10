@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.worldgen;
+package com.indref.industrial_reforged.content.worldgen;
 
 import com.indref.industrial_reforged.registries.IRPlacerTypes;
 import com.mojang.serialization.MapCodec;

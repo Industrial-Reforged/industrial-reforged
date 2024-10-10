@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks.part;
+package com.indref.industrial_reforged.content.blockentities.multiblocks.part;
 
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockPartBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;

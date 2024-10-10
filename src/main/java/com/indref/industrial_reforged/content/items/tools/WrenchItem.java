@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.tools;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import net.minecraft.core.BlockPos;

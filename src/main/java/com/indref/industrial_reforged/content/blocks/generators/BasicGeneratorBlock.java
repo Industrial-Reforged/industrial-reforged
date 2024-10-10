@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.generators;
+package com.indref.industrial_reforged.content.blocks.generators;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlo
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.blockentities.generators.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.api.capabilities.fluid.SidedFluidHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.energy.SidedEnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.SidedHeatHandler;
 import com.indref.industrial_reforged.api.capabilities.item.SidedItemHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -303,6 +304,15 @@ public abstract class ContainerBlockEntity extends BlockEntity {
                 ((handler, supportedActions) -> new SidedHeatHandler(handler, supportedActions.left())),
                 direction,
                 getHeatStorage()
+        );
+    }
+
+    public IEnergyStorage getEnergyHandlerOnSide(Direction direction) {
+        return getHandlerOnSide(
+                IRCapabilities.EnergyStorage.BLOCK,
+                ((handler, supportedActions) -> new SidedEnergyHandler(handler, supportedActions.left())),
+                direction,
+                getEnergyStorage()
         );
     }
 

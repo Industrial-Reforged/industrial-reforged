@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.tools;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.Random;
 
-import static com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock.RESIN;
+import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class TreeTapItem extends Item {
     public TreeTapItem(Properties properties) {

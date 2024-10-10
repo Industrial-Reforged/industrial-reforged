@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.reactor;
+package com.indref.industrial_reforged.content.items.reactor;
 
 import com.indref.industrial_reforged.api.items.BaseFuelRodItem;
 

@@ -20,7 +20,7 @@ public record SidedHeatHandler(IHeatStorage innerHandler, IOActions action) impl
 
     @Override
     public void setHeatCapacity(int value) {
-        innerHandler.setHeatStored(value);
+        innerHandler.setHeatCapacity(value);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.tools;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;

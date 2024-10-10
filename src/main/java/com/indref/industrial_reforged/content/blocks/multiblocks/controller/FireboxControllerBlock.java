@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
+package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
@@ -9,7 +9,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;

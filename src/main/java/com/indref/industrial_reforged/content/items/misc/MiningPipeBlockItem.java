@@ -1,7 +1,7 @@
-package com.indref.industrial_reforged.registries.items.misc;
+package com.indref.industrial_reforged.content.items.misc;
 
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.blocks.misc.MiningPipeBlock;
+import com.indref.industrial_reforged.content.blocks.misc.MiningPipeBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.misc;
+package com.indref.industrial_reforged.content.items.misc;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

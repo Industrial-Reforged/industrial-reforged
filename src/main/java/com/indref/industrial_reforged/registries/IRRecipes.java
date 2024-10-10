@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
-import com.indref.industrial_reforged.registries.recipes.CentrifugeRecipe;
-import com.indref.industrial_reforged.registries.recipes.CrucibleCastingRecipe;
-import com.indref.industrial_reforged.registries.recipes.CrucibleSmeltingRecipe;
+import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
+import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
+import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.registries.DeferredRegister;

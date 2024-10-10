@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.tools;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.Random;
 
-import static com.indref.industrial_reforged.registries.blocks.trees.RubberTreeResinHoleBlock.RESIN;
+import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class ElectricTreeTapItem extends SimpleElectricItem {
     public ElectricTreeTapItem(Properties properties, EnergyTier energyTier) {

@@ -1,17 +1,16 @@
 package com.indref.industrial_reforged.registries;
 
+import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
-import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
-import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
-import com.indref.industrial_reforged.registries.multiblocks.SmallFireboxMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.function.Supplier;
 
 public final class IRMultiblocks {
     public static final DeferredRegister<Multiblock> MULTIBLOCKS = DeferredRegister.create(IRRegistries.MULTIBLOCK, IndustrialReforged.MODID);

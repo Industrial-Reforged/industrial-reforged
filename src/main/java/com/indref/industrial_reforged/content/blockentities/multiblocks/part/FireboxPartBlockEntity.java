@@ -1,9 +1,9 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks.part;
+package com.indref.industrial_reforged.content.blockentities.multiblocks.part;
 
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockPartBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
-import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
+import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;

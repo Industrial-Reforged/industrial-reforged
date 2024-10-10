@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities;
+package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;

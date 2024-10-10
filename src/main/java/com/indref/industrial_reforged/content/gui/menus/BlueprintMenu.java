@@ -1,7 +1,7 @@
-package com.indref.industrial_reforged.registries.gui.screens;
+package com.indref.industrial_reforged.content.gui.menus;
 
 import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
+import com.indref.industrial_reforged.content.items.misc.BlueprintItem;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

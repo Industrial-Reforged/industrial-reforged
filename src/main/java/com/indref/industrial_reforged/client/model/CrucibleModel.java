@@ -69,7 +69,7 @@ public class CrucibleModel extends Model {
     public void renderCrucibleBody(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
         {
-            poseStack.translate(0.5, 0.325, 0.5);
+            poseStack.translate(0.5, -1 - 0.325, 0.5);
             this.crucible.render(poseStack, buffer, packedLight, packedOverlay, color);
         }
         poseStack.popPose();

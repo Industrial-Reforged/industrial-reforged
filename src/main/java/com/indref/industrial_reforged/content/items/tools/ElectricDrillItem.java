@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.tools;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.items.electric.ElectricDiggerItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;

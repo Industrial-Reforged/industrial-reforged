@@ -11,8 +11,13 @@ import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
+import com.indref.industrial_reforged.client.screen.*;
+import com.indref.industrial_reforged.content.items.storage.BatteryItem;
+import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
+import com.indref.industrial_reforged.content.items.tools.NanoSaberItem;
+import com.indref.industrial_reforged.content.items.tools.TapeMeasureItem;
+import com.indref.industrial_reforged.content.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
@@ -25,30 +30,22 @@ import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressR
 import com.indref.industrial_reforged.client.renderer.item.bar.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import com.indref.industrial_reforged.registries.gui.screens.*;
-import com.indref.industrial_reforged.registries.items.misc.BlueprintItem;
-import com.indref.industrial_reforged.registries.items.storage.BatteryItem;
-import com.indref.industrial_reforged.registries.items.storage.ToolboxItem;
-import com.indref.industrial_reforged.registries.items.tools.NanoSaberItem;
-import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
-import com.indref.industrial_reforged.registries.items.tools.ThermometerItem;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRMenuTypes;
+import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,6 +55,8 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -73,6 +72,7 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
@@ -167,8 +167,6 @@ public final class IREvents {
                         (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
                 ItemProperties.register(IRItems.NANO_SABER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ItemUtils.ACTIVE_KEY),
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
-                ItemProperties.register(IRItems.BLUEPRINT.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, BlueprintItem.HAS_RECIPE_KEY),
-                        (stack, level, living, id) -> /*BlueprintItem.hasRecipe(stack)*/0);
                 ItemProperties.register(IRItems.THERMOMETER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),
                         (stack, level, living, id) -> ThermometerItem.getTemperature(stack));
                 for (Item item : BuiltInRegistries.ITEM) {
@@ -251,6 +249,7 @@ public final class IREvents {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             for (Item item : BuiltInRegistries.ITEM) {
@@ -276,30 +275,27 @@ public final class IREvents {
                 }
             }
 
-            // Register all your block entity capabilities manually
-            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), (blockEntity, ctx) -> blockEntity.getEnergyStorage());
-            event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), (blockEntity, ctx) -> blockEntity.getEnergyStorage());
+            for (DeferredHolder<BlockEntityType<?>, ? extends BlockEntityType<?>> be : IRBlockEntityTypes.BLOCK_ENTITIES.getEntries()) {
+                Block validBlock = be.get().getValidBlocks().stream().iterator().next();
+                BlockEntity testBE = be.get().create(BlockPos.ZERO, validBlock.defaultBlockState());
+                if (testBE instanceof ContainerBlockEntity containerBE) {
+                    if (containerBE.getEnergyStorage() != null) {
+                        event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getEnergyHandlerOnSide);
+                    }
 
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.FIREBOX.get(), ContainerBlockEntity::getHeatHandlerOnSide);
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), ContainerBlockEntity::getHeatHandlerOnSide);
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), ContainerBlockEntity::getHeatHandlerOnSide);
-            event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), ContainerBlockEntity::getHeatHandlerOnSide);
+                    if (containerBE.getHeatStorage() != null) {
+                        event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<ContainerBlockEntity>)  be.get(), ContainerBlockEntity::getHeatHandlerOnSide);
+                    }
 
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.FIREBOX_PART.get(), FireboxPartBlockEntity::getItemHandler);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRAFTING_STATION.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), BlastFurnaceBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.SMALL_FIREBOX.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BASIC_GENERATOR.get(), ContainerBlockEntity::getItemHandlerOnSide);
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CENTRIFUGE.get(), ContainerBlockEntity::getItemHandlerOnSide);
+                    if (containerBE.getItemHandler() != null) {
+                        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>)  be.get(), ContainerBlockEntity::getItemHandlerOnSide);
+                    }
 
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE.get(), ContainerBlockEntity::getFluidHandlerOnSide);
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.DRAIN.get(), ContainerBlockEntity::getFluidHandlerOnSide);
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.FAUCET.get(), ContainerBlockEntity::getFluidHandlerOnSide);
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CASTING_BASIN.get(), ContainerBlockEntity::getFluidHandlerOnSide);
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+                    if (containerBE.getFluidHandler() != null) {
+                        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>)  be.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+                    }
+                }
+            }
         }
 
         @SubscribeEvent

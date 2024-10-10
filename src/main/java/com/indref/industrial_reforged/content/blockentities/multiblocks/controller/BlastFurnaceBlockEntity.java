@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
+package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
@@ -12,9 +12,9 @@ import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEnti
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
-import com.indref.industrial_reforged.registries.recipes.BlastFurnaceRecipe;
-import com.indref.industrial_reforged.registries.gui.menus.BlastFurnaceMenu;
+import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
+import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;

@@ -1,8 +1,8 @@
-package com.indref.industrial_reforged.registries.items.tools;
+package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.registries.IRRegistries;
+import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;

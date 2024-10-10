@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
 import com.indref.industrial_reforged.registries.IRFluids;
-import com.indref.industrial_reforged.registries.blockentities.misc.FaucetBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.misc.FaucetBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

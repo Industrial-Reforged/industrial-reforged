@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.commands.ENetsInfoCommand;
-import com.indref.industrial_reforged.registries.commands.ENetsResetCommand;
-import com.indref.industrial_reforged.registries.commands.TagInfoCommand;
+import com.indref.industrial_reforged.content.commands.ENetsInfoCommand;
+import com.indref.industrial_reforged.content.commands.ENetsResetCommand;
+import com.indref.industrial_reforged.content.commands.TagInfoCommand;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;

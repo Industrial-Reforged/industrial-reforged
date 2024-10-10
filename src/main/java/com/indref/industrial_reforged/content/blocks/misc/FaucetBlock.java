@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.misc;
+package com.indref.industrial_reforged.content.blocks.misc;
 
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;

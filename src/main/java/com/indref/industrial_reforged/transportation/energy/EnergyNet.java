@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.transportation.energy;
 import com.indref.industrial_reforged.api.blockentities.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.registries.blocks.pipes.CableBlock;
+import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.Utils;
 import net.minecraft.core.BlockPos;

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.generators;
+package com.indref.industrial_reforged.content.blockentities.generators;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.generator.GeneratorBlockEntity;
@@ -6,10 +6,10 @@ import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEnti
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.transportation.energy.EnergyNet;
 import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.gui.menus.BasicGeneratorMenu;
+import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;

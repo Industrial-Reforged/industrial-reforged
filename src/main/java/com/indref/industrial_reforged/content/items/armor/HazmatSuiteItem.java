@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.items.armor;
+package com.indref.industrial_reforged.content.items.armor;
 
 import com.indref.industrial_reforged.tiers.IRArmorMaterials;
 import net.minecraft.world.item.ArmorItem;

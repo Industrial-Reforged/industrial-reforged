@@ -1,10 +1,10 @@
-package com.indref.industrial_reforged.registries.gui.menus;
+package com.indref.industrial_reforged.content.gui.menus;
 
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
-import com.indref.industrial_reforged.registries.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

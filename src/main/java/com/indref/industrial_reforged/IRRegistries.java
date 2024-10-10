@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.registries;
+package com.indref.industrial_reforged;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.recipes;
+package com.indref.industrial_reforged.content.recipes;
 
 import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;

@@ -1,12 +1,11 @@
-package com.indref.industrial_reforged.registries.items.misc;
+package com.indref.industrial_reforged.content.items.misc;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
+import com.indref.industrial_reforged.content.gui.menus.BlueprintMenu;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.gui.screens.BlueprintMenu;
-import com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;

@@ -1,10 +1,10 @@
-package com.indref.industrial_reforged.registries.gui.screens;
+package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.registries.gui.components.FluidTankGuiComponent;
-import com.indref.industrial_reforged.registries.gui.components.HeatDisplayGuiComponent;
-import com.indref.industrial_reforged.registries.gui.menus.CrucibleMenu;
+import com.indref.industrial_reforged.content.gui.components.FluidTankGuiComponent;
+import com.indref.industrial_reforged.content.gui.components.HeatDisplayGuiComponent;
+import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

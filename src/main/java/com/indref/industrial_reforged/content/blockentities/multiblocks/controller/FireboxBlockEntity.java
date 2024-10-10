@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
+package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
@@ -9,8 +9,8 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.blocks.multiblocks.parts.FireboxPartBlock;
-import com.indref.industrial_reforged.registries.gui.menus.FireBoxMenu;
+import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
+import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;

@@ -6,7 +6,7 @@ import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressR
 import com.indref.industrial_reforged.networking.ArmorActivityPayload;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.items.armor.JetpackItem;
+import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

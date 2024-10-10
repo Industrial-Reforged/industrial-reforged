@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.gui.menus.*;
-import com.indref.industrial_reforged.registries.gui.screens.BlueprintMenu;
+import com.indref.industrial_reforged.content.gui.menus.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;

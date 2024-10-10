@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.multiblocks.controller;
+package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;

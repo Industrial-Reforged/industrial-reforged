@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blockentities.misc;
+package com.indref.industrial_reforged.content.blockentities.misc;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.client.event.RenderArmEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;

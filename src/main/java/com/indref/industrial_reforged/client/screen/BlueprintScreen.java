@@ -1,7 +1,8 @@
-package com.indref.industrial_reforged.registries.gui.screens;
+package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.registries.gui.panels.BlueprintDataPanel;
+import com.indref.industrial_reforged.content.gui.menus.BlueprintMenu;
+import com.indref.industrial_reforged.content.gui.panels.BlueprintDataPanel;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;

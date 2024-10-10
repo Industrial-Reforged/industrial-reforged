@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.multiblocks;
+package com.indref.industrial_reforged.content.multiblocks;
 
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;

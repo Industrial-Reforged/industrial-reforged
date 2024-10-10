@@ -1,10 +1,10 @@
-package com.indref.industrial_reforged.registries.blockentities;
+package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.gui.menus.CraftingStationMenu;
+import com.indref.industrial_reforged.content.gui.menus.CraftingStationMenu;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

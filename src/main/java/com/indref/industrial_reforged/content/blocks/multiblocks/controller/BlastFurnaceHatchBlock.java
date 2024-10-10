@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks.controller;
+package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
@@ -6,8 +6,8 @@ import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
-import com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
+import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

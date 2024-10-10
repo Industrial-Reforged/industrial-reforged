@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.blocks;
 
-import com.indref.industrial_reforged.registries.items.tools.WrenchItem;
+import com.indref.industrial_reforged.content.items.tools.WrenchItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;

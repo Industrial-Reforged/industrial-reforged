@@ -2,8 +2,7 @@ package com.indref.industrial_reforged.api.multiblocks;
 
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
-import com.indref.industrial_reforged.registries.IRRegistries;
-import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.IRRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

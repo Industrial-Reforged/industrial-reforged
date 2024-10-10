@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.commands;
+package com.indref.industrial_reforged.content.commands;
 
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.mojang.brigadier.CommandDispatcher;

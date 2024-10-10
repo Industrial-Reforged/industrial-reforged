@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks.parts;
+package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
@@ -6,9 +6,9 @@ import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.FireboxBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import com.indref.industrial_reforged.registries.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.part.FireboxPartBlockEntity;
+import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;

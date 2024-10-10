@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks;
+package com.indref.industrial_reforged.content.blocks;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

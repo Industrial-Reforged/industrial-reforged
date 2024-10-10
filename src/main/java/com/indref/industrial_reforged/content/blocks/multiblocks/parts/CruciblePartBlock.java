@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.blocks.multiblocks.parts;
+package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
@@ -8,8 +8,8 @@ import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.part.CruciblePartBlockEntity;
-import com.indref.industrial_reforged.registries.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.indref.industrial_reforged.registries.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
+import static com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
 public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;

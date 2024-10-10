@@ -1,13 +1,12 @@
-package com.indref.industrial_reforged.registries.gui.screens;
+package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.registries.gui.components.EnergyGuiComponent;
-import com.indref.industrial_reforged.registries.gui.menus.CentrifugeMenu;
+import com.indref.industrial_reforged.content.gui.components.EnergyGuiComponent;
+import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;

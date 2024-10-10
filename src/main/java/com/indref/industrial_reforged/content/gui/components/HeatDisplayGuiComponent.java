@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.registries.gui.components;
+package com.indref.industrial_reforged.content.gui.components;
 
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
