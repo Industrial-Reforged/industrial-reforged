@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities.heat;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.HeatStorage;
+import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,9 +13,9 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public int getHeatStored() {
-        HeatStorage heatStorage = itemStack.get(IRDataComponents.HEAT);
-        if (heatStorage != null)
-            return heatStorage.heatStored();
+        ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+        if (componentHeatStorage != null)
+            return componentHeatStorage.heatStored();
         else
             throw new NullPointerException("Failed to get heat component for item: "
                     + itemStack.getItem()
@@ -24,14 +24,14 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public void setHeatStored(int value) {
-        itemStack.set(IRDataComponents.HEAT, new HeatStorage(value, getHeatCapacity()));
+        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getHeatCapacity()));
     }
 
     @Override
     public int getHeatCapacity() {
-        HeatStorage heatStorage = itemStack.get(IRDataComponents.HEAT);
-        if (heatStorage != null)
-            return heatStorage.heatCapacity();
+        ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+        if (componentHeatStorage != null)
+            return componentHeatStorage.heatCapacity();
         else
             throw new NullPointerException("Failed to get heat component for item: "
                     + itemStack.getItem()
@@ -40,7 +40,7 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public void setHeatCapacity(int value) {
-        itemStack.set(IRDataComponents.HEAT, new HeatStorage(getHeatStored(), value));
+        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), value));
     }
 
     @Override

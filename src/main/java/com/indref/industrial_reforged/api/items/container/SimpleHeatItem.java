@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.HeatStorage;
+import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 public abstract class SimpleHeatItem extends Item implements IHeatItem {
     public SimpleHeatItem(Item.Properties properties) {
-        super(properties.component(IRDataComponents.HEAT.get(), HeatStorage.EMPTY));
+        super(properties.component(IRDataComponents.HEAT.get(), ComponentHeatStorage.EMPTY));
     }
 
     @Override

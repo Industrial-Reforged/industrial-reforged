@@ -6,16 +6,16 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
+import com.indref.industrial_reforged.events.helper.MultiblockPreviewRenderer;
 import com.indref.industrial_reforged.events.helper.TapeMeasureRenderer;
-import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRMultiblocks;
-import com.indref.industrial_reforged.registries.blocks.MetalStorageBlock;
 import com.indref.industrial_reforged.registries.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.util.Pair;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -33,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -41,7 +42,7 @@ import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import org.apache.commons.lang3.IntegerRange;
+import org.joml.Matrix4f;
 
 public final class CommonEvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
@@ -73,7 +74,7 @@ public final class CommonEvents {
                 }
 
                 if (itemStack.getItem() instanceof TapeMeasureItem) {
-                    ComponentTapeMeasure tapeMeasureData = itemStack.get(IRDataComponents.TAPE_MEASURE_DATA);
+                    ComponentTapeMeasure tapeMeasureData = itemStack.get(IRDataComponents.TAPE_MEASURE);
                     if (tapeMeasureData.tapeMeasureExtended()) {
                         BlockPos firstPos = tapeMeasureData.firstPos();
                         if (firstPos != null) {
@@ -105,60 +106,67 @@ public final class CommonEvents {
 
             ItemStack itemStack = mc.player.getMainHandItem();
 
-            if (itemStack.has(IRDataComponents.BLUEPRINT_POS)) {
-                Multiblock multiblock = IRMultiblocks.CRUCIBLE_CERAMIC.get();
-                BlockPos firstPos = itemStack.getOrDefault(IRDataComponents.BLUEPRINT_POS, BlockPos.ZERO);
+            if (!itemStack.has(IRDataComponents.BLUEPRINT)) {
+                itemStack = mc.player.getOffhandItem();
+            }
+
+            if (itemStack.has(IRDataComponents.BLUEPRINT)) {
+                ComponentBlueprint blueprint = itemStack.getOrDefault(IRDataComponents.BLUEPRINT, ComponentBlueprint.EMPTY);
+                if (blueprint.controllerPos() == null || blueprint.direction() == null || blueprint.multiblock() == null)
+                    return;
+
+                Multiblock multiblock = blueprint.multiblock();
+                Vec3i relativeControllerPos = MultiblockHelper.getRelativeControllerPos(multiblock);
+                BlockPos firstPos = MultiblockHelper.getFirstBlockPos(blueprint.direction(), blueprint.controllerPos(), relativeControllerPos);
                 MultiblockLayer[] layout = multiblock.getLayout();
                 Int2ObjectMap<Block> def = multiblock.getDefinition();
 
                 int y = 0;
                 for (MultiblockLayer layer : layout) {
-                    // initialize/reset x and z coords for indexing
-                    int x = 0;
-                    int z = 0;
+                    for (int i = 0; i < layer.range().getMaximum(); i++) {
+                        // initialize/reset x and z coords for indexing
+                        int x = 0;
+                        int z = 0;
 
-                    int width = multiblock.getWidths().get(y).leftInt();
+                        int width = multiblock.getWidths().get(y).leftInt();
 
-                    // Iterate over blocks in a layer (X, Z)
-                    for (int blockIndex : layer.layer()) {
-                        // Define position-related variables
-                        BlockPos curPos = MultiblockHelper.getCurPos(firstPos, new Vec3i(x, y, z), HorizontalDirection.NORTH);
+                        // Iterate over blocks in a layer (X, Z)
+                        for (int blockIndex : layer.layer()) {
+                            // Define position-related variables
+                            BlockPos curPos = MultiblockHelper.getCurPos(firstPos, new Vec3i(x, y, z), HorizontalDirection.NORTH);
 
-                        Block block = def.get(blockIndex);
-                        if (block != null) {
-                            renderSmallBlock(poseStack, curPos, camX, camY, camZ, blockRenderer, bufferSource, mc.level, block);
+                            Block block = def.get(blockIndex);
+                            if (block != null) {
+                                BlockState blockState = mc.level.getBlockState(curPos);
+                                if (!blockState.is(block)) {
+                                    if (blockState.isEmpty()) {
+                                        if (i < layer.range().getMinimum()) {
+                                            MultiblockPreviewRenderer.renderSmallBlock(poseStack, curPos, camX, camY, camZ, blockRenderer, bufferSource, mc.level, block);
+                                        } else {
+                                            MultiblockPreviewRenderer.renderSmallOptionalBlock(poseStack, curPos, camX, camY, camZ, blockRenderer, bufferSource, mc.level, block);
+                                        }
+                                    } else {
+                                        MultiblockPreviewRenderer.renderErrorBlock(poseStack, curPos, camX, camY, camZ, bufferSource, mc.level);
+                                    }
+                                }
+                            }
+                            // Increase x and z coordinates
+                            // start new x if we are done with row and increase z as another row is done
+                            if (x + 1 < width) {
+                                x++;
+                            } else {
+                                x = 0;
+                                z++;
+                            }
                         }
-                        // Increase x and z coordinates
-                        // start new x if we are done with row and increase z as another row is done
-                        if (x + 1 < width) {
-                            x++;
-                        } else {
-                            x = 0;
-                            z++;
-                        }
+
+                        y++;
                     }
-
-                    y++;
                 }
             }
         }
 
-        private static void renderSmallBlock(PoseStack poseStack, BlockPos blockPos, double camX, double camY, double camZ, BlockRenderDispatcher blockRenderer, MultiBufferSource.BufferSource bufferSource, Level level, Block block) {
-            poseStack.pushPose();
-            {
-                poseStack.translate(blockPos.getX() - camX, blockPos.getY() - camY, blockPos.getZ() - camZ);
-                poseStack.scale(0.5f, 0.5f, 0.5f);
-                poseStack.translate(0.5, 0.5, 0.5);
-                blockRenderer.renderSingleBlock(block.defaultBlockState(), poseStack, bufferSource, getLightLevel(level, blockPos), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.solid());
-            }
-            poseStack.popPose();
-        }
 
-        private static int getLightLevel(Level level, BlockPos pos) {
-            int bLight = level.getBrightness(LightLayer.BLOCK, pos);
-            int sLight = level.getBrightness(LightLayer.SKY, pos);
-            return LightTexture.pack(bLight, sLight);
-        }
 
     }
 }

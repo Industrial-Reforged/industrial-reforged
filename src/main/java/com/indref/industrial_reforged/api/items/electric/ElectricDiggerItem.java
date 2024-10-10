@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.api.items.electric;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.tools.ElectricToolItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.EnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
@@ -35,7 +35,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
-                .component(IRDataComponents.ENERGY, new EnergyStorage(0, energyTier.getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
         this.energyUsage = energyUsage;
         this.blocks = blocks;
         this.energyTier = energyTier;

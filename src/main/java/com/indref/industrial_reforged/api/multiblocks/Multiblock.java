@@ -2,10 +2,16 @@ package com.indref.industrial_reforged.api.multiblocks;
 
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
+import com.indref.industrial_reforged.registries.IRRegistries;
 import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -206,4 +212,14 @@ public interface Multiblock {
     default MultiblockLayer layer(int... layer) {
         return new MultiblockLayer(false, IntegerRange.of(1, 1), layer);
     }
+
+    Codec<Multiblock> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("multiblock").forGetter(IRRegistries.MULTIBLOCK::getId)
+    ).apply(instance, IRRegistries.MULTIBLOCK::byId));
+
+    StreamCodec<RegistryFriendlyByteBuf, Multiblock> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT,
+            IRRegistries.MULTIBLOCK::getId,
+            IRRegistries.MULTIBLOCK::byId
+    );
 }

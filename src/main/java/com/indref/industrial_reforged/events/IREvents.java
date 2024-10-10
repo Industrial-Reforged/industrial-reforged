@@ -39,11 +39,15 @@ import com.indref.industrial_reforged.util.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
@@ -82,7 +86,6 @@ import java.util.Map;
 public final class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static final class ClientBus {
-
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
             event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
@@ -139,6 +142,8 @@ public final class IREvents {
             event.register(IRMenuTypes.BLAST_FURNACE_MENU.get(), BlastFurnaceScreen::new);
             event.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
             event.register(IRMenuTypes.BASIC_GENERATOR_MENU.get(), BasicGeneratorScreen::new);
+
+            event.register(IRMenuTypes.BLUEPRINT_MENU.get(), BlueprintScreen::new);
         }
 
         @SubscribeEvent

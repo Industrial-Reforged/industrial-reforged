@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
-import com.indref.industrial_reforged.data.components.EnergyStorage;
-import com.indref.industrial_reforged.data.components.HeatStorage;
+import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -28,18 +29,18 @@ public final class IRDataComponents {
             () -> builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final Supplier<DataComponentType<Integer>> BATTERY_STAGE = registerDataComponentType("battery_stage",
             () -> builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final Supplier<DataComponentType<BlockPos>> BLUEPRINT_POS = registerDataComponentType("blueprint_pos",
-            () -> builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
-    public static final Supplier<DataComponentType<ComponentTapeMeasure>> TAPE_MEASURE_DATA = registerDataComponentType("tape_measure_data",
+    public static final Supplier<DataComponentType<ComponentBlueprint>> BLUEPRINT = registerDataComponentType("blueprint",
+            () -> builder -> builder.persistent(ComponentBlueprint.CODEC).networkSynchronized(ComponentBlueprint.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ComponentTapeMeasure>> TAPE_MEASURE = registerDataComponentType("tape_measure_data",
             () -> builder -> builder.persistent(ComponentTapeMeasure.CODEC).networkSynchronized(ComponentTapeMeasure.STREAM_CODEC));
     public static final Supplier<DataComponentType<AdvancedBundleContents>> ADVANCED_BUNDLE_CONTENTS = registerDataComponentType("advanced_bundle_contents",
             () -> builder -> builder.persistent(AdvancedBundleContents.CODEC).networkSynchronized(AdvancedBundleContents.STREAM_CODEC));
 
     // Data for capabilities
-    public static final Supplier<DataComponentType<EnergyStorage>> ENERGY = registerDataComponentType("energy",
-            () -> builder -> builder.persistent(EnergyStorage.CODEC).networkSynchronized(EnergyStorage.STREAM_CODEC));
-    public static final Supplier<DataComponentType<HeatStorage>> HEAT = registerDataComponentType("heat",
-            () -> builder -> builder.persistent(HeatStorage.CODEC).networkSynchronized(HeatStorage.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ComponentEnergyStorage>> ENERGY = registerDataComponentType("energy",
+            () -> builder -> builder.persistent(ComponentEnergyStorage.CODEC).networkSynchronized(ComponentEnergyStorage.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ComponentHeatStorage>> HEAT = registerDataComponentType("heat",
+            () -> builder -> builder.persistent(ComponentHeatStorage.CODEC).networkSynchronized(ComponentHeatStorage.STREAM_CODEC));
     public static final Supplier<DataComponentType<SimpleFluidContent>> FLUID = registerDataComponentType("fluid",
             () -> builder -> builder.persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC));
     public static final Supplier<DataComponentType<List<ItemStack>>> ITEM = registerDataComponentType("item",

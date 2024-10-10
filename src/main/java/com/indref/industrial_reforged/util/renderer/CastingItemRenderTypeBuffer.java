@@ -8,6 +8,7 @@
 
 package com.indref.industrial_reforged.util.renderer;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -42,6 +43,7 @@ public class CastingItemRenderTypeBuffer implements MultiBufferSource {
         this.red   = 0xFF - (temperature * (0xFF - 0xB0) / 0xFF);
         this.green = 0xFF - (temperature * (0xFF - 0x60) / 0xFF);
         this.blue  = 0xFF - (temperature * (0xFF - 0x20) / 0xFF);
+        IndustrialReforged.LOGGER.debug("r: {}, g: {}, b: {}", red, green, blue);
     }
 
     @Override

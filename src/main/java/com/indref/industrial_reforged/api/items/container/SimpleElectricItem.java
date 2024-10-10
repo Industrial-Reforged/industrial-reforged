@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.EnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.network.chat.Component;
@@ -16,7 +16,7 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     private final EnergyTier energyTier;
 
     public SimpleElectricItem(Properties properties, EnergyTier energyTier) {
-        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new EnergyStorage(0, energyTier.getDefaultCapacity())));
+        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
         this.energyTier = energyTier;
     }
 

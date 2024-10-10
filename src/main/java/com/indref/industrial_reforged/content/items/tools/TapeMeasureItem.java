@@ -25,14 +25,14 @@ public class TapeMeasureItem extends Item {
     public static final String EXTENDED_KEY = "tape_measure_extended";
 
     public TapeMeasureItem(Properties properties) {
-        super(properties.component(IRDataComponents.TAPE_MEASURE_DATA, ComponentTapeMeasure.EMPTY));
+        super(properties.component(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack useItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
-        if (player.isShiftKeyDown() && useItem.get(IRDataComponents.TAPE_MEASURE_DATA).tapeMeasureExtended()) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(BlockPos.ZERO, false));
+        if (player.isShiftKeyDown() && useItem.get(IRDataComponents.TAPE_MEASURE).tapeMeasureExtended()) {
+            useItem.set(IRDataComponents.TAPE_MEASURE, new ComponentTapeMeasure(BlockPos.ZERO, false));
             return InteractionResultHolder.success(useItem);
         }
         return InteractionResultHolder.fail(useItem);
@@ -44,12 +44,12 @@ public class TapeMeasureItem extends Item {
         BlockPos blockPos = useOnContext.getClickedPos();
         Player player = useOnContext.getPlayer();
         if (!player.isCrouching() && isExtended(useItem) == 0) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(blockPos, true));
+            useItem.set(IRDataComponents.TAPE_MEASURE, new ComponentTapeMeasure(blockPos, true));
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
             // first marked block pos
-            BlockPos firstBlockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE_DATA, ComponentTapeMeasure.EMPTY).firstPos();
+            BlockPos firstBlockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
 
             if (firstBlockPos != null) {
                 // calculate distance between first pos and player pos
@@ -81,10 +81,10 @@ public class TapeMeasureItem extends Item {
                 }
             }
 
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(null, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE, new ComponentTapeMeasure(null, false));
             return InteractionResult.SUCCESS;
         } else if (player.isShiftKeyDown() && isExtended(useItem) == 1) {
-            useItem.set(IRDataComponents.TAPE_MEASURE_DATA, new ComponentTapeMeasure(null, false));
+            useItem.set(IRDataComponents.TAPE_MEASURE, new ComponentTapeMeasure(null, false));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
@@ -96,7 +96,7 @@ public class TapeMeasureItem extends Item {
         if (entity instanceof Player player) {
             if (player.getMainHandItem().is(IRItems.TAPE_MEASURE.get())) {
                 ItemStack useItem = player.getMainHandItem();
-                BlockPos blockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE_DATA, ComponentTapeMeasure.EMPTY).firstPos();
+                BlockPos blockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
                 BlockPos playerPos = player.getOnPos();
                 if (blockPos != null && !blockPos.equals(new BlockPos(0, 0, 0))) {
                     double d0 = (double) blockPos.getX() + 0.5D + (0.5D - randomSource.nextDouble());
@@ -106,7 +106,7 @@ public class TapeMeasureItem extends Item {
                 }
             } else if (player.getOffhandItem().is(IRItems.TAPE_MEASURE.get())) {
                 ItemStack useItem = player.getOffhandItem();
-                BlockPos blockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE_DATA, ComponentTapeMeasure.EMPTY).firstPos();
+                BlockPos blockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
                 BlockPos playerPos = new BlockPos(player.getOnPos().getX(), player.getOnPos().getY(), player.getOnPos().getZ());
                 if (blockPos != null && !blockPos.equals(new BlockPos(0, 0, 0))) {
                     double d3 = (double) randomSource.nextFloat() * 0.4D;
@@ -122,7 +122,7 @@ public class TapeMeasureItem extends Item {
     }
 
     public static float isExtended(ItemStack stack) {
-        return stack.getOrDefault(IRDataComponents.TAPE_MEASURE_DATA,
+        return stack.getOrDefault(IRDataComponents.TAPE_MEASURE,
                 new ComponentTapeMeasure(BlockPos.ZERO, false)).tapeMeasureExtended() ? 1 : 0;
     }
 }

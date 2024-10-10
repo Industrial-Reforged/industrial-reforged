@@ -18,7 +18,7 @@ import org.joml.Matrix4f;
 
 import java.util.List;
 
-public class TapeMeasureRenderer {
+public final class TapeMeasureRenderer {
 
     public static void renderDistance(PoseStack poseStack, VertexConsumer vertexConsumer, Vec3 renderView, Player player,
                                       BlockHitResult blockHitResult, BlockPos firstPos) {

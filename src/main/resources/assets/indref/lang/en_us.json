@@ -164,5 +164,6 @@
   "indref.energy.tier.none": "None",
   "*.desc.melting_not_possible": "Melting not possible",
   "creative_tab.indref.items": "Industrial Reforged Items",
-  "creative_tab.indref.blocks": "Industrial Reforged Blocks"
+  "creative_tab.indref.blocks": "Industrial Reforged Blocks",
+  "indref.container.blueprint": "Blueprint"
 }

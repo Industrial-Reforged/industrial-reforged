@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.EnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.world.item.ItemStack;
 
@@ -18,9 +18,9 @@ public record ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier) impl
 
     @Override
     public int getEnergyStored() {
-        EnergyStorage energyStorage = itemStack.get(IRDataComponents.ENERGY);
-        if (energyStorage != null)
-            return energyStorage.energyStored();
+        ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
+        if (componentEnergyStorage != null)
+            return componentEnergyStorage.energyStored();
         else
             throw new NullPointerException("Failed to get energy component for item: "
                     + itemStack.getItem()
@@ -29,14 +29,14 @@ public record ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier) impl
 
     @Override
     public void setEnergyStored(int value) {
-        itemStack.set(IRDataComponents.ENERGY, new EnergyStorage(value, getEnergyCapacity()));
+        itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(value, getEnergyCapacity()));
     }
 
     @Override
     public int getEnergyCapacity() {
-        EnergyStorage energyStorage = itemStack.get(IRDataComponents.ENERGY);
-        if (energyStorage != null)
-            return energyStorage.energyCapacity();
+        ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
+        if (componentEnergyStorage != null)
+            return componentEnergyStorage.energyCapacity();
         else
             throw new NullPointerException("Failed to get energy component for item: "
                     + itemStack.getItem()
@@ -45,6 +45,6 @@ public record ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier) impl
 
     @Override
     public void setEnergyCapacity(int value) {
-        itemStack.set(IRDataComponents.ENERGY, new EnergyStorage(getEnergyStored(), value));
+        itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(getEnergyStored(), value));
     }
 }

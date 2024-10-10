@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.gui.menus.*;
+import com.indref.industrial_reforged.registries.gui.screens.BlueprintMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -26,6 +27,9 @@ public final class IRMenuTypes {
             registerMenuType("centrifuge_menu", CentrifugeMenu::new);
     public static final Supplier<MenuType<BasicGeneratorMenu>> BASIC_GENERATOR_MENU =
             registerMenuType("basic_generator_menu", BasicGeneratorMenu::new);
+
+    public static final Supplier<MenuType<BlueprintMenu>> BLUEPRINT_MENU =
+            registerMenuType("blue_print_menu", BlueprintMenu::new);
 
     private static <T extends AbstractContainerMenu>Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
