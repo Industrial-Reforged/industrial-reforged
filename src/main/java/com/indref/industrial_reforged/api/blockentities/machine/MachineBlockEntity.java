@@ -34,11 +34,18 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity {
         ItemStack itemStack = this.batterySlot.getItem();
         IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
         IEnergyStorage itemEnergyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
-        if (itemEnergyStorage != null) {
-            int filled = itemEnergyStorage.tryFillEnergy(Math.min(itemEnergyStorage.getMaxInput(), energyStorage.getMaxOutput()), true);
-            int drained = energyStorage.tryDrainEnergy(filled, true);
-            int newFilled = itemEnergyStorage.tryFillEnergy(drained, false);
-            energyStorage.tryDrainEnergy(newFilled, false);
+        if (itemEnergyStorage != null && !level.isClientSide()) {
+            if (batterySlot.getMode() == ChargingSlot.ChargeMode.CHARGE) {
+                int filled = itemEnergyStorage.tryFillEnergy(Math.min(itemEnergyStorage.getMaxInput(), energyStorage.getMaxOutput()), true);
+                int drained = energyStorage.tryDrainEnergy(filled, true);
+                int newFilled = itemEnergyStorage.tryFillEnergy(drained, false);
+                energyStorage.tryDrainEnergy(newFilled, false);
+            } else {
+                int drained = itemEnergyStorage.tryDrainEnergy(Math.min(itemEnergyStorage.getMaxOutput(), energyStorage.getMaxInput()), true);
+                int filled = energyStorage.tryFillEnergy(drained, true);
+                int newDrained = itemEnergyStorage.tryDrainEnergy(filled, false);
+                energyStorage.tryFillEnergy(newDrained, false);
+            }
         }
     }
 }

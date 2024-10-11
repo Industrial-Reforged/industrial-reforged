@@ -63,32 +63,6 @@ public final class CommonEvents {
             }
         }
 
-        // TODO: Rendering is temporary
-        @SubscribeEvent
-        public static void renderOutline(RenderHighlightEvent.Block event) {
-            if (event.getCamera().getEntity() instanceof Player player) {
-                ItemStack itemStack = player.getMainHandItem();
-
-                if (!(itemStack.getItem() instanceof TapeMeasureItem)) {
-                    itemStack = player.getOffhandItem();
-                }
-
-                if (itemStack.getItem() instanceof TapeMeasureItem) {
-                    ComponentTapeMeasure tapeMeasureData = itemStack.get(IRDataComponents.TAPE_MEASURE);
-                    if (tapeMeasureData.tapeMeasureExtended()) {
-                        BlockPos firstPos = tapeMeasureData.firstPos();
-                        if (firstPos != null) {
-                            TapeMeasureRenderer.renderDistance(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.lines()), event.getCamera().getPosition(), player, event.getTarget(), firstPos);
-
-                            event.setCanceled(true);
-                        }
-                    }
-
-                }
-
-            }
-        }
-
         @SubscribeEvent
         public static void renderMultiblockPreview(RenderLevelStageEvent event) {
             if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;

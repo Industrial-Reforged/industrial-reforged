@@ -46,7 +46,7 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
         addSlot(new SlotItemHandler(itemHandler, 3, 80, 77));
         addSlot(new SlotItemHandler(itemHandler, 4, 44, 41));
         // Battery slot
-        addSlot(new ChargingSlot(itemHandler, 5, ChargingSlot.ChargeMode.CHARGE, 9, 67));
+        addSlot(new ChargingSlot(itemHandler, 5, ChargingSlot.ChargeMode.DECHARGE, 9, 67));
     }
 
     @Override

@@ -17,7 +17,6 @@ public final class IndustrialReforged {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public IndustrialReforged(IEventBus modEventBus) {
-
         modEventBus.addListener(NewRegistryEvent.class, event -> event.register(IRRegistries.MULTIBLOCK));
 
         IRItems.ITEMS.register(modEventBus);

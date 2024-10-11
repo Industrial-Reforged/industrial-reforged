@@ -38,8 +38,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuProvider {
+    private @Nullable CentrifugeRecipe recipe;
+
     private int duration;
-    private int maxDuration;
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
@@ -53,7 +54,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     public int getMaxProgress() {
-        return maxDuration;
+        return recipe != null ? recipe.duration() : 0;
     }
 
     @Override
@@ -68,45 +69,60 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
+    protected void onItemsChanged(int slot) {
+        super.onItemsChanged(slot);
+        checkRecipe();
+    }
+
+    private void checkRecipe() {
+        Optional<CentrifugeRecipe> currentRecipe = getCurrentRecipe();
+
+        if (currentRecipe.isPresent()) {
+            CentrifugeRecipe centrifugeRecipe = currentRecipe.get();
+            List<ItemStack> results = centrifugeRecipe.results();
+            int maxDuration = centrifugeRecipe.duration();
+            int energy = centrifugeRecipe.energy();
+
+            if (canInsertItems(results) && getEnergyStorage().getEnergyStored() - energy >= 0) {
+                this.recipe = centrifugeRecipe;
+            }
+        }
+    }
+
+    @Override
     public void commonTick() {
         super.commonTick();
-        Optional<CentrifugeRecipe> optionalRecipe = getCurrentRecipe();
 
-        if (optionalRecipe.isPresent()) {
-            CentrifugeRecipe recipe = optionalRecipe.get();
+        if (recipe != null) {
             int energy = recipe.energy();
             int maxDuration = recipe.duration();
-            this.maxDuration = maxDuration;
             IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
             IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
 
             List<ItemStack> results = recipe.results();
             IngredientWithCount ingredient = recipe.ingredient();
-            if (canInsertItems(results) && energyStorage.getEnergyStored() - energy >= 0) {
-                setActive(true);
-                energyStorage.tryDrainEnergy(energy, false);
-                if (this.duration >= maxDuration) {
-                    for (int i = 0; i < results.size(); i++) {
-                        ItemStack result = results.get(i).copy();
-                        ItemStack prev = itemHandler.getStackInSlot(i + 1);
-                        result.grow(prev.getCount());
+            setActive(true);
+            energyStorage.tryDrainEnergy(energy, false);
+            if (this.duration >= maxDuration) {
+                for (int i = 0; i < results.size(); i++) {
+                    ItemStack result = results.get(i).copy();
+                    ItemStack prev = itemHandler.getStackInSlot(i + 1);
+                    result.grow(prev.getCount());
 
-                        getItemStackHandler().setStackInSlot(i + 1, result);
-                    }
-                    itemHandler.extractItem(0, ingredient.count(), false);
-                    resetRecipe();
-                } else {
-                    this.duration++;
+                    getItemStackHandler().setStackInSlot(i + 1, result);
                 }
-            } else {
+                itemHandler.extractItem(0, ingredient.count(), false);
                 resetRecipe();
+            } else {
+                this.duration++;
             }
+        } else {
+            resetRecipe();
         }
     }
 
     private void resetRecipe() {
         this.duration = 0;
-        this.maxDuration = 0;
         setActive(false);
     }
 
@@ -140,10 +156,15 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
+    public void onLoad() {
+        super.onLoad();
+        checkRecipe();
+    }
+
+    @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         super.saveData(tag, provider);
         tag.putInt("duration", duration);
-        tag.putInt("max_duration", maxDuration);
     }
 
     @Override
@@ -165,6 +186,5 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadData(tag, provider);
         this.duration = tag.getInt("duration");
-        this.maxDuration = tag.getInt("max_duration");
     }
 }

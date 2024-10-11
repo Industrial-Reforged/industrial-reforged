@@ -8,21 +8,22 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> results,
-                               int duration, int energy) implements IRRecipe<ItemRecipeInput> {
+                               int duration, int energy) implements IRRecipe<SingleRecipeInput> {
     public static final String NAME = "centrifuge";
     public static final RecipeType<CentrifugeRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CentrifugeRecipe> SERIALIZER =
             RecipeUtils.newRecipeSerializer(IRRecipeSerializer.Centrifuge.CODEC, IRRecipeSerializer.Centrifuge.STREAM_CODEC);
 
     @Override
-    public boolean matches(ItemRecipeInput recipeInput, Level level) {
-        return ingredient.test(recipeInput.getItem(0));
+    public boolean matches(SingleRecipeInput recipeInput, Level level) {
+        return ingredient.test(recipeInput.item());
     }
 
     @Override
