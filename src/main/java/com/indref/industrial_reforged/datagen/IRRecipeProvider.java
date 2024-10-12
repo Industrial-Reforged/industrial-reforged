@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.datagen;
 
 import com.google.common.collect.ImmutableList;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.CTags;
@@ -8,12 +9,15 @@ import com.indref.industrial_reforged.tags.IRTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class IRRecipeProvider extends RecipeProvider {
@@ -66,22 +70,53 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('#', Tags.Items.INGOTS_COPPER)
                 .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .save(output);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.TREE_TAP.get())
+                .pattern(" S ")
+                .pattern("###")
+                .pattern("#  ")
+                .define('S', Tags.Items.RODS_WOODEN)
+                .define('#', ItemTags.PLANKS)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
+                .save(output);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.THERMOMETER.get())
+                .pattern(" ##")
+                .pattern("#R#")
+                .pattern("R# ")
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .define('#', Tags.Items.GLASS_PANES)
+                .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+                .save(output);
+
         // TODO: Other tool recipes
     }
 
     private void rawOreToBlockRecipes() {
         nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_BAUXITE.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_BAUXITE_BLOCK.get());
-        // TODO: Other raw blocks
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_CHROMIUM.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_CHROMIUM_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_IRIDIUM.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_IRIDIUM_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_LEAD.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_LEAD_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_NICKEL.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_NICKEL_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_TIN.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_TIN_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.RAW_URANIUM.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.RAW_URANIUM_BLOCK.get());
     }
 
     private void ingotToBlockRecipes() {
         nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.STEEL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.STEEL_BLOCK.get());
-        // TODO: Other metal blocks
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.ALUMINUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.ALUMINUM_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.TITANIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.TITANIUM_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.CHROMIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.CHROMIUM_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.IRIDIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.IRIDIUM_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.LEAD_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.LEAD_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.NICKEL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.NICKEL_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.TIN_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.TIN_BLOCK.get());
+        nineBlockStorageRecipes(output, RecipeCategory.MISC, IRItems.URANIUM_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, IRBlocks.URANIUM_BLOCK.get());
     }
 
     private void cableRecipes() {
-        cable(CTags.Items.TIN_INGOT, CTags.Items.TIN_WIRE, IRBlocks.TIN_CABLE.get());
-        // TODO: Other cables
+        cable(CTags.Items.TIN_WIRE, IRBlocks.TIN_CABLE.get());
+        cable(CTags.Items.COPPER_WIRE, IRBlocks.COPPER_CABLE.get());
+        cable(CTags.Items.GOLD_WIRE, IRBlocks.GOLD_CABLE.get());
+        cable(CTags.Items.STEEL_WIRE, IRBlocks.STEEL_CABLE.get());
     }
 
     private void rubberWoodRecipes() {
@@ -125,19 +160,45 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     // -- HELPER METHODS --
-    private void cable(TagKey<Item> cableMaterial, TagKey<Item> wireMaterial, ItemLike cable) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, cable, 6)
-                .pattern("###")
-                .pattern("WWW")
-                .pattern("###")
-                .define('#', CTags.Items.RUBBER_SHEET)
-                .define('W', cableMaterial)
-                .unlockedBy("has_rubber_sheet", has(CTags.Items.RUBBER_SHEET))
-                .save(output);
+    private void cable(TagKey<Item> wireMaterial, ItemLike cable) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, cable)
                 .requires(CTags.Items.RUBBER_SHEET)
                 .requires(wireMaterial)
                 .unlockedBy("has_rubber_sheet", has(CTags.Items.RUBBER_SHEET))
                 .save(output);
+    }
+
+    protected static void nineBlockStorageRecipes(
+            RecipeOutput recipeOutput, RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed
+    ) {
+        nineBlockStorageRecipes(
+                recipeOutput, unpackedCategory, unpacked, packedCategory, packed, getSimpleRecipeName(packed), null, getSimpleRecipeName(unpacked), null
+        );
+    }
+
+    protected static void nineBlockStorageRecipes(
+            RecipeOutput recipeOutput,
+            RecipeCategory unpackedCategory,
+            ItemLike unpacked,
+            RecipeCategory packedCategory,
+            ItemLike packed,
+            String packedName,
+            @Nullable String packedGroup,
+            String unpackedName,
+            @Nullable String unpackedGroup
+    ) {
+        ShapelessRecipeBuilder.shapeless(unpackedCategory, unpacked, 9)
+                .requires(packed)
+                .group(unpackedGroup)
+                .unlockedBy(getHasName(packed), has(packed))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, unpackedName));
+        ShapedRecipeBuilder.shaped(packedCategory, packed)
+                .define('#', unpacked)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .group(packedGroup)
+                .unlockedBy(getHasName(unpacked), has(unpacked))
+                .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, packedName));
     }
 }

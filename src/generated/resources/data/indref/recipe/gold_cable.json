@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:plates/rubber"
+    },
+    {
+      "tag": "c:wires/gold"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:gold_cable"
+  }
+}

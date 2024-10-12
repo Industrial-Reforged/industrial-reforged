@@ -50,10 +50,10 @@ public final class IRTabs {
                 addItem(output, IRItems.TREE_TAP);
                 addItem(output, IRItems.THERMOMETER);
                 addPoweredItem(output, IRItems.SCANNER);
-                addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
-                addPoweredItem(output, IRItems.ELECTRIC_HOE);
+//                addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
+//                addPoweredItem(output, IRItems.ELECTRIC_HOE);
                 addRockCutter(output, parameters, IRItems.ROCK_CUTTER);
-                addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
+//                addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
                 addPoweredItem(output, IRItems.ELECTRIC_DRILL);
                 addPoweredItem(output, IRItems.ADVANCED_DRILL);
                 addPoweredItem(output, IRItems.NANO_SABER);

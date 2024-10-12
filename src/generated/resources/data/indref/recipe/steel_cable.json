@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:plates/rubber"
+    },
+    {
+      "tag": "c:wires/steel"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:steel_cable"
+  }
+}

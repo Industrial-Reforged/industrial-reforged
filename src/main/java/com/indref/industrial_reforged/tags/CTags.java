@@ -27,10 +27,10 @@ public final class CTags {
         public static final TagKey<Item> TIN_PLATE = bind("plates/tin");
 
         public static final TagKey<Item> WIRES = bind("wires");
-        public static final TagKey<Item> TIN_WIRE = bind("wires/copper");
+        public static final TagKey<Item> TIN_WIRE = bind("wires/tin");
         public static final TagKey<Item> COPPER_WIRE = bind("wires/copper");
-        public static final TagKey<Item> GOLD_WIRE = bind("wires/copper");
-        public static final TagKey<Item> STEEL_WIRE = bind("wires/copper");
+        public static final TagKey<Item> GOLD_WIRE = bind("wires/gold");
+        public static final TagKey<Item> STEEL_WIRE = bind("wires/steel");
 
         public static final TagKey<Item> INGOTS = bind("ingots");
         public static final TagKey<Item> TIN_INGOT = bind("ingots/tin");
@@ -41,7 +41,7 @@ public final class CTags {
         public static final TagKey<Item> CHROMIUM_INGOT = bind("ingots/chromium");
         public static final TagKey<Item> URANIUM_INGOT = bind("ingots/uranium");
         public static final TagKey<Item> TITANIUM_INGOT = bind("ingots/titanium");
-        public static final TagKey<Item> IRIDIUM_INGOT = bind("ingots/titanium");
+        public static final TagKey<Item> IRIDIUM_INGOT = bind("ingots/iridium");
 
 
         private static TagKey<Item> bind(String path) {
