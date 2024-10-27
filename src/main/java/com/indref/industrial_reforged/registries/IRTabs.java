@@ -139,7 +139,7 @@ public final class IRTabs {
                 addBlock(output, IRBlocks.COIL);
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK_SLAB);
                 addBlock(output, IRBlocks.TERRACOTTA_BRICK);
-                addBlock(output, IRBlocks.CERAMIC_FAUCET);
+//                addBlock(output, IRBlocks.CERAMIC_FAUCET);
                 addBlock(output, IRBlocks.CERAMIC_CASTING_BASIN);
                 addBlock(output, IRBlocks.REFRACTORY_BRICK);
                 addBlock(output, IRBlocks.REFRACTORY_STONE);

@@ -186,11 +186,9 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.putInt("duration", this.duration);
         tag.putInt("maxDuration", this.maxDuration);
-        CompoundTag itemTag = new CompoundTag();
         if (!this.resultItem.isEmpty()) {
-            this.resultItem.save(provider);
+            tag.put("resultItem", this.resultItem.save(provider));
         }
-        tag.put("resultItem", itemTag);
     }
 
     @Override
@@ -215,7 +213,10 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         this.duration = tag.getInt("duration");
         this.maxDuration = tag.getInt("maxDuration");
-        Optional<ItemStack> resultItem1 = ItemStack.parse(provider, tag.getCompound("resultItem"));
-        this.resultItem = resultItem1.orElse(ItemStack.EMPTY);
+        // TODO: Throws an error, pls fix
+        if (tag.contains("resultItem")) {
+            Optional<ItemStack> resultItem1 = ItemStack.parse(provider, tag.getCompound("resultItem"));
+            this.resultItem = resultItem1.orElse(ItemStack.EMPTY);
+        }
     }
 }

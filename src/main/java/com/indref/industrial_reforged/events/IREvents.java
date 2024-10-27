@@ -158,6 +158,7 @@ public final class IREvents {
         @SubscribeEvent
         public static void registerItemColor(RegisterColorHandlersEvent.Item event) {
             event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
+            event.register(new SimpleFluidItem.Colors(), IRItems.MOLTEN_STEEL_BUCKET.get());
         }
 
         @SubscribeEvent

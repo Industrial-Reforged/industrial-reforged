@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_chromium": {
+      "conditions": {
+        "items": [
+          {
+            "items": "indref:raw_chromium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "indref:raw_chromium_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_raw_chromium"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "indref:raw_chromium_block"
+    ]
+  }
+}

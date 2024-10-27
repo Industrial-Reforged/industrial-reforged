@@ -26,7 +26,7 @@ public final class IRFluidTypes {
                     SoundEvents.HONEY_DRINK), new Vec3i(255, 255, 255), FluidTemplate.OIL);
     public static final Supplier<FluidType> MOLTEN_STEEL_FLUID_TYPE = register("molten_steel",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), new Vec3i(109, 109, 109), FluidTemplate.MOLTEN_METAL);
+                    SoundEvents.HONEY_DRINK), new Vec3i(78, 86, 92), FluidTemplate.MOLTEN_METAL);
 
     private static Supplier<FluidType> register(String name, FluidType.Properties properties, Vec3i color, FluidTemplate template) {
         return FLUID_TYPES.register(name, () -> new BaseFluidType(template.still, template.flowing, template.overlay, color, properties));

@@ -171,7 +171,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 IFluidHandler fluidHandler = fillBlockCache.getCapability();
 
                 if (fluidHandler != null) {
-                    FluidStack drained = getFluidHandler().drain(20, IFluidHandler.FluidAction.EXECUTE);
+                    FluidStack drained = getFluidHandler().drain(1, IFluidHandler.FluidAction.EXECUTE);
                     fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
@@ -216,6 +216,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             if (inUse == 0) {
                 this.speed = 0;
                 if (!turnedOver) {
+                    this.chasingVelocity = 0;
                     this.independentAngle = 0;
                 }
             }
@@ -296,7 +297,6 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                         if (pValue < 0) pValue = 0;
                         tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
                         itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-                        PacketDistributor.sendToAllPlayers(new CrucibleMeltingProgressPayload(worldPosition, i, pValue));
                     }
                 }
             } else if (!itemStack.isEmpty()) {

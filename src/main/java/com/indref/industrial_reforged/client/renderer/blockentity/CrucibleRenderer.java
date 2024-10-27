@@ -58,13 +58,23 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
 
                 if (!fluidInTank.isEmpty() && angle == 0) {
                     poseStack.translate(0, 0.325, 0);
-                    renderFluid(poseStack, bufferSource, fluidInTank, 1, packedLight, false);
+                    renderFluid(poseStack, bufferSource, fluidInTank, 1, packedLight, FluidPart.BODY);
                 }
             }
             poseStack.popPose();
 
             // Crucible legs
             this.model.renderCrucibleLegs(poseStack, vertexconsumer, packedLight, packedOverlay, -1);
+
+            // TODO: position correctly
+            if (/*blockEntity.isTurnedOver() && */blockEntity.inUse == 0 && !fluidInTank.isEmpty()) {
+                poseStack.pushPose();
+                {
+                    poseStack.translate(0, 2.5, 2);
+                    renderFluid(poseStack, bufferSource, fluidInTank, 1, packedLight, FluidPart.FAUCET);
+                }
+                poseStack.popPose();
+            }
         }
         poseStack.popPose();
     }
@@ -84,11 +94,11 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
 
         if (!fluidStack.isEmpty()) {
             poseStack.translate(0, 0.325, 0);
-            renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, true);
+            renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, FluidPart.TOP);
         }
     }
 
-    private void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float heightPercentage, int combinedLight, boolean renderTop) {
+    private void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float heightPercentage, int combinedLight, FluidPart renderPart) {
         VertexConsumer vertexBuilder = bufferSource.getBuffer(RenderType.translucent());
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidTypeExtensions.getStillTexture(fluidStack));
@@ -99,10 +109,13 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         float green = (color >> 8 & 255) / 255f;
         float blue = (color & 255) / 255f;
 
-        if (renderTop) {
-            renderTopQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
-        } else {
-            renderBodyQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+        switch (renderPart) {
+            case TOP ->
+                    renderTopQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+            case BODY ->
+                    renderBodyQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+            case FAUCET ->
+                    renderFaucetQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, 3f, combinedLight);
         }
     }
 
@@ -146,6 +159,51 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         buffer.addVertex(matrix, -0.9f, height, 1.74f).setColor(r, g, b, alpha).setUv(sprite.getU(0.25f), sprite.getV(1)).setLight(light).setNormal(1, 0, 0);
     }
 
+    private static void renderFaucetQuads(Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float belowMaxY, int light) {
+        float frontMinU = sprite.getU(0.375f);
+        float frontMaxU = sprite.getU(0.625f);
+        float yOffset = 5;
+        float minY = (2.1f / 16f) - 0.125f - yOffset;
+        float maxY = 0.4f - minY + 0.2f + -0.125f - yOffset;
+        float height = minY + (maxY - minY);
+        float topMinV = sprite.getV(0);
+        float topMaxV = sprite.getV(0.625f);
+        float minV = sprite.getV(0);
+        float maxV = sprite.getV(1);
+        //float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
+        // top
+
+        buffer.addVertex(matrix, 0.3125f, height, 0).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.3125f, height, 0.3125f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.6875f, height, 0.3125f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.6875f, height, 0).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, 1, 0);
+
+        // back
+        buffer.addVertex(matrix, 0.625f, height, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.625f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.375f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.375f, height, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, -1);
+        // front
+        buffer.addVertex(matrix, 0.625f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.375f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.375f, minY, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.625f, minY, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, 1);
+
+        float sideMinU = sprite.getU(0.25f);
+        float sideMaxU = sprite.getU(0.5f);
+        // side 1
+        buffer.addVertex(matrix, 0.375f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.375f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.375f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.375f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(-1, 0, 0);
+        // side 2
+        buffer.addVertex(matrix, 0.625f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.625f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.625f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.625f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(1, 0, 0);
+
+    }
+
     @Override
     public boolean shouldRenderOffScreen(CrucibleBlockEntity blockEntity) {
         return true;
@@ -154,5 +212,11 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     @Override
     public @NotNull AABB getRenderBoundingBox(CrucibleBlockEntity blockEntity) {
         return new AABB(blockEntity.getBlockPos()).inflate(2);
+    }
+
+    enum FluidPart {
+        TOP,
+        BODY,
+        FAUCET;
     }
 }

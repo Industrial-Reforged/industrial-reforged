@@ -80,6 +80,7 @@ public final class IRBlocks {
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
     public static final DeferredBlock<CruciblePartBlock> CERAMIC_CRUCIBLE_PART = registerBlockAndItem("ceramic_crucible_wall",
             () -> new CruciblePartBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
+    @Deprecated
     public static final DeferredBlock<FaucetBlock> CERAMIC_FAUCET = registerBlockAndItem("ceramic_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.TERRACOTTA_BRICK.get()));
     public static final DeferredBlock<FaucetBlock> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",

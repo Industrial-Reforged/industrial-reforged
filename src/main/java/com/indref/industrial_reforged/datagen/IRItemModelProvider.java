@@ -2,13 +2,17 @@ package com.indref.industrial_reforged.datagen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRFluids;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.Objects;
@@ -30,6 +34,8 @@ public class IRItemModelProvider extends ItemModelProvider {
 		parentItemBlock(IRBlocks.RUBBER_TREE_SLAB.get().asItem());
 		parentItemBlock(IRBlocks.RUBBER_TREE_STAIRS.get().asItem());
 		parentItemBlock(IRBlocks.RUBBER_TREE_TRAPDOOR.get().asItem(), "_bottom");
+
+		createBucket(IRFluids.MOLTEN_STEEL_SOURCE.get());
 	}
 
 	public ItemModelBuilder basicItem(Item item, String textureFolder) {
@@ -62,5 +68,11 @@ public class IRItemModelProvider extends ItemModelProvider {
 		ResourceLocation name = Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item));
 		return getBuilder(name.toString())
 			.parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(name.getNamespace(), "block/" + name.getPath() + suffix)));
+	}
+
+	private void createBucket(Fluid f){
+		withExistingParent(BuiltInRegistries.ITEM.getKey(f.getBucket().asItem()).getPath(), ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket_drip"))
+				.customLoader(DynamicFluidContainerModelBuilder::begin)
+				.fluid(f);
 	}
 }
