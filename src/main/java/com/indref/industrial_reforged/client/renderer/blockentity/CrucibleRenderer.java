@@ -162,7 +162,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     private static void renderFaucetQuads(Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float belowMaxY, int light) {
         float frontMinU = sprite.getU(0.375f);
         float frontMaxU = sprite.getU(0.625f);
-        float yOffset = 5;
+        float yOffset = 2;
         float minY = (2.1f / 16f) - 0.125f - yOffset;
         float maxY = 0.4f - minY + 0.2f + -0.125f - yOffset;
         float height = minY + (maxY - minY);
@@ -173,34 +173,34 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         //float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
         // top
 
-        buffer.addVertex(matrix, 0.3125f, height, 0).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.3125f, height, 0.3125f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.6875f, height, 0.3125f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.6875f, height, 0).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.3125f, height, -0.25f).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.3125f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.685f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.685f, height, -0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, 1, 0);
 
         // back
-        buffer.addVertex(matrix, 0.625f, height, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, 0.625f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, 0.375f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, 0.375f, height, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.6875f, height - 0.25f, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.6875f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.3125f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.3125f, height - 0.25f, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, -1);
         // front
-        buffer.addVertex(matrix, 0.625f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, 1);
-        buffer.addVertex(matrix, 0.375f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, 1);
-        buffer.addVertex(matrix, 0.375f, minY, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, 1);
-        buffer.addVertex(matrix, 0.625f, minY, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.6875f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.3125f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.3125f, minY, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, 1);
+        buffer.addVertex(matrix, 0.6875f, minY, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, 1);
 
         float sideMinU = sprite.getU(0.25f);
         float sideMaxU = sprite.getU(0.5f);
         // side 1
-        buffer.addVertex(matrix, 0.375f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, 0.375f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, 0.375f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, 0.375f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(-1, 0, 0);
         // side 2
-        buffer.addVertex(matrix, 0.625f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 0.625f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 0.625f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 0.625f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(1, 0, 0);
 
     }
 

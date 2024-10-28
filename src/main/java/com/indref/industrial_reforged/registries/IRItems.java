@@ -6,14 +6,12 @@ import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.content.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.content.items.misc.MiningPipeBlockItem;
-import com.indref.industrial_reforged.content.items.misc.MoldItem;
 import com.indref.industrial_reforged.content.items.reactor.UraniumFuelRodItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -91,9 +89,9 @@ public final class IRItems {
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
     public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
-    public static final DeferredItem<MoldItem> CLAY_MOLD_BLANK = registerItem("clay_mold", MoldItem::new);
-    public static final DeferredItem<MoldItem> CLAY_MOLD_INGOT = registerItem("clay_mold_ingot", MoldItem::new);
-    public static final DeferredItem<MoldItem> CLAY_MOLD_WIRE = registerItem("clay_mold_wire", MoldItem::new);
+    public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
+    public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot");
+    public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire");
 
     // Needs to be registered manual for custom placement
     public static final DeferredItem<Item> MINING_PIPE = registerItem("mining_pipe",
@@ -148,7 +146,11 @@ public final class IRItems {
     }
 
     private static DeferredItem<Item> registerStandardItem(String name) {
-        return ITEMS.register(name, () -> new Item(new Item.Properties()));
+        return ITEMS.registerSimpleItem(name);
+    }
+
+    private static DeferredItem<Item> moldItem(String moldType) {
+        return registerStandardItem("clay_mold_"+moldType);
     }
 
 }

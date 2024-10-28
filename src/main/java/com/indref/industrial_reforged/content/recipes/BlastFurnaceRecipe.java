@@ -34,7 +34,7 @@ public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, F
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
-        return Utils.listToNonNullList(IngredientUtils.iWCToIngredientsSaveCount(ingredients));
+        return Utils.listToNonNullList(RecipeUtils.iWCToIngredientsSaveCount(ingredients));
     }
 
     @Override

@@ -48,7 +48,6 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
         BlockPos controllerPos = getActualBlockEntityPos();
         if (controllerPos != null) {
             tag.putLong("mainControllerPos", controllerPos.asLong());
@@ -57,7 +56,6 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
     }

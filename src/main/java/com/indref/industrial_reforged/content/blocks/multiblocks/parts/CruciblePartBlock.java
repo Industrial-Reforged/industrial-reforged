@@ -196,21 +196,21 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         public static final VoxelShape MIDDLE_EDGE_NORTH = Shapes.or(Block.box(0, 0, 12, 16, 16, 16), Block.box(12, 0, 0, 16, 16, 12));
         public static final VoxelShape MIDDLE_EDGE_EAST = Shapes.or(Block.box(0, 0, 0, 4, 16, 16), Block.box(4, 0, 12, 16, 16, 16));
 
-        public static final VoxelShape BOTTOM_EDGE_BASE = Block.box(0, 4, 0, 16, 6, 16);
+        public static final VoxelShape BOTTOM_EDGE_BASE = Block.box(0, 8, 0, 16, 10, 16);
 
-        public static final VoxelShape BOTTOM_EDGE_SOUTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 6, 4, 4, 16, 16), Block.box(0, 6, 0, 16, 16, 4));
-        public static final VoxelShape BOTTOM_EDGE_WEST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 6, 4, 16, 16, 16), Block.box(0, 6, 0, 16, 16, 4));
-        public static final VoxelShape BOTTOM_EDGE_NORTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 6, 0, 16, 16, 12), Block.box(0, 6, 12, 16, 16, 16));
-        public static final VoxelShape BOTTOM_EDGE_EAST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 6, 0, 4, 16, 12), Block.box(0, 6, 12, 16, 16, 16));
+        public static final VoxelShape BOTTOM_EDGE_SOUTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 8, 4, 4, 16, 16), Block.box(0, 10, 0, 16, 16, 4));
+        public static final VoxelShape BOTTOM_EDGE_WEST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 8, 4, 16, 16, 16), Block.box(0, 10, 0, 16, 16, 4));
+        public static final VoxelShape BOTTOM_EDGE_NORTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 8, 0, 16, 16, 12), Block.box(0, 10, 12, 16, 16, 16));
+        public static final VoxelShape BOTTOM_EDGE_EAST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 8, 0, 4, 16, 12), Block.box(0, 10, 12, 16, 16, 16));
 
         public static final VoxelShape MIDDLE_SIDE_WEST = Block.box(0, 0, 0, 16, 16, 4);
         public static final VoxelShape MIDDLE_SIDE_NORTH = Block.box(12, 0, 0, 16, 16, 16);
         public static final VoxelShape MIDDLE_SIDE_EAST = Block.box(0, 0, 12, 16, 16, 16);
         public static final VoxelShape MIDDLE_SIDE_SOUTH = Block.box(0, 0, 0, 4, 16, 16);
 
-        public static final VoxelShape BOTTOM_SIDE_WEST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 0, 16, 16, 4));
-        public static final VoxelShape BOTTOM_SIDE_NORTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 4, 0, 16, 16, 16));
-        public static final VoxelShape BOTTOM_SIDE_EAST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 12, 16, 16, 16));
-        public static final VoxelShape BOTTOM_SIDE_SOUTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 4, 0, 4, 16, 16));
+        public static final VoxelShape BOTTOM_SIDE_WEST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 8, 0, 16, 16, 4));
+        public static final VoxelShape BOTTOM_SIDE_NORTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(12, 8, 0, 16, 16, 16));
+        public static final VoxelShape BOTTOM_SIDE_EAST = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 8, 12, 16, 16, 16));
+        public static final VoxelShape BOTTOM_SIDE_SOUTH = Shapes.or(BOTTOM_EDGE_BASE, Block.box(0, 8, 0, 4, 16, 16));
     }
 }

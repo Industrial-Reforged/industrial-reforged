@@ -12,10 +12,13 @@ import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CrucibleP
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -87,5 +90,12 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
     @Override
     public List<DisplayItem> getCompatibleItems() {
         return List.of(IRItems.THERMOMETER.get());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.literal("This is a multiblock, look at the Blueprint for building instructions")
+                .withStyle(ChatFormatting.DARK_GRAY));
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

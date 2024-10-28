@@ -28,7 +28,7 @@ public interface Multiblock {
      * Your multiblock needs at least one of these in its structure.
      * <br>
      * <br>
-     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getUnformedController() BlastFurnaceMultiblock.getUnformedController()}
+     * Example: {@link com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock#getUnformedController() BlastFurnaceMultiblock.getUnformedController()}
      * <br>
      * @return The controller block of your unformed multiblock
      */
@@ -39,7 +39,7 @@ public interface Multiblock {
      * Your multiblock needs at least one of these in its structure.
      * <br>
      * <br>
-     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getUnformedController() BlastFurnaceMultiblock.getFormedController()}
+     * Example: {@link com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock#getUnformedController() BlastFurnaceMultiblock.getFormedController()}
      * <br>
      * @return The controller block of your formed multiblock
      */
@@ -65,7 +65,7 @@ public interface Multiblock {
      * Note: The first layer in this array also represents the bottom layer of the multiblock
      * <br>
      * <br>
-     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getLayout() BlastFurnaceMultiblock.getLayout()}.
+     * Example: {@link com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock#getLayout() BlastFurnaceMultiblock.getLayout()}.
      * @return An array of multiblock layers that describes the layout of the multiblock
      */
     MultiblockLayer[] getLayout();
@@ -84,7 +84,7 @@ public interface Multiblock {
      * instead of a value.
      * <br>
      * <br>
-     * Example: {@link com.indref.industrial_reforged.registries.multiblocks.BlastFurnaceMultiblock#getDefinition() BlastFurnaceMultiblock.getDefintion()}
+     * Example: {@link com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock#getDefinition() BlastFurnaceMultiblock.getDefintion()}
      * @return The integer to block map that provides the integer keys and their block values
      */
     Int2ObjectMap<Block> getDefinition();

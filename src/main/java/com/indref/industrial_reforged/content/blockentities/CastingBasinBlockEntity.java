@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.items.misc.MoldItem;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleCastingRecipeInput;
 import it.unimi.dsi.fastutil.Pair;
@@ -25,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class CastingBasinBlockEntity extends ContainerBlockEntity {
@@ -38,7 +36,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public CastingBasinBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CASTING_BASIN.get(), p_155229_, p_155230_);
-        addItemHandler(2, (slot, item) -> slot == 0 && item.getItem() instanceof MoldItem);
+        addItemHandler(2, (slot, item) -> slot == 0);
         addFluidTank(1000);
         this.data = new ContainerData() {
             @Override
@@ -213,7 +211,6 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         this.duration = tag.getInt("duration");
         this.maxDuration = tag.getInt("maxDuration");
-        // TODO: Throws an error, pls fix
         if (tag.contains("resultItem")) {
             Optional<ItemStack> resultItem1 = ItemStack.parse(provider, tag.getCompound("resultItem"));
             this.resultItem = resultItem1.orElse(ItemStack.EMPTY);
