@@ -94,7 +94,7 @@ public class TapeMeasureItem extends Item {
     public void inventoryTick(@NotNull ItemStack itemStack, Level level, Entity entity, int slotId, boolean isSelected) {
         RandomSource randomSource = RandomSource.create();
         if (entity instanceof Player player) {
-            if (player.getMainHandItem().is(IRItems.TAPE_MEASURE.get())) {
+            if (player.getMainHandItem().is(this)) {
                 ItemStack useItem = player.getMainHandItem();
                 BlockPos blockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
                 BlockPos playerPos = player.getOnPos();
@@ -104,7 +104,7 @@ public class TapeMeasureItem extends Item {
                     double d2 = (double) blockPos.getZ() + 0.5D + (0.5D - randomSource.nextDouble());
                     level.addParticle(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 0.0D, 1.0D, 0.0D);
                 }
-            } else if (player.getOffhandItem().is(IRItems.TAPE_MEASURE.get())) {
+            } else if (player.getOffhandItem().is(this)) {
                 ItemStack useItem = player.getOffhandItem();
                 BlockPos blockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
                 BlockPos playerPos = new BlockPos(player.getOnPos().getX(), player.getOnPos().getY(), player.getOnPos().getZ());

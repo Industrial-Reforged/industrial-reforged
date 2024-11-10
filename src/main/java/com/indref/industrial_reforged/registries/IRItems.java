@@ -16,10 +16,14 @@ import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IndustrialReforged.MODID);
+    public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
+    public static final List<DeferredItem<?>> TAB_ITEMS = new ArrayList<>();
 
     // Tools
     public static final DeferredItem<WrenchItem> WRENCH = registerItem("wrench",
@@ -34,20 +38,20 @@ public final class IRItems {
             () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM));
-    public static final DeferredItem<ElectricWrenchItem> ELECTRIC_WRENCH = registerItem("electric_wrench",
-            () -> new ElectricWrenchItem(new Item.Properties(), EnergyTiers.LOW));
-    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
-            () -> new ElectricHoeItem(EnergyTiers.LOW, Tiers.IRON, 0, 0, new Item.Properties()));
+//    public static final DeferredItem<ElectricWrenchItem> ELECTRIC_WRENCH = registerItem("electric_wrench",
+//            () -> new ElectricWrenchItem(new Item.Properties(), EnergyTiers.LOW));
+//    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
+//            () -> new ElectricHoeItem(EnergyTiers.LOW, Tiers.IRON, 0, 0, new Item.Properties()));
+//    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
+//            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
             () -> new RockCutterItem(1, -2.8F, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
-    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
-            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
     public static final DeferredItem<ElectricDrillItem> ELECTRIC_DRILL = registerItem("electric_drill",
             () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
-    public static final DeferredItem<TapeMeasureItem> TAPE_MEASURE = registerItem("tape_measure",
-            () -> new TapeMeasureItem(new Item.Properties()));
+//    public static final DeferredItem<TapeMeasureItem> TAPE_MEASURE = registerItem("tape_measure",
+//            () -> new TapeMeasureItem(new Item.Properties()));
     public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
             () -> new BlueprintItem(new Item.Properties()));
 
@@ -76,8 +80,8 @@ public final class IRItems {
             () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_HELMET = registerItem("hazmat_helmet",
             () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<JetpackItem> JETPACK = registerItem("jetpack",
-            () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
+//    public static final DeferredItem<JetpackItem> JETPACK = registerItem("jetpack",
+//            () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
 
     //misc
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
@@ -92,10 +96,6 @@ public final class IRItems {
     public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
     public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot");
     public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire");
-
-    // Needs to be registered manual for custom placement
-    public static final DeferredItem<Item> MINING_PIPE = registerItem("mining_pipe",
-            () -> new MiningPipeBlockItem(new Item.Properties()));
 
     //ores
     public static final DeferredItem<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");
@@ -141,12 +141,16 @@ public final class IRItems {
     public static final DeferredItem<BucketItem> OIL_BUCKET = registerItem("oil_bucket",
             () -> new BucketItem(IRFluids.OIL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-    private static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
-        return ITEMS.register(name, item);
+    static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
+        DeferredItem<T> deferredItem = ITEMS.register(name, item);
+        TAB_ITEMS.add(deferredItem);
+        return deferredItem;
     }
 
     private static DeferredItem<Item> registerStandardItem(String name) {
-        return ITEMS.registerSimpleItem(name);
+        DeferredItem<Item> deferredItem = ITEMS.registerSimpleItem(name);
+        TAB_ITEMS.add(deferredItem);
+        return deferredItem;
     }
 
     private static DeferredItem<Item> moldItem(String moldType) {

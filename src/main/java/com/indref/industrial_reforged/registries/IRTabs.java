@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -44,162 +45,24 @@ public final class IRTabs {
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRItems.HAMMER.get()))
             .displayItems((parameters, output) -> {
-                // Tools
-                addItem(output, IRItems.WRENCH);
-                addItem(output, IRItems.HAMMER);
-                addItem(output, IRItems.TREE_TAP);
-                addItem(output, IRItems.THERMOMETER);
-                addPoweredItem(output, IRItems.SCANNER);
-//                addPoweredItem(output, IRItems.ELECTRIC_WRENCH);
-//                addPoweredItem(output, IRItems.ELECTRIC_HOE);
-                addRockCutter(output, parameters, IRItems.ROCK_CUTTER);
-//                addPoweredItem(output, IRItems.ELECTRIC_TREE_TAP);
-                addPoweredItem(output, IRItems.ELECTRIC_DRILL);
-                addPoweredItem(output, IRItems.ADVANCED_DRILL);
-                addPoweredItem(output, IRItems.NANO_SABER);
-                //addItem(output, IRItems.TAPE_MEASURE);
-                addItem(output, IRItems.BLUEPRINT);
-
-                // Storage items
-                addItem(output, IRItems.TOOLBOX);
-                //addItem(output, IRItems.LUNCH_BAG);
-                addVariantForAllFluids(output, IRItems.FLUID_CELL);
-
-                // armor
-                addItem(output, IRItems.HAZMAT_BOOTS);
-                addItem(output, IRItems.HAZMAT_LEGGINGS);
-                addItem(output, IRItems.HAZMAT_CHESTPLATE);
-                addItem(output, IRItems.HAZMAT_HELMET);
-
-                // reactor
-                // addItem(output, IRItems.URANIUM_FUEL_ROD);
-
-                // misc and crafting items
-                addItem(output, IRItems.BASIC_CIRCUIT);
-                addItem(output, IRItems.ADVANCED_CIRCUIT);
-                addItem(output, IRItems.ULTIMATE_CIRCUIT);
-                addPoweredItem(output, IRItems.BASIC_BATTERY);
-                addPoweredItem(output, IRItems.ADVANCED_BATTERY);
-                addPoweredItem(output, IRItems.ULTIMATE_BATTERY);
-                addItem(output, IRItems.RUBBER_SHEET);
-                addItem(output, IRItems.RUBBER);
-                addItem(output, IRItems.BIOMASS);
-                addItem(output, IRItems.PLANT_BALL);
-                addItem(output, IRItems.ANTENNA);
-
-                addItem(output, IRItems.FERTILIZER);
-                addItem(output, IRItems.STICKY_RESIN);
-                addItem(output, IRItems.CLAY_MOLD_BLANK);
-                addItem(output, IRItems.CLAY_MOLD_INGOT);
-                addItem(output, IRItems.CLAY_MOLD_WIRE);
-
-                addItem(output, IRItems.OIL_BUCKET);
-                addItem(output, IRItems.MOLTEN_STEEL_BUCKET);
-
-                // Raw ore items
-                addItem(output, IRItems.RAW_BAUXITE);
-                addItem(output, IRItems.RAW_CHROMIUM);
-                addItem(output, IRItems.RAW_IRIDIUM);
-                addItem(output, IRItems.RAW_LEAD);
-                addItem(output, IRItems.RAW_NICKEL);
-                addItem(output, IRItems.RAW_TIN);
-                addItem(output, IRItems.RAW_URANIUM);
-
-                addItem(output, IRItems.ALUMINUM_INGOT);
-                addItem(output, IRItems.CHROMIUM_INGOT);
-                addItem(output, IRItems.IRIDIUM_INGOT);
-                addItem(output, IRItems.LEAD_INGOT);
-                addItem(output, IRItems.NICKEL_INGOT);
-                addItem(output, IRItems.TITANIUM_INGOT);
-                addItem(output, IRItems.URANIUM_INGOT);
-                addItem(output, IRItems.TIN_INGOT);
-                addItem(output, IRItems.STEEL_INGOT);
-                addItem(output, IRItems.STEEL_DUST);
-                addItem(output, IRItems.COPPER_DUST);
-                addItem(output, IRItems.COPPER_WIRE);
-                addItem(output, IRItems.GOLD_WIRE);
-                addItem(output, IRItems.STEEL_WIRE);
+                for (DeferredItem<?> item : IRItems.TAB_ITEMS) {
+                    if (item.asItem() instanceof RockCutterItem) {
+                        addRockCutter(output, parameters, item);
+                    } else if (item.asItem() instanceof IEnergyItem) {
+                        addPoweredItem(output, item);
+                    } else {
+                        addItem(output, item);
+                    }
+                }
             }).build());
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref.blocks"))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {
-                // misc blocks
-                addBlock(output, IRBlocks.CENTRIFUGE);
-                addBlock(output, IRBlocks.BASIC_GENERATOR);
-                addBlock(output, IRBlocks.BASIC_MACHINE_FRAME);
-                addBlock(output, IRBlocks.DRAIN);
-                addBlock(output, IRBlocks.CRAFTING_STATION);
-                addBlock(output, IRBlocks.TIN_CABLE);
-                addBlock(output, IRBlocks.COPPER_CABLE);
-                addBlock(output, IRBlocks.GOLD_CABLE);
-                addBlock(output, IRBlocks.STEEL_CABLE);
-                addItem(output, IRItems.MINING_PIPE);
-                addBlock(output, IRBlocks.COIL);
-                addBlock(output, IRBlocks.TERRACOTTA_BRICK_SLAB);
-                addBlock(output, IRBlocks.TERRACOTTA_BRICK);
-//                addBlock(output, IRBlocks.CERAMIC_FAUCET);
-                addBlock(output, IRBlocks.CERAMIC_CASTING_BASIN);
-                addBlock(output, IRBlocks.REFRACTORY_BRICK);
-                addBlock(output, IRBlocks.REFRACTORY_STONE);
-                addBlock(output, IRBlocks.BLAST_FURNACE_BRICKS);
-                addBlock(output, IRBlocks.BLAST_FURNACE_HATCH);
-                addBlock(output, IRBlocks.BLAST_FURNACE_FAUCET);
-                addBlock(output, IRBlocks.SANDY_CASTING_BASIN);
-                addBlock(output, IRBlocks.SMALL_FIREBOX_HATCH);
-
-                // Ores
-                addBlock(output, IRBlocks.BAUXITE_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_BAUXITE_ORE);
-                addBlock(output, IRBlocks.CHROMIUM_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_CHROMIUM_ORE);
-                addBlock(output, IRBlocks.IRIDIUM_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_IRIDIUM_ORE);
-                addBlock(output, IRBlocks.LEAD_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_LEAD_ORE);
-                addBlock(output, IRBlocks.NICKEL_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_NICKEL_ORE);
-                addBlock(output, IRBlocks.TIN_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_TIN_ORE);
-                addBlock(output, IRBlocks.URANIUM_ORE);
-                addBlock(output, IRBlocks.DEEPSLATE_URANIUM_ORE);
-
-                addBlock(output, IRBlocks.RAW_BAUXITE_BLOCK);
-                addBlock(output, IRBlocks.RAW_CHROMIUM_BLOCK);
-                addBlock(output, IRBlocks.RAW_IRIDIUM_BLOCK);
-                addBlock(output, IRBlocks.RAW_LEAD_BLOCK);
-                addBlock(output, IRBlocks.RAW_NICKEL_BLOCK);
-                addBlock(output, IRBlocks.RAW_TIN_BLOCK);
-                addBlock(output, IRBlocks.RAW_URANIUM_BLOCK);
-
-                addBlock(output, IRBlocks.ALUMINUM_BLOCK);
-                addBlock(output, IRBlocks.CHROMIUM_BLOCK);
-                addBlock(output, IRBlocks.IRIDIUM_BLOCK);
-                addBlock(output, IRBlocks.LEAD_BLOCK);
-                addBlock(output, IRBlocks.NICKEL_BLOCK);
-                addBlock(output, IRBlocks.TIN_BLOCK);
-                addBlock(output, IRBlocks.TITANIUM_BLOCK);
-                addBlock(output, IRBlocks.URANIUM_BLOCK);
-                addBlock(output, IRBlocks.STEEL_BLOCK);
-
-                addBlock(output, IRBlocks.RUBBER_TREE_BUTTON);
-                addBlock(output, IRBlocks.RUBBER_TREE_DOOR);
-                addBlock(output, IRBlocks.RUBBER_TREE_FENCE);
-                addBlock(output, IRBlocks.RUBBER_TREE_FENCE_GATE);
-                addBlock(output, IRBlocks.RUBBER_TREE_LEAVES);
-                addBlock(output, IRBlocks.RUBBER_TREE_LOG);
-                addBlock(output, IRBlocks.RUBBER_TREE_PLANKS);
-                addBlock(output, IRBlocks.RUBBER_TREE_PRESSURE_PLATE);
-                addBlock(output, IRBlocks.RUBBER_TREE_SAPLING);
-                addBlock(output, IRBlocks.RUBBER_TREE_SLAB);
-                addBlock(output, IRBlocks.RUBBER_TREE_STAIRS);
-                addBlock(output, IRBlocks.RUBBER_TREE_TRAPDOOR);
-                addBlock(output, IRBlocks.RUBBER_TREE_WOOD);
-                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_LOG);
-                addBlock(output, IRBlocks.STRIPPED_RUBBER_TREE_WOOD);
-
-                addBlock(output, IRBlocks.REINFORCED_PLANKS);
+                for (DeferredItem<?> block : IRBlocks.TAB_BLOCKS) {
+                    output.accept(block);
+                }
             }).build());
 
     private static void addItem(CreativeModeTab.Output output, DeferredItem<?> item) {

@@ -1,9 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "indref:item/seed_pouch_empty"
-  },
-  "overrides": [
-    { "predicate": { "filled": 0.0000001 }, "model": "indref:item/seed_pouch_full" }
-  ]
-}

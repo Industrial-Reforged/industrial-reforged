@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-12T12:14:56.887211142	Tags for minecraft:item mod id vanilla
+// 1.21.1	2024-11-10T01:12:48.832050719	Tags for minecraft:item mod id vanilla
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
 3c024fc87b598b1c8b6014fde24951f4259ceb14 data/c/tags/item/ingots/chromium.json
@@ -20,5 +20,5 @@ fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json
 0b79414d07652b0536049e1e7ea3b0a3a88e742b data/c/tags/item/wires/steel.json
 71051527a733b38d16af3551c77c971f5928095e data/c/tags/item/wires/tin.json
-0cfe6a9a17788eb3d053a06268a3db07863c9d62 data/indref/tags/item/tool.json
+f74de00cd28265a05d06fcde8a72be7fa710e85c data/indref/tags/item/tool.json
 c2989190205a96a6014d8cbc999316cf3d1111b9 data/minecraft/tags/item/rubber_logs.json

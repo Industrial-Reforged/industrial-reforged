@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.registries;
 
-import com.indref.industrial_reforged.datagen.IRWorldGenProvider;
+import com.indref.industrial_reforged.datagen.data.IRWorldGenProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.grower.TreeGrower;

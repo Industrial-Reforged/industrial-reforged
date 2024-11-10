@@ -177,8 +177,8 @@ public final class IREvents {
         @SubscribeEvent
         public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
-                ItemProperties.register(IRItems.TAPE_MEASURE.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, TapeMeasureItem.EXTENDED_KEY),
-                        (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
+//                ItemProperties.register(IRItems.TAPE_MEASURE.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, TapeMeasureItem.EXTENDED_KEY),
+//                        (stack, level, living, id) -> TapeMeasureItem.isExtended(stack));
                 ItemProperties.register(IRItems.NANO_SABER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ItemUtils.ACTIVE_KEY),
                         (stack, level, living, id) -> NanoSaberItem.isActive(stack));
                 ItemProperties.register(IRItems.THERMOMETER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),

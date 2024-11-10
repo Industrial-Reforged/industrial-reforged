@@ -6,22 +6,24 @@ import net.minecraft.network.chat.Component;
 
 public enum EnergyTiers implements EnergyTier {
     // TODO: Adjust these values
-    NONE(Component.translatable("indref.energy.tier.none").withStyle(ChatFormatting.GRAY), 0, 0, 0),
-    LOW(Component.translatable("indref.energy.tier.low").withStyle(ChatFormatting.WHITE), 16, 16, 4_000),
-    MEDIUM(Component.translatable("indref.energy.tier.medium").withStyle(ChatFormatting.GOLD),64, 64, 16_000),
-    HIGH(Component.translatable("indref.energy.tier.high").withStyle(ChatFormatting.BLUE),128, 128, 32_000),
-    EXTREME(Component.translatable("indref.energy.tier.extreme").withStyle(ChatFormatting.GREEN), 512, 512, 256_000),
-    INSANE(Component.translatable("indref.energy.tier.insane").withStyle(ChatFormatting.RED), 1024, 1024, 512_000),
-    CREATIVE(Component.translatable("indref.energy.tier.creative").withStyle(ChatFormatting.LIGHT_PURPLE), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    NONE("none", ChatFormatting.GRAY.getColor(), 0, 0, 0),
+    LOW("low", ChatFormatting.WHITE.getColor(), 16, 16, 4_000),
+    MEDIUM("medium", ChatFormatting.GOLD.getColor(),64, 64, 16_000),
+    HIGH("high", ChatFormatting.BLUE.getColor(),128, 128, 32_000),
+    EXTREME("extreme", ChatFormatting.GREEN.getColor(), 512, 512, 256_000),
+    INSANE("insane", ChatFormatting.RED.getColor(), 1024, 1024, 512_000),
+    CREATIVE("creative", ChatFormatting.LIGHT_PURPLE.getColor(), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     private final int maxInput;
     private final int maxOutput;
     private final int current;
     private final int defaultCapacity;
-    private final Component name;
+    private final String id;
+    private final int color;
 
-    EnergyTiers(Component name, int throughPut, int current, int defaultCapacity) {
-        this.name = name;
+    EnergyTiers(String id, int color, int throughPut, int current, int defaultCapacity) {
+        this.id = id;
+        this.color = color;
         this.maxInput = throughPut;
         this.maxOutput = throughPut;
         this.current = current;
@@ -49,7 +51,12 @@ public enum EnergyTiers implements EnergyTier {
     }
 
     @Override
-    public Component getName() {
-        return this.name;
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public int getColor() {
+        return this.color;
     }
 }

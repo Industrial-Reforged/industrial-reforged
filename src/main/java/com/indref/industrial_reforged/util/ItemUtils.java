@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.ChatFormatting;
@@ -112,7 +113,7 @@ public final class ItemUtils {
         tooltip.add(
                 Component.translatable("indref.energy.desc.tier").withStyle(ChatFormatting.GOLD)
                         .append(Component.literal(": "))
-                        .append(item.getEnergyTier().getName())
+                        .append(Component.translatable("energy_tier." + IndustrialReforged.MODID + "." + item.getEnergyTier()))
         );
     }
 

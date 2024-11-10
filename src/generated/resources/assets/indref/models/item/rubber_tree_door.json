@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "indref:item/tree/rubber_tree_door"
+    "layer0": "indref:item/rubber_tree_door"
   }
 }

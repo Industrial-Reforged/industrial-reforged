@@ -1,7 +1,5 @@
 package com.indref.industrial_reforged.api.tiers;
 
-import net.minecraft.network.chat.Component;
-
 public interface EnergyTier {
     int getMaxInput();
     int getMaxOutput();
@@ -9,5 +7,6 @@ public interface EnergyTier {
     // Current flow unit (EU/t)
     int getCurrent();
     int getDefaultCapacity();
-    Component getName();
+    String getId();
+    int getColor();
 }
