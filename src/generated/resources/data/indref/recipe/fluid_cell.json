@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:ingots/tin"
+    },
+    "P": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#P#",
+    " # "
+  ],
+  "result": {
+    "count": 6,
+    "id": "indref:fluid_cell"
+  }
+}

@@ -70,11 +70,11 @@ public class MiningPipeBlock extends Block implements WrenchableBlock {
         return p_56030_ > 0 && !p_56028_.getBlockState(p_56029_.below()).is(this);
     }
 
-    public static int getDistance(BlockGetter p_56025_, BlockPos p_56026_) {
+    public int getDistance(BlockGetter p_56025_, BlockPos p_56026_) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = p_56026_.mutable().move(Direction.DOWN);
         BlockState blockstate = p_56025_.getBlockState(blockpos$mutableblockpos);
         int i = 7;
-        if (blockstate.is(IRBlocks.MINING_PIPE.get())) {
+        if (blockstate.is(this)) {
             i = blockstate.getValue(DISTANCE);
         } else if (blockstate.isFaceSturdy(p_56025_, blockpos$mutableblockpos, Direction.UP)) {
             return 0;
@@ -82,7 +82,7 @@ public class MiningPipeBlock extends Block implements WrenchableBlock {
 
         for(Direction direction : Direction.Plane.HORIZONTAL) {
             BlockState blockstate1 = p_56025_.getBlockState(blockpos$mutableblockpos.setWithOffset(p_56026_, direction));
-            if (blockstate1.is(IRBlocks.MINING_PIPE.get())) {
+            if (blockstate1.is(this)) {
                 i = Math.min(i, blockstate1.getValue(DISTANCE) + 1);
                 if (i == 1) {
                     break;

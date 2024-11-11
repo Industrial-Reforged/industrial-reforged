@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "indref:block/multiblock/blast_furnace/blast_furnace_bricks"
-  }
-}

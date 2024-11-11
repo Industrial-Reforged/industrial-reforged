@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "indref:plant_ball"
+    },
+    "R": {
+      "tag": "c:plates/rubber"
+    }
+  },
+  "pattern": [
+    "###",
+    "RRR",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "id": "indref:circuit_board"
+  }
+}

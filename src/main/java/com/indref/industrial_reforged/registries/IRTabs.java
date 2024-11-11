@@ -3,17 +3,20 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
+import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
+import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.FastColor;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -50,11 +53,28 @@ public final class IRTabs {
                         addRockCutter(output, parameters, item);
                     } else if (item.asItem() instanceof IEnergyItem) {
                         addPoweredItem(output, item);
-                    } else {
+                    } else if (item.asItem() instanceof FluidCellItem) {
+                        addVariantForAllFluids(output, item);
+                    } else if (item.asItem() instanceof ToolboxItem) {
+                        addVariantForAllColors(output, item);
+                    }else {
                         addItem(output, item);
                     }
                 }
             }).build());
+
+    private static void addVariantForAllColors(CreativeModeTab.Output output, DeferredItem<?> item) {
+        for (DyeColor color : DyeColor.values()) {
+            ItemStack itemStack = item.toStack();
+            int textureDiffuseColor = color.getTextureDiffuseColor();
+            Vec3i rgb = new Vec3i((int) Math.min(FastColor.ARGB32.red(textureDiffuseColor) * 1.4, 255),
+                    (int) Math.min(FastColor.ARGB32.blue(textureDiffuseColor) * 1.4, 255),
+                    (int) Math.min(FastColor.ARGB32.green(textureDiffuseColor) * 1.4, 255));
+            itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(FastColor.ARGB32.color(rgb.getX(), rgb.getY(), rgb.getZ()), false));
+            output.accept(itemStack);
+        }
+    }
+
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
             .title(Component.translatable("creative_tab.indref.blocks"))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)

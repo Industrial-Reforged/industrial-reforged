@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:gems/diamond"
+    },
+    "B": {
+      "item": "indref:advanced_battery"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "D": {
+      "item": "indref:electric_drill"
+    }
+  },
+  "pattern": [
+    " ##",
+    "CD#",
+    "BC "
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:advanced_drill"
+  }
+}

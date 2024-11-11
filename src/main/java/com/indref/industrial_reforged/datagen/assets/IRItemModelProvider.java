@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
+import com.indref.industrial_reforged.content.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -11,7 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -52,6 +55,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.RUBBER);
         basicItem(IRItems.RUBBER_SHEET);
         basicItem(IRItems.STICKY_RESIN);
+        basicItem(IRItems.CIRCUIT_BOARD);
 
         basicItem(IRItems.SCANNER);
         basicItem(IRItems.ADVANCED_DRILL);
@@ -62,7 +66,9 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.HAMMER);
         basicItem(IRItems.TREE_TAP);
         basicItem(IRItems.WRENCH);
-        basicItem(IRItems.TOOLBOX);
+        toolbox(IRItems.TOOLBOX);
+
+        basicItem(IRItems.ELECTRIC_MOTOR);
 
 //		basicItem(IRItems.TIN_WIRE);
         basicItem(IRItems.COPPER_WIRE);
@@ -78,9 +84,9 @@ public class IRItemModelProvider extends ItemModelProvider {
         battery(IRItems.ADVANCED_BATTERY, 8);
         battery(IRItems.ULTIMATE_BATTERY, 9);
 
-        // TODO: Fluid cells
+        fluidCell(IRItems.FLUID_CELL);
 
-        // TODO: Thermometer
+        thermometer(IRItems.THERMOMETER);
 
         basicItem(IRItems.ALUMINUM_INGOT);
         basicItem(IRItems.IRIDIUM_INGOT);
@@ -103,14 +109,54 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.COPPER_DUST);
         basicItem(IRItems.STEEL_DUST);
 
+        basicItem(IRItems.IRON_PLATE);
+        basicItem(IRItems.STEEL_PLATE);
+
+        basicItem(IRItems.IRON_ROD);
+        basicItem(IRItems.STEEL_ROD);
+
         basicItem(IRItems.URANIUM_FUEL_ROD);
+
+        cable(IRBlocks.TIN_CABLE);
+        cable(IRBlocks.COPPER_CABLE);
+        cable(IRBlocks.GOLD_CABLE);
+        cable(IRBlocks.STEEL_CABLE);
 
         blockItems();
     }
 
-    private void battery(ItemLike item, int stages) {
+    private void toolbox(ItemLike item) {
+        withExistingParent(name(item), mcLoc("item/generated"))
+                .texture("layer0", itemTexture(item))
+                .texture("layer1", extend(itemTexture(item), "_overlay"));
+    }
+
+    private void fluidCell(ItemLike item) {
+        withExistingParent(name(item), ResourceLocation.fromNamespaceAndPath("neoforge", "item/default"))
+                .texture("base", itemTexture(item))
+                .texture("fluid", extend(itemTexture(item), "_overlay"))
+                .texture("particle", extend(itemTexture(item), "_overlay"))
+                .customLoader(DynamicFluidContainerModelBuilder::begin)
+                .applyTint(true)
+                .flipGas(true)
+                .fluid(Fluids.EMPTY);
+    }
+
+    private void thermometer(ItemLike item) {
         ItemModelBuilder builder = getBuilder(name(item))
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", extend(itemTexture(item), "_0"));
+
+        for (int i = 0; i < 7; i++) {
+            builder.override()
+                    .model(basicItem(item, "_" + i))
+                    .predicate(modLoc(ThermometerItem.DISPLAY_TEMPERATURE_KEY), i)
+                    .end();
+        }
+    }
+
+    private void battery(ItemLike item, int stages) {
+        ItemModelBuilder builder = withExistingParent(name(item), mcLoc("item/generated"))
                 .texture("layer0", extend(itemTexture(item), "_0"));
 
         for (int i = 0; i < stages; i++) {
@@ -122,9 +168,14 @@ public class IRItemModelProvider extends ItemModelProvider {
     }
 
     private void bucket(Fluid f) {
-        withExistingParent(BuiltInRegistries.ITEM.getKey(f.getBucket().asItem()).getPath(), ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket_drip"))
+        withExistingParent(key(f.getBucket()).getPath(), ResourceLocation.fromNamespaceAndPath("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(f);
+    }
+
+    private void cable(ItemLike item) {
+        withExistingParent(name(item), modLoc("item/cable_inventory"))
+                .texture("texture", blockTexture(item));
     }
 
     private void blockItems() {
@@ -198,6 +249,11 @@ public class IRItemModelProvider extends ItemModelProvider {
     public ResourceLocation itemTexture(ItemLike item) {
         ResourceLocation name = key(item);
         return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + name.getPath());
+    }
+
+    public ResourceLocation blockTexture(ItemLike item) {
+        ResourceLocation name = key(item);
+        return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath());
     }
 
 }

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:ingots/steel"
+    },
+    "B": {
+      "item": "indref:basic_battery"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "D": {
+      "tag": "c:gems/diamond"
+    }
+  },
+  "pattern": [
+    "D# ",
+    " D#",
+    " CB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:rock_cutter"
+  }
+}

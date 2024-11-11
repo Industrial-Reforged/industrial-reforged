@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "indref:block/blast_furnace_bricks",
+    "side": "indref:block/blast_furnace_hatch"
+  }
+}

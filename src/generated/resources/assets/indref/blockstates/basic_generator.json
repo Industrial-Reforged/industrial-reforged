@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "indref:block/basic_generator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "indref:block/basic_generator"
+    },
+    "facing=south": {
+      "model": "indref:block/basic_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indref:block/basic_generator",
+      "y": 270
+    }
+  }
+}

@@ -12,7 +12,10 @@ import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -59,15 +62,25 @@ public final class IRItems {
     public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
     public static final DeferredItem<Item> ANTENNA = registerStandardItem("antenna");
+    public static final DeferredItem<Item> ELECTRIC_MOTOR = registerItem("electric_motor",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CIRCUIT_BOARD = registerItem("circuit_board",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
+    public static final DeferredItem<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
+    public static final DeferredItem<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
     public static final DeferredItem<Item> PLANT_BALL = registerStandardItem("plant_ball");
     public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, 6));
     public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = registerItem("advanced_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, 8));
     public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = registerItem("ultimate_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, 9));
+    public static final DyedItemColor EMPTY_COLOR = new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), false);
     public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
-            () -> new ToolboxItem(new Item.Properties().stacksTo(1)));
+            () -> new ToolboxItem(new Item.Properties()
+                    .stacksTo(1)
+                    .component(DataComponents.DYED_COLOR, EMPTY_COLOR)));
     public static final DeferredItem<UraniumFuelRodItem> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
             () -> new UraniumFuelRodItem(new Item.Properties().stacksTo(1)));
 
@@ -86,10 +99,6 @@ public final class IRItems {
     //misc
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
     public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
-    public static final DeferredItem<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
-    public static final DeferredItem<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
-    public static final DeferredItem<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
-    public static final DeferredItem<Item> BIOMASS = registerStandardItem("biomass");
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
     public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
@@ -125,6 +134,7 @@ public final class IRItems {
 
     // Rods
     public static final DeferredItem<Item> IRON_ROD = registerStandardItem("iron_rod");
+    public static final DeferredItem<Item> STEEL_ROD = registerStandardItem("steel_rod");
 
     // Wires
     public static final DeferredItem<Item> TIN_WIRE = registerStandardItem("tin_wire");

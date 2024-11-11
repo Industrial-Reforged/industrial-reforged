@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "R": {
+      "item": "minecraft:crafting_table"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "#R#",
+    "#C#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:crafting_station"
+  }
+}

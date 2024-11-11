@@ -1,0 +1,6 @@
+{
+  "parent": "indref:item/cable_inventory",
+  "textures": {
+    "texture": "indref:block/steel_cable"
+  }
+}

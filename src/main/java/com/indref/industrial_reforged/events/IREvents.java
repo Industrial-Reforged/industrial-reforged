@@ -51,6 +51,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
@@ -70,6 +71,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -171,7 +173,8 @@ public final class IREvents {
         @SubscribeEvent
         public static void registerItemColor(RegisterColorHandlersEvent.Item event) {
             event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
-            event.register(new SimpleFluidItem.Colors(), IRItems.MOLTEN_STEEL_BUCKET.get());
+            event.register(new DynamicFluidContainerModel.Colors(), IRItems.MOLTEN_STEEL_BUCKET.get());
+            event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
         }
 
         @SubscribeEvent
@@ -184,9 +187,9 @@ public final class IREvents {
                 ItemProperties.register(IRItems.THERMOMETER.get(), ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, ThermometerItem.DISPLAY_TEMPERATURE_KEY),
                         (stack, level, living, id) -> ThermometerItem.getTemperature(stack));
                 for (Item item : BuiltInRegistries.ITEM) {
-                    if (item instanceof BatteryItem) {
+                    if (item instanceof BatteryItem batteryItem) {
                         ItemProperties.register(item, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, BatteryItem.ENERGY_STAGE_KEY),
-                                (stack, level, living, id) -> BatteryItem.getEnergyStage(stack));
+                                (stack, level, living, id) -> batteryItem.getEnergyStage(stack));
                     }
                 }
             });

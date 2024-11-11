@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:plates/steel"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "S": {
+      "item": "indref:steel_rod"
+    }
+  },
+  "pattern": [
+    "# R",
+    "#S ",
+    " ##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:antenna"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "indref:block/cable_connection",
+  "textures": {
+    "texture": "indref:block/steel_cable"
+  }
+}

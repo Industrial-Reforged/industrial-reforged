@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:ingots/steel"
+    },
+    "B": {
+      "item": "indref:basic_battery"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "M": {
+      "item": "indref:electric_motor"
+    }
+  },
+  "pattern": [
+    " ##",
+    "CM#",
+    "BC "
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:electric_drill"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,resin=false": {
+      "model": "indref:block/rubber_tree_resin_hole",
+      "y": 90
+    },
+    "facing=east,resin=true": {
+      "model": "indref:block/rubber_tree_resin_hole_full",
+      "y": 90
+    },
+    "facing=north,resin=false": {
+      "model": "indref:block/rubber_tree_resin_hole"
+    },
+    "facing=north,resin=true": {
+      "model": "indref:block/rubber_tree_resin_hole_full"
+    },
+    "facing=south,resin=false": {
+      "model": "indref:block/rubber_tree_resin_hole",
+      "y": 180
+    },
+    "facing=south,resin=true": {
+      "model": "indref:block/rubber_tree_resin_hole_full",
+      "y": 180
+    },
+    "facing=west,resin=false": {
+      "model": "indref:block/rubber_tree_resin_hole",
+      "y": 270
+    },
+    "facing=west,resin=true": {
+      "model": "indref:block/rubber_tree_resin_hole_full",
+      "y": 270
+    }
+  }
+}

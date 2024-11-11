@@ -1,0 +1,6 @@
+{
+  "parent": "indref:block/cable_base",
+  "textures": {
+    "texture": "indref:block/gold_cable"
+  }
+}

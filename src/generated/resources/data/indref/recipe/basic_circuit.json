@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "indref:copper_cable"
+    },
+    "B": {
+      "item": "indref:circuit_board"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "###",
+    "RBR",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:basic_circuit"
+  }
+}

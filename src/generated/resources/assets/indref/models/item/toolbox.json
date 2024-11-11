@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "indref:item/toolbox"
+    "layer0": "indref:item/toolbox",
+    "layer1": "indref:item/toolbox_overlay"
   }
 }

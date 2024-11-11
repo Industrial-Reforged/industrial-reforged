@@ -1,0 +1,6 @@
+{
+  "parent": "indref:block/casting_basin_base",
+  "textures": {
+    "texture": "indref:block/blast_furnace_bricks"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:plates/iron"
+    },
+    "B": {
+      "item": "indref:basic_machine_frame"
+    },
+    "M": {
+      "item": "indref:electric_motor"
+    },
+    "R": {
+      "item": "indref:iron_rod"
+    }
+  },
+  "pattern": [
+    "###",
+    "RBR",
+    "#M#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:centrifuge"
+  }
+}

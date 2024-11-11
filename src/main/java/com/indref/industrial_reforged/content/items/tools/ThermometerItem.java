@@ -45,7 +45,7 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem {
         Font font = Minecraft.getInstance().font;
         BlockState blockstate = level.getBlockState(blockPos);
         if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
-            if (!displayBlock.getCompatibleItems().contains(IRItems.THERMOMETER.get())) return;
+            if (!displayBlock.getCompatibleItems().contains(this)) return;
 
             List<Component> displayText = new ArrayList<>();
 

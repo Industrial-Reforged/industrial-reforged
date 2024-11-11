@@ -18,7 +18,6 @@ import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
-import com.indref.industrial_reforged.content.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
@@ -47,6 +46,7 @@ public final class IRBlocks {
     public static final List<DeferredItem<?>> TAB_BLOCKS = new ArrayList<>();
     public static final List<DeferredBlock<Block>> METAL_STORAGE_BLOCKS = new ArrayList<>();
     public static final List<DeferredBlock<Block>> RAW_STORAGE_BLOCKS = new ArrayList<>();
+    public static final List<DeferredBlock<DropExperienceBlock>> ORES = new ArrayList<>();
 
     public static final DeferredBlock<CableBlock> TIN_CABLE = registerBlockAndItem("tin_cable",
             () -> new CableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOL).mapColor(MapColor.COLOR_BLACK), 6, EnergyTiers.LOW), true, false);
@@ -56,8 +56,8 @@ public final class IRBlocks {
             () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.HIGH), true, false);
     public static final DeferredBlock<CableBlock> STEEL_CABLE = registerBlockAndItem("steel_cable",
             () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.EXTREME), true, false);
-    public static final DeferredBlock<MiningPipeBlock> MINING_PIPE = registerBlockAndItem("mining_pipe",
-            () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()), $ -> () -> new MiningPipeBlockItem(new Item.Properties()), true, true);
+//    public static final DeferredBlock<MiningPipeBlock> MINING_PIPE = registerBlockAndItem("mining_pipe",
+//            () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()), $ -> () -> new MiningPipeBlockItem(new Item.Properties()), true, true);
     public static final DeferredBlock<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS = registerBlockAndItem("blast_furnace_bricks",
             () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = registerBlockAndItem("blast_furnace_hatch",
@@ -86,14 +86,11 @@ public final class IRBlocks {
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC), false);
     public static final DeferredBlock<CruciblePartBlock> CERAMIC_CRUCIBLE_PART = registerBlock("ceramic_crucible_wall",
             () -> new CruciblePartBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC));
-    @Deprecated
-    public static final DeferredBlock<FaucetBlock> CERAMIC_FAUCET = registerBlockAndItem("ceramic_faucet",
-            () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.TERRACOTTA_BRICK.get()));
     public static final DeferredBlock<FaucetBlock> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final DeferredBlock<CastingBasinBlock> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
-    public static final DeferredBlock<CastingBasinBlock> SANDY_CASTING_BASIN = registerBlockAndItem("sandy_casting_basin",
+    public static final DeferredBlock<CastingBasinBlock> BLAST_FURNACE_CASTING_BASIN = registerBlockAndItem("blast_furnace_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = registerBlockAndItem("centrifuge",
             () -> new CentrifugeBlock(BlockBehaviour.Properties.of()));
@@ -133,34 +130,20 @@ public final class IRBlocks {
             () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB)));
 
     // Ores
-    public static final DeferredBlock<DropExperienceBlock> BAUXITE_ORE = registerBlockAndItem("bauxite_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_BAUXITE_ORE = registerBlockAndItem("deepslate_bauxite_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
-    public static final DeferredBlock<DropExperienceBlock> CHROMIUM_ORE = registerBlockAndItem("chromium_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_CHROMIUM_ORE = registerBlockAndItem("deepslate_chromium_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
-    public static final DeferredBlock<DropExperienceBlock> IRIDIUM_ORE = registerBlockAndItem("iridium_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_IRIDIUM_ORE = registerBlockAndItem("deepslate_iridium_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
-    public static final DeferredBlock<DropExperienceBlock> LEAD_ORE = registerBlockAndItem("lead_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_LEAD_ORE = registerBlockAndItem("deepslate_lead_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
-    public static final DeferredBlock<DropExperienceBlock> NICKEL_ORE = registerBlockAndItem("nickel_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_NICKEL_ORE = registerBlockAndItem("deepslate_nickel_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
-    public static final DeferredBlock<DropExperienceBlock> TIN_ORE = registerBlockAndItem("tin_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_TIN_ORE = registerBlockAndItem("deepslate_tin_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
-    public static final DeferredBlock<DropExperienceBlock> URANIUM_ORE = registerBlockAndItem("uranium_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_URANIUM_ORE = registerBlockAndItem("deepslate_uranium_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(true)));
+    public static final DeferredBlock<DropExperienceBlock> BAUXITE_ORE = oreBlock("bauxite_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_BAUXITE_ORE = oreBlock("deepslate_bauxite_ore");
+    public static final DeferredBlock<DropExperienceBlock> CHROMIUM_ORE = oreBlock("chromium_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_CHROMIUM_ORE = oreBlock("deepslate_chromium_ore");
+    public static final DeferredBlock<DropExperienceBlock> IRIDIUM_ORE = oreBlock("iridium_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_IRIDIUM_ORE = oreBlock("deepslate_iridium_ore");
+    public static final DeferredBlock<DropExperienceBlock> LEAD_ORE = oreBlock("lead_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_LEAD_ORE = oreBlock("deepslate_lead_ore");
+    public static final DeferredBlock<DropExperienceBlock> NICKEL_ORE = oreBlock("nickel_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_NICKEL_ORE = oreBlock("deepslate_nickel_ore");
+    public static final DeferredBlock<DropExperienceBlock> TIN_ORE = oreBlock("tin_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_TIN_ORE = oreBlock("deepslate_tin_ore");
+    public static final DeferredBlock<DropExperienceBlock> URANIUM_ORE = oreBlock("uranium_ore");
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_URANIUM_ORE = oreBlock("deepslate_uranium_ore");
 
     // Metal storage blocks
     public static final DeferredBlock<Block> ALUMINUM_BLOCK = metalStorageBlock("aluminum_block");
@@ -213,14 +196,20 @@ public final class IRBlocks {
         return BLOCKS.register(name, block);
     }
 
+    private static DeferredBlock<DropExperienceBlock> oreBlock(String name) {
+        DeferredBlock<DropExperienceBlock> blockDeferredBlock = registerBlockAndItem(name, () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(false)));
+        ORES.add(blockDeferredBlock);
+        return blockDeferredBlock;
+    }
+
     private static DeferredBlock<Block> rawStorageBlock(String name) {
-        DeferredBlock<Block> blockDeferredBlock = registerBlock(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));
+        DeferredBlock<Block> blockDeferredBlock = registerBlockAndItem(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));
         RAW_STORAGE_BLOCKS.add(blockDeferredBlock);
         return blockDeferredBlock;
     }
 
     private static DeferredBlock<Block> metalStorageBlock(String name) {
-        DeferredBlock<Block> blockDeferredBlock = registerBlock(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
+        DeferredBlock<Block> blockDeferredBlock = registerBlockAndItem(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
         METAL_STORAGE_BLOCKS.add(blockDeferredBlock);
         return blockDeferredBlock;
     }

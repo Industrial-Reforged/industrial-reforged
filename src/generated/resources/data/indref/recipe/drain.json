@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:cobblestones"
+    },
+    "B": {
+      "item": "minecraft:iron_bars"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "U": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "pattern": [
+    "PBP",
+    "#U#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:drain"
+  }
+}

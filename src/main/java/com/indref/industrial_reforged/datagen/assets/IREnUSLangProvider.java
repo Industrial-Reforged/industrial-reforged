@@ -121,7 +121,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.STEEL_CABLE, "Steel Cable");
 
         addBlock(IRBlocks.BASIC_MACHINE_FRAME, "Basic Machine Frame");
-        addBlock(IRBlocks.MINING_PIPE, "Mining Pipe");
+//        addBlock(IRBlocks.MINING_PIPE, "Mining Pipe");
 
         addBlock(IRBlocks.REFRACTORY_BRICK, "Refractory Brick");
         addBlock(IRBlocks.REFRACTORY_STONE, "Refractory Stone");

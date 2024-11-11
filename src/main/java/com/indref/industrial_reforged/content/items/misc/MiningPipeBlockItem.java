@@ -17,8 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 
 public class MiningPipeBlockItem extends BlockItem {
+    private /*final*/ MiningPipeBlock block;
+
     public MiningPipeBlockItem(Properties properties) {
-        super(IRBlocks.MINING_PIPE.get(), properties);
+        super(null /*IRBlocks.MINING_PIPE.get()*/, properties);
+//        this.block = IRBlocks.MINING_PIPE.get();
     }
 
     @Nullable
@@ -30,7 +33,7 @@ public class MiningPipeBlockItem extends BlockItem {
         BlockState blockstate = level.getBlockState(blockpos);
         Block block = this.getBlock();
         if (!blockstate.is(block)) {
-            return MiningPipeBlock.getDistance(level, blockpos) == 7 ? null : context;
+            return this.block.getDistance(level, blockpos) == 7 ? null : context;
         } else {
             Direction direction;
             if (player.isShiftKeyDown()) {

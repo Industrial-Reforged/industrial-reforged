@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "indref:block/ore/deepslate_iridium_ore"
-  }
-}

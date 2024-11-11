@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:plates/steel"
+    },
+    "A": {
+      "item": "indref:antenna"
+    },
+    "C": {
+      "item": "indref:basic_circuit"
+    },
+    "G": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "pattern": [
+    "A  ",
+    "#G#",
+    "#C#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:scanner"
+  }
+}

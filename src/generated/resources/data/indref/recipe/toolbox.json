@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "R": {
+      "item": "indref:iron_rod"
+    }
+  },
+  "pattern": [
+    " R ",
+    "# #",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:toolbox"
+  }
+}

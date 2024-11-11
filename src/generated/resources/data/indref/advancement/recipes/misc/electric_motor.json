@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_copper_wire": {
+      "conditions": {
+        "items": [
+          {
+            "items": "indref:copper_wire"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "indref:electric_motor"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_copper_wire"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "indref:electric_motor"
+    ]
+  }
+}

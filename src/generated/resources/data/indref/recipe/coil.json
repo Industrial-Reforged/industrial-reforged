@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "indref:copper_wire"
+    },
+    "R": {
+      "item": "indref:iron_rod"
+    }
+  },
+  "pattern": [
+    "###",
+    "#R#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:coil"
+  }
+}

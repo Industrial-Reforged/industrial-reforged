@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "indref:block/steel_block"
+    }
+  }
+}

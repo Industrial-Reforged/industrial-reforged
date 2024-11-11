@@ -21,28 +21,24 @@ import java.util.List;
 public class BatteryItem extends SimpleElectricItem {
     public static final String ENERGY_STAGE_KEY = "energy_stage";
     private final int capacity;
+    private final int stages;
 
-    public BatteryItem(Properties properties, EnergyTier energyTier) {
-        this(properties, energyTier, energyTier.getDefaultCapacity());
+    public BatteryItem(Properties properties, EnergyTier energyTier, int stages) {
+        this(properties, energyTier, energyTier.getDefaultCapacity(), stages);
     }
 
-    public BatteryItem(Properties properties, EnergyTier energyTier, int capacity) {
+    public BatteryItem(Properties properties, EnergyTier energyTier, int capacity, int stages) {
         super(properties.component(IRDataComponents.BATTERY_STAGE, 0),energyTier);
         this.capacity = capacity;
+        this.stages = stages;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    @Override
-    public void onEnergyChanged(ItemStack itemStack) {
-        float energyPercentage = (float) getEnergyStored(itemStack) / getCapacity();
-        itemStack.set(IRDataComponents.BATTERY_STAGE, (int) (energyPercentage * 5));
-    }
-
-    public static float getEnergyStage(ItemStack itemStack) {
-        return itemStack.getOrDefault(IRDataComponents.BATTERY_STAGE, 0);
+    public float getEnergyStage(ItemStack itemStack) {
+        return (float) getEnergyStored(itemStack) / getCapacity() * this.stages;
     }
 
     @Override

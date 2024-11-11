@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "indref:basic_battery"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "M": {
+      "item": "indref:basic_machine_frame"
+    }
+  },
+  "pattern": [
+    "B",
+    "M",
+    "F"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:basic_generator"
+  }
+}

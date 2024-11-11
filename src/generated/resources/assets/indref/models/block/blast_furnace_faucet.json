@@ -1,0 +1,6 @@
+{
+  "parent": "indref:block/faucet_base",
+  "textures": {
+    "texture": "indref:block/blast_furnace_bricks"
+  }
+}

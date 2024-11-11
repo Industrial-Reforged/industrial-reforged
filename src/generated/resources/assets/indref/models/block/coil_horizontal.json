@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "indref:block/coil_top",
+    "side": "indref:block/coil_side"
+  }
+}

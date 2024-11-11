@@ -10,6 +10,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -53,6 +54,8 @@ public class IRTagsProvider {
             plates();
             wires();
             ingots();
+
+            tag(ItemTags.DYEABLE, IRItems.TOOLBOX.get());
         }
 
         private void ingots() {

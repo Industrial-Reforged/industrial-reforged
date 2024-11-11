@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "indref:block/drain",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "indref:block/drain"
+    },
+    "facing=south": {
+      "model": "indref:block/drain",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indref:block/drain",
+      "y": 270
+    }
+  }
+}

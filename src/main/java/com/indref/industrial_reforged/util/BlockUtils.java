@@ -45,7 +45,7 @@ public final class BlockUtils {
     }
 
     public static BlockState stateForFacingPlacement(Block block, BlockPlaceContext ctx) {
-        return block.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getPlayer().getDirection());
+        return block.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite());
     }
 
     public static StateDefinition.Builder<Block, BlockState> createFacingDefinition(StateDefinition.Builder<Block, BlockState> builder) {

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:ingots/lead"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "W": {
+      "item": "indref:tin_wire"
+    }
+  },
+  "pattern": [
+    " W ",
+    "#R#",
+    "#R#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:basic_battery"
+  }
+}
