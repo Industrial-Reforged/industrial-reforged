@@ -67,7 +67,9 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
+        if (!blockState.is(newState.getBlock())) {
+            MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), blockPos, level);
+        }
 
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
     }

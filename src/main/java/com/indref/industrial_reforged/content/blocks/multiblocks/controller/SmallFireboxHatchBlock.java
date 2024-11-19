@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -74,8 +75,15 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
-            MultiblockHelper.unform(IRMultiblocks.SMALL_FIREBOX.get(), pPos, pLevel);
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
+                BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();
+                if (actualBlockEntityPos != null && smallFireboxBlockEntity.getMultiblockData().valid()) {
+                    MultiblockHelper.unform(IRMultiblocks.SMALL_FIREBOX.get(), actualBlockEntityPos, pLevel);
+                }
+            }
         }
+
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 }

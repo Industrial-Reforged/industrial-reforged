@@ -210,8 +210,8 @@ public final class IREvents {
 
         @SubscribeEvent
         public static void registerBindings(RegisterKeyMappingsEvent event) {
-            event.register(JETPACK_TOGGLE.get());
-            event.register(JETPACK_ASCEND.get());
+//            event.register(JETPACK_TOGGLE.get());
+//            event.register(JETPACK_ASCEND.get());
         }
 
         @SubscribeEvent

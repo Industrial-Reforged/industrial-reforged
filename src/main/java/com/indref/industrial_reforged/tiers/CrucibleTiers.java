@@ -3,25 +3,26 @@ package com.indref.industrial_reforged.tiers;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Supplier;
 
 public enum CrucibleTiers implements CrucibleTier {
     CERAMIC("ceramic", 1200,
-            IRBlocks.TERRACOTTA_BRICK_SLAB::get,
-            IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER::get,
+            IRBlocks.TERRACOTTA_BRICK_SLAB,
+            IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER,
             IRBlocks.TERRACOTTA_BRICK,
-            IRBlocks.CERAMIC_CRUCIBLE_PART::get
+            IRBlocks.CERAMIC_CRUCIBLE_PART
     );
 
     private final int heatCapacity;
     private final String name;
-    private final Supplier<Block> unformedController;
-    private final Supplier<Block> formedController;
-    private final Supplier<Block> unformedPart;
-    private final Supplier<Block> formedPart;
+    private final Supplier<? extends Block> unformedController;
+    private final Supplier<? extends Block> formedController;
+    private final Supplier<? extends Block> unformedPart;
+    private final Supplier<? extends Block> formedPart;
 
-    CrucibleTiers(String name, int heatCapacity, Supplier<Block> unformedController, Supplier<Block> formedController, Supplier<Block> unformedPart, Supplier<Block> formedPart) {
+    CrucibleTiers(String name, int heatCapacity, Supplier<? extends Block> unformedController, Supplier<? extends Block> formedController, Supplier<? extends Block> unformedPart, Supplier<? extends Block> formedPart) {
         this.name = name;
         this.heatCapacity = heatCapacity;
         this.unformedController = unformedController;

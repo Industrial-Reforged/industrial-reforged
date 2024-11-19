@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.electric.ElectricSwordItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -96,9 +97,9 @@ public class NanoSaberItem extends ElectricSwordItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p41424) {
         if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
-            tooltip.add(Component.translatable("nano_saber.desc.active").withStyle(ChatFormatting.GREEN));
+            tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.ACTIVE).withStyle(ChatFormatting.GREEN));
         } else {
-            tooltip.add(Component.translatable("nano_saber.desc.inactive").withStyle(ChatFormatting.RED));
+            tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.INACTIVE).withStyle(ChatFormatting.RED));
         }
         super.appendHoverText(stack, ctx, tooltip, p41424);
     }

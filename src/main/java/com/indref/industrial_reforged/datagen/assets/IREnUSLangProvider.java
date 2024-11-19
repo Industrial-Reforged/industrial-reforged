@@ -19,6 +19,9 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Supplier;
 
+import static com.indref.industrial_reforged.util.IRTranslations.Tooltip;
+import static com.indref.industrial_reforged.util.IRTranslations.MultiblockFeedback;
+
 public class IREnUSLangProvider extends LanguageProvider {
     public IREnUSLangProvider(PackOutput output) {
         super(output, IndustrialReforged.MODID, "en_us");
@@ -46,16 +49,16 @@ public class IREnUSLangProvider extends LanguageProvider {
         addCreativeTab(IRTabs.BLOCKS, "Industrial Reforged - Blocks");
         addCreativeTab(IRTabs.ITEMS, "Industrial Reforged - Items");
 
-        addTooltip("active", "Active");
-        addTooltip("inactive", "Inactive");
-        addTooltip("energy.stored", "Stored");
-        addTooltip("energy.tier", "Tier");
-        addTooltip("fluid.stored", "Stored");
-        addTooltip("fluid.amount", "Amount");
-        addTooltip("heat.stored", "Heat");
+        addTooltip(Tooltip.ACTIVE, "Active");
+        addTooltip(Tooltip.INACTIVE, "Inactive");
+        addTooltip(Tooltip.ENERGY_STORED, "Stored");
+        addTooltip(Tooltip.ENERGY_TIER, "Tier");
+        addTooltip(Tooltip.FLUID_STORED, "Stored");
+        addTooltip(Tooltip.FLUID_AMOUNT, "Amount");
+        addTooltip(Tooltip.HEAT_STORED, "Heat");
 
-        addTooltip("melting_progress", "Melting Progress");
-        addTooltip("melting_not_possible", "Melting not possible");
+        addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress");
+        addTooltip(Tooltip.MELTING_NOT_POSSIBLE, "Melting not possible");
 
         addTooltip("drain", "A simple device for collecting fluids");
 
@@ -70,10 +73,10 @@ public class IREnUSLangProvider extends LanguageProvider {
         addTitle("firebox", "Firebox");
         addTooltip("basic_generator", "Basic Generator");
 
-        addMultiblockFeedback("failed_to_construct", "Missing or invalid block");
-        addMultiblockFeedback("actual_block", "Block: %s");
-        addMultiblockFeedback("expected_block", "Expected: %s");
-        addMultiblockFeedback("block_pos", "Coordinates: %d, %d, %d");
+        addMultiblockFeedback(MultiblockFeedback.FAILED_TO_CONSTRUCT, "Missing or invalid block");
+        addMultiblockFeedback(MultiblockFeedback.ACTUAL_BLOCK, "Block: %s");
+        addMultiblockFeedback(MultiblockFeedback.EXPECTED_BLOCK, "Expected: %s");
+        addMultiblockFeedback(MultiblockFeedback.BLOCK_POS, "Coordinates: %d, %d, %d");
     }
 
     private void addFluids() {

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.api.blockentities.multiblock;
 
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 
 public interface MultiblockEntity {
@@ -8,11 +9,11 @@ public interface MultiblockEntity {
 
     void setMultiblockData(MultiblockData data);
 
-    default CompoundTag saveMBData() {
-        return getMultiblockData().serializeNBT();
+    default CompoundTag saveMBData(HolderLookup.Provider lookup) {
+        return getMultiblockData().serializeNBT(lookup);
     }
 
-    default MultiblockData loadMBData(CompoundTag tag) {
-        return MultiblockData.deserializeNBT(tag);
+    default void loadMBData(HolderLookup.Provider lookup, CompoundTag tag) {
+        getMultiblockData().deserializeNBT(lookup, tag);
     }
 }

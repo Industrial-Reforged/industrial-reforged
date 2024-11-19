@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "indref:block/refractory_brick",
+    "east": "indref:block/refractory_brick",
+    "north": "indref:block/refractory_brick",
+    "particle": "indref:block/refractory_brick",
+    "south": "indref:block/refractory_brick",
+    "up": "indref:block/multiblock/firebox_coil",
+    "west": "indref:block/refractory_brick"
+  }
+}

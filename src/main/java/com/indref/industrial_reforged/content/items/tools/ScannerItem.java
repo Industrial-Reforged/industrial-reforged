@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.util.IRHooks;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -39,10 +41,19 @@ public class ScannerItem extends SimpleElectricItem implements DisplayItem {
             IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
             if (energyStorage != null) {
                 List<Component> components = new ArrayList<>();
+                List<DisplayItem> compatibleItems = new ArrayList<>();
+                DisplayBlock displayBlock = null;
                 // Collect display text
-                if (blockstate.getBlock() instanceof DisplayBlock displayBlock && displayBlock.getCompatibleItems().contains(this)) {
+                IRHooks.scanBlock(player, blockPos, itemStack, components, compatibleItems);
+                if (blockstate.getBlock() instanceof DisplayBlock dBlock) {
+                    displayBlock = dBlock;
+                    compatibleItems.addAll(dBlock.getCompatibleItems());
+                }
+
+                if (displayBlock != null && compatibleItems.contains(this)) {
                     displayBlock.displayOverlay(components, player, level, itemStack, blockPos, blockstate);
                 }
+
                 // Render display if there is one
                 if (!components.isEmpty()) {
                     for (Component component : components) {

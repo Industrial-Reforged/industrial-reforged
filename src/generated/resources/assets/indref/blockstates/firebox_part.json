@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "firebox_part=brick,hatch_active=false": {
+      "model": "indref:block/firebox_part"
+    },
+    "firebox_part=brick,hatch_active=true": {
+      "model": "indref:block/firebox_part"
+    },
+    "firebox_part=coil,hatch_active=false": {
+      "model": "indref:block/firebox_part"
+    },
+    "firebox_part=coil,hatch_active=true": {
+      "model": "indref:block/firebox_part"
+    },
+    "firebox_part=hatch,hatch_active=false": {
+      "model": "indref:block/firebox_part_hatch"
+    },
+    "firebox_part=hatch,hatch_active=true": {
+      "model": "indref:block/firebox_part_hatch_active"
+    }
+  }
+}

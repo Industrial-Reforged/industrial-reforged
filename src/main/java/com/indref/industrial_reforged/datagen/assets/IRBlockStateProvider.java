@@ -27,7 +27,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         treeStatesAndModels();
-
+        multiblockModels();
         metalStorageBlocks();
         oreBlocks();
 
@@ -64,18 +64,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
         cableBlock(IRBlocks.STEEL_CABLE.get());
 
         simpleBlock(IRBlocks.BLAST_FURNACE_BRICKS.get());
-//        simpleBlock(IRBlocks.BLAST_FURNACE_HATCH.get());
-//        simpleBlock(IRBlocks.SMALL_FIREBOX_HATCH.get());
-
-        simpleColumn(IRBlocks.BLAST_FURNACE_HATCH, IRBlocks.BLAST_FURNACE_BRICKS);
-        simpleBlock(IRBlocks.SMALL_FIREBOX_HATCH.get(), models().cube(name(IRBlocks.SMALL_FIREBOX_HATCH.get()),
-                mcLoc("block/iron_block"),
-                mcLoc("block/iron_block"),
-                modLoc("block/multiblock/small_firebox/front"),
-                modLoc("block/multiblock/small_firebox/front"),
-                modLoc("block/multiblock/small_firebox/front"),
-                modLoc("block/multiblock/small_firebox/front")
-        ).texture("particle", mcLoc("block/iron_block")));
 
         simpleBlock(IRBlocks.REFRACTORY_STONE.get());
         simpleBlock(IRBlocks.REFRACTORY_BRICK.get());
@@ -90,6 +78,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
         faucet(IRBlocks.BLAST_FURNACE_FAUCET, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 
         coilBlock(IRBlocks.COIL.get());
+    }
+
+    private void multiblockModels() {
+        IRMultiblockDataGenHelper dataGenHelper = new IRMultiblockDataGenHelper(this);
+        dataGenHelper.smallFirebox();
+        dataGenHelper.firebox();
+        dataGenHelper.blastFurnace();
     }
 
     private void oreBlocks() {
@@ -282,15 +277,15 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .texture(textureKey, blockTexture(block, textureFolder)));
     }
 
-    private ResourceLocation key(Block block) {
+    public ResourceLocation key(Block block) {
         return BuiltInRegistries.BLOCK.getKey(block);
     }
 
-    private String name(Block block) {
+    public String name(Block block) {
         return key(block).getPath();
     }
 
-    private ResourceLocation extend(ResourceLocation rl, String suffix) {
+    public ResourceLocation extend(ResourceLocation rl, String suffix) {
         return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);
     }
 

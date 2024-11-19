@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.booleans.BooleanArrayList;
 import it.unimi.dsi.fastutil.booleans.BooleanList;
@@ -49,7 +50,6 @@ public final class MultiblockHelper {
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         HorizontalDirection direction;
         if (multiblock.getFixedDirection() != null) {
-            IndustrialReforged.LOGGER.debug("Fixed dir found");
             direction = multiblock.getFixedDirection();
         } else {
             direction = player != null
@@ -244,21 +244,22 @@ public final class MultiblockHelper {
     }
 
     private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
-        player.sendSystemMessage(Component.translatable("multiblock.info.failed_to_construct").withStyle(ChatFormatting.RED).append(":"));
+        player.sendSystemMessage(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.FAILED_TO_CONSTRUCT)
+                .withStyle(ChatFormatting.RED).append(":"));
         player.sendSystemMessage(Component.literal("| ")
                 .withStyle(ChatFormatting.DARK_GRAY)
-                .append(Component.translatable("multiblock.info.actual_block", level.getBlockState(curBlockPos).getBlock().getName().getString())
+                .append(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.ACTUAL_BLOCK, level.getBlockState(curBlockPos).getBlock().getName().getString())
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
         player.sendSystemMessage((Component.literal("| ")
                 .withStyle(ChatFormatting.DARK_GRAY))
-                .append(Component.translatable("multiblock.info.expected_block", def.get(blockIndex).getName().getString())
+                .append(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.EXPECTED_BLOCK, def.get(blockIndex).getName().getString())
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
         player.sendSystemMessage(
                 Component.literal("| ")
                         .withStyle(ChatFormatting.DARK_GRAY)
-                        .append(Component.translatable("multiblock.info.block_pos", curBlockPos.getX(), curBlockPos.getY(), curBlockPos.getZ())
+                        .append(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.BLOCK_POS, curBlockPos.getX(), curBlockPos.getY(), curBlockPos.getZ())
                                 .withStyle(ChatFormatting.DARK_GRAY))
         );
     }
@@ -379,6 +380,7 @@ public final class MultiblockHelper {
         } else {
             throw new IllegalStateException(multiblock + " multiblock controller does not have a blockentity");
         }
+        // TODO: Crucible controller unforming
 
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         HorizontalDirection direction = data.direction();
@@ -400,7 +402,11 @@ public final class MultiblockHelper {
                 BlockPos curBlockPos = getCurPos(firstBlockPos, new Vec3i(x, yIndex, z), direction);
 
                 BlockState blockState = level.getBlockState(curBlockPos);
-                if (!level.getBlockState(curBlockPos).isEmpty()) {
+                if (!blockState.isEmpty()) {
+                    if (blockState.is(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER)) {
+                        IndustrialReforged.LOGGER.debug("unforming ccc, {}", blockState);
+                    }
+
                     BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, data, player);
                     if (expectedState != null) {
                         if (blockState.is(expectedState.getBlock())) {

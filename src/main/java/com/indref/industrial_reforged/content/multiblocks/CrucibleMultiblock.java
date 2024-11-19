@@ -7,9 +7,7 @@ import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
-import com.indref.industrial_reforged.util.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -50,6 +48,11 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
                         0, 0, 0,
                         0, 1, 0,
                         0, 0, 0
+                ),
+                layer(
+                        0, 0, 0,
+                        0, 1, 0,
+                        0, 0, 0
                 )
         };
     }
@@ -71,7 +74,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     @Override
     public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
-        if (currentBlock.is(tier.getUnformedPart()) || currentBlock.is(IRBlocks.CERAMIC_CRUCIBLE_PART.get())) {
+        if (currentBlock.is(tier.getUnformedPart()) || currentBlock.is(tier.getFormedPart())) {
             return tier.getFormedPart()
                     .defaultBlockState()
                     .setValue(CRUCIBLE_WALL, switch (layerIndex) {
@@ -84,9 +87,8 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
                         case 5, 8 -> Direction.NORTH;
                         case 6, 7 -> Direction.EAST;
                         default -> Direction.SOUTH;
-                    }
-            );
-        } else if (currentBlock.is(IRBlocks.TERRACOTTA_BRICK_SLAB.get())) {
+                    });
+        } else if (currentBlock.is(tier.getUnformedController()) || currentBlock.is(tier.getFormedController())) {
             return tier.getFormedController().defaultBlockState()
                     .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection() : multiblockData.direction().toRegularDirection());
         }
@@ -97,7 +99,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
-        return blockState.hasProperty(CRUCIBLE_WALL);
+        return blockState.hasProperty(CRUCIBLE_WALL) || blockState.is(getFormedController());
     }
 
     @Override

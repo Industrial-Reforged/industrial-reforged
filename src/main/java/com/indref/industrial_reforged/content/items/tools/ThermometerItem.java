@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.util.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -108,7 +109,9 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem {
 
     @Override
     public void appendHoverText(ItemStack p_41421_, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
-        tooltip.add(Component.literal("Heat Stored: ").append("%d/%d".formatted(getHeatStored(p_41421_), getHeatCapacity(p_41421_))));
+        tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.HEAT_STORED)
+                .append(": ")
+                .append("%d/%d".formatted(getHeatStored(p_41421_), getHeatCapacity(p_41421_))));
     }
 
     @Override

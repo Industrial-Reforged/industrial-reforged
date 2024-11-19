@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "indref:block/firebox_controller"
+    }
+  }
+}

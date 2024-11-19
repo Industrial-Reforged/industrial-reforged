@@ -1,6 +1,12 @@
 {
   "variants": {
-    "": {
+    "brick_state=formed": {
+      "model": "indref:block/blast_furnace_hatch_formed"
+    },
+    "brick_state=top": {
+      "model": "indref:block/blast_furnace_hatch"
+    },
+    "brick_state=unformed": {
       "model": "indref:block/blast_furnace_hatch"
     }
   }

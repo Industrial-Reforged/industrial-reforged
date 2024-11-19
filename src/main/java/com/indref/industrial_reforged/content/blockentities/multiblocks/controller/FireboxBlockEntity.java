@@ -36,9 +36,6 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.UUID;
-
 public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
     private static final int INPUT_SLOT = 0;
 
@@ -180,14 +177,14 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     protected void saveData(CompoundTag pTag, HolderLookup.Provider provider) {
         pTag.putInt("burnTime", this.burnTime);
         pTag.putInt("maxBurnTime", this.maxBurnTime);
-        pTag.put("multiblockData", saveMBData());
+        pTag.put("multiblockData", saveMBData(provider));
     }
 
     @Override
     protected void loadData(CompoundTag pTag, HolderLookup.Provider provider) {
         this.burnTime = pTag.getInt("burnTime");
         this.maxBurnTime = pTag.getInt("maxBurnTime");
-        this.multiblockData = loadMBData(pTag.getCompound("multiblockData"));
+        loadMBData(provider, pTag.getCompound("multiblockData"));
     }
 
     public int getBurnTime() {

@@ -10,7 +10,6 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
-import com.indref.industrial_reforged.networking.CrucibleMeltingProgressPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
@@ -47,7 +46,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -369,13 +367,13 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     @Override
     protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.loadAdditional(nbt, provider);
-        this.multiblockData = loadMBData(nbt.getCompound("multiblockData"));
+        loadMBData(provider, nbt.getCompound("multiblockData"));
     }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(nbt, provider);
-        nbt.put("multiblockData", saveMBData());
+        nbt.put("multiblockData", saveMBData(provider));
     }
 
     @Override

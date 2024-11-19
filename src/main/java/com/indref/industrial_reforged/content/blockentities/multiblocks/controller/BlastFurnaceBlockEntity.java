@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.capabilities.item.SidedItemHandler;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
@@ -40,9 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * This is the blockentity for the blast furnace.
@@ -90,7 +85,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("multiblockData", saveMBData());
+        tag.put("multiblockData", saveMBData(provider));
         BlockPos actualBlockEntityPos = getActualBlockEntityPos();
         if (actualBlockEntityPos != null) {
             tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());
@@ -132,7 +127,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        this.multiblockData = loadMBData(tag);
+        loadMBData(provider, tag.getCompound("multiblockData"));
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
         this.duration = tag.getInt("duration");
