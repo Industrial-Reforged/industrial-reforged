@@ -71,7 +71,7 @@ public class IRItemModelProvider extends ItemModelProvider {
 
         basicItem(IRItems.ELECTRIC_MOTOR);
 
-//		basicItem(IRItems.TIN_WIRE);
+ 		basicItem(IRItems.TIN_WIRE);
         basicItem(IRItems.COPPER_WIRE);
         basicItem(IRItems.GOLD_WIRE);
         basicItem(IRItems.STEEL_WIRE);
@@ -110,6 +110,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.COPPER_DUST);
         basicItem(IRItems.STEEL_DUST);
 
+        basicItem(IRItems.COPPER_PLATE);
         basicItem(IRItems.IRON_PLATE);
         basicItem(IRItems.STEEL_PLATE);
 

@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-20T21:14:06.010853247	Recipes
+// 1.21.1	2024-11-20T22:08:22.104635794	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -93,7 +93,7 @@ f3e455e124b5b801f205654a7da860de670ba189 data/indref/recipe/basic_machine_frame.
 893d6da1d1d5993088e16039a421140d45c8c1bd data/indref/recipe/blast_furnace_hatch.json
 6ad27dbf5aece5dd92fbd77e2e18ad55f891075d data/indref/recipe/blueprint.json
 0c048259e1637f6ef2f898806d82d64ecc1f9870 data/indref/recipe/centrifuge.json
-a16d892458e3cc6428ca8f8ac575ed9fc5817d8b data/indref/recipe/centrifuge/to_rubber.json
+a16d892458e3cc6428ca8f8ac575ed9fc5817d8b data/indref/recipe/centrifuge/sticky_resin_to_rubber.json
 7521d1ea18ab93f9daeeebba2e7d8271b739cc55 data/indref/recipe/ceramic_casting_basin.json
 f2acf99b85d1311f90d646932484e9b5485f9415 data/indref/recipe/chromium_block.json
 b64df3811cd2c318edce2612e28f0a8be63153fb data/indref/recipe/chromium_ingot.json

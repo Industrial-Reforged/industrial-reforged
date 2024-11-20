@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-20T16:57:20.761602988	Item Models: indref
+// 1.21.1	2024-11-20T22:08:22.100245674	Item Models: indref
 f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -41,6 +41,7 @@ f30f207ca1bf13301146fb0ac40712a461f96906 assets/indref/models/item/clay_mold_ing
 498fd40c5272d52ef8ac45ef34481242c9f958c1 assets/indref/models/item/coil.json
 a0dbfe218012a240d231785b5aebec0618c00613 assets/indref/models/item/copper_cable.json
 0b3b2d47b65cf96a6f644ecb38ace20faa326409 assets/indref/models/item/copper_dust.json
+a5e644317374b8dd7cbfecedd31a32b9ff7de55c assets/indref/models/item/copper_plate.json
 d7bb1c95cd23bde08652d441c484e04068ba9e3f assets/indref/models/item/copper_wire.json
 0cfe3ee9059a55533647c4393c576ad75e23f3d0 assets/indref/models/item/crafting_station.json
 cd425a3df1c67411b7978feace11186f278cf1bf assets/indref/models/item/deepslate_bauxite_ore.json
@@ -136,6 +137,7 @@ bd310326f974ced4aa3b514962a338074a84c66b assets/indref/models/item/sticky_resin.
 d68dfb8a8e813e0bcb5ea699c1dfe4decccdea23 assets/indref/models/item/tin_cable.json
 eaa16d4a43c758e9bca5a5bf4283c3d613975f02 assets/indref/models/item/tin_ingot.json
 31d8b9db019a04500ecedfd7f80d924820004bcc assets/indref/models/item/tin_ore.json
+f4ffb3916e6e6d84d5d045bd4fcd2f790b4ab020 assets/indref/models/item/tin_wire.json
 c3685b2dc299d6f3feb5c84da17ff9db9ae53117 assets/indref/models/item/titanium_block.json
 9c00a3f65e623d663498362ad831803a81a7291a assets/indref/models/item/titanium_ingot.json
 4c87f3b2ec435208a594a96f48adc5dbcab62762 assets/indref/models/item/toolbox.json
