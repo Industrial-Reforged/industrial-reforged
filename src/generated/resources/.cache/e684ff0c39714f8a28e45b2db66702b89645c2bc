@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-11T22:40:18.127065086	Item Models: indref
+// 1.21.1	2024-11-20T15:20:40.179383932	Item Models: indref
 f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -31,7 +31,6 @@ a0a8be8687c43cbdcc4c20e59d19d599da04d4eb assets/indref/models/item/blast_furnace
 0b91911a2c846371024bffeb8b118c763359b08d assets/indref/models/item/blueprint.json
 40f84cb3dd1baef260f6f551ee5213f499ed2e40 assets/indref/models/item/centrifuge.json
 4bf894f927f410eb478cf2ca296f0e52a4748a17 assets/indref/models/item/ceramic_casting_basin.json
-38441bfb656ac88f1dd9133614ecfaea1c8a8df1 assets/indref/models/item/ceramic_crucible_controller.json
 a553b420b2bcb0c9080bd86c1ef2db7e14ea2f5d assets/indref/models/item/chromium_block.json
 24d9e3e759e9d3a332e85b0504b2f5bd1e8bb9c0 assets/indref/models/item/chromium_ingot.json
 a066f253e93e633f3e5afff1063a0956fb90ec86 assets/indref/models/item/chromium_ore.json

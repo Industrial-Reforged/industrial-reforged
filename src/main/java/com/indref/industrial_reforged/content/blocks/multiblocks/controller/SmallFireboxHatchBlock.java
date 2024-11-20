@@ -74,7 +74,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (!pState.is(pNewState.getBlock())) {
+        if (!pState.is(pNewState.getBlock()) && pState.getValue(SmallFireboxMultiblock.FIREBOX_STATE) == SmallFireboxMultiblock.FireboxState.FORMED) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
                 BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();

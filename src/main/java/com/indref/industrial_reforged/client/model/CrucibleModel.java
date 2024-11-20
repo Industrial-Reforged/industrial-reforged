@@ -35,22 +35,22 @@ public class CrucibleModel extends Model {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition leg0 = partdefinition.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(176, 114).addBox(26.0F, -41.0F, -7.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
+        PartDefinition leg0 = partdefinition.addOrReplaceChild("leg0", CubeListBuilder.create().texOffs(176, 110).addBox(26.0F, -41.0F, -7.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
                 .texOffs(104, 166).addBox(26.0F, -30.0F, -7.0F, 4.0F, 34.0F, 14.0F, new CubeDeformation(0.0F))
                 .texOffs(176, 166).addBox(26.0F, -41.0F, 4.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(176, 97).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 0.0F));
+                .texOffs(176, 82).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 20.0F, 0.0F));
 
         PartDefinition leg1 = partdefinition.addOrReplaceChild("leg1", CubeListBuilder.create().texOffs(0, 178).addBox(26.0F, -41.0F, -7.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
                 .texOffs(140, 166).addBox(26.0F, -30.0F, -7.0F, 4.0F, 34.0F, 14.0F, new CubeDeformation(0.0F))
                 .texOffs(14, 178).addBox(26.0F, -41.0F, 4.0F, 4.0F, 11.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(176, 82).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-56.0F, 20.0F, 0.0F));
+                .texOffs(176, 93).addBox(26.0F, -41.0F, -4.0F, 4.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-56.0F, 20.0F, 0.0F));
 
         PartDefinition crucible = partdefinition.addOrReplaceChild("crucible", CubeListBuilder.create().texOffs(0, 0).addBox(-24.0F, -6.0F, -24.0F, 48.0F, 2.0F, 48.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 128).addBox(-24.0F, -44.0F, 20.0F, 48.0F, 38.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(104, 128).addBox(-24.0F, -40.0F, -24.0F, 48.0F, 34.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(28, 178).addBox(3.0F, -44.0F, -28.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(40, 178).addBox(-5.0F, -44.0F, -28.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(176, 108).addBox(-5.0F, -40.0F, -28.0F, 10.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(176, 104).addBox(-5.0F, -40.0F, -28.0F, 10.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 170).addBox(-24.0F, -44.0F, -24.0F, 21.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(50, 170).addBox(3.0F, -44.0F, -24.0F, 21.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 50).addBox(20.0F, -44.0F, -20.0F, 4.0F, 38.0F, 40.0F, new CubeDeformation(0.0F))
