@@ -2,10 +2,15 @@ package com.indref.industrial_reforged.datagen.data;
 
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
+import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
+import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -15,11 +20,14 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class IRRecipeProvider extends RecipeProvider {
@@ -52,6 +60,10 @@ public class IRRecipeProvider extends RecipeProvider {
         storageItemRecipes();
 
         miscRecipes();
+
+        crucibleSmeltingRecipes();
+        castingRecipes();
+        centrifugeRecipes();
 
         // Compacting recipes
         rawOreToBlockRecipes();
@@ -120,12 +132,43 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('P', Tags.Items.GLASS_PANES)
                 .unlockedBy("has_tin_ingot", has(CTags.Items.TIN_INGOT))
                 .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.BLAST_FURNACE_BRICKS)
+                .pattern("SS")
+                .pattern("SS")
+                .define('S', IRItems.SANDY_BRICK)
+                .unlockedBy("has_sandy_brick", has(IRItems.SANDY_BRICK))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.TERRACOTTA_BRICK, 4)
+                .pattern("TB")
+                .pattern("BT")
+                .define('T', Items.TERRACOTTA)
+                .define('B', Blocks.BRICKS)
+                .unlockedBy("has_terracotta", has(Items.TERRACOTTA))
+                .save(output);
+
+        slab(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.TERRACOTTA_BRICK_SLAB, IRBlocks.TERRACOTTA_BRICK);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, 4)
+                .pattern("SB")
+                .pattern("BS")
+                .define('S', IRItems.SANDY_BRICK)
+                .define('B', IRItems.RAW_BAUXITE)
+                .unlockedBy("has_terracotta", has(Items.TERRACOTTA))
+                .save(output);
     }
 
     private void miscRecipes() {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK.get(), 2)
                 .requires(Items.CLAY_BALL, 3)
                 .unlockedBy("has_clay", has(Items.CLAY_BALL))
+                .save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, IRItems.SANDY_BRICK, 3)
+                .requires(Items.CLAY_BALL, 2)
+                .requires(Tags.Items.SANDS)
+                .unlockedBy("has_clay_ball", has(Items.CLAY_BALL))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.ANTENNA.get())
@@ -264,6 +307,22 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('#', CTags.Items.STEEL_PLATE)
                 .unlockedBy("has_circuit", has(IRItems.BASIC_CIRCUIT.get()))
                 .save(output);
+    }
+
+    private void crucibleSmeltingRecipes() {
+        irRecipe(new CrucibleSmeltingRecipe(IngredientWithCount.of(CTags.Items.STEEL_INGOT),
+                new FluidStack(IRFluids.MOLTEN_STEEL_SOURCE.get(), 111),
+                200,
+                200
+        ));
+    }
+
+    private void castingRecipes() {
+        irRecipe(new CrucibleCastingRecipe(new FluidStack(IRFluids.MOLTEN_STEEL_SOURCE.get(), 111), Ingredient.of(IRItems.CLAY_MOLD_INGOT), IRItems.STEEL_INGOT.toStack(), 200, true));
+    }
+
+    private void centrifugeRecipes() {
+        irRecipe(new CentrifugeRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN), List.of(IRItems.RUBBER.toStack(3)), 200, 100));
     }
 
     private void machineCraftingRecipes() {
@@ -442,5 +501,9 @@ public class IRRecipeProvider extends RecipeProvider {
                 .group(packedGroup)
                 .unlockedBy(getHasName(unpacked), has(unpacked))
                 .save(recipeOutput, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, packedName));
+    }
+
+    private void irRecipe(Recipe<?> recipe) {
+        IRRecipeBuilder.of(recipe).save(output);
     }
 }

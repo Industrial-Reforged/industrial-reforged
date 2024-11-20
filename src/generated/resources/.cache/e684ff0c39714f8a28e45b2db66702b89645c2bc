@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-20T15:20:40.179383932	Item Models: indref
+// 1.21.1	2024-11-20T16:57:20.761602988	Item Models: indref
 f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -109,6 +109,7 @@ acf34dca76ed503056e77a6b0b16dfcdb3abf967 assets/indref/models/item/rubber_tree_p
 c97b857023917f892a09141be1175e3f8ddbd0e8 assets/indref/models/item/rubber_tree_stairs.json
 47f94240de7b1f3c71fa263cc0c4f02d12102df2 assets/indref/models/item/rubber_tree_trapdoor.json
 fefdb6c7a9640b03688d70bf4867a0c9776c5fee assets/indref/models/item/rubber_tree_wood.json
+e8097615b990c426e81a6bdfa10da3a417840fec assets/indref/models/item/sandy_brick.json
 5064d58479f024af0989315318b0cdfdbd3fef7a assets/indref/models/item/scanner.json
 04400d8d51b9e9ba9e549bee36b11383679e7773 assets/indref/models/item/small_firebox_hatch.json
 64b61925b7187e4049fd65d80345f58ec3c2192e assets/indref/models/item/steel_block.json

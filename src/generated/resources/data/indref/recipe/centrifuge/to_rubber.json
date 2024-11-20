@@ -1,0 +1,14 @@
+{
+  "type": "indref:centrifuge",
+  "duration": 200,
+  "energy": 100,
+  "ingredient": {
+    "item": "indref:sticky_resin"
+  },
+  "results": [
+    {
+      "count": 3,
+      "id": "indref:rubber"
+    }
+  ]
+}

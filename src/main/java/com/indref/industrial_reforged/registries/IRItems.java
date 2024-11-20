@@ -99,6 +99,7 @@ public final class IRItems {
     //misc
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
     public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
+    public static final DeferredItem<Item> SANDY_BRICK = registerStandardItem("sandy_brick");
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
     public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));

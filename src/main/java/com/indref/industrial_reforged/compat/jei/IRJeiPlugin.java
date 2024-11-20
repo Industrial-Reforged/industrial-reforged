@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.compat.jei;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
+import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import mezz.jei.api.IModPlugin;
@@ -27,6 +29,8 @@ public class IRJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new CrucibleSmeltingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CastingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CentrifugeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -35,16 +39,33 @@ public class IRJeiPlugin implements IModPlugin {
 
         List<CrucibleSmeltingRecipe> crucibleSmeltingRecipes = recipeManager.getAllRecipesFor(CrucibleSmeltingRecipe.TYPE)
                 .stream().map(RecipeHolder::value).toList();
-
         registration.addRecipes(CrucibleSmeltingCategory.RECIPE_TYPE, crucibleSmeltingRecipes);
+        List<CrucibleCastingRecipe> castingRecipes = recipeManager.getAllRecipesFor(CrucibleCastingRecipe.TYPE)
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(CrucibleSmeltingCategory.RECIPE_TYPE, crucibleSmeltingRecipes);
+        List<CentrifugeRecipe> centrifugingRecipes = recipeManager.getAllRecipesFor(CentrifugeRecipe.TYPE)
+                .stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(CrucibleSmeltingCategory.RECIPE_TYPE, crucibleSmeltingRecipes);
+        registration.addRecipes(CastingCategory.RECIPE_TYPE, castingRecipes);
+        registration.addRecipes(CentrifugeCategory.RECIPE_TYPE, centrifugingRecipes);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.FIREBOX_CONTROLLER.get()),
+                RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.BASIC_GENERATOR.get()),
+                RecipeTypes.FUELING);
+
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()),
                 CrucibleSmeltingCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(IRBlocks.REFRACTORY_BRICK.get()),
-                RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.CERAMIC_CASTING_BASIN.get()),
+                CastingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.BLAST_FURNACE_CASTING_BASIN.get()),
+                CastingCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.CENTRIFUGE.get()),
+                CentrifugeCategory.RECIPE_TYPE);
     }
 }

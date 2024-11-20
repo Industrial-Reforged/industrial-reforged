@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sandy_brick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "indref:sandy_brick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "indref:blast_furnace_bricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sandy_brick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "indref:blast_furnace_bricks"
+    ]
+  }
+}

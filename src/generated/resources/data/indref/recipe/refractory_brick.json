@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "indref:raw_bauxite"
+    },
+    "S": {
+      "item": "indref:sandy_brick"
+    }
+  },
+  "pattern": [
+    "SB",
+    "BS"
+  ],
+  "result": {
+    "count": 4,
+    "id": "indref:refractory_brick"
+  }
+}

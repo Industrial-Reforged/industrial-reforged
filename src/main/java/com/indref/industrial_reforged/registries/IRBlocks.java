@@ -72,8 +72,8 @@ public final class IRBlocks {
             () -> new CoilBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<RefractoryBrickBlock> REFRACTORY_BRICK = registerBlockAndItem("refractory_brick",
             () -> new RefractoryBrickBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
-    public static final DeferredBlock<FireboxControllerBlock> FIREBOX_CONTROLLER = registerBlock("firebox_controller",
-            () -> new FireboxControllerBlock(BlockBehaviour.Properties.of(), FireboxTiers.REFRACTORY));
+    public static final DeferredBlock<FireboxControllerBlock> FIREBOX_CONTROLLER = registerBlockAndItem("firebox_controller",
+            () -> new FireboxControllerBlock(BlockBehaviour.Properties.of(), FireboxTiers.REFRACTORY), false, false);
     public static final DeferredBlock<FireboxPartBlock> FIREBOX_PART = registerBlock("firebox_part",
             () -> new FireboxPartBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<MachineFrameBlock> BASIC_MACHINE_FRAME = registerBlockAndItem("basic_machine_frame",

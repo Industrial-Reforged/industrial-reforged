@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "minecraft:bricks"
+    },
+    "T": {
+      "item": "minecraft:terracotta"
+    }
+  },
+  "pattern": [
+    "TB",
+    "BT"
+  ],
+  "result": {
+    "count": 4,
+    "id": "indref:terracotta_brick"
+  }
+}

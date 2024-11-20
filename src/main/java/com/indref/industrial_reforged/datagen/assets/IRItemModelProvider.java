@@ -54,6 +54,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.PLANT_BALL);
         basicItem(IRItems.RUBBER);
         basicItem(IRItems.RUBBER_SHEET);
+        basicItem(IRItems.SANDY_BRICK);
         basicItem(IRItems.STICKY_RESIN);
         basicItem(IRItems.CIRCUIT_BOARD);
 

@@ -5,7 +5,9 @@ import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -27,8 +29,13 @@ public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> r
     }
 
     @Override
+    public @NotNull NonNullList<Ingredient> getIngredients() {
+        return NonNullList.of(Ingredient.EMPTY, ingredient.ingredient());
+    }
+
+    @Override
     public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
-        return ItemStack.EMPTY;
+        return results.getFirst();
     }
 
     @Override
