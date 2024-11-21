@@ -5,6 +5,10 @@
       "resource": "indref:entity/crucible"
     },
     {
+      "type": "single",
+      "resource": "indref:entity/blast_furnace"
+    },
+    {
       "type": "directory",
       "source": "fluid",
       "prefix": "fluid/"

@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-19T23:19:21.757468763	Block States: indref
+// 1.21.1	2024-11-21T16:55:18.067046478	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 730773373aebc01c0228f21355ca4217c0d1a55f assets/indref/blockstates/basic_generator.json
 3cbec80a2e1b5742c04822848fad846cbec7f92a assets/indref/blockstates/basic_machine_frame.json
@@ -75,7 +75,7 @@ d48d25e96a11a0caafcaa255b08a40f39b943e11 assets/indref/models/block/basic_machin
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_bricks.json
 c5cd2277c21cf1deb48965d38ed4eb517fe48c73 assets/indref/models/block/blast_furnace_casting_basin.json
 cff1442e6a599b9ee470f1a6ce6e843061866f75 assets/indref/models/block/blast_furnace_faucet.json
-9e71e3439ae741ba1ac416645bd5b785a324326c assets/indref/models/block/blast_furnace_hatch.json
+0cb272dc1abb8e0251155fe0732116171efea028 assets/indref/models/block/blast_furnace_hatch.json
 9e71e3439ae741ba1ac416645bd5b785a324326c assets/indref/models/block/blast_furnace_hatch_formed.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part_formed.json

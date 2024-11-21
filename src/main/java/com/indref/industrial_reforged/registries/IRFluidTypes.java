@@ -18,15 +18,15 @@ public final class IRFluidTypes {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, IndustrialReforged.MODID);
 
-    public static final Supplier<FluidType> SOAP_WATER_FLUID_TYPE = register("soap_water",
-            FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), new Vec3i(224, 56, 208), FluidTemplate.WATER);
     public static final Supplier<FluidType> OIL_FLUID_TYPE = register("oil",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
                     SoundEvents.HONEY_DRINK), new Vec3i(255, 255, 255), FluidTemplate.OIL);
     public static final Supplier<FluidType> MOLTEN_STEEL_FLUID_TYPE = register("molten_steel",
             FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
                     SoundEvents.HONEY_DRINK), new Vec3i(78, 86, 92), FluidTemplate.MOLTEN_METAL);
+    public static final Supplier<FluidType> MOLTEN_ALUMINUM_FLUID_TYPE = register("molten_aluminum",
+            FluidType.Properties.create().lightLevel(2).density(15).viscosity(5).sound(SoundAction.get("drink"),
+                    SoundEvents.HONEY_DRINK), new Vec3i(226, 232, 242), FluidTemplate.MOLTEN_METAL);
 
     private static Supplier<FluidType> register(String name, FluidType.Properties properties, Vec3i color, FluidTemplate template) {
         return FLUID_TYPES.register(name, () -> new BaseFluidType(template.still, template.flowing, template.overlay, color, properties));

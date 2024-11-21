@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-20T22:08:22.100245674	Item Models: indref
+// 1.21.1	2024-11-21T21:04:20.794738805	Item Models: indref
 f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -71,6 +71,7 @@ b501b9cb79adde65dea00abeaf6bde03bc201c94 assets/indref/models/item/iridium_ore.j
 55123fce61a5af3bbe8b69def3316087c8e75948 assets/indref/models/item/lead_block.json
 bdcc51256c3f1c33907e967e4c310b44a15fdfa7 assets/indref/models/item/lead_ingot.json
 7528ae349c9d6f7094360614b934205ea9e06105 assets/indref/models/item/lead_ore.json
+0153dc5e50a5025b5d559171482d5a7f344a6918 assets/indref/models/item/molten_aluminum_bucket.json
 aa564b47ece28be8cfaf6bd4b71ca52e29949cec assets/indref/models/item/molten_steel_bucket.json
 b613db169a13ea95ea0ce39e8a9a9c471fca183e assets/indref/models/item/nano_saber.json
 aa2590929c4b324a619fa2115c1e3a0d2230148a assets/indref/models/item/nickel_block.json
@@ -137,6 +138,7 @@ bd310326f974ced4aa3b514962a338074a84c66b assets/indref/models/item/sticky_resin.
 d68dfb8a8e813e0bcb5ea699c1dfe4decccdea23 assets/indref/models/item/tin_cable.json
 eaa16d4a43c758e9bca5a5bf4283c3d613975f02 assets/indref/models/item/tin_ingot.json
 31d8b9db019a04500ecedfd7f80d924820004bcc assets/indref/models/item/tin_ore.json
+fb8a6543e3c2fdd39dbb8eae31f70413bb40bc4c assets/indref/models/item/tin_plate.json
 f4ffb3916e6e6d84d5d045bd4fcd2f790b4ab020 assets/indref/models/item/tin_wire.json
 c3685b2dc299d6f3feb5c84da17ff9db9ae53117 assets/indref/models/item/titanium_block.json
 9c00a3f65e623d663498362ad831803a81a7291a assets/indref/models/item/titanium_ingot.json

@@ -58,7 +58,7 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
         FluidStack fluidStack = castingRecipe.fluidStack();
         recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 0, 20)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
-                .setFluidRenderer(fluidStack.getAmount(), true, 16, 16);
+                .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
         recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 40, 20)
                 .addIngredients(Ingredient.of(castingRecipe.resultStack()));
     }

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.api.items;
 
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,5 +16,5 @@ public interface MultiBarItem {
      * @return First pair entry: Color, second: Width
      */
     @NotNull
-    List<Pair<Integer, Integer>> getBarColorsAndWidths(ItemStack itemStack);
+    List<IntIntPair> getBarColorsAndWidths(ItemStack itemStack);
 }

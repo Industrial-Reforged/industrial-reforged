@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.api.items;
 
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -14,10 +15,10 @@ public abstract class BaseFuelRodItem extends Item implements MultiBarItem {
     }
 
     @Override
-    public @NotNull List<Pair<Integer, Integer>> getBarColorsAndWidths(ItemStack itemStack) {
+    public @NotNull List<IntIntPair> getBarColorsAndWidths(ItemStack itemStack) {
         return List.of(
-                Pair.of(ItemUtils.HEAT_BAR_COLOR, 10),
-                Pair.of(ItemUtils.ENERGY_BAR_COLOR, 5)
+                IntIntPair.of(ItemUtils.HEAT_BAR_COLOR, 10),
+                IntIntPair.of(ItemUtils.ENERGY_BAR_COLOR, 5)
         );
     }
 

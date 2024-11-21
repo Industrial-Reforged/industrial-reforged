@@ -9,8 +9,10 @@ import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
+import com.indref.industrial_reforged.client.model.BlastFurnaceItemModel;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
+import com.indref.industrial_reforged.client.renderer.item.BlastFurnaceItemRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
 import com.indref.industrial_reforged.client.screen.*;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
@@ -93,6 +95,7 @@ public final class IREvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static final class ClientBus {
         private static final CrucibleItemRenderer CRUCIBLE_ITEM_RENDERER = new CrucibleItemRenderer();
+        private static final BlastFurnaceItemRenderer BLAST_FURNACe_ITEM_RENDERER = new BlastFurnaceItemRenderer();
 
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
@@ -147,6 +150,13 @@ public final class IREvents {
                     return CRUCIBLE_ITEM_RENDERER;
                 }
             }, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.asItem());
+
+            event.registerItem(new IClientItemExtensions() {
+                @Override
+                public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                    return BLAST_FURNACe_ITEM_RENDERER;
+                }
+            }, IRBlocks.BLAST_FURNACE_CONTROLLER.asItem());
         }
 
         @SubscribeEvent
@@ -174,6 +184,7 @@ public final class IREvents {
         public static void registerItemColor(RegisterColorHandlersEvent.Item event) {
             event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
             event.register(new DynamicFluidContainerModel.Colors(), IRItems.MOLTEN_STEEL_BUCKET.get());
+            event.register(new DynamicFluidContainerModel.Colors(), IRItems.MOLTEN_ALUMINUM_BUCKET.get());
             event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
         }
 
@@ -224,6 +235,7 @@ public final class IREvents {
         @SubscribeEvent
         public static void registerModels(EntityRenderersEvent.RegisterLayerDefinitions event) {
             event.registerLayerDefinition(CrucibleModel.LAYER_LOCATION, CrucibleModel::createBodyLayer);
+            event.registerLayerDefinition(BlastFurnaceItemModel.LAYER_LOCATION, BlastFurnaceItemModel::createBodyLayer);
         }
     }
 

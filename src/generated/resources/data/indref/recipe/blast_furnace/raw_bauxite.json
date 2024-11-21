@@ -1,0 +1,13 @@
+{
+  "type": "indref:blast_furnace",
+  "duration": 200,
+  "ingredients": [
+    {
+      "item": "indref:raw_bauxite"
+    }
+  ],
+  "result": {
+    "amount": 111,
+    "id": "indref:molten_aluminum"
+  }
+}

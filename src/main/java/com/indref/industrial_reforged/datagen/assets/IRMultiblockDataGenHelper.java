@@ -12,10 +12,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
-import net.neoforged.neoforge.common.extensions.IBlockStateExtension;
 import org.jetbrains.annotations.NotNull;
 
-public final class IRMultiblockDataGenHelper {
+public class IRMultiblockDataGenHelper {
     private final IRBlockStateProvider bsp;
 
     public IRMultiblockDataGenHelper(IRBlockStateProvider bsp) {
@@ -124,7 +123,7 @@ public final class IRMultiblockDataGenHelper {
 
     private @NotNull BlockModelBuilder blastFurnaceHatchModel(Block hatch, boolean formed) {
         return bsp.models().cubeColumn(bsp.name(hatch) + (formed ? "_formed" : ""),
-                extend(multiblockLoc(hatch), "_formed"),
+                extend(multiblockLoc(hatch), formed ? "_formed" : ""),
                 bsp.blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get())
         ).texture("particle", bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()));
     }

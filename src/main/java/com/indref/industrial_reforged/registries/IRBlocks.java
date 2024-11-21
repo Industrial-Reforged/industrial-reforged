@@ -62,6 +62,8 @@ public final class IRBlocks {
             () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = registerBlockAndItem("blast_furnace_hatch",
             () -> new BlastFurnaceHatchBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> BLAST_FURNACE_CONTROLLER = registerBlockAndItem("blast_furnace_controller",
+            () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE)), false, false);
     public static final DeferredBlock<BlastFurnacePartBlock> BLAST_FURNACE_PART = registerBlock("blast_furnace_part",
             () -> new BlastFurnacePartBlock(BlockBehaviour.Properties.of().sound(SoundType.STONE)));
     public static final DeferredBlock<SmallFireboxHatchBlock> SMALL_FIREBOX_HATCH = registerBlockAndItem("small_firebox_hatch",
@@ -165,6 +167,8 @@ public final class IRBlocks {
 
     public static final DeferredBlock<LiquidBlock> MOLTEN_STEEL_FLUID_BLOCK = BLOCKS.register("molten_steel_block",
             () -> new LiquidBlock(IRFluids.MOLTEN_STEEL_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
+    public static final DeferredBlock<LiquidBlock> MOLTEN_ALUMINUM_FLUID_BLOCK = BLOCKS.register("molten_aluminum_block",
+            () -> new LiquidBlock(IRFluids.MOLTEN_ALUMINUM_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
     public static final DeferredBlock<LiquidBlock> OIL_FLUID_BLOCK = BLOCKS.register("oil_block",
             () -> new LiquidBlock(IRFluids.OIL_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
 

@@ -56,7 +56,7 @@ public record BlastFurnaceMultiblock() implements Multiblock {
         // You can call methods like setDynamic(IntegerRange)
         // on it to make the layer dynamic.
         // Note that the first member of this array
-        // is the lowest layer in game.
+        // is the bottom layer in game.
         return new MultiblockLayer[]{
                 layer(
                         1, 1,

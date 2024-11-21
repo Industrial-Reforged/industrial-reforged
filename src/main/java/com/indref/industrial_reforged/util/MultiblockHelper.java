@@ -380,7 +380,6 @@ public final class MultiblockHelper {
         } else {
             throw new IllegalStateException(multiblock + " multiblock controller does not have a blockentity");
         }
-        // TODO: Crucible controller unforming
 
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         HorizontalDirection direction = data.direction();

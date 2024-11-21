@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.client.renderer.item.bar;
 
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
@@ -23,11 +24,11 @@ public class MultiBarRenderer implements IItemDecorator {
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int xOffset, int yOffset) {
         MultiBarItem multiBarItem = (MultiBarItem) item;
         if (item.isBarVisible(stack)) {
-            @NotNull List<Pair<Integer, Integer>> barColorsAndWidths = multiBarItem.getBarColorsAndWidths(stack);
+            @NotNull List<IntIntPair> barColorsAndWidths = multiBarItem.getBarColorsAndWidths(stack);
             for (int i1 = 0, barColorsAndWidthsSize = barColorsAndWidths.size(); i1 < barColorsAndWidthsSize; i1++) {
-                Pair<Integer, Integer> colorAndWidth = barColorsAndWidths.get(i1);
-                int l = colorAndWidth.getSecond();
-                int i = colorAndWidth.getFirst();
+                IntIntPair colorAndWidth = barColorsAndWidths.get(i1);
+                int l = colorAndWidth.rightInt();
+                int i = colorAndWidth.leftInt();
                 int j = xOffset + 2;
                 int k = yOffset + 13 + i1;
                 guiGraphics.fill(RenderType.guiOverlay(), j, k, j + 13, k + 2, -16777216);

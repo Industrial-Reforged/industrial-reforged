@@ -1,0 +1,17 @@
+{
+  "type": "indref:blast_furnace",
+  "duration": 200,
+  "ingredients": [
+    {
+      "count": 2,
+      "tag": "c:ingots/iron"
+    },
+    {
+      "tag": "minecraft:coals"
+    }
+  ],
+  "result": {
+    "amount": 222,
+    "id": "indref:molten_steel"
+  }
+}

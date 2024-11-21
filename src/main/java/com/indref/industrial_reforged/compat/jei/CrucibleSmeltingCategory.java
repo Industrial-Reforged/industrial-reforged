@@ -57,6 +57,6 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
         FluidStack fluidStack = crucibleSmeltingRecipe.resultFluid();
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 40, 0)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
-                .setFluidRenderer(fluidStack.getAmount(), true, 16, 16);
+                .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
     }
 }

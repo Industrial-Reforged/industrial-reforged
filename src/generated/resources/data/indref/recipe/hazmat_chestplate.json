@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "tag": "c:ingots/lead"
+    },
+    "R": {
+      "item": "indref:rubber_sheet"
+    },
+    "W": {
+      "item": "minecraft:yellow_wool"
+    }
+  },
+  "pattern": [
+    "W W",
+    "RWR",
+    "LRL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:hazmat_chestplate"
+  }
+}

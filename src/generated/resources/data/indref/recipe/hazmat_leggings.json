@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "R": {
+      "item": "indref:rubber_sheet"
+    },
+    "W": {
+      "item": "minecraft:yellow_wool"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "W W",
+    "R R"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:hazmat_leggings"
+  }
+}

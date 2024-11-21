@@ -41,6 +41,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         parentItemBlock(IRBlocks.RUBBER_TREE_TRAPDOOR.get().asItem(), "_bottom");
 
         bucket(IRFluids.MOLTEN_STEEL_SOURCE.get());
+        bucket(IRFluids.MOLTEN_ALUMINUM_SOURCE.get());
         basicItem(IRItems.BASIC_CIRCUIT);
         basicItem(IRItems.ADVANCED_CIRCUIT);
         basicItem(IRItems.ULTIMATE_CIRCUIT);
@@ -113,6 +114,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.COPPER_PLATE);
         basicItem(IRItems.IRON_PLATE);
         basicItem(IRItems.STEEL_PLATE);
+        basicItem(IRItems.TIN_PLATE);
 
         basicItem(IRItems.IRON_ROD);
         basicItem(IRItems.STEEL_ROD);

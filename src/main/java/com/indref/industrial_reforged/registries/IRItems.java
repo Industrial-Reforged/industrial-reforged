@@ -149,6 +149,8 @@ public final class IRItems {
 
     public static final DeferredItem<BucketItem> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
             () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final DeferredItem<BucketItem> MOLTEN_ALUMINUM_BUCKET = registerItem("molten_aluminum_bucket",
+            () -> new BucketItem(IRFluids.MOLTEN_ALUMINUM_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final DeferredItem<BucketItem> OIL_BUCKET = registerItem("oil_bucket",
             () -> new BucketItem(IRFluids.OIL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
