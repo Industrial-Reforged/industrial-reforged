@@ -35,8 +35,6 @@ public final class IRItems {
             () -> new HammerItem(new Item.Properties()));
     public static final DeferredItem<ThermometerItem> THERMOMETER = registerItem("thermometer",
             () -> new ThermometerItem(new Item.Properties()));
-    public static final DeferredItem<TreeTapItem> TREE_TAP = registerItem("tree_tap",
-            () -> new TreeTapItem(new Item.Properties()));
     public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
             () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",

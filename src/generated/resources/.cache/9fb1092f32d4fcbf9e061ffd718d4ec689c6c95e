@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-21T21:05:23.339417462	Recipes
+// 1.21.1	2024-11-23T00:17:31.177931963	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -108,6 +108,7 @@ d3efdcbb23f638cc4941c7f19cd9f2d0773a4c9b data/indref/recipe/clay_mold.json
 796dd3999616e5a1d7d92e0dab55fd18b2a84f88 data/indref/recipe/coil.json
 6fd8e9c8c2fb4967a95a2136bc80927f4cfd1e25 data/indref/recipe/copper_cable.json
 fe1993473d80d000db4edd36770dcdd3e53d6fb8 data/indref/recipe/crafting_station.json
+914a32eb8680572e17b353625ccbd9b6fb9c446d data/indref/recipe/crucible_casting/to_aluminum_ingot.json
 80edc13f8beda9e28bdf78ae1fa162ba646129f7 data/indref/recipe/crucible_casting/to_steel_ingot.json
 2af90d73403da5a84d9ec59da240eba31f2bf582 data/indref/recipe/crucible_melting/ingots/steel.json
 03cb3b11336482ffc23e2be7147d14d1b8d30eab data/indref/recipe/drain.json

@@ -89,11 +89,13 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         BlockPos controllerPos = blockEntity.getControllerPos();
         if (controllerPos != null) {
             CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos);
-            if (player.isShiftKeyDown()) {
-                controllerBlockEntity.reset();
-            } else {
-                //Utils.openMenu(player, controllerBlockEntity);
-                controllerBlockEntity.turn();
+            if (controllerBlockEntity != null) {
+                if (player.isShiftKeyDown()) {
+                    controllerBlockEntity.reset();
+                } else {
+                    //Utils.openMenu(player, controllerBlockEntity);
+                    controllerBlockEntity.turn();
+                }
             }
         }
 

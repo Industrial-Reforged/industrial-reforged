@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "indref:item/tree_tap"
-  }
+  "parent": "indref:block/tree_tap"
 }

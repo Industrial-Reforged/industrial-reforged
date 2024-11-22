@@ -41,6 +41,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class ContainerBlockEntity extends BlockEntity {
@@ -235,6 +237,21 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         ItemStack[] itemStacks = new ItemStack[itemStackHandler.getSlots()];
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             itemStacks[i] = itemStackHandler.getStackInSlot(i);
+        }
+        return itemStacks;
+    }
+
+    public List<ItemStack> getNonEmptyStacks() {
+        IItemHandler itemStackHandler = getItemHandler();
+
+        if (itemStackHandler == null) return List.of();
+
+        List<ItemStack> itemStacks = new ArrayList<>(itemStackHandler.getSlots());
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            ItemStack stackInSlot = itemStackHandler.getStackInSlot(i);
+            if (!stackInSlot.isEmpty()) {
+                itemStacks.add(stackInSlot);
+            }
         }
         return itemStacks;
     }

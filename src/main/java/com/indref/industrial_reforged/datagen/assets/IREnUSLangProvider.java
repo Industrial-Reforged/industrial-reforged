@@ -87,7 +87,6 @@ public class IREnUSLangProvider extends LanguageProvider {
     private void addItems() {
         addItem(IRItems.FLUID_CELL, "Fluid Cell");
         addItem(IRItems.HAMMER, "Hammer");
-        addItem(IRItems.TREE_TAP, "Tree Tap");
         addItem(IRItems.WRENCH, "Wrench");
         addItem(IRItems.SCANNER, "Scanner");
         addItem(IRItems.THERMOMETER, "Thermometer");

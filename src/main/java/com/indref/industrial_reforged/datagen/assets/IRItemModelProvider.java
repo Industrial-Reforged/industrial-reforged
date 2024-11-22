@@ -66,7 +66,6 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.ROCK_CUTTER);
 
         basicItem(IRItems.HAMMER);
-        basicItem(IRItems.TREE_TAP);
         basicItem(IRItems.WRENCH);
         toolbox(IRItems.TOOLBOX);
 

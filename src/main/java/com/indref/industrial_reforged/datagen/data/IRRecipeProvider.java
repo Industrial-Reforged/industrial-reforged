@@ -237,7 +237,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('#', Tags.Items.INGOTS_COPPER)
                 .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.TREE_TAP.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRBlocks.TREE_TAP.get())
                 .pattern(" S ")
                 .pattern("###")
                 .pattern("#  ")

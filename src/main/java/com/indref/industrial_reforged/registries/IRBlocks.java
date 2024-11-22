@@ -102,6 +102,8 @@ public final class IRBlocks {
             () -> new DrainBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<CraftingStationBlock> CRAFTING_STATION = registerBlockAndItem("crafting_station",
             () -> new CraftingStationBlock(BlockBehaviour.Properties.of()));
+    public static final DeferredBlock<Block> TREE_TAP = registerBlockAndItem("tree_tap",
+            () -> new Block(BlockBehaviour.Properties.of().noOcclusion()));
 
     // Rubber
     public static final DeferredBlock<RubberTreeLogBlock> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log", RubberTreeLogBlock::new);

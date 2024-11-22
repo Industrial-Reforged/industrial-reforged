@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.indref.industrial_reforged.util.renderer.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -70,7 +69,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
             if (/*blockEntity.isTurnedOver() && */blockEntity.inUse == 0 && !fluidInTank.isEmpty()) {
                 poseStack.pushPose();
                 {
-                    poseStack.translate(0, 2.5, 2);
+                    poseStack.translate(0, 2.5, 1.96);
                     renderFluid(poseStack, bufferSource, fluidInTank, 1, packedLight, FluidPart.FAUCET);
                 }
                 poseStack.popPose();
@@ -88,13 +87,26 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     }
 
     private void renderCrucibleFluidTop(PoseStack poseStack, MultiBufferSource bufferSource, float angle, int packedLight, FluidStack fluidStack) {
+        poseStack.pushPose();
+        {
+            poseStack.translate(0.5, 2.15, 0.5);
+            poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle) * 0.5f));
+            poseStack.translate(-0.5, -2.15, -0.5);
+
+            if (!fluidStack.isEmpty()) {
+                poseStack.translate(0, 0.325, 0);
+                renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, FluidPart.TOP);
+            }
+        }
+        poseStack.popPose();
+
         poseStack.translate(0.5, 2.15, 0.5);
-        poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle) * 0.5f));
+        poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle)));
         poseStack.translate(-0.5, -2.15, -0.5);
 
         if (!fluidStack.isEmpty()) {
-            poseStack.translate(0, 0.325, 0);
-            renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, FluidPart.TOP);
+            poseStack.translate(0, 3.865, 1.94);
+            renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, FluidPart.FAUCET_TOP);
         }
     }
 
@@ -109,13 +121,15 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         float green = (color >> 8 & 255) / 255f;
         float blue = (color & 255) / 255f;
 
+        final Matrix4f pose = poseStack.last().pose();
         switch (renderPart) {
             case TOP ->
-                    renderTopQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+                    renderTopQuads(pose, vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
             case BODY ->
-                    renderBodyQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
-            case FAUCET ->
-                    renderFaucetQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, 3f, combinedLight);
+                    renderBodyQuads(pose, vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+            case FAUCET -> renderFaucetQuads(pose, vertexBuilder, sprite, red, green, blue, alpha, 3f, combinedLight);
+            case FAUCET_TOP ->
+                    renderFaucetTopQuads(pose, vertexBuilder, sprite, red, green, blue, alpha, 2, combinedLight);
         }
     }
 
@@ -162,27 +176,22 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     private static void renderFaucetQuads(Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float belowMaxY, int light) {
         float frontMinU = sprite.getU(0.375f);
         float frontMaxU = sprite.getU(0.625f);
-        float yOffset = 2;
-        float minY = (2.1f / 16f) - 0.125f - yOffset;
-        float maxY = 0.4f - minY + 0.2f + -0.125f - yOffset;
-        float height = minY + (maxY - minY);
         float topMinV = sprite.getV(0);
         float topMaxV = sprite.getV(0.625f);
+        float yOffset = 2.305f;
+        float minY = (2.1f / 16f) - 0.125f - yOffset;
+        float maxY = 0.4f - minY + 0.2f - 0.125f - yOffset - 1.55f;
+        float height = minY + (maxY - minY) - 0.01f;
         float minV = sprite.getV(0);
         float maxV = sprite.getV(1);
         //float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
         // top
 
-        buffer.addVertex(matrix, 0.3125f, height, -0.25f).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.3125f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.685f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 0.685f, height, -0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, 1, 0);
-
         // back
-        buffer.addVertex(matrix, 0.6875f, height - 0.25f, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.6875f, height - 0.2f, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, -1);
         buffer.addVertex(matrix, 0.6875f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMinU, maxV).setLight(light).setNormal(0, 0, -1);
         buffer.addVertex(matrix, 0.3125f, minY, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, maxV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, 0.3125f, height - 0.25f, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, -1);
+        buffer.addVertex(matrix, 0.3125f, height - 0.2f, 0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, -1);
         // front
         buffer.addVertex(matrix, 0.6875f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMinU, minV).setLight(light).setNormal(0, 0, 1);
         buffer.addVertex(matrix, 0.3125f, height, 0.375f).setColor(r, g, b, alpha).setUv(frontMaxU, minV).setLight(light).setNormal(0, 0, 1);
@@ -193,15 +202,53 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         float sideMaxU = sprite.getU(0.5f);
         // side 1
         buffer.addVertex(matrix, 0.3125f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, 0.3125f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, height - 0.17f, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(-1, 0, 0);
         buffer.addVertex(matrix, 0.3125f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(-1, 0, 0);
         buffer.addVertex(matrix, 0.3125f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(-1, 0, 0);
         // side 2
         buffer.addVertex(matrix, 0.6875f, height, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(1, 0, 0);
         buffer.addVertex(matrix, 0.6875f, minY, 0.375f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(1, 0, 0);
         buffer.addVertex(matrix, 0.6875f, minY, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 0.6875f, height, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, height - 0.2f, 0.25f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(1, 0, 0);
 
+    }
+
+    private static void renderFaucetTopQuads(Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float yOffset, int light) {
+        float minY = (2.1f / 16f) - 0.125f - yOffset;
+        float maxY = 0.4f - minY + 0.2f - 0.125f - yOffset - 1.4f;
+        float height = minY + (maxY - minY);
+        float frontMinU = sprite.getU(0.375f);
+        float frontMaxU = sprite.getU(0.625f);
+        float topMinV = sprite.getV(0);
+        float topMaxV = sprite.getV(0.625f);
+
+        buffer.addVertex(matrix, 0.3125f, height, -0.25f).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.3125f, height, 0.38f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.685f, height, 0.38f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 0.685f, height, -0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, 1, 0);
+
+        float sideMinU = sprite.getU(0.5f);
+        float sideMaxU = sprite.getU(0.25f);
+
+        float minV = sprite.getV(0);
+        float maxV = sprite.getV(0.5f);
+
+        // side 1
+        buffer.addVertex(matrix, 0.3125f, height, 0.38f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, height, 0.05f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, height - 0.185f - 0.045f, 0.05f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(-1, 0, 0);
+        buffer.addVertex(matrix, 0.3125f, height - 0.185f - 0.045f, 0.435f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(-1, 0, 0);
+
+        // side 2
+        buffer.addVertex(matrix, 0.6875f, height, 0.38f).setColor(r, g, b, alpha).setUv(sideMinU, minV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, height - 0.185f - 0.045f, 0.45f).setColor(r, g, b, alpha).setUv(sideMinU, maxV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, height - 0.185f - 0.045f, 0.05f).setColor(r, g, b, alpha).setUv(sideMaxU, maxV).setLight(light).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, 0.6875f, height, 0.05f).setColor(r, g, b, alpha).setUv(sideMaxU, minV).setLight(light).setNormal(1, 0, 0);
+
+        buffer.addVertex(matrix, 0.685f, height - 0.225f, -0.25f).setColor(r, g, b, alpha).setUv(frontMaxU, topMinV).setLight(light).setNormal(0, -1, 0);
+        buffer.addVertex(matrix, 0.685f, height - 0.225f, 0.45f).setColor(r, g, b, alpha).setUv(frontMaxU, topMaxV).setLight(light).setNormal(0, -1, 0);
+        buffer.addVertex(matrix, 0.3125f, height - 0.225f, 0.45f).setColor(r, g, b, alpha).setUv(frontMinU, topMaxV).setLight(light).setNormal(0, -1, 0);
+        buffer.addVertex(matrix, 0.3125f, height - 0.225f, -0.25f).setColor(r, g, b, alpha).setUv(frontMinU, topMinV).setLight(light).setNormal(0, -1, 0);
     }
 
     @Override
@@ -217,6 +264,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     enum FluidPart {
         TOP,
         BODY,
-        FAUCET;
+        FAUCET_TOP,
+        FAUCET
     }
 }

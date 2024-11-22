@@ -30,7 +30,7 @@ import java.util.List;
 
 public class BlastFurnacePartBlock extends RotatableEntityBlock implements DisplayBlock {
     public BlastFurnacePartBlock(Properties properties) {
-        super(properties.noOcclusion());
+        super(properties);
     }
 
     @Override

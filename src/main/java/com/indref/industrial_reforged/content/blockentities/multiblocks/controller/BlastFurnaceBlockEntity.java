@@ -12,7 +12,6 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import it.unimi.dsi.fastutil.Pair;
@@ -36,6 +35,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -141,21 +141,22 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                 int maxDuration = recipe.duration();
                 this.maxDuration = maxDuration;
                 if (duration >= maxDuration) {
-                    IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(this);
-                    IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
-                    IngredientWithCount ingredient0 = recipe.ingredients().get(0);
-                    IngredientWithCount ingredient1 = recipe.ingredients().get(1);
-                    ItemStack firstStack = itemHandler.getStackInSlot(0);
-                    ItemStack secondStack = itemHandler.getStackInSlot(1);
-                    if (ingredient0.test(firstStack)) {
-                        // Ingredient refers to slot 0
-                        firstStack.shrink(ingredient0.count());
-                        secondStack.shrink(ingredient1.count());
-                    } else {
-                        // Ingredient refers to slot 1
-                        secondStack.shrink(ingredient0.count());
-                        firstStack.shrink(ingredient1.count());
+                    IFluidHandler fluidHandler = getFluidHandler();
+                    IItemHandler itemHandler = getItemHandler();
+
+                    List<IngredientWithCount> ingredients = new ArrayList<>(recipe.ingredients());
+
+                    for (IngredientWithCount ingredient : recipe.ingredients()) {
+                        for (ItemStack itemStack : getNonEmptyStacks()) {
+                            if (ingredient.test(itemStack) && ingredients.contains(ingredient)) {
+                                // TODO: shrink is bad
+                                itemStack.shrink(ingredient.count());
+                                ingredients.remove(ingredient);
+                                break;
+                            }
+                        }
                     }
+
                     fluidHandler.fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE);
                     this.duration = 0;
                     this.maxDuration = 0;
@@ -168,7 +169,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     public Optional<BlastFurnaceRecipe> getCurrentRecipe() {
         return level.getRecipeManager()
-                .getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(List.of(getItemHandlerStacks())), level)
+                .getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(getNonEmptyStacks()), level)
                 .map(RecipeHolder::value);
     }
 
