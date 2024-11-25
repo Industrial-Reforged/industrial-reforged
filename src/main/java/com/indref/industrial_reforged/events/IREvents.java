@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.fluids.BaseFluidType;
+import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.client.model.BlastFurnaceItemModel;
@@ -15,6 +16,7 @@ import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRender
 import com.indref.industrial_reforged.client.renderer.item.BlastFurnaceItemRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
 import com.indref.industrial_reforged.client.screen.*;
+import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.NanoSaberItem;
@@ -33,10 +35,7 @@ import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressR
 import com.indref.industrial_reforged.client.renderer.item.bar.MultiBarRenderer;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.IRMenuTypes;
+import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.Utils;
@@ -183,8 +182,11 @@ public final class IREvents {
         @SubscribeEvent
         public static void registerItemColor(RegisterColorHandlersEvent.Item event) {
             event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
-            event.register(new DynamicFluidContainerModel.Colors(), IRItems.MOLTEN_STEEL_BUCKET.get());
-            event.register(new DynamicFluidContainerModel.Colors(), IRItems.MOLTEN_ALUMINUM_BUCKET.get());
+            for (IRFluid fluid : IRFluids.HELPER.getFluids()) {
+                if (fluid instanceof MoltenMetalFluid) {
+                    event.register(new DynamicFluidContainerModel.Colors(), fluid.getDeferredBucket());
+                }
+            }
             event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
         }
 

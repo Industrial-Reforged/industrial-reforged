@@ -19,6 +19,8 @@ public final class IndustrialReforged {
     public IndustrialReforged(IEventBus modEventBus) {
         modEventBus.addListener(NewRegistryEvent.class, event -> event.register(IRRegistries.MULTIBLOCK));
 
+        IRFluids.HELPER.register(modEventBus);
+
         IRItems.ITEMS.register(modEventBus);
 
         IRBlocks.BLOCKS.register(modEventBus);
@@ -37,9 +39,6 @@ public final class IndustrialReforged {
 
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
-
-        IRFluids.FLUIDS.register(modEventBus);
-        IRFluidTypes.FLUID_TYPES.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
     }

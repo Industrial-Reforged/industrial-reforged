@@ -102,8 +102,6 @@ public final class IRBlocks {
             () -> new DrainBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<CraftingStationBlock> CRAFTING_STATION = registerBlockAndItem("crafting_station",
             () -> new CraftingStationBlock(BlockBehaviour.Properties.of()));
-    public static final DeferredBlock<Block> TREE_TAP = registerBlockAndItem("tree_tap",
-            () -> new Block(BlockBehaviour.Properties.of().noOcclusion()));
 
     // Rubber
     public static final DeferredBlock<RubberTreeLogBlock> RUBBER_TREE_LOG = registerBlockAndItem("rubber_tree_log", RubberTreeLogBlock::new);
@@ -166,13 +164,6 @@ public final class IRBlocks {
     public static final DeferredBlock<Block> URANIUM_BLOCK = metalStorageBlock("uranium_block");
     public static final DeferredBlock<Block> RAW_URANIUM_BLOCK = rawStorageBlock("raw_uranium_block");
     public static final DeferredBlock<Block> STEEL_BLOCK = metalStorageBlock("steel_block");
-
-    public static final DeferredBlock<LiquidBlock> MOLTEN_STEEL_FLUID_BLOCK = BLOCKS.register("molten_steel_block",
-            () -> new LiquidBlock(IRFluids.MOLTEN_STEEL_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
-    public static final DeferredBlock<LiquidBlock> MOLTEN_ALUMINUM_FLUID_BLOCK = BLOCKS.register("molten_aluminum_block",
-            () -> new LiquidBlock(IRFluids.MOLTEN_ALUMINUM_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
-    public static final DeferredBlock<LiquidBlock> OIL_FLUID_BLOCK = BLOCKS.register("oil_block",
-            () -> new LiquidBlock(IRFluids.OIL_SOURCE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA)));
 
     private static <T extends Block> DeferredBlock<T> registerBlockAndItem(String name, Supplier<T> block, boolean addToCreativeTab) {
         return registerBlockAndItem(name, block, addToCreativeTab, true);

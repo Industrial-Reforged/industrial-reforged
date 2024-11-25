@@ -7,11 +7,13 @@ import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -23,10 +25,8 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
     public static final RecipeType<CrucibleSmeltingRecipe> RECIPE_TYPE =
             new RecipeType<>(UID, CrucibleSmeltingRecipe.class);
     private final IDrawable icon;
-    private final IDrawable background;
 
     public CrucibleSmeltingCategory(IGuiHelper guiHelper) {
-        this.background = guiHelper.createBlankDrawable(80, 64);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()));
     }
 
@@ -41,13 +41,18 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
     }
 
     @Override
-    public IDrawable getBackground() {
-        return this.background;
+    public @Nullable IDrawable getIcon() {
+        return this.icon;
     }
 
     @Override
-    public @Nullable IDrawable getIcon() {
-        return this.icon;
+    public int getWidth() {
+        return 80;
+    }
+
+    @Override
+    public int getHeight() {
+        return 64;
     }
 
     @Override
@@ -58,5 +63,10 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 40, 0)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
                 .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
+    }
+
+    @Override
+    public void draw(CrucibleSmeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
     }
 }

@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.fluids.IRFluid;
+import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -12,19 +14,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class IRItemModelProvider extends ItemModelProvider {
 
@@ -40,8 +44,12 @@ public class IRItemModelProvider extends ItemModelProvider {
         parentItemBlock(IRBlocks.RUBBER_TREE_FENCE.get().asItem(), "_inventory");
         parentItemBlock(IRBlocks.RUBBER_TREE_TRAPDOOR.get().asItem(), "_bottom");
 
-        bucket(IRFluids.MOLTEN_STEEL_SOURCE.get());
-        bucket(IRFluids.MOLTEN_ALUMINUM_SOURCE.get());
+        for (IRFluid fluid : IRFluids.HELPER.getFluids()) {
+            if (fluid instanceof MoltenMetalFluid) {
+                bucket(fluid.getStillFluid());
+            }
+        }
+
         basicItem(IRItems.BASIC_CIRCUIT);
         basicItem(IRItems.ADVANCED_CIRCUIT);
         basicItem(IRItems.ULTIMATE_CIRCUIT);
@@ -51,7 +59,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.CLAY_MOLD_INGOT);
         basicItem(IRItems.CLAY_MOLD_WIRE);
         basicItem(IRItems.FERTILIZER);
-        basicItem(IRItems.OIL_BUCKET);
+        basicItem(IRFluids.OIL.getDeferredBucket());
         basicItem(IRItems.PLANT_BALL);
         basicItem(IRItems.RUBBER);
         basicItem(IRItems.RUBBER_SHEET);
@@ -66,6 +74,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.ROCK_CUTTER);
 
         basicItem(IRItems.HAMMER);
+        basicItem(IRItems.TREE_TAP);
         basicItem(IRItems.WRENCH);
         toolbox(IRItems.TOOLBOX);
 

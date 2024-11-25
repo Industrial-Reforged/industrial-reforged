@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
@@ -60,6 +61,12 @@ public final class IRTabs {
                     }else {
                         addItem(output, item);
                     }
+                }
+
+                for (IRFluid fluid : IRFluids.HELPER.getFluids()) {
+                    DeferredItem<BucketItem> deferredBucket = fluid.getDeferredBucket();
+                    IndustrialReforged.LOGGER.debug("Bucket: {}", deferredBucket);
+                    output.accept(deferredBucket);
                 }
             }).build());
 

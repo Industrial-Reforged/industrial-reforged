@@ -41,7 +41,7 @@ public class IRTagsProvider {
             tag(IRTags.Items.TOOL,
                     IRItems.HAMMER,
                     IRItems.WRENCH,
-                    IRBlocks.TREE_TAP,
+                    IRItems.TREE_TAP,
                     IRItems.SCANNER,
                     IRItems.THERMOMETER
             );

@@ -165,7 +165,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private void fillBlock() {
         if (!level.isClientSide()) {
-            if (turnedOver && fillBlockCache != null) {
+            if (turnedOver && inUse == 0 && fillBlockCache != null) {
                 IFluidHandler fluidHandler = fillBlockCache.getCapability();
 
                 if (fluidHandler != null) {

@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.datagen.assets;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRFluidTypes;
+import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRTabs;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -80,8 +80,10 @@ public class IREnUSLangProvider extends LanguageProvider {
     }
 
     private void addFluids() {
-        addFluidType(IRFluidTypes.OIL_FLUID_TYPE, "Oil");
-        addFluidType(IRFluidTypes.MOLTEN_STEEL_FLUID_TYPE, "Molten Steel");
+        addFluidType(IRFluids.OIL.getFluidType(), "Oil");
+        addFluidType(IRFluids.MOLTEN_STEEL.getFluidType(), "Molten Steel");
+        addFluidType(IRFluids.MOLTEN_ALUMINUM.getFluidType(), "Molten Aluminum");
+        addFluidType(IRFluids.MOLTEN_COPPER.getFluidType(), "Molten Copper");
     }
 
     private void addItems() {

@@ -70,6 +70,8 @@
   "energy_tier.indref.LOW": "Low",
   "energy_tier.indref.MEDIUM": "Medium",
   "energy_tier.indref.NONE": "None",
+  "fluid_type.indref.molten_aluminum": "Molten Aluminum",
+  "fluid_type.indref.molten_copper": "Molten Copper",
   "fluid_type.indref.molten_steel": "Molten Steel",
   "fluid_type.indref.oil": "Oil",
   "item.indref.advanced_drill": "Advanced Drill",

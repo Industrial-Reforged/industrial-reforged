@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.datagen.data;
 
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
@@ -19,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -237,7 +239,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('#', Tags.Items.INGOTS_COPPER)
                 .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
                 .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRBlocks.TREE_TAP.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.TREE_TAP.get())
                 .pattern(" S ")
                 .pattern("###")
                 .pattern("#  ")
@@ -354,15 +356,44 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private void crucibleSmeltingRecipes() {
         irRecipe(new CrucibleSmeltingRecipe(IngredientWithCount.of(CTags.Items.STEEL_INGOT),
-                new FluidStack(IRFluids.MOLTEN_STEEL_SOURCE.get(), 111),
+                new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), 111),
                 200,
                 200
         ));
     }
 
     private void castingRecipes() {
-        irRecipe(new CrucibleCastingRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM_SOURCE.get(), 111), Ingredient.of(IRItems.CLAY_MOLD_INGOT), IRItems.ALUMINUM_INGOT.toStack(), 200, true));
-        irRecipe(new CrucibleCastingRecipe(new FluidStack(IRFluids.MOLTEN_STEEL_SOURCE.get(), 111), Ingredient.of(IRItems.CLAY_MOLD_INGOT), IRItems.STEEL_INGOT.toStack(), 200, true));
+        ingotCastingRecipe(IRFluids.MOLTEN_ALUMINUM, IRItems.ALUMINUM_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_COPPER, Items.COPPER_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_GOLD, Items.GOLD_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_IRON, Items.IRON_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_NICKEL, IRItems.NICKEL_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_INGOT);
+
+        wireCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_WIRE);
+        wireCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_WIRE);
+        wireCastingRecipe(IRFluids.MOLTEN_GOLD, IRItems.GOLD_WIRE);
+    }
+
+    private void wireCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
+        irRecipe(new CrucibleCastingRecipe(
+                new FluidStack(fluid.getStillFluid(), 111),
+                Ingredient.of(IRItems.CLAY_MOLD_WIRE),
+                new ItemStack(resultIngotItem.asItem(), 3),
+                200,
+                true
+        ));
+    }
+
+    private void ingotCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
+        irRecipe(new CrucibleCastingRecipe(
+                new FluidStack(fluid.getStillFluid(), 111),
+                Ingredient.of(IRItems.CLAY_MOLD_INGOT),
+                resultIngotItem.asItem().getDefaultInstance(),
+                200,
+                true
+        ));
     }
 
     private void centrifugeRecipes() {
@@ -370,8 +401,8 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void blastFurnaceRecipes() {
-        irRecipe(new BlastFurnaceRecipe(List.of(IngredientWithCount.of(Tags.Items.INGOTS_IRON, 2), IngredientWithCount.of(ItemTags.COALS)), new FluidStack(IRFluids.MOLTEN_STEEL_SOURCE.get(), 222), 200));
-        irRecipe(new BlastFurnaceRecipe(List.of(IngredientWithCount.of(IRItems.RAW_BAUXITE)), new FluidStack(IRFluids.MOLTEN_ALUMINUM_SOURCE.get(), 111), 200));
+        irRecipe(new BlastFurnaceRecipe(List.of(IngredientWithCount.of(Tags.Items.INGOTS_IRON, 2), IngredientWithCount.of(ItemTags.COALS)), new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), 222), 200));
+        irRecipe(new BlastFurnaceRecipe(List.of(IngredientWithCount.of(IRItems.RAW_BAUXITE)), new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), 111), 200));
     }
 
     private void machineCraftingRecipes() {

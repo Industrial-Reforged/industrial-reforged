@@ -31,6 +31,8 @@ public final class IRItems {
     // Tools
     public static final DeferredItem<WrenchItem> WRENCH = registerItem("wrench",
             () -> new WrenchItem(new Item.Properties()));
+    public static final DeferredItem<TreeTapItem> TREE_TAP = registerItem("tree_tap",
+            () -> new TreeTapItem(new Item.Properties()));
     public static final DeferredItem<HammerItem> HAMMER = registerItem("hammer",
             () -> new HammerItem(new Item.Properties()));
     public static final DeferredItem<ThermometerItem> THERMOMETER = registerItem("thermometer",
@@ -144,13 +146,6 @@ public final class IRItems {
     // Wires
     public static final DeferredItem<Item> STEEL_DUST = registerStandardItem("steel_dust");
     public static final DeferredItem<Item> COPPER_DUST = registerStandardItem("copper_dust");
-
-    public static final DeferredItem<BucketItem> MOLTEN_STEEL_BUCKET = registerItem("molten_steel_bucket",
-            () -> new BucketItem(IRFluids.MOLTEN_STEEL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
-    public static final DeferredItem<BucketItem> MOLTEN_ALUMINUM_BUCKET = registerItem("molten_aluminum_bucket",
-            () -> new BucketItem(IRFluids.MOLTEN_ALUMINUM_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
-    public static final DeferredItem<BucketItem> OIL_BUCKET = registerItem("oil_bucket",
-            () -> new BucketItem(IRFluids.OIL_SOURCE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
     static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
         DeferredItem<T> deferredItem = ITEMS.register(name, item);

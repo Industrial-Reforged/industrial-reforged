@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -46,7 +45,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
             // Fluid top
             poseStack.pushPose();
             {
-                renderCrucibleFluidTop(poseStack, bufferSource, angle, packedLight, fluidInTank);
+                renderCrucibleFluidTop(poseStack, bufferSource, angle, packedLight, fluidInTank, blockEntity.isTurnedOver() && blockEntity.inUse == 0 && !fluidInTank.isEmpty());
             }
             poseStack.popPose();
 
@@ -66,7 +65,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
             this.model.renderCrucibleLegs(poseStack, vertexconsumer, packedLight, packedOverlay, -1);
 
             // TODO: position correctly
-            if (/*blockEntity.isTurnedOver() && */blockEntity.inUse == 0 && !fluidInTank.isEmpty()) {
+            if (blockEntity.isTurnedOver() && blockEntity.inUse == 0 && !fluidInTank.isEmpty()) {
                 poseStack.pushPose();
                 {
                     poseStack.translate(0, 2.5, 1.96);
@@ -86,7 +85,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         this.model.renderCrucibleBody(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
     }
 
-    private void renderCrucibleFluidTop(PoseStack poseStack, MultiBufferSource bufferSource, float angle, int packedLight, FluidStack fluidStack) {
+    private void renderCrucibleFluidTop(PoseStack poseStack, MultiBufferSource bufferSource, float angle, int packedLight, FluidStack fluidStack, boolean turnedOver) {
         poseStack.pushPose();
         {
             poseStack.translate(0.5, 2.15, 0.5);
@@ -104,7 +103,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
         poseStack.mulPose(Axis.XP.rotation((float) Math.toRadians(angle)));
         poseStack.translate(-0.5, -2.15, -0.5);
 
-        if (!fluidStack.isEmpty()) {
+        if (!fluidStack.isEmpty() && turnedOver) {
             poseStack.translate(0, 3.865, 1.94);
             renderFluid(poseStack, bufferSource, fluidStack, 1, packedLight, FluidPart.FAUCET_TOP);
         }

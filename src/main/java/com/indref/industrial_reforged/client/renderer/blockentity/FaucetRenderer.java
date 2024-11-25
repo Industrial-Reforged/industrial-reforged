@@ -1,8 +1,6 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
-import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.content.blockentities.misc.FaucetBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,10 +18,8 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.joml.Matrix4f;
 
 public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {

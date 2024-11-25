@@ -1,0 +1,16 @@
+{
+  "type": "indref:crucible_casting",
+  "cast": {
+    "item": "indref:clay_mold_wire"
+  },
+  "consume_cast": true,
+  "duration": 200,
+  "fluid": {
+    "amount": 111,
+    "id": "indref:molten_tin"
+  },
+  "result": {
+    "count": 3,
+    "id": "indref:tin_wire"
+  }
+}

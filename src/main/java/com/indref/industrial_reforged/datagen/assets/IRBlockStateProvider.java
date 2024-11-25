@@ -78,8 +78,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
         faucet(IRBlocks.BLAST_FURNACE_FAUCET, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 
         coilBlock(IRBlocks.COIL.get());
-
-        simpleBlock(IRBlocks.TREE_TAP.get());
     }
 
     private void multiblockModels() {

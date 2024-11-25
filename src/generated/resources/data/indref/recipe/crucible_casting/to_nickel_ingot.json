@@ -1,0 +1,16 @@
+{
+  "type": "indref:crucible_casting",
+  "cast": {
+    "item": "indref:clay_mold_ingot"
+  },
+  "consume_cast": true,
+  "duration": 200,
+  "fluid": {
+    "amount": 111,
+    "id": "indref:molten_nickel"
+  },
+  "result": {
+    "count": 1,
+    "id": "indref:nickel_ingot"
+  }
+}

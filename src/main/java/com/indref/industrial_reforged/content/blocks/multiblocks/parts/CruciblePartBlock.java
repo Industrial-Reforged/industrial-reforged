@@ -15,7 +15,6 @@ import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -71,7 +70,6 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
 
-        // FIXME: Unforming not working
         if (blockEntity instanceof CruciblePartBlockEntity cruciblePartBlockEntity) {
             BlockPos controllerPos = cruciblePartBlockEntity.getControllerPos();
             if (controllerPos != null) {
@@ -177,8 +175,8 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     @Override
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
         if (state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.WALL_BOTTOM) {
-            BlockPos controllerPos = BlockUtils.getBEOfClass(level, pos, CruciblePartBlockEntity.class).getControllerPos();
-            BlockUtils.getBEOfClass(level, controllerPos, CrucibleBlockEntity.class).invalidateCapabilities();
+            BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
+            BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class).invalidateCapabilities();
         }
     }
 
