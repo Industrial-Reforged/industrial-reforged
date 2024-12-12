@@ -47,12 +47,16 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
 
     @Override
     public int getWidth() {
-        return 80;
+        return 96;
     }
 
     @Override
     public int getHeight() {
         return 64;
+    }
+
+    public int getPadding() {
+        return 0;
     }
 
     @Override

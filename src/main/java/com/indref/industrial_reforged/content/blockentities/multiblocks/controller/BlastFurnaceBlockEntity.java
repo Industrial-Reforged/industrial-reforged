@@ -173,10 +173,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                 .map(RecipeHolder::value);
     }
 
-    public boolean isFormed() {
-        return !level.getBlockState(worldPosition).getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED);
-    }
-
     @Override
     public @NotNull Component getDisplayName() {
         return Component.literal("Blast Furnace");

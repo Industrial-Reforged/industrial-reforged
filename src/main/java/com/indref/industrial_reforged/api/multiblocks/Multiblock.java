@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.api.multiblocks;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.IRRegistries;
+import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -184,7 +185,7 @@ public interface Multiblock {
      * if the multiblock cannot be rotated, like the crucible or firebox.
      * Providing a fixed direction can improve performance while forming the multiblock
      * by a bit.
-     * @return a horizontal direction, if the direction can be fixed.
+     * @return a horizontal direction, if the direction can be fixed or null otherwise.
      */
     default @Nullable HorizontalDirection getFixedDirection() {
         return null;
@@ -210,6 +211,34 @@ public interface Multiblock {
      */
     default MultiblockLayer layer(int... layer) {
         return new MultiblockLayer(false, IntegerRange.of(1, 1), layer);
+    }
+
+    /**
+     * Wrapper for {@link MultiblockHelper} method
+     */
+    default boolean form(BlockPos controllerPos, Level level, @Nullable Player player) {
+        return MultiblockHelper.form(this, controllerPos, level, player);
+    }
+
+    /**
+     * Wrapper for {@link MultiblockHelper} method
+     */
+    default boolean form(BlockPos controllerPos, Level level) {
+        return MultiblockHelper.form(this, controllerPos, level);
+    }
+
+    /**
+     * Wrapper for {@link MultiblockHelper} method
+     */
+    default boolean unform(BlockPos controllerPos, Level level, @Nullable Player player) {
+        return MultiblockHelper.unform(this, controllerPos, level, player);
+    }
+
+    /**
+     * Wrapper for {@link MultiblockHelper} method
+     */
+    default boolean unform(BlockPos controllerPos, Level level) {
+        return MultiblockHelper.unform(this, controllerPos, level);
     }
 
     Codec<Multiblock> CODEC = RecordCodecBuilder.create(instance -> instance.group(

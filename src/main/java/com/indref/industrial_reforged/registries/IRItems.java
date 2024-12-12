@@ -2,10 +2,8 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
-import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.content.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
-import com.indref.industrial_reforged.content.items.misc.MiningPipeBlockItem;
 import com.indref.industrial_reforged.content.items.reactor.UraniumFuelRodItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;

@@ -54,7 +54,7 @@ public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements C
         if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blastFurnaceBlockEntity.getActualBlockEntityPos(), level);
+                IRMultiblocks.BLAST_FURNACE.get().unform(blastFurnaceBlockEntity.getActualBlockEntityPos(), level);
             }
         }
 

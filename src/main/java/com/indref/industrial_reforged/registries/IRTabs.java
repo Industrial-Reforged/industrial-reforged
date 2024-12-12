@@ -7,6 +7,8 @@ import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
+import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Vec3i;
@@ -25,6 +27,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -125,8 +130,7 @@ public final class IRTabs {
         for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
             ItemStack stack = new ItemStack(item.get());
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
-                if (item.get() instanceof IFluidItem fluidContainerItem)
-                    fluidContainerItem.tryFillFluid(fluid.getValue(), 1000, stack);
+                stack.set(IRDataComponents.FLUID, SimpleFluidContent.copyOf(new FluidStack(fluid.getValue(), 1000)));
                 output.accept(stack);
             }
         }

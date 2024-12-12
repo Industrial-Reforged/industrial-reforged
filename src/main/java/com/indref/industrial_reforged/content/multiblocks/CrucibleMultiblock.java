@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
@@ -16,6 +17,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -40,19 +42,19 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     public MultiblockLayer[] getLayout() {
         return new MultiblockLayer[]{
                 layer(
-                        0, 0, 0,
-                        0, 2, 0,
-                        0, 0, 0
+                        1, 0, 0, 0, 1,
+                        3, 0, 2, 0, 3,
+                        1, 0, 0, 0, 1
                 ),
                 layer(
-                        0, 0, 0,
-                        0, 1, 0,
-                        0, 0, 0
+                        1, 0, 0, 0, 1,
+                        3, 0, 1, 0, 3,
+                        1, 0, 0, 0, 1
                 ),
                 layer(
-                        0, 0, 0,
-                        0, 1, 0,
-                        0, 0, 0
+                        1, 0, 0, 0, 1,
+                        3, 0, 1, 0, 3,
+                        1, 0, 0, 0, 1
                 )
         };
     }
@@ -63,6 +65,7 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
         def.put(0, tier.getUnformedPart());
         def.put(1, null);
         def.put(2, getUnformedController());
+        def.put(3, Blocks.ACACIA_FENCE);
         return def;
     }
 
@@ -74,23 +77,35 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     @Override
     public @Nullable BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         BlockState currentBlock = level.getBlockState(blockPos);
+        Direction mDirection = multiblockData.direction().toRegularDirection();
+        Direction pDirection = player != null ? player.getDirection() : mDirection;
+        Direction direction = mDirection.getAxis() == pDirection.getAxis() ? pDirection : mDirection;
+        IndustrialReforged.LOGGER.debug("direction: {}", direction);
         if (currentBlock.is(tier.getUnformedPart()) || currentBlock.is(tier.getFormedPart())) {
             return tier.getFormedPart()
                     .defaultBlockState()
                     .setValue(CRUCIBLE_WALL, switch (layerIndex) {
-                        case 0, 2, 6, 8 -> layoutIndex == 0 ? WallStates.EDGE_BOTTOM : WallStates.EDGE_TOP;
-                        case 1, 3, 5, 7 -> layoutIndex == 0 ? WallStates.WALL_BOTTOM : WallStates.WALL_TOP;
+                        case 1, 3, 11, 13 -> layoutIndex == 0 ? WallStates.EDGE_BOTTOM : WallStates.EDGE_TOP;
+                        case 2, 6, 8, 12 -> layoutIndex == 0 ? WallStates.WALL_BOTTOM : WallStates.WALL_TOP;
                         default -> WallStates.WALL_TOP;
                     })
-                    .setValue(CruciblePartBlock.FACING, switch (layerIndex) {
-                        case 1, 2 -> Direction.WEST;
-                        case 5, 8 -> Direction.NORTH;
-                        case 6, 7 -> Direction.EAST;
-                        default -> Direction.SOUTH;
+                    .setValue(CruciblePartBlock.FACING, switch (direction) {
+                        case NORTH, SOUTH -> switch (layerIndex) {
+                            case 2, 3 -> Direction.EAST;
+                            case 8, 13 -> Direction.SOUTH;
+                            case 11, 12 -> Direction.WEST;
+                            default -> Direction.NORTH;
+                        };
+                        default -> switch (layerIndex) {
+                            case 2, 3 -> Direction.NORTH;
+                            case 8, 13 -> Direction.EAST;
+                            case 11, 12 -> Direction.SOUTH;
+                            default -> Direction.WEST;
+                        };
                     });
         } else if (currentBlock.is(tier.getUnformedController()) || currentBlock.is(tier.getFormedController())) {
             return tier.getFormedController().defaultBlockState()
-                    .setValue(BlockStateProperties.HORIZONTAL_FACING, player != null ? player.getDirection() : multiblockData.direction().toRegularDirection());
+                    .setValue(BlockStateProperties.HORIZONTAL_FACING, direction);
         }
         return null;
     }
@@ -103,8 +118,8 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public @NotNull HorizontalDirection getFixedDirection() {
-        return HorizontalDirection.NORTH;
+    public MultiblockLayer layer(int... layer) {
+        return Multiblock.super.layer(layer).setWidths(5, 3);
     }
 
     public enum WallStates implements StringRepresentable {

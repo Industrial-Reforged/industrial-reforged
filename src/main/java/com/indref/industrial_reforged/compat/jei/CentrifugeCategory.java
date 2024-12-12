@@ -46,7 +46,7 @@ public class CentrifugeCategory implements IRecipeCategory<CentrifugeRecipe> {
 
     @Override
     public int getWidth() {
-        return 80;
+        return 96;
     }
 
     @Override

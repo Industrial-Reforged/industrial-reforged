@@ -59,9 +59,10 @@ public final class MultiblockHelper {
 
         // Make player direction first entry of Set to prioritize
         Set<HorizontalDirection> directions = new HashSet<>();
-        directions.add(direction);
         if (multiblock.getFixedDirection() == null) {
             directions.addAll(List.of(HorizontalDirection.values()));
+        } else {
+            directions.add(direction);
         }
 
         // Indexing (Positions)
@@ -117,7 +118,7 @@ public final class MultiblockHelper {
                     int minSize = layer.range().getMinimum();
                     int maxSize = layer.range().getMaximum();
 
-                    outer:
+                    layersLoop:
                     for (int i = 0; i < maxSize; i++) {
                         int x = 0;
                         int z = 0;
@@ -134,7 +135,7 @@ public final class MultiblockHelper {
                                 multiblockIndexList.add(true);
                             } else {
                                 if (i >= minSize) {
-                                    break outer;
+                                    break layersLoop;
                                 } else {
                                     firstMissingBlockPoses.putIfAbsent(mDirection, Pair.of(curBlockPos, blockIndex));
                                     multiblockIndexList.add(false);
@@ -410,7 +411,9 @@ public final class MultiblockHelper {
                     if (expectedState != null) {
                         if (blockState.is(expectedState.getBlock())) {
                             if (multiblock.isFormed(level, curBlockPos)) {
-                                level.setBlockAndUpdate(curBlockPos, definedBlock.defaultBlockState());
+                                if (definedBlock != null) {
+                                    level.setBlockAndUpdate(curBlockPos, definedBlock.defaultBlockState());
+                                }
                                 multiblock.afterUnformBlock(level, curBlockPos, controllerPos, xIndex, yIndex, direction, player);
                             }
                         }

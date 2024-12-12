@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
+import com.indref.industrial_reforged.util.renderer.GuiUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -25,10 +26,13 @@ import org.jetbrains.annotations.Nullable;
 
 public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
     private static final ResourceLocation PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
+    private static final ResourceLocation SLOT_SPRITE = ResourceLocation.fromNamespaceAndPath("jei", "textures/jei/atlas/gui/output_slot.png");
+    private static final ResourceLocation CASTING_BASIN_SPRITE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "casting_basin");
 
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_casting");
     public static final RecipeType<CrucibleCastingRecipe> RECIPE_TYPE =
             new RecipeType<>(UID, CrucibleCastingRecipe.class);
+
     private final IDrawable icon;
 
     public CastingCategory(IGuiHelper guiHelper) {
@@ -52,7 +56,7 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
 
     @Override
     public int getWidth() {
-        return 80;
+        return 96;
     }
 
     @Override
@@ -60,26 +64,32 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
         return 64;
     }
 
+    public int getPadding() {
+        return 6;
+    }
+
     @Override
     public void setRecipe(IRecipeLayoutBuilder recipeLayoutBuilder, CrucibleCastingRecipe castingRecipe, IFocusGroup iFocusGroup) {
         FluidStack fluidStack = castingRecipe.fluidStack();
-        recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 0, 25)
+        recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, getPadding() + 2, 25)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
                 .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
 
-        IRecipeSlotBuilder slotBuilder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.CATALYST, 32, 5)
+        IRecipeSlotBuilder slotBuilder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.CATALYST, getPadding() + 32, 7)
                 .addIngredients(castingRecipe.castItem());
 
         if (castingRecipe.consumeCast()) {
             slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(Component.literal("Item is consumed").withStyle(ChatFormatting.DARK_GRAY)));
         }
-        
-        recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 60, 25)
+
+        recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, getPadding() + 64, 26)
                 .addIngredients(Ingredient.of(castingRecipe.resultStack()));
     }
 
     @Override
     public void draw(CrucibleCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        guiGraphics.blitSprite(PROGRESS_SPRITE, 28, 25, 24, 16);
+        guiGraphics.blitSprite(PROGRESS_SPRITE, getPadding() + 28, 27, 24, 16);
+        guiGraphics.blitSprite(CASTING_BASIN_SPRITE, getPadding(), 24, 20, 20);
+        GuiUtils.drawImg(guiGraphics, SLOT_SPRITE, getPadding() + 59, 21, 26, 26);
     }
 }

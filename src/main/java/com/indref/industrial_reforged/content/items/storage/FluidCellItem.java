@@ -22,7 +22,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 
@@ -81,17 +83,12 @@ public class FluidCellItem extends SimpleFluidItem {
             if (blockState.getBlock() instanceof LiquidBlock liquidBlock) {
                 level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 11);
                 ItemStack stack = new ItemStack(IRItems.FLUID_CELL.get());
-                IFluidItem fluidItem = ItemUtils.getFluidItem(stack);
-                fluidItem.tryFillFluid(liquidBlock.fluid.getSource(), 1000, stack);
+                IFluidHandler fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+                fluidHandler.fill(new FluidStack(liquidBlock.fluid.getSource(), 1000), IFluidHandler.FluidAction.EXECUTE);
                 return stack;
             }
         }
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public FluidStack getFluid() {
-        return this.fluid;
     }
 
     @Override

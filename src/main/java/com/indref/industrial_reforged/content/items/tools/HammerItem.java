@@ -22,7 +22,7 @@ public class HammerItem extends Item {
             for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
                 if (controllerState.is(multiblock.getUnformedController())) {
                     try {
-                        return MultiblockHelper.form(multiblock, useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer())
+                        return multiblock.form(useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer())
                                 ? InteractionResult.SUCCESS
                                 : InteractionResult.FAIL;
                     } catch (Exception e) {
@@ -30,8 +30,6 @@ public class HammerItem extends Item {
                     }
                 }
             }
-        } else {
-            // TODO: Multiblock unforming
         }
         return InteractionResult.FAIL;
     }

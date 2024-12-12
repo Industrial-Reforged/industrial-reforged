@@ -79,7 +79,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
             if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
                 BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();
                 if (actualBlockEntityPos != null && smallFireboxBlockEntity.getMultiblockData().valid()) {
-                    MultiblockHelper.unform(IRMultiblocks.SMALL_FIREBOX.get(), actualBlockEntityPos, pLevel);
+                    IRMultiblocks.SMALL_FIREBOX.get().unform(actualBlockEntityPos, pLevel);
                 }
             }
         }

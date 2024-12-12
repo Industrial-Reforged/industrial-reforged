@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.util.HorizontalDirection;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
@@ -23,6 +24,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,8 +101,7 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
             BlockEntity thisBlockEntity = level.getBlockEntity(pos);
             if (thisBlockEntity instanceof FireboxPartBlockEntity partBE) {
                 BlockPos controllerPos = partBE.getControllerPos();
-                boolean success = MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), controllerPos, level);
-                IndustrialReforged.LOGGER.debug("Successful: {}", success);
+                boolean success = IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(controllerPos, level);
             }
         }
 
@@ -115,6 +117,11 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        return IRBlocks.REFRACTORY_BRICK.toStack();
     }
 
     @Override

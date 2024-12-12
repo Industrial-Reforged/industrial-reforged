@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -73,7 +74,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         if (blockEntity instanceof CruciblePartBlockEntity cruciblePartBlockEntity) {
             BlockPos controllerPos = cruciblePartBlockEntity.getControllerPos();
             if (controllerPos != null) {
-                MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), controllerPos, level);
+                IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(controllerPos, level);
             }
         } else {
             IndustrialReforged.LOGGER.error("Failed to unform crucible, crucible wall blockentity corruption");
@@ -136,6 +137,11 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
                 default -> super.getShape(state, level, pos, context);
             };
         };
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        return IRBlocks.TERRACOTTA_BRICK.toStack();
     }
 
     @Override

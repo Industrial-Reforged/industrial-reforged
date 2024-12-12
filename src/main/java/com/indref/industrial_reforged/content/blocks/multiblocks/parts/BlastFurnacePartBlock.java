@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
@@ -18,11 +19,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +57,7 @@ public class BlastFurnacePartBlock extends RotatableEntityBlock implements Displ
         BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
         if (blockEntity instanceof BlastFurnacePartBlockEntity partBlockEntity) {
             if (p_60516_.getBlockEntity(partBlockEntity.getControllerPos()) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blastFurnaceBlockEntity.getActualBlockEntityPos(), p_60516_);
+                IRMultiblocks.BLAST_FURNACE.get().unform(blastFurnaceBlockEntity.getActualBlockEntityPos(), p_60516_);
             }
         }
         super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
@@ -63,6 +66,11 @@ public class BlastFurnacePartBlock extends RotatableEntityBlock implements Displ
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
         super.createBlockStateDefinition(p_49915_.add(BlastFurnaceMultiblock.BRICK_STATE));
+    }
+
+    @Override
+    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        return IRBlocks.BLAST_FURNACE_BRICKS.toStack();
     }
 
     @Override
