@@ -58,11 +58,12 @@ public final class MultiblockHelper {
         }
 
         // Make player direction first entry of Set to prioritize
-        Set<HorizontalDirection> directions = new HashSet<>();
+        List<HorizontalDirection> directions;
         if (multiblock.getFixedDirection() == null) {
-            directions.addAll(List.of(HorizontalDirection.values()));
+            HorizontalDirection[] values = HorizontalDirection.values();
+            directions = List.of(values);
         } else {
-            directions.add(direction);
+            directions = Collections.singletonList(direction);
         }
 
         // Indexing (Positions)
@@ -78,7 +79,7 @@ public final class MultiblockHelper {
         // Check if multi is valid
         // iterate through all possible directions
         for (HorizontalDirection mDirection : directions) {
-            // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
+            // Calculate block controllerPos of the first block in the multi (multiblock.getLayout().get(0))
             BlockPos firstBlockPos = getFirstBlockPos(mDirection, controllerPos, relativeControllerPos);
             int actualLayoutSize = 0;
 
@@ -160,14 +161,17 @@ public final class MultiblockHelper {
             if (!multiblockIndexList.contains(false)) {
                 return new MultiblockData(true, mDirection, Arrays.copyOf(actualLayout, actualLayoutSize));
             }
+
             for (int i = multiblockIndexList.size() - 1; i >= 0; i--) {
                 if (!multiblockIndexList.getBoolean(i)) {
                     multiblockIndexList.removeBoolean(i);
                 }
             }
+
             if (multiblockIndexList.size() > prioritizedDirectionLayout.getFirst().size()) {
                 prioritizedDirectionLayout = Pair.of(multiblockIndexList, mDirection);
             }
+
             multiblockIndexList = new BooleanArrayList();
             y = 0;
         }
@@ -293,12 +297,13 @@ public final class MultiblockHelper {
 
     private static void formBlocks(Multiblock multiblock, MultiblockData multiblockData, BlockPos controllerPos, Level level, @Nullable Player player) {
         HorizontalDirection direction = multiblockData.direction();
-        IndustrialReforged.LOGGER.debug("Multiblock direction: {}", direction);
         MultiblockLayer[] layout = multiblockData.layers();
 
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
-        // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
+        // Calculate block controllerPos of the first block in the multi (multiblock.getLayout().get(0))
+
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
+
         Int2ObjectMap<Block> def = multiblock.getDefinition();
 
         int index = 0;
@@ -384,7 +389,7 @@ public final class MultiblockHelper {
 
         Vec3i relativeControllerPos = getRelativeControllerPos(multiblock);
         HorizontalDirection direction = data.direction();
-        // Calculate block pos of the first block in the multi (multiblock.getLayout().get(0))
+        // Calculate block controllerPos of the first block in the multi (multiblock.getLayout().get(0))
         BlockPos firstBlockPos = getFirstBlockPos(direction, controllerPos, relativeControllerPos);
         MultiblockLayer[] layout = data.layers();
         Map<Integer, Block> def = multiblock.getDefinition();
@@ -403,10 +408,6 @@ public final class MultiblockHelper {
 
                 BlockState blockState = level.getBlockState(curBlockPos);
                 if (!blockState.isEmpty()) {
-                    if (blockState.is(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER)) {
-                        IndustrialReforged.LOGGER.debug("unforming ccc, {}", blockState);
-                    }
-
                     BlockState expectedState = multiblock.formBlock(level, curBlockPos, controllerPos, xIndex, yIndex, data, player);
                     if (expectedState != null) {
                         if (blockState.is(expectedState.getBlock())) {

@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-23T17:45:54.294855564	Block States: indref
+// 1.21.1	2024-12-12T20:03:53.879021801	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 730773373aebc01c0228f21355ca4217c0d1a55f assets/indref/blockstates/basic_generator.json
 3cbec80a2e1b5742c04822848fad846cbec7f92a assets/indref/blockstates/basic_machine_frame.json
@@ -28,6 +28,7 @@ b8fccd59c657cdaeedd45de18cf679b5bca0e81f assets/indref/blockstates/deepslate_tin
 5d4d277f7a45bfd680d61274d342404b85ffa6ed assets/indref/blockstates/gold_cable.json
 0eb9a5fdae21e73449e6f8f4ee15dc4ca645394f assets/indref/blockstates/iridium_block.json
 aa41041d7d763d96f5f1ce1f0743cbc678248fe0 assets/indref/blockstates/iridium_ore.json
+4324e33a891fdb77d6d8e8c8e6f918742abfc25e assets/indref/blockstates/iron_fence.json
 a00bfafb145e5bc8f80ec4ff6ba2e935f674a06b assets/indref/blockstates/lead_block.json
 fe6270d2523f759c8226ffc54e682dcb98aceb01 assets/indref/blockstates/lead_ore.json
 cb7481fac8b00c57f4bfc866b0c28461ebafac62 assets/indref/blockstates/nickel_block.json
@@ -104,6 +105,8 @@ e67f3d3cf1b814cab0e01af713d12c713c06e751 assets/indref/models/block/firebox_part
 05349b8c65834fd5c053f488ab05c795b28e7534 assets/indref/models/block/gold_cable_connection.json
 81e58d23922d76a1ea4d8a549ba504c923c9bf0d assets/indref/models/block/iridium_block.json
 1e00b6ee2ceff6c8ad35a6f2cb1dabe5a621f28a assets/indref/models/block/iridium_ore.json
+42ab7dd7d048ec3f8c3b68f9671aa7fc867a01d7 assets/indref/models/block/iron_fence_post.json
+6cb87a968a6b0ad13ba50e9a943cfba422d7577e assets/indref/models/block/iron_fence_side.json
 728c26a658a02cb9b01d534283fd4bc16570f6ea assets/indref/models/block/lead_block.json
 01d7459b3dbd7e80133d1caa55bf03e2226bb52a assets/indref/models/block/lead_ore.json
 330b45bdb5c2c24ba8d72cf65249caa86f61227e assets/indref/models/block/nickel_block.json

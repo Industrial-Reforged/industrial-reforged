@@ -20,7 +20,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: 10/22/2023 Implement highlight for the first block pos
+// TODO: 10/22/2023 Implement highlight for the first block controllerPos
 public class TapeMeasureItem extends Item {
     public static final String EXTENDED_KEY = "tape_measure_extended";
 
@@ -48,11 +48,11 @@ public class TapeMeasureItem extends Item {
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
-            // first marked block pos
+            // first marked block controllerPos
             BlockPos firstBlockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
 
             if (firstBlockPos != null) {
-                // calculate distance between first pos and player pos
+                // calculate distance between first controllerPos and player controllerPos
                 int[] finalPos = {
                         Math.abs(firstBlockPos.getX()) - Math.abs(blockPos.getX()),
                         Math.abs(firstBlockPos.getY()) - Math.abs(blockPos.getY()),

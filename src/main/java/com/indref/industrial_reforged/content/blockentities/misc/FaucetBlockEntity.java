@@ -34,7 +34,7 @@ public class FaucetBlockEntity extends ContainerBlockEntity {
     public void onLoad() {
         if (level instanceof ServerLevel serverLevel) {
             Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
-            IndustrialReforged.LOGGER.debug("Creating cap cache, at pos: {}", getBlockPos().relative(dir));
+            IndustrialReforged.LOGGER.debug("Creating cap cache, at controllerPos: {}", getBlockPos().relative(dir));
             this.drainCapCache = BlockCapabilityCache.create(Capabilities.FluidHandler.BLOCK, serverLevel, getBlockPos().relative(dir), dir);
             this.fillCapCache = BlockCapabilityCache.create(Capabilities.FluidHandler.BLOCK, serverLevel, getBlockPos().below(), Direction.DOWN);
             IndustrialReforged.LOGGER.debug("[load] cache Cap: {}, actual cap: {}", drainCapCache.getCapability(),

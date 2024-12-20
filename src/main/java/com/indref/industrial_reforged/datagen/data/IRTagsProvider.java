@@ -10,6 +10,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,7 +30,6 @@ public class IRTagsProvider {
         generator.addProvider(isServer, new ItemsProvider(packOutput, lookupProvider, provider.contentsGetter()));
         generator.addProvider(isServer, new FluidsProvider(packOutput, lookupProvider, existingFileHelper));
     }
-
 
     protected static class ItemsProvider extends ItemTagsProvider {
         public ItemsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags) {
@@ -130,7 +130,7 @@ public class IRTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
-
+            tag(BlockTags.FENCES).add(IRBlocks.IRON_FENCE.get());
         }
     }
 

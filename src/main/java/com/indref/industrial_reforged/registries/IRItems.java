@@ -19,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class IRItems {
@@ -27,14 +28,10 @@ public final class IRItems {
     public static final List<DeferredItem<?>> TAB_ITEMS = new ArrayList<>();
 
     // Tools
-    public static final DeferredItem<WrenchItem> WRENCH = registerItem("wrench",
-            () -> new WrenchItem(new Item.Properties()));
-    public static final DeferredItem<TreeTapItem> TREE_TAP = registerItem("tree_tap",
-            () -> new TreeTapItem(new Item.Properties()));
-    public static final DeferredItem<HammerItem> HAMMER = registerItem("hammer",
-            () -> new HammerItem(new Item.Properties()));
-    public static final DeferredItem<ThermometerItem> THERMOMETER = registerItem("thermometer",
-            () -> new ThermometerItem(new Item.Properties()));
+    public static final DeferredItem<WrenchItem> WRENCH = toolItem("wrench", WrenchItem::new);
+    public static final DeferredItem<TreeTapItem> TREE_TAP = toolItem("tree_tap", TreeTapItem::new);
+    public static final DeferredItem<HammerItem> HAMMER = toolItem("hammer", HammerItem::new);
+    public static final DeferredItem<ThermometerItem> THERMOMETER = toolItem("thermometer", ThermometerItem::new);
     public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
             () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
@@ -159,6 +156,10 @@ public final class IRItems {
 
     private static DeferredItem<Item> moldItem(String moldType) {
         return registerStandardItem("clay_mold_"+moldType);
+    }
+
+    private static <T extends Item> DeferredItem<T> toolItem(String name, Function<Item.Properties, T> itemConstructor) {
+        return registerItem(name, () -> itemConstructor.apply(new Item.Properties().stacksTo(1)));
     }
 
 }

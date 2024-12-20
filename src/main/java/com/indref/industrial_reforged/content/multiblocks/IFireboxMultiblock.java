@@ -13,7 +13,7 @@ public interface IFireboxMultiblock extends Multiblock {
 
     /**
      * @param multiblockPos the blockpos of a block that is part of the multi
-     * @return The controller block pos of the multiblock
+     * @return The controller block controllerPos of the multiblock
      */
     @Nullable BlockPos getControllerPos(BlockPos multiblockPos, Level level);
 }

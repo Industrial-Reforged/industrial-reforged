@@ -45,8 +45,7 @@ public class MultiblockData implements INBTSerializable<CompoundTag> {
             layers[i] = MultiblockLayer.load(listTag.getCompound(String.valueOf(i)));
         }
         HorizontalDirection direction = HorizontalDirection.values()[nbt.getInt("direction")];
-        boolean valid = nbt.getBoolean("valid");
-        this.valid = valid;
+        this.valid = nbt.getBoolean("valid");
         this.direction = direction;
         this.layers = layers;
     }

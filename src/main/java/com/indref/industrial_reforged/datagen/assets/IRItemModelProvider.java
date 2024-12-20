@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
@@ -68,14 +69,14 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.CIRCUIT_BOARD);
 
         basicItem(IRItems.SCANNER);
-        basicItem(IRItems.ADVANCED_DRILL);
-        basicItem(IRItems.ELECTRIC_DRILL);
-        basicItem(IRItems.NANO_SABER);
-        basicItem(IRItems.ROCK_CUTTER);
+        handheldItem(IRItems.ADVANCED_DRILL);
+        handheldItem(IRItems.ELECTRIC_DRILL);
+        handheldItem(IRItems.NANO_SABER);
+        handheldItem(IRItems.ROCK_CUTTER);
 
-        basicItem(IRItems.HAMMER);
-        basicItem(IRItems.TREE_TAP);
-        basicItem(IRItems.WRENCH);
+        handheldItem(IRItems.HAMMER);
+        handheldItem(IRItems.TREE_TAP);
+        handheldItem(IRItems.WRENCH);
         toolbox(IRItems.TOOLBOX);
 
         basicItem(IRItems.ELECTRIC_MOTOR);
@@ -133,6 +134,8 @@ public class IRItemModelProvider extends ItemModelProvider {
         cable(IRBlocks.COPPER_CABLE);
         cable(IRBlocks.GOLD_CABLE);
         cable(IRBlocks.STEEL_CABLE);
+
+        fenceInventory(name(IRBlocks.IRON_FENCE), blockTexture(Blocks.IRON_BLOCK));
 
         blockItems();
     }
@@ -204,6 +207,17 @@ public class IRItemModelProvider extends ItemModelProvider {
         ResourceLocation location = key(item);
         return getBuilder(location + suffix)
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "item/" + location.getPath() + suffix));
+    }
+
+    public ItemModelBuilder handheldItem(ItemLike itemLike) {
+        return basicItem(itemLike, "");
+    }
+
+    public ItemModelBuilder handheldItem(ItemLike item, String suffix) {
+        ResourceLocation location = key(item);
+        return getBuilder(location + suffix)
+                .parent(new ModelFile.UncheckedModelFile("item/handheld"))
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "item/" + location.getPath() + suffix));
     }
 

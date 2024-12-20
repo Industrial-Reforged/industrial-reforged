@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.networking.CrucibleTurnPayload;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -13,15 +14,17 @@ import com.indref.industrial_reforged.content.blockentities.multiblocks.part.Cru
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
-import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -37,6 +40,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,16 +93,14 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         if (controllerPos != null) {
             CrucibleBlockEntity controllerBlockEntity = (CrucibleBlockEntity) level.getBlockEntity(controllerPos);
             if (controllerBlockEntity != null) {
-                if (player.isShiftKeyDown()) {
-                    controllerBlockEntity.reset();
-                } else {
-                    //Utils.openMenu(player, controllerBlockEntity);
-                    controllerBlockEntity.turn();
+                if (!player.isShiftKeyDown()) {
+                    Utils.openMenu(player, controllerBlockEntity);
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return super.useWithoutItem(p_60503_, level, blockPos, player, p_60508_);
     }
 
     @Override
@@ -136,12 +138,39 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
                 case WEST -> VoxelShapes.BOTTOM_SIDE_WEST;
                 default -> super.getShape(state, level, pos, context);
             };
+            case FENCE -> super.getShape(state, level, pos, context);
         };
     }
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return IRBlocks.TERRACOTTA_BRICK.toStack();
+        return state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.FENCE
+                ? IRBlocks.IRON_FENCE.toStack()
+                : IRBlocks.TERRACOTTA_BRICK.toStack();
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+
+        BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
+        CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
+        boolean flag = level.hasNeighborSignal(pos);
+        IndustrialReforged.LOGGER.debug("Powered: {}, flag: {}", be.isPowered(), flag);
+        if (!this.defaultBlockState().is(neighborBlock) && flag != be.isPowered()) {
+            be.setPowered(flag);
+            PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag));
+        }
+    }
+
+    @Override
+    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+        BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
+
+        if (state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.WALL_BOTTOM) {
+            BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class).invalidateCapabilities();
+        }
+
     }
 
     @Override
@@ -175,14 +204,6 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
             if (crucibleBlockEntity instanceof CrucibleBlockEntity) {
                 DisplayUtils.displayHeatInfo(displayText, crucibleBlockEntity.getBlockState(), crucibleBlockEntity.getBlockPos(), level);
             }
-        }
-    }
-
-    @Override
-    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        if (state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.WALL_BOTTOM) {
-            BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
-            BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class).invalidateCapabilities();
         }
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.world.level.BlockGetter;
  */
 public interface CustomFaucetInteractBlock {
     /**
-     * @return the y pos the molten metal should reach down to
+     * @return the y controllerPos the molten metal should reach down to
      */
     float getShapeMaxY(BlockGetter blockGetter, BlockPos blockPos);
 }

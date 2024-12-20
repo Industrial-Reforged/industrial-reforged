@@ -42,7 +42,7 @@ public class EnergyNets {
     }
 
     /**
-     * This will check if the block at the specified pos is part of an enet
+     * This will check if the block at the specified controllerPos is part of an enet
      * and if so, will return that net. Otherwise, it will look at the blocks
      * around the blockpos and check if they are part of an enet and if so, return
      * that net.

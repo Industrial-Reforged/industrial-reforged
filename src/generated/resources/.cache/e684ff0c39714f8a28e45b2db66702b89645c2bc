@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-23T20:12:31.166642453	Item Models: indref
+// 1.21.1	2024-12-13T16:01:15.348122382	Item Models: indref
 f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -66,6 +66,7 @@ c27b8c81321c483ff55b13785e692d720594cf4a assets/indref/models/item/hazmat_leggin
 419e29faf6b5658979cebaac2a1edd8618f67359 assets/indref/models/item/iridium_block.json
 891f55ae4ce9935fa65c3ac458c96fb562da567d assets/indref/models/item/iridium_ingot.json
 b501b9cb79adde65dea00abeaf6bde03bc201c94 assets/indref/models/item/iridium_ore.json
+91bc35232af207094764e67702e3458b959d0572 assets/indref/models/item/iron_fence.json
 884573fa8ca989862a1318196bbacf30946ce794 assets/indref/models/item/iron_plate.json
 8a5d6c788b2066b3bde3214b5ac245062133b2ff assets/indref/models/item/iron_rod.json
 55123fce61a5af3bbe8b69def3316087c8e75948 assets/indref/models/item/lead_block.json

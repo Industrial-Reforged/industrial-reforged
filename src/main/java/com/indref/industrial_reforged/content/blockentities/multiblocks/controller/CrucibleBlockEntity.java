@@ -66,6 +66,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     public int speed;
 
     private boolean turnedOver;
+    // REDSTONE CONTROL
+    private boolean powered;
 
     private int tempTimer;
 
@@ -113,6 +115,14 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public boolean isTurnedOver() {
         return turnedOver;
+    }
+
+    public void setPowered(boolean powered) {
+        this.powered = powered;
+    }
+
+    public boolean isPowered() {
+        return powered;
     }
 
     @Override
@@ -368,12 +378,14 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.loadAdditional(nbt, provider);
         loadMBData(provider, nbt.getCompound("multiblockData"));
+        this.powered = nbt.getBoolean("powered");
     }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(nbt, provider);
         nbt.put("multiblockData", saveMBData(provider));
+        nbt.putBoolean("powered", this.powered);
     }
 
     @Override

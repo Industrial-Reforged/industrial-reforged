@@ -72,6 +72,8 @@ public class IRBlockStateProvider extends BlockStateProvider {
         slabBlock(IRBlocks.TERRACOTTA_BRICK_SLAB.get(), blockTexture(IRBlocks.TERRACOTTA_BRICK.get()),
                 blockTexture(IRBlocks.TERRACOTTA_BRICK.get()));
 
+        fenceBlock(IRBlocks.IRON_FENCE.get(), blockTexture(Blocks.IRON_BLOCK));
+
         castingBasin(IRBlocks.CERAMIC_CASTING_BASIN, blockTexture(IRBlocks.TERRACOTTA_BRICK.get()));
         castingBasin(IRBlocks.BLAST_FURNACE_CASTING_BASIN, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 
