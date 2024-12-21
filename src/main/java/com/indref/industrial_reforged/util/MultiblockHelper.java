@@ -249,22 +249,22 @@ public final class MultiblockHelper {
     }
 
     private static void sendFailureMsg(Player player, Level level, BlockPos curBlockPos, Map<Integer, Block> def, int blockIndex) {
-        player.sendSystemMessage(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.FAILED_TO_CONSTRUCT)
+        player.sendSystemMessage(IRTranslations.MultiblockFeedback.FAILED_TO_CONSTRUCT.component()
                 .withStyle(ChatFormatting.RED).append(":"));
         player.sendSystemMessage(Component.literal("| ")
                 .withStyle(ChatFormatting.DARK_GRAY)
-                .append(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.ACTUAL_BLOCK, level.getBlockState(curBlockPos).getBlock().getName().getString())
+                .append(IRTranslations.MultiblockFeedback.ACTUAL_BLOCK.component(level.getBlockState(curBlockPos).getBlock().getName().getString())
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
         player.sendSystemMessage((Component.literal("| ")
                 .withStyle(ChatFormatting.DARK_GRAY))
-                .append(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.EXPECTED_BLOCK, def.get(blockIndex).getName().getString())
+                .append(IRTranslations.MultiblockFeedback.EXPECTED_BLOCK.component(def.get(blockIndex).getName().getString())
                         .withStyle(ChatFormatting.DARK_GRAY))
         );
         player.sendSystemMessage(
                 Component.literal("| ")
                         .withStyle(ChatFormatting.DARK_GRAY)
-                        .append(IRTranslations.MultiblockFeedback.translatableComponent(IRTranslations.MultiblockFeedback.BLOCK_POS, curBlockPos.getX(), curBlockPos.getY(), curBlockPos.getZ())
+                        .append(IRTranslations.MultiblockFeedback.BLOCK_POS.component(curBlockPos.getX(), curBlockPos.getY(), curBlockPos.getZ())
                                 .withStyle(ChatFormatting.DARK_GRAY))
         );
     }

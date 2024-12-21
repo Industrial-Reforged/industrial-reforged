@@ -27,7 +27,7 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true)
+                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true, true)
         );
     }
 
@@ -39,21 +39,25 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
         super.renderBg(guiGraphics, delta, mouseX, mouseY);
-        float progress = (float) this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress();
-        int scaledProgress = Mth.ceil(progress * 16) + 30;
-        IndustrialReforged.LOGGER.debug("Progress: {}", scaledProgress);
-        int textureSize = 46;
-        guiGraphics.blitSprite(
-                PROGRESS_SPRITE,
-                textureSize,
-                textureSize,
-                textureSize / 2 - scaledProgress / 2,
-                textureSize / 2 - scaledProgress / 2,
-                this.leftPos + 88 - scaledProgress / 2,
-                this.topPos + 49 - scaledProgress / 2,
-                scaledProgress,
-                scaledProgress
-        );
+        float progress = ((float) this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress());
+        int textureSize = 48;
+        int xOffset = 64;
+        int yOffset = 25;
+        int arrowSize = (int) (9 * (1.05F - progress));
+        int uSize = textureSize - arrowSize * 2;
+        if (this.menu.blockEntity.getMaxProgress() > 0) {
+            guiGraphics.blitSprite(
+                    PROGRESS_SPRITE,
+                    textureSize,
+                    textureSize,
+                    arrowSize,
+                    arrowSize,
+                    this.leftPos + xOffset + arrowSize,
+                    this.topPos + yOffset + arrowSize,
+                    uSize,
+                    uSize
+            );
+        }
     }
 
     @Override

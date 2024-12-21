@@ -105,13 +105,13 @@ public final class ItemUtils {
             item = iEnergyItem;
         else return;
         tooltip.add(
-                IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.ENERGY_STORED).withStyle(ChatFormatting.GOLD)
+                IRTranslations.Tooltip.ENERGY_STORED.component().withStyle(ChatFormatting.GOLD)
                         .append(Component.literal(": "))
                         .append(Component.literal(String.format("%s / %s", item.getEnergyStored(itemStack),
                                 item.getEnergyCapacity(itemStack))).withColor(FastColor.ARGB32.color(196, 196, 196)))
         );
         tooltip.add(
-                IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.ENERGY_TIER).withStyle(ChatFormatting.GOLD)
+                IRTranslations.Tooltip.ENERGY_TIER.component().withStyle(ChatFormatting.GOLD)
                         .append(Component.literal(": "))
                         .append(Component.translatable("energy_tier." + IndustrialReforged.MODID + "." + item.getEnergyTier()))
         );
@@ -122,11 +122,11 @@ public final class ItemUtils {
         if (item == null) return;
 
         if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
-            tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.FLUID_STORED)
+            tooltip.add(IRTranslations.Tooltip.FLUID_STORED.component()
                     .append(": ")
                     .append(Component.literal(item.getFluidInTank(0).getHoverName().getString())
                             .withStyle(ChatFormatting.AQUA)));
-            tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.FLUID_AMOUNT)
+            tooltip.add(IRTranslations.Tooltip.FLUID_AMOUNT.component()
                     .append(": ")
                     .append("%d/%d".formatted(
                             item.getFluidInTank(0).getAmount(),

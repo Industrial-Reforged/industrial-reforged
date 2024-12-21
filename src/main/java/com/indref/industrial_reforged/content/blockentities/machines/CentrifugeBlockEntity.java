@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.machines;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,7 +97,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         super.commonTick();
 
         if (recipe != null) {
-            int energy = recipe.energy();
+            int energy = 1;
             int maxDuration = recipe.duration();
             IItemHandler itemHandler = getItemHandler();
             IEnergyStorage energyStorage = getEnergyStorage();
@@ -103,19 +105,27 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
             List<ItemStack> results = recipe.results();
             IngredientWithCount ingredient = recipe.ingredient();
             setActive(true);
-            energyStorage.tryDrainEnergy(energy, false);
-            if (this.duration >= maxDuration) {
-                for (int i = 0; i < results.size(); i++) {
-                    ItemStack result = results.get(i).copy();
-                    ItemStack prev = itemHandler.getStackInSlot(i + 1);
-                    result.grow(prev.getCount());
+            if (!level.isClientSide()) {
+                int extracted = energyStorage.tryDrainEnergy(energy, false);
+                IndustrialReforged.LOGGER.debug("extracted: {}", extracted);
+            }
 
-                    getItemStackHandler().setStackInSlot(i + 1, result);
+            if (this.duration >= maxDuration) {
+                for (ItemStack result : results) {
+                    ItemStack toInsert = result.copy();
+                    for (int j = 0; j < getItemHandler().getSlots(); j++) {
+                        toInsert = forceInsertItem(j, toInsert, false);
+                        if (toInsert.isEmpty()) {
+                            break;
+                        }
+                    }
                 }
                 itemHandler.extractItem(0, ingredient.count(), false);
                 resetRecipe();
             } else {
-                this.duration++;
+                if (!level.isClientSide()) {
+                    this.duration++;
+                }
             }
         } else {
             resetRecipe();

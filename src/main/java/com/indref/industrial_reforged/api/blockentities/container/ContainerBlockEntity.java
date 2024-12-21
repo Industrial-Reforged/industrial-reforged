@@ -223,6 +223,42 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     public void onHeatChanged() {
     }
 
+    private static int getStackLimit(IItemHandler itemHandler, int slot, ItemStack stack) {
+        return Math.min(itemHandler.getSlotLimit(slot), stack.getMaxStackSize());
+    }
+
+    public ItemStack forceInsertItem(int slot, ItemStack stack, boolean simulate) {
+        if (stack.isEmpty())
+            return ItemStack.EMPTY;
+
+        ItemStack existing = getItemHandler().getStackInSlot(slot);
+
+        int limit = getStackLimit(getItemHandler(), slot, stack);
+
+        if (!existing.isEmpty()) {
+            if (!ItemStack.isSameItemSameComponents(stack, existing))
+                return stack;
+
+            limit -= existing.getCount();
+        }
+
+        if (limit <= 0)
+            return stack;
+
+        boolean reachedLimit = stack.getCount() > limit;
+
+        if (!simulate) {
+            if (existing.isEmpty()) {
+                getItemStackHandler().setStackInSlot(slot, reachedLimit ? stack.copyWithCount(limit) : stack);
+            } else {
+                existing.grow(reachedLimit ? limit : stack.getCount());
+            }
+            onItemsChanged(slot);
+        }
+
+        return reachedLimit ? stack.copyWithCount(stack.getCount() - limit) : ItemStack.EMPTY;
+    }
+
     public void drop() {
         ItemStack[] stacks = getItemHandlerStacks();
         SimpleContainer inventory = new SimpleContainer(stacks);

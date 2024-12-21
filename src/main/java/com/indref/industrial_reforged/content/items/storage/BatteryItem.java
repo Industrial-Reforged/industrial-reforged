@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -79,9 +80,9 @@ public class BatteryItem extends SimpleElectricItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p41424) {
         if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
-            tooltip.add(Component.translatable("nano_saber.desc.active").withStyle(ChatFormatting.GREEN));
+            tooltip.add(IRTranslations.Tooltip.ACTIVE.component().withStyle(ChatFormatting.GREEN));
         } else {
-            tooltip.add(Component.translatable("nano_saber.desc.inactive").withStyle(ChatFormatting.RED));
+            tooltip.add(IRTranslations.Tooltip.INACTIVE.component().withStyle(ChatFormatting.RED));
         }
         super.appendHoverText(stack, ctx, tooltip, p41424);
     }

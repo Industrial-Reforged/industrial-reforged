@@ -32,7 +32,7 @@ public class BasicGeneratorScreen extends IRAbstractContainerScreen<BasicGenerat
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true)
+                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true, true)
         );
     }
 

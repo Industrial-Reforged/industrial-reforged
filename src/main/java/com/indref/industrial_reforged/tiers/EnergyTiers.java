@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
+@SuppressWarnings("DataFlowIssue")
 public enum EnergyTiers implements EnergyTier {
     // TODO: Adjust these values
     NONE("none", ChatFormatting.GRAY.getColor(), 0, 0, 0),

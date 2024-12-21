@@ -156,11 +156,16 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
         CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
         boolean flag = level.hasNeighborSignal(pos);
-        IndustrialReforged.LOGGER.debug("Powered: {}, flag: {}", be.isPowered(), flag);
-        if (!this.defaultBlockState().is(neighborBlock) && flag != be.isPowered()) {
-            be.setPowered(flag);
-            PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag));
+        if (flag != be.isPowered()) {
+            if (!be.isTurnedOver()) {
+                be.turn();
+                PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, true));
+            } else {
+                be.turnBack();
+                PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, false));
+            }
         }
+        be.setPowered(flag);
     }
 
     @Override

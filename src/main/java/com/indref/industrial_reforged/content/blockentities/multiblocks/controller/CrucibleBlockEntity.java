@@ -66,10 +66,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     public int speed;
 
     private boolean turnedOver;
+    private int tempTimer;
     // REDSTONE CONTROL
     private boolean powered;
-
-    private int tempTimer;
 
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);

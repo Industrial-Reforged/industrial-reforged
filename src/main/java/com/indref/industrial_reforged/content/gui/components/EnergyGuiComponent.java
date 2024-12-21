@@ -16,14 +16,22 @@ import org.joml.Vector2i;
 import java.util.List;
 
 public class EnergyGuiComponent extends TooltipGuiComponent {
-    private static final ResourceLocation ENERGY_BAR = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/energy_bar.png");
-    private static final ResourceLocation ENERGY_BAR_EMPTY = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/sprites/energy_bar_empty.png");
+    private static final ResourceLocation ENERGY_BAR =
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "energy_bar");
+    private static final ResourceLocation ENERGY_BAR_EMPTY =
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "energy_bar_empty");
+    private static final ResourceLocation ENERGY_BAR_BORDER =
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "energy_bar_border");
+    private static final ResourceLocation ENERGY_BAR_EMPTY_BORDER =
+            ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "energy_bar_empty_border");
 
     private final boolean addBatterySlot;
+    private final boolean hasBorder;
 
-    public EnergyGuiComponent(@NotNull Vector2i position, boolean addBatterySlot) {
+    public EnergyGuiComponent(@NotNull Vector2i position, boolean addBatterySlot, boolean hasBorder) {
         super(position);
         this.addBatterySlot = addBatterySlot;
+        this.hasBorder = hasBorder;
     }
 
     @Override
@@ -51,22 +59,21 @@ public class EnergyGuiComponent extends TooltipGuiComponent {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        // This rendering is kinda weird, it always renders the regular energybar
-        // and over that it renders the empty bar. The empty energy bar is `full`
-        // and when the energy starts filling up, the empty energy bar lifts to
-        // show the regular energy bar underneath
         super.render(guiGraphics, mouseX, mouseY, delta);
-        GuiUtils.drawImg(guiGraphics, ENERGY_BAR, position.x, position.y, textureWidth(), textureHeight());
+        ResourceLocation loc = hasBorder ? ENERGY_BAR_EMPTY_BORDER : ENERGY_BAR_EMPTY;
+        int height = textureHeight();
+        int width = textureWidth();
+        guiGraphics.blitSprite(loc, width, height, 0, 0, position.x, position.y, width, height);
 
         ContainerBlockEntity blockEntity = this.screen.getMenu().getBlockEntity();
-        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+        IEnergyStorage energyStorage = blockEntity.getEnergyStorage();
         if (energyStorage != null) {
             int energyStored = energyStorage.getEnergyStored();
             int maxStored = energyStorage.getEnergyCapacity();
 
-            float percentage = 1f - (float) energyStored / maxStored;
-            int j1 = Mth.ceil(percentage * textureHeight());
-            guiGraphics.blit(ENERGY_BAR_EMPTY, position.x, position.y, textureWidth(), j1, 0, 0, textureWidth(), j1, textureWidth(), textureHeight());
+            int progress = (int) (height *  ((float) energyStored / maxStored));
+            ResourceLocation locFull = hasBorder ? ENERGY_BAR_BORDER : ENERGY_BAR;
+            guiGraphics.blitSprite(locFull, width, height, 0, height - progress, position.x, position.y + height - progress, width, progress);
         }
     }
 

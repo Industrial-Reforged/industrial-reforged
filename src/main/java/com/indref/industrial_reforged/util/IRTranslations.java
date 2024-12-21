@@ -6,40 +6,45 @@ import net.minecraft.network.chat.MutableComponent;
 
 public final class IRTranslations {
     public static final class Tooltip {
-        public static final String ACTIVE = "active";
-        public static final String INACTIVE = "inactive";
-        public static final String ENERGY_STORED = "energy.stored";
-        public static final String ENERGY_TIER = "energy.tier";
-        public static final String FLUID_STORED = "fluid.stored";
-        public static final String FLUID_AMOUNT = "fluid.amount";
-        public static final String HEAT_STORED = "heat.stored";
+        public static final TranslatableConstant ACTIVE = create("active");
+        public static final TranslatableConstant INACTIVE = create("inactive");
+        public static final TranslatableConstant ENERGY_STORED = create("energy.stored");
+        public static final TranslatableConstant ENERGY_TIER = create("energy.tier");
+        public static final TranslatableConstant FLUID_STORED = create("fluid.stored");
+        public static final TranslatableConstant FLUID_AMOUNT = create("fluid.amount");
+        public static final TranslatableConstant HEAT_STORED = create("heat.stored");
 
-        public static final String MELTING_PROGRESS = "melting_progress";
-        public static final String MELTING_NOT_POSSIBLE = "melting_not_possible";
+        public static final TranslatableConstant MELTING_NOT_POSSIBLE = create("melting_not_possible");
+        public static final TranslatableConstant MELTING_PROGRESS = create("melting_progress");
 
-        // returns full translation key
-        public static String translationKey(String tooltip) {
-            return "tooltip." + IndustrialReforged.MODID + "." + tooltip;
-        }
-
-        public static MutableComponent translatableComponent(String tooltip) {
-            return Component.translatable(translationKey(tooltip));
+        private static TranslatableConstant create(String key) {
+            return new TranslatableConstant(key, "tooltip");
         }
     }
 
     public static final class MultiblockFeedback {
-        public static final String FAILED_TO_CONSTRUCT = "failed_to_construct";
-        public static final String ACTUAL_BLOCK = "actual_block";
-        public static final String EXPECTED_BLOCK = "expected_block";
-        public static final String BLOCK_POS = "block_pos";
+        public static final TranslatableConstant FAILED_TO_CONSTRUCT = create("failed_to_construct");
+        public static final TranslatableConstant ACTUAL_BLOCK = create("actual_block");
+        public static final TranslatableConstant EXPECTED_BLOCK = create("expected_block");
+        public static final TranslatableConstant BLOCK_POS = create("block_pos");
 
-        // returns full translation key
-        public static String translationKey(String tooltip) {
-            return "multiblock_feedback." + IndustrialReforged.MODID + "." + tooltip;
+        private static TranslatableConstant create(String key) {
+            return new TranslatableConstant(key, "multiblock_feedback");
+        }
+    }
+
+    public record TranslatableConstant(String key, String category) {
+        public String key() {
+            return category + "." + IndustrialReforged.MODID + "." + key;
         }
 
-        public static MutableComponent translatableComponent(String tooltip, Object... args) {
-            return Component.translatable(translationKey(tooltip), args);
+        public MutableComponent component(Object ...args) {
+            return Component.translatable(key(), args);
+        }
+
+        @Override
+        public String toString() {
+            return key;
         }
     }
 }

@@ -97,9 +97,9 @@ public class NanoSaberItem extends ElectricSwordItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p41424) {
         if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
-            tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.ACTIVE).withStyle(ChatFormatting.GREEN));
+            tooltip.add(IRTranslations.Tooltip.ACTIVE.component().withStyle(ChatFormatting.GREEN));
         } else {
-            tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.INACTIVE).withStyle(ChatFormatting.RED));
+            tooltip.add(IRTranslations.Tooltip.INACTIVE.component().withStyle(ChatFormatting.RED));
         }
         super.appendHoverText(stack, ctx, tooltip, p41424);
     }

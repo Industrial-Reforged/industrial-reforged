@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRTabs;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -184,6 +185,10 @@ public class IREnUSLangProvider extends LanguageProvider {
         add("multiblock_feedback." + IndustrialReforged.MODID + "." + key, val);
     }
 
+    private void addMultiblockFeedback(IRTranslations.TranslatableConstant key, String val) {
+        add("multiblock_feedback." + IndustrialReforged.MODID + "." + key.key(), val);
+    }
+
     private void addTitle(String key, String val) {
         add("title." + IndustrialReforged.MODID + "." + key, val);
     }
@@ -194,6 +199,10 @@ public class IREnUSLangProvider extends LanguageProvider {
 
     private void addTooltip(String key, String val) {
         add("tooltip." + IndustrialReforged.MODID + "." + key, val);
+    }
+
+    private void addTooltip(IRTranslations.TranslatableConstant key, String val) {
+        add("tooltip." + IndustrialReforged.MODID + "." + key.key(), val);
     }
 
     private void addCreativeTab(Supplier<? extends CreativeModeTab> tab, String val) {

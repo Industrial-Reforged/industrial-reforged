@@ -108,10 +108,8 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack p_41421_, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
-        tooltip.add(IRTranslations.Tooltip.translatableComponent(IRTranslations.Tooltip.HEAT_STORED)
-                .append(": ")
-                .append("%d/%d".formatted(getHeatStored(p_41421_), getHeatCapacity(p_41421_))));
+    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
+        tooltip.add(IRTranslations.Tooltip.HEAT_STORED.component(getHeatStored(stack), getHeatCapacity(stack)));
     }
 
     @Override
