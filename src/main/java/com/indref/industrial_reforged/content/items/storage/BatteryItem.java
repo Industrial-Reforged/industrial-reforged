@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,11 +25,11 @@ public class BatteryItem extends SimpleElectricItem {
     private final int capacity;
     private final int stages;
 
-    public BatteryItem(Properties properties, EnergyTier energyTier, int stages) {
-        this(properties, energyTier, energyTier.getDefaultCapacity(), stages);
+    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int stages) {
+        this(properties, energyTier, energyTier.value().getDefaultCapacity(), stages);
     }
 
-    public BatteryItem(Properties properties, EnergyTier energyTier, int capacity, int stages) {
+    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int capacity, int stages) {
         super(properties.component(IRDataComponents.BATTERY_STAGE, 0),energyTier);
         this.capacity = capacity;
         this.stages = stages;
@@ -54,13 +55,13 @@ public class BatteryItem extends SimpleElectricItem {
                 if (pLevel.getGameTime() % 3 == 0) {
                     if (itemStack.getItem() instanceof IEnergyItem item) {
                         // TODO: Possibly round robin this?
-                        int drained = this.tryDrainEnergy(pStack, getEnergyTier().getMaxOutput());
+                        int drained = this.tryDrainEnergy(pStack, getEnergyTier().value().getMaxOutput());
                         item.tryFillEnergy(itemStack, drained);
                     } else {
                         IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (energyStorage == null) continue;
 
-                        energyStorage.receiveEnergy(getEnergyTier().getMaxOutput(), false);
+                        energyStorage.receiveEnergy(getEnergyTier().value().getMaxOutput(), false);
                     }
                 }
             }

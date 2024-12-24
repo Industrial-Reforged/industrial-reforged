@@ -36,6 +36,9 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
     private static final int INPUT_SLOT = 0;
 
@@ -44,7 +47,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     private MultiblockData multiblockData;
     private final FireboxTier fireboxTier;
 
-    private BlockCapabilityCache<IHeatStorage, Direction> aboveBlockCapCache;
+    private Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
 
     public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, int heatCapacity) {
         super(blockEntityType, blockPos, blockState);
@@ -52,6 +55,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         addHeatStorage(heatCapacity);
         this.fireboxTier = fireboxTier;
         this.multiblockData = MultiblockData.EMPTY;
+        this.aboveBlockCapCache = new HashMap<>();
     }
 
     public FireboxBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -61,7 +65,12 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     @Override
     public void onLoad() {
         if (level instanceof ServerLevel serverLevel) {
-            this.aboveBlockCapCache = BlockCapabilityCache.create(IRCapabilities.HeatStorage.BLOCK, serverLevel, getBlockPos().above(), Direction.DOWN);
+            BlockPos[] offsets = {worldPosition.north(), worldPosition.south(), worldPosition.east(), worldPosition.west(),
+                    worldPosition.north().east(), worldPosition.north().west(), worldPosition.south().east(), worldPosition.south().west()};
+            for (BlockPos pos : offsets) {
+                BlockPos above = pos.above();
+                this.aboveBlockCapCache.put(above, BlockCapabilityCache.create(IRCapabilities.HeatStorage.BLOCK, serverLevel, above, Direction.DOWN));
+            }
         }
         super.onLoad();
     }
@@ -117,7 +126,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
             // Only export heat to block directly above
             BlockPos abovePos = worldPosition.above();
             if (aboveBlockCapCache != null) {
-                IHeatStorage aboveHeatStorage = aboveBlockCapCache.getCapability();
+                IHeatStorage aboveHeatStorage = null; //aboveBlockCapCache.getCapability();
                 if (aboveHeatStorage != null && level != null) {
                     IHeatStorage thisHeatStorage = getHeatStorage();
                     int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());

@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
+import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
@@ -18,7 +19,9 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -26,6 +29,7 @@ public final class IRItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IndustrialReforged.MODID);
     public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
     public static final List<DeferredItem<?>> TAB_ITEMS = new ArrayList<>();
+    public static final Map<DeferredItem<?>, CastingMoldValue> MOLD_ITEMS = new HashMap<>();
 
     // Tools
     public static final DeferredItem<WrenchItem> WRENCH = toolItem("wrench", WrenchItem::new);
@@ -99,8 +103,8 @@ public final class IRItems {
     public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
     public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
-    public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot");
-    public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire");
+    public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot", 111, true);
+    public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire", 37, true);
 
     //ores
     public static final DeferredItem<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");
@@ -154,8 +158,10 @@ public final class IRItems {
         return deferredItem;
     }
 
-    private static DeferredItem<Item> moldItem(String moldType) {
-        return registerStandardItem("clay_mold_"+moldType);
+    private static DeferredItem<Item> moldItem(String moldType, int capacity, boolean consumeCast) {
+        DeferredItem<Item> item = registerStandardItem("clay_mold_" + moldType);
+        MOLD_ITEMS.put(item, new CastingMoldValue(capacity, consumeCast));
+        return item;
     }
 
     private static <T extends Item> DeferredItem<T> toolItem(String name, Function<Item.Properties, T> itemConstructor) {

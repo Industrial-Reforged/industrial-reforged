@@ -36,6 +36,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static com.indref.industrial_reforged.util.Utils.ACTIVE;
+
 public class BasicGeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, GeneratorBlockEntity {
     public static final int GENERATION_AMOUNT = 3;
 
@@ -73,7 +75,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
             if (burnTime > 0 && this.burnTime <= 0) {
                 this.burnTime = burnTime;
                 this.maxBurnTime = burnTime;
-                stack.shrink(1);
+                itemHandler.extractItem(0, 1, false);
             }
         }
     }
@@ -92,11 +94,15 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         IEnergyStorage energyStorage = getEnergyStorage();
         if (energyStorage != null) {
             if (this.burnTime > 0) {
-                burnTime--;
                 if (!level.isClientSide()) {
-                    energyStorage.tryFillEnergy(GENERATION_AMOUNT, remove);
+                    int filled = energyStorage.tryFillEnergy(GENERATION_AMOUNT, remove);
+                    if (filled > 0) {
+                        this.burnTime--;
+                    }
                 }
+                setActive(true);
             } else {
+                setActive(false);
                 this.maxBurnTime = 0;
                 IItemHandler itemHandler = getItemHandler();
                 ItemStack stack = itemHandler.getStackInSlot(0);
@@ -104,7 +110,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 if (burnTime > 0) {
                     this.burnTime = burnTime;
                     this.maxBurnTime = burnTime;
-                    stack.shrink(1);
+                    itemHandler.extractItem(0, 1, false);
                 }
             }
         }
@@ -115,10 +121,16 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
                 Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
                 if (enet.isPresent()) {
-                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().getMaxOutput(), thisEnergyStorage.getEnergyStored()));
+                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().value().getMaxOutput(), thisEnergyStorage.getEnergyStored()));
                     thisEnergyStorage.tryDrainEnergy(filled, false);
                 }
             }
+        }
+    }
+
+    public void setActive(boolean active) {
+        if (getBlockState().getValue(ACTIVE) != active) {
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ACTIVE, active));
         }
     }
 

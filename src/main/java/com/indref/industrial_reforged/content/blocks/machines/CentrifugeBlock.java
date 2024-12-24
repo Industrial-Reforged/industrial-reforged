@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.NotNull;
 
+import static com.indref.industrial_reforged.util.Utils.ACTIVE;
+
 public class CentrifugeBlock extends ContainerBlock implements WrenchableBlock {
-    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public CentrifugeBlock(Properties properties) {
         super(properties);

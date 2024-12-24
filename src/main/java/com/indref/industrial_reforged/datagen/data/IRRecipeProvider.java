@@ -379,20 +379,18 @@ public class IRRecipeProvider extends RecipeProvider {
     private void wireCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
                 new FluidStack(fluid.getStillFluid(), 111),
-                Ingredient.of(IRItems.CLAY_MOLD_WIRE),
+                IRItems.CLAY_MOLD_WIRE.get(),
                 new ItemStack(resultIngotItem.asItem(), 3),
-                200,
-                true
+                200
         ));
     }
 
     private void ingotCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
                 new FluidStack(fluid.getStillFluid(), 111),
-                Ingredient.of(IRItems.CLAY_MOLD_INGOT),
+                IRItems.CLAY_MOLD_INGOT.get(),
                 resultIngotItem.asItem().getDefaultInstance(),
-                200,
-                true
+                200
         ));
     }
 

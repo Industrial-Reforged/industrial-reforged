@@ -38,6 +38,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static com.indref.industrial_reforged.util.Utils.ACTIVE;
+
 public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuProvider {
     private @Nullable CentrifugeRecipe recipe;
 
@@ -107,7 +109,6 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
             setActive(true);
             if (!level.isClientSide()) {
                 int extracted = energyStorage.tryDrainEnergy(energy, false);
-                IndustrialReforged.LOGGER.debug("extracted: {}", extracted);
             }
 
             if (this.duration >= maxDuration) {
@@ -160,8 +161,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     public void setActive(boolean active) {
-        if (getBlockState().getValue(CentrifugeBlock.ACTIVE) != active) {
-            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(CentrifugeBlock.ACTIVE, active));
+        if (getBlockState().getValue(ACTIVE) != active) {
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ACTIVE, active));
         }
     }
 

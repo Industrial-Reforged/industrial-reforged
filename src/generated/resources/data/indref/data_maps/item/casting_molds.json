@@ -1,0 +1,12 @@
+{
+  "values": {
+    "indref:clay_mold_ingot": {
+      "capacity": 111,
+      "consume_cast": true
+    },
+    "indref:clay_mold_wire": {
+      "capacity": 37,
+      "consume_cast": true
+    }
+  }
+}

@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,12 +18,12 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem, ElectricToolItem {
-    protected final EnergyTier energyTier;
+    protected final Holder<EnergyTier> energyTier;
 
-    public ElectricSwordItem(EnergyTier energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
+    public ElectricSwordItem(Holder<EnergyTier> energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
         super(tier, properties
                 .attributes(SwordItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
         this.energyTier = energyTier;
     }
 

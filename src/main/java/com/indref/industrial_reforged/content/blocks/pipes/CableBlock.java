@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,9 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class CableBlock extends PipeBlock {
-    private final EnergyTier energyTier;
+    private final Holder<EnergyTier> energyTier;
 
-    public CableBlock(Properties properties, int width, EnergyTier energyTier) {
+    public CableBlock(Properties properties, int width, Holder<EnergyTier> energyTier) {
         super(properties, width);
         this.energyTier = energyTier;
     }
@@ -92,7 +93,7 @@ public class CableBlock extends PipeBlock {
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
     }
 
-    public EnergyTier getEnergyTier() {
+    public Holder<EnergyTier> getEnergyTier() {
         return this.energyTier;
     }
 

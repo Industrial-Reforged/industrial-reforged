@@ -1,14 +1,11 @@
 {
   "type": "indref:crucible_casting",
-  "cast": {
-    "item": "indref:clay_mold_wire"
-  },
-  "consume_cast": true,
   "duration": 200,
   "fluid": {
     "amount": 111,
     "id": "indref:molten_gold"
   },
+  "mold_item": "indref:clay_mold_wire",
   "result": {
     "count": 3,
     "id": "indref:gold_wire"

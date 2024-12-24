@@ -5,6 +5,8 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -17,7 +19,7 @@ import java.util.Random;
 import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class ElectricTreeTapItem extends SimpleElectricItem {
-    public ElectricTreeTapItem(Properties properties, EnergyTier energyTier) {
+    public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier) {
         super(properties, energyTier);
     }
 
@@ -30,7 +32,7 @@ public class ElectricTreeTapItem extends SimpleElectricItem {
             if (getEnergyStored(useOnContext.getItemInHand()) >= 10) {
                 level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
                 ItemStack resinDrop = new ItemStack(IRItems.STICKY_RESIN.get());
-                Random random = new Random();
+                RandomSource random = useOnContext.getLevel().random;
                 int randomInt = random.nextInt(1, 4);
                 resinDrop.setCount(randomInt);
                 ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);

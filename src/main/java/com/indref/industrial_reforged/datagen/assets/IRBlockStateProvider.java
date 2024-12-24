@@ -19,6 +19,8 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.indref.industrial_reforged.util.Utils.ACTIVE;
+
 public class IRBlockStateProvider extends BlockStateProvider {
     public IRBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, IndustrialReforged.MODID, exFileHelper);
@@ -34,6 +36,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
         blockModel(IRBlocks.BASIC_GENERATOR)
                 .front(this::machineTexture, "_front")
                 .rotatable()
+                .active()
                 .create();
 
         blockModel(IRBlocks.CENTRIFUGE)
@@ -388,7 +391,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
         }
 
         public void create() {
-            BlockModelBuilder activeBuilder = models().withExistingParent(name(block), "cube");
+            BlockModelBuilder activeBuilder = models().withExistingParent(name(block) + "_active", "cube");
             if (this.active) {
                 activeBuilder.texture("down", activeTextureOrDefault(this.down));
                 activeBuilder.texture("up", activeTextureOrDefault(this.up));
@@ -422,9 +425,9 @@ public class IRBlockStateProvider extends BlockStateProvider {
             if (this.rotatable) {
                 for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
                     if (this.active) {
-                        builder.partialState().with(CentrifugeBlock.ACTIVE, true).with(BlockStateProperties.HORIZONTAL_FACING, dir)
+                        builder.partialState().with(ACTIVE, true).with(BlockStateProperties.HORIZONTAL_FACING, dir)
                                 .modelForState().modelFile(activeBuilder).rotationY(((int) dir.toYRot() + 180) % 360).addModel()
-                                .partialState().with(CentrifugeBlock.ACTIVE, false).with(BlockStateProperties.HORIZONTAL_FACING, dir)
+                                .partialState().with(ACTIVE, false).with(BlockStateProperties.HORIZONTAL_FACING, dir)
                                 .modelForState().modelFile(inactiveBuilder).rotationY(((int) dir.toYRot() + 180) % 360).addModel();
                     } else {
                         builder.partialState().with(BlockStateProperties.HORIZONTAL_FACING, dir)
@@ -432,9 +435,9 @@ public class IRBlockStateProvider extends BlockStateProvider {
                     }
                 }
             } else if (this.active) {
-                builder.partialState().with(CentrifugeBlock.ACTIVE, true)
+                builder.partialState().with(ACTIVE, true)
                         .modelForState().modelFile(activeBuilder).addModel()
-                        .partialState().with(CentrifugeBlock.ACTIVE, false)
+                        .partialState().with(ACTIVE, false)
                         .modelForState().modelFile(inactiveBuilder).addModel();
             } else {
                 builder.partialState().modelForState().modelFile(inactiveBuilder).addModel();

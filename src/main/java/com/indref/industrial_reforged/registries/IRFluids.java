@@ -6,7 +6,7 @@ import com.indref.industrial_reforged.content.fluids.OilFluid;
 import com.indref.industrial_reforged.util.FluidRegistrationHelper;
 import net.minecraft.core.Vec3i;
 
-public class IRFluids {
+public final class IRFluids {
     public static final FluidRegistrationHelper HELPER = new FluidRegistrationHelper(IRBlocks.BLOCKS, IRItems.ITEMS, IndustrialReforged.MODID);
 
     public static final OilFluid OIL = HELPER.registerFluid(new OilFluid("oil"));
@@ -23,5 +23,5 @@ public class IRFluids {
     public static final MoltenMetalFluid MOLTEN_NICKEL = HELPER.registerFluid(new MoltenMetalFluid("molten_nickel",
             new Vec3i(229, 233, 210)));
     public static final MoltenMetalFluid MOLTEN_GOLD = HELPER.registerFluid(new MoltenMetalFluid("molten_gold",
-            new Vec3i(250, 214, 74)));
+            new Vec3i(253, 206, 95)));
 }

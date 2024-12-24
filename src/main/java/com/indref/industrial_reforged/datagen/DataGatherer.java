@@ -4,10 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.datagen.assets.IRBlockStateProvider;
 import com.indref.industrial_reforged.datagen.assets.IREnUSLangProvider;
 import com.indref.industrial_reforged.datagen.assets.IRItemModelProvider;
-import com.indref.industrial_reforged.datagen.data.IRBlockLootTableProvider;
-import com.indref.industrial_reforged.datagen.data.IRRecipeProvider;
-import com.indref.industrial_reforged.datagen.data.IRTagsProvider;
-import com.indref.industrial_reforged.datagen.data.IRWorldGenProvider;
+import com.indref.industrial_reforged.datagen.data.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -36,6 +33,7 @@ public class DataGatherer {
         generator.addProvider(event.includeClient(), new IREnUSLangProvider(packOutput));
 
         IRTagsProvider.createTagProviders(generator, packOutput, lookupProvider, existingFileHelper, event.includeServer());
+        generator.addProvider(event.includeServer(), new IRDataMapProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new IRRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new IRWorldGenProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), List.of(

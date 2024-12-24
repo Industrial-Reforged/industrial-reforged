@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class NanoSaberItem extends ElectricSwordItem {
-    public NanoSaberItem(Properties properties, EnergyTier energyTier) {
+    public NanoSaberItem(Properties properties, Holder<EnergyTier> energyTier) {
         super(energyTier, Tiers.DIAMOND, -1, -3F, properties.component(IRDataComponents.ACTIVE, false));
     }
 
@@ -90,8 +91,8 @@ public class NanoSaberItem extends ElectricSwordItem {
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
-        return EnergyTiers.HIGH;
+    public Holder<EnergyTier> getEnergyTier() {
+        return energyTier;
     }
 
     @Override

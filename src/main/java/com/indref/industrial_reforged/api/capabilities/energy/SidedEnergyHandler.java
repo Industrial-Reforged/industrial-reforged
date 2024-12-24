@@ -2,10 +2,11 @@ package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import net.minecraft.core.Holder;
 
 public record SidedEnergyHandler(IEnergyStorage innerHandler, IOActions action) implements IEnergyStorage {
     @Override
-    public EnergyTier getEnergyTier() {
+    public Holder<EnergyTier> getEnergyTier() {
         return innerHandler.getEnergyTier();
     }
 

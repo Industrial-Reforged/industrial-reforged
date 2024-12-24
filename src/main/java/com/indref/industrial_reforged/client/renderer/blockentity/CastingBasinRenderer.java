@@ -42,9 +42,9 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         ItemStack[] itemStacks = castingTableBlockEntity.getRenderStacks();
 
         // This code for fading item and fluid texture is from Tinkers construct.
-        // Thank you to the tinkers construct devs for implementing this
-        int duration = castingTableBlockEntity.getData().get(0);
-        int maxDuration = castingTableBlockEntity.getData().get(1);
+        // Thank you to the tinkers construct devs for this
+        int duration = castingTableBlockEntity.getDuration();
+        int maxDuration = castingTableBlockEntity.getMaxDuration();
         int fluidOpacity = 0xFF;
         int itemOpacity = 0;
         if (duration > 0 && maxDuration > 0) {

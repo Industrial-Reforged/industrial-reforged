@@ -1,63 +1,54 @@
 package com.indref.industrial_reforged.tiers;
 
+import com.indref.industrial_reforged.IRRegistries;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
-@SuppressWarnings("DataFlowIssue")
-public enum EnergyTiers implements EnergyTier {
+public class EnergyTiers {
     // TODO: Adjust these values
-    NONE("none", ChatFormatting.GRAY.getColor(), 0, 0, 0),
-    LOW("low", ChatFormatting.WHITE.getColor(), 16, 16, 4_000),
-    MEDIUM("medium", ChatFormatting.GOLD.getColor(),64, 64, 16_000),
-    HIGH("high", ChatFormatting.BLUE.getColor(),128, 128, 32_000),
-    EXTREME("extreme", ChatFormatting.GREEN.getColor(), 512, 512, 256_000),
-    INSANE("insane", ChatFormatting.RED.getColor(), 1024, 1024, 512_000),
-    CREATIVE("creative", ChatFormatting.LIGHT_PURPLE.getColor(), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    public static final Holder<EnergyTier> NONE = register("none", ChatFormatting.GRAY.getColor(), 0, 0);
+    public static final Holder<EnergyTier> LOW = register("low", ChatFormatting.WHITE.getColor(), 16, 4_000);
+    public static final Holder<EnergyTier> MEDIUM = register("medium", ChatFormatting.GOLD.getColor(),64, 16_000);
+    public static final Holder<EnergyTier> HIGH = register("high", ChatFormatting.BLUE.getColor(),128, 32_000);
+    public static final Holder<EnergyTier> EXTREME = register("extreme", ChatFormatting.GREEN.getColor(), 512, 256_000);
+    public static final Holder<EnergyTier> INSANE = register("insane", ChatFormatting.RED.getColor(), 1024, 512_000);
+    public static final Holder<EnergyTier> CREATIVE = register("creative", ChatFormatting.LIGHT_PURPLE.getColor(), Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-    private final int maxInput;
-    private final int maxOutput;
-    private final int current;
-    private final int defaultCapacity;
-    private final String id;
-    private final int color;
-
-    EnergyTiers(String id, int color, int throughPut, int current, int defaultCapacity) {
-        this.id = id;
-        this.color = color;
-        this.maxInput = throughPut;
-        this.maxOutput = throughPut;
-        this.current = current;
-        this.defaultCapacity = defaultCapacity;
+    public static Holder<EnergyTier> register(String name, int color, int throughput, int capacity) {
+        return register(name, color, throughput, throughput, capacity);
     }
 
-    @Override
-    public int getMaxInput() {
-        return this.maxInput;
-    }
+    public static Holder<EnergyTier> register(String name, int color, int maxInput, int maxOutput, int capacity) {
+        EnergyTier energyTier = new EnergyTier() {
+            @Override
+            public ResourceLocation getId() {
+                return IndustrialReforged.rl(name);
+            }
 
-    @Override
-    public int getMaxOutput() {
-        return this.maxOutput;
-    }
+            @Override
+            public int getMaxInput() {
+                return maxInput;
+            }
 
-    @Override
-    public int getCurrent() {
-        return this.current;
-    }
+            @Override
+            public int getMaxOutput() {
+                return maxOutput;
+            }
 
-    @Override
-    public int getDefaultCapacity() {
-        return this.defaultCapacity;
-    }
+            @Override
+            public int getDefaultCapacity() {
+                return capacity;
+            }
 
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    @Override
-    public int getColor() {
-        return this.color;
+            @Override
+            public int getColor() {
+                return color;
+            }
+        };
+        return Registry.registerForHolder(IRRegistries.ENERGY_TIER, IndustrialReforged.rl(name), energyTier);
     }
 }

@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -69,12 +70,12 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
             Consumer<UseOnContext> consumer = pair.getSecond();
             if (predicate.test(p_41341_) && getEnergyStored(itemStack) >= 10) {
                 level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     consumer.accept(p_41341_);
                     setEnergyStored(itemStack, getEnergyStored(itemStack) - 10);
                 }
 
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.sidedSuccess(level.isClientSide());
             } else {
                 return InteractionResult.PASS;
             }
@@ -82,7 +83,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public Holder<EnergyTier> getEnergyTier() {
         return EnergyTiers.LOW;
     }
 

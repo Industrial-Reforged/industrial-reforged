@@ -9,6 +9,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class Utils {
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+
     public static <K, V> Map<V, K> reverseMap(Map<K, V> map) {
         Map<V, K> returnMap = new HashMap<>();
         map.forEach((key, value) -> returnMap.put(value, key));

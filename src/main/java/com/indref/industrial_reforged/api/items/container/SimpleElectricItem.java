@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -13,10 +14,10 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public abstract class SimpleElectricItem extends Item implements IEnergyItem {
-    private final EnergyTier energyTier;
+    private final Holder<EnergyTier> energyTier;
 
-    public SimpleElectricItem(Properties properties, EnergyTier energyTier) {
-        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
+    public SimpleElectricItem(Properties properties, Holder<EnergyTier> energyTier) {
+        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
         this.energyTier = energyTier;
     }
 
@@ -52,7 +53,7 @@ public abstract class SimpleElectricItem extends Item implements IEnergyItem {
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public Holder<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 }

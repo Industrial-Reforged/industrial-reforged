@@ -22,7 +22,12 @@ public enum CrucibleTiers implements CrucibleTier {
     private final Supplier<? extends Block> unformedPart;
     private final Supplier<? extends Block> formedPart;
 
-    CrucibleTiers(String name, int heatCapacity, Supplier<? extends Block> unformedController, Supplier<? extends Block> formedController, Supplier<? extends Block> unformedPart, Supplier<? extends Block> formedPart) {
+    CrucibleTiers(String name,
+                  int heatCapacity,
+                  Supplier<? extends Block> unformedController,
+                  Supplier<? extends Block> formedController,
+                  Supplier<? extends Block> unformedPart,
+                  Supplier<? extends Block> formedPart) {
         this.name = name;
         this.heatCapacity = heatCapacity;
         this.unformedController = unformedController;

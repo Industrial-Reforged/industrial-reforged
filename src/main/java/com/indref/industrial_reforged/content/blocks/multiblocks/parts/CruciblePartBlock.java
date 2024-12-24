@@ -17,6 +17,7 @@ import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -143,7 +144,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.FENCE
                 ? IRBlocks.IRON_FENCE.toStack()
                 : IRBlocks.TERRACOTTA_BRICK.toStack();
@@ -155,17 +156,21 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
 
         BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
         CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
-        boolean flag = level.hasNeighborSignal(pos);
-        if (flag != be.isPowered()) {
-            if (!be.isTurnedOver()) {
-                be.turn();
-                PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, true));
-            } else {
-                be.turnBack();
-                PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, false));
+        BlockPos blockPos = pos.subtract(neighborPos);
+        Direction direction = Direction.fromDelta(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        if (direction != null) {
+            boolean flag = level.hasSignal(neighborPos, direction);
+            if (level.getBlockState(neighborPos).isSignalSource() && flag != be.isPowered()) {
+                if (!be.isTurnedOver()) {
+                    be.turn();
+                    PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, true));
+                } else {
+                    be.turnBack();
+                    PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, false));
+                }
+                be.setPowered(flag);
             }
         }
-        be.setPowered(flag);
     }
 
     @Override

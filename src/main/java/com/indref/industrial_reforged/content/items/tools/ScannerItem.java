@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScannerItem extends SimpleElectricItem implements DisplayItem {
-    public ScannerItem(Properties p_41383_, EnergyTier energyTier) {
+    public ScannerItem(Properties p_41383_, Holder<EnergyTier> energyTier) {
         super(p_41383_, energyTier);
     }
 

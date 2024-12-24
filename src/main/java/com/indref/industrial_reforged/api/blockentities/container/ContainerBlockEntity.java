@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.fluid.DynamicFluidTank;
 import com.indref.industrial_reforged.api.capabilities.fluid.SidedFluidHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
@@ -19,6 +20,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -35,7 +37,6 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,7 @@ import java.util.Map;
 
 public abstract class ContainerBlockEntity extends BlockEntity {
     private @Nullable ItemStackHandler itemHandler;
-    private @Nullable FluidTank fluidTank;
+    private @Nullable DynamicFluidTank fluidTank;
     private @Nullable EnergyStorage energyStorage;
     private @Nullable HeatStorage heatStorage;
 
@@ -78,7 +79,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         return itemHandler;
     }
 
-    protected FluidTank getFluidTank() {
+    protected DynamicFluidTank getFluidTank() {
         return fluidTank;
     }
 
@@ -94,9 +95,9 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.loadAdditional(nbt, provider);
         if (this.getFluidTank() != null)
-            this.getFluidTank().readFromNBT(provider, nbt);
+            this.getFluidTank().deserializeNBT(provider, nbt.getCompound("fluid_handler"));
         if (this.getItemStackHandler() != null)
-            this.getItemStackHandler().deserializeNBT(provider, nbt.getCompound("itemhandler"));
+            this.getItemStackHandler().deserializeNBT(provider, nbt.getCompound("item_handler"));
         if (this.getEnergyStorageImpl() != null)
             this.getEnergyStorageImpl().deserializeNBT(provider, nbt.getCompound("energy_storage"));
         if (this.getHeatStorageImpl() != null)
@@ -108,9 +109,9 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(nbt, provider);
         if (getFluidTank() != null)
-            getFluidTank().writeToNBT(provider, nbt);
+           nbt.put("fluid_handler", getFluidTank().serializeNBT(provider));
         if (getItemStackHandler() != null)
-            nbt.put("itemhandler", getItemStackHandler().serializeNBT(provider));
+            nbt.put("item_handler", getItemStackHandler().serializeNBT(provider));
         if (getEnergyStorageImpl() != null)
             nbt.put("energy_storage", getEnergyStorageImpl().serializeNBT(provider));
         if (getHeatStorageImpl() != null)
@@ -145,7 +146,6 @@ public abstract class ContainerBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 update();
-                setChanged();
                 onItemsChanged(slot);
             }
 
@@ -162,11 +162,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     }
 
     protected final void addFluidTank(int capacityInMb, ValidationFunctions.FluidValid validation) {
-        this.fluidTank = new FluidTank(capacityInMb) {
+        this.fluidTank = new DynamicFluidTank(capacityInMb) {
             @Override
             protected void onContentsChanged() {
                 update();
-                setChanged();
                 onFluidChanged();
             }
 
@@ -174,20 +173,25 @@ public abstract class ContainerBlockEntity extends BlockEntity {
             public boolean isFluidValid(FluidStack stack) {
                 return validation.fluidValid(stack);
             }
+
+            @Override
+            public void setCapacity(int capacity) {
+                super.setCapacity(capacity);
+                onContentsChanged();
+            }
         };
     }
 
-    protected final void addEnergyStorage(EnergyTier energyTier) {
-        addEnergyStorage(energyTier, energyTier.getDefaultCapacity());
+    protected final void addEnergyStorage(Holder<EnergyTier> energyTier) {
+        addEnergyStorage(energyTier, energyTier.value().getDefaultCapacity());
     }
 
-    protected final void addEnergyStorage(EnergyTier energyTier, int energyCapacity) {
+    protected final void addEnergyStorage(Holder<EnergyTier> energyTier, int energyCapacity) {
         this.energyStorage = new EnergyStorage(energyTier) {
             @Override
-            public void onEnergyChanged() {
+            public void onEnergyChanged(int oldAmount) {
                 update();
-                setChanged();
-                ContainerBlockEntity.this.onEnergyChanged();
+                ContainerBlockEntity.this.onEnergyChanged(oldAmount);
             }
         };
         this.energyStorage.setEnergyCapacity(energyCapacity);
@@ -197,18 +201,16 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         this.heatStorage = new HeatStorage() {
             @Override
             public void onHeatChanged() {
-                setChanged();
-                ContainerBlockEntity.this.onHeatChanged();
                 update();
+                ContainerBlockEntity.this.onHeatChanged();
             }
         };
         this.heatStorage.setHeatCapacity(capacity);
     }
 
-    private void update() {
-        if (!level.isClientSide()) {
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-        }
+    public void update() {
+        setChanged();
+        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
     }
 
     protected void onItemsChanged(int slot) {
@@ -217,14 +219,10 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     protected void onFluidChanged() {
     }
 
-    public void onEnergyChanged() {
+    public void onEnergyChanged(int oldAmount) {
     }
 
     public void onHeatChanged() {
-    }
-
-    private static int getStackLimit(IItemHandler itemHandler, int slot, ItemStack stack) {
-        return Math.min(itemHandler.getSlotLimit(slot), stack.getMaxStackSize());
     }
 
     public ItemStack forceInsertItem(int slot, ItemStack stack, boolean simulate) {
@@ -233,7 +231,8 @@ public abstract class ContainerBlockEntity extends BlockEntity {
 
         ItemStack existing = getItemHandler().getStackInSlot(slot);
 
-        int limit = getStackLimit(getItemHandler(), slot, stack);
+        IItemHandler itemHandler1 = getItemHandler();
+        int limit = Math.min(itemHandler1.getSlotLimit(slot), stack.getMaxStackSize());
 
         if (!existing.isEmpty()) {
             if (!ItemStack.isSameItemSameComponents(stack, existing))

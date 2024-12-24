@@ -52,8 +52,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 // TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
+// TODO: Cache recipes
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
-    public static final AABB AABB = new AABB(-1, 0.25, -1, 2, 1, 2);
+    public static final AABB AABB = new AABB(-1, (double) 10 / 16, -1, 2, 1, 2);
     private final CrucibleTier tier;
     private MultiblockData multiblockData;
 
@@ -66,7 +67,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     public int speed;
 
     private boolean turnedOver;
-    private int tempTimer;
+    private int turnTimer;
+    private int maxTurnTime;
     // REDSTONE CONTROL
     private boolean powered;
 
@@ -84,6 +86,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             this.inUse = 70;
             this.speed = 70;
             this.turnedOver = true;
+            IFluidHandler basinFluidTank = CapabilityUtils.fluidHandlerCapability(level.getBlockEntity(getBasinPos()));
+            IFluidHandler fluidTank = getFluidHandler();
+            this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0), fluidTank.getFluidInTank(0).getAmount());
         }
     }
 
@@ -92,7 +97,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
             this.inUse = 70;
             this.speed = -70;
             this.turnedOver = false;
-            this.tempTimer = 0;
+            this.turnTimer = 0;
         }
     }
 
@@ -132,8 +137,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     private void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
-            Direction direction = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
-            BlockPos pos = worldPosition.relative(direction, 2);
+            BlockPos pos = getBasinPos();
             this.fillBlockCache = BlockCapabilityCache.create(
                     Capabilities.FluidHandler.BLOCK,
                     serverLevel,
@@ -142,8 +146,12 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                     () -> !this.isRemoved(),
                     this::onInvalidateCaps
             );
-            IndustrialReforged.LOGGER.debug("created cache at: {}", pos);
         }
+    }
+
+    private @NotNull BlockPos getBasinPos() {
+        Direction direction = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+        return worldPosition.relative(direction, 2);
     }
 
     @Override
@@ -228,10 +236,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 }
             }
         } else if (this.turnedOver) {
-            if (this.tempTimer >= 300) {
+            if (this.turnTimer >= this.maxTurnTime) {
                 turnBack();
             }
-            this.tempTimer++;
+            this.turnTimer++;
         }
     }
 
@@ -378,6 +386,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         super.loadAdditional(nbt, provider);
         loadMBData(provider, nbt.getCompound("multiblockData"));
         this.powered = nbt.getBoolean("powered");
+        this.turnTimer = nbt.getInt("turnTimer");
+        this.maxTurnTime = nbt.getInt("maxTurnTime");
+        // TODO: Serialize animation data
     }
 
     @Override
@@ -385,6 +396,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         super.saveAdditional(nbt, provider);
         nbt.put("multiblockData", saveMBData(provider));
         nbt.putBoolean("powered", this.powered);
+        nbt.putInt("turnTimer", this.turnTimer);
+        nbt.putInt("maxTurnTime", this.maxTurnTime);
     }
 
     @Override

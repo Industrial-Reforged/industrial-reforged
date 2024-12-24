@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -10,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundTag> {
     public static final EnergyStorage EMPTY = new EnergyStorage(EnergyTiers.NONE);
 
-    private final EnergyTier energyTier;
+    private final Holder<EnergyTier> energyTier;
     private int energyStored;
     private int energyCapacity;
 
-    public EnergyStorage(EnergyTier energyTier) {
+    public EnergyStorage(Holder<EnergyTier> energyTier) {
         this.energyTier = energyTier;
     }
 
@@ -26,8 +27,9 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
     @Override
     public void setEnergyStored(int value) {
         if (this.energyStored != value) {
+            int stored = energyStored;
             this.energyStored = value;
-            onEnergyChanged();
+            onEnergyChanged(stored);
         }
     }
 
@@ -44,11 +46,11 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public Holder<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 
-    public void onEnergyChanged() {
+    public void onEnergyChanged(int oldAmount) {
     }
 
     @Override

@@ -1,6 +1,6 @@
-// 1.21.1	2024-12-12T20:03:53.879021801	Block States: indref
+// 1.21.1	2024-12-22T09:19:55.315187068	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
-730773373aebc01c0228f21355ca4217c0d1a55f assets/indref/blockstates/basic_generator.json
+b269694801416e295b87a1190e8aabbc2733f47c assets/indref/blockstates/basic_generator.json
 3cbec80a2e1b5742c04822848fad846cbec7f92a assets/indref/blockstates/basic_machine_frame.json
 d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.json
 88eb7647f5d97dcbf4b00de55b5e9563aa8101f3 assets/indref/blockstates/blast_furnace_bricks.json
@@ -8,7 +8,7 @@ d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.j
 21df4a5213445e1a3599fdb83e82d74730151997 assets/indref/blockstates/blast_furnace_faucet.json
 eab39028c79a08ea8a012138fede88c71d488460 assets/indref/blockstates/blast_furnace_hatch.json
 ffb3b28edc08cd3d01be9926b44248d0ca6eb5fa assets/indref/blockstates/blast_furnace_part.json
-8904f8548afea681014bb6365d1dd46ff44e538d assets/indref/blockstates/centrifuge.json
+1178b47900680945ddb3ab906e5d75a7965a6bc2 assets/indref/blockstates/centrifuge.json
 8628c4b47a0cbdc0adcbf57556ee64f4379854f1 assets/indref/blockstates/ceramic_casting_basin.json
 3852a0bedf83de36846bc8498288366dea418c87 assets/indref/blockstates/chromium_block.json
 df520f8fbb33b92336de02e52b10cacf57a5351e assets/indref/blockstates/chromium_ore.json
@@ -71,6 +71,7 @@ ee5165b75e4206665a9842606f0154b78592a591 assets/indref/blockstates/uranium_block
 a215aec48f9f55d5fe65d30d2f62c32a432e81f8 assets/indref/blockstates/uranium_ore.json
 8f385309313021f49e14320a218c0639bb40e31a assets/indref/models/block/aluminum_block.json
 69dfb4bf05287123c52634f3cc713d12a4bc6fea assets/indref/models/block/basic_generator.json
+cc7996bf1cfc3b9708cbc00484536c30cd7321a4 assets/indref/models/block/basic_generator_active.json
 d48d25e96a11a0caafcaa255b08a40f39b943e11 assets/indref/models/block/basic_machine_frame.json
 5d9b8883e613b20ceb1bca50a18afdba3200689d assets/indref/models/block/bauxite_ore.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_bricks.json
@@ -81,6 +82,7 @@ cff1442e6a599b9ee470f1a6ce6e843061866f75 assets/indref/models/block/blast_furnac
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part_formed.json
 a1d6fe3394c7f4545785f420f4ae7d935c0a87fb assets/indref/models/block/centrifuge.json
+45976ed82837a8aa90f846fdf26f910bcfd5edf1 assets/indref/models/block/centrifuge_active.json
 4cc7c8ff06bb5d96446165519a6d33f206f2a54a assets/indref/models/block/ceramic_casting_basin.json
 2b64a7937639150a24842b09729c0dc46e1d3901 assets/indref/models/block/chromium_block.json
 89a00bcb3ee4bf949b3eb49e78c2689c5640df9b assets/indref/models/block/chromium_ore.json
@@ -89,6 +91,7 @@ a1d6fe3394c7f4545785f420f4ae7d935c0a87fb assets/indref/models/block/centrifuge.j
 6a0e81b6f0c326ec00c90e1cae5ee70728c9156c assets/indref/models/block/copper_cable_base.json
 9637ca147728df02ff2593b6c51a63d37413ec64 assets/indref/models/block/copper_cable_connection.json
 48857d80df487bdd1db444c3be506dd5a5d9760f assets/indref/models/block/crafting_station.json
+2df84f617919b06948fe28b3b79fefd83b95d871 assets/indref/models/block/crafting_station_active.json
 5d697b39541b99d644e386603dc07a73c4dac90c assets/indref/models/block/deepslate_bauxite_ore.json
 f399cf8ad7898540506ed5f50628d259a4a66d1d assets/indref/models/block/deepslate_chromium_ore.json
 db64d98763c8672d20b518981552b551cdd6fa69 assets/indref/models/block/deepslate_iridium_ore.json
@@ -97,6 +100,7 @@ ff1e32e3d2d6b5f0b474d844dc9bad73cf311ce0 assets/indref/models/block/deepslate_le
 b063597f6a1ed7173fda167aa4d64d2de75b0e79 assets/indref/models/block/deepslate_tin_ore.json
 690b6459c6f74d7e6d7ab3752b8a014d210f009f assets/indref/models/block/deepslate_uranium_ore.json
 e690210c636aea898c4ed2f5e578665f506f7006 assets/indref/models/block/drain.json
+2df84f617919b06948fe28b3b79fefd83b95d871 assets/indref/models/block/drain_active.json
 eb5acdf1be684a6826dffc622e39dac0d37d330f assets/indref/models/block/firebox_controller.json
 7694978ab5288bee9a9ae1fa23ea65a0c757a322 assets/indref/models/block/firebox_part.json
 e67f3d3cf1b814cab0e01af713d12c713c06e751 assets/indref/models/block/firebox_part_hatch.json

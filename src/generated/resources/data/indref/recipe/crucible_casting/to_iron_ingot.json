@@ -1,14 +1,11 @@
 {
   "type": "indref:crucible_casting",
-  "cast": {
-    "item": "indref:clay_mold_ingot"
-  },
-  "consume_cast": true,
   "duration": 200,
   "fluid": {
     "amount": 111,
     "id": "indref:molten_iron"
   },
+  "mold_item": "indref:clay_mold_ingot",
   "result": {
     "count": 1,
     "id": "minecraft:iron_ingot"

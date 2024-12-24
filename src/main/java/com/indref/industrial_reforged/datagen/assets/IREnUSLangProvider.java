@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRTabs;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.IRTranslations;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -193,7 +194,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         add("title." + IndustrialReforged.MODID + "." + key, val);
     }
 
-    private void addEnergyTier(EnergyTier key, String val) {
+    private void addEnergyTier(Holder<EnergyTier> key, String val) {
         add("energy_tier." + IndustrialReforged.MODID + "." + key, val);
     }
 

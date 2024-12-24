@@ -23,9 +23,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
@@ -33,9 +35,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.indref.industrial_reforged.util.Utils.ACTIVE;
+
 public class BasicGeneratorBlock extends RotatableContainerBlock implements WrenchableBlock, DisplayBlock {
-    public BasicGeneratorBlock(Properties p_49224_) {
-        super(p_49224_);
+    public BasicGeneratorBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
     }
 
     @Override
@@ -52,6 +57,11 @@ public class BasicGeneratorBlock extends RotatableContainerBlock implements Wren
     @Override
     public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
         return new BasicGeneratorBlockEntity(p_153215_, p_153216_);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(ACTIVE));
     }
 
     @Override

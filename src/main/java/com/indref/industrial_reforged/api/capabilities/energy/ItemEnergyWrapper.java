@@ -3,16 +3,17 @@ package com.indref.industrial_reforged.api.capabilities.energy;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 
-public record ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier) implements IEnergyStorage {
-    public ItemEnergyWrapper(ItemStack itemStack, EnergyTier energyTier, int initialCapacity) {
+public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTier) implements IEnergyStorage {
+    public ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTier, int initialCapacity) {
         this(itemStack, energyTier);
         this.setEnergyCapacity(initialCapacity);
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public Holder<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 

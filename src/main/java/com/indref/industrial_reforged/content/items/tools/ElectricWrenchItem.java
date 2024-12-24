@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -15,7 +16,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class ElectricWrenchItem extends SimpleElectricItem {
-    public ElectricWrenchItem(Item.Properties properties, EnergyTier energyTier) {
+    public ElectricWrenchItem(Item.Properties properties, Holder<EnergyTier> energyTier) {
         super(properties, energyTier);
     }
 

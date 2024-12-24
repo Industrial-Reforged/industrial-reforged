@@ -2,8 +2,10 @@ package com.indref.industrial_reforged.compat.jei;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.data.IRDataMaps;
+import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.util.recipes.RecipeUtils;
+import com.indref.industrial_reforged.util.RegistryUtils;
 import com.indref.industrial_reforged.util.renderer.GuiUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -17,6 +19,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -76,9 +79,11 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
                 .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
 
         IRecipeSlotBuilder slotBuilder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.CATALYST, getPadding() + 32, 7)
-                .addIngredients(castingRecipe.castItem());
+                .addItemStack(castingRecipe.moldItem().getDefaultInstance());
 
-        if (castingRecipe.consumeCast()) {
+        CastingMoldValue moldValue = RegistryUtils.holder(BuiltInRegistries.ITEM, castingRecipe.moldItem()).getData(IRDataMaps.CASTING_MOLDS);
+
+        if (moldValue.consumeCast()) {
             slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(Component.literal("Item is consumed").withStyle(ChatFormatting.DARK_GRAY)));
         }
 

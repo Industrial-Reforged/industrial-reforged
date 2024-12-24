@@ -1,24 +1,29 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.fluid.DynamicFluidTank;
+import com.indref.industrial_reforged.data.IRDataMaps;
+import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.util.RegistryUtils;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleCastingRecipeInput;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,36 +36,41 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
 
     public int duration;
     public int maxDuration;
-    private ContainerData data;
     public ItemStack resultItem = ItemStack.EMPTY;
+
+    private CrucibleCastingRecipe recipe;
 
     public CastingBasinBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CASTING_BASIN.get(), p_155229_, p_155230_);
-        addItemHandler(2, (slot, item) -> slot == 0);
-        addFluidTank(1000);
-        this.data = new ContainerData() {
-            @Override
-            public int get(int index) {
-                return switch (index) {
-                    case 0 -> CastingBasinBlockEntity.this.duration;
-                    case 1 -> CastingBasinBlockEntity.this.maxDuration;
-                    default -> 0;
-                };
-            }
+        addItemHandler(2, (slot, item) -> slot == 0 && getMold(item.getItem()) != null);
+        addFluidTank(0);
+    }
 
-            @Override
-            public void set(int index, int val) {
-                switch (index) {
-                    case 0 -> CastingBasinBlockEntity.this.duration = val;
-                    case 1 -> CastingBasinBlockEntity.this.maxDuration = val;
-                }
+    @Override
+    protected void onItemsChanged(int slot) {
+        super.onItemsChanged(slot);
+        updateRecipe(true);
+        if (slot == 0) {
+            CastingMoldValue moldValue = getMold(getItemHandler().getStackInSlot(slot).getItem());
+            if (moldValue != null) {
+                getFluidTank().setCapacity(moldValue.capacity());
+                update();
+            } else {
+                getFluidTank().setCapacity(0);
             }
+        }
 
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        };
+        updateRenderedStack();
+    }
+
+    private @Nullable CastingMoldValue getMold(Item Item) {
+        return RegistryUtils.holder(BuiltInRegistries.ITEM, Item).getData(IRDataMaps.CASTING_MOLDS);
+    }
+
+    @Override
+    protected void onFluidChanged() {
+        super.onFluidChanged();
+        updateRecipe(false);
     }
 
     public ItemStack[] getRenderStacks() {
@@ -79,9 +89,9 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public void commonTick() {
-        if (hasRecipe()) {
+        if (recipe != null) {
             increaseCraftingProgress();
-            setChanged(level, worldPosition, getBlockState());
+            setChanged();
             updateRenderedStack();
 
             if (hasProgressFinished()) {
@@ -93,7 +103,7 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public void updateRenderedStack() {
-        this.resultItem = getCurrentRecipe().get().getResultItem(level.registryAccess());
+        this.resultItem = this.recipe != null ? this.recipe.getResultItem(level.registryAccess()) : ItemStack.EMPTY;
     }
 
     public void resetRenderedStack() {
@@ -101,23 +111,22 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
     }
 
     public void castItem() {
-        Optional<CrucibleCastingRecipe> optionalRecipe = getCurrentRecipe();
-        FluidTank fluidTank = getFluidTank();
+        DynamicFluidTank fluidTank = getFluidTank();
         ItemStackHandler itemHandler = getItemStackHandler();
 
-        if (optionalRecipe.isPresent()) {
-            CrucibleCastingRecipe recipe = optionalRecipe.get();
-            fluidTank.drain(recipe.fluidStack(), IFluidHandler.FluidAction.EXECUTE);
+        if (this.recipe != null) {
+            Item moldItem = this.recipe.moldItem();
+            ItemStack resultItem1 = this.recipe.resultStack().copy();
 
-            if (recipe.shouldConsumeCast()) {
+            fluidTank.drain(this.recipe.fluidStack().getAmount(), IFluidHandler.FluidAction.EXECUTE);
+
+            // this.recipe is null from here on
+            CastingMoldValue moldValue = getMold(moldItem);
+            if (moldValue.consumeCast()) {
                 itemHandler.setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
             }
 
-            ItemStack resultItem1 = recipe.getResultItem(level.registryAccess());
-
-            resultItem1.grow(itemHandler.getStackInSlot(1).getCount());
-
-            itemHandler.setStackInSlot(1, resultItem1);
+            forceInsertItem(1, resultItem1, false);
             resetProgress();
         }
     }
@@ -139,19 +148,25 @@ public class CastingBasinBlockEntity extends ContainerBlockEntity {
         return maxDuration;
     }
 
-    public ContainerData getData() {
-        return data;
-    }
-
     public boolean hasProgressFinished() {
-        return getCurrentRecipe().isPresent() && this.duration >= getCurrentRecipe().get().getDuration();
+        return this.recipe != null && this.duration >= this.recipe.getDuration();
     }
 
-    public boolean hasRecipe() {
+    public void updateRecipe(boolean itemsChanged) {
         Optional<CrucibleCastingRecipe> recipe = getCurrentRecipe();
 
-        return recipe.filter(crucibleCastingRecipeRecipeHolder ->
-                canInsertIntoOutput(crucibleCastingRecipeRecipeHolder.getResultItem(level.registryAccess()))).isPresent();
+        boolean canInsert = recipe.filter(crucibleCastingRecipe ->
+                canInsertIntoOutput(crucibleCastingRecipe.getResultItem(level.registryAccess()))).isPresent();
+
+        if (canInsert) {
+            this.recipe = recipe.get();
+            if (itemsChanged) {
+                int capacity = this.recipe.fluidStack().getAmount();
+                IndustrialReforged.LOGGER.debug("Set Capacity: {}", capacity);
+            }
+        } else {
+            this.recipe = null;
+        }
     }
 
     private Optional<CrucibleCastingRecipe> getCurrentRecipe() {

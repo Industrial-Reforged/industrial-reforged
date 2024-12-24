@@ -1,12 +1,13 @@
 package com.indref.industrial_reforged.api.tiers;
 
+import net.minecraft.resources.ResourceLocation;
+
 public interface EnergyTier {
+    ResourceLocation getId();
+
     int getMaxInput();
     int getMaxOutput();
 
-    // Current flow unit (EU/t)
-    int getCurrent();
     int getDefaultCapacity();
-    String getId();
     int getColor();
 }

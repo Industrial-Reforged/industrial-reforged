@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,13 +30,13 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     private final int energyUsage;
     private final float mineSpeed;
     private final TagKey<Block> blocks;
-    protected final EnergyTier energyTier;
+    protected final Holder<EnergyTier> energyTier;
 
-    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, TagKey<Block> blocks, int energyUsage, EnergyTier energyTier, Tier tier, Properties properties) {
+    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, TagKey<Block> blocks, int energyUsage, Holder<EnergyTier> energyTier, Tier tier, Properties properties) {
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
         this.energyUsage = energyUsage;
         this.blocks = blocks;
         this.energyTier = energyTier;
@@ -99,5 +100,10 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     @Override
     public int getEnergyUsage(ItemStack itemStack, @Nullable Player player) {
         return this.energyUsage;
+    }
+
+    @Override
+    public Holder<EnergyTier> getEnergyTier() {
+        return energyTier;
     }
 }

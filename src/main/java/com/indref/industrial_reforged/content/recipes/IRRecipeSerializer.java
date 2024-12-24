@@ -1,37 +1,48 @@
 package com.indref.industrial_reforged.content.recipes;
 
+import com.indref.industrial_reforged.data.IRDataMaps;
+import com.indref.industrial_reforged.data.maps.CastingMoldValue;
+import com.indref.industrial_reforged.util.RegistryUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Function;
 
 public final class IRRecipeSerializer {
     protected static final class Casting {
+        public static final Codec<Item> ITEM_CODEC = RegistryUtils.registryCodec(BuiltInRegistries.ITEM);
+        public static final StreamCodec<ByteBuf, Item> ITEM_STREAM_CODEC = RegistryUtils.registryStreamCodec(BuiltInRegistries.ITEM);
+
         static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 FluidStack.CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
-                Ingredient.CODEC.fieldOf("cast").forGetter(CrucibleCastingRecipe::castItem),
+                ITEM_CODEC.fieldOf("mold_item").forGetter(CrucibleCastingRecipe::moldItem),
                 ItemStack.CODEC.fieldOf("result").forGetter(CrucibleCastingRecipe::resultStack),
-                Codec.INT.fieldOf("duration").forGetter(CrucibleCastingRecipe::duration),
-                Codec.BOOL.fieldOf("consume_cast").forGetter(CrucibleCastingRecipe::consumeCast)
+                Codec.INT.fieldOf("duration").forGetter(CrucibleCastingRecipe::duration)
         ).apply(builder, CrucibleCastingRecipe::new));
+
         static final StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> STREAM_CODEC = StreamCodec.composite(
                 FluidStack.STREAM_CODEC,
                 CrucibleCastingRecipe::fluidStack,
-                Ingredient.CONTENTS_STREAM_CODEC,
-                CrucibleCastingRecipe::castItem,
+                ITEM_STREAM_CODEC,
+                CrucibleCastingRecipe::moldItem,
                 ItemStack.STREAM_CODEC,
                 CrucibleCastingRecipe::resultStack,
                 ByteBufCodecs.INT,
                 CrucibleCastingRecipe::duration,
-                ByteBufCodecs.BOOL,
-                CrucibleCastingRecipe::consumeCast,
                 CrucibleCastingRecipe::new
         );
     }

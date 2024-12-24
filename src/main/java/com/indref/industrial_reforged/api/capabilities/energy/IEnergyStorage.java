@@ -1,10 +1,11 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 
 public interface IEnergyStorage {
-    EnergyTier getEnergyTier();
+    Holder<EnergyTier> getEnergyTier();
 
     /**
      * Removes energy from the storage. Returns the amount of energy that was removed.
@@ -69,11 +70,11 @@ public interface IEnergyStorage {
     void setEnergyCapacity(int value);
 
     default int getMaxInput() {
-        return getEnergyTier().getMaxInput();
+        return getEnergyTier().value().getMaxInput();
     }
 
     default int getMaxOutput() {
-        return getEnergyTier().getMaxOutput();
+        return getEnergyTier().value().getMaxOutput();
     }
 
     default boolean canFillEnergy() {
