@@ -86,7 +86,7 @@ public class CrucibleModel extends Model {
         poseStack.popPose();
     }
 
-    public void setupAnimation(float time) {
+    public void setupAnimation() {
         this.crucible.xRot = (float) Math.toRadians(180);
         this.leg0.xRot = (float) Math.toRadians(180);
         this.leg1.xRot = (float) Math.toRadians(180);

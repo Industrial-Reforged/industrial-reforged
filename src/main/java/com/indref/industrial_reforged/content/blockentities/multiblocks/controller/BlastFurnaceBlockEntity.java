@@ -49,7 +49,7 @@ import java.util.Optional;
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
     private BlockPos mainControllerPos;
-    private int duration;
+    private float duration;
     private int maxDuration;
     private MultiblockData multiblockData;
 
@@ -71,7 +71,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     public int getProgress() {
-        return duration;
+        return (int) duration;
     }
 
     public int getMaxProgress() {
@@ -83,6 +83,22 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         this.mainControllerPos = blockPos;
     }
 
+    public int getHeight() {
+        return multiblockData.layers().length;
+    }
+
+    public int getBaseHeight() {
+        return 4;
+    }
+
+    @Override
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        loadMBData(provider, tag.getCompound("multiblockData"));
+        long mainControllerPos1 = tag.getLong("mainControllerPos");
+        this.mainControllerPos = BlockPos.of(mainControllerPos1);
+        this.duration = tag.getFloat("duration");
+    }
+
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         tag.put("multiblockData", saveMBData(provider));
@@ -90,12 +106,12 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         if (actualBlockEntityPos != null) {
             tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());
         }
-        tag.putInt("duration", this.duration);
+        tag.putFloat("duration", this.duration);
     }
 
     @Override
     public IFluidHandler getFluidHandlerOnSide(Direction direction) {
-        if (!isMainController()) {
+        if (!isMainController() && mainControllerPos != null) {
             BlockEntity be = level.getBlockEntity(mainControllerPos);
             if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
                 return blastFurnaceBlockEntity.getFluidHandlerOnSide(direction);
@@ -104,10 +120,19 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         return super.getFluidHandlerOnSide(direction);
     }
 
-    // TODO: Export this through the bricks block
+    @Override
+    public IItemHandler getItemHandlerOnSide(Direction direction) {
+        if (!isMainController() && mainControllerPos != null) {
+            BlockEntity be = level.getBlockEntity(mainControllerPos);
+            if (be instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                return blastFurnaceBlockEntity.getItemHandlerOnSide(direction);
+            }
+        }
+        return super.getItemHandlerOnSide(direction);
+    }
+
     @Override
     public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        IndustrialReforged.LOGGER.debug("getting sided interaction");
         if (capability == Capabilities.ItemHandler.BLOCK) {
             return ImmutableMap.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
         } else if (capability == Capabilities.FluidHandler.BLOCK) {
@@ -125,14 +150,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         return worldPosition.equals(mainControllerPos);
     }
 
-    @Override
-    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        loadMBData(provider, tag.getCompound("multiblockData"));
-        long mainControllerPos1 = tag.getLong("mainControllerPos");
-        this.mainControllerPos = BlockPos.of(mainControllerPos1);
-        this.duration = tag.getInt("duration");
-    }
-
     public void commonTick() {
         if (isMainController()) {
             Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
@@ -147,12 +164,14 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                     List<IngredientWithCount> ingredients = new ArrayList<>(recipe.ingredients());
 
                     for (IngredientWithCount ingredient : recipe.ingredients()) {
-                        for (ItemStack itemStack : getNonEmptyStacks()) {
-                            if (ingredient.test(itemStack) && ingredients.contains(ingredient)) {
-                                // TODO: shrink is bad
-                                itemStack.shrink(ingredient.count());
-                                ingredients.remove(ingredient);
-                                break;
+                        for (int i = 0; i < itemHandler.getSlots(); i++) {
+                            ItemStack itemStack = itemHandler.getStackInSlot(i);
+                            if (!itemStack.isEmpty()){
+                                if (ingredient.test(itemStack) && ingredients.contains(ingredient)) {
+                                    itemHandler.extractItem(i, ingredient.count(), false);
+                                    ingredients.remove(ingredient);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -161,7 +180,9 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                     this.duration = 0;
                     this.maxDuration = 0;
                 } else {
-                    duration++;
+                    float progress = (float) getHeight() / getBaseHeight();
+                    IndustrialReforged.LOGGER.debug("Progress: {}", progress);
+                    duration += progress;
                 }
             }
         }

@@ -26,10 +26,9 @@ public abstract class SimpleFluidItem extends Item implements IFluidItem {
     }
 
     @Override
-    public int getFluidCapacity(ItemStack itemStack) {
+    public int getDefaultFluidCapacity() {
         return this.capacity;
     }
-
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {

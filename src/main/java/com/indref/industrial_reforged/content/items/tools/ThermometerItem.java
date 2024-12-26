@@ -6,12 +6,8 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -24,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,38 +31,20 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThermometerItem extends SimpleHeatItem implements DisplayItem {
-    public static final String DISPLAY_TEMPERATURE_KEY = "thermometer_temperature";
-
+public class ThermometerItem extends SimpleHeatItem {
     public ThermometerItem(Properties properties) {
         super(properties.component(IRDataComponents.THERMOMETER_STAGE, 0));
     }
 
-    @Override
-    public void displayOverlay(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos, ItemStack itemStack) {
-        Font font = Minecraft.getInstance().font;
-        BlockState blockstate = level.getBlockState(blockPos);
-        if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
-            if (!displayBlock.getCompatibleItems().contains(this)) return;
-
-            List<Component> displayText = new ArrayList<>();
-
-            displayBlock.displayOverlay(displayText, player, level, itemStack, blockPos, blockstate);
-
-            for (Component component : displayText) {
-                guiGraphics.drawCenteredString(font, component, x, y + lineOffset, 256);
-                lineOffset += font.lineHeight + 3;
-            }
-        }
-    }
-
+    // FIXME: Bunch of client code
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int p_41407_, boolean p_41408_) {
         if (!(entity instanceof Player player)) return;
+        BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+        IHeatStorage heatStorage = getHeatCap(itemStack);
 
-        HitResult hitResult = Minecraft.getInstance().hitResult;
-        if (hitResult instanceof BlockHitResult blockHitResult) {
-            BlockPos blockPos = blockHitResult.getBlockPos();
+        if (result.getType() != HitResult.Type.MISS) {
+            BlockPos blockPos = result.getBlockPos();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof FakeBlockEntity fakeBlockEntity) {
                 if (fakeBlockEntity.getActualBlockEntityPos() != null) {
@@ -73,19 +52,19 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem {
                 }
             }
             if (blockEntity != null) {
-                IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
-                if (heatStorage != null) {
-                    setHeatStored(itemStack, Math.min(getHeatStored(itemStack) + 16, heatStorage.getHeatStored()));
+                IHeatStorage blockHeatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
+                if (blockHeatStorage != null) {
+                    heatStorage.setHeatStored(Math.min(heatStorage.getHeatStored() + 16, blockHeatStorage.getHeatStored()));
                 } else {
-                    setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
+                    heatStorage.setHeatStored(Math.max(heatStorage.getHeatStored() - 16, 0));
                 }
             }
         } else {
-            setHeatStored(itemStack, Math.max(getHeatStored(itemStack) - 16, 0));
+            heatStorage.setHeatStored(Math.max(heatStorage.getHeatStored() - 16, 0));
         }
-        itemStack.set(IRDataComponents.THERMOMETER_STAGE, Math.round(getHeatStored(itemStack) / 1000f));
+        itemStack.set(IRDataComponents.THERMOMETER_STAGE, Math.round(heatStorage.getHeatStored() / 1000f));
 
-        if (getHeatStored(itemStack) >= getHeatCapacity(itemStack)) {
+        if (heatStorage.getHeatStored() >= heatStorage.getHeatCapacity()) {
             explodeThermometer(player, itemStack);
         }
     }
@@ -98,18 +77,15 @@ public class ThermometerItem extends SimpleHeatItem implements DisplayItem {
         ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.GLASS_PANE, 3), player.getInventory().selected);
     }
 
-    public static float getTemperature(ItemStack itemStack) {
-        return itemStack.getOrDefault(IRDataComponents.THERMOMETER_STAGE, 0);
-    }
-
     @Override
-    public int getHeatCapacity(ItemStack itemStack) {
+    public int getDefaultHeatCapacity() {
         return 7000;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
-        tooltip.add(IRTranslations.Tooltip.HEAT_STORED.component(getHeatStored(stack), getHeatCapacity(stack)));
+        IHeatStorage heatStorage = getHeatCap(stack);
+        tooltip.add(IRTranslations.Tooltip.HEAT_STORED.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity()));
     }
 
     @Override

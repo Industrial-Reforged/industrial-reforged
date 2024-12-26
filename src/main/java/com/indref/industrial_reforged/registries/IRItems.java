@@ -40,20 +40,12 @@ public final class IRItems {
             () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM));
-//    public static final DeferredItem<ElectricWrenchItem> ELECTRIC_WRENCH = registerItem("electric_wrench",
-//            () -> new ElectricWrenchItem(new Item.Properties(), EnergyTiers.LOW));
-//    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
-//            () -> new ElectricHoeItem(EnergyTiers.LOW, Tiers.IRON, 0, 0, new Item.Properties()));
-//    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
-//            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
             () -> new RockCutterItem(1, -2.8F, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ELECTRIC_DRILL = registerItem("electric_drill",
             () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
-//    public static final DeferredItem<TapeMeasureItem> TAPE_MEASURE = registerItem("tape_measure",
-//            () -> new TapeMeasureItem(new Item.Properties()));
     public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
             () -> new BlueprintItem(new Item.Properties()));
 
@@ -105,6 +97,7 @@ public final class IRItems {
     public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
     public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot", 111, true);
     public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire", 37, true);
+    public static final DeferredItem<Item> CLAY_MOLD_ROD = moldItem("rod", 111, true);
 
     //ores
     public static final DeferredItem<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");

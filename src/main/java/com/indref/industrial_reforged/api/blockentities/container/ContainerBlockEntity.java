@@ -200,9 +200,9 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     protected final void addHeatStorage(int capacity) {
         this.heatStorage = new HeatStorage() {
             @Override
-            public void onHeatChanged() {
+            public void onHeatChanged(int oldAmount) {
                 update();
-                ContainerBlockEntity.this.onHeatChanged();
+                ContainerBlockEntity.this.onHeatChanged(oldAmount);
             }
         };
         this.heatStorage.setHeatCapacity(capacity);
@@ -222,7 +222,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     public void onEnergyChanged(int oldAmount) {
     }
 
-    public void onHeatChanged() {
+    public void onHeatChanged(int oldAmount) {
     }
 
     public ItemStack forceInsertItem(int slot, ItemStack stack, boolean simulate) {

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -14,11 +15,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import java.util.Random;
-
 import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
-public class ElectricTreeTapItem extends SimpleElectricItem {
+public class ElectricTreeTapItem extends SimpleEnergyItem {
     public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier) {
         super(properties, energyTier);
     }
@@ -28,15 +27,18 @@ public class ElectricTreeTapItem extends SimpleElectricItem {
         Level level = useOnContext.getLevel();
         BlockPos blockPos = useOnContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
+        ItemStack itemInHand = useOnContext.getItemInHand();
+        IEnergyStorage energyStorage = getEnergyCap(itemInHand);
+
         if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
-            if (getEnergyStored(useOnContext.getItemInHand()) >= 10) {
+            if (energyStorage.getEnergyStored() >= 10) {
                 level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
                 ItemStack resinDrop = new ItemStack(IRItems.STICKY_RESIN.get());
                 RandomSource random = useOnContext.getLevel().random;
                 int randomInt = random.nextInt(1, 4);
                 resinDrop.setCount(randomInt);
                 ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
-                setEnergyStored(useOnContext.getItemInHand(), getEnergyStored(useOnContext.getItemInHand()) - 10);
+                energyStorage.tryDrainEnergy(10, false);
                 return InteractionResult.SUCCESS;
             }
         }

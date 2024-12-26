@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.items.tools;
 
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
@@ -51,28 +52,26 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
-        return 1;
-    }
-
-    @Override
-    public InteractionResult useOn(UseOnContext p_41341_) {
-        Level level = p_41341_.getLevel();
-        BlockPos blockpos = p_41341_.getClickedPos();
-        BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(p_41341_, ItemAbilities.HOE_TILL, false);
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        BlockPos blockpos = context.getClickedPos();
+        ItemStack itemInHand = context.getItemInHand();
+        BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(context, ItemAbilities.HOE_TILL, false);
         Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
+        IEnergyStorage energyStorage = getEnergyCap(itemInHand);
+
         if (pair == null) {
             return InteractionResult.PASS;
         } else {
-            Player player = p_41341_.getPlayer();
-            ItemStack itemStack = player.getItemInHand(p_41341_.getHand());
+            Player player = context.getPlayer();
+            ItemStack itemStack = player.getItemInHand(context.getHand());
             Predicate<UseOnContext> predicate = pair.getFirst();
             Consumer<UseOnContext> consumer = pair.getSecond();
-            if (predicate.test(p_41341_) && getEnergyStored(itemStack) >= 10) {
+            if (predicate.test(context) && energyStorage.getEnergyStored() >= 10) {
                 level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!level.isClientSide()) {
-                    consumer.accept(p_41341_);
-                    setEnergyStored(itemStack, getEnergyStored(itemStack) - 10);
+                    consumer.accept(context);
+                    energyStorage.tryDrainEnergy(10, false);
                 }
 
                 return InteractionResult.sidedSuccess(level.isClientSide());

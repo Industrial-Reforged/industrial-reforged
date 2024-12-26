@@ -14,26 +14,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import java.util.List;
 
 public final class BlockUtils {
-    public static BlockPos[] getBlocksAroundSelf(BlockPos selfPos) {
-        return new BlockPos[]{
-                selfPos.offset(1, 0, 0),
-                selfPos.offset(0, 1, 0),
-                selfPos.offset(0, 0, 1),
-                selfPos.offset(-1, 0, 0),
-                selfPos.offset(0, -1, 0),
-                selfPos.offset(0, 0, -1)
-        };
-    }
-
-    public static BlockPos[] getBlocksAroundSelfHorizontal(BlockPos selfPos) {
-        return new BlockPos[]{
-                selfPos.offset(1, 0, 0),
-                selfPos.offset(-1, 0, 0),
-                selfPos.offset(0, 0, 1),
-                selfPos.offset(0, 0, -1),
-        };
-    }
-
     public static BlockState rotateBlock(BlockState state, DirectionProperty prop, Comparable<?> currentValue) {
         List<Direction> directions = prop.getPossibleValues().stream().toList();
         int currentDirectionIndex = directions.indexOf(currentValue);
@@ -50,19 +30,6 @@ public final class BlockUtils {
         builder.add(BlockStateProperties.HORIZONTAL_FACING);
         return builder;
     }
-
-    /*
-    public static EnergyNet.EnergyTypes getEnergyType(Level level, BlockPos blockPos) {
-        if (level.getBlockState(blockPos).getBlock() instanceof CableBlock) {
-            return EnergyNet.EnergyTypes.TRANSMITTERS;
-        } else if (level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity) {
-            return EnergyNet.EnergyTypes.PRODUCERS;
-        } else if (level.getBlockEntity(blockPos) instanceof IEnergyBlock && !(level.getBlockEntity(blockPos) instanceof GeneratorBlockEntity)) {
-            return EnergyNet.EnergyTypes.CONSUMERS;
-        }
-        return null;
-    }
-     */
 
     @SuppressWarnings("unchecked")
     public static <T extends BlockEntity> T getBE(BlockGetter level, BlockPos blockPos, Class<T> clazz) {

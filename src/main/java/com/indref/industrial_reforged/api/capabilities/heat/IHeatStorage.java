@@ -3,6 +3,9 @@ package com.indref.industrial_reforged.api.capabilities.heat;
 import net.minecraft.util.Mth;
 
 public interface IHeatStorage {
+    default void onHeatChanged(int oldAmount) {
+    }
+
     int getHeatStored();
 
     void setHeatStored(int value);

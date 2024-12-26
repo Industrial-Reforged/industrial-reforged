@@ -39,7 +39,8 @@ public class CableBlock extends PipeBlock {
             // Adds the net
             EnergyNet net = nets.getEnets().getOrCreateNetAndPush(blockPos);
             nets.setDirty();
-            for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+            for (Direction dir : Direction.values()) {
+                BlockPos offsetPos = blockPos.relative(dir);
                 Block block = level.getBlockState(offsetPos).getBlock();
                 if (block instanceof CableBlock) {
                     Optional<EnergyNet> network = nets.getEnets().getNetwork(offsetPos);

@@ -25,6 +25,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
 
     public CrucibleRenderer(BlockEntityRendererProvider.Context context) {
         this.model = new CrucibleModel(context.bakeLayer(CrucibleModel.LAYER_LOCATION));
+        this.model.setupAnimation();
     }
 
     @Override
@@ -39,8 +40,6 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
             poseStack.translate(0.5, 0.5, 0.5);
             poseStack.mulPose(Axis.YN.rotationDegrees(oppositeFacing.toYRot()));
             poseStack.translate(-0.5, -0.5, -0.5);
-            // TODO: Maybe we can move this to the constructor
-            this.model.setupAnimation(partialTick);
             VertexConsumer vertexconsumer = CrucibleModel.CRUCIBLE_LOCATION.buffer(bufferSource, RenderType::entitySolid);
             // Fluid top
             poseStack.pushPose();

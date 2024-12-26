@@ -1,6 +1,8 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
@@ -104,8 +106,8 @@ public final class IRTabs {
     public static void addPoweredItem(CreativeModeTab.Output output, DeferredItem<?> item) {
         output.accept(item.get().getDefaultInstance());
         ItemStack stack = new ItemStack(item.get());
-        IEnergyItem energyItem = (IEnergyItem) stack.getItem();
-        energyItem.setEnergyStored(stack, energyItem.getEnergyCapacity(stack));
+        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
 
         output.accept(stack);
     }
@@ -117,8 +119,8 @@ public final class IRTabs {
 
         output.accept(stack);
         ItemStack energyStack = stack.copy();
-        IEnergyItem energyItem = (IEnergyItem) energyStack.getItem();
-        energyItem.setEnergyStored(energyStack, energyItem.getEnergyCapacity(energyStack));
+        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
 
         output.accept(energyStack);
     }

@@ -1,7 +1,8 @@
 package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
-public class ElectricWrenchItem extends SimpleElectricItem {
+public class ElectricWrenchItem extends SimpleEnergyItem {
     public ElectricWrenchItem(Item.Properties properties, Holder<EnergyTier> energyTier) {
         super(properties, energyTier);
     }
@@ -25,7 +26,6 @@ public class ElectricWrenchItem extends SimpleElectricItem {
         return false;
     }
 
-    // TODO: Extract wrench code into common class
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         Player player = useOnContext.getPlayer();
@@ -33,12 +33,15 @@ public class ElectricWrenchItem extends SimpleElectricItem {
         BlockPos clickPos = useOnContext.getClickedPos();
         BlockState wrenchableBlock = level.getBlockState(clickPos);
         ItemStack itemInHand = useOnContext.getItemInHand();
-        assert player != null;
+        IEnergyStorage energyStorage = getEnergyCap(itemInHand);
 
         // only on the server side
         if (!level.isClientSide) {
             // check if block can be wrenched
-            if (wrenchableBlock instanceof WrenchableBlock iWrenchableBlockBlock && ((WrenchableBlock) wrenchableBlock).canWrench(level, clickPos, wrenchableBlock) && player.isCrouching() && getEnergyStored(itemInHand) >= 10) {
+            if (wrenchableBlock instanceof WrenchableBlock iWrenchableBlockBlock
+                    && iWrenchableBlockBlock.canWrench(level, clickPos, wrenchableBlock)
+                    && player.isCrouching()
+                    && energyStorage.getEnergyStored() >= 10) {
                 // Drop the block itself instead of custom drop
                 if (iWrenchableBlockBlock.getDropItem().isEmpty()) {
                     ItemStack dropItem = wrenchableBlock.getBlock().asItem().getDefaultInstance();
@@ -49,7 +52,7 @@ public class ElectricWrenchItem extends SimpleElectricItem {
                     ItemStack dropItem = iWrenchableBlockBlock.getDropItem().get().getDefaultInstance();
                     ItemHandlerHelper.giveItemToPlayer(player, dropItem);
                 }
-                setEnergyStored(itemInHand, getEnergyStored(itemInHand)-10);
+                energyStorage.tryDrainEnergy(10, false);
                 level.removeBlock(clickPos, false);
                 return InteractionResult.SUCCESS;
             }
@@ -58,7 +61,7 @@ public class ElectricWrenchItem extends SimpleElectricItem {
     }
 
     @Override
-    public int getEnergyCapacity(ItemStack itemStack) {
+    public int getDefaultEnergyCapacity() {
         return 10000;
     }
 }

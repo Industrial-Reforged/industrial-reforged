@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.events.ScannerEvent;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.networking.ArmorActivityPayload;
@@ -40,8 +41,6 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-
-import static com.indref.industrial_reforged.events.IREvents.ClientBus.JETPACK_TOGGLE;
 
 public final class NeoforgeEvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID)
@@ -85,29 +84,6 @@ public final class NeoforgeEvents {
                 }
             }
         }
-    }
 
-    @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
-    public static final class Client {
-        @SubscribeEvent
-        public static void onClientTickPost(ClientTickEvent.Post event) {
-            Player player = Minecraft.getInstance().player;
-            while (JETPACK_TOGGLE.get().consumeClick()) {
-                ItemStack jetpackItem = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.CHEST);
-                if (jetpackItem.getItem() instanceof JetpackItem) {
-                    JetpackItem.toggle(jetpackItem);
-                    PacketDistributor.sendToServer(new ArmorActivityPayload(ItemUtils.indexFromEquipmentSlot(EquipmentSlot.CHEST),
-                            player.getItemBySlot(EquipmentSlot.CHEST).getOrDefault(IRDataComponents.ACTIVE, false)));
-                }
-            }
-        }
-
-        @SubscribeEvent
-        public static void onClientTickPre(ClientTickEvent.Pre event) {
-//            if (JETPACK_ASCEND.get().isDown()) {
-//                Player player = Minecraft.getInstance().player;
-//                InputUtils.update(player, true, false, false, false, false, false, false);
-//            }
-        }
     }
 }

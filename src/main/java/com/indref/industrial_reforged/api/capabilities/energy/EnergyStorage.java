@@ -50,9 +50,6 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
         return energyTier;
     }
 
-    public void onEnergyChanged(int oldAmount) {
-    }
-
     @Override
     public @NotNull CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();

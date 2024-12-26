@@ -4,11 +4,12 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public class RegistryUtils {
+public final class RegistryUtils {
     public static <T> Codec<T> registryCodec(Registry<T> registry) {
         return ResourceLocation.CODEC.xmap(registry::get, registry::getKey);
     }
@@ -29,5 +30,13 @@ public class RegistryUtils {
      */
     public static <T> Holder.Reference<T> holder(Registry<T> registry, T value) {
         return registry.getHolderOrThrow(resourceKey(registry, value));
+    }
+
+    public static <T extends Enum<T>> Codec<T> enumCodec(Class<T> enumClazz) {
+        return Codec.INT.xmap(i -> enumClazz.getEnumConstants()[i], Enum::ordinal);
+    }
+
+    public static <T extends Enum<T>> StreamCodec<ByteBuf, T> enumStreamCodec(Class<T> enumClazz) {
+        return ByteBufCodecs.INT.map(i -> enumClazz.getEnumConstants()[i], Enum::ordinal);
     }
 }

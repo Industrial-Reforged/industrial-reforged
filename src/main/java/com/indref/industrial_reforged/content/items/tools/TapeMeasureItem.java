@@ -20,7 +20,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: 10/22/2023 Implement highlight for the first block controllerPos
 public class TapeMeasureItem extends Item {
     public static final String EXTENDED_KEY = "tape_measure_extended";
 

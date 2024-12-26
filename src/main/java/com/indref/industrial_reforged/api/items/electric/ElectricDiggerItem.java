@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
@@ -45,7 +46,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
 
     @Override
     public boolean mineBlock(ItemStack p_41416_, Level p_41417_, BlockState p_41418_, BlockPos p_41419_, LivingEntity p_41420_) {
-        IEnergyStorage energyStorage = IEnergyItem.getCap(p_41416_);
+        IEnergyStorage energyStorage = getEnergyCap(p_41416_);
         int energyUsage = getEnergyUsage(p_41416_, p_41420_ instanceof Player player ? player : null);
         energyStorage.tryDrainEnergy(energyUsage, false);
         return true;
@@ -53,7 +54,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
 
     @Override
     public boolean hurtEnemy(ItemStack p_40994_, LivingEntity p_40995_, LivingEntity p_40996_) {
-        IEnergyStorage energyStorage = IEnergyItem.getCap(p_40994_);
+        IEnergyStorage energyStorage = getEnergyCap(p_40994_);
         int energyUsage = (int) (getEnergyUsage(p_40994_, p_40995_ instanceof Player player ? player : null) * 1.5f);
         energyStorage.tryDrainEnergy(energyUsage, false);
         return true;
@@ -62,7 +63,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     @Override
     public float getDestroySpeed(ItemStack pStack, BlockState pState) {
         int energyUsage = getEnergyUsage(pStack, null);
-        return IEnergyItem.getCap(pStack).tryDrainEnergy(energyUsage, true) > 0 ? 12f : 1f;
+        return getEnergyCap(pStack).tryDrainEnergy(energyUsage, true) > 0 ? 12f : 1f;
     }
 
     @Override
@@ -98,7 +99,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public int getEnergyUsage(ItemStack itemStack, @Nullable Player player) {
+    public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
         return this.energyUsage;
     }
 

@@ -25,6 +25,7 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 
@@ -52,7 +53,8 @@ public class FluidCellItem extends SimpleFluidItem {
                 BlockPos blockpos = blockhitresult.getBlockPos();
                 Direction direction = blockhitresult.getDirection();
                 BlockPos blockpos1 = blockpos.relative(direction);
-                Fluid fluid1 = IFluidItem.getFluidHandler(handItem).getFluidInTank(0).getFluid();
+                IFluidHandlerItem fluidHandlerItem = getFluidCap(handItem);
+                Fluid fluid1 = fluidHandlerItem.getFluidInTank(0).getFluid();
                 if (fluid1 == Fluids.EMPTY) {
                     BlockState blockstate1 = level.getBlockState(blockpos);
                     Block block1 = blockstate1.getBlock();
@@ -68,7 +70,7 @@ public class FluidCellItem extends SimpleFluidItem {
                     return InteractionResultHolder.fail(handItem);
                 } else {
                     if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)
-                            && !fluid1.getFluidType().isVaporizedOnPlacement(level, blockpos, IFluidItem.getFluidHandler(handItem).getFluidInTank(0))) {
+                            && !fluid1.getFluidType().isVaporizedOnPlacement(level, blockpos, fluidHandlerItem.getFluidInTank(0))) {
                         level.setBlock(blockpos1, fluid1.defaultFluidState().createLegacyBlock(), 11);
                         return InteractionResultHolder.success(handItem);
                     }
@@ -92,7 +94,7 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
-    public int getFluidCapacity(ItemStack itemStack) {
+    public int getDefaultFluidCapacity() {
         return this.capacity;
     }
 }

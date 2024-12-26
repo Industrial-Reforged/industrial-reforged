@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -18,6 +19,13 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
     }
 
     @Override
+    public void onEnergyChanged(int oldAmount) {
+        if (itemStack.getItem() instanceof IEnergyItem energyItem) {
+            energyItem.onEnergyChanged(itemStack, oldAmount);
+        }
+    }
+
+    @Override
     public int getEnergyStored() {
         ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
         if (componentEnergyStorage != null)
@@ -30,7 +38,9 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
 
     @Override
     public void setEnergyStored(int value) {
+        int energyStored = getEnergyStored();
         itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(value, getEnergyCapacity()));
+        onEnergyChanged(energyStored);
     }
 
     @Override

@@ -7,6 +7,9 @@ import net.minecraft.util.Mth;
 public interface IEnergyStorage {
     Holder<EnergyTier> getEnergyTier();
 
+    default void onEnergyChanged(int oldAmount) {
+    }
+
     /**
      * Removes energy from the storage. Returns the amount of energy that was removed.
      *

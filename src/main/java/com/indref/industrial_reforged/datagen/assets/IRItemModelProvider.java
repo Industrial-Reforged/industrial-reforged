@@ -2,12 +2,15 @@ package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.fluids.IRFluid;
+import com.indref.industrial_reforged.client.item.IRItemProperties;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
+import com.indref.industrial_reforged.content.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.content.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -17,19 +20,17 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class IRItemModelProvider extends ItemModelProvider {
 
@@ -59,6 +60,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.CLAY_MOLD_BLANK);
         basicItem(IRItems.CLAY_MOLD_INGOT);
         basicItem(IRItems.CLAY_MOLD_WIRE);
+        basicItem(IRItems.CLAY_MOLD_ROD);
         basicItem(IRItems.FERTILIZER);
         basicItem(IRFluids.OIL.getDeferredBucket());
         basicItem(IRItems.PLANT_BALL);
@@ -91,13 +93,16 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.HAZMAT_LEGGINGS);
         basicItem(IRItems.HAZMAT_BOOTS);
 
-        battery(IRItems.BASIC_BATTERY, 6);
-        battery(IRItems.ADVANCED_BATTERY, 8);
-        battery(IRItems.ULTIMATE_BATTERY, 9);
+        battery(IRItems.BASIC_BATTERY.get());
+        battery(IRItems.ADVANCED_BATTERY.get());
+        battery(IRItems.ULTIMATE_BATTERY.get());
 
         fluidCell(IRItems.FLUID_CELL);
 
-        thermometer(IRItems.THERMOMETER);
+        overrideItemModel(7, basicItem(IRItems.THERMOMETER, extend(itemTexture(IRItems.THERMOMETER), "_0")), IRItemProperties.TEMPERATURE_KEY,
+                i -> basicItem(IRItems.THERMOMETER, "_" + i));
+        overrideItemModel(2, basicItem(IRItems.NANO_SABER), IRItemProperties.ACTIVE_KEY,
+                i -> i == 1 ? basicItem(extend(key(IRItems.NANO_SABER), "_active")) : basicItem(IRItems.NANO_SABER));
 
         basicItem(IRItems.ALUMINUM_INGOT);
         basicItem(IRItems.IRIDIUM_INGOT);
@@ -140,6 +145,12 @@ public class IRItemModelProvider extends ItemModelProvider {
         blockItems();
     }
 
+    public ItemModelBuilder basicItem(ItemLike item, ResourceLocation texture) {
+        return getBuilder(name(item))
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(texture.getNamespace(), texture.getPath()));
+    }
+
     private void toolbox(ItemLike item) {
         withExistingParent(name(item), mcLoc("item/generated"))
                 .texture("layer0", itemTexture(item))
@@ -157,29 +168,19 @@ public class IRItemModelProvider extends ItemModelProvider {
                 .fluid(Fluids.EMPTY);
     }
 
-    private void thermometer(ItemLike item) {
-        ItemModelBuilder builder = getBuilder(name(item))
-                .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", extend(itemTexture(item), "_0"));
-
-        for (int i = 0; i < 7; i++) {
-            builder.override()
-                    .model(basicItem(item, "_" + i))
-                    .predicate(modLoc(ThermometerItem.DISPLAY_TEMPERATURE_KEY), i)
+    private void overrideItemModel(int variants, ItemModelBuilder defaultModel, ResourceLocation key, Function<Integer, ItemModelBuilder> overrideFunction) {
+        for (int i = 0; i < variants; i++) {
+            ItemModelBuilder model = overrideFunction.apply(i);
+            defaultModel.override()
+                    .model(model)
+                    .predicate(key, i)
                     .end();
         }
     }
 
-    private void battery(ItemLike item, int stages) {
-        ItemModelBuilder builder = withExistingParent(name(item), mcLoc("item/generated"))
-                .texture("layer0", extend(itemTexture(item), "_0"));
-
-        for (int i = 0; i < stages; i++) {
-            builder.override()
-                    .model(basicItem(item, "_" + i))
-                    .predicate(modLoc(BatteryItem.ENERGY_STAGE_KEY), i)
-                    .end();
-        }
+    private void battery(BatteryItem item) {
+        overrideItemModel(item.getStages(), basicItem(item, extend(itemTexture(item), "_0")), IRItemProperties.BATTERY_STAGE_KEY,
+                i -> basicItem(item, "_" + i));
     }
 
     private void bucket(Fluid f) {

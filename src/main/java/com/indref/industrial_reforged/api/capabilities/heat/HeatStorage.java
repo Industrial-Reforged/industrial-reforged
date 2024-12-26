@@ -19,8 +19,9 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
     @Override
     public void setHeatStored(int value) {
         if (this.heatStored != value) {
+            int oldAmount = this.heatStored;
             this.heatStored = value;
-            onHeatChanged();
+            onHeatChanged(oldAmount);
         }
     }
 
@@ -34,9 +35,6 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
         if (this.heatCapacity != value) {
             this.heatCapacity = value;
         }
-    }
-
-    public void onHeatChanged() {
     }
 
     @Override

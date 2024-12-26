@@ -101,6 +101,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.CLAY_MOLD_BLANK, "Clay Mold");
         addItem(IRItems.CLAY_MOLD_INGOT, "Clay Mold Ingot");
         addItem(IRItems.CLAY_MOLD_WIRE, "Clay Mold Wire");
+        addItem(IRItems.CLAY_MOLD_ROD, "Clay Mold Rod");
         addItem(IRItems.STICKY_RESIN, "Sticky Resin");
         addItem(IRItems.RUBBER, "Rubber");
         addItem(IRItems.RUBBER_SHEET, "Rubber Sheet");

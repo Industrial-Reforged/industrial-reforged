@@ -374,11 +374,23 @@ public class IRRecipeProvider extends RecipeProvider {
         wireCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_WIRE);
         wireCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_WIRE);
         wireCastingRecipe(IRFluids.MOLTEN_GOLD, IRItems.GOLD_WIRE);
+
+        rodCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_ROD);
+        rodCastingRecipe(IRFluids.MOLTEN_IRON, IRItems.IRON_ROD);
+    }
+
+    private void rodCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
+        irRecipe(new CrucibleCastingRecipe(
+                new FluidStack(fluid.getStillFluid(), 111),
+                IRItems.CLAY_MOLD_WIRE.get(),
+                new ItemStack(resultIngotItem.asItem(), 4),
+                200
+        ));
     }
 
     private void wireCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
-                new FluidStack(fluid.getStillFluid(), 111),
+                new FluidStack(fluid.getStillFluid(), 37),
                 IRItems.CLAY_MOLD_WIRE.get(),
                 new ItemStack(resultIngotItem.asItem(), 3),
                 200

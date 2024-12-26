@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -17,7 +18,7 @@ public class EnergyNets {
     private final Level level;
 
     /**
-     * Initializes heat networks of the world
+     * Initializes energy networks of the world
      */
     public EnergyNets(ServerLevel level) {
         this.level = level;
@@ -53,7 +54,8 @@ public class EnergyNets {
         if (rawNet.isPresent()) return rawNet;
 
         for (EnergyNet enet : getNetworks()) {
-            for (BlockPos pos : BlockUtils.getBlocksAroundSelf(blockPos)) {
+            for (Direction dir : Direction.values()) {
+                BlockPos pos = blockPos.relative(dir);
                 if (enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(pos) || enet.get(EnergyNet.EnergyTypes.INTERACTORS).contains(pos))
                     return Optional.of(enet);
             }
@@ -80,7 +82,7 @@ public class EnergyNets {
     }
 
     /**
-     * merges two heat nets into one
+     * merges two energy nets into one
      * (the one that is supplied first as an argument)
      *
      * @param originNet  the main net that the other net will be merged into
@@ -97,14 +99,15 @@ public class EnergyNets {
     public void splitNets(BlockPos removedBlockPos) {
         // These are all transmitters that have been checked
         Set<BlockPos> alreadyChecked = new HashSet<>();
-        // Every array entry represents the heat network created from checking each side.
+        // Every array entry represents the energy network created from checking each side.
         // Some of these might be empty due to there not being an exclusive enet on one side of the 'removedBlockPos'
         EnergyNet[] enets = new EnergyNet[6];
         // enets array index
         int index = 0;
         // Loop through all blocks around the removed position
-        for (BlockPos offsetPos : BlockUtils.getBlocksAroundSelf(removedBlockPos)) {
-            // Check if one of the blocks is a transmitter of heat
+        for (Direction dir : Direction.values()) {
+            BlockPos offsetPos = removedBlockPos.relative(dir);
+            // Check if one of the blocks is a transmitter of energy
             if (level.getBlockState(offsetPos).getBlock() instanceof CableBlock && !alreadyChecked.contains(offsetPos)) {
                 enets[index] = new EnergyNet(level);
                 enets[index].get(EnergyNet.EnergyTypes.TRANSMITTERS).add(removedBlockPos);
@@ -127,7 +130,8 @@ public class EnergyNets {
         } else {
             return;
         }
-        for (BlockPos offSetPos : BlockUtils.getBlocksAroundSelf(checkFrom)) {
+        for (Direction dir : Direction.values()) {
+            BlockPos offSetPos = checkFrom.relative(dir);
             if (!enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(offSetPos)) {
                 if (is(EnergyNet.EnergyTypes.TRANSMITTERS, offSetPos)) {
                     recheckConnections(offSetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enet, alreadyCheckedTracker);

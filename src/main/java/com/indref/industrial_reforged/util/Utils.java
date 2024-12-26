@@ -29,29 +29,10 @@ public final class Utils {
         return returnMap;
     }
 
-    public static Direction oppositeDirection(Direction originalDirection) {
-        return switch (originalDirection) {
-            case DOWN -> Direction.UP;
-            case UP -> Direction.DOWN;
-            case NORTH -> Direction.SOUTH;
-            case SOUTH -> Direction.NORTH;
-            case WEST -> Direction.EAST;
-            case EAST -> Direction.WEST;
-        };
-    }
-
-    public static String fluidStackToString(FluidStack fluidStack) {
-        return "FluidStack { fluid: " + fluidToString(fluidStack.getFluid()) + ", amount: " + fluidStack.getAmount() + " }";
-    }
-
     public static <T extends BlockEntity & MenuProvider> void openMenu(Player player, T blockEntity) {
         if (blockEntity != null) {
             player.openMenu(blockEntity, blockEntity.getBlockPos());
         }
-    }
-
-    public static String fluidToString(Fluid fluid) {
-        return "Fluid { " + "type: " + fluid.getFluidType() + " }";
     }
 
     public static int[] splitNumberEvenly(int number, int parts) {
@@ -76,54 +57,10 @@ public final class Utils {
         return result;
     }
 
-    public static int rgbToHex(Vec3i rgb) {
-        return Integer.parseUnsignedInt(String.format("0x%02X%02X%02X", rgb.getX(), rgb.getY(), rgb.getY()).substring(2), 16);
-    }
-
-    public static Vector3f rgbToHsv(Vec3i rgb) {
-        return new Vector3f((float) rgb.getX() / 256F, (float) rgb.getY() / 256F, (float) rgb.getZ() / 256F);
-    }
-
-    public static int facingToIndex(Direction direction) {
-        return switch (direction) {
-            case NORTH -> 0;
-            case EAST -> 1;
-            case SOUTH -> 2;
-            case WEST -> 3;
-            default -> -1;
-        };
-    }
-
-    public static Direction indexToFacing(int index) {
-        return switch (index) {
-            case 0 -> Direction.NORTH;
-            case 1 -> Direction.EAST;
-            case 2 -> Direction.SOUTH;
-            case 3 -> Direction.WEST;
-            default -> null;
-        };
-    }
-
-    public static Direction incDirection(Direction facing) {
-        int facingIndex = Utils.facingToIndex(facing);
-        facingIndex++;
-        if (facingIndex > 3)
-            return Direction.NORTH;
-        return Utils.indexToFacing(facingIndex);
-    }
-
     public static <T> NonNullList<T> listToNonNullList(List<T> list) {
         NonNullList<T> nnl = NonNullList.create();
         nnl.addAll(list);
         return nnl;
-    }
-
-    public static <T> void arrayAdd(T[] arr, T elem) {
-        arr[arr.length-1] = elem;
-    }
-
-    public static Vector3f copyVec3f(Vector3f old) {
-        return new Vector3f(old.x, old.y, old.z);
     }
 
     public static IntList intArrayToList(int[] array) {

@@ -21,6 +21,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -106,7 +107,7 @@ public class BasicGeneratorBlock extends RotatableContainerBlock implements Wren
     }
 
     @Override
-    public @Nullable List<DisplayItem> getCompatibleItems() {
+    public @Nullable List<ItemLike> getCompatibleItems() {
         return List.of(IRItems.SCANNER.get());
     }
 }

@@ -29,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -168,7 +169,8 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     public void setBlockActive(boolean value) {
-        for (BlockPos pos : BlockUtils.getBlocksAroundSelfHorizontal(worldPosition)) {
+        for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
+            BlockPos pos = worldPosition.relative(dir);
             BlockState blockState = level.getBlockState(pos);
             if (blockState.hasProperty(FireboxPartBlock.HATCH_ACTIVE)) {
                 level.setBlockAndUpdate(pos, blockState.setValue(FireboxPartBlock.HATCH_ACTIVE, value));

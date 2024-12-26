@@ -23,6 +23,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -138,7 +139,7 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
     }
 
     @Override
-    public List<DisplayItem> getCompatibleItems() {
+    public List<ItemLike> getCompatibleItems() {
         return Collections.singletonList(IRItems.THERMOMETER.get());
     }
 }

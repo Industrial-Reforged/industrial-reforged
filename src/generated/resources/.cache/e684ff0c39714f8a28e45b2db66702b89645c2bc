@@ -1,4 +1,4 @@
-// 1.21.1	2024-12-13T16:01:15.348122382	Item Models: indref
+// 1.21.1	2024-12-25T15:46:41.183610695	Item Models: indref
 f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -79,7 +79,8 @@ bdcc51256c3f1c33907e967e4c310b44a15fdfa7 assets/indref/models/item/lead_ingot.js
 b259f158bf507e516264c0e8366516d487add201 assets/indref/models/item/molten_nickel_bucket.json
 aa564b47ece28be8cfaf6bd4b71ca52e29949cec assets/indref/models/item/molten_steel_bucket.json
 9b8951cc93608cb5ca67d5de86f3098447fdbf40 assets/indref/models/item/molten_tin_bucket.json
-b613db169a13ea95ea0ce39e8a9a9c471fca183e assets/indref/models/item/nano_saber.json
+e9b14d27cb70d554643cc54150a92e383eda360e assets/indref/models/item/nano_saber.json
+bc2abcd23c1dfed563b4fe5b443bd3188a36ef2e assets/indref/models/item/nano_saber_active.json
 aa2590929c4b324a619fa2115c1e3a0d2230148a assets/indref/models/item/nickel_block.json
 bdc030641dd7ef9d4bdb312e287dcdefc451d18c assets/indref/models/item/nickel_ingot.json
 6eb1cc151c41d4633ba9336ae83403a5a35c64a6 assets/indref/models/item/nickel_ore.json

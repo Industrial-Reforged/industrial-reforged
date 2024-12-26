@@ -1,6 +1,9 @@
 package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.ChatFormatting;
@@ -25,70 +28,16 @@ public final class ItemUtils {
     public static final int HEAT_BAR_COLOR = 0xFF8000;
     public static final String ACTIVE_KEY = "active";
 
-    public enum ChargeType {
-        HEAT,
-        FLUID,
-        ENERGY,
+    public static int energyForDurabilityBar(ItemStack stack) {
+        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        float ratio = (float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity();
+        return Math.round(13.0F - ((1 - ratio) * 13.0F));
     }
 
-    public static int energyForDurabilityBar(ItemStack itemStack) {
-        return Math.round(13.0F - ((1 - getChargeRatio(ChargeType.ENERGY, itemStack)) * 13.0F));
-    }
-
-    public static int heatForDurabilityBar(ItemStack itemStack) {
-        return Math.round(13.0F - ((1 - getChargeRatio(ChargeType.HEAT, itemStack)) * 13.0F));
-    }
-
-    public static int fluidForDurabilityBar(ItemStack itemStack) {
-        return Math.round(13.0F - ((1 - getChargeRatio(ChargeType.FLUID, itemStack)) * 13.0F));
-    }
-
-    public static EquipmentSlot equipmentSlotFromIndex(int index) {
-        return switch (index) {
-            case 0 -> EquipmentSlot.MAINHAND;
-            case 1 -> EquipmentSlot.OFFHAND;
-            case 2 -> EquipmentSlot.FEET;
-            case 3 -> EquipmentSlot.LEGS;
-            case 4 -> EquipmentSlot.CHEST;
-            case 5 -> EquipmentSlot.HEAD;
-            default -> null;
-        };
-    }
-
-    public static int indexFromEquipmentSlot(EquipmentSlot slot) {
-        return switch (slot) {
-            case MAINHAND -> 0;
-            case OFFHAND -> 1;
-            case FEET -> 2;
-            case LEGS -> 3;
-            case CHEST -> 4;
-            case HEAD -> 5;
-            case BODY -> -6;
-        };
-    }
-
-    public static IFluidItem getFluidItem(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof IFluidItem fluidItem) {
-            return fluidItem;
-        }
-        return null;
-    }
-
-    public static IEnergyItem getEnergyItem(ItemStack itemStack) {
-        if (itemStack.getItem() instanceof IEnergyItem fluidItem) {
-            return fluidItem;
-        }
-        return null;
-    }
-
-    public static float getChargeRatio(ChargeType type, ItemStack stack) {
-        return switch (type) {
-            case FLUID ->
-                    (float) getFluidItem(stack).getFluidStored(stack) / getFluidItem(stack).getFluidCapacity(stack);
-            case ENERGY ->
-                    (float) getEnergyItem(stack).getEnergyStored(stack) / getEnergyItem(stack).getEnergyCapacity(stack);
-            default -> 0F;
-        };
+    public static int heatForDurabilityBar(ItemStack stack) {
+        IHeatStorage heatStorage = stack.getCapability(IRCapabilities.HeatStorage.ITEM);
+        float ratio = (float) heatStorage.getHeatStored() / heatStorage.getHeatCapacity();
+        return Math.round(13.0F - ((1 - ratio) * 13.0F));
     }
 
     public static ItemStack itemStackFromInteractionHand(InteractionHand interactionHand, Player player) {
@@ -100,21 +49,20 @@ public final class ItemUtils {
     }
 
     public static void addEnergyTooltip(List<Component> tooltip, ItemStack itemStack) {
-        IEnergyItem item;
-        if (itemStack.getItem() instanceof IEnergyItem iEnergyItem)
-            item = iEnergyItem;
-        else return;
-        tooltip.add(
-                IRTranslations.Tooltip.ENERGY_STORED.component().withStyle(ChatFormatting.GOLD)
-                        .append(Component.literal(": "))
-                        .append(Component.literal(String.format("%s / %s", item.getEnergyStored(itemStack),
-                                item.getEnergyCapacity(itemStack))).withColor(FastColor.ARGB32.color(196, 196, 196)))
-        );
-        tooltip.add(
-                IRTranslations.Tooltip.ENERGY_TIER.component().withStyle(ChatFormatting.GOLD)
-                        .append(Component.literal(": "))
-                        .append(Component.translatable("energy_tier." + IndustrialReforged.MODID + "." + item.getEnergyTier()))
-        );
+        IEnergyStorage energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        if (energyStorage != null) {
+            tooltip.add(
+                    IRTranslations.Tooltip.ENERGY_STORED.component().withStyle(ChatFormatting.GOLD)
+                            .append(Component.literal(": "))
+                            .append(Component.literal(String.format("%s / %s", energyStorage.getEnergyStored(),
+                                    energyStorage.getEnergyCapacity())).withColor(FastColor.ARGB32.color(196, 196, 196)))
+            );
+            tooltip.add(
+                    IRTranslations.Tooltip.ENERGY_TIER.component().withStyle(ChatFormatting.GOLD)
+                            .append(Component.literal(": "))
+                            .append(Component.translatable("energy_tier." + IndustrialReforged.MODID + "." + energyStorage.getEnergyTier().value()))
+            );
+        }
     }
 
     public static void addFluidToolTip(List<Component> tooltip, ItemStack itemStack) {
@@ -130,16 +78,12 @@ public final class ItemUtils {
                     .append(": ")
                     .append("%d/%d".formatted(
                             item.getFluidInTank(0).getAmount(),
-                            getFluidItem(itemStack).getFluidCapacity(itemStack)))
+                            item.getTankCapacity(0)))
                     .withStyle(ChatFormatting.AQUA));
         }
     }
 
     public static CustomData getImmutableTag(ItemStack itemStack) {
         return itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-    }
-
-    public static List<ItemStack> copyItems(List<ItemStack> itemStacks) {
-        return itemStacks.stream().map(ItemStack::copy).toList();
     }
 }

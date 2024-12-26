@@ -13,10 +13,10 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
-public abstract class SimpleElectricItem extends Item implements IEnergyItem {
+public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     private final Holder<EnergyTier> energyTier;
 
-    public SimpleElectricItem(Properties properties, Holder<EnergyTier> energyTier) {
+    public SimpleEnergyItem(Properties properties, Holder<EnergyTier> energyTier) {
         super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
         this.energyTier = energyTier;
     }

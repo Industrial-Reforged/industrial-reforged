@@ -1,5 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities.heat;
 
+import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +11,13 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
     public ItemHeatWrapper(@NotNull ItemStack itemStack, int initialCapacity) {
         this(itemStack);
         this.setHeatCapacity(initialCapacity);
+    }
+
+    @Override
+    public void onHeatChanged(int oldAmount) {
+        if (itemStack.getItem() instanceof IHeatItem heatItem) {
+            heatItem.onHeatChanged(itemStack, oldAmount);
+        }
     }
 
     @Override
@@ -24,7 +33,9 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public void setHeatStored(int value) {
+        int heatStored = getHeatStored();
         itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getHeatCapacity()));
+        onHeatChanged(heatStored);
     }
 
     @Override

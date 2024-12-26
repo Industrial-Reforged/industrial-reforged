@@ -1,8 +1,9 @@
 package com.indref.industrial_reforged.content.items.storage;
 
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.items.container.SimpleElectricItem;
+import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.ChatFormatting;
@@ -16,12 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BatteryItem extends SimpleElectricItem {
-    public static final String ENERGY_STAGE_KEY = "energy_stage";
+public class BatteryItem extends SimpleEnergyItem {
     private final int capacity;
     private final int stages;
 
@@ -30,17 +30,23 @@ public class BatteryItem extends SimpleElectricItem {
     }
 
     public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int capacity, int stages) {
-        super(properties.component(IRDataComponents.BATTERY_STAGE, 0),energyTier);
+        super(properties.component(IRDataComponents.BATTERY_STAGE, 0), energyTier);
         this.capacity = capacity;
         this.stages = stages;
     }
 
-    public int getCapacity() {
-        return capacity;
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return this.capacity;
+    }
+
+    public int getStages() {
+        return stages;
     }
 
     public float getEnergyStage(ItemStack itemStack) {
-        return (float) getEnergyStored(itemStack) / getCapacity() * this.stages;
+        IEnergyStorage energyStorage = getEnergyCap(itemStack);
+        return (float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity() * this.stages;
     }
 
     @Override
@@ -53,15 +59,16 @@ public class BatteryItem extends SimpleElectricItem {
         if (pEntity instanceof Player player && pStack.getOrDefault(IRDataComponents.ACTIVE, false)) {
             for (ItemStack itemStack : player.getInventory().items) {
                 if (pLevel.getGameTime() % 3 == 0) {
-                    if (itemStack.getItem() instanceof IEnergyItem item) {
+                    IEnergyStorage energyStorage = getEnergyCap(itemStack);
+                    if (energyStorage != null) {
                         // TODO: Possibly round robin this?
-                        int drained = this.tryDrainEnergy(pStack, getEnergyTier().value().getMaxOutput());
-                        item.tryFillEnergy(itemStack, drained);
+                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().value().getMaxOutput(), false);
+                        energyStorage.tryFillEnergy(drained, false);
                     } else {
-                        IEnergyStorage energyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
-                        if (energyStorage == null) continue;
+                        net.neoforged.neoforge.energy.@Nullable IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
+                        if (feEnergyStorage == null) continue;
 
-                        energyStorage.receiveEnergy(getEnergyTier().value().getMaxOutput(), false);
+                        feEnergyStorage.receiveEnergy(getEnergyTier().value().getMaxOutput(), false);
                     }
                 }
             }

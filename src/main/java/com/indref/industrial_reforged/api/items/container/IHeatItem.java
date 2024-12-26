@@ -5,17 +5,12 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.world.item.ItemStack;
 
 public interface IHeatItem {
-    private static IHeatStorage getCap(ItemStack itemStack) {
+    default IHeatStorage getHeatCap(ItemStack itemStack) {
         return itemStack.getCapability(IRCapabilities.HeatStorage.ITEM);
     }
 
-    default int getHeatStored(ItemStack itemStack) {
-        return getCap(itemStack).getHeatStored();
+    default void onHeatChanged(ItemStack itemStack, int oldAmount) {
     }
 
-    default void setHeatStored(ItemStack itemStack, int value) {
-        getCap(itemStack).setHeatStored(value);
-    }
-
-    int getHeatCapacity(ItemStack itemStack);
+    int getDefaultHeatCapacity();
 }

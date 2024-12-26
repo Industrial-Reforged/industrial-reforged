@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.client.hud;
 
+import com.indref.industrial_reforged.IndustrialReforgedClient;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.LayeredDraw;
@@ -17,12 +18,18 @@ public class ScannerInfoOverlay {
         Level level = minecraft.level;
         Player player = minecraft.player;
         if (minecraft.hitResult instanceof BlockHitResult blockHitResult) {
-            ItemStack mainHandItem = player.getMainHandItem();
-            ItemStack offhandItem = player.getOffhandItem();
-            if (mainHandItem.getItem() instanceof DisplayItem displayItem) {
-                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos(), mainHandItem);
-            } else if (offhandItem.getItem() instanceof DisplayItem displayItem) {
-                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos(), offhandItem);
+            ItemStack item = player.getMainHandItem();
+            if (!IndustrialReforgedClient.DISPLAY_ITEMS.containsKey(item.getItem())) {
+                ItemStack offhandItem = player.getOffhandItem();
+                if (IndustrialReforgedClient.DISPLAY_ITEMS.containsKey(offhandItem.getItem())) {
+                    item = offhandItem;
+                } else {
+                    item = ItemStack.EMPTY;
+                }
+            }
+            if (!item.isEmpty()) {
+                DisplayItem displayItem = IndustrialReforgedClient.DISPLAY_ITEMS.get(item.getItem());
+                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos(), item);
             }
         }
     };
