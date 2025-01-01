@@ -36,7 +36,6 @@ public class ThermometerItem extends SimpleHeatItem {
         super(properties.component(IRDataComponents.THERMOMETER_STAGE, 0));
     }
 
-    // FIXME: Bunch of client code
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int p_41407_, boolean p_41408_) {
         if (!(entity instanceof Player player)) return;

@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -18,6 +17,8 @@ import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -55,11 +56,14 @@ import java.util.*;
 // TODO: Cache recipes
 public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
     public static final AABB AABB = new AABB(-1, (double) 10 / 16, -1, 2, 1, 2);
+    public static final int SLOTS = 9;
     private final CrucibleTier tier;
     private MultiblockData multiblockData;
 
     // Block that can be filled when turning crucible
     public BlockCapabilityCache<IFluidHandler, Direction> fillBlockCache;
+    // Recipe cache
+    private final Int2ObjectMap<CrucibleSmeltingRecipe> recipeCache;
 
     public float independentAngle;
     public float chasingVelocity;
@@ -76,6 +80,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         super(IRBlockEntityTypes.CRUCIBLE.get(), blockPos, blockState);
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
         this.multiblockData = MultiblockData.EMPTY;
+        this.recipeCache = new Int2ObjectOpenHashMap<>(SLOTS);
         addItemHandler(9, 1);
         addFluidTank(9000);
         addHeatStorage(tier.getHeatCapacity());
@@ -135,18 +140,50 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         initCapCache();
     }
 
+    @SuppressWarnings("OptionalIsPresent")
+    @Override
+    protected void onItemsChanged(int slot) {
+        Optional<CrucibleSmeltingRecipe> _recipe = getRecipeForCache(slot);
+        if (_recipe.isPresent()) {
+            this.recipeCache.put(slot, _recipe.get());
+        }
+    }
+
+    @Override
+    protected void onFluidChanged() {
+        for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
+            Optional<CrucibleSmeltingRecipe> _recipe = getRecipeForCache(slot);
+            if (_recipe.isPresent()) {
+                this.recipeCache.put(slot, _recipe.get());
+            }
+        }
+    }
+
+    private Optional<CrucibleSmeltingRecipe> getRecipeForCache(int slot) {
+        ItemStack stackInSlot = getItemHandler().getStackInSlot(slot);
+
+        if (stackInSlot.isEmpty()) return Optional.empty();
+
+        return this.level.getRecipeManager()
+                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new SingleRecipeInput(stackInSlot), level)
+                .map(RecipeHolder::value);
+    }
+
     private void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
-            BlockPos pos = getBasinPos();
             this.fillBlockCache = BlockCapabilityCache.create(
                     Capabilities.FluidHandler.BLOCK,
                     serverLevel,
-                    pos,
+                    getBasinPos(),
                     Direction.UP,
                     () -> !this.isRemoved(),
                     this::onInvalidateCaps
             );
         }
+    }
+
+    public @Nullable CrucibleSmeltingRecipe getCurrentRecipe(int slot) {
+        return recipeCache.get(slot);
     }
 
     private @NotNull BlockPos getBasinPos() {
@@ -161,11 +198,18 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public void commonTick() {
         // Recipe
-        if (hasRecipe()) {
-            increaseCraftingProgress();
-            setChanged(level, worldPosition, getBlockState());
+        int totalIncreasedAmount = 0;
+        for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
+            CrucibleSmeltingRecipe recipe = getCurrentRecipe(slot);
+            if (!getItemHandler().getStackInSlot(slot).isEmpty()) {
+                int increased = hasRecipe(slot, recipe, getFluidTank().getFluid().getAmount() + totalIncreasedAmount);
+                if (increased != -1) {
+                    totalIncreasedAmount += increased;
+                    increaseCraftingProgress(slot, recipe);
 
-            tryMeltItem();
+                    tryMeltItem(slot, recipe);
+                }
+            }
         }
 
         // Item sucking in
@@ -267,93 +311,77 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
         return level != null ? level.getEntitiesOfClass(LivingEntity.class, area) : Collections.emptyList();
     }
 
-    private void tryMeltItem() {
+    private void tryMeltItem(int slot, CrucibleSmeltingRecipe recipe) {
         IItemHandler handler = getItemHandler();
-        for (int i = 0; i < handler.getSlots(); i++) {
-            Optional<CrucibleSmeltingRecipe> recipeOptional = this.getCurrentRecipe(i);
-            if (recipeOptional.isPresent() && this.getHeatStorage().getHeatStored() >= recipeOptional.get().heat()) {
-                CrucibleSmeltingRecipe recipe = recipeOptional.get();
-                ItemStack itemStack = handler.getStackInSlot(i);
-                CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
-                if (recipe.ingredient().test(itemStack) && tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
-                    itemStack.shrink(1);
-                    tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
-                    itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-                    FluidStack resultFluid = recipe.resultFluid();
-                    if (!level.isClientSide()) {
-                        IFluidHandler fluidHandler = getFluidHandler();
-                        fluidHandler.fill(resultFluid.copy(), IFluidHandler.FluidAction.EXECUTE);
-                    }
+        if (recipe != null && this.getHeatStorage().getHeatStored() >= recipe.heat()) {
+            ItemStack itemStack = handler.getStackInSlot(slot);
+            CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
+            if (recipe.ingredient().test(itemStack) && tag.getInt(CrucibleProgressRenderer.BARWIDTH_KEY) >= 10) {
+                handler.extractItem(slot, 1, false);
+                tag.putInt(CrucibleProgressRenderer.BARWIDTH_KEY, 0);
+                itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                FluidStack resultFluid = recipe.resultFluid();
+                if (!level.isClientSide()) {
+                    IFluidHandler fluidHandler = getFluidHandler();
+                    fluidHandler.fill(resultFluid.copy(), IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
+
     }
 
-    private void increaseCraftingProgress() {
+    private void increaseCraftingProgress(int slot, CrucibleSmeltingRecipe recipe) {
         IItemHandler itemStackHandler = getItemHandler();
         IHeatStorage heatStorage = getHeatStorage();
 
         if (itemStackHandler == null || heatStorage == null) return;
 
         // TODO: Clean this up to reduce amount of logic
-        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
-            Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
-            ItemStack itemStack = itemStackHandler.getStackInSlot(i);
-            CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
-            if (recipe.isPresent()) {
-                if (heatStorage.getHeatStored() >= recipe.get().heat()) {
-                    IngredientWithCount input = recipe.get().ingredient();
-                    if (input.test(itemStack)) {
-                        if (tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY) == 0) {
-                            tag.putInt(CrucibleProgressRenderer.IS_MELTING_KEY, 1);
-                            itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-                        }
-                        float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.get().duration()) * 6;
-                        if (pValue < 0) pValue = 0;
-                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
+        ItemStack itemStack = itemStackHandler.getStackInSlot(slot);
+        CompoundTag tag = ItemUtils.getImmutableTag(itemStack).copyTag();
+        if (recipe != null) {
+            if (heatStorage.getHeatStored() >= recipe.heat()) {
+                IngredientWithCount input = recipe.ingredient();
+                if (input.test(itemStack)) {
+                    if (tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY) == 0) {
+                        tag.putInt(CrucibleProgressRenderer.IS_MELTING_KEY, 1);
                         itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                     }
-                }
-            } else if (!itemStack.isEmpty()) {
-                if (tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY) == 0) {
-                    tag.putInt(CrucibleProgressRenderer.IS_MELTING_KEY, 2);
+                    float pValue = tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) + ((float) 1 / recipe.duration()) * 6;
+                    if (pValue < 0) pValue = 0;
+                    tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, pValue);
                     itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
                 }
+            }
+        } else if (!itemStack.isEmpty()) {
+            if (tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY) == 0) {
+                tag.putInt(CrucibleProgressRenderer.IS_MELTING_KEY, 2);
+                itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
             }
         }
     }
 
-    public boolean hasRecipe() {
-        for (int i = 0; i < getItemHandler().getSlots(); i++) {
-            Optional<CrucibleSmeltingRecipe> recipe = getCurrentRecipe(i);
 
-            if (recipe.isEmpty())
-                continue;
+    /**
+     * @param slot              slot for which we need to check the recipe
+     * @param recipe            the recipe in the slot
+     * @param actualFluidAmount the actual amount of fluid in the fluid tank
+     * @return the amount of fluid that will be added to the fluid tank, returns -1 if we cant find a recipe
+     */
+    public int hasRecipe(int slot, CrucibleSmeltingRecipe recipe, int actualFluidAmount) {
+        if (recipe != null) {
+            IFluidHandler fluidHandler = getFluidHandler();
 
-            IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(this);
-
-            FluidStack result = recipe.get().resultFluid();
+            FluidStack result = recipe.resultFluid();
             FluidStack fluidInTank = fluidHandler.getFluidInTank(0);
 
-//            if ((fluidInTank.is(result.getFluid()) || fluidInTank.isEmpty())
-//                    && fluidInTank.getAmount() + result.getAmount() <= fluidHandler.getTankCapacity(0)
-//                    && fluidHandler.isFluidValid(0, result))
-//                return true;
+            if ((fluidInTank.is(result.getFluid()) || fluidInTank.isEmpty())
+                    && actualFluidAmount + result.getAmount() <= fluidHandler.getTankCapacity(0)
+                    && fluidHandler.isFluidValid(0, result)) {
+                return recipe.resultFluid().getAmount();
+            }
         }
-
-        return true;
-    }
-
-    private Optional<CrucibleSmeltingRecipe> getCurrentRecipe(int slot) {
-        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
-        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
-        ItemStack stackInSlot = itemHandler.getStackInSlot(slot);
-
-        if (stackInSlot.isEmpty() || heatStorage == null) return Optional.empty();
-
-        return this.level.getRecipeManager()
-                .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new SingleRecipeInput(stackInSlot), level)
-                .map(RecipeHolder::value);
+        return -1;
     }
 
     @Nullable

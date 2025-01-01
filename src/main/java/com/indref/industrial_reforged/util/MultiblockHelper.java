@@ -400,6 +400,7 @@ public final class MultiblockHelper {
             // relative position
             int x = 0;
             // multiblock index
+            // FIXME: Rn we are ignoring rightInt
             int width = multiblock.getWidths().get(yIndex).leftInt();
             int z = 0;
             for (int blockIndex : layer.layer()) {
