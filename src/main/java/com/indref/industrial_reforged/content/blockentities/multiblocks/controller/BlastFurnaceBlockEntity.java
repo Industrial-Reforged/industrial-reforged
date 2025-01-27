@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
@@ -48,6 +49,8 @@ import java.util.Optional;
  * logic and the others just point to that block.
  */
 public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
+    public static final int HEAT_USAGE = 500;
+
     private BlockPos mainControllerPos;
     private float duration;
     private int maxDuration;
@@ -57,6 +60,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
         addItemHandler(2);
         addFluidTank(9000);
+        addHeatStorage(2000);
         this.multiblockData = MultiblockData.EMPTY;
     }
 
@@ -142,6 +146,10 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                     Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
                     Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0})
             );
+        } else if (capability == IRCapabilities.HeatStorage.BLOCK) {
+            return ImmutableMap.of(
+                    Direction.DOWN, Pair.of(IOActions.INSERT, new int[]{0})
+            );
         }
         return ImmutableMap.of();
     }
@@ -152,8 +160,10 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     public void commonTick() {
         if (isMainController()) {
+            IndustrialReforged.LOGGER.debug("heat: {}", getHeatStorage().getHeatStored());
+
             Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
-            if (optRecipe.isPresent()) {
+            if (optRecipe.isPresent() && getHeatStorage().getHeatStored() > HEAT_USAGE) {
                 BlastFurnaceRecipe recipe = optRecipe.get();
                 int maxDuration = recipe.duration();
                 this.maxDuration = maxDuration;
@@ -181,7 +191,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
                     this.maxDuration = 0;
                 } else {
                     float progress = (float) getHeight() / getBaseHeight();
-                    IndustrialReforged.LOGGER.debug("Progress: {}", progress);
                     duration += progress;
                 }
             }

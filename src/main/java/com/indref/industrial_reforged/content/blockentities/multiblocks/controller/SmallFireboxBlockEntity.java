@@ -1,14 +1,21 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,10 +23,48 @@ import java.util.UUID;
 
 public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPosBlockEntity {
     private BlockPos mainControllerPos;
-    private UUID uuid;
+    private BlockCapabilityCache<IHeatStorage, Direction> aboveCapCache;
 
     public SmallFireboxBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.SMALL_FIREBOX.get(), p_155229_, p_155230_, FireboxTiers.SMALL, 1800);
+    }
+
+    @Override
+    public void onLoad() {
+        if (level instanceof ServerLevel serverLevel) {
+            this.aboveCapCache = BlockCapabilityCache.create(IRCapabilities.HeatStorage.BLOCK, serverLevel, worldPosition.above(), Direction.DOWN);
+            IndustrialReforged.LOGGER.debug("cap cache: {}", this.aboveCapCache.getCapability());
+        }
+        super.onLoad();
+    }
+
+    @Override
+    public void commonTick() {
+        if (actualBlockEntity()) {
+            tickRecipe();
+        }
+
+        tickIO();
+    }
+
+    @Override
+    protected void tickIO() {
+        if (!level.isClientSide()) {
+            // Only export heat to block directly above
+            BlockPos abovePos = worldPosition.above();
+            if (aboveCapCache != null) {
+                IHeatStorage aboveHeatStorage = aboveCapCache.getCapability();
+                if (aboveHeatStorage != null && level != null) {
+                    IHeatStorage thisHeatStorage = getHeatStorage();
+                    int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
+                    int drained = thisHeatStorage.tryDrainHeat(output, true);
+                    thisHeatStorage.tryDrainHeat(drained, false);
+                    if (aboveHeatStorage.tryFillHeat(drained, false) != 0) {
+                        level.invalidateCapabilities(abovePos);
+                    }
+                }
+            }
+        }
     }
 
     @Override

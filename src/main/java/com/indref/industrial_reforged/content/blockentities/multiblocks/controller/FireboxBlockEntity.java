@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
@@ -45,7 +46,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
 
     private int burnTime;
     private int maxBurnTime;
-    private MultiblockData multiblockData;
+    protected MultiblockData multiblockData;
     private final FireboxTier fireboxTier;
 
     private Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
@@ -122,12 +123,12 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         tickIO();
     }
 
-    private void tickIO() {
+    protected void tickIO() {
         if (!level.isClientSide()) {
             // Only export heat to block directly above
             BlockPos abovePos = worldPosition.above();
             if (aboveBlockCapCache != null) {
-                IHeatStorage aboveHeatStorage = null; //aboveBlockCapCache.getCapability();
+                IHeatStorage aboveHeatStorage = aboveBlockCapCache.get(abovePos).getCapability();
                 if (aboveHeatStorage != null && level != null) {
                     IHeatStorage thisHeatStorage = getHeatStorage();
                     int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
@@ -141,7 +142,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
         }
     }
 
-    private void tickRecipe() {
+    protected void tickRecipe() {
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
         IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
         if (heatStorage != null) {

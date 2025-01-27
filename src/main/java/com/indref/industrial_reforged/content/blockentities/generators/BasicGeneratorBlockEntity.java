@@ -121,7 +121,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
                 Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
                 if (enet.isPresent()) {
-                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().value().getMaxOutput(), thisEnergyStorage.getEnergyStored()));
+                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().value().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
                     thisEnergyStorage.tryDrainEnergy(filled, false);
                 }
             }

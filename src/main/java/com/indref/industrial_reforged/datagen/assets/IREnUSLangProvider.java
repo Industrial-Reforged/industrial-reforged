@@ -62,6 +62,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress");
         addTooltip(Tooltip.MELTING_NOT_POSSIBLE, "Melting not possible");
 
+        addTooltip(Tooltip.LIQUID_AMOUNT, "%d/%d");
+
         addTooltip("drain", "A simple device for collecting fluids");
 
         addEnergyTier(EnergyTiers.NONE, "None");

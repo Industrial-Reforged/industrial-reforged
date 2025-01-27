@@ -73,11 +73,11 @@ public interface IEnergyStorage {
     void setEnergyCapacity(int value);
 
     default int getMaxInput() {
-        return getEnergyTier().value().getMaxInput();
+        return getEnergyTier().value().maxInput();
     }
 
     default int getMaxOutput() {
-        return getEnergyTier().value().getMaxOutput();
+        return getEnergyTier().value().maxOutput();
     }
 
     default boolean canFillEnergy() {

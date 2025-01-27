@@ -15,7 +15,7 @@ public interface IEnergyItem {
     }
 
     default int getDefaultEnergyCapacity() {
-       return getEnergyTier().value().getDefaultCapacity();
+       return getEnergyTier().value().defaultCapacity();
     }
 
     Holder<EnergyTier> getEnergyTier();

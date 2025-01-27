@@ -183,7 +183,7 @@ public abstract class ContainerBlockEntity extends BlockEntity {
     }
 
     protected final void addEnergyStorage(Holder<EnergyTier> energyTier) {
-        addEnergyStorage(energyTier, energyTier.value().getDefaultCapacity());
+        addEnergyStorage(energyTier, energyTier.value().defaultCapacity());
     }
 
     protected final void addEnergyStorage(Holder<EnergyTier> energyTier, int energyCapacity) {

@@ -37,7 +37,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.value().defaultCapacity())));
         this.energyUsage = energyUsage;
         this.blocks = blocks;
         this.energyTier = energyTier;

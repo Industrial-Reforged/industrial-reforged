@@ -17,7 +17,7 @@ public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     private final Holder<EnergyTier> energyTier;
 
     public SimpleEnergyItem(Properties properties, Holder<EnergyTier> energyTier) {
-        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
+        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.value().defaultCapacity())));
         this.energyTier = energyTier;
     }
 

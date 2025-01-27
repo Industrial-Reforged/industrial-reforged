@@ -26,7 +26,7 @@ public class BatteryItem extends SimpleEnergyItem {
     private final int stages;
 
     public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int stages) {
-        this(properties, energyTier, energyTier.value().getDefaultCapacity(), stages);
+        this(properties, energyTier, energyTier.value().defaultCapacity(), stages);
     }
 
     public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int capacity, int stages) {
@@ -62,13 +62,13 @@ public class BatteryItem extends SimpleEnergyItem {
                     IEnergyStorage energyStorage = getEnergyCap(itemStack);
                     if (energyStorage != null) {
                         // TODO: Possibly round robin this?
-                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().value().getMaxOutput(), false);
+                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().value().maxOutput(), false);
                         energyStorage.tryFillEnergy(drained, false);
                     } else {
                         net.neoforged.neoforge.energy.@Nullable IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (feEnergyStorage == null) continue;
 
-                        feEnergyStorage.receiveEnergy(getEnergyTier().value().getMaxOutput(), false);
+                        feEnergyStorage.receiveEnergy(getEnergyTier().value().maxOutput(), false);
                     }
                 }
             }

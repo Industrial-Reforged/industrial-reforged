@@ -8,7 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 
-public class EnergyTiers {
+public final class EnergyTiers {
     // TODO: Adjust these values
     public static final Holder<EnergyTier> NONE = register("none", ChatFormatting.GRAY.getColor(), 0, 0);
     public static final Holder<EnergyTier> LOW = register("low", ChatFormatting.WHITE.getColor(), 16, 4_000);
@@ -23,32 +23,7 @@ public class EnergyTiers {
     }
 
     public static Holder<EnergyTier> register(String name, int color, int maxInput, int maxOutput, int capacity) {
-        EnergyTier energyTier = new EnergyTier() {
-            @Override
-            public ResourceLocation getId() {
-                return IndustrialReforged.rl(name);
-            }
-
-            @Override
-            public int getMaxInput() {
-                return maxInput;
-            }
-
-            @Override
-            public int getMaxOutput() {
-                return maxOutput;
-            }
-
-            @Override
-            public int getDefaultCapacity() {
-                return capacity;
-            }
-
-            @Override
-            public int getColor() {
-                return color;
-            }
-        };
+        EnergyTier energyTier = new EnergyTier(maxInput, maxOutput, capacity, color);
         return Registry.registerForHolder(IRRegistries.ENERGY_TIER, IndustrialReforged.rl(name), energyTier);
     }
 }

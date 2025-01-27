@@ -17,6 +17,8 @@ public final class IRTranslations {
         public static final TranslatableConstant MELTING_NOT_POSSIBLE = create("melting_not_possible");
         public static final TranslatableConstant MELTING_PROGRESS = create("melting_progress");
 
+        public static final TranslatableConstant LIQUID_AMOUNT = create("liquid.amount_with_capacity");
+
         private static TranslatableConstant create(String key) {
             return new TranslatableConstant(key, "tooltip");
         }

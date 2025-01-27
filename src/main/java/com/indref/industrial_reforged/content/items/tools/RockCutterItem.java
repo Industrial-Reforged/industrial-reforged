@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class RockCutterItem extends ElectricDiggerItem {
     public RockCutterItem(float baseAttackDamage, float attackSpeed, Holder<EnergyTier> energyTier, Tier tier, Properties properties) {
-        super(baseAttackDamage, attackSpeed, BlockTags.MINEABLE_WITH_PICKAXE, energyTier.value().getMaxOutput() / 2, energyTier, tier, properties);
+        super(baseAttackDamage, attackSpeed, BlockTags.MINEABLE_WITH_PICKAXE, energyTier.value().maxOutput() / 2, energyTier, tier, properties);
     }
 
     @Override

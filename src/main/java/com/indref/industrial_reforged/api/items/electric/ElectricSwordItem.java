@@ -23,7 +23,7 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     public ElectricSwordItem(Holder<EnergyTier> energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
         super(tier, properties
                 .attributes(SwordItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.value().getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.value().defaultCapacity())));
         this.energyTier = energyTier;
     }
 

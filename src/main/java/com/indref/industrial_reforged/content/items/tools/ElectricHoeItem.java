@@ -33,7 +33,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     public ElectricHoeItem(EnergyTier energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
         super(tier, properties.stacksTo(1)
                 .attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.getDefaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.defaultCapacity())));
     }
 
     @Override
