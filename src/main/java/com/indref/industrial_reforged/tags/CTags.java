@@ -32,7 +32,6 @@ public final class CTags {
         public static final TagKey<Item> GOLD_WIRE = bind("wires/gold");
         public static final TagKey<Item> STEEL_WIRE = bind("wires/steel");
 
-        public static final TagKey<Item> INGOTS = bind("ingots");
         public static final TagKey<Item> TIN_INGOT = bind("ingots/tin");
         public static final TagKey<Item> NICKEL_INGOT = bind("ingots/nickel");
         public static final TagKey<Item> LEAD_INGOT = bind("ingots/lead");
@@ -43,9 +42,20 @@ public final class CTags {
         public static final TagKey<Item> TITANIUM_INGOT = bind("ingots/titanium");
         public static final TagKey<Item> IRIDIUM_INGOT = bind("ingots/iridium");
 
-        public static final TagKey<Item> RODS = bind("rods");
         public static final TagKey<Item> IRON_ROD = bind("rods/iron");
         public static final TagKey<Item> STEEL_ROD = bind("rods/steel");
+
+        public static final TagKey<Item> STORAGE_BLOCKS_TIN = bind("storage_blocks/tin");
+        public static final TagKey<Item> STORAGE_BLOCKS_NICKEL = bind("storage_blocks/nickel");
+        public static final TagKey<Item> STORAGE_BLOCKS_STEEL = bind("storage_blocks/steel");
+        public static final TagKey<Item> STORAGE_BLOCKS_LEAD = bind("storage_blocks/lead");
+        public static final TagKey<Item> STORAGE_BLOCKS_URANIUM = bind("storage_blocks/uranium");
+        public static final TagKey<Item> STORAGE_BLOCKS_IRIDIUM = bind("storage_blocks/iridium");
+        public static final TagKey<Item> STORAGE_BLOCKS_TITANIUM = bind("storage_blocks/titanium");
+        public static final TagKey<Item> STORAGE_BLOCKS_ALUMINUM = bind("storage_blocks/aluminum");
+
+        public static final TagKey<Item> DUSTS_COPPER = bind("dusts/copper");
+        public static final TagKey<Item> DUSTS_STEEL = bind("dusts/steel");
 
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));

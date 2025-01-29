@@ -1,18 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "key": {
-    "#": {
-      "item": "indref:plant_ball"
-    },
-    "R": {
+  "ingredients": [
+    {
       "tag": "c:plates/rubber"
+    },
+    {
+      "tag": "c:plates/rubber"
+    },
+    {
+      "item": "indref:plant_mass"
+    },
+    {
+      "item": "indref:plant_mass"
+    },
+    {
+      "item": "indref:plant_mass"
     }
-  },
-  "pattern": [
-    "###",
-    "RRR",
-    "###"
   ],
   "result": {
     "count": 2,

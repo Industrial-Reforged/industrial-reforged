@@ -90,6 +90,7 @@ public final class IRItems {
     //misc
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
     public static final DeferredItem<Item> BIO_PLASTIC = registerStandardItem("bio_plastic");
+    public static final DeferredItem<Item> PLANT_MASS = registerStandardItem("plant_mass");
     public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
     public static final DeferredItem<Item> SANDY_BRICK = registerStandardItem("sandy_brick");
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");

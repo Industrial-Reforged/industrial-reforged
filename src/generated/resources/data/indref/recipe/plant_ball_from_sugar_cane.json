@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:crops/sugar_cane"
+    },
+    {
+      "tag": "c:crops/sugar_cane"
+    },
+    {
+      "tag": "c:crops/sugar_cane"
+    },
+    {
+      "tag": "c:crops/sugar_cane"
+    },
+    {
+      "tag": "c:crops/sugar_cane"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "indref:plant_ball"
+  }
+}

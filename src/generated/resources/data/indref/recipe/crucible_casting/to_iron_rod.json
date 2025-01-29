@@ -5,7 +5,7 @@
     "amount": 111,
     "id": "indref:molten_iron"
   },
-  "mold_item": "indref:clay_mold_wire",
+  "mold_item": "indref:clay_mold_rod",
   "result": {
     "count": 4,
     "id": "indref:iron_rod"

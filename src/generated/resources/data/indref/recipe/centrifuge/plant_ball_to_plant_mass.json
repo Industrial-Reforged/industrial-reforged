@@ -1,0 +1,22 @@
+{
+  "type": "indref:centrifuge",
+  "duration": 200,
+  "energy": 100,
+  "ingredient": {
+    "item": "indref:plant_ball"
+  },
+  "results": [
+    {
+      "count": 3,
+      "id": "indref:plant_mass"
+    },
+    {
+      "count": 2,
+      "id": "minecraft:vine"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:wheat_seeds"
+    }
+  ]
+}

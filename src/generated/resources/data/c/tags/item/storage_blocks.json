@@ -1,0 +1,12 @@
+{
+  "values": [
+    "indref:tin_block",
+    "indref:nickel_block",
+    "indref:steel_block",
+    "indref:lead_block",
+    "indref:uranium_block",
+    "indref:iridium_block",
+    "indref:titanium_block",
+    "indref:aluminum_block"
+  ]
+}

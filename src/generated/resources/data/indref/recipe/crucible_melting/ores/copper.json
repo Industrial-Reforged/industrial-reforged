@@ -1,0 +1,12 @@
+{
+  "type": "indref:crucible_melting",
+  "duration": 200,
+  "heat": 200,
+  "ingredient": {
+    "tag": "c:ores/copper"
+  },
+  "result": {
+    "amount": 222,
+    "id": "indref:molten_copper"
+  }
+}

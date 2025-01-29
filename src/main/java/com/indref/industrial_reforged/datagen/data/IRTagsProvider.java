@@ -16,6 +16,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
@@ -56,12 +57,13 @@ public class IRTagsProvider {
             wires();
             ingots();
             rods();
+            storageBlocks();
 
             tag(ItemTags.DYEABLE, IRItems.TOOLBOX.get());
         }
 
         private void ingots() {
-            tag(CTags.Items.INGOTS,
+            tag(Tags.Items.INGOTS,
                     CTags.Items.ALUMINUM_INGOT,
                     CTags.Items.CHROMIUM_INGOT,
                     CTags.Items.IRIDIUM_INGOT,
@@ -109,9 +111,31 @@ public class IRTagsProvider {
         }
 
         private void rods() {
-            tag(CTags.Items.RODS, IRItems.IRON_ROD, IRItems.STEEL_ROD);
+            tag(Tags.Items.RODS, IRItems.IRON_ROD, IRItems.STEEL_ROD);
             tag(CTags.Items.IRON_ROD, IRItems.IRON_ROD);
             tag(CTags.Items.STEEL_ROD, IRItems.STEEL_ROD);
+        }
+
+        private void storageBlocks() {
+            tag(Tags.Items.STORAGE_BLOCKS,
+                    IRBlocks.TIN_BLOCK,
+                    IRBlocks.NICKEL_BLOCK,
+                    IRBlocks.STEEL_BLOCK,
+                    IRBlocks.LEAD_BLOCK,
+                    IRBlocks.URANIUM_BLOCK,
+                    IRBlocks.IRIDIUM_BLOCK,
+                    IRBlocks.TITANIUM_BLOCK,
+                    IRBlocks.ALUMINUM_BLOCK
+            );
+
+            tag(CTags.Items.STORAGE_BLOCKS_TIN, IRBlocks.TIN_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_NICKEL, IRBlocks.NICKEL_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_STEEL, IRBlocks.LEAD_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_LEAD, IRBlocks.TIN_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_URANIUM, IRBlocks.URANIUM_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_IRIDIUM, IRBlocks.IRIDIUM_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_TITANIUM, IRBlocks.TITANIUM_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_ALUMINUM, IRBlocks.ALUMINUM_BLOCK);
         }
 
         private void tag(TagKey<Item> itemTagKey, ItemLike... items) {
