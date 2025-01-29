@@ -1,5 +1,5 @@
-// 1.21.1	2024-12-25T15:46:41.183610695	Item Models: indref
-f7ec6fb5ed23aeb3af6189124bcaf6223e350054 assets/indref/models/item/advanced_battery.json
+// 1.21.1	2025-01-28T18:52:18.57865037	Item Models: indref
+23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
 812b35040e14bb84138e4002352675d7e4e7ba68 assets/indref/models/item/advanced_battery_2.json
@@ -13,7 +13,7 @@ def1e187c13961c0da4733dbd741b3424f36f5cd assets/indref/models/item/advanced_dril
 22bd7f6be31106077008150949f43699fd5d5469 assets/indref/models/item/aluminum_block.json
 a6360bd18b10a80d5bb89aeee949fb687beb55f0 assets/indref/models/item/aluminum_ingot.json
 9853d030e0ddfe99d6531f21d77575b016f07795 assets/indref/models/item/antenna.json
-4461e3e636ef83d4fd134c499640f1fe9aaace61 assets/indref/models/item/basic_battery.json
+2e0f8f0d0809b4812ff98dca7b0237b8495acbb4 assets/indref/models/item/basic_battery.json
 4cd030aafb38fe16878a030bba9b2d6369c0ab84 assets/indref/models/item/basic_battery_0.json
 e6ca2501564249d74c7e0d436c0b71974a8074b9 assets/indref/models/item/basic_battery_1.json
 2b11c644ce8fd9c1804ef7c935504d2e1c68a183 assets/indref/models/item/basic_battery_2.json
@@ -24,6 +24,7 @@ f201c8b924375b6ba0aeed5adac359159a9bff4c assets/indref/models/item/basic_battery
 b5701c30cef2e6b6d353e76d5ba3c02b673feb10 assets/indref/models/item/basic_generator.json
 63ddb958a9699cefcc513ff4a69b9021201f311a assets/indref/models/item/basic_machine_frame.json
 f0d3a2aab723fb2343fac252bd6ff776722a4e45 assets/indref/models/item/bauxite_ore.json
+60fa2351538cf5017052a22d3ec837bd5e9def7f assets/indref/models/item/bio_plastic.json
 3d7ea1aebe5cc7a2708dbb7758b117a54d12570f assets/indref/models/item/blast_furnace_bricks.json
 a0a8be8687c43cbdcc4c20e59d19d599da04d4eb assets/indref/models/item/blast_furnace_casting_basin.json
 1270464d11b7f5e238f0f53baf1618ed99281b4b assets/indref/models/item/blast_furnace_faucet.json
@@ -37,6 +38,8 @@ a066f253e93e633f3e5afff1063a0956fb90ec86 assets/indref/models/item/chromium_ore.
 60e7dea40f2159770791628928209670209cabc0 assets/indref/models/item/circuit_board.json
 2079990159d4b5f63f7074fdb4eb692c1cc0b166 assets/indref/models/item/clay_mold.json
 f30f207ca1bf13301146fb0ac40712a461f96906 assets/indref/models/item/clay_mold_ingot.json
+1ab5d327f18e573583fc522db76702480ddf51e1 assets/indref/models/item/clay_mold_plate.json
+cd8e9b55ffd8f5a55d1bca0ea20056c71db68738 assets/indref/models/item/clay_mold_rod.json
 2869fac4bb1a2a1db75804d1625e0714c786f8a1 assets/indref/models/item/clay_mold_wire.json
 498fd40c5272d52ef8ac45ef34481242c9f958c1 assets/indref/models/item/coil.json
 a0dbfe218012a240d231785b5aebec0618c00613 assets/indref/models/item/copper_cable.json
@@ -133,7 +136,7 @@ bd310326f974ced4aa3b514962a338074a84c66b assets/indref/models/item/sticky_resin.
 620c959eb7d8ccb2a1cd1dc714fedff4e3884cb8 assets/indref/models/item/stripped_rubber_tree_wood.json
 9273482b4f821fd6506e07a5eb51c8f2daa83186 assets/indref/models/item/terracotta_brick.json
 98b393533956f419b2270c52a9c4e07c7376ba32 assets/indref/models/item/terracotta_brick_slab.json
-6f34d314ca219a006fd0c49a984fb1c7703b6fea assets/indref/models/item/thermometer.json
+0d97006ac1f6e78c74fb2e4167af48a30f4707de assets/indref/models/item/thermometer.json
 43b3da3f8742e77b1ebcd7ca212f99dea3bab49f assets/indref/models/item/thermometer_0.json
 6a191180a00901fc6fa8438e3b85ef73535e9655 assets/indref/models/item/thermometer_1.json
 7ec4437a313240277878409ccea7c7ca7aef833b assets/indref/models/item/thermometer_2.json
@@ -151,7 +154,7 @@ c3685b2dc299d6f3feb5c84da17ff9db9ae53117 assets/indref/models/item/titanium_bloc
 9c00a3f65e623d663498362ad831803a81a7291a assets/indref/models/item/titanium_ingot.json
 4c87f3b2ec435208a594a96f48adc5dbcab62762 assets/indref/models/item/toolbox.json
 0458e396ed36ac409161e9fce13d9f41bdbd3af0 assets/indref/models/item/tree_tap.json
-d44236281a8e57677981a8e1a6cde49ee04057af assets/indref/models/item/ultimate_battery.json
+1b679301e38c04fdcd3596d448b5ea6780c95a40 assets/indref/models/item/ultimate_battery.json
 87efcae6d870d54b002d92f65395d3370b8e8461 assets/indref/models/item/ultimate_battery_0.json
 f5c92357209b6a125de22afc40446b001d2a41ea assets/indref/models/item/ultimate_battery_1.json
 8909a5f8a38e9a7d03a08538a7c02f59fe50814b assets/indref/models/item/ultimate_battery_2.json

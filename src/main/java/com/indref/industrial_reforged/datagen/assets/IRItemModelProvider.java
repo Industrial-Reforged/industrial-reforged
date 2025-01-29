@@ -59,11 +59,13 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.BLUEPRINT);
         basicItem(IRItems.CLAY_MOLD_BLANK);
         basicItem(IRItems.CLAY_MOLD_INGOT);
+        basicItem(IRItems.CLAY_MOLD_PLATE);
         basicItem(IRItems.CLAY_MOLD_WIRE);
         basicItem(IRItems.CLAY_MOLD_ROD);
         basicItem(IRItems.FERTILIZER);
         basicItem(IRFluids.OIL.getDeferredBucket());
         basicItem(IRItems.PLANT_BALL);
+        basicItem(IRItems.BIO_PLASTIC);
         basicItem(IRItems.RUBBER);
         basicItem(IRItems.RUBBER_SHEET);
         basicItem(IRItems.SANDY_BRICK);

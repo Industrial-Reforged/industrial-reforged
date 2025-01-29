@@ -51,9 +51,11 @@ public class IRTagsProvider {
                     IRBlocks.RUBBER_TREE_WOOD,
                     IRBlocks.STRIPPED_RUBBER_TREE_WOOD
             );
+
             plates();
             wires();
             ingots();
+            rods();
 
             tag(ItemTags.DYEABLE, IRItems.TOOLBOX.get());
         }
@@ -106,6 +108,11 @@ public class IRTagsProvider {
             tag(CTags.Items.STEEL_WIRE, IRItems.STEEL_WIRE);
         }
 
+        private void rods() {
+            tag(CTags.Items.RODS, IRItems.IRON_ROD, IRItems.STEEL_ROD);
+            tag(CTags.Items.IRON_ROD, IRItems.IRON_ROD);
+            tag(CTags.Items.STEEL_ROD, IRItems.STEEL_ROD);
+        }
 
         private void tag(TagKey<Item> itemTagKey, ItemLike... items) {
             IntrinsicTagAppender<Item> tag = tag(itemTagKey);

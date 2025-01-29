@@ -3,10 +3,10 @@
   "duration": 200,
   "heat": 200,
   "ingredient": {
-    "tag": "c:ingots/steel"
+    "tag": "c:wires/copper"
   },
   "result": {
-    "amount": 111,
-    "id": "indref:molten_steel"
+    "amount": 37,
+    "id": "indref:molten_copper"
   }
 }

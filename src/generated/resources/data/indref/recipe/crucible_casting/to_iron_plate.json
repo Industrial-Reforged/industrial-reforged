@@ -1,0 +1,13 @@
+{
+  "type": "indref:crucible_casting",
+  "duration": 200,
+  "fluid": {
+    "amount": 111,
+    "id": "indref:molten_iron"
+  },
+  "mold_item": "indref:clay_mold_plate",
+  "result": {
+    "count": 1,
+    "id": "indref:iron_plate"
+  }
+}

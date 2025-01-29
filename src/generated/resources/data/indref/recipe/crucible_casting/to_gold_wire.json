@@ -2,7 +2,7 @@
   "type": "indref:crucible_casting",
   "duration": 200,
   "fluid": {
-    "amount": 111,
+    "amount": 37,
     "id": "indref:molten_gold"
   },
   "mold_item": "indref:clay_mold_wire",

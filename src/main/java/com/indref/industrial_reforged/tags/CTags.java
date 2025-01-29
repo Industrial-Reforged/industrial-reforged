@@ -43,6 +43,9 @@ public final class CTags {
         public static final TagKey<Item> TITANIUM_INGOT = bind("ingots/titanium");
         public static final TagKey<Item> IRIDIUM_INGOT = bind("ingots/iridium");
 
+        public static final TagKey<Item> RODS = bind("rods");
+        public static final TagKey<Item> IRON_ROD = bind("rods/iron");
+        public static final TagKey<Item> STEEL_ROD = bind("rods/steel");
 
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));

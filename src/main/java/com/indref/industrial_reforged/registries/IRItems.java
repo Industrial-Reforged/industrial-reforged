@@ -89,6 +89,7 @@ public final class IRItems {
 
     //misc
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
+    public static final DeferredItem<Item> BIO_PLASTIC = registerStandardItem("bio_plastic");
     public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
     public static final DeferredItem<Item> SANDY_BRICK = registerStandardItem("sandy_brick");
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
@@ -96,6 +97,7 @@ public final class IRItems {
             () -> new FertilizerItem(new Item.Properties()));
     public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
     public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot", 111, true);
+    public static final DeferredItem<Item> CLAY_MOLD_PLATE = moldItem("plate", 111, true);
     public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire", 37, true);
     public static final DeferredItem<Item> CLAY_MOLD_ROD = moldItem("rod", 111, true);
 

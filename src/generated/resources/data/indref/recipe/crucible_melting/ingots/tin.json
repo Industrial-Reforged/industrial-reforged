@@ -1,0 +1,12 @@
+{
+  "type": "indref:crucible_melting",
+  "duration": 200,
+  "heat": 200,
+  "ingredient": {
+    "tag": "c:ingots/tin"
+  },
+  "result": {
+    "amount": 111,
+    "id": "indref:molten_tin"
+  }
+}

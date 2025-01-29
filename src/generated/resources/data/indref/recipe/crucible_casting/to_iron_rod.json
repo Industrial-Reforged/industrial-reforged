@@ -2,12 +2,12 @@
   "type": "indref:crucible_casting",
   "duration": 200,
   "fluid": {
-    "amount": 37,
-    "id": "indref:molten_copper"
+    "amount": 111,
+    "id": "indref:molten_iron"
   },
   "mold_item": "indref:clay_mold_wire",
   "result": {
-    "count": 3,
-    "id": "indref:copper_wire"
+    "count": 4,
+    "id": "indref:iron_rod"
   }
 }

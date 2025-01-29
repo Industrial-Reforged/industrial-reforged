@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.datagen.data;
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.fluids.IRFluid;
+import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
@@ -355,8 +356,31 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void crucibleSmeltingRecipes() {
-        irRecipe(new CrucibleSmeltingRecipe(IngredientWithCount.of(CTags.Items.STEEL_INGOT),
-                new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), 111),
+        // Copper
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.INGOTS_COPPER, 111);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, CTags.Items.COPPER_PLATE, 111);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, CTags.Items.COPPER_WIRE, 37);
+
+//        // Steel
+//        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_INGOT, 111);
+//        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_PLATE, 111);
+//        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_WIRE, 37);
+
+        // Iron
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, Tags.Items.INGOTS_IRON, 111);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, CTags.Items.IRON_PLATE, 111);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, CTags.Items.IRON_ROD, 111);
+
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_NICKEL, CTags.Items.NICKEL_INGOT, 111);
+
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_GOLD, Tags.Items.INGOTS_GOLD, 111);
+
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.TIN_INGOT, 111);
+    }
+
+    private void itemCrucibleSmeltingRecipe(MoltenMetalFluid fluid, TagKey<Item> item, int fluidAmount) {
+        irRecipe(new CrucibleSmeltingRecipe(IngredientWithCount.of(item),
+                new FluidStack(fluid.getStillFluid(), fluidAmount),
                 200,
                 200
         ));
@@ -377,6 +401,10 @@ public class IRRecipeProvider extends RecipeProvider {
 
         rodCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_ROD);
         rodCastingRecipe(IRFluids.MOLTEN_IRON, IRItems.IRON_ROD);
+
+        plateCastingRecipe(IRFluids.MOLTEN_IRON, IRItems.IRON_PLATE);
+        plateCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_PLATE);
+        plateCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_PLATE);
     }
 
     private void rodCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
@@ -402,6 +430,15 @@ public class IRRecipeProvider extends RecipeProvider {
                 new FluidStack(fluid.getStillFluid(), 111),
                 IRItems.CLAY_MOLD_INGOT.get(),
                 resultIngotItem.asItem().getDefaultInstance(),
+                200
+        ));
+    }
+
+    private void plateCastingRecipe(IRFluid fluid, ItemLike resultPlateItem) {
+        irRecipe(new CrucibleCastingRecipe(
+                new FluidStack(fluid.getStillFluid(), 111),
+                IRItems.CLAY_MOLD_PLATE.get(),
+                resultPlateItem.asItem().getDefaultInstance(),
                 200
         ));
     }

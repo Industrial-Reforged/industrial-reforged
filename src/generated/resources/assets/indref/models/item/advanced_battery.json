@@ -4,49 +4,49 @@
     {
       "model": "indref:item/advanced_battery_0",
       "predicate": {
-        "indref:energy_stage": 0.0
+        "indref:battery_stage": 0.0
       }
     },
     {
       "model": "indref:item/advanced_battery_1",
       "predicate": {
-        "indref:energy_stage": 1.0
+        "indref:battery_stage": 1.0
       }
     },
     {
       "model": "indref:item/advanced_battery_2",
       "predicate": {
-        "indref:energy_stage": 2.0
+        "indref:battery_stage": 2.0
       }
     },
     {
       "model": "indref:item/advanced_battery_3",
       "predicate": {
-        "indref:energy_stage": 3.0
+        "indref:battery_stage": 3.0
       }
     },
     {
       "model": "indref:item/advanced_battery_4",
       "predicate": {
-        "indref:energy_stage": 4.0
+        "indref:battery_stage": 4.0
       }
     },
     {
       "model": "indref:item/advanced_battery_5",
       "predicate": {
-        "indref:energy_stage": 5.0
+        "indref:battery_stage": 5.0
       }
     },
     {
       "model": "indref:item/advanced_battery_6",
       "predicate": {
-        "indref:energy_stage": 6.0
+        "indref:battery_stage": 6.0
       }
     },
     {
       "model": "indref:item/advanced_battery_7",
       "predicate": {
-        "indref:energy_stage": 7.0
+        "indref:battery_stage": 7.0
       }
     }
   ],

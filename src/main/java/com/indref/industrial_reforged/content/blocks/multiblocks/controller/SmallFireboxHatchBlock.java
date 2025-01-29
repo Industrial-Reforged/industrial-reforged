@@ -86,4 +86,5 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
 
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
+
 }
