@@ -56,9 +56,4 @@ public class DrainBlock extends RotatableContainerBlock implements WrenchableBlo
         }
         return InteractionResult.SUCCESS;
     }
-
-    @Override
-    public void appendHoverText(ItemStack p_49816_, Item.TooltipContext p_339606_, List<Component> tooltip, TooltipFlag p_49819_) {
-        tooltip.add(Component.translatable("drain.desc.0").withStyle(ChatFormatting.GRAY));
-    }
 }

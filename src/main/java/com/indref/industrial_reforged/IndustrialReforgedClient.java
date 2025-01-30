@@ -184,6 +184,8 @@ public final class IndustrialReforgedClient {
                 event.register(new DynamicFluidContainerModel.Colors(), fluid.getDeferredBucket());
             }
         }
+        event.register(new DynamicFluidContainerModel.Colors(), IRFluids.BIO_MASS.getDeferredBucket());
+        event.register(new DynamicFluidContainerModel.Colors(), IRFluids.METHANE.getDeferredBucket());
         event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
     }
 

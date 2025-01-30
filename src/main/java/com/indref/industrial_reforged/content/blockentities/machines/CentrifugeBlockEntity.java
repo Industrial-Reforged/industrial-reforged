@@ -31,6 +31,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +49,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
         addEnergyStorage(EnergyTiers.LOW);
+        addFluidTank(8000);
         addItemHandler(6, ((slot, itemStack) -> slot == 0
                 || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
     }
@@ -83,10 +85,11 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         if (currentRecipe.isPresent()) {
             CentrifugeRecipe centrifugeRecipe = currentRecipe.get();
             List<ItemStack> results = centrifugeRecipe.results();
-            int maxDuration = centrifugeRecipe.duration();
             int energy = centrifugeRecipe.energy();
 
-            if (canInsertItems(results) && getEnergyStorage().getEnergyStored() - energy >= 0) {
+            if (canInsertItems(results)
+                    && getEnergyStorage().getEnergyStored() - energy >= 0
+                    && forceFillTank(centrifugeRecipe.resultFluid().copy(), IFluidHandler.FluidAction.SIMULATE) == centrifugeRecipe.resultFluid().getAmount()) {
                 this.recipe = centrifugeRecipe;
             }
         } else {
@@ -107,9 +110,6 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
             List<ItemStack> results = recipe.results();
             IngredientWithCount ingredient = recipe.ingredient();
             setActive(true);
-            if (!level.isClientSide()) {
-                int extracted = energyStorage.tryDrainEnergy(energy, false);
-            }
 
             if (this.duration >= maxDuration) {
                 for (ItemStack result : results) {
@@ -121,10 +121,12 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                         }
                     }
                 }
+                getFluidHandler().fill(recipe.resultFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
                 itemHandler.extractItem(0, ingredient.count(), false);
                 resetRecipe();
             } else {
                 if (!level.isClientSide()) {
+                    energyStorage.tryDrainEnergy(energy, false);
                     this.duration++;
                 }
             }
@@ -141,7 +143,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     private boolean canInsertItems(List<ItemStack> results) {
         IntList slots = new IntArrayList();
         IItemHandler itemHandler = getItemHandler();
-        for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+        for (int slotIndex = 1; slotIndex < 5; slotIndex++) {
             ItemStack slot = itemHandler.getStackInSlot(slotIndex);
             for (ItemStack item : results) {
                 if (slot.isEmpty() || (slot.is(item.getItem()) && slot.getCount() + item.getCount() <= item.getMaxStackSize())) {

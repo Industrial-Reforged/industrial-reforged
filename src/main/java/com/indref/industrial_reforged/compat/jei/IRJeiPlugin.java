@@ -5,21 +5,31 @@ import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
+import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.BlastFurnaceBlock;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @JeiPlugin
 public class IRJeiPlugin implements IModPlugin {
@@ -55,6 +65,18 @@ public class IRJeiPlugin implements IModPlugin {
         List<BlastFurnaceRecipe> blastFurnaceRecipes = recipeManager.getAllRecipesFor(BlastFurnaceRecipe.TYPE)
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(BlastFurnaceCategory.RECIPE_TYPE, blastFurnaceRecipes);
+
+        List<RecipeHolder<CraftingRecipe>> recipes = new ArrayList<>();
+        for (Map.Entry<ResourceKey<Item>, TagKey<Item>> entry : BuiltInRegistries.ITEM.getDataMap(IRDataMaps.MOLD_INGREDIENTS).entrySet()) {
+            ResourceLocation rl = IndustrialReforged.rl("clay_mold_from_" + entry.getKey().location().getPath());
+            recipes.add(new RecipeHolder<>(rl, new ShapelessRecipe(
+                    "misc",
+                    CraftingBookCategory.MISC,
+                    BuiltInRegistries.ITEM.get(entry.getKey()).getDefaultInstance(),
+                    NonNullList.of(Ingredient.EMPTY, Ingredient.of(IRItems.CLAY_MOLD_BLANK), Ingredient.of(entry.getValue()))
+            )));
+        }
+        registration.addRecipes(RecipeTypes.CRAFTING, recipes);
     }
 
     @Override

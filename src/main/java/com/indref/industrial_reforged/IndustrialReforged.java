@@ -92,6 +92,7 @@ public final class IndustrialReforged {
 
     private void registerDataMaps(RegisterDataMapTypesEvent event) {
         event.register(IRDataMaps.CASTING_MOLDS);
+        event.register(IRDataMaps.MOLD_INGREDIENTS);
     }
 
     private void onRegister(RegisterEvent event) {
@@ -164,15 +165,15 @@ public final class IndustrialReforged {
                 }
 
                 if (containerBE.getHeatStorage() != null) {
-                    event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<ContainerBlockEntity>)  be.get(), ContainerBlockEntity::getHeatHandlerOnSide);
+                    event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getHeatHandlerOnSide);
                 }
 
                 if (containerBE.getItemHandler() != null) {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>)  be.get(), ContainerBlockEntity::getItemHandlerOnSide);
+                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getItemHandlerOnSide);
                 }
 
                 if (containerBE.getFluidHandler() != null) {
-                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>)  be.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getFluidHandlerOnSide);
                 }
             }
         }

@@ -1,3 +1,6 @@
 {
-  "parent": "indref:block/terracotta_brick"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "indref:item/terracotta_brick"
+  }
 }

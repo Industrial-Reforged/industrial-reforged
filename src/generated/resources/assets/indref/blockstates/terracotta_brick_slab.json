@@ -4,7 +4,7 @@
       "model": "indref:block/terracotta_brick_slab"
     },
     "type=double": {
-      "model": "indref:block/terracotta_brick"
+      "model": "indref:block/terracotta_bricks"
     },
     "type=top": {
       "model": "indref:block/terracotta_brick_slab_top"

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_terracotta_brick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "indref:terracotta_brick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "indref:terracotta_bricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_terracotta_brick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "indref:terracotta_bricks"
+    ]
+  }
+}

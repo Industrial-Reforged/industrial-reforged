@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.api.gui.util;
 
 import com.google.common.base.Preconditions;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.util.IRTranslations;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
@@ -171,7 +172,7 @@ public class FluidTankRenderer {
             long milliBuckets = (amount * 1000) / FluidType.BUCKET_VOLUME;
 
             if (tooltipMode == TooltipMode.SHOW_AMOUNT_AND_CAPACITY) {
-                MutableComponent amountString = Component.translatable("indref.tooltip.liquid.amount_with_capacity", nf.format(milliBuckets), nf.format(capacity));
+                MutableComponent amountString = IRTranslations.Tooltip.LIQUID_AMOUNT.component(nf.format(milliBuckets), nf.format(capacity));
                 tooltip.add(amountString.withStyle(ChatFormatting.GRAY));
             } else if (tooltipMode == TooltipMode.SHOW_AMOUNT) {
                 MutableComponent amountString = Component.translatable("indref.tooltip.liquid.amount", nf.format(milliBuckets));

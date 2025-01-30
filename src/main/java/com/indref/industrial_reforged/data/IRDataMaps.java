@@ -2,7 +2,10 @@ package com.indref.industrial_reforged.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
+import com.indref.industrial_reforged.util.RegistryUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 
@@ -13,6 +16,14 @@ public final class IRDataMaps {
             CastingMoldValue.CODEC
     ).synced(
             CastingMoldValue.CODEC,
+            false
+    ).build();
+    public static final DataMapType<Item, TagKey<Item>> MOLD_INGREDIENTS = DataMapType.builder(
+            IndustrialReforged.rl("mold_ingredients"),
+            Registries.ITEM,
+            TagKey.codec(Registries.ITEM)
+    ).synced(
+            TagKey.codec(Registries.ITEM),
             false
     ).build();
 }

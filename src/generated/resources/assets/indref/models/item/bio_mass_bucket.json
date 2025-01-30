@@ -1,0 +1,5 @@
+{
+  "parent": "neoforge:item/bucket_drip",
+  "fluid": "indref:bio_mass",
+  "loader": "neoforge:fluid_container"
+}

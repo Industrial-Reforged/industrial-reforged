@@ -1,0 +1,12 @@
+{
+  "type": "indref:crucible_melting",
+  "duration": 200,
+  "heat": 200,
+  "ingredient": {
+    "tag": "c:storage_blocks/aluminum"
+  },
+  "result": {
+    "amount": 1000,
+    "id": "indref:molten_aluminum"
+  }
+}

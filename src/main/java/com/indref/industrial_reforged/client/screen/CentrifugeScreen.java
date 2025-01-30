@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.client.screen;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
 import com.indref.industrial_reforged.content.gui.components.EnergyGuiComponent;
+import com.indref.industrial_reforged.content.gui.components.FluidTankGuiComponent;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -27,7 +28,8 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true, true)
+                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true, true),
+                new FluidTankGuiComponent(new Vector2i(this.leftPos + 142, this.topPos + 24), FluidTankGuiComponent.TankVariants.SMALL)
         );
     }
 

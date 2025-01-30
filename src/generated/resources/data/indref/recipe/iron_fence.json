@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "R": {
+      "tag": "c:rods/iron"
+    }
+  },
+  "pattern": [
+    "#R#",
+    "#R#"
+  ],
+  "result": {
+    "count": 3,
+    "id": "indref:iron_fence"
+  }
+}

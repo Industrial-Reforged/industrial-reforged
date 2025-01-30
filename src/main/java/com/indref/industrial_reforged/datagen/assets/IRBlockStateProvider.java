@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blocks.machines.CentrifugeBlock;
 import com.indref.industrial_reforged.content.blocks.misc.CastingBasinBlock;
 import com.indref.industrial_reforged.content.blocks.misc.FaucetBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
@@ -71,13 +70,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
         simpleBlock(IRBlocks.REFRACTORY_STONE.get());
         simpleBlock(IRBlocks.REFRACTORY_BRICK.get());
         simpleBlock(IRBlocks.BASIC_MACHINE_FRAME.get());
-        simpleBlock(IRBlocks.TERRACOTTA_BRICK.get());
-        slabBlock(IRBlocks.TERRACOTTA_BRICK_SLAB.get(), blockTexture(IRBlocks.TERRACOTTA_BRICK.get()),
-                blockTexture(IRBlocks.TERRACOTTA_BRICK.get()));
+        simpleBlock(IRBlocks.TERRACOTTA_BRICKS.get());
+        slabBlock(IRBlocks.TERRACOTTA_BRICK_SLAB.get(), blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()),
+                blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()));
 
         fenceBlock(IRBlocks.IRON_FENCE.get(), blockTexture(Blocks.IRON_BLOCK));
 
-        castingBasin(IRBlocks.CERAMIC_CASTING_BASIN, blockTexture(IRBlocks.TERRACOTTA_BRICK.get()));
+        castingBasin(IRBlocks.CERAMIC_CASTING_BASIN, blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()));
         castingBasin(IRBlocks.BLAST_FURNACE_CASTING_BASIN, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 
         faucet(IRBlocks.BLAST_FURNACE_FAUCET, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));

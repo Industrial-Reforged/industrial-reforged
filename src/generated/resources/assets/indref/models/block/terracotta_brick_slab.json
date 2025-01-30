@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/slab",
   "textures": {
-    "bottom": "indref:block/terracotta_brick",
-    "side": "indref:block/terracotta_brick",
-    "top": "indref:block/terracotta_brick"
+    "bottom": "indref:block/terracotta_bricks",
+    "side": "indref:block/terracotta_bricks",
+    "top": "indref:block/terracotta_bricks"
   }
 }

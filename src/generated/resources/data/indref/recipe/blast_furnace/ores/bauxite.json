@@ -1,0 +1,13 @@
+{
+  "type": "indref:blast_furnace",
+  "duration": 200,
+  "ingredients": [
+    {
+      "tag": "c:ores/bauxite"
+    }
+  ],
+  "result": {
+    "amount": 222,
+    "id": "indref:molten_aluminum"
+  }
+}

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_terracotta": {
+    "has_clay_ball": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:terracotta"
+            "items": "minecraft:clay_ball"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_terracotta"
+      "has_clay_ball"
     ]
   ],
   "rewards": {

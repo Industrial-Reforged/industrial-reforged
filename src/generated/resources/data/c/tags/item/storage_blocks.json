@@ -7,6 +7,13 @@
     "indref:uranium_block",
     "indref:iridium_block",
     "indref:titanium_block",
-    "indref:aluminum_block"
+    "indref:aluminum_block",
+    "indref:raw_bauxite_block",
+    "indref:raw_chromium_block",
+    "indref:raw_iridium_block",
+    "indref:raw_lead_block",
+    "indref:raw_nickel_block",
+    "indref:raw_tin_block",
+    "indref:raw_uranium_block"
   ]
 }

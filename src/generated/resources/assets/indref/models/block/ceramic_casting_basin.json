@@ -1,6 +1,6 @@
 {
   "parent": "indref:block/casting_basin_base",
   "textures": {
-    "texture": "indref:block/terracotta_brick"
+    "texture": "indref:block/terracotta_bricks"
   }
 }

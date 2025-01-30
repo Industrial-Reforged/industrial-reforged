@@ -58,8 +58,49 @@ public class IRTagsProvider {
             ingots();
             rods();
             storageBlocks();
+            rawMaterials();
+            ores();
 
             tag(ItemTags.DYEABLE, IRItems.TOOLBOX.get());
+        }
+
+        private void ores() {
+            tag(Tags.Items.ORES,
+                    IRBlocks.BAUXITE_ORE,
+                    IRBlocks.CHROMIUM_ORE,
+                    IRBlocks.IRIDIUM_ORE,
+                    IRBlocks.LEAD_ORE,
+                    IRBlocks.NICKEL_ORE,
+                    IRBlocks.TIN_ORE,
+                    IRBlocks.URANIUM_ORE
+            );
+
+            tag(CTags.Items.ORES_BAUXITE, IRBlocks.BAUXITE_ORE);
+            tag(CTags.Items.ORES_CHROMIUM, IRBlocks.CHROMIUM_ORE);
+            tag(CTags.Items.ORES_IRIDIUM, IRBlocks.IRIDIUM_ORE);
+            tag(CTags.Items.ORES_LEAD, IRBlocks.LEAD_ORE);
+            tag(CTags.Items.ORES_NICKEL, IRBlocks.NICKEL_ORE);
+            tag(CTags.Items.ORES_TIN, IRBlocks.TIN_ORE);
+            tag(CTags.Items.ORES_URANIUM, IRBlocks.URANIUM_ORE);
+        }
+
+        private void rawMaterials() {
+            tag(Tags.Items.RAW_MATERIALS,
+                    IRItems.RAW_BAUXITE,
+                    IRItems.RAW_CHROMIUM,
+                    IRItems.RAW_IRIDIUM,
+                    IRItems.RAW_LEAD,
+                    IRItems.RAW_NICKEL,
+                    IRItems.RAW_TIN,
+                    IRItems.RAW_URANIUM
+            );
+            tag(CTags.Items.RAW_MATERIALS_BAUXITE, IRItems.RAW_BAUXITE);
+            tag(CTags.Items.RAW_MATERIALS_CHROMIUM, IRItems.RAW_CHROMIUM);
+            tag(CTags.Items.RAW_MATERIALS_IRIDIUM, IRItems.RAW_IRIDIUM);
+            tag(CTags.Items.RAW_MATERIALS_LEAD, IRItems.RAW_LEAD);
+            tag(CTags.Items.RAW_MATERIALS_NICKEL, IRItems.RAW_NICKEL);
+            tag(CTags.Items.RAW_MATERIALS_TIN, IRItems.RAW_TIN);
+            tag(CTags.Items.RAW_MATERIALS_URANIUM, IRItems.RAW_URANIUM);
         }
 
         private void ingots() {
@@ -125,17 +166,31 @@ public class IRTagsProvider {
                     IRBlocks.URANIUM_BLOCK,
                     IRBlocks.IRIDIUM_BLOCK,
                     IRBlocks.TITANIUM_BLOCK,
-                    IRBlocks.ALUMINUM_BLOCK
+                    IRBlocks.ALUMINUM_BLOCK,
+                    IRBlocks.RAW_BAUXITE_BLOCK,
+                    IRBlocks.RAW_CHROMIUM_BLOCK,
+                    IRBlocks.RAW_IRIDIUM_BLOCK,
+                    IRBlocks.RAW_LEAD_BLOCK,
+                    IRBlocks.RAW_NICKEL_BLOCK,
+                    IRBlocks.RAW_TIN_BLOCK,
+                    IRBlocks.RAW_URANIUM_BLOCK
             );
 
             tag(CTags.Items.STORAGE_BLOCKS_TIN, IRBlocks.TIN_BLOCK);
             tag(CTags.Items.STORAGE_BLOCKS_NICKEL, IRBlocks.NICKEL_BLOCK);
-            tag(CTags.Items.STORAGE_BLOCKS_STEEL, IRBlocks.LEAD_BLOCK);
-            tag(CTags.Items.STORAGE_BLOCKS_LEAD, IRBlocks.TIN_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_STEEL, IRBlocks.STEEL_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_LEAD, IRBlocks.LEAD_BLOCK);
             tag(CTags.Items.STORAGE_BLOCKS_URANIUM, IRBlocks.URANIUM_BLOCK);
             tag(CTags.Items.STORAGE_BLOCKS_IRIDIUM, IRBlocks.IRIDIUM_BLOCK);
             tag(CTags.Items.STORAGE_BLOCKS_TITANIUM, IRBlocks.TITANIUM_BLOCK);
             tag(CTags.Items.STORAGE_BLOCKS_ALUMINUM, IRBlocks.ALUMINUM_BLOCK);
+
+            tag(CTags.Items.STORAGE_BLOCKS_RAW_TIN, IRBlocks.RAW_TIN_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_RAW_NICKEL, IRBlocks.RAW_NICKEL_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_RAW_LEAD, IRBlocks.RAW_LEAD_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_RAW_URANIUM, IRBlocks.RAW_URANIUM_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_RAW_IRIDIUM, IRBlocks.RAW_IRIDIUM_BLOCK);
+            tag(CTags.Items.STORAGE_BLOCKS_RAW_BAUXITE, IRBlocks.RAW_BAUXITE_BLOCK);
         }
 
         private void tag(TagKey<Item> itemTagKey, ItemLike... items) {

@@ -23,7 +23,7 @@ public final class EnergyTiers {
     }
 
     public static Holder<EnergyTier> register(String name, int color, int maxInput, int maxOutput, int capacity) {
-        EnergyTier energyTier = new EnergyTier(maxInput, maxOutput, capacity, color);
+        EnergyTier energyTier = new EnergyTier(name, maxInput, maxOutput, capacity, color);
         return Registry.registerForHolder(IRRegistries.ENERGY_TIER, IndustrialReforged.rl(name), energyTier);
     }
 }

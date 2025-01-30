@@ -73,7 +73,7 @@ public final class IRItems {
                     .stacksTo(1)
                     .component(DataComponents.DYED_COLOR, EMPTY_COLOR)));
     public static final DeferredItem<UraniumFuelRodItem> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
-            () -> new UraniumFuelRodItem(new Item.Properties().stacksTo(1)));
+            () -> new UraniumFuelRodItem(new Item.Properties().stacksTo(1)), false);
 
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",
@@ -94,6 +94,9 @@ public final class IRItems {
     public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
     public static final DeferredItem<Item> SANDY_BRICK = registerStandardItem("sandy_brick");
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
+    public static final DeferredItem<Item> COAL_DUST = registerStandardItem("coal_dust");
+    public static final DeferredItem<Item> CARBON_PLATE = registerStandardItem("carbon_plate");
+    public static final DeferredItem<Item> TERRACOTTA_BRICK = registerStandardItem("terracotta_brick");
     public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));
     public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
@@ -141,6 +144,14 @@ public final class IRItems {
     // Wires
     public static final DeferredItem<Item> STEEL_DUST = registerStandardItem("steel_dust");
     public static final DeferredItem<Item> COPPER_DUST = registerStandardItem("copper_dust");
+
+    static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item, boolean addToTab) {
+        DeferredItem<T> deferredItem = ITEMS.register(name, item);
+        if (addToTab) {
+            TAB_ITEMS.add(deferredItem);
+        }
+        return deferredItem;
+    }
 
     static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
         DeferredItem<T> deferredItem = ITEMS.register(name, item);

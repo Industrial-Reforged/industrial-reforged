@@ -4,10 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
-import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
-import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
-import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
-import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
+import com.indref.industrial_reforged.content.recipes.*;
+import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -15,8 +13,10 @@ import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -27,11 +27,13 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class IRRecipeProvider extends RecipeProvider {
@@ -43,8 +45,8 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private RecipeOutput output;
 
-    public IRRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookUpProvider) {
-        super(output, lookUpProvider);
+    public IRRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
     }
 
     @Override
@@ -73,14 +75,25 @@ public class IRRecipeProvider extends RecipeProvider {
         // Compacting recipes
         rawOreToBlockRecipes();
         ingotToBlockRecipes();
+
+        SpecialRecipeBuilder.special(MoldCraftingRecipe::new)
+                .save(output, IndustrialReforged.rl("mold_crafting"));
+
+        for (Map.Entry<ResourceKey<Item>, TagKey<Item>> entry : BuiltInRegistries.ITEM.getDataMap(IRDataMaps.MOLD_INGREDIENTS).entrySet()) {
+            Item item = BuiltInRegistries.ITEM.get(entry.getKey());
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK.get())
+                    .requires(item)
+                    .unlockedBy("has_mold", has(item))
+                    .save(output, IndustrialReforged.rl("clay_mold_from_" + entry.getKey().location().getPath()));
+        }
     }
 
     private void multiblockRecipes() {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.CERAMIC_CASTING_BASIN.get())
                 .pattern("# #")
                 .pattern("###")
-                .define('#', IRBlocks.TERRACOTTA_BRICK.get())
-                .unlockedBy("has_terracotta_brick", has(IRBlocks.TERRACOTTA_BRICK.get()))
+                .define('#', IRBlocks.TERRACOTTA_BRICKS.get())
+                .unlockedBy("has_terracotta_brick", has(IRBlocks.TERRACOTTA_BRICKS.get()))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.BLAST_FURNACE_CASTING_BASIN.get())
@@ -116,6 +129,14 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('F', Blocks.FURNACE)
                 .unlockedBy("has_iron_plate", has(CTags.Items.IRON_PLATE))
                 .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.IRON_FENCE.get(), 3)
+                .pattern("#R#")
+                .pattern("#R#")
+                .define('#', Tags.Items.INGOTS_IRON)
+                .define('R', CTags.Items.IRON_ROD)
+                .unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON))
+                .save(output);
     }
 
     private void storageItemRecipes() {
@@ -145,15 +166,14 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_sandy_brick", has(IRItems.SANDY_BRICK))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.TERRACOTTA_BRICK, 4)
-                .pattern("TB")
-                .pattern("BT")
-                .define('T', Items.TERRACOTTA)
-                .define('B', Blocks.BRICKS)
-                .unlockedBy("has_terracotta", has(Items.TERRACOTTA))
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.TERRACOTTA_BRICKS, 4)
+                .pattern("BB")
+                .pattern("BB")
+                .define('B', IRItems.TERRACOTTA_BRICK)
+                .unlockedBy("has_terracotta_brick", has(IRItems.TERRACOTTA_BRICK))
                 .save(output);
 
-        slab(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.TERRACOTTA_BRICK_SLAB, IRBlocks.TERRACOTTA_BRICK);
+        slab(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.TERRACOTTA_BRICK_SLAB, IRBlocks.TERRACOTTA_BRICKS);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, 4)
                 .pattern("SB")
@@ -176,6 +196,12 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_clay_ball", has(Items.CLAY_BALL))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.TERRACOTTA_BRICK, 5)
+                .requires(Items.CLAY_BALL, 2)
+                .requires(Items.BRICK, 2)
+                .unlockedBy("has_clay_ball", has(Items.CLAY_BALL))
+                .save(output);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.ANTENNA.get())
                 .pattern("# R")
                 .pattern("#S ")
@@ -184,6 +210,20 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('S', IRItems.STEEL_ROD.get())
                 .define('R', Tags.Items.DUSTS_REDSTONE)
                 .unlockedBy("has_battery", has(IRItems.ADVANCED_BATTERY.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.IRON_ROD.get(), 4)
+                .pattern("#")
+                .pattern("#")
+                .define('#', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.STEEL_ROD.get(), 4)
+                .pattern("#")
+                .pattern("#")
+                .define('#', CTags.Items.STEEL_INGOT)
+                .unlockedBy("has_steel_ingot", has(CTags.Items.STEEL_INGOT))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.ELECTRIC_MOTOR.get(), 2)
@@ -379,14 +419,14 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void crucibleSmeltingRecipes() {
-        // Copper
         int moltenIngot = 111;
         int moltenWire = moltenIngot / 3;
         int moltenBlock = moltenIngot * 9 + 1;
-        int moltenIngotAndTwoThirds = moltenIngot * 5 / 3;
-        int moltenBlockAndTwoThirds = moltenBlock * 5 / 3;
+        int moltenRawMaterial = moltenIngot * 5 / 3;
+        int moltenRawBlock = moltenBlock * 5 / 3;
         int twoMoltenIngots = moltenIngot * 2;
 
+        // Copper
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.INGOTS_COPPER, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, CTags.Items.COPPER_PLATE, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, CTags.Items.DUSTS_COPPER, moltenIngot);
@@ -394,41 +434,57 @@ public class IRRecipeProvider extends RecipeProvider {
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, CTags.Items.COPPER_WIRE, moltenWire);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER, moltenBlock);
 
-        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.STORAGE_BLOCKS_RAW_COPPER, moltenBlockAndTwoThirds);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.STORAGE_BLOCKS_RAW_COPPER, moltenRawBlock);
 
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.ORES_COPPER, twoMoltenIngots);
-        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.RAW_MATERIALS_COPPER, moltenIngotAndTwoThirds);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_COPPER, Tags.Items.RAW_MATERIALS_COPPER, moltenRawMaterial);
 
-//        // Steel
-//        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_INGOT, 111);
-//        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_PLATE, 111);
-//        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_WIRE, 37);
+        // Steel
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_INGOT, moltenIngot);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_PLATE, moltenIngot);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_WIRE, moltenWire);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STEEL_ROD, moltenIngot);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.DUSTS_STEEL, moltenIngot);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_STEEL, CTags.Items.STORAGE_BLOCKS_STEEL, moltenBlock);
 
         // Iron
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, Tags.Items.INGOTS_IRON, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, CTags.Items.IRON_PLATE, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, CTags.Items.IRON_ROD, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, Tags.Items.STORAGE_BLOCKS_IRON, moltenBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, Tags.Items.RAW_MATERIALS_IRON, moltenRawMaterial);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_IRON, Tags.Items.STORAGE_BLOCKS_RAW_IRON, moltenRawBlock);
 
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_NICKEL, CTags.Items.NICKEL_INGOT, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_NICKEL, CTags.Items.STORAGE_BLOCKS_NICKEL, moltenBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_NICKEL, CTags.Items.STORAGE_BLOCKS_RAW_NICKEL, moltenRawBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_NICKEL, CTags.Items.RAW_MATERIALS_NICKEL, moltenRawMaterial);
 
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_GOLD, Tags.Items.INGOTS_GOLD, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD, moltenBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_GOLD, Tags.Items.STORAGE_BLOCKS_RAW_GOLD, moltenRawBlock);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_GOLD, CTags.Items.GOLD_WIRE, moltenWire);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_GOLD, Tags.Items.RAW_MATERIALS_GOLD, moltenRawMaterial);
 
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.TIN_INGOT, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.TIN_PLATE, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.TIN_WIRE, moltenWire);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.STORAGE_BLOCKS_TIN, moltenBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.STORAGE_BLOCKS_RAW_TIN, moltenRawBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_TIN, CTags.Items.RAW_MATERIALS_TIN, moltenRawMaterial);
 
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_LEAD, CTags.Items.LEAD_INGOT, moltenIngot);
         itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_LEAD, CTags.Items.STORAGE_BLOCKS_LEAD, moltenBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_LEAD, CTags.Items.STORAGE_BLOCKS_RAW_LEAD, moltenRawBlock);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_LEAD, CTags.Items.RAW_MATERIALS_LEAD, moltenRawMaterial);
+
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_ALUMINUM, CTags.Items.ALUMINUM_INGOT, moltenIngot);
+        itemCrucibleSmeltingRecipe(IRFluids.MOLTEN_ALUMINUM, CTags.Items.STORAGE_BLOCKS_ALUMINUM, moltenBlock);
     }
 
     private void itemCrucibleSmeltingRecipe(MoltenMetalFluid fluid, TagKey<Item> item, int fluidAmount) {
         irRecipe(new CrucibleSmeltingRecipe(IngredientWithCount.of(item),
-                new FluidStack(fluid.getStillFluid(), fluidAmount),
+                fluid.toStack(fluidAmount),
                 200,
                 200
         ));
@@ -442,6 +498,7 @@ public class IRRecipeProvider extends RecipeProvider {
         ingotCastingRecipe(IRFluids.MOLTEN_NICKEL, IRItems.NICKEL_INGOT);
         ingotCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_INGOT);
         ingotCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_INGOT);
+        ingotCastingRecipe(IRFluids.MOLTEN_LEAD, IRItems.LEAD_INGOT);
 
         wireCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_WIRE);
         wireCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_WIRE);
@@ -458,7 +515,7 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private void rodCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
-                new FluidStack(fluid.getStillFluid(), 111),
+                fluid.toStack(111),
                 IRItems.CLAY_MOLD_ROD.get(),
                 new ItemStack(resultIngotItem.asItem(), 4),
                 200
@@ -467,7 +524,7 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private void wireCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
-                new FluidStack(fluid.getStillFluid(), 37),
+                fluid.toStack(37),
                 IRItems.CLAY_MOLD_WIRE.get(),
                 new ItemStack(resultIngotItem.asItem(), 3),
                 200
@@ -476,7 +533,7 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private void ingotCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
-                new FluidStack(fluid.getStillFluid(), 111),
+                fluid.toStack(111),
                 IRItems.CLAY_MOLD_INGOT.get(),
                 resultIngotItem.asItem().getDefaultInstance(),
                 200
@@ -485,7 +542,7 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private void plateCastingRecipe(IRFluid fluid, ItemLike resultPlateItem) {
         irRecipe(new CrucibleCastingRecipe(
-                new FluidStack(fluid.getStillFluid(), 111),
+                fluid.toStack(111),
                 IRItems.CLAY_MOLD_PLATE.get(),
                 resultPlateItem.asItem().getDefaultInstance(),
                 200
@@ -493,18 +550,56 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void centrifugeRecipes() {
-        centrifugeRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN), 200, 100, IRItems.RUBBER.toStack(3));
-        centrifugeRecipe(IngredientWithCount.of(IRItems.PLANT_BALL, 2), 200, 100,
-                IRItems.PLANT_MASS.toStack(3), Items.VINE.getDefaultInstance().copyWithCount(2), Items.WHEAT_SEEDS.getDefaultInstance().copyWithCount(4));
+        centrifugeRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN), 200, 100,
+                asStack(IRItems.RUBBER, 3));
+        centrifugeRecipe(IngredientWithCount.of(IRBlocks.RUBBER_TREE_LOG, 16), IRFluids.METHANE.toStack(333), 200, 100,
+                asStack(IRItems.RUBBER, 6), asStack(IRItems.COAL_DUST, 2));
+        centrifugeRecipe(IngredientWithCount.of(Tags.Items.FOODS_RAW_MEAT, 3), IRFluids.METHANE.toStack(666), 200, 100,
+                asStack(IRItems.COAL_DUST), asStack(Items.BONE_MEAL));
+        centrifugeRecipe(IngredientWithCount.of(Items.CLAY), new FluidStack(Fluids.WATER, 1000), 200, 100,
+                asStack(Items.DIRT, 10), asStack(Items.CLAY_BALL, 3));
+        centrifugeRecipe(IngredientWithCount.of(IRItems.PLANT_BALL, 2), IRFluids.BIO_MASS.toStack(333), 200, 100,
+                asStack(IRItems.PLANT_MASS, 3), asStack(Items.VINE, 2), asStack(Items.WHEAT_SEEDS, 4));
+        centrifugeRecipe(IngredientWithCount.of(Items.SOUL_SAND, 16), IRFluids.OIL.toStack(666), 200, 100,
+                asStack(Items.SAND, 10), asStack(IRItems.COAL_DUST, 3), asStack(Items.GOLD_NUGGET, 2));
+    }
+
+    private ItemStack asStack(ItemLike item, int count) {
+        return new ItemStack(item, count);
+    }
+
+    private ItemStack asStack(ItemLike item) {
+        return asStack(item, 1);
     }
 
     private void centrifugeRecipe(IngredientWithCount ingredient, int duration, int energy, ItemStack... items) {
-        irRecipe(new CentrifugeRecipe(ingredient, List.of(items), duration, energy));
+        irRecipe(new CentrifugeRecipe(ingredient, List.of(items), FluidStack.EMPTY, duration, energy));
+    }
+
+    private void centrifugeRecipe(IngredientWithCount ingredient, FluidStack resultFluid, int duration, int energy, ItemStack... items) {
+        irRecipe(new CentrifugeRecipe(ingredient, List.of(items), resultFluid, duration, energy));
     }
 
     private void blastFurnaceRecipes() {
-        irRecipe(new BlastFurnaceRecipe(List.of(IngredientWithCount.of(Tags.Items.INGOTS_IRON, 2), IngredientWithCount.of(ItemTags.COALS)), new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), 222), 200));
-        irRecipe(new BlastFurnaceRecipe(List.of(IngredientWithCount.of(IRItems.RAW_BAUXITE)), new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), 111), 200));
+        int moltenIngot = 111;
+        int moltenWire = moltenIngot / 3;
+        int moltenBlock = moltenIngot * 9 + 1;
+        int moltenIngotAndTwoThirds = moltenIngot * 5 / 3;
+        int moltenBlockAndTwoThirds = moltenBlock * 5 / 3;
+        int twoMoltenIngots = moltenIngot * 2;
+
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), twoMoltenIngots), 200,
+                IngredientWithCount.of(Tags.Items.INGOTS_IRON, 2), IngredientWithCount.of(ItemTags.COALS));
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), moltenIngot), 200,
+                IngredientWithCount.of(IRItems.RAW_BAUXITE));
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), twoMoltenIngots), 200,
+                IngredientWithCount.of(CTags.Items.ORES_BAUXITE));
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), moltenBlockAndTwoThirds), 200 * 9,
+                IngredientWithCount.of(CTags.Items.STORAGE_BLOCKS_RAW_BAUXITE));
+    }
+
+    private void blastFurnaceRecipe(FluidStack resultFluid, int duration, IngredientWithCount... ingredients) {
+        irRecipe(new BlastFurnaceRecipe(List.of(ingredients), resultFluid, duration));
     }
 
     private void machineCraftingRecipes() {

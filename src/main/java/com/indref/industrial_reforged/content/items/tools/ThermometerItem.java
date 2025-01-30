@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.util.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -84,7 +85,8 @@ public class ThermometerItem extends SimpleHeatItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
         IHeatStorage heatStorage = getHeatCap(stack);
-        tooltip.add(IRTranslations.Tooltip.HEAT_STORED.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity()));
+        tooltip.add(IRTranslations.Tooltip.HEAT_STORED.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity())
+                .withStyle(ChatFormatting.GRAY));
     }
 
     @Override
@@ -96,4 +98,5 @@ public class ThermometerItem extends SimpleHeatItem {
     public boolean isBarVisible(ItemStack p_150899_) {
         return false;
     }
+
 }

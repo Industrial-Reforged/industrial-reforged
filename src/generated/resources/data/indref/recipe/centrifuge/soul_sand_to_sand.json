@@ -1,0 +1,27 @@
+{
+  "type": "indref:centrifuge",
+  "duration": 200,
+  "energy": 100,
+  "ingredient": {
+    "count": 16,
+    "item": "minecraft:soul_sand"
+  },
+  "result_fluid": {
+    "amount": 666,
+    "id": "indref:oil"
+  },
+  "results": [
+    {
+      "count": 10,
+      "id": "minecraft:sand"
+    },
+    {
+      "count": 3,
+      "id": "indref:coal_dust"
+    },
+    {
+      "count": 2,
+      "id": "minecraft:gold_nugget"
+    }
+  ]
+}

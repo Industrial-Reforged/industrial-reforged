@@ -60,7 +60,7 @@ public final class ItemUtils {
             tooltip.add(
                     IRTranslations.Tooltip.ENERGY_TIER.component().withStyle(ChatFormatting.GOLD)
                             .append(Component.literal(": "))
-                            .append(Component.translatable("energy_tier." + IndustrialReforged.MODID + "." + energyStorage.getEnergyTier().value()))
+                            .append(energyStorage.getEnergyTier().value().getTranslation())
             );
         }
     }

@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class BlastFurnaceCategory implements IRecipeCategory<BlastFurnaceRecipe> {
     private static final ResourceLocation PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
     private static final ResourceLocation SLOT_SPRITE = ResourceLocation.withDefaultNamespace("container/slot");
+    private static final ResourceLocation TANK_SPRITE = IndustrialReforged.rl("small_tank");
 
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "blast_furnace");
     public static final RecipeType<BlastFurnaceRecipe> RECIPE_TYPE = new RecipeType<>(UID, BlastFurnaceRecipe.class);
@@ -66,14 +67,15 @@ public class BlastFurnaceCategory implements IRecipeCategory<BlastFurnaceRecipe>
         }
 
         FluidStack fluidStack = recipe.resultFluid();
-        builder.addOutputSlot(getPadding() + 76, getHeight() / 2 - 8)
+        builder.addOutputSlot(getPadding() + 76, getHeight() / 2 - 26)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
-                .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
+                .setFluidRenderer(fluidStack.getAmount(), false, 16, 52);
     }
 
     @Override
     public void draw(BlastFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blitSprite(PROGRESS_SPRITE, getPadding() + 48, getHeight() / 2 - 8, 24, 16);
+        guiGraphics.blitSprite(TANK_SPRITE, getPadding() + 75, getHeight() / 2 - 27, 18, 54);
         guiGraphics.blitSprite(SLOT_SPRITE, getPadding() - 1, getHeight() / 2 - 9, 18, 18);
         guiGraphics.blitSprite(SLOT_SPRITE, getPadding() + 27, getHeight() / 2 - 9, 18, 18);
     }

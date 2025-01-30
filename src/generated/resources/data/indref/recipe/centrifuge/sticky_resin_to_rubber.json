@@ -5,6 +5,7 @@
   "ingredient": {
     "item": "indref:sticky_resin"
   },
+  "result_fluid": {},
   "results": [
     {
       "count": 3,

@@ -3,9 +3,13 @@ package com.indref.industrial_reforged.datagen.data;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.tags.CTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -23,10 +27,20 @@ public class IRDataMapProvider extends DataMapProvider {
             CastingMoldValue value = item.getValue();
             moldItem(item.getKey().get(), value.capacity(), value.consumeCast());
         }
+
+        moldIngredient(IRItems.CLAY_MOLD_INGOT, Tags.Items.INGOTS);
+        moldIngredient(IRItems.CLAY_MOLD_PLATE, CTags.Items.PLATES);
+        moldIngredient(IRItems.CLAY_MOLD_ROD, Tags.Items.RODS);
+        moldIngredient(IRItems.CLAY_MOLD_WIRE, CTags.Items.WIRES);
     }
 
     private void moldItem(Item moldItem, int capacity, boolean consumeCast) {
         builder(IRDataMaps.CASTING_MOLDS)
                 .add(moldItem.getDefaultInstance().getItemHolder(), new CastingMoldValue(capacity, consumeCast), false);
+    }
+
+    private void moldIngredient(ItemLike moldItem, TagKey<Item> ingredient) {
+        builder(IRDataMaps.MOLD_INGREDIENTS)
+                .add(moldItem.asItem().getDefaultInstance().getItemHolder(), ingredient, false);
     }
 }

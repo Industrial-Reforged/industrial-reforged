@@ -3,7 +3,12 @@
   "duration": 200,
   "energy": 100,
   "ingredient": {
+    "count": 2,
     "item": "indref:plant_ball"
+  },
+  "result_fluid": {
+    "amount": 333,
+    "id": "indref:bio_mass"
   },
   "results": [
     {

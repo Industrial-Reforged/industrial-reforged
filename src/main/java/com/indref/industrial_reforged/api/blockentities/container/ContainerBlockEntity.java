@@ -258,6 +258,44 @@ public abstract class ContainerBlockEntity extends BlockEntity {
         return reachedLimit ? stack.copyWithCount(stack.getCount() - limit) : ItemStack.EMPTY;
     }
 
+    public int forceFillTank(FluidStack resource, IFluidHandler.FluidAction action) {
+        if (resource.isEmpty()) {
+            return 0;
+        }
+
+        FluidStack fluid = getFluidTank().getFluid();
+        int capacity = getFluidTank().getCapacity();
+
+        if (action.simulate()) {
+            if (fluid.isEmpty()) {
+                return Math.min(capacity, resource.getAmount());
+            }
+            if (!FluidStack.isSameFluidSameComponents(fluid, resource)) {
+                return 0;
+            }
+            return Math.min(capacity - fluid.getAmount(), resource.getAmount());
+        }
+        if (fluid.isEmpty()) {
+            fluid = resource.copyWithAmount(Math.min(capacity, resource.getAmount()));
+            onFluidChanged();
+            return fluid.getAmount();
+        }
+        if (!FluidStack.isSameFluidSameComponents(fluid, resource)) {
+            return 0;
+        }
+        int filled = capacity - fluid.getAmount();
+
+        if (resource.getAmount() < filled) {
+            fluid.grow(resource.getAmount());
+            filled = resource.getAmount();
+        } else {
+            fluid.setAmount(capacity);
+        }
+        if (filled > 0)
+            onFluidChanged();
+        return filled;
+    }
+
     public void drop() {
         ItemStack[] stacks = getItemHandlerStacks();
         SimpleContainer inventory = new SimpleContainer(stacks);

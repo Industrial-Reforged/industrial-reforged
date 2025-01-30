@@ -28,7 +28,7 @@ public final class IRRecipeSerializer {
         public static final StreamCodec<ByteBuf, Item> ITEM_STREAM_CODEC = RegistryUtils.registryStreamCodec(BuiltInRegistries.ITEM);
 
         static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                FluidStack.CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
+                FluidStack.OPTIONAL_CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
                 ITEM_CODEC.fieldOf("mold_item").forGetter(CrucibleCastingRecipe::moldItem),
                 ItemStack.CODEC.fieldOf("result").forGetter(CrucibleCastingRecipe::resultStack),
                 Codec.INT.fieldOf("duration").forGetter(CrucibleCastingRecipe::duration)
@@ -72,6 +72,7 @@ public final class IRRecipeSerializer {
         static final MapCodec<CentrifugeRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 IngredientWithCount.CODEC.fieldOf("ingredient").forGetter(CentrifugeRecipe::ingredient),
                 ItemStack.CODEC.listOf().fieldOf("results").forGetter(CentrifugeRecipe::results),
+                FluidStack.OPTIONAL_CODEC.fieldOf("result_fluid").forGetter(CentrifugeRecipe::resultFluid),
                 Codec.INT.fieldOf("duration").forGetter(CentrifugeRecipe::duration),
                 Codec.INT.fieldOf("energy").forGetter(CentrifugeRecipe::energy)
         ).apply(builder, CentrifugeRecipe::new));
@@ -80,6 +81,8 @@ public final class IRRecipeSerializer {
                 CentrifugeRecipe::ingredient,
                 ItemStack.LIST_STREAM_CODEC,
                 CentrifugeRecipe::results,
+                FluidStack.OPTIONAL_STREAM_CODEC,
+                CentrifugeRecipe::resultFluid,
                 ByteBufCodecs.INT,
                 CentrifugeRecipe::duration,
                 ByteBufCodecs.INT,

@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.tiers;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Supplier;
 
@@ -11,7 +10,7 @@ public enum CrucibleTiers implements CrucibleTier {
     CERAMIC("ceramic", 1200,
             IRBlocks.TERRACOTTA_BRICK_SLAB,
             IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER,
-            IRBlocks.TERRACOTTA_BRICK,
+            IRBlocks.TERRACOTTA_BRICKS,
             IRBlocks.CERAMIC_CRUCIBLE_PART
     );
 

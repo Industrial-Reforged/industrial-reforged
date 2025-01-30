@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
@@ -57,12 +58,12 @@ public class IREnUSLangProvider extends LanguageProvider {
         addTooltip(Tooltip.ENERGY_TIER, "Tier");
         addTooltip(Tooltip.FLUID_STORED, "Stored");
         addTooltip(Tooltip.FLUID_AMOUNT, "Amount");
-        addTooltip(Tooltip.HEAT_STORED, "Heat");
+        addTooltip(Tooltip.HEAT_STORED, "Heat: %d/%d");
 
         addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress");
         addTooltip(Tooltip.MELTING_NOT_POSSIBLE, "Melting not possible");
 
-        addTooltip(Tooltip.LIQUID_AMOUNT, "%d/%d");
+        addTooltip(Tooltip.LIQUID_AMOUNT, "%d/%d mb");
 
         addTooltip("drain", "A simple device for collecting fluids");
 
@@ -85,9 +86,17 @@ public class IREnUSLangProvider extends LanguageProvider {
 
     private void addFluids() {
         addFluidType(IRFluids.OIL.getFluidType(), "Oil");
-        addFluidType(IRFluids.MOLTEN_STEEL.getFluidType(), "Molten Steel");
-        addFluidType(IRFluids.MOLTEN_ALUMINUM.getFluidType(), "Molten Aluminum");
-        addFluidType(IRFluids.MOLTEN_COPPER.getFluidType(), "Molten Copper");
+        addFluidType(IRFluids.BIO_MASS.getFluidType(), "Bio Mass");
+        addFluidType(IRFluids.METHANE.getFluidType(), "Methane");
+
+        addFluidType(IRFluids.MOLTEN_COPPER, "Molten Copper");
+        addFluidType(IRFluids.MOLTEN_NICKEL, "Molten Nickel");
+        addFluidType(IRFluids.MOLTEN_TIN, "Molten Tin");
+        addFluidType(IRFluids.MOLTEN_ALUMINUM, "Molten Aluminum");
+        addFluidType(IRFluids.MOLTEN_STEEL, "Molten Steel");
+        addFluidType(IRFluids.MOLTEN_LEAD, "Molten Lead");
+        addFluidType(IRFluids.MOLTEN_IRON, "Molten Iron");
+        addFluidType(IRFluids.MOLTEN_GOLD, "Molten Gold");
     }
 
     private void addItems() {
@@ -108,6 +117,52 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.STICKY_RESIN, "Sticky Resin");
         addItem(IRItems.RUBBER, "Rubber");
         addItem(IRItems.RUBBER_SHEET, "Rubber Sheet");
+        addItem(IRItems.PLANT_BALL, "Plant Ball");
+        addItem(IRItems.TREE_TAP, "Tree Tap");
+        addItem(IRItems.BASIC_BATTERY, "Basic Battery");
+        addItem(IRItems.ADVANCED_BATTERY, "Advanced Battery");
+        addItem(IRItems.ULTIMATE_BATTERY, "Ultimate Battery");
+        addItem(IRItems.BASIC_CIRCUIT, "Basic Circuit");
+        addItem(IRItems.ADVANCED_CIRCUIT, "Advanced Circuit");
+        addItem(IRItems.ULTIMATE_CIRCUIT, "Ultimate Circuit");
+        addItem(IRItems.CIRCUIT_BOARD, "Circuit Board");
+        addItem(IRItems.ELECTRIC_MOTOR, "Electric Motor");
+        addItem(IRItems.ANTENNA, "Antenna");
+        addItem(IRItems.SANDY_BRICK, "Sandy Brick");
+        addItem(IRItems.PLANT_MASS, "Plant Mass");
+        addItem(IRItems.BIO_PLASTIC, "Bio Plastic");
+        addItem(IRItems.TERRACOTTA_BRICK, "Terracotta Brick");
+
+        addItem(IRItems.IRON_PLATE, "Iron Plate");
+        addItem(IRItems.COPPER_PLATE, "Copper Plate");
+        addItem(IRItems.STEEL_PLATE, "Steel Plate");
+        addItem(IRItems.TIN_PLATE, "Tin Plate");
+        addItem(IRItems.CARBON_PLATE, "Carbon Plate");
+
+        addItem(IRItems.IRON_ROD, "Iron Rod");
+        addItem(IRItems.STEEL_ROD, "Steel Rod");
+
+        addItem(IRItems.TIN_WIRE, "Tin Wire");
+        addItem(IRItems.COPPER_WIRE, "Copper Wire");
+        addItem(IRItems.GOLD_WIRE, "Gold Wire");
+        addItem(IRItems.STEEL_WIRE, "Steel Wire");
+
+        addItem(IRItems.COPPER_DUST, "Copper Dust");
+        addItem(IRItems.COAL_DUST, "Coal Dust");
+        addItem(IRItems.STEEL_DUST, "Steel Dust");
+
+        addItem(IRFluids.OIL.getDeferredBucket(), "Oil Bucket");
+        addItem(IRFluids.BIO_MASS.getDeferredBucket(), "Bio Mass Bucket");
+        addItem(IRFluids.METHANE.getDeferredBucket(), "Methane Bucket");
+
+        addItem(IRFluids.MOLTEN_COPPER.getDeferredBucket(), "Molten Copper Bucket");
+        addItem(IRFluids.MOLTEN_NICKEL.getDeferredBucket(), "Molten Nickel Bucket");
+        addItem(IRFluids.MOLTEN_TIN.getDeferredBucket(), "Molten Tin Bucket");
+        addItem(IRFluids.MOLTEN_ALUMINUM.getDeferredBucket(), "Molten Aluminum Bucket");
+        addItem(IRFluids.MOLTEN_STEEL.getDeferredBucket(), "Molten Steel Bucket");
+        addItem(IRFluids.MOLTEN_LEAD.getDeferredBucket(), "Molten Lead Bucket");
+        addItem(IRFluids.MOLTEN_IRON.getDeferredBucket(), "Molten Iron Bucket");
+        addItem(IRFluids.MOLTEN_GOLD.getDeferredBucket(), "Molten Gold Bucket");
 
         addItem(IRItems.ELECTRIC_DRILL, "Electric Drill");
         addItem(IRItems.ADVANCED_DRILL, "Advanced Drill");
@@ -137,12 +192,17 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.REFRACTORY_STONE, "Refractory Stone");
         addBlock(IRBlocks.COIL, "Copper Coil");
 
-        addBlock(IRBlocks.TERRACOTTA_BRICK, "Terracotta Brick");
+        addBlock(IRBlocks.SMALL_FIREBOX_HATCH, "Small Firebox Hatch");
+        addBlock(IRBlocks.IRON_FENCE, "Iron Fence");
+
+        addBlock(IRBlocks.TERRACOTTA_BRICKS, "Terracotta Bricks");
         addBlock(IRBlocks.TERRACOTTA_BRICK_SLAB, "Terracotta Brick Slab");
         addBlock(IRBlocks.CERAMIC_CASTING_BASIN, "Ceramic Casting Basin");
 
         addBlock(IRBlocks.BLAST_FURNACE_BRICKS, "Blast Furnace Bricks");
         addBlock(IRBlocks.BLAST_FURNACE_HATCH, "Blast Furnace Hatch");
+        addBlock(IRBlocks.BLAST_FURNACE_FAUCET, "Blast Furnace Faucet");
+        addBlock(IRBlocks.BLAST_FURNACE_CASTING_BASIN, "Blast Furnace Casting Basin");
 
         addBlock(IRBlocks.RUBBER_TREE_LOG, "Rubber Tree Log");
         addBlock(IRBlocks.RUBBER_TREE_WOOD, "Rubber Tree Wood");
@@ -167,15 +227,15 @@ public class IREnUSLangProvider extends LanguageProvider {
 
     private void addMetals(String key, String val, boolean addOres, boolean addMetals) {
         if (addMetals) {
-            add("block." + IndustrialReforged.MODID + key + "_block", val + " Block");
+            add("block." + IndustrialReforged.MODID + "." + key + "_block", val + " Block");
 
             add("item." + IndustrialReforged.MODID + "." + key + "_ingot", val + " Ingot");
         }
 
         if (addOres) {
-            add("block." + IndustrialReforged.MODID + key + "_ore", val + " Ore");
-            add("block." + IndustrialReforged.MODID + ".deepslate_" + key + "_ore", "Deepslate" + val + " Ore");
-            add("block." + IndustrialReforged.MODID + "raw_" + key + "_block", "Raw" + val + " Block");
+            add("block." + IndustrialReforged.MODID + "." + key + "_ore", val + " Ore");
+            add("block." + IndustrialReforged.MODID + ".deepslate_" + key + "_ore", "Deepslate " + val + " Ore");
+            add("block." + IndustrialReforged.MODID + ".raw_" + key + "_block", "Raw " + val + " Block");
 
             add("item." + IndustrialReforged.MODID + ".raw_" + key, "Raw " + val);
         }
@@ -191,7 +251,7 @@ public class IREnUSLangProvider extends LanguageProvider {
     }
 
     private void addMultiblockFeedback(IRTranslations.TranslatableConstant key, String val) {
-        add("multiblock_feedback." + IndustrialReforged.MODID + "." + key.key(), val);
+        add(key.key(), val);
     }
 
     private void addTitle(String key, String val) {
@@ -199,7 +259,7 @@ public class IREnUSLangProvider extends LanguageProvider {
     }
 
     private void addEnergyTier(Holder<EnergyTier> key, String val) {
-        add("energy_tier." + IndustrialReforged.MODID + "." + key, val);
+        add("energy_tier." + IndustrialReforged.MODID + "." + key.value().name(), val);
     }
 
     private void addTooltip(String key, String val) {
@@ -207,7 +267,7 @@ public class IREnUSLangProvider extends LanguageProvider {
     }
 
     private void addTooltip(IRTranslations.TranslatableConstant key, String val) {
-        add("tooltip." + IndustrialReforged.MODID + "." + key.key(), val);
+        add(key.key(), val);
     }
 
     private void addCreativeTab(Supplier<? extends CreativeModeTab> tab, String val) {
@@ -216,6 +276,10 @@ public class IREnUSLangProvider extends LanguageProvider {
 
     private void addFluidType(Supplier<? extends FluidType> fluidType, String val) {
         add(registryTranslation(NeoForgeRegistries.FLUID_TYPES, fluidType.get()).getString(), val);
+    }
+
+    private void addFluidType(IRFluid fluidType, String val) {
+        add(registryTranslation(NeoForgeRegistries.FLUID_TYPES, fluidType.getFluidType().get()).getString(), val);
     }
 
     public static <T> Component registryTranslation(Registry<T> registry, T registryObject) {

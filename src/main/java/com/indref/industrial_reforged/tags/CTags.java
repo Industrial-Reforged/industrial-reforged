@@ -57,6 +57,29 @@ public final class CTags {
         public static final TagKey<Item> DUSTS_COPPER = bind("dusts/copper");
         public static final TagKey<Item> DUSTS_STEEL = bind("dusts/steel");
 
+        public static final TagKey<Item> RAW_MATERIALS_BAUXITE = bind("raw_materials/bauxite");
+        public static final TagKey<Item> RAW_MATERIALS_CHROMIUM = bind("raw_materials/chromium");
+        public static final TagKey<Item> RAW_MATERIALS_IRIDIUM = bind("raw_materials/iridium");
+        public static final TagKey<Item> RAW_MATERIALS_LEAD = bind("raw_materials/lead");
+        public static final TagKey<Item> RAW_MATERIALS_NICKEL = bind("raw_materials/nickel");
+        public static final TagKey<Item> RAW_MATERIALS_TIN = bind("raw_materials/tin");
+        public static final TagKey<Item> RAW_MATERIALS_URANIUM = bind("raw_materials/uranium");
+
+        public static final TagKey<Item> ORES_BAUXITE = bind("ores/bauxite");
+        public static final TagKey<Item> ORES_CHROMIUM = bind("ores/chromium");
+        public static final TagKey<Item> ORES_IRIDIUM = bind("ores/iridium");
+        public static final TagKey<Item> ORES_LEAD = bind("ores/lead");
+        public static final TagKey<Item> ORES_NICKEL = bind("ores/nickel");
+        public static final TagKey<Item> ORES_TIN = bind("ores/tin");
+        public static final TagKey<Item> ORES_URANIUM = bind("ores/uranium");
+
+        public static final TagKey<Item> STORAGE_BLOCKS_RAW_TIN = bind("storage_blocks/raw_tin");
+        public static final TagKey<Item> STORAGE_BLOCKS_RAW_NICKEL = bind("storage_blocks/raw_nickel");
+        public static final TagKey<Item> STORAGE_BLOCKS_RAW_LEAD = bind("storage_blocks/raw_lead");
+        public static final TagKey<Item> STORAGE_BLOCKS_RAW_URANIUM = bind("storage_blocks/raw_uranium");
+        public static final TagKey<Item> STORAGE_BLOCKS_RAW_IRIDIUM = bind("storage_blocks/raw_iridium");
+        public static final TagKey<Item> STORAGE_BLOCKS_RAW_BAUXITE = bind("storage_blocks/raw_titanium");
+
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));
         }

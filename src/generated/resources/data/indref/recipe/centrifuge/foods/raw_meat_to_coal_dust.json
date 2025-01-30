@@ -1,0 +1,23 @@
+{
+  "type": "indref:centrifuge",
+  "duration": 200,
+  "energy": 100,
+  "ingredient": {
+    "count": 3,
+    "tag": "c:foods/raw_meat"
+  },
+  "result_fluid": {
+    "amount": 666,
+    "id": "indref:methane"
+  },
+  "results": [
+    {
+      "count": 1,
+      "id": "indref:coal_dust"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:bone_meal"
+    }
+  ]
+}

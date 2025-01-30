@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.networking.CrucibleTurnPayload;
@@ -144,7 +143,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.FENCE
                 ? IRBlocks.IRON_FENCE.toStack()
-                : IRBlocks.TERRACOTTA_BRICK.toStack();
+                : IRBlocks.TERRACOTTA_BRICKS.toStack();
     }
 
     @Override
@@ -198,7 +197,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     public Optional<Item> getDropItem() {
-        return Optional.of(IRBlocks.TERRACOTTA_BRICK.get().asItem());
+        return Optional.of(IRBlocks.TERRACOTTA_BRICKS.get().asItem());
     }
 
     @Override

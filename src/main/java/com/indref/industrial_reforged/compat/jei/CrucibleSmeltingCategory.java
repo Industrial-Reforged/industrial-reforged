@@ -21,6 +21,8 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltingRecipe> {
+    private static final ResourceLocation SLOT_SPRITE = ResourceLocation.withDefaultNamespace("container/slot");
+    private static final ResourceLocation TANK_SPRITE = IndustrialReforged.rl("large_tank");
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_smelting");
     public static final RecipeType<CrucibleSmeltingRecipe> RECIPE_TYPE =
             new RecipeType<>(UID, CrucibleSmeltingRecipe.class);
@@ -47,7 +49,7 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
 
     @Override
     public int getWidth() {
-        return 96;
+        return 128;
     }
 
     @Override
@@ -61,16 +63,25 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, CrucibleSmeltingRecipe crucibleSmeltingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 0, 0)
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 1, 7)
                 .addIngredients(RecipeUtils.iWCToIngredientSaveCount(crucibleSmeltingRecipe.ingredient()));
         FluidStack fluidStack = crucibleSmeltingRecipe.resultFluid();
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 40, 0)
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 73, 27)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
-                .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
+                .setFluidRenderer(fluidStack.getAmount(), false, 52, 32);
     }
 
     @Override
     public void draw(CrucibleSmeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+        int x = 0;
+        int y = 6;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                guiGraphics.blitSprite(SLOT_SPRITE, x + j * 18, y + i * 18, 18, 18);
+            }
+        }
+
+        guiGraphics.blitSprite(TANK_SPRITE, x + 18 * 4, y, 54, 54);
     }
 }

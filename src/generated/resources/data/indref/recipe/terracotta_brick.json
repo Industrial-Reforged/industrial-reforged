@@ -1,20 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "B": {
-      "item": "minecraft:bricks"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:clay_ball"
     },
-    "T": {
-      "item": "minecraft:terracotta"
+    {
+      "item": "minecraft:clay_ball"
+    },
+    {
+      "item": "minecraft:brick"
+    },
+    {
+      "item": "minecraft:brick"
     }
-  },
-  "pattern": [
-    "TB",
-    "BT"
   ],
   "result": {
-    "count": 4,
+    "count": 5,
     "id": "indref:terracotta_brick"
   }
 }

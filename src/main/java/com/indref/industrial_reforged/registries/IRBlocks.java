@@ -82,7 +82,7 @@ public final class IRBlocks {
             () -> new MachineFrameBlock(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<SlabBlock> TERRACOTTA_BRICK_SLAB = registerBlockAndItem("terracotta_brick_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.of()));
-    public static final DeferredBlock<Block> TERRACOTTA_BRICK = registerBlockAndItem("terracotta_brick",
+    public static final DeferredBlock<Block> TERRACOTTA_BRICKS = registerBlockAndItem("terracotta_bricks",
             () -> new Block(BlockBehaviour.Properties.of()));
     public static final DeferredBlock<CrucibleControllerBlock> CERAMIC_CRUCIBLE_CONTROLLER = registerBlockAndItem("ceramic_crucible_controller",
             () -> new CrucibleControllerBlock(BlockBehaviour.Properties.of().noOcclusion(), CrucibleTiers.CERAMIC), false, false);
@@ -91,7 +91,7 @@ public final class IRBlocks {
     public static final DeferredBlock<FaucetBlock> BLAST_FURNACE_FAUCET = registerBlockAndItem("blast_furnace_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.of(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final DeferredBlock<CastingBasinBlock> CERAMIC_CASTING_BASIN = registerBlockAndItem("ceramic_casting_basin",
-            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICK.get()));
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICKS.get()));
     public static final DeferredBlock<CastingBasinBlock> BLAST_FURNACE_CASTING_BASIN = registerBlockAndItem("blast_furnace_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get()));
     public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = registerBlockAndItem("centrifuge",
