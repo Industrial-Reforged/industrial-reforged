@@ -3,14 +3,12 @@ package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.util.DisplayUtils;
-import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -69,7 +67,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.is(newState.getBlock())) {
-            IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(blockPos, level);
+            IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(level, blockPos);
         }
 
         super.onRemove(blockState, level, blockPos, newState, p_60519_);

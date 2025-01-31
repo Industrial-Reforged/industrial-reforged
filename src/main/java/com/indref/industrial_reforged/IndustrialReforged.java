@@ -9,8 +9,6 @@ import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
@@ -22,6 +20,10 @@ import com.indref.industrial_reforged.networking.CrucibleTurnPayload;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.logging.LogUtils;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -33,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -50,6 +53,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 @Mod(IndustrialReforged.MODID)
 public final class IndustrialReforged {
@@ -100,14 +104,14 @@ public final class IndustrialReforged {
         if (registry != null) {
             for (Multiblock multiblock : registry) {
                 // Check non-negative integers in definition
-                Int2ObjectMap<@Nullable Block> def = multiblock.getDefinition();
-                for (Map.Entry<Integer, @Nullable Block> entry : def.int2ObjectEntrySet()) {
+                MultiblockDefinition def = multiblock.getDefinition();
+                for (Map.Entry<Integer, Pair<Predicate<BlockState>, Block>> entry : def.def().entrySet()) {
                     Preconditions.checkArgument(entry.getKey() >= 0, "The integer keys for multiblock blocks are not allowed to be less than zero. Affected multiblock: "
                             + multiblock + ", affected key: " + entry.getKey() + ", " + entry.getValue());
                 }
 
                 // Check that multiblock has controller
-                Map<@Nullable Block, Integer> revDef = Utils.reverseMap(def);
+                Map<Pair<Predicate<BlockState>, Block>, Integer> revDef = Utils.reverseMap(def.def());
                 int controllerKey = revDef.get(multiblock.getUnformedController());
                 boolean hasController = false;
                 for (MultiblockLayer layer : multiblock.getLayout()) {

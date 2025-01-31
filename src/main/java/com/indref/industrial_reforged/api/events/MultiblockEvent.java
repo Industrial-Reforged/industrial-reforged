@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.api.events;
 
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

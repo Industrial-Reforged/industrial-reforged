@@ -1,16 +1,15 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
-import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
+import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -55,8 +54,8 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     }
 
     @Override
-    public Int2ObjectMap<Block> getDefinition() {
-        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
+    public MultiblockDefinition getDefinition() {
+        MultiblockDefinition def = new MultiblockDefinition();
         def.put(0, getUnformedPart());
         def.put(1, getUnformedController());
         return def;
@@ -76,7 +75,7 @@ public record FireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock 
     public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 
-        if (blockState.is(getUnformedController()) || blockState.is(getUnformedPart()) || getDefinition().containsValue(blockState.getBlock())) return false;
+        if (blockState.is(getUnformedController()) || blockState.is(getUnformedPart())) return false;
 
         return blockState.hasProperty(FIREBOX_PART);
     }

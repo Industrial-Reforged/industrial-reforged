@@ -1,37 +1,27 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
-import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.events.helper.MultiblockPreviewRenderer;
-import com.indref.industrial_reforged.events.helper.TapeMeasureRenderer;
-import com.indref.industrial_reforged.content.items.tools.TapeMeasureItem;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.MultiblockHelper;
-import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
+import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
+import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -90,11 +80,11 @@ public final class CommonEvents {
                 Vec3i relativeControllerPos = MultiblockHelper.getRelativeControllerPos(multiblock);
                 BlockPos firstPos = MultiblockHelper.getFirstBlockPos(blueprint.direction(), blueprint.controllerPos(), relativeControllerPos);
                 MultiblockLayer[] layout = multiblock.getLayout();
-                Int2ObjectMap<Block> def = multiblock.getDefinition();
+                MultiblockDefinition def = multiblock.getDefinition();
 
                 int y = 0;
                 for (MultiblockLayer layer : layout) {
-                    for (int i = 0; i < layer.range().getMaximum(); i++) {
+                    for (int i = 0; i < layer.range().getMax(); i++) {
                         // initialize/reset x and z coords for indexing
                         int x = 0;
                         int z = 0;
@@ -106,12 +96,12 @@ public final class CommonEvents {
                             // Define position-related variables
                             BlockPos curPos = MultiblockHelper.getCurPos(firstPos, new Vec3i(x, y, z), HorizontalDirection.NORTH);
 
-                            Block block = def.get(blockIndex);
+                            Block block = def.getDefaultBlock(blockIndex);
                             if (block != null) {
                                 BlockState blockState = mc.level.getBlockState(curPos);
-                                if (!blockState.is(block)) {
+                                if (def.getPredicate(blockIndex).test(blockState)) {
                                     if (blockState.isEmpty()) {
-                                        if (i < layer.range().getMinimum()) {
+                                        if (i < layer.range().getMin()) {
                                             MultiblockPreviewRenderer.renderSmallBlock(poseStack, curPos, camX, camY, camZ, blockRenderer, bufferSource, mc.level, block);
                                         } else {
                                             MultiblockPreviewRenderer.renderSmallOptionalBlock(poseStack, curPos, camX, camY, camZ, blockRenderer, bufferSource, mc.level, block);

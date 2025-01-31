@@ -1,14 +1,15 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
-import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
-import com.indref.industrial_reforged.api.util.HorizontalDirection;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
+import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -58,8 +59,8 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     }
 
     @Override
-    public Int2ObjectMap<@Nullable Block> getDefinition() {
-        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
+    public MultiblockDefinition getDefinition() {
+        MultiblockDefinition def = new MultiblockDefinition();
         def.put(0, IRBlocks.SMALL_FIREBOX_HATCH.get());
         return def;
     }

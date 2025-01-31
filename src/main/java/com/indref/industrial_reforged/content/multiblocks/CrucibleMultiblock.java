@@ -1,13 +1,14 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
-import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockLayer;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -58,8 +59,8 @@ public record CrucibleMultiblock(CrucibleTier tier) implements Multiblock {
     }
 
     @Override
-    public Int2ObjectMap<Block> getDefinition() {
-        Int2ObjectMap<Block> def = new Int2ObjectOpenHashMap<>();
+    public MultiblockDefinition getDefinition() {
+        MultiblockDefinition def = new MultiblockDefinition();
         def.put(0, tier.getUnformedPart());
         def.put(1, null);
         def.put(2, getUnformedController());

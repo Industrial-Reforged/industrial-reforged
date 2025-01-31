@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.IRRegistries;
-import com.indref.industrial_reforged.util.MultiblockHelper;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
@@ -22,7 +21,7 @@ public class HammerItem extends Item {
             for (Multiblock multiblock : IRRegistries.MULTIBLOCK) {
                 if (controllerState.is(multiblock.getUnformedController())) {
                     try {
-                        return multiblock.form(useOnContext.getClickedPos(), useOnContext.getLevel(), useOnContext.getPlayer())
+                        return multiblock.form(useOnContext.getLevel(), useOnContext.getClickedPos(), useOnContext.getPlayer())
                                 ? InteractionResult.SUCCESS
                                 : InteractionResult.FAIL;
                     } catch (Exception e) {

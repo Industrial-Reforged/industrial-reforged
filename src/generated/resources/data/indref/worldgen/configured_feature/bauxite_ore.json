@@ -2,11 +2,11 @@
   "type": "minecraft:ore",
   "config": {
     "discard_chance_on_air_exposure": 0.0,
-    "size": 3,
+    "size": 10,
     "targets": [
       {
         "state": {
-          "Name": "indref:iridium_ore"
+          "Name": "indref:bauxite_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "indref:deepslate_iridium_ore"
+          "Name": "indref:deepslate_bauxite_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

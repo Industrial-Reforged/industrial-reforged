@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged;
 
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

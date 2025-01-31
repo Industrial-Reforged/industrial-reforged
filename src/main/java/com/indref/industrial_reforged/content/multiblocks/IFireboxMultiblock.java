@@ -1,12 +1,10 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
-import com.indref.industrial_reforged.api.multiblocks.Multiblock;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public interface IFireboxMultiblock extends Multiblock {
     FireboxTier getTier();

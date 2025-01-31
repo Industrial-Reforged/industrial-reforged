@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
@@ -8,7 +7,6 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
-import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,7 +52,7 @@ public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements C
         if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                IRMultiblocks.BLAST_FURNACE.get().unform(blastFurnaceBlockEntity.getActualBlockEntityPos(), level);
+                IRMultiblocks.BLAST_FURNACE.get().unform(level, blastFurnaceBlockEntity.getActualBlockEntityPos());
             }
         }
 

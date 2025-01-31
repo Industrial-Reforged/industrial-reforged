@@ -2,11 +2,9 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -16,6 +14,8 @@ import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -412,7 +412,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     @Override
     protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.loadAdditional(nbt, provider);
-        loadMBData(provider, nbt.getCompound("multiblockData"));
+        this.multiblockData = loadMBData(nbt.getCompound("multiblockData"));
         this.powered = nbt.getBoolean("powered");
         this.turnTimer = nbt.getInt("turnTimer");
         this.maxTurnTime = nbt.getInt("maxTurnTime");
@@ -422,7 +422,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
         super.saveAdditional(nbt, provider);
-        nbt.put("multiblockData", saveMBData(provider));
+        nbt.put("multiblockData", saveMBData());
         nbt.putBoolean("powered", this.powered);
         nbt.putInt("turnTimer", this.turnTimer);
         nbt.putInt("maxTurnTime", this.maxTurnTime);

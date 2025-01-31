@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "indref:tin_ore"
+          "Name": "indref:nickel_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",
@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "indref:deepslate_tin_ore"
+          "Name": "indref:deepslate_nickel_ore"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

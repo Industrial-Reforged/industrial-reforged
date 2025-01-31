@@ -1,4 +1,4 @@
-// 1.21.1	2025-01-30T22:10:45.406917458	Recipes
+// 1.21.1	2025-01-31T13:56:42.079619668	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -66,6 +66,7 @@ b4d8c09d1810e5e1a48c36abee42cc2669034a5b data/indref/advancement/recipes/misc/ra
 254edede1504c095d83c09fb2e2a9c8a5fcb593c data/indref/advancement/recipes/misc/raw_uranium.json
 bab317759c4b41089e26c201802ae2437beceabb data/indref/advancement/recipes/misc/sandy_brick.json
 3689a09140e9c630b0f51595f876abbcb04ee843 data/indref/advancement/recipes/misc/steel_ingot.json
+b9f85b23b42d7f950c8bda326df3343ad66cb833 data/indref/advancement/recipes/misc/steel_rod.json
 9d848bed2ea9046d9f3e11ea0dbd6a21c92500d2 data/indref/advancement/recipes/misc/terracotta_brick.json
 f7169cd668ddb428df1e465bc630a63ea62ed0af data/indref/advancement/recipes/misc/tin_ingot.json
 4c191a752a46d3476a99c82acecd78a850002b5b data/indref/advancement/recipes/misc/titanium_ingot.json
@@ -233,6 +234,7 @@ d242545729ce3ad855f76643f5737ee191d516ee data/indref/recipe/rubber_tree_planks.j
 4aa760a76760f45d9abfe76dc8a44c6e049aca25 data/indref/recipe/steel_block.json
 02a3487c05ded028f94271abadfd4251ea0f7b44 data/indref/recipe/steel_cable.json
 ae963ca3a997f90c742e92a84d7b0370455426d5 data/indref/recipe/steel_ingot.json
+d5c01db11ffd4cf8ceecb7567a3d4956e559dd57 data/indref/recipe/steel_rod.json
 4c2eae8d9c287e2dc297183c190c162ecf3cb1f3 data/indref/recipe/stripped_rubber_tree_wood.json
 0f3882e6d38edd148ff3ccad4fd6150ed566ce47 data/indref/recipe/terracotta_brick.json
 ed0b0a5ce3f9bff0751e4a1dc9405d40947033f7 data/indref/recipe/terracotta_brick_slab.json

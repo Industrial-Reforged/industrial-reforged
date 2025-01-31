@@ -2,19 +2,18 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -97,7 +96,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        loadMBData(provider, tag.getCompound("multiblockData"));
+        this.multiblockData = loadMBData(tag.getCompound("multiblockData"));
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
         this.duration = tag.getFloat("duration");
@@ -105,7 +104,7 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.put("multiblockData", saveMBData(provider));
+        tag.put("multiblockData", saveMBData());
         BlockPos actualBlockEntityPos = getActualBlockEntityPos();
         if (actualBlockEntityPos != null) {
             tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());

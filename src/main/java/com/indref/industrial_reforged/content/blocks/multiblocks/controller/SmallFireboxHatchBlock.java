@@ -1,13 +1,11 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
-import com.indref.industrial_reforged.util.MultiblockHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -79,7 +77,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
             if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
                 BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();
                 if (actualBlockEntityPos != null && smallFireboxBlockEntity.getMultiblockData().valid()) {
-                    IRMultiblocks.SMALL_FIREBOX.get().unform(actualBlockEntityPos, pLevel);
+                    IRMultiblocks.SMALL_FIREBOX.get().unform(pLevel, actualBlockEntityPos);
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.datagen.assets;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.core.Direction;

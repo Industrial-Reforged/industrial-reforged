@@ -75,7 +75,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         if (blockEntity instanceof CruciblePartBlockEntity cruciblePartBlockEntity) {
             BlockPos controllerPos = cruciblePartBlockEntity.getControllerPos();
             if (controllerPos != null) {
-                IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(controllerPos, level);
+                IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(level, controllerPos);
             }
         } else {
             IndustrialReforged.LOGGER.error("Failed to unform crucible, crucible wall blockentity corruption");

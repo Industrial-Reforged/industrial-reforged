@@ -1,20 +1,18 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.multiblock.MultiblockEntity;
 import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.multiblocks.MultiblockData;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -189,14 +187,14 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     protected void saveData(CompoundTag pTag, HolderLookup.Provider provider) {
         pTag.putInt("burnTime", this.burnTime);
         pTag.putInt("maxBurnTime", this.maxBurnTime);
-        pTag.put("multiblockData", saveMBData(provider));
+        pTag.put("multiblockData", saveMBData());
     }
 
     @Override
     protected void loadData(CompoundTag pTag, HolderLookup.Provider provider) {
         this.burnTime = pTag.getInt("burnTime");
         this.maxBurnTime = pTag.getInt("maxBurnTime");
-        loadMBData(provider, pTag.getCompound("multiblockData"));
+        this.multiblockData = loadMBData(pTag.getCompound("multiblockData"));
     }
 
     public int getBurnTime() {
