@@ -1,4 +1,5 @@
-// 1.21.1	2025-01-30T21:14:58.967075527	Tags for minecraft:item mod id vanilla
+// 1.21.1	2025-02-02T12:32:59.800244367	Tags for minecraft:item mod id vanilla
+bf4207125fec838572bf88021bbbaeb2269993f9 data/c/tags/item/bricks.json
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
 3c024fc87b598b1c8b6014fde24951f4259ceb14 data/c/tags/item/ingots/chromium.json
@@ -49,11 +50,21 @@ ba4f664761fc06f11aa98bdbfb6f4d7300a6371a data/c/tags/item/storage_blocks/steel.j
 46fd52b3f0a3a1b902edc906ed56c4c184cf9e0e data/c/tags/item/storage_blocks/tin.json
 824a488a50b696cd30504e06ccada17376b7de3d data/c/tags/item/storage_blocks/titanium.json
 dde8ce543b3c601a52f16ea4aad07cef90c865d7 data/c/tags/item/storage_blocks/uranium.json
+f74de00cd28265a05d06fcde8a72be7fa710e85c data/c/tags/item/tools.json
 9d15fdcfb63962dfcdf18a753893bc9336f0ff4c data/c/tags/item/wires.json
 fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json
 0b79414d07652b0536049e1e7ea3b0a3a88e742b data/c/tags/item/wires/steel.json
 71051527a733b38d16af3551c77c971f5928095e data/c/tags/item/wires/tin.json
-f74de00cd28265a05d06fcde8a72be7fa710e85c data/indref/tags/item/tool.json
 58b05a4da836c7c814c64c079ffc32ca0bc145da data/minecraft/tags/item/dyeable.json
+7ec99157ac16a38de2ac0d390dc224f1fbe49af4 data/minecraft/tags/item/fence_gates.json
+9fc4940b4b0bec19481be6ce8ee18150a36574fd data/minecraft/tags/item/leaves.json
+cedd081972b2581d1997db600bf27a93b8ef4657 data/minecraft/tags/item/logs_that_burn.json
+b479234ce7d2baf7968c89065c71c62544e49fca data/minecraft/tags/item/planks.json
 c2989190205a96a6014d8cbc999316cf3d1111b9 data/minecraft/tags/item/rubber_logs.json
+101f70355e6a5e463a92339ae0f556e6add0ca99 data/minecraft/tags/item/wooden_buttons.json
+2b8e8c23cf7535eb7647015304ebfd46b30a2ed3 data/minecraft/tags/item/wooden_doors.json
+a85be415f0ca70fddb306eaf7e9d0f63488ea68b data/minecraft/tags/item/wooden_fences.json
+f63800ba64f40dea42a2312e36c174d529c9f3b3 data/minecraft/tags/item/wooden_pressure_plates.json
+07e617cd78df58b6f5d30499d9dfb667d448586b data/minecraft/tags/item/wooden_slabs.json
+44deab82307fb70c0f24b95d64cf33f9761005aa data/minecraft/tags/item/wooden_trapdoors.json

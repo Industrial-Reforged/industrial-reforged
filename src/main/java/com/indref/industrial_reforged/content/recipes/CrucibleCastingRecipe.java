@@ -1,11 +1,10 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
-import com.indref.industrial_reforged.data.maps.CastingMoldValue;
-import com.indref.industrial_reforged.util.RegistryUtils;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleCastingRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
+import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
+import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -17,7 +16,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 public record CrucibleCastingRecipe(FluidStack fluidStack, Item moldItem, ItemStack resultStack,
-                                    int duration) implements IRRecipe<CrucibleCastingRecipeInput> {
+                                    int duration) implements PDLRecipe<CrucibleCastingRecipeInput> {
     public static final String NAME = "crucible_casting";
     public static final RecipeType<CrucibleCastingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CrucibleCastingRecipe> SERIALIZER =
@@ -26,7 +25,7 @@ public record CrucibleCastingRecipe(FluidStack fluidStack, Item moldItem, ItemSt
     @Override
     public boolean matches(CrucibleCastingRecipeInput recipeInput, Level level) {
         return RegistryUtils.holder(BuiltInRegistries.ITEM, moldItem).getData(IRDataMaps.CASTING_MOLDS) != null
-                && moldItem == recipeInput.getItem(0).getItem()
+                && recipeInput.moldItem().is(moldItem)
                 && recipeInput.fluidStack().is(this.fluidStack.getFluid())
                 && recipeInput.fluidStack().getAmount() >= this.fluidStack.getAmount();
     }

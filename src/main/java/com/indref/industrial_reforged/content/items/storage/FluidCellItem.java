@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.content.items.storage;
 
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -31,18 +32,18 @@ import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 
 public class FluidCellItem extends SimpleFluidItem {
     private final int capacity;
-    private FluidStack fluid = FluidStack.EMPTY;
 
     public FluidCellItem(Properties properties, int capacity) {
-        super(properties, capacity);
+        super(properties);
         this.capacity = capacity;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack handItem = ItemUtils.itemStackFromInteractionHand(interactionHand, player);
+        IFluidHandler handler = handItem.getCapability(Capabilities.FluidHandler.ITEM);
         BlockHitResult blockhitresult = getPlayerPOVHitResult(
-                level, player, this.fluid.isEmpty() ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE
+                level, player, handler.getFluidInTank(0).isEmpty() ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE
         );
         if (blockhitresult.getType() == HitResult.Type.MISS) {
             return InteractionResultHolder.pass(handItem);
@@ -53,8 +54,7 @@ public class FluidCellItem extends SimpleFluidItem {
                 BlockPos blockpos = blockhitresult.getBlockPos();
                 Direction direction = blockhitresult.getDirection();
                 BlockPos blockpos1 = blockpos.relative(direction);
-                IFluidHandlerItem fluidHandlerItem = getFluidCap(handItem);
-                Fluid fluid1 = fluidHandlerItem.getFluidInTank(0).getFluid();
+                Fluid fluid1 = handler.getFluidInTank(0).getFluid();
                 if (fluid1 == Fluids.EMPTY) {
                     BlockState blockstate1 = level.getBlockState(blockpos);
                     Block block1 = blockstate1.getBlock();
@@ -70,7 +70,7 @@ public class FluidCellItem extends SimpleFluidItem {
                     return InteractionResultHolder.fail(handItem);
                 } else {
                     if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)
-                            && !fluid1.getFluidType().isVaporizedOnPlacement(level, blockpos, fluidHandlerItem.getFluidInTank(0))) {
+                            && !fluid1.getFluidType().isVaporizedOnPlacement(level, blockpos, handler.getFluidInTank(0))) {
                         level.setBlock(blockpos1, fluid1.defaultFluidState().createLegacyBlock(), 11);
                         return InteractionResultHolder.success(handItem);
                     }
@@ -94,7 +94,8 @@ public class FluidCellItem extends SimpleFluidItem {
     }
 
     @Override
-    public int getDefaultFluidCapacity() {
+    public int getFluidCapacity() {
         return this.capacity;
     }
+
 }

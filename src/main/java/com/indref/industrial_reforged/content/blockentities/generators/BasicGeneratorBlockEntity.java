@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.content.blockentities.generators;
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.generator.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -13,7 +12,8 @@ import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
-import com.indref.industrial_reforged.util.capabilities.SidedCapUtils;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.SidedCapUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,6 +34,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
@@ -51,7 +52,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
             boolean canInsertBattery = slot == 1 && item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null;
             return canInsertFuel || canInsertBattery;
         });
-        addEnergyStorage(EnergyTiers.LOW);
+        addEuStorage(EnergyTiers.LOW);
     }
 
     public boolean isActive() {
@@ -81,7 +82,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> Map<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
             return SidedCapUtils.allInsert(0);
         }
@@ -91,7 +92,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     @Override
     public void commonTick() {
         super.commonTick();
-        IEnergyStorage energyStorage = getEnergyStorage();
+        IEnergyStorage energyStorage = getEuStorage();
         if (energyStorage != null) {
             if (this.burnTime > 0) {
                 if (!level.isClientSide()) {
@@ -136,12 +137,14 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
 
     @Override
     protected void saveData(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.saveData(pTag, provider);
         pTag.putInt("burnTime", burnTime);
         pTag.putInt("maxBurnTime", maxBurnTime);
     }
 
     @Override
     protected void loadData(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadData(pTag, provider);
         burnTime = pTag.getInt("burnTime");
         maxBurnTime = pTag.getInt("maxBurnTime");
     }

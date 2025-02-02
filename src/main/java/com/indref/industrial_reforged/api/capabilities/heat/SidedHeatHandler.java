@@ -1,8 +1,13 @@
 package com.indref.industrial_reforged.api.capabilities.heat;
 
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import it.unimi.dsi.fastutil.Pair;
 
-public record SidedHeatHandler(IHeatStorage innerHandler, IOActions action) implements IHeatStorage {
+public record SidedHeatHandler(IHeatStorage innerHandler, IOAction action) implements IHeatStorage {
+    public SidedHeatHandler(IHeatStorage innerHandler, Pair<IOAction, int[]> action) {
+        this(innerHandler, action.first());
+    }
+
     @Override
     public int getHeatStored() {
         return innerHandler.getHeatStored();
@@ -35,11 +40,11 @@ public record SidedHeatHandler(IHeatStorage innerHandler, IOActions action) impl
 
     @Override
     public int tryDrainHeat(int value, boolean simulate) {
-        return action == IOActions.EXTRACT || action == IOActions.BOTH ? innerHandler.tryDrainHeat(value, simulate) : 0;
+        return action == IOAction.EXTRACT || action == IOAction.BOTH ? innerHandler.tryDrainHeat(value, simulate) : 0;
     }
 
     @Override
     public int tryFillHeat(int value, boolean simulate) {
-        return action == IOActions.INSERT || action == IOActions.BOTH ? innerHandler.tryFillHeat(value, simulate) : 0;
+        return action == IOAction.INSERT || action == IOAction.BOTH ? innerHandler.tryFillHeat(value, simulate) : 0;
     }
 }

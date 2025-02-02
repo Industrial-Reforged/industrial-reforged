@@ -2,9 +2,12 @@ package com.indref.industrial_reforged.datagen.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
+import com.indref.industrial_reforged.tags.ModdedTags;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -16,9 +19,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +44,7 @@ public class IRTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.@NotNull Provider provider) {
-            tag(IRTags.Items.TOOL,
+            tag(Tags.Items.TOOLS,
                     IRItems.HAMMER,
                     IRItems.WRENCH,
                     IRItems.TREE_TAP,
@@ -62,6 +67,24 @@ public class IRTagsProvider {
             ores();
 
             tag(ItemTags.DYEABLE, IRItems.TOOLBOX.get());
+
+            tag(ItemTags.PLANKS, IRBlocks.RUBBER_TREE_PLANKS.get());
+            tag(ItemTags.WOODEN_FENCES, IRBlocks.RUBBER_TREE_FENCE.get());
+            tag(ItemTags.FENCE_GATES, IRBlocks.RUBBER_TREE_FENCE_GATE.get());
+            tag(ItemTags.WOODEN_BUTTONS, IRBlocks.RUBBER_TREE_BUTTON.get());
+            tag(ItemTags.WOODEN_DOORS, IRBlocks.RUBBER_TREE_DOOR.get());
+            tag(ItemTags.WOODEN_PRESSURE_PLATES, IRBlocks.RUBBER_TREE_PRESSURE_PLATE.get());
+            tag(ItemTags.WOODEN_SLABS, IRBlocks.RUBBER_TREE_SLAB.get());
+            tag(ItemTags.WOODEN_TRAPDOORS, IRBlocks.RUBBER_TREE_TRAPDOOR.get());
+            tag(ItemTags.LEAVES, IRBlocks.RUBBER_TREE_LEAVES.get());
+            tag(ItemTags.LOGS_THAT_BURN,
+                    IRBlocks.RUBBER_TREE_LOG.get(),
+                    IRBlocks.STRIPPED_RUBBER_TREE_LOG.get(),
+                    IRBlocks.RUBBER_TREE_WOOD.get(),
+                    IRBlocks.STRIPPED_RUBBER_TREE_WOOD.get(),
+                    IRBlocks.RUBBER_TREE_RESIN_HOLE.get()
+            );
+            tag(Tags.Items.BRICKS, IRBlocks.TERRACOTTA_BRICKS.get(), IRBlocks.BLAST_FURNACE_BRICKS.get(), IRBlocks.REFRACTORY_BRICK.get());
         }
 
         private void ores() {
@@ -216,7 +239,94 @@ public class IRTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
-            tag(BlockTags.FENCES).add(IRBlocks.IRON_FENCE.get());
+            tag(BlockTags.FENCES, IRBlocks.IRON_FENCE.get());
+
+            // Rubber trees
+            tag(BlockTags.PLANKS, IRBlocks.RUBBER_TREE_PLANKS.get());
+            tag(BlockTags.WOODEN_FENCES, IRBlocks.RUBBER_TREE_FENCE.get());
+            tag(BlockTags.FENCE_GATES, IRBlocks.RUBBER_TREE_FENCE_GATE.get());
+            tag(BlockTags.WOODEN_BUTTONS, IRBlocks.RUBBER_TREE_BUTTON.get());
+            tag(BlockTags.WOODEN_DOORS, IRBlocks.RUBBER_TREE_DOOR.get());
+            tag(BlockTags.WOODEN_PRESSURE_PLATES, IRBlocks.RUBBER_TREE_PRESSURE_PLATE.get());
+            tag(BlockTags.WOODEN_SLABS, IRBlocks.RUBBER_TREE_SLAB.get());
+            tag(BlockTags.WOODEN_TRAPDOORS, IRBlocks.RUBBER_TREE_TRAPDOOR.get());
+            tag(BlockTags.LEAVES, IRBlocks.RUBBER_TREE_LEAVES.get());
+            tag(BlockTags.LOGS_THAT_BURN,
+                    IRBlocks.RUBBER_TREE_LOG.get(),
+                    IRBlocks.STRIPPED_RUBBER_TREE_LOG.get(),
+                    IRBlocks.RUBBER_TREE_WOOD.get(),
+                    IRBlocks.STRIPPED_RUBBER_TREE_WOOD.get(),
+                    IRBlocks.RUBBER_TREE_RESIN_HOLE.get()
+            );
+
+            for (DeferredBlock<?> block : IRBlocks.AXE_MINEABLE) {
+                tag(BlockTags.MINEABLE_WITH_AXE, block.get());
+            }
+
+            for (DeferredBlock<?> block : IRBlocks.PICKAXE_MINEABLE) {
+                tag(BlockTags.MINEABLE_WITH_PICKAXE, block.get());
+            }
+
+            tag(ModdedTags.Blocks.SUPPORTS_FACADE,
+                    IRBlocks.TIN_CABLE.get(),
+                    IRBlocks.COPPER_CABLE.get(),
+                    IRBlocks.GOLD_CABLE.get(),
+                    IRBlocks.STEEL_CABLE.get()
+            );
+
+            tag(BlockTags.NEEDS_STONE_TOOL,
+                    IRBlocks.BAUXITE_ORE.get(),
+                    IRBlocks.TIN_BLOCK.get(),
+                    IRBlocks.LEAD_ORE.get(),
+                    IRBlocks.NICKEL_BLOCK.get(),
+                    IRBlocks.ALUMINUM_BLOCK.get(),
+                    IRBlocks.TIN_BLOCK.get(),
+                    IRBlocks.LEAD_BLOCK.get(),
+                    IRBlocks.NICKEL_BLOCK.get(),
+                    IRBlocks.RAW_BAUXITE_BLOCK.get(),
+                    IRBlocks.RAW_TIN_BLOCK.get(),
+                    IRBlocks.RAW_LEAD_BLOCK.get(),
+                    IRBlocks.RAW_NICKEL_BLOCK.get()
+            );
+
+            tag(BlockTags.NEEDS_STONE_TOOL,
+                    IRBlocks.BASIC_GENERATOR.get(),
+                    IRBlocks.CENTRIFUGE.get()
+            );
+
+            tag(BlockTags.NEEDS_IRON_TOOL,
+                    IRBlocks.CHROMIUM_ORE.get(),
+                    IRBlocks.URANIUM_ORE.get(),
+                    IRBlocks.CHROMIUM_BLOCK.get(),
+                    IRBlocks.URANIUM_BLOCK.get(),
+                    IRBlocks.STEEL_BLOCK.get(),
+                    IRBlocks.RAW_CHROMIUM_BLOCK.get(),
+                    IRBlocks.RAW_URANIUM_BLOCK.get()
+            );
+
+            tag(BlockTags.NEEDS_DIAMOND_TOOL,
+                    IRBlocks.IRIDIUM_ORE.get(),
+                    IRBlocks.TITANIUM_BLOCK.get(),
+                    IRBlocks.IRIDIUM_BLOCK.get(),
+                    IRBlocks.RAW_IRIDIUM_BLOCK.get()
+            );
+
+            tag(Tags.Blocks.STONES, IRBlocks.REFRACTORY_STONE.get());
+        }
+
+        private void tag(TagKey<Block> itemTagKey, Block... blocks) {
+            IntrinsicTagAppender<Block> tag = tag(itemTagKey);
+            for (Block block : blocks) {
+                tag.add(block);
+            }
+        }
+
+        @SafeVarargs
+        private void tag(TagKey<Block> itemTagKey, TagKey<Block>... blocks) {
+            IntrinsicTagAppender<Block> tag = tag(itemTagKey);
+            for (TagKey<Block> block : blocks) {
+                tag.addTag(block);
+            }
         }
     }
 
@@ -227,6 +337,29 @@ public class IRTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
+            tag(CTags.Fluids.OIL, IRFluids.OIL);
+        }
+
+        private void tag(TagKey<Fluid> fluidTagKey, PDLFluid... fluids) {
+            IntrinsicTagAppender<Fluid> tag = tag(fluidTagKey);
+            for (PDLFluid fluid : fluids) {
+                tag.add(fluid.getStillFluid());
+            }
+        }
+
+        private void tag(TagKey<Fluid> fluidTagKey, Fluid... fluids) {
+            IntrinsicTagAppender<Fluid> tag = tag(fluidTagKey);
+            for (Fluid fluid : fluids) {
+                tag.add(fluid);
+            }
+        }
+
+        @SafeVarargs
+        private void tag(TagKey<Fluid> fluidTagKey, TagKey<Fluid>... fluids) {
+            IntrinsicTagAppender<Fluid> tag = tag(fluidTagKey);
+            for (TagKey<Fluid> fluid : fluids) {
+                tag.addTag(fluid);
+            }
         }
     }
 }

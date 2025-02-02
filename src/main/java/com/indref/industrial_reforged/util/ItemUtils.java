@@ -1,18 +1,13 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;

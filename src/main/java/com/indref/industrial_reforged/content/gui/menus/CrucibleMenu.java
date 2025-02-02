@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.gui.menus;
 
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class CrucibleMenu extends IRAbstractContainerMenu<CrucibleBlockEntity> {
+public class CrucibleMenu extends MachineContainerMenu<CrucibleBlockEntity> {
     private final Level level;
 
     public CrucibleMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
@@ -45,5 +45,10 @@ public class CrucibleMenu extends IRAbstractContainerMenu<CrucibleBlockEntity> {
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, getBlockEntity().getBlockPos()),
                 player, IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get());
+    }
+
+    @Override
+    protected int getMergeableSlotCount() {
+        return 9;
     }
 }

@@ -1,13 +1,12 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.util.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -24,12 +23,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ThermometerItem extends SimpleHeatItem {

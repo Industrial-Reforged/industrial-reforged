@@ -15,8 +15,10 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

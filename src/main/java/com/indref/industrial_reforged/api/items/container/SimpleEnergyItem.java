@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.ItemUtils;
 import net.minecraft.core.Holder;
@@ -17,7 +17,7 @@ public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     private final Holder<EnergyTier> energyTier;
 
     public SimpleEnergyItem(Properties properties, Holder<EnergyTier> energyTier) {
-        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEnergyStorage(0, energyTier.value().defaultCapacity())));
+        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEuStorage(0, energyTier.value().defaultCapacity())));
         this.energyTier = energyTier;
     }
 

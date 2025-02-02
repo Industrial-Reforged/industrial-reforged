@@ -1,4 +1,4 @@
-// 1.21.1	2025-01-31T16:32:51.876855698	Registries
+// 1.21.1	2025-02-01T18:21:01.280780566	Registries
 2f23264fd1d6040e6e57885ac43148e138af76f1 data/indref/worldgen/configured_feature/bauxite_ore.json
 f9f768cf08ada7b0dd4182bb53f98677ddce8ef3 data/indref/worldgen/configured_feature/chromium_ore.json
 d7b0d0eac70c82bbe5763ffc221eb24b8450c9c0 data/indref/worldgen/configured_feature/iridium_ore.json
@@ -12,6 +12,6 @@ cd4646c0fc4e4016b4ca8419cd92d0c0844a33a6 data/indref/worldgen/placed_feature/chr
 2c41e2e35f05012194ccb4e5c0eadedd2c92c427 data/indref/worldgen/placed_feature/iridium_ore.json
 331eaf0321f6df44013fec9c2c10e24970905758 data/indref/worldgen/placed_feature/lead_ore.json
 a55148373ba557e99f0ddb4c9bc7641893361554 data/indref/worldgen/placed_feature/nickel_ore.json
-17f70cfee22fecde9021c642ee29dde2a902938e data/indref/worldgen/placed_feature/rubber_tree.json
+0fc6e4be04f2cc867614618c3d2cbab2e30b1a68 data/indref/worldgen/placed_feature/rubber_tree.json
 9522c1ccbd725476c2642396e483952bca24c5b1 data/indref/worldgen/placed_feature/tin_ore.json
 80c940774c166e01d14ac6e7518e5a037b821fe1 data/indref/worldgen/placed_feature/uranium_ore.json

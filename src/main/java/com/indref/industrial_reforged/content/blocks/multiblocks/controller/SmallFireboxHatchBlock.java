@@ -1,12 +1,13 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
+import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +35,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
     }
 
     @Override
-    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.SMALL_FIREBOX.get();
     }
 
@@ -77,7 +78,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
             if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
                 BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();
                 if (actualBlockEntityPos != null && smallFireboxBlockEntity.getMultiblockData().valid()) {
-                    IRMultiblocks.SMALL_FIREBOX.get().unform(pLevel, actualBlockEntityPos);
+                    MultiblockHelper.unform(IRMultiblocks.SMALL_FIREBOX.get(), actualBlockEntityPos, pLevel);
                 }
             }
         }

@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -10,6 +9,8 @@ import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
+import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -67,7 +68,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
         if (!blockState.is(newState.getBlock())) {
-            IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(level, blockPos);
+            MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
         }
 
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
@@ -79,7 +80,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
     }
 
     @Override
-    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.CRUCIBLE.get();
     }
 

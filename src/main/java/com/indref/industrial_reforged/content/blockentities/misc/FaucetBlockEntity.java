@@ -2,10 +2,10 @@ package com.indref.industrial_reforged.content.blockentities.misc;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,9 +19,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
-public class FaucetBlockEntity extends ContainerBlockEntity {
+public class FaucetBlockEntity extends IRContainerBlockEntity {
     private BlockCapabilityCache<IFluidHandler, Direction> drainCapCache;
     private BlockCapabilityCache<IFluidHandler, Direction> fillCapCache;
 
@@ -61,7 +59,7 @@ public class FaucetBlockEntity extends ContainerBlockEntity {
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         return ImmutableMap.of();
     }
 }

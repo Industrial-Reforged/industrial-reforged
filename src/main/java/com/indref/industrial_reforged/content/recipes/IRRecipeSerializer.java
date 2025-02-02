@@ -1,31 +1,23 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.data.IRDataMaps;
-import com.indref.industrial_reforged.data.maps.CastingMoldValue;
-import com.indref.industrial_reforged.util.RegistryUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Function;
 
 public final class IRRecipeSerializer {
     protected static final class Casting {
-        public static final Codec<Item> ITEM_CODEC = RegistryUtils.registryCodec(BuiltInRegistries.ITEM);
-        public static final StreamCodec<ByteBuf, Item> ITEM_STREAM_CODEC = RegistryUtils.registryStreamCodec(BuiltInRegistries.ITEM);
+        public static final Codec<Item> ITEM_CODEC = CodecUtils.registryCodec(BuiltInRegistries.ITEM);
+        public static final StreamCodec<ByteBuf, Item> ITEM_STREAM_CODEC = CodecUtils.registryStreamCodec(BuiltInRegistries.ITEM);
 
         static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
                 FluidStack.OPTIONAL_CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
@@ -95,7 +87,8 @@ public final class IRRecipeSerializer {
         static final MapCodec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
                 IngredientWithCount.CODEC.listOf().fieldOf("ingredients").forGetter(BlastFurnaceRecipe::ingredients),
                 FluidStack.CODEC.fieldOf("result").forGetter(BlastFurnaceRecipe::resultFluid),
-                Codec.INT.fieldOf("duration").forGetter(BlastFurnaceRecipe::duration)
+                Codec.INT.fieldOf("duration").forGetter(BlastFurnaceRecipe::duration),
+                Codec.INT.fieldOf("heat").forGetter(BlastFurnaceRecipe::heat)
         ).apply(builder, BlastFurnaceRecipe::new));
         static final StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> STREAM_CODEC = StreamCodec.composite(
                 IngredientWithCount.STREAM_LIST_CODEC,
@@ -104,6 +97,8 @@ public final class IRRecipeSerializer {
                 BlastFurnaceRecipe::resultFluid,
                 ByteBufCodecs.INT,
                 BlastFurnaceRecipe::duration,
+                ByteBufCodecs.INT,
+                BlastFurnaceRecipe::heat,
                 BlastFurnaceRecipe::new
         );
     }

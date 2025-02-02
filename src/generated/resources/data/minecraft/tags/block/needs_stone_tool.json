@@ -1,0 +1,18 @@
+{
+  "values": [
+    "indref:bauxite_ore",
+    "indref:tin_block",
+    "indref:lead_ore",
+    "indref:nickel_block",
+    "indref:aluminum_block",
+    "indref:tin_block",
+    "indref:lead_block",
+    "indref:nickel_block",
+    "indref:raw_bauxite_block",
+    "indref:raw_tin_block",
+    "indref:raw_lead_block",
+    "indref:raw_nickel_block",
+    "indref:basic_generator",
+    "indref:centrifuge"
+  ]
+}

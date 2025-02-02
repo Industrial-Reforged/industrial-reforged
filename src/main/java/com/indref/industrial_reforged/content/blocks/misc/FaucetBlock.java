@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.content.blocks.misc;
 
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -99,7 +99,7 @@ public class FaucetBlock extends RotatableContainerBlock implements WrenchableBl
     }
 
     @Override
-    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.FAUCET.get();
     }
 

@@ -1,4 +1,4 @@
-// 1.21.1	2025-01-31T13:56:42.079619668	Recipes
+// 1.21.1	2025-02-02T12:40:48.830533676	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -98,10 +98,10 @@ b67111755cb5dfaf5918c7a4bd47e97ef0dfa3b0 data/indref/recipe/basic_battery.json
 9bf623d9f8406468a176f78ec6ed1987737a2469 data/indref/recipe/basic_circuit.json
 81ddf1e73b4446fc9092d904664d48bf9a7434eb data/indref/recipe/basic_generator.json
 f3e455e124b5b801f205654a7da860de670ba189 data/indref/recipe/basic_machine_frame.json
-7105c6c93f7d33a846a6d2e06dd4c41f052d4dbb data/indref/recipe/blast_furnace/ingots/iron_coals.json
-2b7011aefab3f9c418a4bce3b7e8e429d259ff8b data/indref/recipe/blast_furnace/ores/bauxite.json
-665bc0ce282cbc72293aeb4b2c5ba054a3828b49 data/indref/recipe/blast_furnace/raw_bauxite.json
-0392e8a1d88b8ae58d0fab1ea211bf1b366a6466 data/indref/recipe/blast_furnace/storage_blocks/raw_titanium.json
+a6cbf583459fdeafc435a4198f9ab68a69e32a34 data/indref/recipe/blast_furnace/ingots/iron_coals.json
+2389c081d882d6d30546b37022dcfa2d2d505620 data/indref/recipe/blast_furnace/ores/bauxite.json
+4b1b9b813ed83f5ec5c6007069fe10bea263e803 data/indref/recipe/blast_furnace/raw_bauxite.json
+7ea3e2925482d0997cf96276fd28a875263366a8 data/indref/recipe/blast_furnace/storage_blocks/raw_titanium.json
 2268a3dbee7484ed444bf27811008d02db7f02e5 data/indref/recipe/blast_furnace_bricks.json
 1b72ba9a07bb116d051901baab0639ed672541e0 data/indref/recipe/blast_furnace_casting_basin.json
 6e7a0ea270c70ff47fe411f66716779b09611842 data/indref/recipe/blast_furnace_faucet.json
@@ -245,7 +245,7 @@ edc0cc3267ca3a9248f0c18389269d4e8ffe213c data/indref/recipe/tin_cable.json
 55b5c69becb7d039e5f5a154b39baf3d1fd9f525 data/indref/recipe/tin_ingot.json
 468ba8e5b59a358961c261dc77faf07cf911c6bb data/indref/recipe/titanium_block.json
 46d5127a735cf8880403bf8b27af38d0ab1ae7be data/indref/recipe/titanium_ingot.json
-1ad6f1b06217f9deea493947255fe76114c3dd85 data/indref/recipe/toolbox.json
+8ab9b9b1a502d7b7b44f68006df6bcd9f809fab6 data/indref/recipe/toolbox.json
 624864a84194cc3c841a8f6aa2e2226292534e51 data/indref/recipe/tree_tap.json
 04a6976ab1e12d27d06d469114d23d936803324c data/indref/recipe/uranium_block.json
 e41b994a1fc8cf0c9b667bdeb46e6a039c8dfd2d data/indref/recipe/uranium_ingot.json

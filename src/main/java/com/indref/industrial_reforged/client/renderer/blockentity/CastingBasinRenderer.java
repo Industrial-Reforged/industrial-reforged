@@ -2,6 +2,9 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.content.blocks.misc.CastingBasinBlock;
+import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.data.maps.CastingMoldValue;
+import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.LightLayer;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.joml.Matrix4f;
 
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
@@ -39,7 +43,11 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
     @Override
     public void render(CastingBasinBlockEntity castingTableBlockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, int combinedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        ItemStack[] itemStacks = castingTableBlockEntity.getRenderStacks();
+        IItemHandler itemHandler = castingTableBlockEntity.getItemHandler();
+        CrucibleCastingRecipe recipe = castingTableBlockEntity.getRecipe();
+        ItemStack moldItem = itemHandler.getStackInSlot(0);
+        CastingMoldValue mold = castingTableBlockEntity.getMold(moldItem.getItem());
+        ItemStack resultItem = recipe != null && mold != null && castingTableBlockEntity.getFluidTank().getFluidAmount() == mold.capacity() ? recipe.getResultItem(null) : itemHandler.getStackInSlot(1);
 
         // This code for fading item and fluid texture is from Tinkers construct.
         // Thank you to the tinkers construct devs for this
@@ -58,28 +66,8 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
             }
         }
 
-        for (int i = 0; i < itemStacks.length; i++) {
-            ItemStack itemStack = itemStacks[i];
-            poseStack.pushPose();
-            poseStack.translate(0.5f, 0.18f, 0.5f);
-            poseStack.scale(0.78f, 0.78f, 0.78f);
-            poseStack.mulPose(Axis.XP.rotationDegrees(90));
-
-            poseStack.mulPose(Axis.ZP.rotationDegrees(0));
-
-            // This code for fading the item texture is from Tinkers construct.
-            // Thank you to the tinkers construct devs for implementing this
-            MultiBufferSource outputBuffer = multiBufferSource;
-            if (itemOpacity > 0 && i == 1) {
-                // apply a buffer wrapper to tint and add opacity
-                outputBuffer = new CastingItemRenderTypeBuffer(multiBufferSource, itemOpacity, fluidOpacity);
-            }
-
-            itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, getLightLevel(castingTableBlockEntity.getLevel(),
-                            castingTableBlockEntity.getBlockPos()),
-                    OverlayTexture.NO_OVERLAY, poseStack, outputBuffer, castingTableBlockEntity.getLevel(), 1);
-            poseStack.popPose();
-        }
+        renderItem(moldItem, castingTableBlockEntity, poseStack, multiBufferSource, 0, fluidOpacity, itemRenderer);
+        renderItem(resultItem, castingTableBlockEntity, poseStack, multiBufferSource, itemOpacity, fluidOpacity, itemRenderer);
 
         IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(castingTableBlockEntity);
         if (fluidHandler != null) {
@@ -96,7 +84,32 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
                 renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
             else
                 renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
+
         }
+    }
+
+    private void renderItem(ItemStack item, CastingBasinBlockEntity castingTableBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int itemOpacity, int fluidOpacity, ItemRenderer itemRenderer) {
+        poseStack.pushPose();
+        {
+            poseStack.translate(0.5f, 0.18f, 0.5f);
+            poseStack.scale(0.78f, 0.78f, 0.78f);
+            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+
+            poseStack.mulPose(Axis.ZP.rotationDegrees(0));
+
+            // This code for fading the item texture is from Tinkers construct.
+            // Thank you to the tinkers construct devs for implementing this
+            MultiBufferSource outputBuffer = multiBufferSource;
+            if (itemOpacity > 0) {
+                // apply a buffer wrapper to tint and add opacity
+                outputBuffer = new CastingItemRenderTypeBuffer(multiBufferSource, itemOpacity, fluidOpacity);
+            }
+
+            itemRenderer.renderStatic(item, ItemDisplayContext.FIXED, getLightLevel(castingTableBlockEntity.getLevel(),
+                            castingTableBlockEntity.getBlockPos()),
+                    OverlayTexture.NO_OVERLAY, poseStack, outputBuffer, castingTableBlockEntity.getLevel(), 1);
+        }
+        poseStack.popPose();
     }
 
     private int getLightLevel(Level level, BlockPos pos) {

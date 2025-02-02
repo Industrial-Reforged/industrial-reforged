@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blockentities.multiblock;
 
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

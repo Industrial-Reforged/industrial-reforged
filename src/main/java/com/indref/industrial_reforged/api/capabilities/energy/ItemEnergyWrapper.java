@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
@@ -27,9 +27,9 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
 
     @Override
     public int getEnergyStored() {
-        ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
-        if (componentEnergyStorage != null)
-            return componentEnergyStorage.energyStored();
+        ComponentEuStorage componentEuStorage = itemStack.get(IRDataComponents.ENERGY);
+        if (componentEuStorage != null)
+            return componentEuStorage.energyStored();
         else
             throw new NullPointerException("Failed to get energy component for item: "
                     + itemStack.getItem()
@@ -39,15 +39,15 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
     @Override
     public void setEnergyStored(int value) {
         int energyStored = getEnergyStored();
-        itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(value, getEnergyCapacity()));
+        itemStack.set(IRDataComponents.ENERGY, new ComponentEuStorage(value, getEnergyCapacity()));
         onEnergyChanged(energyStored);
     }
 
     @Override
     public int getEnergyCapacity() {
-        ComponentEnergyStorage componentEnergyStorage = itemStack.get(IRDataComponents.ENERGY);
-        if (componentEnergyStorage != null)
-            return componentEnergyStorage.energyCapacity();
+        ComponentEuStorage componentEuStorage = itemStack.get(IRDataComponents.ENERGY);
+        if (componentEuStorage != null)
+            return componentEuStorage.energyCapacity();
         else
             throw new NullPointerException("Failed to get energy component for item: "
                     + itemStack.getItem()
@@ -56,6 +56,6 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
 
     @Override
     public void setEnergyCapacity(int value) {
-        itemStack.set(IRDataComponents.ENERGY, new ComponentEnergyStorage(getEnergyStored(), value));
+        itemStack.set(IRDataComponents.ENERGY, new ComponentEuStorage(getEnergyStored(), value));
     }
 }

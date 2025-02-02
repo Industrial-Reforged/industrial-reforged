@@ -1,13 +1,12 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -18,8 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPosBlockEntity {
     private BlockPos mainControllerPos;

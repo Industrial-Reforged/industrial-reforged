@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.util.RegistryUtils;
+import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public record ArmorActivityPayload(EquipmentSlot slot, boolean active) implements CustomPacketPayload {
     public static final Type<ArmorActivityPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "armor_activity_payload"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ArmorActivityPayload> STREAM_CODEC = StreamCodec.composite(
-            RegistryUtils.enumStreamCodec(EquipmentSlot.class),
+            CodecUtils.enumStreamCodec(EquipmentSlot.class),
             ArmorActivityPayload::slot,
             ByteBufCodecs.BOOL,
             ArmorActivityPayload::active,

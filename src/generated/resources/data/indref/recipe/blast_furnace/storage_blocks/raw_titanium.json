@@ -1,6 +1,7 @@
 {
   "type": "indref:blast_furnace",
   "duration": 1800,
+  "heat": 180,
   "ingredients": [
     {
       "tag": "c:storage_blocks/raw_titanium"

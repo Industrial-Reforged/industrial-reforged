@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
+import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record CentrifugeRecipe(IngredientWithCount ingredient, List<ItemStack> results, FluidStack resultFluid,
-                               int duration, int energy) implements IRRecipe<SingleRecipeInput> {
+                               int duration, int energy) implements PDLRecipe<SingleRecipeInput> {
     public static final String NAME = "centrifuge";
     public static final RecipeType<CentrifugeRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CentrifugeRecipe> SERIALIZER =

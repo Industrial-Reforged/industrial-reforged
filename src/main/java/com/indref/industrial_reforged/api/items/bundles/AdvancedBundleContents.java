@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BundleContents;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.Tags;
 import org.apache.commons.lang3.math.Fraction;
 
 import javax.annotation.Nullable;
@@ -145,10 +146,7 @@ public record AdvancedBundleContents(List<ItemStack> items, Fraction weight) imp
         }
 
         public boolean isValid(ItemStack itemStack) {
-            return (itemStack.getTags().anyMatch(tag -> tag == IRTags.Items.TOOL)
-                    || itemStack.canPerformAction(ItemAbilities.PICKAXE_DIG)
-                    || itemStack.canPerformAction(ItemAbilities.AXE_DIG)
-                    || itemStack.canPerformAction(ItemAbilities.SHOVEL_DIG));
+            return (itemStack.getTags().anyMatch(tag -> tag == Tags.Items.TOOLS));
         }
 
         public int tryTransfer(Slot p_330834_, Player p_331924_) {

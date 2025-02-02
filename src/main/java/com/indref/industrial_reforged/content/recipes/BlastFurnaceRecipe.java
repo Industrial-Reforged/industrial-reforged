@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.util.recipes.*;
 import com.indref.industrial_reforged.util.Utils;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
+import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -17,14 +17,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record BlastFurnaceRecipe(NonNullList<IngredientWithCount> ingredients, FluidStack resultFluid,
-                                 int duration) implements IRRecipe<ItemRecipeInput> {
+                                 int duration, int heat) implements PDLRecipe<ItemRecipeInput> {
     public static final String NAME = "blast_furnace";
     public static final RecipeType<BlastFurnaceRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<BlastFurnaceRecipe> SERIALIZER =
             RecipeUtils.newRecipeSerializer(IRRecipeSerializer.BlastFurnace.CODEC, IRRecipeSerializer.BlastFurnace.STREAM_CODEC);
 
-    public BlastFurnaceRecipe(List<IngredientWithCount> ingredients, FluidStack resultFluid, int duration) {
-        this(Utils.listToNonNullList(ingredients), resultFluid, duration);
+    public BlastFurnaceRecipe(List<IngredientWithCount> ingredients, FluidStack resultFluid, int duration, int heat) {
+        this(Utils.listToNonNullList(ingredients), resultFluid, duration, heat);
     }
 
     @Override

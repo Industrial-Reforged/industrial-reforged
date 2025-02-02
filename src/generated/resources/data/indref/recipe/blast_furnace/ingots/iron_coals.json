@@ -1,6 +1,7 @@
 {
   "type": "indref:blast_furnace",
   "duration": 200,
+  "heat": 180,
   "ingredients": [
     {
       "count": 2,

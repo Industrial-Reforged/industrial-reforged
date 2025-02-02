@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -14,6 +13,8 @@ import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableEntityBlock;
+import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -70,7 +71,7 @@ public class BlastFurnacePartBlock extends RotatableEntityBlock implements Displ
         BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
         if (blockEntity instanceof BlastFurnacePartBlockEntity partBlockEntity) {
             if (p_60516_.getBlockEntity(partBlockEntity.getControllerPos()) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                IRMultiblocks.BLAST_FURNACE.get().unform(p_60516_, blastFurnaceBlockEntity.getActualBlockEntityPos());
+                MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blastFurnaceBlockEntity.getActualBlockEntityPos(), p_60516_);
             }
         }
         super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);

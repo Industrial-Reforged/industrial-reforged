@@ -1,2 +1,19 @@
-// 1.21.1	2024-12-13T16:07:28.641944551	Tags for minecraft:block mod id indref
+// 1.21.1	2025-02-02T12:32:59.795200124	Tags for minecraft:block mod id indref
+3bc3be338d499b13948c6cb82053d97c708b313d data/c/tags/block/stones.json
+e8bbb9941d99f1577cba384f72df9dd4c0e7b754 data/cable_facades/tags/block/supports_facade.json
+7ec99157ac16a38de2ac0d390dc224f1fbe49af4 data/minecraft/tags/block/fence_gates.json
 78dad906beb19c9df69e27851cf8819fb51abf37 data/minecraft/tags/block/fences.json
+9fc4940b4b0bec19481be6ce8ee18150a36574fd data/minecraft/tags/block/leaves.json
+cedd081972b2581d1997db600bf27a93b8ef4657 data/minecraft/tags/block/logs_that_burn.json
+fff53774a6638d7425273b562313521d1a919f24 data/minecraft/tags/block/mineable/axe.json
+a172ed9428ecb4f28055917fd130b9b1cb67ad6b data/minecraft/tags/block/mineable/pickaxe.json
+aebfae13bc12dc5d2ebe92031733c76fe9a73304 data/minecraft/tags/block/needs_diamond_tool.json
+fa8b84e716c2552c70fe8382b7f1a0b38f260e61 data/minecraft/tags/block/needs_iron_tool.json
+22aa615ac755d05413974fa0034dcacdfb637667 data/minecraft/tags/block/needs_stone_tool.json
+b479234ce7d2baf7968c89065c71c62544e49fca data/minecraft/tags/block/planks.json
+101f70355e6a5e463a92339ae0f556e6add0ca99 data/minecraft/tags/block/wooden_buttons.json
+2b8e8c23cf7535eb7647015304ebfd46b30a2ed3 data/minecraft/tags/block/wooden_doors.json
+a85be415f0ca70fddb306eaf7e9d0f63488ea68b data/minecraft/tags/block/wooden_fences.json
+f63800ba64f40dea42a2312e36c174d529c9f3b3 data/minecraft/tags/block/wooden_pressure_plates.json
+07e617cd78df58b6f5d30499d9dfb667d448586b data/minecraft/tags/block/wooden_slabs.json
+44deab82307fb70c0f24b95d64cf33f9761005aa data/minecraft/tags/block/wooden_trapdoors.json

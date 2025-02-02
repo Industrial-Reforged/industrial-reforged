@@ -7,14 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record CrucibleCastingRecipeInput(List<ItemStack> itemStacks, FluidStack fluidStack) implements RecipeInput {
+public record CrucibleCastingRecipeInput(ItemStack moldItem, FluidStack fluidStack) implements RecipeInput {
     @Override
     public @NotNull ItemStack getItem(int i) {
-        return itemStacks.get(i);
+        return i == 0 ? moldItem : ItemStack.EMPTY;
     }
 
     @Override
     public int size() {
-        return itemStacks.size();
+        return 1;
     }
 }

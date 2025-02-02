@@ -1,9 +1,12 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.content.gui.components.EnergyGuiComponent;
+import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
+import com.indref.industrial_reforged.content.gui.widgets.BatterySlotWidget;
+import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
+import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.EnergyBarWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
-public class BasicGeneratorScreen extends IRAbstractContainerScreen<BasicGeneratorMenu> {
+public class BasicGeneratorScreen extends PDLAbstractContainerScreen<BasicGeneratorMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/basic_generator.png");
     private static final ResourceLocation LIT_PROGRESS_SPRITE = ResourceLocation.parse("container/smoker/lit_progress");
@@ -31,9 +34,10 @@ public class BasicGeneratorScreen extends IRAbstractContainerScreen<BasicGenerat
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
-        initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true, true)
+        EnergyBarWidget energyBarWidget = addRenderableWidget(
+                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), "EU", true)
         );
+        addRenderableWidget(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
     }
 
     @Override

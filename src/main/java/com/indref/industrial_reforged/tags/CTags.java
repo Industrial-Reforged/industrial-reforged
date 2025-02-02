@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 public final class CTags {
     public static class Blocks {
@@ -82,6 +83,14 @@ public final class CTags {
 
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));
+        }
+    }
+
+    public static class Fluids {
+        public static final TagKey<Fluid> OIL = bind("oil");
+
+        private static TagKey<Fluid> bind(String path) {
+            return TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath("c", path));
         }
     }
 }

@@ -13,12 +13,17 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.charset.MalformedInputException;
 
 public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltingRecipe> {
     private static final ResourceLocation SLOT_SPRITE = ResourceLocation.withDefaultNamespace("container/slot");
@@ -54,19 +59,17 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
 
     @Override
     public int getHeight() {
-        return 64;
-    }
-
-    public int getPadding() {
-        return 0;
+        return 76;
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, CrucibleSmeltingRecipe crucibleSmeltingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 1, 7)
+        int y = 14;
+
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 1, y + 7)
                 .addIngredients(RecipeUtils.iWCToIngredientSaveCount(crucibleSmeltingRecipe.ingredient()));
         FluidStack fluidStack = crucibleSmeltingRecipe.resultFluid();
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 73, 27)
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 73, y + 27)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
                 .setFluidRenderer(fluidStack.getAmount(), false, 52, 32);
     }
@@ -74,7 +77,7 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
     @Override
     public void draw(CrucibleSmeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         int x = 0;
-        int y = 6;
+        int y = 20;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -83,5 +86,13 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
         }
 
         guiGraphics.blitSprite(TANK_SPRITE, x + 18 * 4, y, 54, 54);
+
+        Font font = Minecraft.getInstance().font;
+
+        String heatText = "%d HU".formatted(recipe.heat());
+        String durationText = "%d sec".formatted(recipe.duration() / 20);
+
+        guiGraphics.drawString(font, heatText, 0, 0, ChatFormatting.DARK_GRAY.getColor(), false);
+        guiGraphics.drawString(font, durationText, 0, font.lineHeight, ChatFormatting.DARK_GRAY.getColor(), false);
     }
 }

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.fluids;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.fluids.FluidTemplate;
+import com.portingdeadmods.portingdeadlibs.api.fluids.FluidTemplate;
 import net.minecraft.resources.ResourceLocation;
 
 public enum FluidTemplates implements FluidTemplate {

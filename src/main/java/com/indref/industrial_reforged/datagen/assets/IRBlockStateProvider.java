@@ -92,7 +92,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
     }
 
     private void oreBlocks() {
-        for (DeferredBlock<DropExperienceBlock> oreBlock : IRBlocks.ORES) {
+        for (DeferredBlock<DropExperienceBlock> oreBlock : IRBlocks.ORES.keySet()) {
             simpleBlock(oreBlock.get());
         }
     }

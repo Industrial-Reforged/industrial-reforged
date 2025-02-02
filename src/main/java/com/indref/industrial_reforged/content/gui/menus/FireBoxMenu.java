@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.content.gui.menus;
 
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +16,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class FireBoxMenu extends IRAbstractContainerMenu<FireboxBlockEntity> {
+public class FireBoxMenu extends PDLAbstractContainerMenu<FireboxBlockEntity> {
     private final Level level;
     private final Player player;
 
@@ -51,6 +52,11 @@ public class FireBoxMenu extends IRAbstractContainerMenu<FireboxBlockEntity> {
             }
         }
         return false;
+    }
+
+    @Override
+    protected int getMergeableSlotCount() {
+        return 0;
     }
 
     public Player getPlayer() {

@@ -12,6 +12,8 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -32,6 +34,8 @@ public class IRDataMapProvider extends DataMapProvider {
         moldIngredient(IRItems.CLAY_MOLD_PLATE, CTags.Items.PLATES);
         moldIngredient(IRItems.CLAY_MOLD_ROD, Tags.Items.RODS);
         moldIngredient(IRItems.CLAY_MOLD_WIRE, CTags.Items.WIRES);
+
+        furnaceFuel(IRItems.COAL_DUST, 1600);
     }
 
     private void moldItem(Item moldItem, int capacity, boolean consumeCast) {
@@ -42,5 +46,10 @@ public class IRDataMapProvider extends DataMapProvider {
     private void moldIngredient(ItemLike moldItem, TagKey<Item> ingredient) {
         builder(IRDataMaps.MOLD_INGREDIENTS)
                 .add(moldItem.asItem().getDefaultInstance().getItemHolder(), ingredient, false);
+    }
+
+    private void furnaceFuel(ItemLike fuelItem, int duration) {
+        builder(NeoForgeDataMaps.FURNACE_FUELS)
+                .add(fuelItem.asItem().getDefaultInstance().getItemHolder(), new FurnaceFuel(duration), false);
     }
 }

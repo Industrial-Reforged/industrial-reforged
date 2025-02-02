@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
@@ -9,6 +8,7 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRTabs;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.IRTranslations;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -76,7 +76,12 @@ public class IREnUSLangProvider extends LanguageProvider {
         addEnergyTier(EnergyTiers.CREATIVE, "Creative");
 
         addTitle("firebox", "Firebox");
+        addTitle("small_firebox", "Small Firebox");
+        addTitle("crucible", "Crucible");
+        addTitle("blueprint", "Blueprint");
+        addTitle("crafting_station", "Crafting Station");
         addTooltip("basic_generator", "Basic Generator");
+        addTooltip("centrifuge", "Centrifuge");
 
         addMultiblockFeedback(MultiblockFeedback.FAILED_TO_CONSTRUCT, "Missing or invalid block");
         addMultiblockFeedback(MultiblockFeedback.ACTUAL_BLOCK, "Block: %s");
@@ -278,7 +283,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         add(registryTranslation(NeoForgeRegistries.FLUID_TYPES, fluidType.get()).getString(), val);
     }
 
-    private void addFluidType(IRFluid fluidType, String val) {
+    private void addFluidType(PDLFluid fluidType, String val) {
         add(registryTranslation(NeoForgeRegistries.FLUID_TYPES, fluidType.getFluidType().get()).getString(), val);
     }
 

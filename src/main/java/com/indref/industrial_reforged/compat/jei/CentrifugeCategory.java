@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.compat.jei;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;

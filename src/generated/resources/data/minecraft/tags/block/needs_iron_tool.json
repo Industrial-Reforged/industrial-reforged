@@ -1,0 +1,11 @@
+{
+  "values": [
+    "indref:chromium_ore",
+    "indref:uranium_ore",
+    "indref:chromium_block",
+    "indref:uranium_block",
+    "indref:steel_block",
+    "indref:raw_chromium_block",
+    "indref:raw_uranium_block"
+  ]
+}

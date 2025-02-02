@@ -11,11 +11,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlastFurnaceCategory implements IRecipeCategory<BlastFurnaceRecipe> {
@@ -32,12 +36,12 @@ public class BlastFurnaceCategory implements IRecipeCategory<BlastFurnaceRecipe>
     }
 
     @Override
-    public RecipeType<BlastFurnaceRecipe> getRecipeType() {
+    public @NotNull RecipeType<BlastFurnaceRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         return Component.literal("Blast Furnace");
     }
 
@@ -78,5 +82,12 @@ public class BlastFurnaceCategory implements IRecipeCategory<BlastFurnaceRecipe>
         guiGraphics.blitSprite(TANK_SPRITE, getPadding() + 75, getHeight() / 2 - 27, 18, 54);
         guiGraphics.blitSprite(SLOT_SPRITE, getPadding() - 1, getHeight() / 2 - 9, 18, 18);
         guiGraphics.blitSprite(SLOT_SPRITE, getPadding() + 27, getHeight() / 2 - 9, 18, 18);
+
+        Font font = Minecraft.getInstance().font;
+
+        String heatText = "%d HU".formatted(recipe.heat());
+        String durationText = "%d sec".formatted(recipe.duration() / 20);
+        guiGraphics.drawString(font, heatText, 0, getHeight() - font.lineHeight * 2, ChatFormatting.DARK_GRAY.getColor(), false);
+        guiGraphics.drawString(font, durationText, 0, getHeight() - font.lineHeight, ChatFormatting.DARK_GRAY.getColor(), false);
     }
 }

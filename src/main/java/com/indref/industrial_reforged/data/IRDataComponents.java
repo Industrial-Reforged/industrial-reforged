@@ -3,12 +3,12 @@ package com.indref.industrial_reforged.data;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
-import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
@@ -21,7 +21,7 @@ import java.util.function.UnaryOperator;
 // Registry for minecraft's item data component system
 // entities and blockentities are handled in IRAttachmentTypes
 public final class IRDataComponents {
-    public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(IndustrialReforged.MODID);
+    public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, IndustrialReforged.MODID);
 
     public static final Supplier<DataComponentType<Boolean>> ACTIVE = registerDataComponentType("active",
             () -> builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
@@ -37,8 +37,8 @@ public final class IRDataComponents {
             () -> builder -> builder.persistent(AdvancedBundleContents.CODEC).networkSynchronized(AdvancedBundleContents.STREAM_CODEC));
 
     // Data for capabilities
-    public static final Supplier<DataComponentType<ComponentEnergyStorage>> ENERGY = registerDataComponentType("energy",
-            () -> builder -> builder.persistent(ComponentEnergyStorage.CODEC).networkSynchronized(ComponentEnergyStorage.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ComponentEuStorage>> ENERGY = registerDataComponentType("energy",
+            () -> builder -> builder.persistent(ComponentEuStorage.CODEC).networkSynchronized(ComponentEuStorage.STREAM_CODEC));
     public static final Supplier<DataComponentType<ComponentHeatStorage>> HEAT = registerDataComponentType("heat",
             () -> builder -> builder.persistent(ComponentHeatStorage.CODEC).networkSynchronized(ComponentHeatStorage.STREAM_CODEC));
     public static final Supplier<DataComponentType<SimpleFluidContent>> FLUID = registerDataComponentType("fluid",

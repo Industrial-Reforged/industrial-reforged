@@ -15,6 +15,7 @@ import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -75,7 +76,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         if (blockEntity instanceof CruciblePartBlockEntity cruciblePartBlockEntity) {
             BlockPos controllerPos = cruciblePartBlockEntity.getControllerPos();
             if (controllerPos != null) {
-                IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(level, controllerPos);
+                MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), controllerPos, level);
             }
         } else {
             IndustrialReforged.LOGGER.error("Failed to unform crucible, crucible wall blockentity corruption");

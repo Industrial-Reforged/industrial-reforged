@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.content.fluids.BioMassFluid;
 import com.indref.industrial_reforged.content.fluids.MethaneFluid;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.fluids.OilFluid;
-import com.indref.industrial_reforged.util.FluidRegistrationHelper;
+import com.portingdeadmods.portingdeadlibs.utils.FluidRegistrationHelper;
 import net.minecraft.core.Vec3i;
 
 public final class IRFluids {

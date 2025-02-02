@@ -1,30 +1,29 @@
 package com.indref.industrial_reforged;
 
 import com.google.common.base.Preconditions;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.IRDataMaps;
-import com.indref.industrial_reforged.networking.ArmorActivityPayload;
-import com.indref.industrial_reforged.networking.CrucibleControllerPayload;
-import com.indref.industrial_reforged.networking.CrucibleMeltingProgressPayload;
-import com.indref.industrial_reforged.networking.CrucibleTurnPayload;
+import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.logging.LogUtils;
+import com.portingdeadmods.portingdeadlibs.PDLRegistries;
+import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.CapabilityRegistrationHelper;
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -48,7 +47,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -90,7 +88,6 @@ public final class IndustrialReforged {
     }
 
     private void registerRegistries(NewRegistryEvent event) {
-        event.register(IRRegistries.MULTIBLOCK);
         event.register(IRRegistries.ENERGY_TIER);
     }
 
@@ -100,7 +97,7 @@ public final class IndustrialReforged {
     }
 
     private void onRegister(RegisterEvent event) {
-        Registry<Multiblock> registry = event.getRegistry(IRRegistries.MULTIBLOCK.key());
+        Registry<Multiblock> registry = event.getRegistry(PDLRegistries.MULTIBLOCK.key());
         if (registry != null) {
             for (Multiblock multiblock : registry) {
                 // Check non-negative integers in definition
@@ -148,7 +145,7 @@ public final class IndustrialReforged {
 
             if (item instanceof IFluidItem fluidItem)
                 event.registerItem(Capabilities.FluidHandler.ITEM,
-                        (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getDefaultFluidCapacity()), item);
+                        (stack, ctx) -> new FluidHandlerItemStack(IRDataComponents.FLUID, stack, fluidItem.getFluidCapacity()), item);
 
             if (item instanceof ToolboxItem) {
                 event.registerItem(Capabilities.ItemHandler.ITEM,
@@ -163,23 +160,16 @@ public final class IndustrialReforged {
         for (DeferredHolder<BlockEntityType<?>, ? extends BlockEntityType<?>> be : IRBlockEntityTypes.BLOCK_ENTITIES.getEntries()) {
             Block validBlock = be.get().getValidBlocks().stream().iterator().next();
             BlockEntity testBE = be.get().create(BlockPos.ZERO, validBlock.defaultBlockState());
-            if (testBE instanceof ContainerBlockEntity containerBE) {
-                if (containerBE.getEnergyStorage() != null) {
-                    event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getEnergyHandlerOnSide);
+            if (testBE instanceof IRContainerBlockEntity machineBE) {
+                if (machineBE.getHeatStorage() != null) {
+                    event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getHeatHandlerOnSide);
                 }
 
-                if (containerBE.getHeatStorage() != null) {
-                    event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getHeatHandlerOnSide);
-                }
-
-                if (containerBE.getItemHandler() != null) {
-                    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getItemHandlerOnSide);
-                }
-
-                if (containerBE.getFluidHandler() != null) {
-                    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<ContainerBlockEntity>) be.get(), ContainerBlockEntity::getFluidHandlerOnSide);
+                if (machineBE.getEuStorage() != null) {
+                    event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getEuHandlerOnSide);
                 }
             }
+            CapabilityRegistrationHelper.registerBECaps(event, IRBlockEntityTypes.BLOCK_ENTITIES);
         }
 
         registerMBPartCaps(event);
@@ -197,6 +187,7 @@ public final class IndustrialReforged {
         registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, CrucibleControllerPayload::handle);
         registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, CrucibleMeltingProgressPayload::handle);
         registrar.playToClient(CrucibleTurnPayload.TYPE, CrucibleTurnPayload.STREAM_CODEC, CrucibleTurnPayload::handle);
+        registrar.playToClient(BasinFluidChangedPayload.TYPE, BasinFluidChangedPayload.STREAM_CODEC, BasinFluidChangedPayload::handle);
     }
 
     public static ResourceLocation rl(String path) {

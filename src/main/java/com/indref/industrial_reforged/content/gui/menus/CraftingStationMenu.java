@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.gui.menus;
 
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.CraftingStationBlockEntity;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStationBlockEntity> {
+public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlockEntity> {
     public static final int BLUEPRINT_SLOT = 28;
 
     private final ItemhandlerCraftingContainer craftSlots;
@@ -124,5 +124,10 @@ public class CraftingStationMenu extends IRAbstractContainerMenu<CraftingStation
     @Override
     public boolean stillValid(@NotNull Player player) {
         return stillValid(access, player, IRBlocks.CRAFTING_STATION.get());
+    }
+
+    @Override
+    protected int getMergeableSlotCount() {
+        return 9 + 18;
     }
 }

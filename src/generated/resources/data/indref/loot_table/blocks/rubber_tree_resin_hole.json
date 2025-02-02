@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "indref:rubber_tree_log"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "indref:sticky_resin"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": {
+            "type": "minecraft:uniform",
+            "max": 1.0,
+            "min": 0.0
+          },
+          "function": "minecraft:set_count"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "indref:blocks/rubber_tree_resin_hole"
+}

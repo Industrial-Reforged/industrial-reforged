@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.content.gui.components.HeatDisplayGuiComponent;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
+import com.indref.industrial_reforged.content.gui.widgets.HeatDisplayWidget;
+import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,13 +13,15 @@ import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
-public class FireBoxScreen extends IRAbstractContainerScreen<FireBoxMenu> {
+public class FireBoxScreen extends PDLAbstractContainerScreen<FireBoxMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/firebox.png");
     private static final ResourceLocation LIT_PROGRESS_SPRITE = ResourceLocation.parse("container/smoker/lit_progress");
+    private final Inventory inventory;
 
     public FireBoxScreen(FireBoxMenu fireBoxMenu, Inventory inventory, Component component) {
         super(fireBoxMenu, inventory, component);
+        this.inventory = inventory;
     }
 
     @Override
@@ -32,8 +35,8 @@ public class FireBoxScreen extends IRAbstractContainerScreen<FireBoxMenu> {
         super.init();
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        initComponents(
-                new HeatDisplayGuiComponent(new Vector2i(x + imageWidth - 95, y + 5), true)
+        addRenderableWidget(
+                new HeatDisplayWidget(x + imageWidth - 95, y + 5, menu.blockEntity.getHeatStorage(), inventory, true)
         );
     }
 

@@ -1,16 +1,17 @@
 package com.indref.industrial_reforged.content.fluids;
 
-import com.indref.industrial_reforged.api.fluids.IRFluid;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.joml.Vector4i;
 
-public class OilFluid extends IRFluid {
+public class OilFluid extends PDLFluid {
     public OilFluid(String name) {
         super(name);
-        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vec3i(255, 255, 255), FluidTemplates.OIL);
+        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(255, 255, 255, 255), FluidTemplates.OIL);
     }
 
     @Override

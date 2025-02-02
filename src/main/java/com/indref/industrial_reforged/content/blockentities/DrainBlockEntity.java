@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,9 +18,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
-public class DrainBlockEntity extends ContainerBlockEntity {
+public class DrainBlockEntity extends IRContainerBlockEntity {
     public DrainBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.DRAIN.get(), p_155229_, p_155230_);
         addFluidTank(16000);
@@ -42,14 +40,14 @@ public class DrainBlockEntity extends ContainerBlockEntity {
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.FluidHandler.BLOCK) {
             return ImmutableMap.of(
-                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.DOWN, Pair.of(IOActions.EXTRACT, new int[]{0})
+                    Direction.NORTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.EAST, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.WEST, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.DOWN, Pair.of(IOAction.EXTRACT, new int[]{0})
             );
         }
         return ImmutableMap.of();

@@ -1,19 +1,22 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.content.gui.components.EnergyGuiComponent;
-import com.indref.industrial_reforged.content.gui.components.FluidTankGuiComponent;
+import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.content.blockentities.machines.CentrifugeBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
+import com.indref.industrial_reforged.content.gui.widgets.BatterySlotWidget;
+import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
+import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.EnergyBarWidget;
+import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
-public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> {
+public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/centrifuge.png");
     private static final ResourceLocation PROGRESS_SPRITE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "container/centrifuge/progress_arrows");
@@ -27,10 +30,13 @@ public class CentrifugeScreen extends IRAbstractContainerScreen<CentrifugeMenu> 
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
-        initComponents(
-                new EnergyGuiComponent(new Vector2i(this.leftPos + 10, this.topPos + 16), true, true),
-                new FluidTankGuiComponent(new Vector2i(this.leftPos + 142, this.topPos + 24), FluidTankGuiComponent.TankVariants.SMALL)
+        EnergyBarWidget energyBarWidget = addRenderableWidget(
+                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), "EU", true)
         );
+        addRenderableWidget(
+                new FluidTankWidget(this.leftPos + 142, this.topPos + 24, FluidTankWidget.TankVariants.SMALL, menu.blockEntity)
+        );
+        addRenderableWidget(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
     }
 
     @Override

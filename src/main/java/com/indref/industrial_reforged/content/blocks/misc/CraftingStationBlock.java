@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.content.blocks.misc;
 
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ public class CraftingStationBlock extends RotatableContainerBlock implements Wre
     }
 
     @Override
-    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.CRAFTING_STATION.get();
     }
 

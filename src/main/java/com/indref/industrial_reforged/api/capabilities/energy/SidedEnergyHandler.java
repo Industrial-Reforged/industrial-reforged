@@ -1,10 +1,15 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.api.capabilities.IOActions;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.Holder;
 
-public record SidedEnergyHandler(IEnergyStorage innerHandler, IOActions action) implements IEnergyStorage {
+public record SidedEnergyHandler(IEnergyStorage innerHandler, IOAction action) implements IEnergyStorage {
+    public SidedEnergyHandler(IEnergyStorage innerHandler, Pair<IOAction, int[]> action) {
+        this(innerHandler, action.first());
+    }
+
     @Override
     public Holder<EnergyTier> getEnergyTier() {
         return innerHandler.getEnergyTier();
@@ -32,11 +37,11 @@ public record SidedEnergyHandler(IEnergyStorage innerHandler, IOActions action) 
 
     @Override
     public int tryDrainEnergy(int value, boolean simulate) {
-        return action == IOActions.EXTRACT || action == IOActions.BOTH ? innerHandler.tryDrainEnergy(value, simulate) : 0;
+        return action == IOAction.EXTRACT || action == IOAction.BOTH ? innerHandler.tryDrainEnergy(value, simulate) : 0;
     }
 
     @Override
     public int tryFillEnergy(int value, boolean simulate) {
-        return action == IOActions.EXTRACT || action == IOActions.BOTH ? innerHandler.tryFillEnergy(value, simulate) : 0;
+        return action == IOAction.EXTRACT || action == IOAction.BOTH ? innerHandler.tryFillEnergy(value, simulate) : 0;
     }
 }

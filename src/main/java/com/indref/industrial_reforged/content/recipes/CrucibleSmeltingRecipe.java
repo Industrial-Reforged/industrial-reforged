@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
-import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleSmeltingRecipeInput;
+import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +15,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 public record CrucibleSmeltingRecipe(IngredientWithCount ingredient, FluidStack resultFluid, int duration,
-                                     int heat) implements IRRecipe<SingleRecipeInput> {
+                                     int heat) implements PDLRecipe<SingleRecipeInput> {
     public static final String NAME = "crucible_melting";
     public static final RecipeType<CrucibleSmeltingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<CrucibleSmeltingRecipe> SERIALIZER =

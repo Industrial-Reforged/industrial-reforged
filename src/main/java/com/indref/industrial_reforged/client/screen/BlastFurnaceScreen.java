@@ -1,34 +1,38 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerScreen;
-import com.indref.industrial_reforged.content.gui.components.FluidTankGuiComponent;
-import com.indref.industrial_reforged.content.gui.components.HeatDisplayGuiComponent;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
+import com.indref.industrial_reforged.content.gui.widgets.HeatDisplayWidget;
+import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
+import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector2i;
 
-public class BlastFurnaceScreen extends IRAbstractContainerScreen<BlastFurnaceMenu> {
+public class BlastFurnaceScreen extends PDLAbstractContainerScreen<BlastFurnaceMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/blast_furnace.png");
     private static final ResourceLocation PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
 
+    private final Inventory inventory;
+
     public BlastFurnaceScreen(BlastFurnaceMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
+        inventory = p_97742_;
     }
 
     @Override
     protected void init() {
         super.init();
-        initComponents(
-                new FluidTankGuiComponent(new Vector2i(this.leftPos + 97, this.topPos + 17), FluidTankGuiComponent.TankVariants.LARGE),
-                new HeatDisplayGuiComponent(new Vector2i(this.leftPos, this.topPos), false)
-        );
+        FluidTankWidget fluidTankWidget = new FluidTankWidget(this.leftPos + 97, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, this.getMenu().blockEntity.getFluidHandler());
+        HeatDisplayWidget heatDisplayWidget = new HeatDisplayWidget(this.leftPos, this.topPos, menu.blockEntity.getHeatStorage(), inventory, true);
+
+        addRenderableWidget(fluidTankWidget);
+        addRenderableWidget(heatDisplayWidget);
     }
 
     @Override

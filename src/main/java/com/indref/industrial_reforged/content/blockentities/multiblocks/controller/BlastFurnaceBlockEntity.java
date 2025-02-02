@@ -2,18 +2,18 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.blockentities.multiblock.FakeBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.multiblock.SavesControllerPosBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,7 +47,7 @@ import java.util.Optional;
  * is the actual blockentity that handles the
  * logic and the others just point to that block.
  */
-public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
+public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
     public static final int HEAT_USAGE = 500;
 
     private BlockPos mainControllerPos;
@@ -135,19 +135,19 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
-            return ImmutableMap.of(Direction.UP, Pair.of(IOActions.INSERT, new int[]{0, 1}));
+            return ImmutableMap.of(Direction.UP, Pair.of(IOAction.INSERT, new int[]{0, 1}));
         } else if (capability == Capabilities.FluidHandler.BLOCK) {
             return ImmutableMap.of(
-                    Direction.NORTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOActions.EXTRACT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOActions.EXTRACT, new int[]{0})
+                    Direction.NORTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.EAST, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
+                    Direction.WEST, Pair.of(IOAction.EXTRACT, new int[]{0})
             );
         } else if (capability == IRCapabilities.HeatStorage.BLOCK) {
             return ImmutableMap.of(
-                    Direction.DOWN, Pair.of(IOActions.INSERT, new int[]{0})
+                    Direction.DOWN, Pair.of(IOAction.INSERT, new int[]{0})
             );
         }
         return ImmutableMap.of();
@@ -159,8 +159,6 @@ public class BlastFurnaceBlockEntity extends ContainerBlockEntity implements Men
 
     public void commonTick() {
         if (isMainController()) {
-            IndustrialReforged.LOGGER.debug("heat: {}", getHeatStorage().getHeatStored());
-
             Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
             if (optRecipe.isPresent() && getHeatStorage().getHeatStored() > HEAT_USAGE) {
                 BlastFurnaceRecipe recipe = optRecipe.get();

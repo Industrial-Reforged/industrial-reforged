@@ -17,12 +17,12 @@ public class BlastFurnacePartBlockEntity extends MultiblockPartBlockEntity {
 
     public IItemHandler exposeItemHandler(Direction direction) {
         BlastFurnaceBlockEntity be = BlockUtils.getBE(level, getControllerPos(), BlastFurnaceBlockEntity.class);
-        return be.getItemHandlerOnSide(direction);
+        return be != null ? be.getItemHandlerOnSide(direction) : null;
     }
 
     public IFluidHandler exposeFluidHandler(Direction direction) {
         BlastFurnaceBlockEntity be = BlockUtils.getBE(level, getControllerPos(), BlastFurnaceBlockEntity.class);
-        return be.getFluidHandlerOnSide(direction);
+        return be != null ? be.getFluidHandlerOnSide(direction) : null;
     }
 
 }

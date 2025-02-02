@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.content.blocks.generators;
 
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.container.RotatableContainerBlock;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -11,6 +10,7 @@ import com.indref.industrial_reforged.content.blockentities.generators.BasicGene
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -66,7 +66,7 @@ public class BasicGeneratorBlock extends RotatableContainerBlock implements Wren
     }
 
     @Override
-    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.BASIC_GENERATOR.get();
     }
 

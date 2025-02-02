@@ -1,0 +1,82 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "indref:ceramic_crucible_wall",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "crucible_wall": "fence"
+              }
+            }
+          ],
+          "name": "indref:iron_fence"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "indref:ceramic_crucible_wall",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "crucible_wall": "wall_top"
+              }
+            }
+          ],
+          "name": "indref:terracotta_bricks"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "indref:ceramic_crucible_wall",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "crucible_wall": "wall_bottom"
+              }
+            }
+          ],
+          "name": "indref:terracotta_bricks"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "indref:ceramic_crucible_wall",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "crucible_wall": "edge_bottom"
+              }
+            }
+          ],
+          "name": "indref:terracotta_bricks"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "indref:ceramic_crucible_wall",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "crucible_wall": "edge_top"
+              }
+            }
+          ],
+          "name": "indref:terracotta_bricks"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "indref:blocks/ceramic_crucible_wall"
+}

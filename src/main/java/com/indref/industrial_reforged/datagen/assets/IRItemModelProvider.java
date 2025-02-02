@@ -1,13 +1,13 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.client.item.IRItemProperties;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +43,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         parentItemBlock(IRBlocks.RUBBER_TREE_FENCE.get().asItem(), "_inventory");
         parentItemBlock(IRBlocks.RUBBER_TREE_TRAPDOOR.get().asItem(), "_bottom");
 
-        for (IRFluid fluid : IRFluids.HELPER.getFluids()) {
+        for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
             if (fluid instanceof MoltenMetalFluid) {
                 bucket(fluid.getStillFluid());
             }

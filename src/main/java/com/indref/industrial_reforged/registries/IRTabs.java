@@ -3,16 +3,13 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.items.container.IFluidItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,22 +20,17 @@ import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -70,7 +62,7 @@ public final class IRTabs {
                     }
                 }
 
-                for (IRFluid fluid : IRFluids.HELPER.getFluids()) {
+                for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
                     DeferredItem<BucketItem> deferredBucket = fluid.getDeferredBucket();
                     IndustrialReforged.LOGGER.debug("Bucket: {}", deferredBucket);
                     output.accept(deferredBucket);

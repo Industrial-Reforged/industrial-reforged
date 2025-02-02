@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.content.blocks.misc;
 
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
-import com.indref.industrial_reforged.api.blocks.container.ContainerBlock;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -67,7 +67,7 @@ public class CastingBasinBlock extends ContainerBlock implements CustomFaucetInt
     }
 
     @Override
-    public BlockEntityType<? extends ContainerBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRBlockEntityTypes.CASTING_BASIN.get();
     }
 

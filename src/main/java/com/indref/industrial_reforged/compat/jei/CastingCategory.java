@@ -5,8 +5,8 @@ import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.util.RegistryUtils;
-import com.indref.industrial_reforged.util.renderer.GuiUtils;
+import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
+import com.portingdeadmods.portingdeadlibs.utils.renderers.GuiUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -18,6 +18,8 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -64,7 +66,7 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
 
     @Override
     public int getHeight() {
-        return 64;
+        return 40;
     }
 
     public int getPadding() {
@@ -73,12 +75,14 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder recipeLayoutBuilder, CrucibleCastingRecipe castingRecipe, IFocusGroup iFocusGroup) {
+        int y = 0;
+
         FluidStack fluidStack = castingRecipe.fluidStack();
-        recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, getPadding() + 2, 25)
+        recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, getPadding() + 2, y + 18)
                 .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
                 .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
 
-        IRecipeSlotBuilder slotBuilder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.CATALYST, getPadding() + 32, 7)
+        IRecipeSlotBuilder slotBuilder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.CATALYST, getPadding() + 32, y)
                 .addItemStack(castingRecipe.moldItem().getDefaultInstance());
 
         CastingMoldValue moldValue = RegistryUtils.holder(BuiltInRegistries.ITEM, castingRecipe.moldItem()).getData(IRDataMaps.CASTING_MOLDS);
@@ -87,14 +91,22 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
             slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(Component.literal("Item is consumed").withStyle(ChatFormatting.DARK_GRAY)));
         }
 
-        recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, getPadding() + 64, 26)
+        recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, getPadding() + 64, y + 19)
                 .addIngredients(Ingredient.of(castingRecipe.resultStack()));
     }
 
     @Override
     public void draw(CrucibleCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        guiGraphics.blitSprite(PROGRESS_SPRITE, getPadding() + 28, 27, 24, 16);
-        guiGraphics.blitSprite(CASTING_BASIN_SPRITE, getPadding(), 24, 20, 20);
-        GuiUtils.drawImg(guiGraphics, SLOT_SPRITE, getPadding() + 59, 21, 26, 26);
+        int y = 0;
+
+        guiGraphics.blitSprite(PROGRESS_SPRITE, getPadding() + 28, y + 20, 24, 16);
+        guiGraphics.blitSprite(CASTING_BASIN_SPRITE, getPadding(), y + 17, 20, 20);
+        GuiUtils.drawImg(guiGraphics, SLOT_SPRITE, getPadding() + 59, y + 14, 26, 26);
+
+        Font font = Minecraft.getInstance().font;
+
+        String durationText = "%d sec".formatted(recipe.duration() / 20);
+
+        guiGraphics.drawString(font, durationText, 0, 0, ChatFormatting.DARK_GRAY.getColor(), false);
     }
 }

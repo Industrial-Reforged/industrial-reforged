@@ -1,7 +1,5 @@
 package com.indref.industrial_reforged;
 
-import com.indref.industrial_reforged.api.fluids.BaseFluidType;
-import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.tools.DisplayItem;
@@ -26,6 +24,8 @@ import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.portingdeadmods.portingdeadlibs.api.fluids.BaseFluidType;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -103,46 +103,6 @@ public final class IndustrialReforgedClient {
     private static final BlastFurnaceItemRenderer BLAST_FURNACE_ITEM_RENDERER = new BlastFurnaceItemRenderer();
 
     private void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        // Fluid renderers
-        for (FluidType fluidType : NeoForgeRegistries.FLUID_TYPES) {
-            if (fluidType instanceof BaseFluidType baseFluidType) {
-                event.registerFluidType(new IClientFluidTypeExtensions() {
-                    @Override
-                    public @NotNull ResourceLocation getStillTexture() {
-                        return baseFluidType.getStillTexture();
-                    }
-
-                    @Override
-                    public @NotNull ResourceLocation getFlowingTexture() {
-                        return baseFluidType.getFlowingTexture();
-                    }
-
-                    @Override
-                    public @Nullable ResourceLocation getOverlayTexture() {
-                        return baseFluidType.getOverlayTexture();
-                    }
-
-                    @Override
-                    public int getTintColor() {
-                        Vec3i color = baseFluidType.getColor();
-                        return FastColor.ARGB32.color(color.getX(), color.getY(), color.getZ());
-                    }
-
-                    @Override
-                    public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-                        Vec3i color = baseFluidType.getColor();
-                        return new Vector3f(color.getX() / 255f, color.getY() / 255f, color.getZ() / 255f);
-                    }
-
-                    @Override
-                    public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
-                        RenderSystem.setShaderFogStart(1f);
-                        RenderSystem.setShaderFogEnd(6f); // distance when the fog starts
-                    }
-                }, baseFluidType);
-            }
-        }
-
         event.registerItem(new IClientItemExtensions() {
             @Override
             public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
@@ -179,7 +139,7 @@ public final class IndustrialReforgedClient {
 
     private void registerItemColor(RegisterColorHandlersEvent.Item event) {
         event.register(new SimpleFluidItem.Colors(), IRItems.FLUID_CELL.get());
-        for (IRFluid fluid : IRFluids.HELPER.getFluids()) {
+        for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
             if (fluid instanceof MoltenMetalFluid) {
                 event.register(new DynamicFluidContainerModel.Colors(), fluid.getDeferredBucket());
             }

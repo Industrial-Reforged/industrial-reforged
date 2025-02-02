@@ -2,8 +2,6 @@ package com.indref.industrial_reforged.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
-import com.indref.industrial_reforged.util.RegistryUtils;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;

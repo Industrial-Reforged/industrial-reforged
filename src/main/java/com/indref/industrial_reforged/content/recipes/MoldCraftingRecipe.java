@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.api.recipes.IRRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRRecipes;

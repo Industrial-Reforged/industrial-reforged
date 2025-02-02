@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.gui.menus;
 
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
-import com.indref.industrial_reforged.api.gui.IRAbstractContainerMenu;
+import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.machines.CentrifugeBlockEntity;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntity> {
+public class CentrifugeMenu extends MachineContainerMenu<CentrifugeBlockEntity> {
     private final Level level;
     private final ContainerData data;
     private final ContainerLevelAccess access;
@@ -52,5 +52,10 @@ public class CentrifugeMenu extends IRAbstractContainerMenu<CentrifugeBlockEntit
     @Override
     public boolean stillValid(Player player) {
         return stillValid(access, player, IRBlocks.CENTRIFUGE.get());
+    }
+
+    @Override
+    protected int getMergeableSlotCount() {
+        return 0;
     }
 }

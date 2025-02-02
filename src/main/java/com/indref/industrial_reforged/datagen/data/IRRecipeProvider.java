@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.datagen.data;
 
 import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.fluids.IRFluid;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.recipes.*;
 import com.indref.industrial_reforged.data.IRDataMaps;
@@ -12,6 +11,7 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -322,7 +322,6 @@ public class IRRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.TOOLBOX.get())
                 .pattern(" R ")
-                .pattern("# #")
                 .pattern("###")
                 .define('R', IRItems.IRON_ROD)
                 .define('#', Tags.Items.INGOTS_IRON)
@@ -513,7 +512,7 @@ public class IRRecipeProvider extends RecipeProvider {
         plateCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_PLATE);
     }
 
-    private void rodCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
+    private void rodCastingRecipe(PDLFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
                 fluid.toStack(111),
                 IRItems.CLAY_MOLD_ROD.get(),
@@ -522,7 +521,7 @@ public class IRRecipeProvider extends RecipeProvider {
         ));
     }
 
-    private void wireCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
+    private void wireCastingRecipe(PDLFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
                 fluid.toStack(37),
                 IRItems.CLAY_MOLD_WIRE.get(),
@@ -531,7 +530,7 @@ public class IRRecipeProvider extends RecipeProvider {
         ));
     }
 
-    private void ingotCastingRecipe(IRFluid fluid, ItemLike resultIngotItem) {
+    private void ingotCastingRecipe(PDLFluid fluid, ItemLike resultIngotItem) {
         irRecipe(new CrucibleCastingRecipe(
                 fluid.toStack(111),
                 IRItems.CLAY_MOLD_INGOT.get(),
@@ -540,7 +539,7 @@ public class IRRecipeProvider extends RecipeProvider {
         ));
     }
 
-    private void plateCastingRecipe(IRFluid fluid, ItemLike resultPlateItem) {
+    private void plateCastingRecipe(PDLFluid fluid, ItemLike resultPlateItem) {
         irRecipe(new CrucibleCastingRecipe(
                 fluid.toStack(111),
                 IRItems.CLAY_MOLD_PLATE.get(),
@@ -588,18 +587,18 @@ public class IRRecipeProvider extends RecipeProvider {
         int moltenBlockAndTwoThirds = moltenBlock * 5 / 3;
         int twoMoltenIngots = moltenIngot * 2;
 
-        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), twoMoltenIngots), 200,
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_STEEL.getStillFluid(), twoMoltenIngots), 200, 180,
                 IngredientWithCount.of(Tags.Items.INGOTS_IRON, 2), IngredientWithCount.of(ItemTags.COALS));
-        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), moltenIngot), 200,
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), moltenIngot), 200, 180,
                 IngredientWithCount.of(IRItems.RAW_BAUXITE));
-        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), twoMoltenIngots), 200,
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), twoMoltenIngots), 200, 180,
                 IngredientWithCount.of(CTags.Items.ORES_BAUXITE));
-        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), moltenBlockAndTwoThirds), 200 * 9,
+        blastFurnaceRecipe(new FluidStack(IRFluids.MOLTEN_ALUMINUM.getStillFluid(), moltenBlockAndTwoThirds), 200 * 9, 180,
                 IngredientWithCount.of(CTags.Items.STORAGE_BLOCKS_RAW_BAUXITE));
     }
 
-    private void blastFurnaceRecipe(FluidStack resultFluid, int duration, IngredientWithCount... ingredients) {
-        irRecipe(new BlastFurnaceRecipe(List.of(ingredients), resultFluid, duration));
+    private void blastFurnaceRecipe(FluidStack resultFluid, int duration, int heat, IngredientWithCount... ingredients) {
+        irRecipe(new BlastFurnaceRecipe(List.of(ingredients), resultFluid, duration, heat));
     }
 
     private void machineCraftingRecipes() {

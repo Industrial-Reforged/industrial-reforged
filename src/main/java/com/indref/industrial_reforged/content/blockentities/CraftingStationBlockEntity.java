@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.gui.menus.CraftingStationMenu;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,9 +18,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
-public class CraftingStationBlockEntity extends ContainerBlockEntity implements MenuProvider {
+public class CraftingStationBlockEntity extends IRContainerBlockEntity implements MenuProvider {
     public CraftingStationBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CRAFTING_STATION.get(), p_155229_, p_155230_);
         addItemHandler(29);
@@ -38,7 +36,7 @@ public class CraftingStationBlockEntity extends ContainerBlockEntity implements 
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         return ImmutableMap.of();
     }
 }

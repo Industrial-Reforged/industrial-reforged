@@ -1,17 +1,15 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
-import com.indref.industrial_reforged.api.blocks.misc.RotatableEntityBlock;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
+import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableEntityBlock;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
 import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;

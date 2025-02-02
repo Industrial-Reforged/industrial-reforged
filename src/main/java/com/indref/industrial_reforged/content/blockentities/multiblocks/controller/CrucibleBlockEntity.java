@@ -1,12 +1,13 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
@@ -14,8 +15,10 @@ import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -36,6 +39,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
@@ -47,6 +52,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +60,7 @@ import java.util.*;
 
 // TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
 // TODO: Cache recipes
-public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
+public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuProvider, MultiblockEntity {
     public static final AABB AABB = new AABB(-1, (double) 10 / 16, -1, 2, 1, 2);
     public static final int SLOTS = 9;
     private final CrucibleTier tier;
@@ -88,12 +94,15 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
 
     public void turn() {
         if (!this.turnedOver) {
-            this.inUse = 70;
-            this.speed = 70;
-            this.turnedOver = true;
-            IFluidHandler basinFluidTank = CapabilityUtils.fluidHandlerCapability(level.getBlockEntity(getBasinPos()));
-            IFluidHandler fluidTank = getFluidHandler();
-            this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0), fluidTank.getFluidInTank(0).getAmount());
+            BlockEntity blockEntity = level.getBlockEntity(getBasinPos());
+            if (blockEntity != null) {
+                IFluidHandler basinFluidTank = CapabilityUtils.fluidHandlerCapability(blockEntity);
+                IFluidHandler fluidTank = getFluidHandler();
+                this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0), fluidTank.getFluidInTank(0).getAmount());
+                this.inUse = 70;
+                this.speed = 70;
+                this.turnedOver = true;
+            }
         }
     }
 
@@ -150,7 +159,7 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     @Override
-    protected void onFluidChanged() {
+    public void onFluidChanged() {
         for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
             Optional<CrucibleSmeltingRecipe> _recipe = getRecipeForCache(slot);
             if (_recipe.isPresent()) {
@@ -232,6 +241,9 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
                 if (fluidHandler != null) {
                     FluidStack drained = getFluidHandler().drain(1, IFluidHandler.FluidAction.EXECUTE);
                     fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+                    PacketDistributor.sendToAllPlayers(
+                            new BasinFluidChangedPayload(getBasinPos(), getFluidTank().getFluidAmount())
+                    );
                 }
             }
         }
@@ -292,10 +304,10 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == IRCapabilities.HeatStorage.BLOCK) {
             return ImmutableMap.of(
-                    Direction.DOWN, Pair.of(IOActions.INSERT, new int[0])
+                    Direction.DOWN, Pair.of(IOAction.INSERT, new int[]{0})
             );
         }
         return ImmutableMap.of();
@@ -410,8 +422,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     @Override
-    protected void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
-        super.loadAdditional(nbt, provider);
+    protected void loadData(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
+        super.loadData(nbt, provider);
         this.multiblockData = loadMBData(nbt.getCompound("multiblockData"));
         this.powered = nbt.getBoolean("powered");
         this.turnTimer = nbt.getInt("turnTimer");
@@ -420,8 +432,8 @@ public class CrucibleBlockEntity extends ContainerBlockEntity implements MenuPro
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
-        super.saveAdditional(nbt, provider);
+    protected void saveData(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
+        super.saveData(nbt, provider);
         nbt.put("multiblockData", saveMBData());
         nbt.putBoolean("powered", this.powered);
         nbt.putInt("turnTimer", this.turnTimer);

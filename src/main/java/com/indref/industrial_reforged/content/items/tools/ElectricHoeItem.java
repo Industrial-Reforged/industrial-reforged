@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.ComponentEnergyStorage;
+import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +32,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     public ElectricHoeItem(EnergyTier energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
         super(tier, properties.stacksTo(1)
                 .attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEnergyStorage(0, energyTier.defaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEuStorage(0, energyTier.defaultCapacity())));
     }
 
     @Override

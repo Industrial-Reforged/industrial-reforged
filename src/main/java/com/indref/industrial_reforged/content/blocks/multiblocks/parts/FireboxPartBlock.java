@@ -12,6 +12,7 @@ import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
+import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -101,7 +102,7 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
             BlockEntity thisBlockEntity = level.getBlockEntity(pos);
             if (thisBlockEntity instanceof FireboxPartBlockEntity partBE) {
                 BlockPos controllerPos = partBE.getControllerPos();
-                boolean success = IRMultiblocks.CRUCIBLE_CERAMIC.get().unform(level, controllerPos);
+                MultiblockHelper.unform(IRMultiblocks.REFRACTORY_FIREBOX.get(), controllerPos, level);
             }
         }
 

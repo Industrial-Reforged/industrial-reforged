@@ -58,12 +58,11 @@ public final class IRDisplayItems {
         }
     }
 
-
     public static void thermometer(GuiGraphics guiGraphics, int x, int y, int lineOffset, Level level, Player player, BlockPos blockPos, ItemStack itemStack) {
         Font font = Minecraft.getInstance().font;
         BlockState blockstate = level.getBlockState(blockPos);
         if (blockstate.getBlock() instanceof DisplayBlock displayBlock) {
-            if (!displayBlock.getCompatibleItems().contains((DisplayItem) itemStack.getItem())) return;
+            if (!displayBlock.getCompatibleItems().contains(itemStack.getItem())) return;
 
             List<Component> displayText = new ArrayList<>();
 

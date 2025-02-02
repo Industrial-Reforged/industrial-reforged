@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.api.blockentities.container.ContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IOActions;
+import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
@@ -13,6 +12,7 @@ import com.indref.industrial_reforged.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProvider, MultiblockEntity {
+public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuProvider, MultiblockEntity {
     private static final int INPUT_SLOT = 0;
 
     private int burnTime;
@@ -65,7 +65,7 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     @Override
     public void onLoad() {
         if (level instanceof ServerLevel serverLevel) {
-            BlockPos[] offsets = {worldPosition.north(), worldPosition.south(), worldPosition.east(), worldPosition.west(),
+            BlockPos[] offsets = {worldPosition, worldPosition.north(), worldPosition.south(), worldPosition.east(), worldPosition.west(),
                     worldPosition.north().east(), worldPosition.north().west(), worldPosition.south().east(), worldPosition.south().west()};
             for (BlockPos pos : offsets) {
                 BlockPos above = pos.above();
@@ -99,13 +99,13 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOActions, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
+    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
             return ImmutableMap.of(
-                    Direction.NORTH, Pair.of(IOActions.INSERT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOActions.INSERT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOActions.INSERT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOActions.INSERT, new int[]{0})
+                    Direction.NORTH, Pair.of(IOAction.INSERT, new int[]{0}),
+                    Direction.EAST, Pair.of(IOAction.INSERT, new int[]{0}),
+                    Direction.SOUTH, Pair.of(IOAction.INSERT, new int[]{0}),
+                    Direction.WEST, Pair.of(IOAction.INSERT, new int[]{0})
             );
         }
         return ImmutableMap.of();
@@ -126,14 +126,17 @@ public class FireboxBlockEntity extends ContainerBlockEntity implements MenuProv
             // Only export heat to block directly above
             BlockPos abovePos = worldPosition.above();
             if (aboveBlockCapCache != null) {
-                IHeatStorage aboveHeatStorage = aboveBlockCapCache.get(abovePos).getCapability();
-                if (aboveHeatStorage != null && level != null) {
-                    IHeatStorage thisHeatStorage = getHeatStorage();
-                    int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
-                    int drained = thisHeatStorage.tryDrainHeat(output, true);
-                    thisHeatStorage.tryDrainHeat(drained, false);
-                    if (aboveHeatStorage.tryFillHeat(drained, false) != 0) {
-                        level.invalidateCapabilities(abovePos);
+                BlockCapabilityCache<IHeatStorage, Direction> cache = aboveBlockCapCache.get(abovePos);
+                if (cache != null) {
+                    IHeatStorage aboveHeatStorage = cache.getCapability();
+                    if (aboveHeatStorage != null && level != null) {
+                        IHeatStorage thisHeatStorage = getHeatStorage();
+                        int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
+                        int drained = thisHeatStorage.tryDrainHeat(output, true);
+                        thisHeatStorage.tryDrainHeat(drained, false);
+                        if (aboveHeatStorage.tryFillHeat(drained, false) != 0) {
+                            level.invalidateCapabilities(abovePos);
+                        }
                     }
                 }
             }

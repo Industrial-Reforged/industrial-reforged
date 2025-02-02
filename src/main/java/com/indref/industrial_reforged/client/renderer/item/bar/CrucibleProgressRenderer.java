@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.client.renderer.item.bar;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.renderer.GuiUtils;
+import com.portingdeadmods.portingdeadlibs.utils.renderers.GuiUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;

@@ -2,6 +2,8 @@ package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.portingdeadmods.portingdeadlibs.api.data.PDLDataComponents;
+import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,15 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public abstract class SimpleFluidItem extends Item implements IFluidItem {
-    private final int capacity;
-    public SimpleFluidItem(Properties properties, int capacity) {
+    public SimpleFluidItem(Properties properties) {
         super(properties.component(IRDataComponents.FLUID.get(), SimpleFluidContent.EMPTY));
-        this.capacity = capacity;
-    }
-
-    @Override
-    public int getDefaultFluidCapacity() {
-        return this.capacity;
     }
 
     @Override
