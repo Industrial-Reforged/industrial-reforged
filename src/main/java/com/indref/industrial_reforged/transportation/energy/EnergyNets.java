@@ -122,21 +122,29 @@ public class EnergyNets {
     }
 
     private void recheckConnections(BlockPos checkFrom, EnergyNet.EnergyTypes checkedPosType, EnergyNet enet, Set<BlockPos> alreadyCheckedTracker) {
-        if (!alreadyCheckedTracker.contains(checkFrom)) {
-            enet.get(checkedPosType).add(checkFrom);
-            if (checkedPosType == EnergyNet.EnergyTypes.TRANSMITTERS) {
-                alreadyCheckedTracker.add(checkFrom);
+        Queue<BlockPos> toCheck = new LinkedList<>();
+        toCheck.add(checkFrom);
+
+        while (!toCheck.isEmpty()) {
+            BlockPos currentPos = toCheck.poll();
+
+            if (alreadyCheckedTracker.contains(currentPos)) {
+                continue;
             }
-        } else {
-            return;
-        }
-        for (Direction dir : Direction.values()) {
-            BlockPos offSetPos = checkFrom.relative(dir);
-            if (!enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(offSetPos)) {
-                if (is(EnergyNet.EnergyTypes.TRANSMITTERS, offSetPos)) {
-                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.TRANSMITTERS, enet, alreadyCheckedTracker);
-                } else if (is(EnergyNet.EnergyTypes.INTERACTORS, offSetPos)) {
-                    recheckConnections(offSetPos, EnergyNet.EnergyTypes.INTERACTORS, enet, alreadyCheckedTracker);
+
+            enet.get(checkedPosType).add(currentPos);
+            if (checkedPosType == EnergyNet.EnergyTypes.TRANSMITTERS) {
+                alreadyCheckedTracker.add(currentPos);
+            }
+
+            for (Direction dir : Direction.values()) {
+                BlockPos offsetPos = currentPos.relative(dir);
+                if (!enet.get(EnergyNet.EnergyTypes.TRANSMITTERS).contains(offsetPos)) {
+                    if (is(EnergyNet.EnergyTypes.TRANSMITTERS, offsetPos)) {
+                        toCheck.add(offsetPos);
+                    } else if (is(EnergyNet.EnergyTypes.INTERACTORS, offsetPos)) {
+                        enet.get(EnergyNet.EnergyTypes.INTERACTORS).add(offsetPos);
+                    }
                 }
             }
         }
