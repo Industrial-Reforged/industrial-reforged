@@ -76,8 +76,12 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.CIRCUIT_BOARD);
 
         basicItem(IRItems.SCANNER);
-        handheldItem(IRItems.ADVANCED_DRILL);
+        handheldItem(IRItems.ELECTRIC_HOE);
+        handheldItem(IRItems.ELECTRIC_TREE_TAP);
         handheldItem(IRItems.ELECTRIC_DRILL);
+        handheldItem(IRItems.ADVANCED_DRILL);
+        handheldItem(IRItems.ELECTRIC_CHAINSAW);
+        handheldItem(IRItems.ADVANCED_CHAINSAW);
         handheldItem(IRItems.NANO_SABER);
         handheldItem(IRItems.ROCK_CUTTER);
 

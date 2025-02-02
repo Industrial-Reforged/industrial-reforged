@@ -183,22 +183,24 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .texture("texture", texture));
     }
 
-    private void rubberTreeResinHole(DeferredBlock<RubberTreeResinHoleBlock> rubberTreeResinHole) {
-        VariantBlockStateBuilder builder = getVariantBuilder(rubberTreeResinHole.get());
-        BlockModelBuilder modelBuilder = models().cube(name(rubberTreeResinHole.get()) + "_full",
+    private void rubberTreeResinHole(DeferredBlock<RubberTreeResinHoleBlock> block) {
+        VariantBlockStateBuilder builder = getVariantBuilder(block.get());
+        BlockModelBuilder modelBuilder = models().cube(name(block.get()) + "_full",
                 extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
                 extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
-                extend(blockTexture(rubberTreeResinHole.get(), "tree"), "_full"),
+                extend(blockTexture(block.get(), "tree"), "_full"),
                 blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
                 blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"));
-        BlockModelBuilder emptyModelBuilder = models().cube(name(rubberTreeResinHole.get()),
+                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"))
+                .texture("particle", blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"));
+        BlockModelBuilder emptyModelBuilder = models().cube(name(block.get()),
                 extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
                 extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
-                blockTexture(rubberTreeResinHole.get(), "tree"),
+                blockTexture(block.get(), "tree"),
                 blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
                 blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"));
+                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"))
+                .texture("particle", blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"));
 
         for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
             builder.partialState().with(RubberTreeResinHoleBlock.RESIN, true).with(BlockStateProperties.HORIZONTAL_FACING, dir)

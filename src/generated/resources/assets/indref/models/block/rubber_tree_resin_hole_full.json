@@ -4,6 +4,7 @@
     "down": "indref:block/tree/rubber_tree_log_top",
     "east": "indref:block/tree/rubber_tree_log",
     "north": "indref:block/tree/rubber_tree_resin_hole_full",
+    "particle": "indref:block/tree/rubber_tree_log",
     "south": "indref:block/tree/rubber_tree_log",
     "up": "indref:block/tree/rubber_tree_log_top",
     "west": "indref:block/tree/rubber_tree_log"

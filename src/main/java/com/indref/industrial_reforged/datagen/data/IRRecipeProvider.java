@@ -665,6 +665,15 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('R', IRItems.IRON_ROD)
                 .unlockedBy("has_copper_wire", has(IRItems.COPPER_WIRE.get()))
                 .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.COIL.get())
+                .pattern("###")
+                .pattern("#R#")
+                .pattern("###")
+                .define('#', Tags.Items.INGOTS_COPPER)
+                .define('R', IRItems.IRON_ROD)
+                .unlockedBy("has_copper_ingot", has(Tags.Items.INGOTS_COPPER))
+                .save(output, IndustrialReforged.rl("coil_from_ingots"));
     }
 
     private void rawOreToBlockRecipes() {

@@ -171,6 +171,10 @@ public class IREnUSLangProvider extends LanguageProvider {
 
         addItem(IRItems.ELECTRIC_DRILL, "Electric Drill");
         addItem(IRItems.ADVANCED_DRILL, "Advanced Drill");
+        addItem(IRItems.ELECTRIC_CHAINSAW, "Electric Chainsaw");
+        addItem(IRItems.ADVANCED_CHAINSAW, "Advanced Chainsaw");
+        addItem(IRItems.ELECTRIC_HOE, "Electric Hoe");
+        addItem(IRItems.ELECTRIC_TREE_TAP, "Electric Tree Tap");
         addItem(IRItems.ROCK_CUTTER, "Rock Cutter");
 
         addItem(IRItems.HAZMAT_HELMET, "Hazmat Helmet");

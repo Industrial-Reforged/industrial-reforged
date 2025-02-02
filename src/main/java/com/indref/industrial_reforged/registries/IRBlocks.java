@@ -48,7 +48,7 @@ public final class IRBlocks {
     public static final List<DeferredItem<?>> TAB_BLOCKS = new ArrayList<>();
     public static final List<DeferredBlock<Block>> METAL_STORAGE_BLOCKS = new ArrayList<>();
     public static final List<DeferredBlock<Block>> RAW_STORAGE_BLOCKS = new ArrayList<>();
-    public static final Map<DeferredBlock<DropExperienceBlock>, DeferredItem<?>> ORES = new HashMap<>();
+    public static final Map<DeferredBlock<Block>, DeferredItem<?>> ORES = new HashMap<>();
     public static final List<DeferredBlock<?>> DROP_SELF_BLOCKS = new ArrayList<>();
     public static final List<DeferredBlock<?>> AXE_MINEABLE = new ArrayList<>();
     public static final List<DeferredBlock<?>> PICKAXE_MINEABLE = new ArrayList<>();
@@ -142,20 +142,20 @@ public final class IRBlocks {
             () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB)));
 
     // Ores
-    public static final DeferredBlock<DropExperienceBlock> BAUXITE_ORE = oreBlock("bauxite_ore", IRItems.RAW_BAUXITE);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_BAUXITE_ORE = oreBlock("deepslate_bauxite_ore", IRItems.RAW_BAUXITE, true);
-    public static final DeferredBlock<DropExperienceBlock> CHROMIUM_ORE = oreBlock("chromium_ore", IRItems.RAW_CHROMIUM);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_CHROMIUM_ORE = oreBlock("deepslate_chromium_ore", IRItems.RAW_CHROMIUM, true);
-    public static final DeferredBlock<DropExperienceBlock> IRIDIUM_ORE = oreBlock("iridium_ore", IRItems.RAW_IRIDIUM);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_IRIDIUM_ORE = oreBlock("deepslate_iridium_ore", IRItems.RAW_IRIDIUM, true);
-    public static final DeferredBlock<DropExperienceBlock> LEAD_ORE = oreBlock("lead_ore", IRItems.RAW_LEAD);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_LEAD_ORE = oreBlock("deepslate_lead_ore", IRItems.RAW_LEAD, true);
-    public static final DeferredBlock<DropExperienceBlock> NICKEL_ORE = oreBlock("nickel_ore", IRItems.RAW_NICKEL);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_NICKEL_ORE = oreBlock("deepslate_nickel_ore", IRItems.RAW_NICKEL, true);
-    public static final DeferredBlock<DropExperienceBlock> TIN_ORE = oreBlock("tin_ore", IRItems.RAW_TIN);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_TIN_ORE = oreBlock("deepslate_tin_ore", IRItems.RAW_TIN, true);
-    public static final DeferredBlock<DropExperienceBlock> URANIUM_ORE = oreBlock("uranium_ore", IRItems.RAW_URANIUM);
-    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_URANIUM_ORE = oreBlock("deepslate_uranium_ore", IRItems.RAW_URANIUM, true);
+    public static final DeferredBlock<Block> BAUXITE_ORE = oreBlock("bauxite_ore", IRItems.RAW_BAUXITE);
+    public static final DeferredBlock<Block> DEEPSLATE_BAUXITE_ORE = oreBlock("deepslate_bauxite_ore", IRItems.RAW_BAUXITE, true);
+    public static final DeferredBlock<Block> CHROMIUM_ORE = oreBlock("chromium_ore", IRItems.RAW_CHROMIUM);
+    public static final DeferredBlock<Block> DEEPSLATE_CHROMIUM_ORE = oreBlock("deepslate_chromium_ore", IRItems.RAW_CHROMIUM, true);
+    public static final DeferredBlock<Block> IRIDIUM_ORE = oreBlock("iridium_ore", IRItems.RAW_IRIDIUM);
+    public static final DeferredBlock<Block> DEEPSLATE_IRIDIUM_ORE = oreBlock("deepslate_iridium_ore", IRItems.RAW_IRIDIUM, true);
+    public static final DeferredBlock<Block> LEAD_ORE = oreBlock("lead_ore", IRItems.RAW_LEAD);
+    public static final DeferredBlock<Block> DEEPSLATE_LEAD_ORE = oreBlock("deepslate_lead_ore", IRItems.RAW_LEAD, true);
+    public static final DeferredBlock<Block> NICKEL_ORE = oreBlock("nickel_ore", IRItems.RAW_NICKEL);
+    public static final DeferredBlock<Block> DEEPSLATE_NICKEL_ORE = oreBlock("deepslate_nickel_ore", IRItems.RAW_NICKEL, true);
+    public static final DeferredBlock<Block> TIN_ORE = oreBlock("tin_ore", IRItems.RAW_TIN);
+    public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE = oreBlock("deepslate_tin_ore", IRItems.RAW_TIN, true);
+    public static final DeferredBlock<Block> URANIUM_ORE = oreBlock("uranium_ore", IRItems.RAW_URANIUM);
+    public static final DeferredBlock<Block> DEEPSLATE_URANIUM_ORE = oreBlock("deepslate_uranium_ore", IRItems.RAW_URANIUM, true);
 
     // Metal storage blocks
     public static final DeferredBlock<Block> ALUMINUM_BLOCK = metalStorageBlock("aluminum_block", MetalType.IRON);
@@ -244,12 +244,12 @@ public final class IRBlocks {
         return BLOCKS.register(name, block);
     }
 
-    private static DeferredBlock<DropExperienceBlock> oreBlock(String name, DeferredItem<?> item) {
+    private static DeferredBlock<Block> oreBlock(String name, DeferredItem<?> item) {
         return oreBlock(name, item, false);
     }
 
-    private static DeferredBlock<DropExperienceBlock> oreBlock(String name, DeferredItem<?> item, boolean deepslate) {
-        DeferredBlock<DropExperienceBlock> blockDeferredBlock = registerBlockAndItem(name, () -> new DropExperienceBlock(ConstantInt.of(1), oreSettings(deepslate)), true, true, false);
+    private static DeferredBlock<Block> oreBlock(String name, DeferredItem<?> item, boolean deepslate) {
+        DeferredBlock<Block> blockDeferredBlock = registerBlockAndItem(name, () -> new Block(oreSettings(deepslate)), true, true, false);
         ORES.put(blockDeferredBlock, item);
         return pickaxeMineable(blockDeferredBlock);
     }

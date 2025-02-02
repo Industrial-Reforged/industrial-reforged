@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.content.items.tools;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.api.items.electric.ElectricSwordItem;
+import com.indref.industrial_reforged.api.items.tools.electric.ElectricSwordItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.IRTranslations;
 import net.minecraft.ChatFormatting;

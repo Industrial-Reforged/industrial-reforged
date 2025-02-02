@@ -2,7 +2,10 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.portingdeadmods.portingdeadlibs.utils.ItemUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -18,17 +21,7 @@ import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResi
 
 public class TreeTapItem extends Item {
     public TreeTapItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return 40;
-    }
-
-    @Override
-    public boolean isDamageable(ItemStack stack) {
-        return true;
+        super(properties.durability(80));
     }
 
     @Override
@@ -42,7 +35,8 @@ public class TreeTapItem extends Item {
             Random random = new Random();
             int randomInt = random.nextInt(1, 4);
             resinDrop.setCount(randomInt);
-            ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
+            ItemUtils.giveItemToPlayerNoSound(useOnContext.getPlayer(), resinDrop);
+            level.playSound(null, blockPos, SoundEvents.HONEY_BLOCK_PLACE, SoundSource.PLAYERS);
             useOnContext.getItemInHand().hurtAndBreak(1, useOnContext.getPlayer(), LivingEntity.getSlotForHand(useOnContext.getHand()));
             return InteractionResult.SUCCESS;
         }

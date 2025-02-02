@@ -1,11 +1,15 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.items.electric.ElectricDiggerItem;
+import com.indref.industrial_reforged.api.items.tools.electric.ElectricDiggerItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
@@ -19,8 +23,4 @@ public class ElectricDrillItem extends ElectricDiggerItem {
         return ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(itemAbility) || ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
     }
 
-    @Override
-    public Holder<EnergyTier> getEnergyTier() {
-        return energyTier;
-    }
 }

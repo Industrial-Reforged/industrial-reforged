@@ -29,6 +29,10 @@ public record ComponentEuStorage(int energyStored, int energyCapacity) {
             ComponentEuStorage::new
     );
 
+    public ComponentEuStorage(int energyCapacity) {
+        this(0, energyCapacity);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

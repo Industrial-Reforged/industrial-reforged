@@ -44,10 +44,18 @@ public final class IRItems {
             () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
             () -> new RockCutterItem(1, -2.8F, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
+    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
+            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
+    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
+            () -> new ElectricHoeItem(EnergyTiers.LOW.value(), Tiers.IRON, 1, -2.8F, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ELECTRIC_DRILL = registerItem("electric_drill",
             () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
+    public static final DeferredItem<ElectricChainsawItem> ELECTRIC_CHAINSAW = registerItem("electric_chainsaw",
+            () -> new ElectricChainsawItem(5, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
+    public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = registerItem("advanced_chainsaw",
+            () -> new ElectricChainsawItem(7, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
     public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
             () -> new BlueprintItem(new Item.Properties()));
 

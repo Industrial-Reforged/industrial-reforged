@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.api.items.electric;
+package com.indref.industrial_reforged.api.items.tools.electric;
 
-import com.indref.industrial_reforged.api.items.tools.ElectricToolItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
@@ -64,7 +63,7 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     }
 
     @Override
-    public boolean requireEnergyToBreak(ItemStack itemStack, Player player) {
+    public boolean requireEnergyToWork(ItemStack itemStack, Player player) {
         return true;
     }
 }

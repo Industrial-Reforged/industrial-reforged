@@ -47,7 +47,7 @@ public class IRBlockLootTableProvider extends BlockLootSubProvider {
             dropSelf(block.get());
         }
 
-        for (Map.Entry<DeferredBlock<DropExperienceBlock>, DeferredItem<?>> entry : IRBlocks.ORES.entrySet()) {
+        for (Map.Entry<DeferredBlock<Block>, DeferredItem<?>> entry : IRBlocks.ORES.entrySet()) {
             add(entry.getKey().get(), block -> createOreDrop(block, entry.getValue().asItem()));
         }
 
