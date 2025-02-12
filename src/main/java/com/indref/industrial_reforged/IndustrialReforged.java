@@ -183,6 +183,7 @@ public final class IndustrialReforged {
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(IndustrialReforged.MODID);
         registrar.playToServer(ArmorActivityPayload.TYPE, ArmorActivityPayload.STREAM_CODEC, ArmorActivityPayload::handle);
+        registrar.playToServer(EmptyCruciblePayload.TYPE, EmptyCruciblePayload.STREAM_CODEC, EmptyCruciblePayload::handle);
 
         registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, CrucibleControllerPayload::handle);
         registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, CrucibleMeltingProgressPayload::handle);

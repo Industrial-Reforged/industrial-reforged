@@ -11,7 +11,7 @@ import org.joml.Vector4i;
 public class BioMassFluid extends PDLFluid {
     public BioMassFluid(String name) {
         super(name);
-        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(0, 220, 40, 255), FluidTemplates.WATER);
+        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(88, 214, 113, 255), FluidTemplates.WATER);
     }
 
     @Override

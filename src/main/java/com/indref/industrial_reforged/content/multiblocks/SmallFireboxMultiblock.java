@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -20,12 +21,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultiblock {
-    public static final EnumProperty<SmallFireboxMultiblock.FireboxState> FIREBOX_STATE = EnumProperty.create("firebox_state",
-            SmallFireboxMultiblock.FireboxState.class);
+    public static final IntegerProperty FIREBOX_PART = IntegerProperty.create("firebox_part", 0, 3);
 
     @Override
     public Block getUnformedController() {
@@ -72,41 +73,31 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     public @NotNull BlockState formBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         BlockState blockState = level.getBlockState(blockPos);
         if (layoutIndex == 0) {
-            return blockState.setValue(RotatableEntityBlock.FACING, getCorrectDirection(layerIndex, multiblockData.direction())).setValue(FIREBOX_STATE, FireboxState.FORMED);
+            return blockState
+                    .setValue(FIREBOX_PART, fireboxPart(layerIndex, multiblockData.direction()))
+                    .setValue(FORMED, true);
         }
         return blockState;
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    private static @NotNull Direction getCorrectDirection(int index, HorizontalDirection direction) {
+    public int fireboxPart(int layerIndex, HorizontalDirection direction) {
+        IndustrialReforged.LOGGER.debug("direction: {}", direction);
         return switch (direction) {
-            case NORTH -> switch (index) {
-                case 0 -> Direction.SOUTH;
-                case 1 -> Direction.WEST;
-                case 2 -> Direction.EAST;
-                case 3 -> Direction.NORTH;
-                default -> null;
+            case NORTH -> layerIndex;
+            case EAST -> switch (layerIndex) {
+                case 0 -> 1;
+                case 1 -> 3;
+                case 2 -> 0;
+                case 3 -> 2;
+                default -> -1;
             };
-            case EAST -> switch (index) {
-                case 0 -> Direction.WEST;
-                case 1 -> Direction.NORTH;
-                case 2 -> Direction.SOUTH;
-                case 3 -> Direction.EAST;
-                default -> null;
-            };
-            case SOUTH -> switch (index) {
-                case 0 -> Direction.NORTH;
-                case 1 -> Direction.EAST;
-                case 2 -> Direction.WEST;
-                case 3 -> Direction.SOUTH;
-                default -> null;
-            };
-            case WEST -> switch (index) {
-                case 0 -> Direction.EAST;
-                case 1 -> Direction.SOUTH;
-                case 2 -> Direction.NORTH;
-                case 3 -> Direction.WEST;
-                default -> null;
+            case SOUTH -> 3 - layerIndex;
+            case WEST -> switch (layerIndex) {
+                case 0 -> 2;
+                case 1 -> 0;
+                case 2 -> 3;
+                case 3 -> 1;
+                default -> -1;
             };
         };
     }
@@ -114,27 +105,11 @@ public record SmallFireboxMultiblock(FireboxTier tier) implements IFireboxMultib
     @Override
     public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState state = level.getBlockState(blockPos);
-        return state.hasProperty(FIREBOX_STATE) && !state.getValue(FIREBOX_STATE).equals(FireboxState.UNFORMED);
+        return state.hasProperty(FORMED) && state.getValue(FORMED);
     }
 
     @Override
     public FireboxTier getTier() {
         return tier;
-    }
-
-    public enum FireboxState implements StringRepresentable {
-        FORMED("formed"),
-        UNFORMED("unformed");
-
-        private final String name;
-
-        FireboxState(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public @NotNull String getSerializedName() {
-            return this.name;
-        }
     }
 }

@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
+import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
@@ -59,10 +60,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 // TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
-// TODO: Cache recipes
 public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuProvider, MultiblockEntity {
     public static final AABB AABB = new AABB(-1, (double) 10 / 16, -1, 2, 1, 2);
     public static final int SLOTS = 9;
+    private static final int CASTING_SPEED = 3;
     private final CrucibleTier tier;
     private MultiblockData multiblockData;
 
@@ -93,12 +94,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     }
 
     public void turn() {
-        if (!this.turnedOver) {
+        if (!this.turnedOver && canTurn()) {
             BlockEntity blockEntity = level.getBlockEntity(getBasinPos());
             if (blockEntity != null) {
                 IFluidHandler basinFluidTank = CapabilityUtils.fluidHandlerCapability(blockEntity);
                 IFluidHandler fluidTank = getFluidHandler();
-                this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0), fluidTank.getFluidInTank(0).getAmount());
+                this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0), fluidTank.getFluidInTank(0).getAmount() / CASTING_SPEED);
                 this.inUse = 70;
                 this.speed = 70;
                 this.turnedOver = true;
@@ -113,14 +114,6 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
             this.turnedOver = false;
             this.turnTimer = 0;
         }
-    }
-
-    public void reset() {
-        this.inUse = 0;
-        this.speed = 0;
-        this.independentAngle = 0;
-        this.chasingVelocity = 0;
-        this.turnedOver = false;
     }
 
     private float getSpeed() {
@@ -141,6 +134,13 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     public boolean isPowered() {
         return powered;
+    }
+
+    public boolean canTurn() {
+        if (level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be) {
+            return be.hasMold();
+        }
+        return false;
     }
 
     @Override
@@ -239,8 +239,10 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
                 IFluidHandler fluidHandler = fillBlockCache.getCapability();
 
                 if (fluidHandler != null) {
-                    FluidStack drained = getFluidHandler().drain(1, IFluidHandler.FluidAction.EXECUTE);
-                    fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+                    FluidStack drained = getFluidHandler().drain(CASTING_SPEED, IFluidHandler.FluidAction.EXECUTE);
+                    int filled = fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+                    int remaining = drained.getAmount() - filled;
+                    getFluidTank().fill(getFluidTank().getFluidInTank(0).copyWithAmount(remaining), IFluidHandler.FluidAction.EXECUTE);
                     PacketDistributor.sendToAllPlayers(
                             new BasinFluidChangedPayload(getBasinPos(), getFluidTank().getFluidAmount())
                     );
@@ -372,7 +374,6 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
             }
         }
     }
-
 
     /**
      * @param slot              slot for which we need to check the recipe

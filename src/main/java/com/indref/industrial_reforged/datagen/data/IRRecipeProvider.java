@@ -254,6 +254,15 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_copper_cable", has(IRBlocks.COPPER_CABLE))
                 .save(output);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.WOODEN_SCAFFOLDING.get(), 6)
+                .pattern("PPP")
+                .pattern("# #")
+                .pattern("# #")
+                .define('#', Tags.Items.RODS_WOODEN)
+                .define('P', ItemTags.PLANKS)
+                .unlockedBy("has_iron_ingot", has(Tags.Items.RODS_WOODEN))
+                .save(output);
+
         plantBallRecipes();
 
         stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, IRBlocks.REFRACTORY_STONE);
@@ -335,6 +344,28 @@ public class IRRecipeProvider extends RecipeProvider {
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ELECTRIC_DRILL.get())
+                .pattern(" # ")
+                .pattern("#M#")
+                .pattern("CBC")
+                .define('#', CTags.Items.STEEL_INGOT)
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('M', IRItems.ELECTRIC_MOTOR.get())
+                .define('B', IRItems.BASIC_BATTERY.get())
+                .unlockedBy("has_motor", has(IRItems.ELECTRIC_MOTOR.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ADVANCED_DRILL.get())
+                .pattern(" # ")
+                .pattern("#D#")
+                .pattern("CBC")
+                .define('#', Tags.Items.GEMS_DIAMOND)
+                .define('D', IRItems.ELECTRIC_DRILL.get())
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('B', IRItems.ADVANCED_BATTERY.get())
+                .unlockedBy("has_battery", has(IRItems.ADVANCED_BATTERY.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ELECTRIC_CHAINSAW.get())
                 .pattern(" ##")
                 .pattern("CM#")
                 .pattern("BC ")
@@ -345,15 +376,33 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_motor", has(IRItems.ELECTRIC_MOTOR.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ADVANCED_DRILL.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ADVANCED_CHAINSAW.get())
                 .pattern(" ##")
                 .pattern("CD#")
                 .pattern("BC ")
                 .define('#', Tags.Items.GEMS_DIAMOND)
-                .define('D', IRItems.ELECTRIC_DRILL.get())
                 .define('C', Tags.Items.INGOTS_COPPER)
+                .define('D', IRItems.ELECTRIC_CHAINSAW.get())
                 .define('B', IRItems.ADVANCED_BATTERY.get())
-                .unlockedBy("has_battery", has(IRItems.ADVANCED_BATTERY.get()))
+                .unlockedBy("has_motor", has(IRItems.ELECTRIC_MOTOR.get()))
+                .save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, IRItems.ELECTRIC_HOE)
+                .requires(IRItems.BASIC_BATTERY)
+                .requires(ItemTags.HOES)
+                .unlockedBy("has_battery", has(IRItems.BASIC_BATTERY))
+                .save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, IRItems.ELECTRIC_TREE_TAP)
+                .requires(IRItems.BASIC_BATTERY)
+                .requires(IRItems.TREE_TAP)
+                .unlockedBy("has_battery", has(IRItems.BASIC_BATTERY))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.WOODEN_PLATE.get(), 4)
+                .pattern("LL")
+                .define('L', ItemTags.LOGS)
+                .unlockedBy("has_logs", has(ItemTags.LOGS))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ROCK_CUTTER.get())
@@ -556,7 +605,7 @@ public class IRRecipeProvider extends RecipeProvider {
         centrifugeRecipe(IngredientWithCount.of(Tags.Items.FOODS_RAW_MEAT, 3), IRFluids.METHANE.toStack(666), 200, 100,
                 asStack(IRItems.COAL_DUST), asStack(Items.BONE_MEAL));
         centrifugeRecipe(IngredientWithCount.of(Items.CLAY), new FluidStack(Fluids.WATER, 1000), 200, 100,
-                asStack(Items.DIRT, 10), asStack(Items.CLAY_BALL, 3));
+                asStack(Items.DIRT, 3), asStack(Items.CLAY_BALL, 3));
         centrifugeRecipe(IngredientWithCount.of(IRItems.PLANT_BALL, 2), IRFluids.BIO_MASS.toStack(333), 200, 100,
                 asStack(IRItems.PLANT_MASS, 3), asStack(Items.VINE, 2), asStack(Items.WHEAT_SEEDS, 4));
         centrifugeRecipe(IngredientWithCount.of(Items.SOUL_SAND, 16), IRFluids.OIL.toStack(666), 200, 100,

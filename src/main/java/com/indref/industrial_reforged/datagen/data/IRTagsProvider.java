@@ -17,6 +17,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -151,9 +152,18 @@ public class IRTagsProvider {
 
         private void plates() {
             tag(CTags.Items.PLATES,
-                    CTags.Items.RUBBER_SHEET
+                    CTags.Items.RUBBER_SHEET,
+                    CTags.Items.IRON_PLATE,
+                    CTags.Items.COPPER_PLATE,
+                    CTags.Items.TIN_PLATE,
+                    CTags.Items.STEEL_PLATE,
+                    CTags.Items.WOODEN_PLATE,
+                    CTags.Items.CARBON_PLATE
             );
+
             tag(CTags.Items.RUBBER_SHEET, IRItems.RUBBER_SHEET);
+            tag(CTags.Items.WOODEN_PLATE, IRItems.WOODEN_PLATE);
+            tag(CTags.Items.CARBON_PLATE, IRItems.CARBON_PLATE);
             tag(CTags.Items.IRON_PLATE, IRItems.IRON_PLATE);
             tag(CTags.Items.COPPER_PLATE, IRItems.COPPER_PLATE);
             tag(CTags.Items.TIN_PLATE, IRItems.TIN_PLATE);
@@ -165,13 +175,15 @@ public class IRTagsProvider {
                     CTags.Items.TIN_WIRE,
                     CTags.Items.COPPER_WIRE,
                     CTags.Items.GOLD_WIRE,
-                    CTags.Items.STEEL_WIRE
+                    CTags.Items.STEEL_WIRE,
+                    Tags.Items.STRINGS
             );
 
             tag(CTags.Items.TIN_WIRE, IRItems.TIN_WIRE);
             tag(CTags.Items.COPPER_WIRE, IRItems.COPPER_WIRE);
             tag(CTags.Items.GOLD_WIRE, IRItems.GOLD_WIRE);
             tag(CTags.Items.STEEL_WIRE, IRItems.STEEL_WIRE);
+            tag(Tags.Items.STRINGS, Items.STRING);
         }
 
         private void rods() {
@@ -278,6 +290,9 @@ public class IRTagsProvider {
                     IRBlocks.BAUXITE_ORE.get(),
                     IRBlocks.TIN_BLOCK.get(),
                     IRBlocks.LEAD_ORE.get(),
+                    IRBlocks.DEEPSLATE_BAUXITE_ORE.get(),
+                    IRBlocks.DEEPSLATE_TIN_ORE.get(),
+                    IRBlocks.DEEPSLATE_LEAD_ORE.get(),
                     IRBlocks.NICKEL_BLOCK.get(),
                     IRBlocks.ALUMINUM_BLOCK.get(),
                     IRBlocks.TIN_BLOCK.get(),
@@ -299,6 +314,10 @@ public class IRTagsProvider {
                     IRBlocks.URANIUM_ORE.get(),
                     IRBlocks.CHROMIUM_BLOCK.get(),
                     IRBlocks.URANIUM_BLOCK.get(),
+                    IRBlocks.DEEPSLATE_CHROMIUM_ORE.get(),
+                    IRBlocks.DEEPSLATE_URANIUM_ORE.get(),
+                    IRBlocks.CHROMIUM_BLOCK.get(),
+                    IRBlocks.URANIUM_BLOCK.get(),
                     IRBlocks.STEEL_BLOCK.get(),
                     IRBlocks.RAW_CHROMIUM_BLOCK.get(),
                     IRBlocks.RAW_URANIUM_BLOCK.get()
@@ -306,12 +325,16 @@ public class IRTagsProvider {
 
             tag(BlockTags.NEEDS_DIAMOND_TOOL,
                     IRBlocks.IRIDIUM_ORE.get(),
+                    IRBlocks.DEEPSLATE_IRIDIUM_ORE.get(),
                     IRBlocks.TITANIUM_BLOCK.get(),
                     IRBlocks.IRIDIUM_BLOCK.get(),
                     IRBlocks.RAW_IRIDIUM_BLOCK.get()
             );
 
             tag(Tags.Blocks.STONES, IRBlocks.REFRACTORY_STONE.get());
+
+            tag(BlockTags.CLIMBABLE, IRBlocks.WOODEN_SCAFFOLDING.get());
+            tag(BlockTags.FALL_DAMAGE_RESETTING, IRBlocks.WOODEN_SCAFFOLDING.get());
         }
 
         private void tag(TagKey<Block> itemTagKey, Block... blocks) {

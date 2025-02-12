@@ -60,6 +60,14 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .rotatable()
                 .create();
 
+        blockModel(IRBlocks.WOODEN_SCAFFOLDING)
+                .top(this::modelTexture, "_top")
+                .sides(this::modelTexture, "_side")
+                .bottom(this::modelTexture, "_bottom")
+                .particle(this::modelTexture, "_top")
+                .cutout()
+                .create();
+
         cableBlock(IRBlocks.TIN_CABLE.get());
         cableBlock(IRBlocks.COPPER_CABLE.get());
         cableBlock(IRBlocks.GOLD_CABLE.get());
@@ -92,7 +100,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
     }
 
     private void oreBlocks() {
-        for (DeferredBlock<DropExperienceBlock> oreBlock : IRBlocks.ORES.keySet()) {
+        for (DeferredBlock<?> oreBlock : IRBlocks.ORES.keySet()) {
             simpleBlock(oreBlock.get());
         }
     }
@@ -186,20 +194,20 @@ public class IRBlockStateProvider extends BlockStateProvider {
     private void rubberTreeResinHole(DeferredBlock<RubberTreeResinHoleBlock> block) {
         VariantBlockStateBuilder builder = getVariantBuilder(block.get());
         BlockModelBuilder modelBuilder = models().cube(name(block.get()) + "_full",
-                extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
-                extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
-                extend(blockTexture(block.get(), "tree"), "_full"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"))
+                        extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
+                        extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
+                        extend(blockTexture(block.get(), "tree"), "_full"),
+                        blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
+                        blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
+                        blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"))
                 .texture("particle", blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"));
         BlockModelBuilder emptyModelBuilder = models().cube(name(block.get()),
-                extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
-                extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
-                blockTexture(block.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
-                blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"))
+                        extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
+                        extend(blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"), "_top"),
+                        blockTexture(block.get(), "tree"),
+                        blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
+                        blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"),
+                        blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"))
                 .texture("particle", blockTexture(IRBlocks.RUBBER_TREE_LOG.get(), "tree"));
 
         for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
@@ -251,6 +259,10 @@ public class IRBlockStateProvider extends BlockStateProvider {
         return blockTexture(block, "machine", "");
     }
 
+    private ResourceLocation modelTexture(Block block, String suffix) {
+        return blockTexture(block, "", suffix);
+    }
+
     private ResourceLocation blockTexture(Block block, String textureFolder) {
         return blockTexture(block, textureFolder, "");
     }
@@ -300,6 +312,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         private boolean active;
         private boolean rotatable;
+        private boolean cutout;
         private ResourceLocation up;
         private ResourceLocation down;
         private ResourceLocation north;
@@ -307,10 +320,16 @@ public class IRBlockStateProvider extends BlockStateProvider {
         private ResourceLocation south;
         private ResourceLocation west;
         private ResourceLocation defaultTexture;
+        private ResourceLocation particle;
 
         public ModelBuilder(DeferredBlock<?> block) {
             this.block = block.get();
             this.defaultTexture = blockTexture(IRBlocks.BASIC_MACHINE_FRAME.get());
+        }
+
+        public ModelBuilder cutout() {
+            this.cutout = true;
+            return this;
         }
 
         public ModelBuilder active() {
@@ -391,6 +410,19 @@ public class IRBlockStateProvider extends BlockStateProvider {
             return defaultTexture(defaultTexture.apply(this.block, suffix));
         }
 
+        public ModelBuilder particle(ResourceLocation defaultTexture) {
+            this.particle = defaultTexture;
+            return this;
+        }
+
+        public ModelBuilder particle(Function<Block, ResourceLocation> particleTexture) {
+            return particle(particleTexture.apply(this.block));
+        }
+
+        public ModelBuilder particle(BiFunction<Block, String, ResourceLocation> particleTexture, String suffix) {
+            return particle(particleTexture.apply(this.block, suffix));
+        }
+
         public void create() {
             BlockModelBuilder activeBuilder = models().withExistingParent(name(block) + "_active", "cube");
             if (this.active) {
@@ -400,7 +432,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 activeBuilder.texture("east", activeTextureOrDefault(this.east));
                 activeBuilder.texture("south", activeTextureOrDefault(this.south));
                 activeBuilder.texture("west", activeTextureOrDefault(this.west));
-                activeBuilder.texture("particle", this.defaultTexture);
+                activeBuilder.texture("particle", textureOrDefault(this.particle));
             }
             BlockModelBuilder inactiveBuilder = models().withExistingParent(name(block), "cube");
             inactiveBuilder.texture("down", textureOrDefault(this.down));
@@ -409,7 +441,11 @@ public class IRBlockStateProvider extends BlockStateProvider {
             inactiveBuilder.texture("east", textureOrDefault(this.east));
             inactiveBuilder.texture("south", textureOrDefault(this.south));
             inactiveBuilder.texture("west", textureOrDefault(this.west));
-            inactiveBuilder.texture("particle", this.defaultTexture);
+            inactiveBuilder.texture("particle", textureOrDefault(this.particle));
+            if (cutout) {
+                activeBuilder.renderType("cutout");
+                inactiveBuilder.renderType("cutout");
+            }
             createBlockState(activeBuilder, inactiveBuilder);
         }
 

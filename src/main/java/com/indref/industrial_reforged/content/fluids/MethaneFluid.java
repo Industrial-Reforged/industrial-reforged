@@ -10,7 +10,7 @@ import org.joml.Vector4i;
 public class MethaneFluid extends PDLFluid {
     public MethaneFluid(String name) {
         super(name);
-        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(187, 122, 198, 255), FluidTemplates.WATER);
+        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(226, 154, 239, 255), FluidTemplates.WATER);
     }
 
     @Override

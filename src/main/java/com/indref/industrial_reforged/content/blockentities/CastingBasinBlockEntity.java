@@ -40,9 +40,13 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
 
     private CrucibleCastingRecipe recipe;
 
-    public CastingBasinBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(IRBlockEntityTypes.CASTING_BASIN.get(), p_155229_, p_155230_);
-        addItemHandler(2, (slot, item) -> slot == 0 && getMold(item.getItem()) != null);
+    public CastingBasinBlockEntity(BlockPos pos, BlockState state) {
+        super(IRBlockEntityTypes.CASTING_BASIN.get(), pos, state);
+        addItemHandler(
+                2,
+                slot -> slot == 0 ? 1 : getItemHandler().getStackInSlot(0).getMaxStackSize(),
+                (slot, item) -> slot == 0 && getMold(item.getItem()) != null
+        );
         addFluidTank(0);
     }
 
@@ -60,6 +64,10 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
                 update();
             }
         }
+    }
+
+    public boolean hasMold() {
+        return !getItemHandler().getStackInSlot(0).isEmpty();
     }
 
     public @Nullable CastingMoldValue getMold(Item item) {
@@ -161,7 +169,6 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         Optional<CrucibleCastingRecipe> recipe = this.level.getRecipeManager()
                 .getRecipeFor(CrucibleCastingRecipe.TYPE, new CrucibleCastingRecipeInput(moltItem, getFluidTank().getFluidInTank(0).copyWithAmount(fluidAmount)), level)
                 .map(RecipeHolder::value);
-
 
         if (recipe.isEmpty()) return Optional.empty();
 

@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
 import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -26,29 +27,30 @@ public class IRMultiblockDataGenHelper {
         Block block = IRBlocks.SMALL_FIREBOX_HATCH.get();
 
         VariantBlockStateBuilder builder = bsp.getVariantBuilder(block);
-        for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
-            builder.partialState().with(SmallFireboxMultiblock.FIREBOX_STATE, SmallFireboxMultiblock.FireboxState.FORMED).with(BlockStateProperties.HORIZONTAL_FACING, dir.getOpposite())
-                    .modelForState().modelFile(smallFireboxModel(block, true)).rotationY(((int) dir.toYRot() + 180) % 360).addModel()
-                    .partialState().with(SmallFireboxMultiblock.FIREBOX_STATE, SmallFireboxMultiblock.FireboxState.UNFORMED).with(BlockStateProperties.HORIZONTAL_FACING, dir.getOpposite())
-                    .modelForState().modelFile(smallFireboxModel(block, false)).rotationY(((int) dir.toYRot() + 180) % 360).addModel();
+        for (int i = 0; i < 4; i++) {
+                builder.partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, true)
+                        .modelForState().modelFile(smallFireboxModel(block, i)).addModel()
+                        .partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, false)
+                        .modelForState().modelFile(unformedSmallFireboxModel(block)).addModel();
         }
     }
 
-    private BlockModelBuilder smallFireboxModel(Block block, boolean formed) {
-        if (formed) {
-            return bsp.models().cube(bsp.name(block) + "_formed",
-                    extend(multiblockLoc(block), "_top"),
-                    extend(multiblockLoc(block), "_top"),
-                    extend(multiblockLoc(block), "_right"),
-                    extend(multiblockLoc(block), "_left"),
-                    extend(multiblockLoc(block), "_right"),
-                    extend(multiblockLoc(block), "_left")
-            ).texture("particle", bsp.blockTexture(Blocks.IRON_BLOCK));
-        }
+    private BlockModelBuilder smallFireboxModel(Block block, int part) {
+        return bsp.models().cube(bsp.name(block) + "_formed_"+part,
+                extend(multiblockLoc(block), "_top_" + part),
+                extend(multiblockLoc(block), "_top_" + part),
+                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_1" : "_side_0"),
+                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_1" : "_side_0"),
+                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_0" : "_side_1"),
+                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_0" : "_side_1")
+        ).texture("particle", bsp.blockTexture(Blocks.IRON_BLOCK));
+    }
+
+    public @NotNull BlockModelBuilder unformedSmallFireboxModel(Block block) {
         return bsp.models()
                 .cube(bsp.name(IRBlocks.SMALL_FIREBOX_HATCH.get()),
-                        bsp.blockTexture(Blocks.IRON_BLOCK),
-                        bsp.blockTexture(Blocks.IRON_BLOCK),
+                        extend(multiblockLoc(block), "_unformed_top"),
+                        extend(multiblockLoc(block), "_unformed_top"),
                         extend(multiblockLoc(block), "_front"),
                         extend(multiblockLoc(block), "_front"),
                         extend(multiblockLoc(block), "_front"),

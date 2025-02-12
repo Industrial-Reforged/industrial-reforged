@@ -79,7 +79,7 @@ public final class MoldCraftingRecipe extends CustomRecipe {
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInput input) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(input.size(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = super.getRemainingItems(input);
 
         for (int i = 0; i < nonnulllist.size(); i++) {
             ItemStack item = input.getItem(i);

@@ -6,7 +6,9 @@ import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.mojang.serialization.MapCodec;
+import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
+import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -23,10 +25,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SmallFireboxHatchBlock extends RotatableContainerBlock {
+public class SmallFireboxHatchBlock extends ContainerBlock {
     public SmallFireboxHatchBlock(Properties properties) {
         super(properties);
-        registerDefaultState(this.defaultBlockState().setValue(SmallFireboxMultiblock.FIREBOX_STATE, SmallFireboxMultiblock.FireboxState.UNFORMED));
+        registerDefaultState(this.defaultBlockState().setValue(SmallFireboxMultiblock.FORMED, false));
     }
 
     @Override
@@ -41,12 +43,12 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
-        super.createBlockStateDefinition(p_49915_.add(SmallFireboxMultiblock.FIREBOX_STATE));
+        super.createBlockStateDefinition(p_49915_.add(SmallFireboxMultiblock.FIREBOX_PART, Multiblock.FORMED));
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext p_49820_) {
-        return super.getStateForPlacement(p_49820_).setValue(SmallFireboxMultiblock.FIREBOX_STATE, SmallFireboxMultiblock.FireboxState.UNFORMED);
+        return super.getStateForPlacement(p_49820_).setValue(SmallFireboxMultiblock.FORMED, false);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
-        if(blockState.getValue(SmallFireboxMultiblock.FIREBOX_STATE) != SmallFireboxMultiblock.FireboxState.UNFORMED) {
+        if(blockState.getValue(SmallFireboxMultiblock.FORMED)) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof SmallFireboxBlockEntity fakeBlockEntity) {
                 BlockPos actualBlockEntityPos = fakeBlockEntity.getActualBlockEntityPos();
@@ -73,7 +75,7 @@ public class SmallFireboxHatchBlock extends RotatableContainerBlock {
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (!pState.is(pNewState.getBlock()) && pState.getValue(SmallFireboxMultiblock.FIREBOX_STATE) == SmallFireboxMultiblock.FireboxState.FORMED) {
+        if (!pState.is(pNewState.getBlock()) && pState.getValue(SmallFireboxMultiblock.FORMED)) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
                 BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();

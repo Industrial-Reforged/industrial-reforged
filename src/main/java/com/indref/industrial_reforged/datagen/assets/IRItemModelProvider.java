@@ -67,6 +67,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.BIO_PLASTIC);
         basicItem(IRItems.COAL_DUST);
         basicItem(IRItems.CARBON_PLATE);
+        basicItem(IRItems.WOODEN_PLATE);
         basicItem(IRItems.PLANT_MASS);
         basicItem(IRItems.RUBBER);
         basicItem(IRItems.RUBBER_SHEET);
@@ -112,6 +113,10 @@ public class IRItemModelProvider extends ItemModelProvider {
                 i -> basicItem(IRItems.THERMOMETER, "_" + i));
         overrideItemModel(2, basicItem(IRItems.NANO_SABER), IRItemProperties.ACTIVE_KEY,
                 i -> i == 1 ? basicItem(extend(key(IRItems.NANO_SABER), "_active")) : basicItem(IRItems.NANO_SABER));
+        overrideItemModel(2, basicItem(IRItems.ELECTRIC_CHAINSAW), IRItemProperties.ACTIVE_KEY,
+                i -> i == 1 ? basicItem(extend(key(IRItems.ELECTRIC_CHAINSAW), "_active")) : basicItem(IRItems.ELECTRIC_CHAINSAW));
+        overrideItemModel(2, basicItem(IRItems.ADVANCED_CHAINSAW), IRItemProperties.ACTIVE_KEY,
+                i -> i == 1 ? basicItem(extend(key(IRItems.ADVANCED_CHAINSAW), "_active")) : basicItem(IRItems.ADVANCED_CHAINSAW));
 
         basicItem(IRItems.ALUMINUM_INGOT);
         basicItem(IRItems.IRIDIUM_INGOT);

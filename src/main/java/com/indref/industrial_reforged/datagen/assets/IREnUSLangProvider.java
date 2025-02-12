@@ -87,6 +87,9 @@ public class IREnUSLangProvider extends LanguageProvider {
         addMultiblockFeedback(MultiblockFeedback.ACTUAL_BLOCK, "Block: %s");
         addMultiblockFeedback(MultiblockFeedback.EXPECTED_BLOCK, "Expected: %s");
         addMultiblockFeedback(MultiblockFeedback.BLOCK_POS, "Coordinates: %d, %d, %d");
+
+        add("*.desc.melting_progress", "Melting Progress");
+        add("*.desc.melting_not_possible", "Melting Not Possible");
     }
 
     private void addFluids() {
@@ -143,6 +146,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.STEEL_PLATE, "Steel Plate");
         addItem(IRItems.TIN_PLATE, "Tin Plate");
         addItem(IRItems.CARBON_PLATE, "Carbon Plate");
+        addItem(IRItems.WOODEN_PLATE, "Wooden Plate");
 
         addItem(IRItems.IRON_ROD, "Iron Rod");
         addItem(IRItems.STEEL_ROD, "Steel Rod");
@@ -203,6 +207,7 @@ public class IREnUSLangProvider extends LanguageProvider {
 
         addBlock(IRBlocks.SMALL_FIREBOX_HATCH, "Small Firebox Hatch");
         addBlock(IRBlocks.IRON_FENCE, "Iron Fence");
+        addBlock(IRBlocks.WOODEN_SCAFFOLDING, "Wooden Scaffolding");
 
         addBlock(IRBlocks.TERRACOTTA_BRICKS, "Terracotta Bricks");
         addBlock(IRBlocks.TERRACOTTA_BRICK_SLAB, "Terracotta Brick Slab");

@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-02T12:32:59.800244367	Tags for minecraft:item mod id vanilla
+// 1.21.1	2025-02-11T18:07:39.845966709	Tags for minecraft:item mod id vanilla
 bf4207125fec838572bf88021bbbaeb2269993f9 data/c/tags/item/bricks.json
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
@@ -18,12 +18,14 @@ d4cb1130ab1f69ab6e3f347a1549b89d1fbed827 data/c/tags/item/ores/chromium.json
 9b17ec8ae49796ecec62976e1254ee4b18948845 data/c/tags/item/ores/nickel.json
 52989a86b4200aa37f4a421862492c023b5aedc4 data/c/tags/item/ores/tin.json
 cfd2b417851dbd2c32a5cfee0c767bcdc960376d data/c/tags/item/ores/uranium.json
-50152259d9cbcb7554482766d1df144368279a6b data/c/tags/item/plates.json
+87e5fd25056df0a3672488d0fdfc24d095e14755 data/c/tags/item/plates.json
+c1727d7fa2789634e60febb3c49fc1f423aef23e data/c/tags/item/plates/carbon.json
 bf279439bd2ce4fb30125e1fe9e4e3ac0fffc7e8 data/c/tags/item/plates/copper.json
 2795cfc71507e98b1db8b64b20043130da17ba80 data/c/tags/item/plates/iron.json
 cdb9737a4d1ac63a74f79454d16d3b21fbb4ac18 data/c/tags/item/plates/rubber.json
 149e5cbebccf54f6458556eec888b40f8e494177 data/c/tags/item/plates/steel.json
 e952c7967f2f80de39dc6393d39763b2bf62698b data/c/tags/item/plates/tin.json
+ec630d7400e595c88703e72426cd6f42e2c3f2eb data/c/tags/item/plates/wooden.json
 6e55c7a437f333dc5acaf0c059e4b7fdb3b9d94c data/c/tags/item/raw_materials.json
 c4be79e520915ad04c504743cc874c7c858d7911 data/c/tags/item/raw_materials/bauxite.json
 ab65eb73223123d9113f08f6dfaa60130c3132a8 data/c/tags/item/raw_materials/chromium.json
@@ -50,8 +52,9 @@ ba4f664761fc06f11aa98bdbfb6f4d7300a6371a data/c/tags/item/storage_blocks/steel.j
 46fd52b3f0a3a1b902edc906ed56c4c184cf9e0e data/c/tags/item/storage_blocks/tin.json
 824a488a50b696cd30504e06ccada17376b7de3d data/c/tags/item/storage_blocks/titanium.json
 dde8ce543b3c601a52f16ea4aad07cef90c865d7 data/c/tags/item/storage_blocks/uranium.json
+6bb01ece43dc060b7f6e508c68ea0179c30e853f data/c/tags/item/strings.json
 f74de00cd28265a05d06fcde8a72be7fa710e85c data/c/tags/item/tools.json
-9d15fdcfb63962dfcdf18a753893bc9336f0ff4c data/c/tags/item/wires.json
+123438c2f9efeb63561c40ff053050dc01bed1c6 data/c/tags/item/wires.json
 fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json
 0b79414d07652b0536049e1e7ea3b0a3a88e742b data/c/tags/item/wires/steel.json

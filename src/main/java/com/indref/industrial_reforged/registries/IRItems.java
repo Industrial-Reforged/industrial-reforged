@@ -106,6 +106,7 @@ public final class IRItems {
     public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
     public static final DeferredItem<Item> COAL_DUST = registerStandardItem("coal_dust");
     public static final DeferredItem<Item> CARBON_PLATE = registerStandardItem("carbon_plate");
+    public static final DeferredItem<Item> WOODEN_PLATE = registerStandardItem("wooden_plate");
     public static final DeferredItem<Item> TERRACOTTA_BRICK = registerStandardItem("terracotta_brick");
     public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
             () -> new FertilizerItem(new Item.Properties()));

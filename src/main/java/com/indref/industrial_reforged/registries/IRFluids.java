@@ -1,10 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.fluids.BioMassFluid;
-import com.indref.industrial_reforged.content.fluids.MethaneFluid;
-import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
-import com.indref.industrial_reforged.content.fluids.OilFluid;
+import com.indref.industrial_reforged.content.fluids.*;
 import com.portingdeadmods.portingdeadlibs.utils.FluidRegistrationHelper;
 import net.minecraft.core.Vec3i;
 
@@ -27,7 +24,7 @@ public final class IRFluids {
     public static final MoltenMetalFluid MOLTEN_NICKEL = HELPER.registerFluid(new MoltenMetalFluid("molten_nickel",
             new Vec3i(229, 233, 210)));
     public static final MoltenMetalFluid MOLTEN_GOLD = HELPER.registerFluid(new MoltenMetalFluid("molten_gold",
-            new Vec3i(253, 206, 95)));
+            new Vec3i(255, 225, 109), FluidTemplates.MOLTEN_GOLD));
     public static final MoltenMetalFluid MOLTEN_LEAD = HELPER.registerFluid(new MoltenMetalFluid("molten_lead",
-            new Vec3i(71, 72, 100)));
+            new Vec3i(71, 72, 100),FluidTemplates.MOLTEN_LEAD));
 }

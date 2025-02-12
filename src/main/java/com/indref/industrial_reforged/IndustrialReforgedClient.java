@@ -87,6 +87,8 @@ public final class IndustrialReforgedClient {
     private static void registerItemProperties() {
         ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, IRItemProperties::isActive);
         ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, IRItemProperties::getTemperature);
+        ItemProperties.register(IRItems.ELECTRIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, IRItemProperties::isActive);
+        ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, IRItemProperties::isActive);
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof BatteryItem batteryItem) {
                 ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY,

@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.fluids;
 
+import com.portingdeadmods.portingdeadlibs.api.fluids.FluidTemplate;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.Blocks;
@@ -10,8 +11,12 @@ import org.joml.Vector4i;
 
 public class MoltenMetalFluid extends PDLFluid {
     public MoltenMetalFluid(String name, Vec3i color) {
+        this(name, color, FluidTemplates.MOLTEN_METAL);
+    }
+
+    public MoltenMetalFluid(String name, Vec3i color, FluidTemplate template) {
         super(name);
-        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(color.getX(), color.getY(), color.getZ(), 255), FluidTemplates.MOLTEN_METAL);
+        this.fluidType = registerFluidType(FluidType.Properties.create(), new Vector4i(color.getX(), color.getY(), color.getZ(), 255), template);
     }
 
     @Override

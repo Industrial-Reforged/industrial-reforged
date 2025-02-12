@@ -16,6 +16,7 @@ import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -88,11 +89,11 @@ public class IRWorldGenProvider extends DatapackBuiltinEntriesProvider {
         registerConfiguredOre(context, IRWorldgenKeys.URANIUM_ORE_KEY, IRBlocks.URANIUM_ORE.get(), IRBlocks.DEEPSLATE_URANIUM_ORE.get(), 4);
     }
 
-    private static void registerConfiguredOre(BootstrapContext<ConfiguredFeature<?, ?>> context, IRWorldgenKeys.Feature ore, DropExperienceBlock oreBlock, DropExperienceBlock deepslateOreBlock, int size) {
+    private static void registerConfiguredOre(BootstrapContext<ConfiguredFeature<?, ?>> context, IRWorldgenKeys.Feature ore, Block oreBlock, Block deepslateOreBlock, int size) {
         registerConfiguredOre(context, ore, oreBlock, deepslateOreBlock, size, 0);
     }
 
-    private static void registerConfiguredOre(BootstrapContext<ConfiguredFeature<?, ?>> context, IRWorldgenKeys.Feature ore, DropExperienceBlock oreBlock, DropExperienceBlock deepslateOreBlock, int size, float discardChanceOnAirExposure) {
+    private static void registerConfiguredOre(BootstrapContext<ConfiguredFeature<?, ?>> context, IRWorldgenKeys.Feature ore, Block oreBlock, Block deepslateOreBlock, int size, float discardChanceOnAirExposure) {
         List<OreConfiguration.TargetBlockState> oreConfiguration = List.of(
                 OreConfiguration.target(STONE_ORE_REPLACEABLES, oreBlock.defaultBlockState()),
                 OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, deepslateOreBlock.defaultBlockState()));

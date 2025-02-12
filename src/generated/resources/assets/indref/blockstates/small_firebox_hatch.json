@@ -1,34 +1,28 @@
 {
   "variants": {
-    "facing=east,firebox_state=formed": {
-      "model": "indref:block/small_firebox_hatch_formed",
-      "y": 270
-    },
-    "facing=east,firebox_state=unformed": {
-      "model": "indref:block/small_firebox_hatch",
-      "y": 270
-    },
-    "facing=north,firebox_state=formed": {
-      "model": "indref:block/small_firebox_hatch_formed",
-      "y": 180
-    },
-    "facing=north,firebox_state=unformed": {
-      "model": "indref:block/small_firebox_hatch",
-      "y": 180
-    },
-    "facing=south,firebox_state=formed": {
-      "model": "indref:block/small_firebox_hatch_formed"
-    },
-    "facing=south,firebox_state=unformed": {
+    "firebox_part=0,formed=false": {
       "model": "indref:block/small_firebox_hatch"
     },
-    "facing=west,firebox_state=formed": {
-      "model": "indref:block/small_firebox_hatch_formed",
-      "y": 90
+    "firebox_part=0,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_0"
     },
-    "facing=west,firebox_state=unformed": {
-      "model": "indref:block/small_firebox_hatch",
-      "y": 90
+    "firebox_part=1,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "firebox_part=1,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_1"
+    },
+    "firebox_part=2,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "firebox_part=2,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_2"
+    },
+    "firebox_part=3,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "firebox_part=3,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_3"
     }
   }
 }
