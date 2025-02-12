@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "tag": "c:rods/wooden"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "# #",
+    "# #"
+  ],
+  "result": {
+    "count": 6,
+    "id": "indref:wooden_scaffolding"
+  }
+}

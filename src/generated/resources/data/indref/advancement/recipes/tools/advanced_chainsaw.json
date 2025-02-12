@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_motor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "indref:electric_motor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "indref:advanced_chainsaw"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_motor"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "indref:advanced_chainsaw"
+    ]
+  }
+}

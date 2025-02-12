@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "down": "indref:block/wooden_scaffolding_bottom",
+    "east": "indref:block/wooden_scaffolding_side",
+    "north": "indref:block/wooden_scaffolding_side",
+    "particle": "indref:block/wooden_scaffolding_top",
+    "south": "indref:block/wooden_scaffolding_side",
+    "up": "indref:block/wooden_scaffolding_top",
+    "west": "indref:block/wooden_scaffolding_side"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:block/cube",
+  "render_type": "minecraft:cutout"
+}

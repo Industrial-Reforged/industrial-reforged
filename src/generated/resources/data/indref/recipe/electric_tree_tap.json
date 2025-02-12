@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "indref:basic_battery"
+    },
+    {
+      "item": "indref:tree_tap"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:electric_tree_tap"
+  }
+}
