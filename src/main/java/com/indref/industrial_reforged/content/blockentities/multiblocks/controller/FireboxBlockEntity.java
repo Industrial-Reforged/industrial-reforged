@@ -144,8 +144,8 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     }
 
     protected void tickRecipe() {
-        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
-        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(this);
+        IItemHandler itemHandler = getItemHandler();
+        IHeatStorage heatStorage = getHeatStorage();
         if (heatStorage != null) {
             if (this.burnTime > 0) {
                 burnTime--;
@@ -188,6 +188,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
 
     @Override
     protected void saveData(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.saveData(pTag, provider);
         pTag.putInt("burnTime", this.burnTime);
         pTag.putInt("maxBurnTime", this.maxBurnTime);
         pTag.put("multiblockData", saveMBData());
@@ -195,6 +196,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
 
     @Override
     protected void loadData(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadData(pTag, provider);
         this.burnTime = pTag.getInt("burnTime");
         this.maxBurnTime = pTag.getInt("maxBurnTime");
         this.multiblockData = loadMBData(pTag.getCompound("multiblockData"));

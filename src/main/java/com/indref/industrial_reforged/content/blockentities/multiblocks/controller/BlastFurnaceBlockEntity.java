@@ -96,6 +96,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadData(tag, provider);
         this.multiblockData = loadMBData(tag.getCompound("multiblockData"));
         long mainControllerPos1 = tag.getLong("mainControllerPos");
         this.mainControllerPos = BlockPos.of(mainControllerPos1);
@@ -104,6 +105,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
         tag.put("multiblockData", saveMBData());
         BlockPos actualBlockEntityPos = getActualBlockEntityPos();
         if (actualBlockEntityPos != null) {

@@ -31,7 +31,7 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
 
     @Override
     public void render(FaucetBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        FluidStack fluidInTank = CapabilityUtils.fluidHandlerCapability(blockEntity).getFluidInTank(0);
+        FluidStack fluidInTank = blockEntity.getRenderStack();
         if (fluidInTank.isEmpty()) return;
 
         Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);

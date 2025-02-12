@@ -244,7 +244,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
                     int remaining = drained.getAmount() - filled;
                     getFluidTank().fill(getFluidTank().getFluidInTank(0).copyWithAmount(remaining), IFluidHandler.FluidAction.EXECUTE);
                     PacketDistributor.sendToAllPlayers(
-                            new BasinFluidChangedPayload(getBasinPos(), getFluidTank().getFluidAmount())
+                            new BasinFluidChangedPayload(getBasinPos(), fluidHandler.getFluidInTank(0).getAmount())
                     );
                 }
             }
