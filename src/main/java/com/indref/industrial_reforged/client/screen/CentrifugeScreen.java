@@ -2,9 +2,9 @@ package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
-import com.indref.industrial_reforged.content.blockentities.machines.CentrifugeBlockEntity;
+import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
-import com.indref.industrial_reforged.content.gui.widgets.BatterySlotWidget;
+import com.indref.industrial_reforged.client.widgets.BatterySlotWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.EnergyBarWidget;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
@@ -12,9 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector2i;
 
 public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/centrifuge.png");

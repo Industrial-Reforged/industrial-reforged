@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.client.widgets.ClearableFluidTankWidget;
+import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
-import com.indref.industrial_reforged.content.gui.widgets.HeatDisplayWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,8 +29,8 @@ public class BlastFurnaceScreen extends PDLAbstractContainerScreen<BlastFurnaceM
     @Override
     protected void init() {
         super.init();
-        FluidTankWidget fluidTankWidget = new FluidTankWidget(this.leftPos + 97, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, this.getMenu().blockEntity.getFluidHandler());
-        HeatDisplayWidget heatDisplayWidget = new HeatDisplayWidget(this.leftPos, this.topPos, menu.blockEntity.getHeatStorage(), inventory, true);
+        FluidTankWidget fluidTankWidget = new ClearableFluidTankWidget(this.leftPos + 97, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, this.getMenu().blockEntity);
+        HeatBarWidget heatDisplayWidget = new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 7, this.topPos + 55);
 
         addRenderableWidget(fluidTankWidget);
         addRenderableWidget(heatDisplayWidget);
@@ -45,7 +46,7 @@ public class BlastFurnaceScreen extends PDLAbstractContainerScreen<BlastFurnaceM
         super.renderBg(guiGraphics, delta, mouseX, mouseY);
         float progress = (float) this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress();
         int scaledProgress = Mth.ceil(progress * 24.0F);
-        guiGraphics.blitSprite(PROGRESS_SPRITE, 24, 16, 0, 0, this.leftPos + 67, this.topPos + 38, scaledProgress, 16);
+        guiGraphics.blitSprite(PROGRESS_SPRITE, 24, 16, 0, 0, this.leftPos + 67, this.topPos + 50, scaledProgress, 16);
     }
 
     @Override

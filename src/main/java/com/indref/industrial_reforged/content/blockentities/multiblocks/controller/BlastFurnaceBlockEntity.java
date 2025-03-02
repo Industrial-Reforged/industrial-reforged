@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: Cache recipe
 /**
  * This is the blockentity for the blast furnace.
  * It is attached to the blast furnace hatch.
@@ -99,7 +100,9 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         super.loadData(tag, provider);
         this.multiblockData = loadMBData(tag.getCompound("multiblockData"));
         long mainControllerPos1 = tag.getLong("mainControllerPos");
-        this.mainControllerPos = BlockPos.of(mainControllerPos1);
+        if (tag.getBoolean("hasControllerPos")) {
+            this.mainControllerPos = BlockPos.of(mainControllerPos1);
+        }
         this.duration = tag.getFloat("duration");
     }
 
@@ -111,6 +114,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         if (actualBlockEntityPos != null) {
             tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());
         }
+        tag.putBoolean("hasControllerPos", actualBlockEntityPos != null);
         tag.putFloat("duration", this.duration);
     }
 

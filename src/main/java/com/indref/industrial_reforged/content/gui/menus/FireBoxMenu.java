@@ -32,7 +32,7 @@ public class FireBoxMenu extends PDLAbstractContainerMenu<FireboxBlockEntity> {
         checkContainerSize(inv, 1);
 
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 36));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 48));
 
         this.addPlayerHotbar(inv);
         this.addPlayerInventory(inv);

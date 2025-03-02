@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.gui.widgets;
+package com.indref.industrial_reforged.client.widgets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.client.gui.GuiGraphics;

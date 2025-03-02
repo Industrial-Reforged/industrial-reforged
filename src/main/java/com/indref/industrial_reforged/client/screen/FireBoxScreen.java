@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
-import com.indref.industrial_reforged.content.gui.widgets.HeatDisplayWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -35,9 +35,7 @@ public class FireBoxScreen extends PDLAbstractContainerScreen<FireBoxMenu> {
         super.init();
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        addRenderableWidget(
-                new HeatDisplayWidget(x + imageWidth - 95, y + 5, menu.blockEntity.getHeatStorage(), inventory, true)
-        );
+        addRenderableWidget(new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 51, this.topPos + 22));
     }
 
     @Override

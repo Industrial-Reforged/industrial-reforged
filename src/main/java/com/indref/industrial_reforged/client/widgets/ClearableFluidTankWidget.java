@@ -14,11 +14,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
-public class CrucibleFluidTankWidget extends FluidTankWidget {
+public class ClearableFluidTankWidget extends FluidTankWidget {
     private final IFluidHandler fluidHandler;
     private final BlockPos pos;
 
-    public CrucibleFluidTankWidget(int x, int y, TankVariants variant, ContainerBlockEntity entity) {
+    public ClearableFluidTankWidget(int x, int y, TankVariants variant, ContainerBlockEntity entity) {
         super(x, y, variant, entity);
         this.fluidHandler = entity.getFluidHandler();
         this.pos = entity.getBlockPos();

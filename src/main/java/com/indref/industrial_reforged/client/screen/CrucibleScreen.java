@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.client.widgets.CrucibleFluidTankWidget;
+import com.indref.industrial_reforged.client.widgets.ClearableFluidTankWidget;
+import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
 import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
-import com.indref.industrial_reforged.content.gui.widgets.HeatDisplayWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.network.chat.Component;
@@ -22,8 +22,8 @@ public class CrucibleScreen extends PDLAbstractContainerScreen<CrucibleMenu> {
     protected void init() {
         super.init();
 
-        addRenderableWidget(new CrucibleFluidTankWidget(leftPos + 98, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, menu.blockEntity));
-        addRenderableWidget(new HeatDisplayWidget((width - imageWidth) / 2, (height - imageHeight) / 2, menu.blockEntity, menu.getInv(), true));
+        addRenderableWidget(new ClearableFluidTankWidget(leftPos + 98, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, menu.blockEntity));
+        addRenderableWidget(new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 7, this.topPos + 74));
     }
 
 

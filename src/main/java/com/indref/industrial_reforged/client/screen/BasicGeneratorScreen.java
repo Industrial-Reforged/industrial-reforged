@@ -2,9 +2,8 @@ package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
-import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
-import com.indref.industrial_reforged.content.gui.widgets.BatterySlotWidget;
+import com.indref.industrial_reforged.client.widgets.BatterySlotWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.EnergyBarWidget;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector2i;
 
 public class BasicGeneratorScreen extends PDLAbstractContainerScreen<BasicGeneratorMenu> {
     private static final ResourceLocation TEXTURE =
