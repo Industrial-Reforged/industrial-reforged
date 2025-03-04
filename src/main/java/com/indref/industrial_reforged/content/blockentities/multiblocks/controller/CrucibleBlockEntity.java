@@ -2,21 +2,21 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
+import com.indref.industrial_reforged.util.IRClientUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.ItemUtils;
-import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -30,6 +30,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -40,7 +42,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -226,6 +227,23 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         suckInItems(items);
 
         List<LivingEntity> entities = getEntitiesInside();
+        boolean containsPlayer = false;
+        for (LivingEntity entity : entities) {
+            if (entity instanceof Player) {
+                containsPlayer = true;
+                break;
+            }
+        }
+
+        if (level.isClientSide()) {
+            IRClientUtils.setPlayerInCrucible(containsPlayer ? getFluidHandler().getFluidInTank(0) : null);
+
+            if (getFluidHandler().getFluidInTank(0).getAmount() > 0 && level.random.nextInt(0, 170) == 10) {
+                level.playLocalSound(worldPosition, SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 1.75F, 0.75F, true);
+            }
+
+        }
+
         meltEntities(entities);
 
         turnCrucible();

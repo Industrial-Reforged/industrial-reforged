@@ -1,28 +1,52 @@
 {
   "variants": {
-    "firebox_part=0,formed=false": {
+    "active=false,firebox_part=0,formed=false": {
       "model": "indref:block/small_firebox_hatch"
     },
-    "firebox_part=0,formed=true": {
+    "active=false,firebox_part=0,formed=true": {
       "model": "indref:block/small_firebox_hatch_formed_0"
     },
-    "firebox_part=1,formed=false": {
+    "active=false,firebox_part=1,formed=false": {
       "model": "indref:block/small_firebox_hatch"
     },
-    "firebox_part=1,formed=true": {
+    "active=false,firebox_part=1,formed=true": {
       "model": "indref:block/small_firebox_hatch_formed_1"
     },
-    "firebox_part=2,formed=false": {
+    "active=false,firebox_part=2,formed=false": {
       "model": "indref:block/small_firebox_hatch"
     },
-    "firebox_part=2,formed=true": {
+    "active=false,firebox_part=2,formed=true": {
       "model": "indref:block/small_firebox_hatch_formed_2"
     },
-    "firebox_part=3,formed=false": {
+    "active=false,firebox_part=3,formed=false": {
       "model": "indref:block/small_firebox_hatch"
     },
-    "firebox_part=3,formed=true": {
+    "active=false,firebox_part=3,formed=true": {
       "model": "indref:block/small_firebox_hatch_formed_3"
+    },
+    "active=true,firebox_part=0,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "active=true,firebox_part=0,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_0_active"
+    },
+    "active=true,firebox_part=1,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "active=true,firebox_part=1,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_1_active"
+    },
+    "active=true,firebox_part=2,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "active=true,firebox_part=2,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_2_active"
+    },
+    "active=true,firebox_part=3,formed=false": {
+      "model": "indref:block/small_firebox_hatch"
+    },
+    "active=true,firebox_part=3,formed=true": {
+      "model": "indref:block/small_firebox_hatch_formed_3_active"
     }
   }
 }

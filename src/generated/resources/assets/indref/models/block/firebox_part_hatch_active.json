@@ -2,11 +2,11 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "down": "indref:block/refractory_brick",
-    "east": "indref:block/multiblock/firebox_hatch",
-    "north": "indref:block/multiblock/firebox_hatch",
+    "east": "indref:block/multiblock/firebox_hatch_active",
+    "north": "indref:block/multiblock/firebox_hatch_active",
     "particle": "indref:block/refractory_brick",
-    "south": "indref:block/multiblock/firebox_hatch",
+    "south": "indref:block/multiblock/firebox_hatch_active",
     "up": "indref:block/refractory_brick",
-    "west": "indref:block/multiblock/firebox_hatch"
+    "west": "indref:block/multiblock/firebox_hatch_active"
   }
 }

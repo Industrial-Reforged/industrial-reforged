@@ -42,15 +42,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
-    public static final BooleanProperty HATCH_ACTIVE = BooleanProperty.create("hatch_active");
-
     public FireboxPartBlock(Properties p_49224_) {
         super(p_49224_);
+        registerDefaultState(defaultBlockState()
+                .setValue(IFireboxMultiblock.ACTIVE, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FireboxMultiblock.FIREBOX_PART, HATCH_ACTIVE);
+        pBuilder.add(FireboxMultiblock.FIREBOX_PART, IFireboxMultiblock.ACTIVE);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (state.getValue(FireboxMultiblock.FIREBOX_PART) != FireboxMultiblock.PartIndex.HATCH || !state.getValue(HATCH_ACTIVE))
+        if (state.getValue(FireboxMultiblock.FIREBOX_PART) != FireboxMultiblock.PartIndex.HATCH || !state.getValue(IFireboxMultiblock.ACTIVE))
             return;
 
         for (HorizontalDirection dir : HorizontalDirection.values()) {
@@ -77,7 +77,7 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
                 double d2 = (double) pos.getZ() + 0.5;
 
                 if (random.nextDouble() < 0.1) {
-                    level.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 2.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 3.0F, 1F, false);
                 }
 
                 Direction.Axis direction$axis = direction.getAxis();

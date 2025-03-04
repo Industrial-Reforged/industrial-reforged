@@ -28,7 +28,9 @@ import org.jetbrains.annotations.Nullable;
 public class SmallFireboxHatchBlock extends ContainerBlock {
     public SmallFireboxHatchBlock(Properties properties) {
         super(properties);
-        registerDefaultState(this.defaultBlockState().setValue(SmallFireboxMultiblock.FORMED, false));
+        registerDefaultState(this.defaultBlockState()
+                .setValue(SmallFireboxMultiblock.FORMED, false)
+                .setValue(SmallFireboxMultiblock.ACTIVE, false));
     }
 
     @Override
@@ -43,7 +45,7 @@ public class SmallFireboxHatchBlock extends ContainerBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
-        super.createBlockStateDefinition(p_49915_.add(SmallFireboxMultiblock.FIREBOX_PART, Multiblock.FORMED));
+        super.createBlockStateDefinition(p_49915_.add(SmallFireboxMultiblock.FIREBOX_PART, SmallFireboxMultiblock.ACTIVE, Multiblock.FORMED));
     }
 
     @Override
@@ -58,7 +60,7 @@ public class SmallFireboxHatchBlock extends ContainerBlock {
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult hitResult) {
-        if(blockState.getValue(SmallFireboxMultiblock.FORMED)) {
+        if (blockState.getValue(SmallFireboxMultiblock.FORMED)) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof SmallFireboxBlockEntity fakeBlockEntity) {
                 BlockPos actualBlockEntityPos = fakeBlockEntity.getActualBlockEntityPos();
@@ -79,7 +81,7 @@ public class SmallFireboxHatchBlock extends ContainerBlock {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof SmallFireboxBlockEntity smallFireboxBlockEntity) {
                 BlockPos actualBlockEntityPos = smallFireboxBlockEntity.getActualBlockEntityPos();
-                if (actualBlockEntityPos != null && smallFireboxBlockEntity.getMultiblockData().valid()) {
+                if (actualBlockEntityPos != null) {
                     MultiblockHelper.unform(IRMultiblocks.SMALL_FIREBOX.get(), actualBlockEntityPos, pLevel);
                 }
             }

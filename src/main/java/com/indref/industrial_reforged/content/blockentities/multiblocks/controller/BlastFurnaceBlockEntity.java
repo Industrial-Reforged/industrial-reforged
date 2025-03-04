@@ -56,8 +56,8 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     private int maxDuration;
     private MultiblockData multiblockData;
 
-    public BlastFurnaceBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(IRBlockEntityTypes.BLAST_FURNACE.get(), p_155229_, p_155230_);
+    public BlastFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(IRBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState);
         addItemHandler(2);
         addFluidTank(9000);
         addHeatStorage(2000);

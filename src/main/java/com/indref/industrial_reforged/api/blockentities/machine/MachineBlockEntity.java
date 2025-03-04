@@ -44,7 +44,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity {
 
     private void tickBatterySlot() {
         ItemStack itemStack = this.batterySlot.getItem();
-        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(this);
+        IEnergyStorage energyStorage = getEuStorage();
         IEnergyStorage itemEnergyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (itemEnergyStorage != null && !level.isClientSide()) {
             if (batterySlot.getMode() == ChargingSlot.ChargeMode.CHARGE) {

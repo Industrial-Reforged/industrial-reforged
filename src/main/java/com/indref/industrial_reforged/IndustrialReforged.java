@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
+import com.indref.industrial_reforged.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.networking.*;
@@ -84,6 +85,9 @@ public final class IndustrialReforged {
 
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
+
+        IRAttachmentTypes.ATTACHMENTS.register(modEventBus);
+
     }
 
     private void registerRegistries(NewRegistryEvent event) {

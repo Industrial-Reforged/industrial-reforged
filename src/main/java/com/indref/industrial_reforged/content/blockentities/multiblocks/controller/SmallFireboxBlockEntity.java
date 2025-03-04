@@ -3,16 +3,20 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
+import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.NotNull;
@@ -39,26 +43,27 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
     public void commonTick() {
         if (actualBlockEntity()) {
             tickRecipe();
+
+            if (getBlockState().getValue(SmallFireboxMultiblock.FORMED) && level.isClientSide()) {
+                level.playLocalSound(worldPosition, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 2.0F, 1.0F, false);
+            }
         }
 
         tickIO();
+
     }
 
     @Override
     protected void tickIO() {
         if (!level.isClientSide()) {
             // Only export heat to block directly above
-            BlockPos abovePos = worldPosition.above();
             if (aboveCapCache != null) {
                 IHeatStorage aboveHeatStorage = aboveCapCache.getCapability();
                 if (aboveHeatStorage != null && level != null) {
                     IHeatStorage thisHeatStorage = getHeatStorage();
                     int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
                     int drained = thisHeatStorage.tryDrainHeat(output, true);
-                    thisHeatStorage.tryDrainHeat(drained, false);
-                    if (aboveHeatStorage.tryFillHeat(drained, false) != 0) {
-                        level.invalidateCapabilities(abovePos);
-                    }
+                    aboveHeatStorage.tryFillHeat(drained, false);
                 }
             }
         }
@@ -81,6 +86,14 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     @Override
     public void setBlockActive(boolean value) {
+        level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SmallFireboxMultiblock.ACTIVE, value));
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(worldPosition)) {
+            if (level.getBlockEntity(pos) instanceof SmallFireboxBlockEntity be) {
+                if (be.getActualBlockEntityPos() != null && be.getActualBlockEntityPos().equals(worldPosition)) {
+                    level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(SmallFireboxMultiblock.ACTIVE, value));
+                }
+            }
+        }
     }
 
     @Override

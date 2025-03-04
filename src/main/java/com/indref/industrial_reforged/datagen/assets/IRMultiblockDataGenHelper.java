@@ -28,21 +28,27 @@ public class IRMultiblockDataGenHelper {
 
         VariantBlockStateBuilder builder = bsp.getVariantBuilder(block);
         for (int i = 0; i < 4; i++) {
-                builder.partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, true)
-                        .modelForState().modelFile(smallFireboxModel(block, i)).addModel()
-                        .partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, false)
-                        .modelForState().modelFile(unformedSmallFireboxModel(block)).addModel();
+            builder.partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, true).with(SmallFireboxMultiblock.ACTIVE, true)
+                    .modelForState().modelFile(smallFireboxModel(block, i, true)).addModel()
+                    .partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, false).with(SmallFireboxMultiblock.ACTIVE, true)
+                    .modelForState().modelFile(unformedSmallFireboxModel(block)).addModel()
+                    .partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, true).with(SmallFireboxMultiblock.ACTIVE, false)
+                    .modelForState().modelFile(smallFireboxModel(block, i, false)).addModel()
+                    .partialState().with(SmallFireboxMultiblock.FIREBOX_PART, i).with(Multiblock.FORMED, false).with(SmallFireboxMultiblock.ACTIVE, false)
+                    .modelForState().modelFile(unformedSmallFireboxModel(block)).addModel();
         }
     }
 
-    private BlockModelBuilder smallFireboxModel(Block block, int part) {
-        return bsp.models().cube(bsp.name(block) + "_formed_"+part,
+    private BlockModelBuilder smallFireboxModel(Block block, int part, boolean active) {
+        String suffix0 = (part == 0 || part == 3 ? "_side_1" : "_side_0") + (active ? "_active" : "");
+        String suffix1 = (part == 0 || part == 3 ? "_side_0" : "_side_1") + (active ? "_active" : "");
+        return bsp.models().cube(bsp.name(block) + "_formed_" + part + (active ? "_active" : ""),
                 extend(multiblockLoc(block), "_top_" + part),
                 extend(multiblockLoc(block), "_top_" + part),
-                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_1" : "_side_0"),
-                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_1" : "_side_0"),
-                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_0" : "_side_1"),
-                extend(multiblockLoc(block), part == 0 || part == 3 ? "_side_0" : "_side_1")
+                extend(multiblockLoc(block), suffix0),
+                extend(multiblockLoc(block), suffix0),
+                extend(multiblockLoc(block), suffix1),
+                extend(multiblockLoc(block), suffix1)
         ).texture("particle", bsp.blockTexture(Blocks.IRON_BLOCK));
     }
 
@@ -74,17 +80,17 @@ public class IRMultiblockDataGenHelper {
                 ).texture("particle", bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()))).addModel();
 
         bsp.getVariantBuilder(part)
-                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.COIL).with(FireboxPartBlock.HATCH_ACTIVE, true)
+                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.COIL).with(IFireboxMultiblock.ACTIVE, true)
                 .modelForState().modelFile(bsp.models().cubeAll(bsp.name(part), bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()))).addModel()
-                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.BRICK).with(FireboxPartBlock.HATCH_ACTIVE, true)
+                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.BRICK).with(IFireboxMultiblock.ACTIVE, true)
                 .modelForState().modelFile(bsp.models().cubeAll(bsp.name(part), bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()))).addModel()
-                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.HATCH).with(FireboxPartBlock.HATCH_ACTIVE, true)
+                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.HATCH).with(IFireboxMultiblock.ACTIVE, true)
                 .modelForState().modelFile(fireboxHatchModel(part, "_active")).addModel()
-                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.COIL).with(FireboxPartBlock.HATCH_ACTIVE, false)
+                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.COIL).with(IFireboxMultiblock.ACTIVE, false)
                 .modelForState().modelFile(bsp.models().cubeAll(bsp.name(part), bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()))).addModel()
-                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.BRICK).with(FireboxPartBlock.HATCH_ACTIVE, false)
+                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.BRICK).with(IFireboxMultiblock.ACTIVE, false)
                 .modelForState().modelFile(bsp.models().cubeAll(bsp.name(part), bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()))).addModel()
-                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.HATCH).with(FireboxPartBlock.HATCH_ACTIVE, false)
+                .partialState().with(FireboxMultiblock.FIREBOX_PART, FireboxMultiblock.PartIndex.HATCH).with(IFireboxMultiblock.ACTIVE, false)
                 .modelForState().modelFile(fireboxHatchModel(part, "")).addModel();
     }
 
@@ -92,10 +98,10 @@ public class IRMultiblockDataGenHelper {
         return bsp.models().cube(bsp.name(part) + "_hatch" + suffix,
                 bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()),
                 bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()),
-                bsp.modLoc("block/multiblock/firebox_hatch"),
-                bsp.modLoc("block/multiblock/firebox_hatch"),
-                bsp.modLoc("block/multiblock/firebox_hatch"),
-                bsp.modLoc("block/multiblock/firebox_hatch")
+                bsp.modLoc("block/multiblock/firebox_hatch" + suffix),
+                bsp.modLoc("block/multiblock/firebox_hatch" + suffix),
+                bsp.modLoc("block/multiblock/firebox_hatch" + suffix),
+                bsp.modLoc("block/multiblock/firebox_hatch" + suffix)
         ).texture("particle", bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()));
     }
 

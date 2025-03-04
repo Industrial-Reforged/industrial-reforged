@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlo
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
+import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
@@ -17,9 +18,14 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -29,12 +35,14 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,6 +127,31 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     public void commonTick() {
         tickRecipe();
         tickIO();
+
+        if (level.isClientSide() && burnTime > 0) {
+            clientTick();
+        }
+    }
+
+    protected void clientTick() {
+        RandomSource random = level.random;
+        if (random.nextInt(0, 2) == 0) {
+            int i0 = random.nextInt(-1, 1);
+            int i1 = random.nextInt(-1, 1);
+            double xSpeed = random.nextDouble() * 0.15 * i0;
+            double ySpeed = random.nextDouble() * 0.07;
+            double zSpeed = random.nextDouble() * 0.15 * i1;
+            int j0 = random.nextInt(1, 2);
+            int j1 = random.nextInt(1, 2);
+            level.addParticle(ParticleTypes.SMOKE,
+                    worldPosition.getX() - xSpeed * 10 * j0, worldPosition.above().getY(), worldPosition.getZ() - zSpeed * 10 * j1,
+                    xSpeed / 10, ySpeed / 10, zSpeed / 10);
+            if (random.nextInt(0, 3) == 0) {
+                level.addParticle(new DustParticleOptions(new Vector3f(242 / 255f, 103 / 255f, 25 / 255f), 1),
+                        worldPosition.getX() - xSpeed * 10 * j0, worldPosition.above().getY(), worldPosition.getZ() - zSpeed * 10 * j1,
+                        xSpeed / 10, ySpeed / 10, zSpeed / 10);
+            }
+        }
     }
 
     protected void tickIO() {
@@ -133,10 +166,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                         IHeatStorage thisHeatStorage = getHeatStorage();
                         int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
                         int drained = thisHeatStorage.tryDrainHeat(output, true);
-                        thisHeatStorage.tryDrainHeat(drained, false);
-                        if (aboveHeatStorage.tryFillHeat(drained, false) != 0) {
-                            level.invalidateCapabilities(abovePos);
-                        }
+                        aboveHeatStorage.tryFillHeat(drained, false);
                     }
                 }
             }
@@ -146,15 +176,15 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     protected void tickRecipe() {
         IItemHandler itemHandler = getItemHandler();
         IHeatStorage heatStorage = getHeatStorage();
-        if (heatStorage != null) {
-            if (this.burnTime > 0) {
-                burnTime--;
-                if (burnTime % 5 == 0) {
-                    if (!level.isClientSide()) {
-                        heatStorage.tryFillHeat(getProductionAmount(), false);
-                    }
+        if (this.burnTime > 0) {
+            burnTime--;
+            if (burnTime % 5 == 0) {
+                if (!level.isClientSide()) {
+                    heatStorage.tryFillHeat(getProductionAmount(), false);
                 }
-            } else {
+            }
+
+            if (burnTime == 0) {
                 this.maxBurnTime = 0;
                 ItemStack stack = itemHandler.getStackInSlot(INPUT_SLOT);
                 int burnTime = stack.getBurnTime(RecipeType.SMELTING);
@@ -167,6 +197,10 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                     setBlockActive(false);
                 }
             }
+        } else {
+            if (level.getGameTime() % 3 == 0 && !level.isClientSide()) {
+                heatStorage.tryDrainHeat((int) Math.pow(10, 0.5 - ((double) heatStorage.getHeatStored() / heatStorage.getHeatCapacity())), false);
+            }
         }
     }
 
@@ -174,8 +208,8 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
         for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
             BlockPos pos = worldPosition.relative(dir);
             BlockState blockState = level.getBlockState(pos);
-            if (blockState.hasProperty(FireboxPartBlock.HATCH_ACTIVE)) {
-                level.setBlockAndUpdate(pos, blockState.setValue(FireboxPartBlock.HATCH_ACTIVE, value));
+            if (blockState.hasProperty(IFireboxMultiblock.ACTIVE)) {
+                level.setBlockAndUpdate(pos, blockState.setValue(IFireboxMultiblock.ACTIVE, value));
             }
         }
     }

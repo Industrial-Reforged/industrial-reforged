@@ -1,21 +1,21 @@
 {
   "variants": {
-    "firebox_part=brick,hatch_active=false": {
+    "active=false,firebox_part=brick": {
       "model": "indref:block/firebox_part"
     },
-    "firebox_part=brick,hatch_active=true": {
+    "active=false,firebox_part=coil": {
       "model": "indref:block/firebox_part"
     },
-    "firebox_part=coil,hatch_active=false": {
-      "model": "indref:block/firebox_part"
-    },
-    "firebox_part=coil,hatch_active=true": {
-      "model": "indref:block/firebox_part"
-    },
-    "firebox_part=hatch,hatch_active=false": {
+    "active=false,firebox_part=hatch": {
       "model": "indref:block/firebox_part_hatch"
     },
-    "firebox_part=hatch,hatch_active=true": {
+    "active=true,firebox_part=brick": {
+      "model": "indref:block/firebox_part"
+    },
+    "active=true,firebox_part=coil": {
+      "model": "indref:block/firebox_part"
+    },
+    "active=true,firebox_part=hatch": {
       "model": "indref:block/firebox_part_hatch_active"
     }
   }
