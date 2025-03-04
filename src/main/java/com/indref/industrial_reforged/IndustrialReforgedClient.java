@@ -20,8 +20,10 @@ import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.tools.NanoSaberItem;
 import com.indref.industrial_reforged.content.items.tools.ThermometerItem;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.portingdeadmods.portingdeadlibs.api.fluids.BaseFluidType;
@@ -149,6 +151,11 @@ public final class IndustrialReforgedClient {
         event.register(new DynamicFluidContainerModel.Colors(), IRFluids.BIO_MASS.getDeferredBucket());
         event.register(new DynamicFluidContainerModel.Colors(), IRFluids.METHANE.getDeferredBucket());
         event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
+        event.register((itemstack, index) -> {
+            SingleFluidStack fluidStack = itemstack.get(IRDataComponents.SINGLE_FLUID);
+            int color = IClientFluidTypeExtensions.of(fluidStack.fluidStack().getFluid()).getTintColor();
+            return index == 0 ? color : -1;
+        }, IRItems.CASTING_SCRAPS);
     }
 
     private void registerBERenderers(EntityRenderersEvent.RegisterRenderers event) {

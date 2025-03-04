@@ -8,9 +8,11 @@ import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
+import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.IRClientUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
@@ -173,6 +175,10 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         ItemStack stackInSlot = getItemHandler().getStackInSlot(slot);
 
         if (stackInSlot.isEmpty()) return Optional.empty();
+
+        if (stackInSlot.is(IRItems.CASTING_SCRAPS)) {
+            return Optional.of(new CrucibleSmeltingRecipe(IngredientWithCount.of(IRItems.CASTING_SCRAPS.get(), 1), stackInSlot.get(IRDataComponents.SINGLE_FLUID).copy().fluidStack(), 200, 200));
+        }
 
         return this.level.getRecipeManager()
                 .getRecipeFor(CrucibleSmeltingRecipe.TYPE, new SingleRecipeInput(stackInSlot), level)
@@ -438,6 +444,15 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+
+        if (level.isClientSide) {
+            IRClientUtils.setPlayerInCrucible(null);
+        }
     }
 
     @Override

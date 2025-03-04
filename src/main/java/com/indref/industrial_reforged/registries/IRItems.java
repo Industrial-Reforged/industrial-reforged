@@ -3,14 +3,17 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.misc.BlueprintItem;
+import com.indref.industrial_reforged.content.items.misc.CastingScrapsItem;
 import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.content.items.reactor.UraniumFuelRodItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.util.SingleFluidStack;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
@@ -115,6 +118,9 @@ public final class IRItems {
     public static final DeferredItem<Item> CLAY_MOLD_PLATE = moldItem("plate", 111, true);
     public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire", 37, true);
     public static final DeferredItem<Item> CLAY_MOLD_ROD = moldItem("rod", 111, true);
+
+    public static final DeferredItem<Item> CASTING_SCRAPS = registerItem("casting_scraps",
+            () -> new CastingScrapsItem(new Item.Properties().component(IRDataComponents.SINGLE_FLUID, SingleFluidStack.EMPTY)), false);
 
     //ores
     public static final DeferredItem<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");

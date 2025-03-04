@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-12T20:00:16.797076118	Item Models: indref
+// 1.21.1	2025-03-04T21:18:07.451767155	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -34,6 +34,7 @@ a0a8be8687c43cbdcc4c20e59d19d599da04d4eb assets/indref/models/item/blast_furnace
 4e0c66b8337709330b1371e2ba96f41340b69819 assets/indref/models/item/blast_furnace_hatch.json
 0b91911a2c846371024bffeb8b118c763359b08d assets/indref/models/item/blueprint.json
 ea64f24007ddcacb3f6b802848902cc0c4a6eb08 assets/indref/models/item/carbon_plate.json
+f24493a2b7875defbe984a0dc59cd2ba58fec752 assets/indref/models/item/casting_scraps.json
 40f84cb3dd1baef260f6f551ee5213f499ed2e40 assets/indref/models/item/centrifuge.json
 4bf894f927f410eb478cf2ca296f0e52a4748a17 assets/indref/models/item/ceramic_casting_basin.json
 a553b420b2bcb0c9080bd86c1ef2db7e14ea2f5d assets/indref/models/item/chromium_block.json

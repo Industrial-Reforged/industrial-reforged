@@ -11,6 +11,7 @@ public final class IRTranslations {
         public static final TranslatableConstant ENERGY_STORED = create("energy.stored");
         public static final TranslatableConstant ENERGY_TIER = create("energy.tier");
         public static final TranslatableConstant FLUID_STORED = create("fluid.stored");
+        public static final TranslatableConstant FLUID_AMOUNT_WITH_CAPACITY = create("fluid.amount_with_capacity");
         public static final TranslatableConstant FLUID_AMOUNT = create("fluid.amount");
         public static final TranslatableConstant HEAT_STORED = create("heat.stored");
 

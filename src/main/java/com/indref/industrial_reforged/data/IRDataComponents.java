@@ -6,11 +6,13 @@ import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
+import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -35,6 +37,8 @@ public final class IRDataComponents {
             () -> builder -> builder.persistent(ComponentTapeMeasure.CODEC).networkSynchronized(ComponentTapeMeasure.STREAM_CODEC));
     public static final Supplier<DataComponentType<AdvancedBundleContents>> ADVANCED_BUNDLE_CONTENTS = registerDataComponentType("advanced_bundle_contents",
             () -> builder -> builder.persistent(AdvancedBundleContents.CODEC).networkSynchronized(AdvancedBundleContents.STREAM_CODEC));
+    public static final Supplier<DataComponentType<SingleFluidStack>> SINGLE_FLUID = registerDataComponentType("single_fluid",
+            () -> builder -> builder.persistent(SingleFluidStack.CODEC).networkSynchronized(SingleFluidStack.STREAM_CODEC));
 
     // Data for capabilities
     public static final Supplier<DataComponentType<ComponentEuStorage>> ENERGY = registerDataComponentType("energy",

@@ -65,15 +65,11 @@ public final class ItemUtils {
         if (item == null) return;
 
         if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
-            tooltip.add(IRTranslations.Tooltip.FLUID_STORED.component()
-                    .append(": ")
-                    .append(Component.literal(item.getFluidInTank(0).getHoverName().getString())
-                            .withStyle(ChatFormatting.AQUA)));
-            tooltip.add(IRTranslations.Tooltip.FLUID_AMOUNT.component()
-                    .append(": ")
-                    .append("%d/%d".formatted(
-                            item.getFluidInTank(0).getAmount(),
-                            item.getTankCapacity(0)))
+            tooltip.add(IRTranslations.Tooltip.FLUID_STORED
+                    .component(item.getFluidInTank(0).getHoverName().getString())
+                    .withStyle(ChatFormatting.AQUA));
+            tooltip.add(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY
+                    .component(item.getFluidInTank(0).getAmount(), item.getTankCapacity(0))
                     .withStyle(ChatFormatting.AQUA));
         }
     }

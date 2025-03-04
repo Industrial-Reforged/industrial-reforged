@@ -56,8 +56,9 @@ public class IREnUSLangProvider extends LanguageProvider {
         addTooltip(Tooltip.INACTIVE, "Inactive");
         addTooltip(Tooltip.ENERGY_STORED, "Stored");
         addTooltip(Tooltip.ENERGY_TIER, "Tier");
-        addTooltip(Tooltip.FLUID_STORED, "Stored");
-        addTooltip(Tooltip.FLUID_AMOUNT, "Amount");
+        addTooltip(Tooltip.FLUID_STORED, "Stored: %s");
+        addTooltip(Tooltip.FLUID_AMOUNT_WITH_CAPACITY, "Amount: %dmb/%dmb");
+        addTooltip(Tooltip.FLUID_AMOUNT, "Amount: %dmb");
         addTooltip(Tooltip.HEAT_STORED, "Heat: %d/%d");
 
         addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress");
