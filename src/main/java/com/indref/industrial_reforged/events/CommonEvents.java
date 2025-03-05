@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
+import com.indref.industrial_reforged.util.IRTranslations;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.portingdeadmods.portingdeadlibs.api.client.renderers.multiblocks.MultiblockPreviewRenderer;
@@ -41,13 +42,11 @@ public final class CommonEvents {
             CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
             int meltingType = tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY);
             if (meltingType == 1) {
-                event.getToolTip().add(Component.translatable("*.desc.melting_progress")
-                        .append(": ")
-                        .append(String.format("%.1f", tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY)))
-                        .append("/10.0")
+                event.getToolTip().add(IRTranslations.Tooltip.MELTING_PROGRESS
+                        .component(tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY))
                         .withStyle(ChatFormatting.GRAY));
             } else if (meltingType == 2) {
-                event.getToolTip().add(Component.translatable("*.desc.melting_not_possible").withStyle(ChatFormatting.GRAY));
+                event.getToolTip().add(IRTranslations.Tooltip.MELTING_PROGRESS.component().withStyle(ChatFormatting.GRAY));
             }
         }
 

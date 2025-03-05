@@ -36,12 +36,30 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
 
     @Override
     public void onLoad() {
+        initCapCache();
+        super.onLoad();
+    }
+
+    private void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
             Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
-            this.drainCapCache = BlockCapabilityCache.create(Capabilities.FluidHandler.BLOCK, serverLevel, getBlockPos().relative(dir), dir);
-            this.fillCapCache = BlockCapabilityCache.create(Capabilities.FluidHandler.BLOCK, serverLevel, getBasinPos(), Direction.UP);
+            this.drainCapCache = BlockCapabilityCache.create(
+                    Capabilities.FluidHandler.BLOCK,
+                    serverLevel,
+                    getBlockPos().relative(dir),
+                    dir,
+                    () -> !this.isRemoved(),
+                    this::initCapCache
+            );
+            this.fillCapCache = BlockCapabilityCache.create(
+                    Capabilities.FluidHandler.BLOCK,
+                    serverLevel,
+                    getBasinPos(),
+                    Direction.UP,
+                    () -> !this.isRemoved(),
+                    this::initCapCache
+            );
         }
-        super.onLoad();
     }
 
     private @NotNull BlockPos getBasinPos() {
@@ -69,7 +87,7 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
                     && level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be
                     && be.hasMold()
                     && be.getFluidTank().getFluidAmount() < be.getFluidTank().getCapacity()) {
-                FluidStack drained = drainHandler.drain(2, IFluidHandler.FluidAction.EXECUTE);
+                FluidStack drained = drainHandler.drain(Math.min(3, be.getFluidTank().getCapacity() - be.getFluidTank().getFluidAmount()), IFluidHandler.FluidAction.EXECUTE);
                 int filled = fillHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                 int diff = drained.getAmount() - filled;
                 drainHandler.fill(drained.copyWithAmount(diff), IFluidHandler.FluidAction.EXECUTE);

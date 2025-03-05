@@ -61,7 +61,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addTooltip(Tooltip.FLUID_AMOUNT, "Amount: %dmb");
         addTooltip(Tooltip.HEAT_STORED, "Heat: %d/%d");
 
-        addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress");
+        addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress: %.1f/10.0");
         addTooltip(Tooltip.MELTING_NOT_POSSIBLE, "Melting not possible");
 
         addTooltip(Tooltip.LIQUID_AMOUNT, "%d/%d mb");
@@ -91,6 +91,7 @@ public class IREnUSLangProvider extends LanguageProvider {
 
         add("*.desc.melting_progress", "Melting Progress");
         add("*.desc.melting_not_possible", "Melting Not Possible");
+
     }
 
     private void addFluids() {
@@ -141,6 +142,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.PLANT_MASS, "Plant Mass");
         addItem(IRItems.BIO_PLASTIC, "Bio Plastic");
         addItem(IRItems.TERRACOTTA_BRICK, "Terracotta Brick");
+
+        addItem(IRItems.CASTING_SCRAPS, "Casting Scraps");
 
         addItem(IRItems.IRON_PLATE, "Iron Plate");
         addItem(IRItems.COPPER_PLATE, "Copper Plate");

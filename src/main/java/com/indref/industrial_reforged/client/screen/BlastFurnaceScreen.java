@@ -46,7 +46,7 @@ public class BlastFurnaceScreen extends PDLAbstractContainerScreen<BlastFurnaceM
         super.renderBg(guiGraphics, delta, mouseX, mouseY);
         float progress = (float) this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress();
         int scaledProgress = Mth.ceil(progress * 24.0F);
-        guiGraphics.blitSprite(PROGRESS_SPRITE, 24, 16, 0, 0, this.leftPos + 67, this.topPos + 50, scaledProgress, 16);
+        guiGraphics.blitSprite(PROGRESS_SPRITE, 24, 16, 0, 0, this.leftPos + 67, this.topPos + 38, scaledProgress, 16);
     }
 
     @Override

@@ -185,6 +185,11 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void miscRecipes() {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.RUBBER_SHEET.get(), 3)
+                .requires(IRItems.RUBBER, 2)
+                .unlockedBy("has_rubber", has(IRItems.RUBBER))
+                .save(output);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK.get(), 2)
                 .requires(Items.CLAY_BALL, 3)
                 .unlockedBy("has_clay", has(Items.CLAY_BALL))

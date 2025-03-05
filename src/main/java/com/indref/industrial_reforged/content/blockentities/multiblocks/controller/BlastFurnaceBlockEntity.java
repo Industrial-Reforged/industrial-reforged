@@ -18,6 +18,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -30,8 +31,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,8 +56,8 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
 
     private BlockPos mainControllerPos;
     private float duration;
-    private int maxDuration;
     private MultiblockData multiblockData;
+    private BlastFurnaceRecipe recipe;
 
     public BlastFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState);
@@ -62,6 +65,40 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         addFluidTank(9000);
         addHeatStorage(2000);
         this.multiblockData = MultiblockData.EMPTY;
+    }
+
+    @Override
+    protected void onItemsChanged(int slot) {
+        super.onItemsChanged(slot);
+
+        this.recipe = getRecipeForCache();
+    }
+
+    @Override
+    public void onFluidChanged() {
+        super.onFluidChanged();
+
+        this.recipe = getRecipeForCache();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+
+        this.recipe = getRecipeForCache();
+    }
+
+    private BlastFurnaceRecipe getRecipeForCache() {
+        BlastFurnaceRecipe blastFurnaceRecipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(getNonEmptyStacks()), level)
+                .map(RecipeHolder::value)
+                .orElse(null);
+        if (blastFurnaceRecipe != null) {
+            FluidStack resource = blastFurnaceRecipe.resultFluid();
+            if (getFluidHandler().fill(resource, IFluidHandler.FluidAction.SIMULATE) == resource.getAmount()) {
+                return blastFurnaceRecipe;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -79,7 +116,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     }
 
     public int getMaxProgress() {
-        return maxDuration;
+        return recipe != null ? recipe.duration() : 0;
     }
 
     @Override
@@ -93,29 +130,6 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
 
     public int getBaseHeight() {
         return 4;
-    }
-
-    @Override
-    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadData(tag, provider);
-        this.multiblockData = loadMBData(tag.getCompound("multiblockData"));
-        long mainControllerPos1 = tag.getLong("mainControllerPos");
-        if (tag.getBoolean("hasControllerPos")) {
-            this.mainControllerPos = BlockPos.of(mainControllerPos1);
-        }
-        this.duration = tag.getFloat("duration");
-    }
-
-    @Override
-    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveData(tag, provider);
-        tag.put("multiblockData", saveMBData());
-        BlockPos actualBlockEntityPos = getActualBlockEntityPos();
-        if (actualBlockEntityPos != null) {
-            tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());
-        }
-        tag.putBoolean("hasControllerPos", actualBlockEntityPos != null);
-        tag.putFloat("duration", this.duration);
     }
 
     @Override
@@ -165,18 +179,17 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
 
     public void commonTick() {
         if (isMainController()) {
-            Optional<BlastFurnaceRecipe> optRecipe = getCurrentRecipe();
-            if (optRecipe.isPresent() && getHeatStorage().getHeatStored() > HEAT_USAGE) {
-                BlastFurnaceRecipe recipe = optRecipe.get();
-                int maxDuration = recipe.duration();
-                this.maxDuration = maxDuration;
-                if (duration >= maxDuration) {
+            if (recipe != null && getHeatStorage().getHeatStored() > HEAT_USAGE) {
+                if (duration >= recipe.duration()) {
                     IFluidHandler fluidHandler = getFluidHandler();
                     IItemHandler itemHandler = getItemHandler();
 
-                    List<IngredientWithCount> ingredients = new ArrayList<>(recipe.ingredients());
+                    NonNullList<IngredientWithCount> ingredients1 = NonNullList.copyOf(recipe.ingredients());
+                    List<IngredientWithCount> ingredients = new ArrayList<>(ingredients1);
 
-                    for (IngredientWithCount ingredient : recipe.ingredients()) {
+                    FluidStack resultFluid = recipe.resultFluid().copy();
+
+                    for (IngredientWithCount ingredient : ingredients1) {
                         for (int i = 0; i < itemHandler.getSlots(); i++) {
                             ItemStack itemStack = itemHandler.getStackInSlot(i);
                             if (!itemStack.isEmpty()){
@@ -189,13 +202,14 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
                         }
                     }
 
-                    fluidHandler.fill(recipe.resultFluid(), IFluidHandler.FluidAction.EXECUTE);
+                    fluidHandler.fill(resultFluid, IFluidHandler.FluidAction.EXECUTE);
                     this.duration = 0;
-                    this.maxDuration = 0;
                 } else {
                     float progress = (float) getHeight() / getBaseHeight();
                     duration += progress;
                 }
+            } else {
+                this.duration = 0;
             }
         }
     }
@@ -226,4 +240,28 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     public void setMultiblockData(MultiblockData data) {
         this.multiblockData = data;
     }
+
+    @Override
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadData(tag, provider);
+        this.multiblockData = loadMBData(tag.getCompound("multiblockData"));
+        long mainControllerPos1 = tag.getLong("mainControllerPos");
+        if (tag.getBoolean("hasControllerPos")) {
+            this.mainControllerPos = BlockPos.of(mainControllerPos1);
+        }
+        this.duration = tag.getFloat("duration");
+    }
+
+    @Override
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
+        tag.put("multiblockData", saveMBData());
+        BlockPos actualBlockEntityPos = getActualBlockEntityPos();
+        if (actualBlockEntityPos != null) {
+            tag.putLong("mainControllerPos", actualBlockEntityPos.asLong());
+        }
+        tag.putBoolean("hasControllerPos", actualBlockEntityPos != null);
+        tag.putFloat("duration", this.duration);
+    }
+
 }

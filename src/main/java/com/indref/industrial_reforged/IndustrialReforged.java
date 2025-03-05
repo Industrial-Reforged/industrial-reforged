@@ -36,7 +36,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -58,7 +60,7 @@ public final class IndustrialReforged {
     public static final String MODID = "indref";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public IndustrialReforged(IEventBus modEventBus) {
+    public IndustrialReforged(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::registerRegistries);
         modEventBus.addListener(this::registerDataMaps);
         modEventBus.addListener(this::onRegister);
@@ -88,6 +90,7 @@ public final class IndustrialReforged {
 
         IRAttachmentTypes.ATTACHMENTS.register(modEventBus);
 
+        modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
     }
 
     private void registerRegistries(NewRegistryEvent event) {

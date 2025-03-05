@@ -32,11 +32,21 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     @Override
     public void onLoad() {
-        if (level instanceof ServerLevel serverLevel) {
-            this.aboveCapCache = BlockCapabilityCache.create(IRCapabilities.HeatStorage.BLOCK, serverLevel, worldPosition.above(), Direction.DOWN);
-            IndustrialReforged.LOGGER.debug("cap cache: {}", this.aboveCapCache.getCapability());
-        }
         super.onLoad();
+        initCapCache();
+    }
+
+    private void initCapCache() {
+        if (level instanceof ServerLevel serverLevel) {
+            this.aboveCapCache = BlockCapabilityCache.create(
+                    IRCapabilities.HeatStorage.BLOCK,
+                    serverLevel,
+                    worldPosition.above(),
+                    Direction.DOWN,
+                    () -> !this.isRemoved(),
+                    this::initCapCache
+            );
+        }
     }
 
     @Override
@@ -44,7 +54,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
         if (actualBlockEntity()) {
             tickRecipe();
 
-            if (getBlockState().getValue(SmallFireboxMultiblock.FORMED) && level.isClientSide()) {
+            if (getBlockState().getValue(SmallFireboxMultiblock.FORMED) && this.getBurnTime() > 0 && level.isClientSide() && level.random.nextInt(0, 35) == 0) {
                 level.playLocalSound(worldPosition, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 2.0F, 1.0F, false);
             }
         }

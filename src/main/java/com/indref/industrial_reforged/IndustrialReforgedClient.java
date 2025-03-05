@@ -32,6 +32,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
@@ -47,6 +48,8 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -70,6 +73,8 @@ public final class IndustrialReforgedClient {
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::registerItemDecorations);
         modEventBus.addListener(this::registerMenuScreens);
+
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
     public static final Map<Item, DisplayItem> DISPLAY_ITEMS = new HashMap<>();
@@ -87,10 +92,10 @@ public final class IndustrialReforgedClient {
     }
 
     private static void registerItemProperties() {
-        ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, IRItemProperties::isActive);
-        ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, IRItemProperties::getTemperature);
-        ItemProperties.register(IRItems.ELECTRIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, IRItemProperties::isActive);
-        ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, IRItemProperties::isActive);
+        ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
+        ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getTemperature);
+        ItemProperties.register(IRItems.ELECTRIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
+        ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof BatteryItem batteryItem) {
                 ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY,
