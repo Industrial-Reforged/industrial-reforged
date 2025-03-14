@@ -8,20 +8,20 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStorage {
-    public ItemHeatWrapper(@NotNull ItemStack itemStack, int initialCapacity) {
+    public ItemHeatWrapper(@NotNull ItemStack itemStack, float initialCapacity) {
         this(itemStack);
         this.setHeatCapacity(initialCapacity);
     }
 
     @Override
-    public void onHeatChanged(int oldAmount) {
+    public void onHeatChanged(float oldAmount) {
         if (itemStack.getItem() instanceof IHeatItem heatItem) {
             heatItem.onHeatChanged(itemStack, oldAmount);
         }
     }
 
     @Override
-    public int getHeatStored() {
+    public float getHeatStored() {
         ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
         if (componentHeatStorage != null)
             return componentHeatStorage.heatStored();
@@ -32,14 +32,14 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
     }
 
     @Override
-    public void setHeatStored(int value) {
-        int heatStored = getHeatStored();
+    public void setHeatStored(float value) {
+        float heatStored = getHeatStored();
         itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getHeatCapacity()));
         onHeatChanged(heatStored);
     }
 
     @Override
-    public int getHeatCapacity() {
+    public float getHeatCapacity() {
         ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
         if (componentHeatStorage != null)
             return componentHeatStorage.heatCapacity();
@@ -50,17 +50,17 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
     }
 
     @Override
-    public void setHeatCapacity(int value) {
+    public void setHeatCapacity(float value) {
         itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), value));
     }
 
     @Override
-    public int getMaxInput() {
+    public float getMaxInput() {
         return 100;
     }
 
     @Override
-    public int getMaxOutput() {
+    public float getMaxOutput() {
         return 100;
     }
 }

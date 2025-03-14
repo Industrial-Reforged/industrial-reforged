@@ -3,10 +3,13 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FormListener;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
@@ -14,6 +17,7 @@ import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.Multibl
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,6 +25,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +35,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -43,6 +49,7 @@ import java.util.List;
 import java.util.Optional;
 
 // TODO: Cache recipe
+
 /**
  * This is the blockentity for the blast furnace.
  * It is attached to the blast furnace hatch.
@@ -192,7 +199,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
                     for (IngredientWithCount ingredient : ingredients1) {
                         for (int i = 0; i < itemHandler.getSlots(); i++) {
                             ItemStack itemStack = itemHandler.getStackInSlot(i);
-                            if (!itemStack.isEmpty()){
+                            if (!itemStack.isEmpty()) {
                                 if (ingredient.test(itemStack) && ingredients.contains(ingredient)) {
                                     itemHandler.extractItem(i, ingredient.count(), false);
                                     ingredients.remove(ingredient);
@@ -212,6 +219,13 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
                 this.duration = 0;
             }
         }
+
+        if (!level.isClientSide()) {
+            tickHeat();
+        }
+    }
+
+    protected void tickHeat() {
     }
 
     public Optional<BlastFurnaceRecipe> getCurrentRecipe() {

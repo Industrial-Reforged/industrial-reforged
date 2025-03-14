@@ -8,18 +8,18 @@ import net.minecraft.network.codec.StreamCodec;
 
 import java.util.Objects;
 
-public record ComponentHeatStorage(int heatStored, int heatCapacity) {
+public record ComponentHeatStorage(float heatStored, float heatCapacity) {
     public static final ComponentHeatStorage EMPTY = new ComponentHeatStorage(0, 0);
 
     public static final Codec<ComponentHeatStorage> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                    Codec.INT.fieldOf("heat_stored").forGetter(ComponentHeatStorage::heatStored),
-                    Codec.INT.fieldOf("heat_capacity").forGetter(ComponentHeatStorage::heatCapacity)
+                    Codec.FLOAT.fieldOf("heat_stored").forGetter(ComponentHeatStorage::heatStored),
+                    Codec.FLOAT.fieldOf("heat_capacity").forGetter(ComponentHeatStorage::heatCapacity)
             ).apply(builder, ComponentHeatStorage::new)
     );
     public static final StreamCodec<ByteBuf, ComponentHeatStorage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
+            ByteBufCodecs.FLOAT,
             ComponentHeatStorage::heatStored,
-            ByteBufCodecs.INT,
+            ByteBufCodecs.FLOAT,
             ComponentHeatStorage::heatCapacity,
             ComponentHeatStorage::new
     );

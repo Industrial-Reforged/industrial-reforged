@@ -9,8 +9,8 @@ public interface IHeatItem {
         return itemStack.getCapability(IRCapabilities.HeatStorage.ITEM);
     }
 
-    default void onHeatChanged(ItemStack itemStack, int oldAmount) {
+    default void onHeatChanged(ItemStack itemStack, float oldAmount) {
     }
 
-    int getDefaultHeatCapacity();
+    float getDefaultHeatCapacity();
 }

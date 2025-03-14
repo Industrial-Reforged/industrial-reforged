@@ -75,7 +75,7 @@ public class ThermometerItem extends SimpleHeatItem {
     }
 
     @Override
-    public int getDefaultHeatCapacity() {
+    public float getDefaultHeatCapacity() {
         return 7000;
     }
 

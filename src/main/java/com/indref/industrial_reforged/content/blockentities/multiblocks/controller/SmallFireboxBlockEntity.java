@@ -36,7 +36,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
         initCapCache();
     }
 
-    private void initCapCache() {
+    public void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
             this.aboveCapCache = BlockCapabilityCache.create(
                     IRCapabilities.HeatStorage.BLOCK,
@@ -54,12 +54,12 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
         if (actualBlockEntity()) {
             tickRecipe();
 
+            tickIO();
+
             if (getBlockState().getValue(SmallFireboxMultiblock.FORMED) && this.getBurnTime() > 0 && level.isClientSide() && level.random.nextInt(0, 35) == 0) {
                 level.playLocalSound(worldPosition, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 2.0F, 1.0F, false);
             }
         }
-
-        tickIO();
 
     }
 
@@ -71,9 +71,9 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
                 IHeatStorage aboveHeatStorage = aboveCapCache.getCapability();
                 if (aboveHeatStorage != null && level != null) {
                     IHeatStorage thisHeatStorage = getHeatStorage();
-                    int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
-                    int drained = thisHeatStorage.tryDrainHeat(output, true);
-                    aboveHeatStorage.tryFillHeat(drained, false);
+                    float deltaT = (float) ((thisHeatStorage.getHeatStored() - aboveHeatStorage.getHeatStored()) * 0.1); // Spread factor
+                    aboveHeatStorage.fill(deltaT, false);
+                    thisHeatStorage.drain(deltaT, false);
                 }
             }
         }

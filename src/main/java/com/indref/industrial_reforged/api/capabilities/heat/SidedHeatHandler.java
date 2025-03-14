@@ -9,42 +9,42 @@ public record SidedHeatHandler(IHeatStorage innerHandler, IOAction action) imple
     }
 
     @Override
-    public int getHeatStored() {
+    public float getHeatStored() {
         return innerHandler.getHeatStored();
     }
 
     @Override
-    public void setHeatStored(int value) {
+    public void setHeatStored(float value) {
         innerHandler.setHeatStored(value);
     }
 
     @Override
-    public int getHeatCapacity() {
+    public float getHeatCapacity() {
         return innerHandler.getHeatCapacity();
     }
 
     @Override
-    public void setHeatCapacity(int value) {
+    public void setHeatCapacity(float value) {
         innerHandler.setHeatCapacity(value);
     }
 
     @Override
-    public int getMaxInput() {
+    public float getMaxInput() {
         return innerHandler.getMaxInput();
     }
 
     @Override
-    public int getMaxOutput() {
+    public float getMaxOutput() {
         return innerHandler.getMaxOutput();
     }
 
     @Override
-    public int tryDrainHeat(int value, boolean simulate) {
-        return action == IOAction.EXTRACT || action == IOAction.BOTH ? innerHandler.tryDrainHeat(value, simulate) : 0;
+    public float drain(float value, boolean simulate) {
+        return action == IOAction.EXTRACT || action == IOAction.BOTH ? innerHandler.drain(value, simulate) : 0;
     }
 
     @Override
-    public int tryFillHeat(int value, boolean simulate) {
-        return action == IOAction.INSERT || action == IOAction.BOTH ? innerHandler.tryFillHeat(value, simulate) : 0;
+    public float fill(float value, boolean simulate) {
+        return action == IOAction.INSERT || action == IOAction.BOTH ? innerHandler.fill(value, simulate) : 0;
     }
 }

@@ -47,15 +47,18 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
         this.euStorage.setEnergyCapacity(energyCapacity);
     }
 
-    protected final void addHeatStorage(int heatCapacity) {
-        this.heatStorage = new HeatStorage() {
+    protected final void addHeatStorage(float heatCapacity) {
+        addHeatStorage(heatCapacity, 5, 5);
+    }
+
+    protected final void addHeatStorage(float heatCapacity, float maxInput, float maxOutput) {
+        this.heatStorage = new HeatStorage(heatCapacity, maxInput, maxOutput) {
             @Override
-            public void onHeatChanged(int oldAmount) {
+            public void onHeatChanged(float oldAmount) {
                 update();
                 IRContainerBlockEntity.this.onHeatChanged(oldAmount);
             }
         };
-        this.heatStorage.setHeatCapacity(heatCapacity);
     }
 
     @Override
@@ -87,7 +90,7 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
     public void onEuChanged(int oldAmount) {
     }
 
-    public void onHeatChanged(int oldAmount) {
+    public void onHeatChanged(float oldAmount) {
     }
 
     public ItemStack forceInsertItem(int slot, ItemStack stack, boolean simulate) {

@@ -2,10 +2,14 @@ package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
+import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
@@ -14,6 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,6 +27,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
+
+import static com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
 public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements CanAttachFaucetBlock {
     public BlastFurnaceHatchBlock(Properties properties) {

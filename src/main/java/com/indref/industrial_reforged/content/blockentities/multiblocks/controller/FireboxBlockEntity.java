@@ -7,10 +7,8 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -19,12 +17,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,7 +31,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -55,12 +50,12 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     protected MultiblockData multiblockData;
     private final FireboxTier fireboxTier;
 
-    private Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
+    private final Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
 
     public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, int heatCapacity) {
         super(blockEntityType, blockPos, blockState);
         addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
-        addHeatStorage(heatCapacity);
+        addHeatStorage(heatCapacity, 1, fireboxTier.getMaxHeatOutput());
         this.fireboxTier = fireboxTier;
         this.multiblockData = MultiblockData.EMPTY;
         this.aboveBlockCapCache = new HashMap<>();
@@ -164,9 +159,9 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                     IHeatStorage aboveHeatStorage = cache.getCapability();
                     if (aboveHeatStorage != null && level != null) {
                         IHeatStorage thisHeatStorage = getHeatStorage();
-                        int output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
-                        int drained = thisHeatStorage.tryDrainHeat(output, true);
-                        aboveHeatStorage.tryFillHeat(drained, false);
+                        float output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
+                        float drained = thisHeatStorage.drain(output, true);
+                        aboveHeatStorage.fill(drained, false);
                     }
                 }
             }
@@ -180,7 +175,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
             burnTime--;
             if (burnTime % 5 == 0) {
                 if (!level.isClientSide()) {
-                    heatStorage.tryFillHeat(getProductionAmount(), false);
+                    heatStorage.fill(getProductionAmount(), false);
                 }
             }
 
@@ -198,8 +193,8 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                 }
             }
         } else {
-            if (level.getGameTime() % 3 == 0 && !level.isClientSide()) {
-                heatStorage.tryDrainHeat((int) Math.pow(10, 0.5 - ((double) heatStorage.getHeatStored() / heatStorage.getHeatCapacity())), false);
+            if (!level.isClientSide()) {
+                heatStorage.drain((int) Math.pow(10, 0.5 - ((double) heatStorage.getHeatStored() / heatStorage.getHeatCapacity())), false);
             }
         }
     }

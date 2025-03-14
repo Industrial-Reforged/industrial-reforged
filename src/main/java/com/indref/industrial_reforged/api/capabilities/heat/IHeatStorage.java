@@ -3,50 +3,50 @@ package com.indref.industrial_reforged.api.capabilities.heat;
 import net.minecraft.util.Mth;
 
 public interface IHeatStorage {
-    default void onHeatChanged(int oldAmount) {
+    default void onHeatChanged(float oldAmount) {
     }
 
-    int getHeatStored();
+    float getHeatStored();
 
-    void setHeatStored(int value);
+    void setHeatStored(float value);
 
-    int getHeatCapacity();
+    float getHeatCapacity();
 
-    void setHeatCapacity(int value);
+    void setHeatCapacity(float value);
 
-    default int tryDrainHeat(int value, boolean simulate) {
-        if (!canDrainHeat() || value <= 0) {
+    default float drain(float value, boolean simulate) {
+        if (!canDrain() || value <= 0) {
             return 0;
         }
 
-        int energyExtracted = Math.min(getHeatStored(), Math.min(getMaxOutput(), value));
+        float heatExtracted = Math.min(getHeatStored(), Math.min(getMaxOutput(), value));
         if (!simulate) {
-            setHeatStored(getHeatStored() - energyExtracted);
+            setHeatStored(getHeatStored() - heatExtracted);
         }
-        return energyExtracted;
+        return heatExtracted;
     }
 
-    default int tryFillHeat(int value, boolean simulate) {
-        if (!canFillHeat() || value <= 0) {
+    default float fill(float value, boolean simulate) {
+        if (!canFill() || value <= 0) {
             return 0;
         }
 
-        int energyReceived = Mth.clamp(getHeatCapacity() - getHeatStored(), 0, Math.min(getMaxInput(), value));
+        float heatReceived = Mth.clamp(getHeatCapacity() - getHeatStored(), 0, Math.min(getMaxInput(), value));
         if (!simulate) {
-            setHeatStored(getHeatStored() + energyReceived);
+            setHeatStored(getHeatStored() + heatReceived);
         }
-        return energyReceived;
+        return heatReceived;
     }
 
-    int getMaxInput();
+    float getMaxInput();
 
-    int getMaxOutput();
+    float getMaxOutput();
 
-    default boolean canFillHeat() {
+    default boolean canFill() {
         return getMaxInput() > 0;
     }
 
-    default boolean canDrainHeat() {
+    default boolean canDrain() {
         return getMaxOutput() > 0;
     }
 }

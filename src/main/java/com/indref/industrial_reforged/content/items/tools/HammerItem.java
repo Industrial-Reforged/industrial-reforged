@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.IRRegistries;
+import com.indref.industrial_reforged.api.blockentities.multiblock.FormListener;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.world.InteractionResult;
@@ -22,7 +23,11 @@ public class HammerItem extends Item {
             for (Multiblock multiblock : PDLRegistries.MULTIBLOCK) {
                 if (controllerState.is(multiblock.getUnformedController())) {
                     try {
-                        return multiblock.form(useOnContext.getLevel(), useOnContext.getClickedPos(), useOnContext.getPlayer())
+                        boolean formed = multiblock.form(useOnContext.getLevel(), useOnContext.getClickedPos(), useOnContext.getPlayer());
+                        if (useOnContext.getLevel().getBlockEntity(useOnContext.getClickedPos()) instanceof FormListener listener) {
+                            listener.onForm();
+                        }
+                        return formed
                                 ? InteractionResult.SUCCESS
                                 : InteractionResult.FAIL;
                     } catch (Exception e) {

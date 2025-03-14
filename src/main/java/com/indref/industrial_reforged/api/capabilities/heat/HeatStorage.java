@@ -6,58 +6,73 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 
 public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> {
-    public static final HeatStorage EMPTY = new HeatStorage();
+    public static final HeatStorage EMPTY = new HeatStorage(0, 0, 0);
 
-    private int heatStored;
-    private int heatCapacity;
+    private float heatStored;
+    private float heatCapacity;
+
+    private final float maxInput;
+    private final float maxOutput;
+
+    public HeatStorage(float heatCapacity) {
+        this.heatCapacity = heatCapacity;
+        this.maxInput = 5;
+        this.maxOutput = 5;
+    }
+
+    public HeatStorage(float heatCapacity, float maxInput, float maxOutput) {
+        this.heatCapacity = heatCapacity;
+        this.maxInput = maxInput;
+        this.maxOutput = maxOutput;
+    }
 
     @Override
-    public int getHeatStored() {
+    public float getHeatStored() {
         return this.heatStored;
     }
 
     @Override
-    public void setHeatStored(int value) {
+    public void setHeatStored(float value) {
         if (this.heatStored != value) {
-            int oldAmount = this.heatStored;
+            float oldAmount = this.heatStored;
             this.heatStored = value;
             onHeatChanged(oldAmount);
         }
     }
 
     @Override
-    public int getHeatCapacity() {
+    public float getHeatCapacity() {
         return this.heatCapacity;
     }
 
     @Override
-    public void setHeatCapacity(int value) {
+    public void setHeatCapacity(float value) {
         if (this.heatCapacity != value) {
             this.heatCapacity = value;
         }
     }
 
     @Override
-    public int getMaxInput() {
-        return 20;
+    public float getMaxInput() {
+        return this.maxInput;
     }
 
     @Override
-    public int getMaxOutput() {
-        return 20;
+    public float getMaxOutput() {
+        return this.maxOutput;
     }
 
     @Override
     public @NotNull CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
         CompoundTag tag = new CompoundTag();
-        tag.putInt("heat_stored", this.heatStored);
-        tag.putInt("heat_capacity", this.heatCapacity);
+        tag.putFloat("heat_stored", this.heatStored);
+        tag.putFloat("heat_capacity", this.heatCapacity);
         return tag;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag tag) {
-        this.heatStored = tag.getInt("heat_stored");
-        this.heatCapacity = tag.getInt("heat_capacity");
+        this.heatStored = tag.getFloat("heat_stored");
+        this.heatCapacity = tag.getFloat("heat_capacity");
     }
 }

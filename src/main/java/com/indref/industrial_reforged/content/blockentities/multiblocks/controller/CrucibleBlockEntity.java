@@ -7,7 +7,6 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -255,6 +254,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         turnCrucible();
 
         fillBlock();
+
+        tickHeat();
+    }
+
+    private void tickHeat() {
+
     }
 
     private void fillBlock() {
@@ -281,7 +286,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
             for (LivingEntity entity : entities) {
                 if (getHeatStorage().getHeatStored() > 100) {
                     entity.hurt(level.damageSources().lava(), 7);
-                    getHeatStorage().tryDrainHeat(12, false);
+                    getHeatStorage().drain(12, false);
                 } else {
                     return;
                 }

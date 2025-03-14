@@ -25,13 +25,13 @@ public class HeatBarWidget extends AbstractWidget {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blitSprite(HEAT_BAR_EMPTY_SPRITE, getX(), getY(), width, height);
-        int heatStored = heatStorage.getHeatStored();
-        int heatCapacity = heatStorage.getHeatCapacity();
+        float heatStored = heatStorage.getHeatStored();
+        float heatCapacity = heatStorage.getHeatCapacity();
         float progress = (float) heatStored / heatCapacity;
         guiGraphics.blitSprite(HEAT_BAR_SPRITE, width - 2, height - 2, 0, 0, getX() + 1, getY() + 1, Mth.ceil((width - 2) * progress), height - 2);
 
         if (isHovered) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("%d/%d HU".formatted(heatStored, heatCapacity)), mouseX, mouseY);
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("%.1f/%.1f HU".formatted(heatStored, heatCapacity)), mouseX, mouseY);
         }
     }
 

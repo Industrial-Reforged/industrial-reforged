@@ -1,6 +1,9 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
+import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -34,6 +37,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
 public class BlastFurnacePartBlock extends RotatableEntityBlock implements DisplayBlock {
     public BlastFurnacePartBlock(Properties properties) {
