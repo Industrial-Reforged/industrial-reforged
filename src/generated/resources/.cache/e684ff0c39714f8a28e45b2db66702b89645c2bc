@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-04T21:18:07.451767155	Item Models: indref
+// 1.21.1	2025-03-14T16:40:15.737107926	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -22,12 +22,14 @@ e6ca2501564249d74c7e0d436c0b71974a8074b9 assets/indref/models/item/basic_battery
 ad95c0e40cbbd6534800dfcec18ffc4389522027 assets/indref/models/item/basic_battery_3.json
 34c1f77b8b499e14c1ab508fd3ffabd7ebde7b5d assets/indref/models/item/basic_battery_4.json
 f201c8b924375b6ba0aeed5adac359159a9bff4c assets/indref/models/item/basic_battery_5.json
+290e0d59b71ab91fde2c9af1a68a7c8f6a2fe9aa assets/indref/models/item/basic_chainsaw.json
+09be2271590fe38e10caa37951b07ffe2af58d48 assets/indref/models/item/basic_chainsaw_active.json
 179f9ee43b2b48d7ccb02eefc5bcbeb0c1c9855b assets/indref/models/item/basic_circuit.json
+0ea478dc7f54e25e2affccf869e8992b73e7ac3f assets/indref/models/item/basic_drill.json
 b5701c30cef2e6b6d353e76d5ba3c02b673feb10 assets/indref/models/item/basic_generator.json
 63ddb958a9699cefcc513ff4a69b9021201f311a assets/indref/models/item/basic_machine_frame.json
 f0d3a2aab723fb2343fac252bd6ff776722a4e45 assets/indref/models/item/bauxite_ore.json
 c0d39c68d88bf39ca8b8bff827f68a68f111c968 assets/indref/models/item/bio_mass_bucket.json
-60fa2351538cf5017052a22d3ec837bd5e9def7f assets/indref/models/item/bio_plastic.json
 3d7ea1aebe5cc7a2708dbb7758b117a54d12570f assets/indref/models/item/blast_furnace_bricks.json
 a0a8be8687c43cbdcc4c20e59d19d599da04d4eb assets/indref/models/item/blast_furnace_casting_basin.json
 1270464d11b7f5e238f0f53baf1618ed99281b4b assets/indref/models/item/blast_furnace_faucet.json
@@ -61,9 +63,6 @@ ec4fa1fb582fd53b9bcbcbd4e8b091cf6407dc2a assets/indref/models/item/deepslate_nic
 6284c6c74d5ea273acb56dd46f4449cf4d857ac1 assets/indref/models/item/deepslate_tin_ore.json
 ce5b37d45ed23832e81084dd1e95dde7c356f260 assets/indref/models/item/deepslate_uranium_ore.json
 f0b1860428f27476fe7abe457e390a47c55ee86a assets/indref/models/item/drain.json
-49c5c2df7864d72134a35b57a749231d7fc7588c assets/indref/models/item/electric_chainsaw.json
-b6d218db6e726c452dc397ed2d0bcf45b485d639 assets/indref/models/item/electric_chainsaw_active.json
-f375af61dbb3b8fbfe3b63a59d21c1113df0f2cb assets/indref/models/item/electric_drill.json
 e23eb26f4b579c97070b91e8598eca743c7cde7e assets/indref/models/item/electric_hoe.json
 64dca56289be895561d2ff72a8cae658b9715cbb assets/indref/models/item/electric_motor.json
 0fce0253bc9d3b8f67757fc88cef969f5fbb39e0 assets/indref/models/item/electric_tree_tap.json
@@ -180,7 +179,6 @@ f5c92357209b6a125de22afc40446b001d2a41ea assets/indref/models/item/ultimate_batt
 d53b27513da89806b1f5e15e6b7320bdadd06f4f assets/indref/models/item/ultimate_battery_8.json
 2ea1e09603c42d823ec80c7eca4301a53b617732 assets/indref/models/item/ultimate_circuit.json
 102d86ad7029cbbb7c1b1e69f85355bc51beaaee assets/indref/models/item/uranium_block.json
-f116c2615b9107db395318fa03f97f2018bd176a assets/indref/models/item/uranium_fuel_rod.json
 5db48cace9829c208e0e34e7e925b22427c0161d assets/indref/models/item/uranium_ingot.json
 88845440414ad24920cef0607a34ef417429eb88 assets/indref/models/item/uranium_ore.json
 73742531f0b3772c43c66af9c0960628205bff1e assets/indref/models/item/wooden_plate.json

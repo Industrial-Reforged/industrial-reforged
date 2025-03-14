@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "indref:electric_drill"
+        "recipe": "indref:basic_drill"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "indref:electric_drill"
+      "indref:basic_drill"
     ]
   }
 }

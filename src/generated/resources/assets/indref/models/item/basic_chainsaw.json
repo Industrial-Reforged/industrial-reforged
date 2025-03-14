@@ -2,19 +2,19 @@
   "parent": "minecraft:item/generated",
   "overrides": [
     {
-      "model": "indref:item/electric_chainsaw",
+      "model": "indref:item/basic_chainsaw",
       "predicate": {
         "indref:active": 0.0
       }
     },
     {
-      "model": "indref:item/electric_chainsaw_active",
+      "model": "indref:item/basic_chainsaw_active",
       "predicate": {
         "indref:active": 1.0
       }
     }
   ],
   "textures": {
-    "layer0": "indref:item/electric_chainsaw"
+    "layer0": "indref:item/basic_chainsaw"
   }
 }

@@ -64,7 +64,6 @@ public class IRItemModelProvider extends ItemModelProvider {
         bucket(IRFluids.BIO_MASS.getStillFluid());
         bucket(IRFluids.METHANE.getStillFluid());
         basicItem(IRItems.PLANT_BALL);
-        basicItem(IRItems.BIO_PLASTIC);
         basicItem(IRItems.COAL_DUST);
         basicItem(IRItems.CARBON_PLATE);
         basicItem(IRItems.WOODEN_PLATE);
@@ -79,9 +78,9 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.SCANNER);
         handheldItem(IRItems.ELECTRIC_HOE);
         handheldItem(IRItems.ELECTRIC_TREE_TAP);
-        handheldItem(IRItems.ELECTRIC_DRILL);
+        handheldItem(IRItems.BASIC_DRILL);
         handheldItem(IRItems.ADVANCED_DRILL);
-        handheldItem(IRItems.ELECTRIC_CHAINSAW);
+        handheldItem(IRItems.BASIC_CHAINSAW);
         handheldItem(IRItems.ADVANCED_CHAINSAW);
         handheldItem(IRItems.NANO_SABER);
         handheldItem(IRItems.ROCK_CUTTER);
@@ -115,8 +114,8 @@ public class IRItemModelProvider extends ItemModelProvider {
                 i -> basicItem(IRItems.THERMOMETER, "_" + i));
         overrideItemModel(2, basicItem(IRItems.NANO_SABER), IRItemProperties.ACTIVE_KEY,
                 i -> i == 1 ? basicItem(extend(key(IRItems.NANO_SABER), "_active")) : basicItem(IRItems.NANO_SABER));
-        overrideItemModel(2, basicItem(IRItems.ELECTRIC_CHAINSAW), IRItemProperties.ACTIVE_KEY,
-                i -> i == 1 ? basicItem(extend(key(IRItems.ELECTRIC_CHAINSAW), "_active")) : basicItem(IRItems.ELECTRIC_CHAINSAW));
+        overrideItemModel(2, basicItem(IRItems.BASIC_CHAINSAW), IRItemProperties.ACTIVE_KEY,
+                i -> i == 1 ? basicItem(extend(key(IRItems.BASIC_CHAINSAW), "_active")) : basicItem(IRItems.BASIC_CHAINSAW));
         overrideItemModel(2, basicItem(IRItems.ADVANCED_CHAINSAW), IRItemProperties.ACTIVE_KEY,
                 i -> i == 1 ? basicItem(extend(key(IRItems.ADVANCED_CHAINSAW), "_active")) : basicItem(IRItems.ADVANCED_CHAINSAW));
 
@@ -148,8 +147,6 @@ public class IRItemModelProvider extends ItemModelProvider {
 
         basicItem(IRItems.IRON_ROD);
         basicItem(IRItems.STEEL_ROD);
-
-        basicItem(IRItems.URANIUM_FUEL_ROD);
 
         cable(IRBlocks.TIN_CABLE);
         cable(IRBlocks.COPPER_CABLE);

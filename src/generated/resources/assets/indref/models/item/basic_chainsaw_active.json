@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "indref:item/electric_chainsaw_active"
+    "layer0": "indref:item/basic_chainsaw_active"
   }
 }

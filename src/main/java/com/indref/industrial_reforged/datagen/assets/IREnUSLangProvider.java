@@ -140,7 +140,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.ANTENNA, "Antenna");
         addItem(IRItems.SANDY_BRICK, "Sandy Brick");
         addItem(IRItems.PLANT_MASS, "Plant Mass");
-        addItem(IRItems.BIO_PLASTIC, "Bio Plastic");
         addItem(IRItems.TERRACOTTA_BRICK, "Terracotta Brick");
 
         addItem(IRItems.CASTING_SCRAPS, "Casting Scraps");
@@ -177,9 +176,9 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRFluids.MOLTEN_IRON.getDeferredBucket(), "Molten Iron Bucket");
         addItem(IRFluids.MOLTEN_GOLD.getDeferredBucket(), "Molten Gold Bucket");
 
-        addItem(IRItems.ELECTRIC_DRILL, "Electric Drill");
+        addItem(IRItems.BASIC_DRILL, "Electric Drill");
         addItem(IRItems.ADVANCED_DRILL, "Advanced Drill");
-        addItem(IRItems.ELECTRIC_CHAINSAW, "Electric Chainsaw");
+        addItem(IRItems.BASIC_CHAINSAW, "Electric Chainsaw");
         addItem(IRItems.ADVANCED_CHAINSAW, "Advanced Chainsaw");
         addItem(IRItems.ELECTRIC_HOE, "Electric Hoe");
         addItem(IRItems.ELECTRIC_TREE_TAP, "Electric Tree Tap");

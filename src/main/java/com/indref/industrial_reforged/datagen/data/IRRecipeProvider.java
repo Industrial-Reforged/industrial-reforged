@@ -348,7 +348,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_paper", has(Items.PAPER))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ELECTRIC_DRILL.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.BASIC_DRILL.get())
                 .pattern(" # ")
                 .pattern("#M#")
                 .pattern("CBC")
@@ -364,13 +364,13 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("#D#")
                 .pattern("CBC")
                 .define('#', Tags.Items.GEMS_DIAMOND)
-                .define('D', IRItems.ELECTRIC_DRILL.get())
+                .define('D', IRItems.BASIC_DRILL.get())
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .define('B', IRItems.ADVANCED_BATTERY.get())
                 .unlockedBy("has_battery", has(IRItems.ADVANCED_BATTERY.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ELECTRIC_CHAINSAW.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.BASIC_CHAINSAW.get())
                 .pattern(" ##")
                 .pattern("CM#")
                 .pattern("BC ")
@@ -387,7 +387,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("BC ")
                 .define('#', Tags.Items.GEMS_DIAMOND)
                 .define('C', Tags.Items.INGOTS_COPPER)
-                .define('D', IRItems.ELECTRIC_CHAINSAW.get())
+                .define('D', IRItems.BASIC_CHAINSAW.get())
                 .define('B', IRItems.ADVANCED_BATTERY.get())
                 .unlockedBy("has_motor", has(IRItems.ELECTRIC_MOTOR.get()))
                 .save(output);

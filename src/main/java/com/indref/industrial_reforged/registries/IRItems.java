@@ -18,10 +18,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,11 +49,11 @@ public final class IRItems {
             () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(EnergyTiers.LOW.value(), Tiers.IRON, 1, -2.8F, new Item.Properties()));
-    public static final DeferredItem<ElectricDrillItem> ELECTRIC_DRILL = registerItem("electric_drill",
+    public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = registerItem("basic_drill",
             () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
-    public static final DeferredItem<ElectricChainsawItem> ELECTRIC_CHAINSAW = registerItem("electric_chainsaw",
+    public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = registerItem("basic_chainsaw",
             () -> new ElectricChainsawItem(5, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
     public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = registerItem("advanced_chainsaw",
             () -> new ElectricChainsawItem(7, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
@@ -85,8 +83,6 @@ public final class IRItems {
             () -> new ToolboxItem(new Item.Properties()
                     .stacksTo(1)
                     .component(DataComponents.DYED_COLOR, EMPTY_COLOR)));
-    public static final DeferredItem<UraniumFuelRodItem> URANIUM_FUEL_ROD = registerItem("uranium_fuel_rod",
-            () -> new UraniumFuelRodItem(new Item.Properties().stacksTo(1)), false);
 
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",
@@ -101,8 +97,9 @@ public final class IRItems {
 //            () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
 
     //misc
+    // This shouldnt be used. Migrate to regular rubber
+    @Deprecated
     public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
-    public static final DeferredItem<Item> BIO_PLASTIC = registerStandardItem("bio_plastic");
     public static final DeferredItem<Item> PLANT_MASS = registerStandardItem("plant_mass");
     public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
     public static final DeferredItem<Item> SANDY_BRICK = registerStandardItem("sandy_brick");

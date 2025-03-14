@@ -95,11 +95,13 @@
   "item.indref.aluminum_ingot": "Aluminum Ingot",
   "item.indref.antenna": "Antenna",
   "item.indref.basic_battery": "Basic Battery",
+  "item.indref.basic_chainsaw": "Electric Chainsaw",
   "item.indref.basic_circuit": "Basic Circuit",
+  "item.indref.basic_drill": "Electric Drill",
   "item.indref.bio_mass_bucket": "Bio Mass Bucket",
-  "item.indref.bio_plastic": "Bio Plastic",
   "item.indref.blueprint": "Blueprint",
   "item.indref.carbon_plate": "Carbon Plate",
+  "item.indref.casting_scraps": "Casting Scraps",
   "item.indref.chromium_ingot": "Chromium Ingot",
   "item.indref.circuit_board": "Circuit Board",
   "item.indref.clay_mold": "Clay Mold",
@@ -111,8 +113,6 @@
   "item.indref.copper_dust": "Copper Dust",
   "item.indref.copper_plate": "Copper Plate",
   "item.indref.copper_wire": "Copper Wire",
-  "item.indref.electric_chainsaw": "Electric Chainsaw",
-  "item.indref.electric_drill": "Electric Drill",
   "item.indref.electric_hoe": "Electric Hoe",
   "item.indref.electric_motor": "Electric Motor",
   "item.indref.electric_tree_tap": "Electric Tree Tap",
@@ -195,5 +195,5 @@
   "tooltip.indref.inactive": "Inactive",
   "tooltip.indref.liquid.amount_with_capacity": "%d/%d mb",
   "tooltip.indref.melting_not_possible": "Melting not possible",
-  "tooltip.indref.melting_progress": "Melting Progress"
+  "tooltip.indref.melting_progress": "Melting Progress: %.1f/10.0"
 }

@@ -18,23 +18,13 @@ import com.indref.industrial_reforged.client.renderer.item.bar.MultiBarRenderer;
 import com.indref.industrial_reforged.client.screen.*;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
-import com.indref.industrial_reforged.content.items.tools.NanoSaberItem;
-import com.indref.industrial_reforged.content.items.tools.ThermometerItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.*;
-import com.indref.industrial_reforged.util.ItemUtils;
 import com.indref.industrial_reforged.util.SingleFluidStack;
-import com.mojang.blaze3d.shaders.FogShape;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.portingdeadmods.portingdeadlibs.api.fluids.BaseFluidType;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
-import net.minecraft.client.Camera;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -51,11 +41,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,7 +80,7 @@ public final class IndustrialReforgedClient {
     private static void registerItemProperties() {
         ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getTemperature);
-        ItemProperties.register(IRItems.ELECTRIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
+        ItemProperties.register(IRItems.BASIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof BatteryItem batteryItem) {
