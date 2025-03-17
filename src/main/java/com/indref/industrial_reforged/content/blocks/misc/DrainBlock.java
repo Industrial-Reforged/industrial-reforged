@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlo
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.DrainBlockEntity;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import net.minecraft.ChatFormatting;
@@ -52,7 +53,10 @@ public class DrainBlock extends RotatableContainerBlock implements WrenchableBlo
             IFluidHandler fluidTank = blockEntity.getFluidHandler();
             Fluid fluid = fluidTank.getFluidInTank(0).getFluid();
             int fluidAmount = fluidTank.getFluidInTank(0).getAmount();
-            player.sendSystemMessage(Component.translatable("drain.info.0").append(fluid.getFluidType().getDescription().getString() + ", " + fluidAmount + "mb"));
+            player.sendSystemMessage(fluidTank.getFluidInTank(0).getHoverName().copy()
+                    .append(", ")
+                    .append(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY.component(fluidAmount, fluidTank.getTankCapacity(0)))
+                    .append(IRTranslations.General.ENERGY_UNIT.component()));
         }
         return InteractionResult.SUCCESS;
     }

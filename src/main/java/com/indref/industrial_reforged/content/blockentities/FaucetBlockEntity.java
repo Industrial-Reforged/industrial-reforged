@@ -1,13 +1,10 @@
-package com.indref.industrial_reforged.content.blockentities.misc;
+package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.networking.FaucetSetRenderStack;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;

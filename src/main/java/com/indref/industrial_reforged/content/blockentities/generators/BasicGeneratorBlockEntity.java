@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.transportation.energy.EnergyNet;
 import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -151,7 +152,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("title.indref.basic_generator");
+        return IRTranslations.Menus.BASIC_GENERATOR.component();
     }
 
     @Nullable

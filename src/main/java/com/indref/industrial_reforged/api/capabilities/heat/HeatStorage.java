@@ -9,15 +9,14 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
     public static final HeatStorage EMPTY = new HeatStorage(0, 0, 0);
 
     private float heatStored;
+    private float lastHeatStored;
     private float heatCapacity;
 
     private final float maxInput;
     private final float maxOutput;
 
     public HeatStorage(float heatCapacity) {
-        this.heatCapacity = heatCapacity;
-        this.maxInput = 5;
-        this.maxOutput = 5;
+        this(heatCapacity, 5, 5);
     }
 
     public HeatStorage(float heatCapacity, float maxInput, float maxOutput) {
@@ -36,8 +35,19 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
         if (this.heatStored != value) {
             float oldAmount = this.heatStored;
             this.heatStored = value;
+            setLastHeatStored(oldAmount);
             onHeatChanged(oldAmount);
         }
+    }
+
+    @Override
+    public float getLastHeatStored() {
+        return this.lastHeatStored;
+    }
+
+    @Override
+    public void setLastHeatStored(float value) {
+        this.lastHeatStored = value;
     }
 
     @Override
@@ -66,6 +76,7 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
     public @NotNull CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
         CompoundTag tag = new CompoundTag();
         tag.putFloat("heat_stored", this.heatStored);
+        tag.putFloat("last_heat_stored", this.lastHeatStored);
         tag.putFloat("heat_capacity", this.heatCapacity);
         return tag;
     }
@@ -73,6 +84,7 @@ public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> 
     @Override
     public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag tag) {
         this.heatStored = tag.getFloat("heat_stored");
+        this.lastHeatStored = tag.getFloat("last_heat_stored");
         this.heatCapacity = tag.getFloat("heat_capacity");
     }
 }

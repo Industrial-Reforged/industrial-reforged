@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
 import com.portingdeadmods.portingdeadlibs.utils.renderers.GuiUtils;
 import mezz.jei.api.constants.VanillaTypes;
@@ -51,7 +52,7 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.literal("Casting");
+        return IRTranslations.Jei.CASTING.component();
     }
 
     @Override
@@ -88,7 +89,7 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
         CastingMoldValue moldValue = RegistryUtils.holder(BuiltInRegistries.ITEM, castingRecipe.moldItem()).getData(IRDataMaps.CASTING_MOLDS);
 
         if (moldValue.consumeCast()) {
-            slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(Component.literal("Item is consumed").withStyle(ChatFormatting.DARK_GRAY)));
+            slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(IRTranslations.Jei.ITEM_CONSUMED.component().withStyle(ChatFormatting.DARK_GRAY)));
         }
 
         recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, getPadding() + 64, y + 19)

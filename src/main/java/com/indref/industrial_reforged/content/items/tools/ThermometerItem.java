@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
-import com.indref.industrial_reforged.util.IRTranslations;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -82,7 +81,7 @@ public class ThermometerItem extends SimpleHeatItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
         IHeatStorage heatStorage = getHeatCap(stack);
-        tooltip.add(IRTranslations.Tooltip.HEAT_STORED.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity())
+        tooltip.add(IRTranslations.Tooltip.HEAT_AMOUNT.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity())
                 .withStyle(ChatFormatting.GRAY));
     }
 

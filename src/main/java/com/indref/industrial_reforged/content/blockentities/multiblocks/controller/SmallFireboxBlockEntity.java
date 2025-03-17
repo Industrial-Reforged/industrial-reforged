@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
@@ -22,12 +22,16 @@ import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPosBlockEntity {
     private BlockPos mainControllerPos;
-    private BlockCapabilityCache<IHeatStorage, Direction> aboveCapCache;
+    private final Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
 
-    public SmallFireboxBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(IRBlockEntityTypes.SMALL_FIREBOX.get(), p_155229_, p_155230_, FireboxTiers.SMALL, 1800);
+    public SmallFireboxBlockEntity(BlockPos pos, BlockState state) {
+        super(IRBlockEntityTypes.SMALL_FIREBOX.get(), pos, state, FireboxTiers.SMALL, 1800);
+        this.aboveBlockCapCache = new HashMap<>();
     }
 
     @Override
@@ -38,14 +42,26 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     public void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
-            this.aboveCapCache = BlockCapabilityCache.create(
+            for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(worldPosition)) {
+                if (level.getBlockEntity(pos) instanceof SmallFireboxBlockEntity be && worldPosition.equals(be.getActualBlockEntityPos())) {
+                    this.aboveBlockCapCache.put(pos.above(), BlockCapabilityCache.create(
+                            IRCapabilities.HeatStorage.BLOCK,
+                            serverLevel,
+                            pos.above(),
+                            Direction.DOWN,
+                            () -> !this.isRemoved(),
+                            this::initCapCache
+                    ));
+                }
+            }
+            this.aboveBlockCapCache.put(worldPosition.above(), BlockCapabilityCache.create(
                     IRCapabilities.HeatStorage.BLOCK,
                     serverLevel,
                     worldPosition.above(),
                     Direction.DOWN,
                     () -> !this.isRemoved(),
                     this::initCapCache
-            );
+            ));
         }
     }
 
@@ -67,13 +83,15 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
     protected void tickIO() {
         if (!level.isClientSide()) {
             // Only export heat to block directly above
-            if (aboveCapCache != null) {
-                IHeatStorage aboveHeatStorage = aboveCapCache.getCapability();
-                if (aboveHeatStorage != null && level != null) {
-                    IHeatStorage thisHeatStorage = getHeatStorage();
-                    float deltaT = (float) ((thisHeatStorage.getHeatStored() - aboveHeatStorage.getHeatStored()) * 0.1); // Spread factor
-                    aboveHeatStorage.fill(deltaT, false);
-                    thisHeatStorage.drain(deltaT, false);
+            if (aboveBlockCapCache != null) {
+                for (BlockPos pos : aboveBlockCapCache.keySet()) {
+                    IHeatStorage aboveHeatStorage = aboveBlockCapCache.get(pos).getCapability();
+                    if (aboveHeatStorage != null && level != null) {
+                        IHeatStorage thisHeatStorage = getHeatStorage();
+                        float deltaT = (float) ((thisHeatStorage.getHeatStored() - aboveHeatStorage.getHeatStored()) * 0.1); // Spread factor
+                        aboveHeatStorage.fill(deltaT, false);
+                        thisHeatStorage.drain(deltaT, false);
+                    }
                 }
             }
         }
@@ -81,7 +99,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.literal("Small Firebox");
+        return IRTranslations.Menus.SMALL_FIREBOX.component();
     }
 
     @Override

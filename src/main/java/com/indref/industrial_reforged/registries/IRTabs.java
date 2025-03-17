@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
@@ -44,7 +45,7 @@ public final class IRTabs {
      * Default Item Group for all indref items
      */
     public static final Supplier<CreativeModeTab> ITEMS = CREATIVE_TABS.register("items", () -> CreativeModeTab.builder()
-            .title(Component.translatable("creative_tab.indref.items"))
+            .title(IRTranslations.Tabs.ITEMS.component())
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRItems.HAMMER.get()))
             .displayItems((parameters, output) -> {
@@ -82,7 +83,7 @@ public final class IRTabs {
     }
 
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
-            .title(Component.translatable("creative_tab.indref.blocks"))
+            .title(IRTranslations.Tabs.BLOCKS.component())
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {

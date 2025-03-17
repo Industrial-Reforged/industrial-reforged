@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.multiblocks;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -99,6 +100,13 @@ public record BlastFurnaceMultiblock() implements Multiblock {
             return getFormedController().defaultBlockState().setValue(BRICK_STATE, BrickStates.FORMED);
         }
         return getFormedPart().defaultBlockState().setValue(BRICK_STATE, BrickStates.FORMED);
+    }
+
+    @Override
+    public BlockState unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
+        int blockId = multiblockData.layers()[layoutIndex].layer()[layerIndex];
+        Block block = this.getDefinition().getDefaultBlock(blockId);
+        return block != null ? block.defaultBlockState() : null;
     }
 
     @Override

@@ -10,10 +10,17 @@ public interface IHeatStorage {
 
     void setHeatStored(float value);
 
+    float getLastHeatStored();
+
+    void setLastHeatStored(float value);
+
     float getHeatCapacity();
 
     void setHeatCapacity(float value);
 
+    /**
+     * @return The heat that was extracted
+     */
     default float drain(float value, boolean simulate) {
         if (!canDrain() || value <= 0) {
             return 0;
@@ -26,6 +33,9 @@ public interface IHeatStorage {
         return heatExtracted;
     }
 
+    /**
+     * @return The heat that was actually filled
+     */
     default float fill(float value, boolean simulate) {
         if (!canFill() || value <= 0) {
             return 0;

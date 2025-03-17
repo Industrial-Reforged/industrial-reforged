@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.client.widgets;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.screen.CrucibleScreen;
 import com.indref.industrial_reforged.networking.EmptyCruciblePayload;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.ChatFormatting;
@@ -28,7 +29,7 @@ public class ClearableFluidTankWidget extends FluidTankWidget {
     public List<Component> getFluidTooltip() {
         List<Component> fluidTooltip = super.getFluidTooltip();
         if (CrucibleScreen.hasShiftDown() && !fluidHandler.getFluidInTank(0).isEmpty()) {
-            fluidTooltip.add(Component.literal("Alt + Shift Click to empty").withStyle(ChatFormatting.YELLOW));
+            fluidTooltip.add(IRTranslations.Tooltip.EMPTY_FLUID.component().withStyle(ChatFormatting.YELLOW));
         }
         return fluidTooltip;
     }

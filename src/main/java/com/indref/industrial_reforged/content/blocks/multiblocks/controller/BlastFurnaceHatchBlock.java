@@ -57,12 +57,14 @@ public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements C
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                BlockPos actualBlockEntityPos = blastFurnaceBlockEntity.getActualBlockEntityPos();
-                if (actualBlockEntityPos != null) {
-                    MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), actualBlockEntityPos, level);
+        if (!blockState.is(newState.getBlock())) {
+            if (!blockState.getValue(BlastFurnaceMultiblock.BRICK_STATE).equals(BlastFurnaceMultiblock.BrickStates.UNFORMED)) {
+                BlockEntity blockEntity = level.getBlockEntity(blockPos);
+                if (blockEntity instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                    BlockPos actualBlockEntityPos = blastFurnaceBlockEntity.getActualBlockEntityPos();
+                    if (actualBlockEntityPos != null) {
+                        MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), actualBlockEntityPos, level);
+                    }
                 }
             }
         }

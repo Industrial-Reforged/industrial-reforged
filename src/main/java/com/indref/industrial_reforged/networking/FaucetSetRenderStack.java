@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blockentities.misc.FaucetBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.FaucetBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.gui.menus.CraftingStationMenu;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
@@ -26,7 +27,7 @@ public class CraftingStationBlockEntity extends IRContainerBlockEntity implement
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.literal("Test");
+        return IRTranslations.Menus.CRAFTING_STATION.component();
     }
 
     @Nullable

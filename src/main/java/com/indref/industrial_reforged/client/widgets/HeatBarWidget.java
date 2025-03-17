@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.client.widgets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -27,11 +28,11 @@ public class HeatBarWidget extends AbstractWidget {
         guiGraphics.blitSprite(HEAT_BAR_EMPTY_SPRITE, getX(), getY(), width, height);
         float heatStored = heatStorage.getHeatStored();
         float heatCapacity = heatStorage.getHeatCapacity();
-        float progress = (float) heatStored / heatCapacity;
+        float progress = heatStored / heatCapacity;
         guiGraphics.blitSprite(HEAT_BAR_SPRITE, width - 2, height - 2, 0, 0, getX() + 1, getY() + 1, Mth.ceil((width - 2) * progress), height - 2);
 
         if (isHovered) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("%.1f/%.1f HU".formatted(heatStored, heatCapacity)), mouseX, mouseY);
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, IRTranslations.Tooltip.HEAT_AMOUNT_WITH_CAPACITY.component(heatStored, heatCapacity).append(IRTranslations.General.HEAT_UNIT.component()), mouseX, mouseY);
         }
     }
 

@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRTabs;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.util.IRTranslations;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -20,10 +20,8 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.util.Map;
 import java.util.function.Supplier;
-
-import static com.indref.industrial_reforged.util.IRTranslations.Tooltip;
-import static com.indref.industrial_reforged.util.IRTranslations.MultiblockFeedback;
 
 public class IREnUSLangProvider extends LanguageProvider {
     public IREnUSLangProvider(PackOutput output) {
@@ -32,6 +30,8 @@ public class IREnUSLangProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        IRTranslations.init();
+
         addBlocks();
         addItems();
         addFluids();
@@ -52,21 +52,9 @@ public class IREnUSLangProvider extends LanguageProvider {
         addCreativeTab(IRTabs.BLOCKS, "Industrial Reforged - Blocks");
         addCreativeTab(IRTabs.ITEMS, "Industrial Reforged - Items");
 
-        addTooltip(Tooltip.ACTIVE, "Active");
-        addTooltip(Tooltip.INACTIVE, "Inactive");
-        addTooltip(Tooltip.ENERGY_STORED, "Stored");
-        addTooltip(Tooltip.ENERGY_TIER, "Tier");
-        addTooltip(Tooltip.FLUID_STORED, "Stored: %s");
-        addTooltip(Tooltip.FLUID_AMOUNT_WITH_CAPACITY, "Amount: %dmb/%dmb");
-        addTooltip(Tooltip.FLUID_AMOUNT, "Amount: %dmb");
-        addTooltip(Tooltip.HEAT_STORED, "Heat: %d/%d");
-
-        addTooltip(Tooltip.MELTING_PROGRESS, "Melting Progress: %.1f/10.0");
-        addTooltip(Tooltip.MELTING_NOT_POSSIBLE, "Melting not possible");
-
-        addTooltip(Tooltip.LIQUID_AMOUNT, "%d/%d mb");
-
-        addTooltip("drain", "A simple device for collecting fluids");
+        for (Map.Entry<String, String> entry : IRTranslations.TRANSLATIONS.entrySet()) {
+            add(entry.getKey(), entry.getValue());
+        }
 
         addEnergyTier(EnergyTiers.NONE, "None");
         addEnergyTier(EnergyTiers.LOW, "Low");
@@ -75,19 +63,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addEnergyTier(EnergyTiers.EXTREME, "Extreme");
         addEnergyTier(EnergyTiers.INSANE, "Insane");
         addEnergyTier(EnergyTiers.CREATIVE, "Creative");
-
-        addTitle("firebox", "Firebox");
-        addTitle("small_firebox", "Small Firebox");
-        addTitle("crucible", "Crucible");
-        addTitle("blueprint", "Blueprint");
-        addTitle("crafting_station", "Crafting Station");
-        addTooltip("basic_generator", "Basic Generator");
-        addTooltip("centrifuge", "Centrifuge");
-
-        addMultiblockFeedback(MultiblockFeedback.FAILED_TO_CONSTRUCT, "Missing or invalid block");
-        addMultiblockFeedback(MultiblockFeedback.ACTUAL_BLOCK, "Block: %s");
-        addMultiblockFeedback(MultiblockFeedback.EXPECTED_BLOCK, "Expected: %s");
-        addMultiblockFeedback(MultiblockFeedback.BLOCK_POS, "Coordinates: %d, %d, %d");
 
         add("*.desc.melting_progress", "Melting Progress");
         add("*.desc.melting_not_possible", "Melting Not Possible");

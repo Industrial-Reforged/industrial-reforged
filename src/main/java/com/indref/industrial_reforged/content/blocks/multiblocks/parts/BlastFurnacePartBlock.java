@@ -73,10 +73,12 @@ public class BlastFurnacePartBlock extends RotatableEntityBlock implements Displ
 
     @Override
     protected void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
-        BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
-        if (blockEntity instanceof BlastFurnacePartBlockEntity partBlockEntity) {
-            if (p_60516_.getBlockEntity(partBlockEntity.getControllerPos()) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
-                MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blastFurnaceBlockEntity.getActualBlockEntityPos(), p_60516_);
+        if (!p_60515_.is(p_60518_.getBlock())) {
+            BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
+            if (blockEntity instanceof BlastFurnacePartBlockEntity partBlockEntity) {
+                if (p_60516_.getBlockEntity(partBlockEntity.getControllerPos()) instanceof BlastFurnaceBlockEntity blastFurnaceBlockEntity) {
+                    MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), blastFurnaceBlockEntity.getActualBlockEntityPos(), p_60516_);
+                }
             }
         }
         super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);

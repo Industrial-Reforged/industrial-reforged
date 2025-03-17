@@ -1,15 +1,12 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.multiblock.FormListener;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
@@ -17,7 +14,6 @@ import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.Multibl
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
-import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +21,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -35,18 +30,15 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 // TODO: Cache recipe
 
@@ -185,6 +177,8 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     }
 
     public void commonTick() {
+        getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
+        
         if (isMainController()) {
             if (recipe != null && getHeatStorage().getHeatStored() > HEAT_USAGE) {
                 if (duration >= recipe.duration()) {
@@ -218,25 +212,27 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
             } else {
                 this.duration = 0;
             }
-        }
 
-        if (!level.isClientSide()) {
-            tickHeat();
+            if (!level.isClientSide()) {
+                tickHeat();
+            }
         }
+    }
+
+    private float getHeatDecay() {
+        return 0.12f;
     }
 
     protected void tickHeat() {
-    }
-
-    public Optional<BlastFurnaceRecipe> getCurrentRecipe() {
-        return level.getRecipeManager()
-                .getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(getNonEmptyStacks()), level)
-                .map(RecipeHolder::value);
+        float heatDiff = getHeatStorage().getHeatStored() - getHeatStorage().getLastHeatStored();
+        if (heatDiff <= 0) {
+            getHeatStorage().drain(getHeatDecay() + Math.abs(getHeatDecay() * heatDiff), false);
+        }
     }
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.literal("Blast Furnace");
+        return IRTranslations.Menus.BLAST_FURNACE.component();
     }
 
     @Nullable

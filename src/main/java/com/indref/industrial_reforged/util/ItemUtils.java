@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.util;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -47,15 +49,12 @@ public final class ItemUtils {
         IEnergyStorage energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (energyStorage != null) {
             tooltip.add(
-                    IRTranslations.Tooltip.ENERGY_STORED.component().withStyle(ChatFormatting.GOLD)
-                            .append(Component.literal(": "))
-                            .append(Component.literal(String.format("%s / %s", energyStorage.getEnergyStored(),
-                                    energyStorage.getEnergyCapacity())).withColor(FastColor.ARGB32.color(196, 196, 196)))
+                    IRTranslations.Tooltip.ENERGY_AMOUNT_WITH_CAPACITY.component(energyStorage.getEnergyStored(), energyStorage.getEnergyCapacity())
+                            .append(IRTranslations.General.ENERGY_UNIT.component()).withStyle(ChatFormatting.GOLD)
             );
+            EnergyTier tier = energyStorage.getEnergyTier().value();
             tooltip.add(
-                    IRTranslations.Tooltip.ENERGY_TIER.component().withStyle(ChatFormatting.GOLD)
-                            .append(Component.literal(": "))
-                            .append(energyStorage.getEnergyTier().value().getTranslation())
+                    tier.getTranslation().copy().withColor(tier.color())
             );
         }
     }
@@ -65,11 +64,10 @@ public final class ItemUtils {
         if (item == null) return;
 
         if (!item.getFluidInTank(0).getFluid().equals(Fluids.EMPTY)) {
-            tooltip.add(IRTranslations.Tooltip.FLUID_STORED
-                    .component(item.getFluidInTank(0).getHoverName().getString())
+            tooltip.add(IRTranslations.Tooltip.FLUID_STORED.component(item.getFluidInTank(0).getHoverName().getString())
                     .withStyle(ChatFormatting.AQUA));
-            tooltip.add(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY
-                    .component(item.getFluidInTank(0).getAmount(), item.getTankCapacity(0))
+            tooltip.add(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY.component(item.getFluidInTank(0).getAmount(), item.getTankCapacity(0))
+                    .append(IRTranslations.General.FLUID_UNIT.component())
                     .withStyle(ChatFormatting.AQUA));
         }
     }

@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.api.capabilities.heat;
 
-import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
@@ -22,20 +21,27 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public float getHeatStored() {
-        ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
-        if (componentHeatStorage != null)
-            return componentHeatStorage.heatStored();
-        else
-            throw new NullPointerException("Failed to get heat component for item: "
-                    + itemStack.getItem()
-                    + " please add it under the item properties using .component(...) or preferably inherit one of the heat item classes");
+        ComponentHeatStorage componentHeatStorage = getHeatStorage();
+        return componentHeatStorage.heatStored();
     }
 
     @Override
     public void setHeatStored(float value) {
         float heatStored = getHeatStored();
-        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getHeatCapacity()));
+        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getLastHeatStored(), getHeatCapacity()));
+        setLastHeatStored(heatStored);
         onHeatChanged(heatStored);
+    }
+
+    @Override
+    public float getLastHeatStored() {
+        ComponentHeatStorage componentHeatStorage = getHeatStorage();
+        return componentHeatStorage.lastHeatStored();
+    }
+
+    @Override
+    public void setLastHeatStored(float value) {
+        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), value, getHeatCapacity()));
     }
 
     @Override
@@ -51,7 +57,7 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public void setHeatCapacity(float value) {
-        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), value));
+        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), getLastHeatStored(), value));
     }
 
     @Override
@@ -62,5 +68,15 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
     @Override
     public float getMaxOutput() {
         return 100;
+    }
+
+    private ComponentHeatStorage getHeatStorage() {
+        ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+        if (componentHeatStorage != null)
+            return componentHeatStorage;
+        else
+            throw new NullPointerException("Failed to get heat component for item: "
+                    + itemStack.getItem()
+                    + " please add it under the item properties using .component(...) or preferably inherit one of the heat item classes");
     }
 }

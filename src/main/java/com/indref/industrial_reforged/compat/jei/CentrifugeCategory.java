@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import mezz.jei.api.constants.VanillaTypes;
@@ -54,7 +55,7 @@ public class CentrifugeCategory implements IRecipeCategory<CentrifugeRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.literal("Centrifuge");
+        return IRTranslations.Jei.CENTRIFUGE.component();
     }
 
     @Override
@@ -103,8 +104,8 @@ public class CentrifugeCategory implements IRecipeCategory<CentrifugeRecipe> {
 
         boolean shouldRenderTooltip = shouldRenderTooltip(energyBarX, energyBarY, (int) mouseX, (int) mouseY);
         if (shouldRenderTooltip) {
-            tooltip.add(Component.literal("Energy"));
-            tooltip.add(Component.literal("EU/t: %d".formatted(recipe.energy())).withStyle(ChatFormatting.GRAY));
+            tooltip.add(IRTranslations.General.ENERGY_NAME.component());
+            tooltip.add(IRTranslations.Jei.ENERGY_USAGE.component(IRTranslations.General.ENERGY_UNIT, recipe.energy()));
         }
     }
 

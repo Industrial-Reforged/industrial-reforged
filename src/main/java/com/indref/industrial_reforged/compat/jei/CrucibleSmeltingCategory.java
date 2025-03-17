@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.compat.jei;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -23,8 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.MalformedInputException;
-
 public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltingRecipe> {
     private static final ResourceLocation SLOT_SPRITE = ResourceLocation.withDefaultNamespace("container/slot");
     private static final ResourceLocation TANK_SPRITE = IndustrialReforged.rl("large_tank");
@@ -44,7 +43,7 @@ public class CrucibleSmeltingCategory implements IRecipeCategory<CrucibleSmeltin
 
     @Override
     public Component getTitle() {
-        return Component.literal("Crucible Smelting");
+        return IRTranslations.Jei.CRUCIBLE_SMELTING.component();
     }
 
     @Override

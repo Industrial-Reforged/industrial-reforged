@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.IRClientUtils;
 import com.indref.industrial_reforged.util.SingleFluidStack;
@@ -109,8 +110,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("This is a multiblock, look at the Blueprint for building instructions")
-                .withStyle(ChatFormatting.DARK_GRAY));
+        tooltipComponents.add(IRTranslations.Tooltip.MULTIBLOCK_HINT.component().withStyle(ChatFormatting.DARK_GRAY));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

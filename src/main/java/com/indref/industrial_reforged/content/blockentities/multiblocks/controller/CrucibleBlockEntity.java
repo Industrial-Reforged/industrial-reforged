@@ -13,6 +13,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.IRClientUtils;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
@@ -208,10 +209,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.literal("Crucible");
+        return IRTranslations.Menus.CRUCIBLE.component();
     }
 
     public void commonTick() {
+        getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
+
         // Recipe
         int totalIncreasedAmount = 0;
         for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
@@ -255,11 +258,17 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
         fillBlock();
 
-        tickHeat();
+
+        if (!level.isClientSide()) {
+            tickHeat();
+        }
     }
 
     private void tickHeat() {
-
+        IHeatStorage thisHeatStorage = getHeatStorage();
+        if (thisHeatStorage.getHeatStored() - thisHeatStorage.getLastHeatStored() <= 0) {
+            thisHeatStorage.drain((int) Math.pow(10, 0.5 - ((double) thisHeatStorage.getHeatStored() / thisHeatStorage.getHeatCapacity())), false);
+        }
     }
 
     private void fillBlock() {

@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.util;
 
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -24,10 +25,10 @@ public final class DisplayUtils {
                 scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE)
         );
         displayText.add(
-                Component.translatable("scanner_info.energy_block.energy_ratio")
+                IRTranslations.General.ENERGY_NAME.component()
                         .append(": ")
-                        .append(Component.literal(String.format("%d/%d", energyStorage.getEnergyStored(), energyStorage.getEnergyCapacity())))
-                        .append(Component.literal(","))
+                        .append(IRTranslations.Tooltip.ENERGY_AMOUNT_WITH_CAPACITY.component(energyStorage.getEnergyStored(), energyStorage.getEnergyCapacity()))
+                        .append(IRTranslations.General.ENERGY_UNIT.component())
                         .withStyle(ChatFormatting.WHITE)
         );
     }
@@ -42,10 +43,10 @@ public final class DisplayUtils {
                 scannedBlock.getBlock().getName().withStyle(ChatFormatting.WHITE)
         );
         displayText.add(
-                Component.translatable("scanner_info.heat_block.heat_ratio")
+                IRTranslations.General.HEAT_NAME.component()
                         .append(": ")
-                        .append(Component.literal(String.format("%d/%d", heatStorage.getHeatStored(), heatStorage.getHeatCapacity())))
-                        .append(Component.literal(","))
+                        .append(IRTranslations.Tooltip.HEAT_AMOUNT_WITH_CAPACITY.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity()))
+                        .append(IRTranslations.General.HEAT_UNIT.component())
                         .withStyle(ChatFormatting.WHITE)
         );
     }
@@ -61,10 +62,10 @@ public final class DisplayUtils {
         );
         for (int i = 0; i < fluidHandler.getTanks(); i++) {
             displayText.add(
-                    Component.translatable("scanner_info.heat_block.heat_ratio")
+                    IRTranslations.General.FLUID_NAME.component()
                             .append(": ")
-                            .append(Component.literal(String.format("%d/%d", fluidHandler.getFluidInTank(i).getAmount(), fluidHandler.getTankCapacity(i))))
-                            .append(Component.literal(","))
+                            .append(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY.component(fluidHandler.getFluidInTank(i).getAmount(), fluidHandler.getTankCapacity(i)))
+                            .append(IRTranslations.General.FLUID_UNIT.component())
                             .withStyle(ChatFormatting.WHITE)
             );
         }

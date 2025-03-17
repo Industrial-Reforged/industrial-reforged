@@ -19,6 +19,16 @@ public record SidedHeatHandler(IHeatStorage innerHandler, IOAction action) imple
     }
 
     @Override
+    public float getLastHeatStored() {
+        return innerHandler.getLastHeatStored();
+    }
+
+    @Override
+    public void setLastHeatStored(float value) {
+        innerHandler.setLastHeatStored(value);
+    }
+
+    @Override
     public float getHeatCapacity() {
         return innerHandler.getHeatCapacity();
     }

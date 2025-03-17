@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.items.misc;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.util.IRTranslations;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.SingleFluidStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

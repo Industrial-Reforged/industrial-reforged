@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.compat.jei;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -42,7 +43,7 @@ public class BlastFurnaceCategory implements IRecipeCategory<BlastFurnaceRecipe>
 
     @Override
     public @NotNull Component getTitle() {
-        return Component.literal("Blast Furnace");
+        return IRTranslations.Jei.BLAST_FURNACE.component();
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.indref.industrial_reforged.content.blockentities.DrainBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.misc.FaucetBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.FaucetBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;

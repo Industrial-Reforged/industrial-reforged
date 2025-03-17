@@ -71,8 +71,8 @@ public final class IRBlocks {
             () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = pickaxeMineable(registerBlockAndItem("blast_furnace_hatch",
             () -> new BlastFurnaceHatchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
-    public static final DeferredBlock<Block> BLAST_FURNACE_CONTROLLER = pickaxeMineable(multiblockControllerBlock("blast_furnace_controller",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE)), false));
+    public static final DeferredBlock<BlastFurnaceController> BLAST_FURNACE_CONTROLLER = pickaxeMineable(multiblockControllerBlock("blast_furnace_controller",
+            () -> new BlastFurnaceController(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE)), false));
     public static final DeferredBlock<BlastFurnacePartBlock> BLAST_FURNACE_PART = pickaxeMineable(registerBlock("blast_furnace_part",
             () -> new BlastFurnacePartBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<SmallFireboxHatchBlock> SMALL_FIREBOX_HATCH = pickaxeMineable(registerBlockAndItem("small_firebox_hatch",

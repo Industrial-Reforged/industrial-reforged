@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
@@ -61,7 +62,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.literal("Centrifuge");
+        return IRTranslations.Menus.CENTRIFUGE.component();
     }
 
     @Nullable

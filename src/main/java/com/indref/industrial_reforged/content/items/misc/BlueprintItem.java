@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.content.gui.menus.BlueprintMenu;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
 import net.minecraft.core.BlockPos;
@@ -31,6 +32,7 @@ public class BlueprintItem extends Item implements MenuProvider {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        //TODO: We dont need a menu for this
         player.openMenu(this);
         return InteractionResultHolder.success(player.getItemInHand(usedHand));
     }
@@ -48,7 +50,7 @@ public class BlueprintItem extends Item implements MenuProvider {
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("indref.container.blueprint");
+        return IRTranslations.Menus.BLAST_FURNACE.component();
     }
 
     @Override

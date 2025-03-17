@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -55,7 +56,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, int heatCapacity) {
         super(blockEntityType, blockPos, blockState);
         addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
-        addHeatStorage(heatCapacity, 1, fireboxTier.getMaxHeatOutput());
+        addHeatStorage(heatCapacity, getProductionAmount(), fireboxTier.getMaxHeatOutput());
         this.fireboxTier = fireboxTier;
         this.multiblockData = MultiblockData.EMPTY;
         this.aboveBlockCapCache = new HashMap<>();
@@ -82,8 +83,8 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
         return this.burnTime > 0;
     }
 
-    public int getProductionAmount() {
-        return 3;
+    public float getProductionAmount() {
+        return 2.5f;
     }
 
     @Override
@@ -116,10 +117,12 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.literal("Firebox");
+        return IRTranslations.Menus.FIREBOX.component();
     }
 
     public void commonTick() {
+        getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
+
         tickRecipe();
         tickIO();
 
@@ -152,17 +155,13 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     protected void tickIO() {
         if (!level.isClientSide()) {
             // Only export heat to block directly above
-            BlockPos abovePos = worldPosition.above();
-            if (aboveBlockCapCache != null) {
-                BlockCapabilityCache<IHeatStorage, Direction> cache = aboveBlockCapCache.get(abovePos);
-                if (cache != null) {
-                    IHeatStorage aboveHeatStorage = cache.getCapability();
-                    if (aboveHeatStorage != null && level != null) {
-                        IHeatStorage thisHeatStorage = getHeatStorage();
-                        float output = Math.min(thisHeatStorage.getMaxOutput(), aboveHeatStorage.getMaxInput());
-                        float drained = thisHeatStorage.drain(output, true);
-                        aboveHeatStorage.fill(drained, false);
-                    }
+            for (Map.Entry<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> entry : aboveBlockCapCache.entrySet()) {
+                IHeatStorage aboveHeatStorage = entry.getValue().getCapability();
+                if (aboveHeatStorage != null && level != null) {
+                    IHeatStorage thisHeatStorage = getHeatStorage();
+                    float deltaT = (float) ((thisHeatStorage.getHeatStored() - aboveHeatStorage.getHeatStored()) * 0.1); // Spread factor
+                    aboveHeatStorage.fill(deltaT, false);
+                    thisHeatStorage.drain(deltaT, false);
                 }
             }
         }
@@ -173,10 +172,8 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
         IHeatStorage heatStorage = getHeatStorage();
         if (this.burnTime > 0) {
             burnTime--;
-            if (burnTime % 5 == 0) {
-                if (!level.isClientSide()) {
-                    heatStorage.fill(getProductionAmount(), false);
-                }
+            if (!level.isClientSide()) {
+                heatStorage.fill(getProductionAmount(), false);
             }
 
             if (burnTime == 0) {
@@ -192,10 +189,21 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                     setBlockActive(false);
                 }
             }
-        } else {
-            if (!level.isClientSide()) {
-                heatStorage.drain((int) Math.pow(10, 0.5 - ((double) heatStorage.getHeatStored() / heatStorage.getHeatCapacity())), false);
-            }
+        }
+
+        if (!level.isClientSide()) {
+            tickHeat();
+        }
+    }
+
+    private float getHeatDecay() {
+        return 0.12f;
+    }
+
+    protected void tickHeat() {
+        float heatDiff = getHeatStorage().getHeatStored() - getHeatStorage().getLastHeatStored();
+        if (heatDiff <= 0) {
+            getHeatStorage().drain(getHeatDecay() + Math.abs(getHeatDecay() * heatDiff), false);
         }
     }
 

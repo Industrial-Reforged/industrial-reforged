@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
-import com.indref.industrial_reforged.util.IRTranslations;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.ItemUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.portingdeadmods.portingdeadlibs.api.client.renderers.multiblocks.MultiblockPreviewRenderer;
@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -46,7 +45,7 @@ public final class CommonEvents {
                         .component(tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY))
                         .withStyle(ChatFormatting.GRAY));
             } else if (meltingType == 2) {
-                event.getToolTip().add(IRTranslations.Tooltip.MELTING_PROGRESS.component().withStyle(ChatFormatting.GRAY));
+                event.getToolTip().add(IRTranslations.Tooltip.MELTING_NOT_POSSIBLE.component().withStyle(ChatFormatting.GRAY));
             }
         }
 
