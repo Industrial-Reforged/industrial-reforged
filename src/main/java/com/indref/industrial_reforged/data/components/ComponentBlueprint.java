@@ -17,7 +17,7 @@ public record ComponentBlueprint(BlockPos controllerPos, HorizontalDirection dir
     public static final ComponentBlueprint EMPTY = new ComponentBlueprint(null, null, null);
 
     public static final Codec<ComponentBlueprint> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            BlockPos.CODEC.fieldOf("controllerPos").forGetter(ComponentBlueprint::controllerPos),
+            BlockPos.CODEC.fieldOf("blockPos").forGetter(ComponentBlueprint::controllerPos),
             CodecUtils.enumCodec(HorizontalDirection.class).fieldOf("direction").forGetter(ComponentBlueprint::direction),
             CodecUtils.registryCodec(PDLRegistries.MULTIBLOCK).fieldOf("multiblock").forGetter(ComponentBlueprint::multiblock)
     ).apply(builder, ComponentBlueprint::new));

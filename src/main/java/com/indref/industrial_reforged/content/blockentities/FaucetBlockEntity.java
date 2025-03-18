@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.networking.FaucetSetRenderStack;
@@ -9,6 +10,8 @@ import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,7 +25,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FaucetBlockEntity extends IRContainerBlockEntity {
+public class FaucetBlockEntity extends IRContainerBlockEntity implements PowerableBlockEntity {
     private BlockCapabilityCache<IFluidHandler, Direction> drainCapCache;
     private BlockCapabilityCache<IFluidHandler, Direction> fillCapCache;
     private FluidStack renderStack = FluidStack.EMPTY;
@@ -72,10 +75,12 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
         this.renderStack = renderStack;
     }
 
+    @Override
     public boolean isPowered() {
         return powered;
     }
 
+    @Override
     public void setPowered(boolean powered) {
         this.powered = powered;
     }
@@ -84,14 +89,14 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
     public void commonTick() {
         super.commonTick();
 
-        if (level instanceof ServerLevel serverLevel) {
+        if (isPowered() && level instanceof ServerLevel serverLevel) {
             ChunkPos pos = new ChunkPos(worldPosition);
             IFluidHandler drainHandler = drainCapCache.getCapability();
             IFluidHandler fillHandler = fillCapCache.getCapability();
             if (drainHandler != null
                     && fillHandler != null
                     && level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be
-                    && be.hasMoldAndEmpty()
+                    && be.hasMold()
                     && be.getFluidTank().getFluidAmount() < be.getFluidTank().getCapacity()) {
                 FluidStack drained = drainHandler.drain(Math.min(3, be.getFluidTank().getCapacity() - be.getFluidTank().getFluidAmount()), IFluidHandler.FluidAction.EXECUTE);
                 int filled = fillHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
@@ -122,5 +127,19 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
     @Override
     public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         return ImmutableMap.of();
+    }
+
+    @Override
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadData(tag, provider);
+
+        this.powered = tag.getBoolean("powered");
+    }
+
+    @Override
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
+
+        tag.putBoolean("powered", this.powered);
     }
 }

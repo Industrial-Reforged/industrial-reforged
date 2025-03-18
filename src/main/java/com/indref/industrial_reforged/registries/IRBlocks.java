@@ -9,11 +9,9 @@ import com.indref.industrial_reforged.content.blocks.multiblocks.controller.Blas
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.FireboxControllerBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.SmallFireboxHatchBlock;
-import com.indref.industrial_reforged.content.blocks.multiblocks.misc.BlastFurnaceBricksBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.BlastFurnacePartBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
-import com.indref.industrial_reforged.content.blocks.multiblocks.misc.RefractoryBrickBlock;
 import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLogBlock;
@@ -21,10 +19,8 @@ import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBl
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ScaffoldingBlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -67,8 +63,8 @@ public final class IRBlocks {
             () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.EXTREME), true, false));
     //    public static final DeferredBlock<MiningPipeBlock> MINING_PIPE = registerBlockAndItem("mining_pipe",
 //            () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()), $ -> () -> new MiningPipeBlockItem(new Item.Properties()), true, true);
-    public static final DeferredBlock<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS = pickaxeMineable(registerBlockAndItem("blast_furnace_bricks",
-            () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
+    public static final DeferredBlock<Block> BLAST_FURNACE_BRICKS = pickaxeMineable(registerBlockAndItem("blast_furnace_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = pickaxeMineable(registerBlockAndItem("blast_furnace_hatch",
             () -> new BlastFurnaceHatchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<BlastFurnaceController> BLAST_FURNACE_CONTROLLER = pickaxeMineable(multiblockControllerBlock("blast_furnace_controller",
@@ -81,8 +77,8 @@ public final class IRBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<CoilBlock> COIL = pickaxeMineable(registerBlockAndItem("coil",
             () -> new CoilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK))));
-    public static final DeferredBlock<RefractoryBrickBlock> REFRACTORY_BRICK = pickaxeMineable(registerBlockAndItem("refractory_brick",
-            () -> new RefractoryBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.GOLD))));
+    public static final DeferredBlock<Block> REFRACTORY_BRICK = pickaxeMineable(registerBlockAndItem("refractory_brick",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.GOLD))));
     public static final DeferredBlock<FireboxControllerBlock> FIREBOX_CONTROLLER = pickaxeMineable(multiblockControllerBlock("firebox_controller",
             () -> new FireboxControllerBlock(BlockBehaviour.Properties.ofFullCopy(COIL.get()), FireboxTiers.REFRACTORY), false));
     public static final DeferredBlock<FireboxPartBlock> FIREBOX_PART = pickaxeMineable(registerBlock("firebox_part",

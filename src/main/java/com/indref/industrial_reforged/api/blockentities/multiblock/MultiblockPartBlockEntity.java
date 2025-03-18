@@ -33,13 +33,13 @@ public abstract class MultiblockPartBlockEntity extends BlockEntity implements S
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         if (controllerPos != null) {
-            tag.putLong("controllerPos", controllerPos.asLong());
+            tag.putLong("blockPos", controllerPos.asLong());
         }
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        long rawPos = tag.getLong("controllerPos");
+        long rawPos = tag.getLong("blockPos");
         if (rawPos != 0) {
             this.controllerPos = BlockPos.of(rawPos);
         } else {

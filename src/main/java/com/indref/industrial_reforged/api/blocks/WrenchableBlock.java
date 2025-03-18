@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
+// TODO: Move this to a tag
 /**
  * Implement this if you want your block to be able to be picked up by a
  * variant (inheritor) of the {@link WrenchItem} class

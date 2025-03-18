@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
@@ -63,7 +64,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 // TODO: Make it so heat to main controller heats up most and the other blocks only heat up by ~60% of that
-public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuProvider, MultiblockEntity {
+public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuProvider, MultiblockEntity, PowerableBlockEntity {
     public static final AABB AABB = new AABB(-1, (double) 10 / 16, -1, 2, 1, 2);
     public static final int SLOTS = 9;
     private static final int CASTING_SPEED = 3;
@@ -131,10 +132,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         return turnedOver;
     }
 
+    @Override
     public void setPowered(boolean powered) {
         this.powered = powered;
     }
 
+    @Override
     public boolean isPowered() {
         return powered;
     }

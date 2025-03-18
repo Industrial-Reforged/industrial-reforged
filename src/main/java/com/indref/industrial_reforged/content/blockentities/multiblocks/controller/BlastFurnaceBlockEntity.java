@@ -51,8 +51,6 @@ import java.util.List;
  * logic and the others just point to that block.
  */
 public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
-    public static final int HEAT_USAGE = 500;
-
     private BlockPos mainControllerPos;
     private float duration;
     private MultiblockData multiblockData;
@@ -180,7 +178,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
         
         if (isMainController()) {
-            if (recipe != null && getHeatStorage().getHeatStored() > HEAT_USAGE) {
+            if (recipe != null && getHeatStorage().getHeatStored() >= recipe.heat()) {
                 if (duration >= recipe.duration()) {
                     IFluidHandler fluidHandler = getFluidHandler();
                     IItemHandler itemHandler = getItemHandler();

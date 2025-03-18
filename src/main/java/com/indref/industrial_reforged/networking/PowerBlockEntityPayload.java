@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -13,14 +12,14 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record CruciblePowerPayload(BlockPos controllerPos, boolean powered) implements CustomPacketPayload {
-    public static final Type<CruciblePowerPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_power_payload"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, CruciblePowerPayload> STREAM_CODEC = StreamCodec.composite(
+public record PowerBlockEntityPayload(BlockPos blockPos, boolean powered) implements CustomPacketPayload {
+    public static final Type<PowerBlockEntityPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "power_block_entity_payload"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, PowerBlockEntityPayload> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
-            CruciblePowerPayload::controllerPos,
+            PowerBlockEntityPayload::blockPos,
             ByteBufCodecs.BOOL,
-            CruciblePowerPayload::powered,
-            CruciblePowerPayload::new
+            PowerBlockEntityPayload::powered,
+            PowerBlockEntityPayload::new
     );
 
     @Override
@@ -31,8 +30,9 @@ public record CruciblePowerPayload(BlockPos controllerPos, boolean powered) impl
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             Level level = context.player().level();
-            CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
-            be.setPowered(powered);
+            if (level.getBlockEntity(blockPos) instanceof PowerableBlockEntity be) {
+                be.setPowered(powered);
+            }
         });
     }
 }

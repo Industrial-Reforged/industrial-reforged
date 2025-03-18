@@ -47,11 +47,11 @@ public class TapeMeasureItem extends Item {
             return InteractionResult.SUCCESS;
         } else if (!player.isCrouching() && isExtended(useItem) == 1) {
 
-            // first marked block controllerPos
+            // first marked block blockPos
             BlockPos firstBlockPos = useItem.getOrDefault(IRDataComponents.TAPE_MEASURE, ComponentTapeMeasure.EMPTY).firstPos();
 
             if (firstBlockPos != null) {
-                // calculate distance between first controllerPos and player controllerPos
+                // calculate distance between first blockPos and player blockPos
                 int[] finalPos = {
                         Math.abs(firstBlockPos.getX()) - Math.abs(blockPos.getX()),
                         Math.abs(firstBlockPos.getY()) - Math.abs(blockPos.getY()),

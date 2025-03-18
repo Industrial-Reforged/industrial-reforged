@@ -194,7 +194,7 @@ public final class IndustrialReforged {
         registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, CrucibleControllerPayload::handle);
         registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, CrucibleMeltingProgressPayload::handle);
         registrar.playToClient(CrucibleTurnPayload.TYPE, CrucibleTurnPayload.STREAM_CODEC, CrucibleTurnPayload::handle);
-        registrar.playToClient(CruciblePowerPayload.TYPE, CruciblePowerPayload.STREAM_CODEC, CruciblePowerPayload::handle);
+        registrar.playToClient(PowerBlockEntityPayload.TYPE, PowerBlockEntityPayload.STREAM_CODEC, PowerBlockEntityPayload::handle);
         registrar.playToClient(BasinFluidChangedPayload.TYPE, BasinFluidChangedPayload.STREAM_CODEC, BasinFluidChangedPayload::handle);
         registrar.playToClient(FaucetSetRenderStack.TYPE, FaucetSetRenderStack.STREAM_CODEC, FaucetSetRenderStack::handle);
     }
