@@ -84,7 +84,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     }
 
     public float getProductionAmount() {
-        return 2.5f;
+        return 0.55f;
     }
 
     @Override
@@ -128,6 +128,10 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
 
         if (level.isClientSide() && burnTime > 0) {
             clientTick();
+        }
+
+        if (!level.isClientSide()) {
+            tickHeat();
         }
     }
 
@@ -189,10 +193,6 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                     setBlockActive(false);
                 }
             }
-        }
-
-        if (!level.isClientSide()) {
-            tickHeat();
         }
     }
 

@@ -32,7 +32,8 @@ public class HeatBarWidget extends AbstractWidget {
         guiGraphics.blitSprite(HEAT_BAR_SPRITE, width - 2, height - 2, 0, 0, getX() + 1, getY() + 1, Mth.ceil((width - 2) * progress), height - 2);
 
         if (isHovered) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, IRTranslations.Tooltip.HEAT_AMOUNT_WITH_CAPACITY.component(heatStored, heatCapacity).append(IRTranslations.General.HEAT_UNIT.component()), mouseX, mouseY);
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, IRTranslations.Tooltip.HEAT_AMOUNT_WITH_CAPACITY.component(heatStored, heatCapacity)
+                    .append(IRTranslations.General.HEAT_UNIT.component()), mouseX, mouseY);
         }
     }
 

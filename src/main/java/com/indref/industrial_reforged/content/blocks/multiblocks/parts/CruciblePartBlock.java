@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
+import com.indref.industrial_reforged.networking.CruciblePowerPayload;
 import com.indref.industrial_reforged.networking.CrucibleTurnPayload;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -158,14 +159,10 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         if (direction != null) {
             boolean flag = level.hasSignal(neighborPos, direction);
             if (level.getBlockState(neighborPos).isSignalSource() && flag != be.isPowered()) {
-                if (!be.isTurnedOver()) {
-                    be.turn();
-                    PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, true));
-                } else {
-                    be.turnBack();
-                    PacketDistributor.sendToPlayersTrackingChunk(((ServerLevel) level), new ChunkPos(pos), new CrucibleTurnPayload(controllerPos, flag, false));
-                }
                 be.setPowered(flag);
+                if (level instanceof ServerLevel serverLevel) {
+                    PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(pos), new CruciblePowerPayload(controllerPos, flag));
+                }
             }
         }
     }

@@ -13,14 +13,14 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record CrucibleTurnPayload(BlockPos controllerPos, boolean forward) implements CustomPacketPayload {
-    public static final Type<CrucibleTurnPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_turn_payload"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, CrucibleTurnPayload> STREAM_CODEC = StreamCodec.composite(
+public record CruciblePowerPayload(BlockPos controllerPos, boolean powered) implements CustomPacketPayload {
+    public static final Type<CruciblePowerPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_power_payload"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, CruciblePowerPayload> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
-            CrucibleTurnPayload::controllerPos,
+            CruciblePowerPayload::controllerPos,
             ByteBufCodecs.BOOL,
-            CrucibleTurnPayload::forward,
-            CrucibleTurnPayload::new
+            CruciblePowerPayload::powered,
+            CruciblePowerPayload::new
     );
 
     @Override
@@ -32,11 +32,7 @@ public record CrucibleTurnPayload(BlockPos controllerPos, boolean forward) imple
         context.enqueueWork(() -> {
             Level level = context.player().level();
             CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
-            if (forward) {
-                be.turn();
-            } else {
-                be.turnBack();
-            }
+            be.setPowered(powered);
         });
     }
 }

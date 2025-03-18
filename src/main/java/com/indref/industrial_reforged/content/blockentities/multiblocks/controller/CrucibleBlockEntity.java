@@ -141,7 +141,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     public boolean canTurn() {
         if (level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be) {
-            return be.hasMold();
+            return be.hasMoldAndEmpty();
         }
         return false;
     }
@@ -258,16 +258,35 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
         fillBlock();
 
+        tickRedstone();
 
         if (!level.isClientSide()) {
             tickHeat();
         }
     }
 
-    private void tickHeat() {
-        IHeatStorage thisHeatStorage = getHeatStorage();
-        if (thisHeatStorage.getHeatStored() - thisHeatStorage.getLastHeatStored() <= 0) {
-            thisHeatStorage.drain((int) Math.pow(10, 0.5 - ((double) thisHeatStorage.getHeatStored() / thisHeatStorage.getHeatCapacity())), false);
+    private void tickRedstone() {
+        if (this.isPowered()) {
+            if (this.inUse == 0) {
+                if (!this.isTurnedOver()) {
+                    this.turn();
+                }
+            } else if (this.turnTimer >= this.maxTurnTime) {
+                if (this.isTurnedOver()) {
+                    this.turnBack();
+                }
+            }
+        }
+    }
+
+    private float getHeatDecay() {
+        return 0.12f;
+    }
+
+    protected void tickHeat() {
+        float heatDiff = getHeatStorage().getHeatStored() - getHeatStorage().getLastHeatStored();
+        if (heatDiff <= 0) {
+            getHeatStorage().drain(getHeatDecay() + Math.abs(getHeatDecay() * heatDiff), false);
         }
     }
 

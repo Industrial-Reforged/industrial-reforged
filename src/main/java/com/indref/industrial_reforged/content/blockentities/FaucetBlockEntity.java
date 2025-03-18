@@ -26,6 +26,7 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
     private BlockCapabilityCache<IFluidHandler, Direction> drainCapCache;
     private BlockCapabilityCache<IFluidHandler, Direction> fillCapCache;
     private FluidStack renderStack = FluidStack.EMPTY;
+    private boolean powered;
 
     public FaucetBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.FAUCET.get(), p_155229_, p_155230_);
@@ -71,6 +72,14 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
         this.renderStack = renderStack;
     }
 
+    public boolean isPowered() {
+        return powered;
+    }
+
+    public void setPowered(boolean powered) {
+        this.powered = powered;
+    }
+
     @Override
     public void commonTick() {
         super.commonTick();
@@ -82,7 +91,7 @@ public class FaucetBlockEntity extends IRContainerBlockEntity {
             if (drainHandler != null
                     && fillHandler != null
                     && level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be
-                    && be.hasMold()
+                    && be.hasMoldAndEmpty()
                     && be.getFluidTank().getFluidAmount() < be.getFluidTank().getCapacity()) {
                 FluidStack drained = drainHandler.drain(Math.min(3, be.getFluidTank().getCapacity() - be.getFluidTank().getFluidAmount()), IFluidHandler.FluidAction.EXECUTE);
                 int filled = fillHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
