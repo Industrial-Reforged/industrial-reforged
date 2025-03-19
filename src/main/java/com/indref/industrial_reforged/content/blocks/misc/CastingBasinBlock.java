@@ -2,11 +2,18 @@ package com.indref.industrial_reforged.content.blocks.misc;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
+import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -122,6 +129,15 @@ public class CastingBasinBlock extends ContainerBlock implements CustomFaucetInt
             }
         }
         return ItemInteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            BlockUtils.dropCastingScraps(level, pos);
+        }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;

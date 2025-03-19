@@ -268,6 +268,11 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_iron_ingot", has(Tags.Items.RODS_WOODEN))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK)
+                .requires(IRTags.Items.MOLDS)
+                .unlockedBy("has_item", has(IRTags.Items.MOLDS))
+                .save(output, IndustrialReforged.rl("uncraft_clay_mold"));
+
         plantBallRecipes();
 
         stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, IRBlocks.REFRACTORY_STONE);

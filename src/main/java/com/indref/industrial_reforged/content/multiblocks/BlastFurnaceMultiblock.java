@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
@@ -106,7 +107,15 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     public BlockState unformBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, MultiblockData multiblockData, @Nullable Player player) {
         int blockId = multiblockData.layers()[layoutIndex].layer()[layerIndex];
         Block block = this.getDefinition().getDefaultBlock(blockId);
+
         return block != null ? block.defaultBlockState() : null;
+    }
+
+    @Override
+    public void afterUnformBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, HorizontalDirection direction, @Nullable Player player) {
+        if (blockPos.equals(controllerPos)) {
+            BlockUtils.dropCastingScraps(level, controllerPos);
+        }
     }
 
     @Override

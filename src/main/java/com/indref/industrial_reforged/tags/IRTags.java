@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 public final class IRTags {
     public static class Blocks {
@@ -22,7 +23,7 @@ public final class IRTags {
 
     public static class Items {
         public static final TagKey<Item> RUBBER_LOGS = bind("minecraft", "rubber_logs");
-        public static final TagKey<Item> TOOL = bind("tool");
+        public static final TagKey<Item> MOLDS = bind("molds");
 
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, path));
@@ -30,6 +31,14 @@ public final class IRTags {
 
         private static TagKey<Item> bind(String namespace, String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(namespace, path));
+        }
+    }
+
+    public static class Fluids {
+        public static final TagKey<Fluid> MOLTEN_METAL = bind("molten_metal");
+
+        private static TagKey<Fluid> bind(String path) {
+            return TagKey.create(Registries.FLUID, IndustrialReforged.rl(path));
         }
     }
 }

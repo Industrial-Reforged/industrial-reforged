@@ -1,0 +1,12 @@
+{
+  "values": [
+    "indref:molten_aluminum",
+    "indref:molten_steel",
+    "indref:molten_copper",
+    "indref:molten_iron",
+    "indref:molten_tin",
+    "indref:molten_nickel",
+    "indref:molten_gold",
+    "indref:molten_lead"
+  ]
+}

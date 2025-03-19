@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.translations.IRTranslations;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.mojang.serialization.MapCodec;
@@ -77,11 +78,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
             MultiblockHelper.unform(IRMultiblocks.CRUCIBLE_CERAMIC.get(), blockPos, level);
         }
 
-        if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity be && !be.getFluidHandler().getFluidInTank(0).isEmpty()) {
-            ItemStack stack = IRItems.CASTING_SCRAPS.toStack();
-            stack.set(IRDataComponents.SINGLE_FLUID, new SingleFluidStack(be.getFluidHandler().getFluidInTank(0)));
-            Containers.dropItemStack(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), stack);
-        }
+        BlockUtils.dropCastingScraps(level, blockPos);
 
         super.onRemove(blockState, level, blockPos, newState, p_60519_);
     }

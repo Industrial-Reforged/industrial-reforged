@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.datagen.data;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -58,6 +59,9 @@ public class IRTagsProvider {
                     IRBlocks.RUBBER_TREE_WOOD,
                     IRBlocks.STRIPPED_RUBBER_TREE_WOOD
             );
+            for (ItemLike item : IRItems.MOLD_ITEMS.keySet()) {
+                tag(IRTags.Items.MOLDS, item.asItem());
+            }
 
             plates();
             wires();
@@ -361,6 +365,12 @@ public class IRTagsProvider {
         @Override
         protected void addTags(HolderLookup.Provider provider) {
             tag(CTags.Fluids.OIL, IRFluids.OIL);
+
+            for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
+                if (fluid instanceof MoltenMetalFluid fluid1) {
+                    tag(IRTags.Fluids.MOLTEN_METAL, fluid1);
+                }
+            }
         }
 
         private void tag(TagKey<Fluid> fluidTagKey, PDLFluid... fluids) {

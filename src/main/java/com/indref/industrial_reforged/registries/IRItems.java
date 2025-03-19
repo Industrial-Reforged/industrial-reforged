@@ -50,7 +50,7 @@ public final class IRItems {
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(EnergyTiers.LOW.value(), Tiers.IRON, 1, -2.8F, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = registerItem("basic_drill",
-            () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
+            () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
             () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
     public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = registerItem("basic_chainsaw",

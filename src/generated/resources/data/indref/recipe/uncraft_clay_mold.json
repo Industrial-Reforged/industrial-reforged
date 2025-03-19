@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "indref:molds"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:clay_mold"
+  }
+}

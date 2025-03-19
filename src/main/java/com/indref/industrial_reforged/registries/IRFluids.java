@@ -26,5 +26,5 @@ public final class IRFluids {
     public static final MoltenMetalFluid MOLTEN_GOLD = HELPER.registerFluid(new MoltenMetalFluid("molten_gold",
             new Vec3i(255, 225, 109), FluidTemplates.MOLTEN_GOLD));
     public static final MoltenMetalFluid MOLTEN_LEAD = HELPER.registerFluid(new MoltenMetalFluid("molten_lead",
-            new Vec3i(71, 72, 100),FluidTemplates.MOLTEN_LEAD));
+            new Vec3i(71, 72, 100), FluidTemplates.MOLTEN_LEAD));
 }
