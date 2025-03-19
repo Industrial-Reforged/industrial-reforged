@@ -1,11 +1,7 @@
 package com.indref.industrial_reforged.networking;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
-import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
-import com.portingdeadmods.portingdeadlibs.api.capabilities.DynamicFluidTank;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

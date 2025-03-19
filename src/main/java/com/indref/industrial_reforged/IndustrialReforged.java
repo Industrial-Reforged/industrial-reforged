@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged;
 
 import com.google.common.base.Preconditions;
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
 import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;

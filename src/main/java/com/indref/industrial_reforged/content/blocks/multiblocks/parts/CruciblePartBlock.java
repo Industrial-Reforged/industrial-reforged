@@ -42,6 +42,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -152,15 +153,17 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
 
         BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
-        CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
-        BlockPos blockPos = pos.subtract(neighborPos);
-        Direction direction = Direction.fromDelta(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-        if (direction != null) {
-            boolean flag = level.hasSignal(neighborPos, direction);
-            if (level.getBlockState(neighborPos).isSignalSource() && flag != be.isPowered()) {
-                be.setPowered(flag);
-                if (level instanceof ServerLevel serverLevel) {
-                    PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(pos), new PowerBlockEntityPayload(controllerPos, flag));
+        if (controllerPos != null) {
+            CrucibleBlockEntity be = BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class);
+            BlockPos blockPos = pos.subtract(neighborPos);
+            Direction direction = Direction.fromDelta(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            if (direction != null) {
+                boolean flag = level.hasSignal(neighborPos, direction);
+                if (level.getBlockState(neighborPos).isSignalSource() && flag != be.isPowered()) {
+                    be.setPowered(flag);
+                    if (level instanceof ServerLevel serverLevel) {
+                        PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(pos), new PowerBlockEntityPayload(controllerPos, flag));
+                    }
                 }
             }
         }
@@ -170,7 +173,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
         BlockPos controllerPos = BlockUtils.getBE(level, pos, CruciblePartBlockEntity.class).getControllerPos();
 
-        if (state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.WALL_BOTTOM) {
+        if (controllerPos != null && state.getValue(CRUCIBLE_WALL) == CrucibleMultiblock.WallStates.WALL_BOTTOM) {
             BlockUtils.getBE(level, controllerPos, CrucibleBlockEntity.class).invalidateCapabilities();
         }
 
@@ -212,7 +215,7 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
 
     @Override
     public List<ItemLike> getCompatibleItems() {
-        return List.of(IRItems.THERMOMETER.get());
+        return Collections.emptyList(); //return List.of(IRItems.THERMOMETER.get());
     }
 
     public static final class VoxelShapes {

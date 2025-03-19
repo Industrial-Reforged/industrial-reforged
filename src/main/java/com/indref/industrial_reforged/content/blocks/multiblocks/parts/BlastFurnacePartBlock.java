@@ -64,9 +64,9 @@ public class BlastFurnacePartBlock extends RotatableEntityBlock implements Displ
             if (controllerBE instanceof FireboxBlockEntity) {
                 if (itemStack.is(IRItems.SCANNER.get())) {
                     DisplayUtils.displayFluidInfo(displayText, scannedBlock, scannedBlockPos, level);
-                } else if (itemStack.is(IRItems.THERMOMETER.get())) {
-                    DisplayUtils.displayHeatInfo(displayText, scannedBlock, scannedBlockPos, level);
-                }
+                }// else if (itemStack.is(IRItems.THERMOMETER.get())) {
+                   // DisplayUtils.displayHeatInfo(displayText, scannedBlock, scannedBlockPos, level);
+                //}
             }
         }
     }
@@ -96,7 +96,7 @@ public class BlastFurnacePartBlock extends RotatableEntityBlock implements Displ
 
     @Override
     public List<ItemLike> getCompatibleItems() {
-        return List.of(IRItems.SCANNER.get(), IRItems.THERMOMETER.get());
+        return List.of(IRItems.SCANNER.get());
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.util.ItemUtils;
-import com.portingdeadmods.portingdeadlibs.api.data.PDLDataComponents;
+import com.indref.industrial_reforged.util.TooltipUtils;
+import com.indref.industrial_reforged.util.items.ItemBarUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.network.chat.Component;
@@ -31,9 +32,9 @@ public abstract class SimpleFluidItem extends Item implements IFluidItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack p_41421_, TooltipContext p_339594_, List<Component> p_41423_, TooltipFlag p_41424_) {
-        super.appendHoverText(p_41421_, p_339594_, p_41423_, p_41424_);
-        ItemUtils.addFluidToolTip(p_41423_, p_41421_);
+    public void appendHoverText(ItemStack stack, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
+        super.appendHoverText(stack, p_339594_, tooltip, p_41424_);
+        TooltipUtils.addFluidToolTip(tooltip, stack);
     }
 
     public static class Colors implements ItemColor {

@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.api.gui;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;

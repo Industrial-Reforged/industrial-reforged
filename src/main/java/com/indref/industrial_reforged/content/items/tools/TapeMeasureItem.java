@@ -2,8 +2,7 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentTapeMeasure;
-import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

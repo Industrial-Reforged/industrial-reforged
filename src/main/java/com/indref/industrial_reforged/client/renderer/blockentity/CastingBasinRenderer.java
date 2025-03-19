@@ -47,7 +47,9 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         CrucibleCastingRecipe recipe = castingTableBlockEntity.getRecipe();
         ItemStack moldItem = itemHandler.getStackInSlot(0);
         CastingMoldValue mold = castingTableBlockEntity.getMold(moldItem.getItem());
-        ItemStack resultItem = recipe != null && mold != null && castingTableBlockEntity.getFluidTank().getFluidAmount() == mold.capacity() ? recipe.getResultItem(null) : itemHandler.getStackInSlot(1);
+        ItemStack resultItem = recipe != null
+                && mold != null
+                && castingTableBlockEntity.getFluidHandler().getFluidInTank(0).getAmount() == mold.capacity() ? recipe.getResultItem(null) : itemHandler.getStackInSlot(1);
 
         // This code for fading item and fluid texture is from Tinkers construct.
         // Thank you to the tinkers construct devs for this

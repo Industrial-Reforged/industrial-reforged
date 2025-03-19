@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.networking;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,7 +15,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
@@ -23,8 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public record CrucibleMeltingProgressPayload(BlockPos pos, int slotIndex, float progress) implements CustomPacketPayload {
     public static final Type<CrucibleMeltingProgressPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_melting_progress_payload"));

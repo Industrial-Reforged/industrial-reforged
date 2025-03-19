@@ -6,7 +6,9 @@ import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.TooltipUtils;
+import com.indref.industrial_reforged.util.items.ItemBarUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -37,12 +39,12 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
 
     @Override
     public int getBarWidth(ItemStack itemStack) {
-        return ItemUtils.energyForDurabilityBar(itemStack);
+        return ItemBarUtils.energyBarWidth(itemStack);
     }
 
     @Override
     public int getBarColor(ItemStack itemStack) {
-        return ItemUtils.ENERGY_BAR_COLOR;
+        return ItemBarUtils.energyBarColor(itemStack);
     }
 
     @Override
@@ -89,6 +91,6 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p41424) {
         super.appendHoverText(stack, ctx, tooltip, p41424);
 
-        ItemUtils.addEnergyTooltip(tooltip, stack);
+        TooltipUtils.addEnergyTooltip(tooltip, stack);
     }
 }

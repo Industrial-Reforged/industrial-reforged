@@ -23,4 +23,9 @@ public class BatterySlotWidget extends AbstractWidget {
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 
     }
+
+    @Override
+    public void onClick(double mouseX, double mouseY, int button) {
+    }
+
 }

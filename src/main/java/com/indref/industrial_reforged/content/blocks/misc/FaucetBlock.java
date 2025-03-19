@@ -1,20 +1,19 @@
 package com.indref.industrial_reforged.content.blocks.misc;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.content.blockentities.FaucetBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.networking.PowerBlockEntityPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
-import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -83,7 +81,7 @@ public class FaucetBlock extends RotatableContainerBlock implements WrenchableBl
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         for (Block key : ALTERNATE_VERSIONS.keySet()) {
@@ -91,6 +89,7 @@ public class FaucetBlock extends RotatableContainerBlock implements WrenchableBl
             if (itemStack.is(key.asItem()) && !blockState.is(val)) {
                 level.setBlockAndUpdate(blockPos, val.defaultBlockState()
                         .setValue(BlockStateProperties.HORIZONTAL_FACING, direction));
+                level.playSound(player, blockPos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS);
                 return ItemInteractionResult.SUCCESS;
             }
         }
@@ -143,7 +142,17 @@ public class FaucetBlock extends RotatableContainerBlock implements WrenchableBl
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState state = super.getStateForPlacement(context);
         Direction facing = context.getHorizontalDirection().getOpposite();
-        return super.getStateForPlacement(context).setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
+        Level level = context.getLevel();
+        BlockPos clickedPos = context.getClickedPos();
+        if (level.getBlockState(clickedPos).getBlock() instanceof CanAttachFaucetBlock block) {
+            BlockPos relative = clickedPos.relative(context.getClickedFace().getOpposite());
+            BlockState toAttach = level.getBlockState(relative);
+            if (block.canAttachFaucetToBlock(toAttach, relative, level, context.getClickedFace())) {
+                state = null;
+            }
+        }
+        return state != null ? state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing) : null;
     }
 }

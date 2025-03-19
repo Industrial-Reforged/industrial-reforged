@@ -1,13 +1,12 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
-import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.core.BlockPos;

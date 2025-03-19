@@ -38,7 +38,7 @@ public final class IRItems {
     public static final DeferredItem<WrenchItem> WRENCH = toolItem("wrench", WrenchItem::new);
     public static final DeferredItem<TreeTapItem> TREE_TAP = toolItem("tree_tap", TreeTapItem::new);
     public static final DeferredItem<HammerItem> HAMMER = toolItem("hammer", HammerItem::new);
-    public static final DeferredItem<ThermometerItem> THERMOMETER = toolItem("thermometer", ThermometerItem::new);
+    //public static final DeferredItem<ThermometerItem> THERMOMETER = toolItem("thermometer", ThermometerItem::new);
     public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
             () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",

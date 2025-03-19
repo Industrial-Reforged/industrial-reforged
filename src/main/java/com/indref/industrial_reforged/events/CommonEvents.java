@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressR
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.translations.IRTranslations;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.portingdeadmods.portingdeadlibs.api.client.renderers.multiblocks.MultiblockPreviewRenderer;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;

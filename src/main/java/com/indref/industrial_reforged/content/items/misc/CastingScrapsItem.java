@@ -8,7 +8,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.List;
 
@@ -22,7 +25,19 @@ public class CastingScrapsItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         SingleFluidStack fluidStack = stack.get(IRDataComponents.SINGLE_FLUID);
         FluidStack fluidStack1 = fluidStack.fluidStack();
-        tooltipComponents.add(IRTranslations.Tooltip.FLUID_STORED.component(fluidStack1.getHoverName().getString()).withStyle(ChatFormatting.DARK_GRAY));
-        tooltipComponents.add(IRTranslations.Tooltip.FLUID_AMOUNT.component(fluidStack1.getAmount()).withStyle(ChatFormatting.DARK_GRAY));
+
+        if (!fluidStack1.isEmpty()) {
+            tooltipComponents.add(IRTranslations.Tooltip.FLUID_TYPE.component()
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(fluidStack1.getHoverName().copy()
+                            .withColor(-1)));
+            tooltipComponents.add(IRTranslations.Tooltip.FLUID_STORED.component()
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(IRTranslations.Tooltip.FLUID_AMOUNT.component(fluidStack1.getAmount())
+                            .withStyle(ChatFormatting.WHITE))
+                    .append(" ")
+                    .append(IRTranslations.General.FLUID_UNIT.component()
+                            .withStyle(ChatFormatting.WHITE)));
+        }
     }
 }

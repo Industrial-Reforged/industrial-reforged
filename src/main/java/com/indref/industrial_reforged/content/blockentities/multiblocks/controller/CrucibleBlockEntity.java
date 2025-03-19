@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
@@ -19,7 +19,7 @@ import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CrucibleMenu;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;

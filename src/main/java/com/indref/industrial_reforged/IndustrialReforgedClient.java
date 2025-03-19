@@ -74,12 +74,12 @@ public final class IndustrialReforgedClient {
 
     private static void registerDisplayItems() {
         DISPLAY_ITEMS.put(IRItems.SCANNER.get(), IRDisplayItems::scanner);
-        DISPLAY_ITEMS.put(IRItems.THERMOMETER.get(), IRDisplayItems::thermometer);
+        // DISPLAY_ITEMS.put(IRItems.THERMOMETER.get(), IRDisplayItems::thermometer);
     }
 
     private static void registerItemProperties() {
         ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
-        ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getTemperature);
+        // ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getTemperature);
         ItemProperties.register(IRItems.BASIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         for (Item item : BuiltInRegistries.ITEM) {

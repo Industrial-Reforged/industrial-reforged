@@ -49,8 +49,8 @@ public class IRTagsProvider {
                     IRItems.HAMMER,
                     IRItems.WRENCH,
                     IRItems.TREE_TAP,
-                    IRItems.SCANNER,
-                    IRItems.THERMOMETER
+                    IRItems.SCANNER
+                    //IRItems.THERMOMETER
             );
             tag(IRTags.Items.RUBBER_LOGS,
                     IRBlocks.RUBBER_TREE_LOG,

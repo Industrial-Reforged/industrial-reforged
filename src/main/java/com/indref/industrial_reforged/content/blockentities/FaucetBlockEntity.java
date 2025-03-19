@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.networking.FaucetSetRenderStack;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -97,8 +97,8 @@ public class FaucetBlockEntity extends IRContainerBlockEntity implements Powerab
                     && fillHandler != null
                     && level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be
                     && be.hasMold()
-                    && be.getFluidTank().getFluidAmount() < be.getFluidTank().getCapacity()) {
-                FluidStack drained = drainHandler.drain(Math.min(3, be.getFluidTank().getCapacity() - be.getFluidTank().getFluidAmount()), IFluidHandler.FluidAction.EXECUTE);
+                    && be.getFluidHandler().getFluidInTank(0).getAmount() < be.getFluidHandler().getTankCapacity(0)) {
+                FluidStack drained = drainHandler.drain(Math.min(3, be.getFluidHandler().getTankCapacity(0) - be.getFluidHandler().getFluidInTank(0).getAmount()), IFluidHandler.FluidAction.EXECUTE);
                 int filled = fillHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                 int diff = drained.getAmount() - filled;
                 drainHandler.fill(drained.copyWithAmount(diff), IFluidHandler.FluidAction.EXECUTE);

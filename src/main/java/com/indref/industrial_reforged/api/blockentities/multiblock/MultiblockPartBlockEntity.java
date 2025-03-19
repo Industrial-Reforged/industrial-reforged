@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MultiblockPartBlockEntity extends BlockEntity implements SavesControllerPosBlockEntity {
+public class MultiblockPartBlockEntity extends BlockEntity implements SavesControllerPosBlockEntity {
     private BlockPos controllerPos;
 
     public MultiblockPartBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {

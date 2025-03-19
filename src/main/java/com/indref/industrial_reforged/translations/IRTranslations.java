@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.translations;
 import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.animal.Panda;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,14 +37,18 @@ public final class IRTranslations {
         public static final TranslatableConstant ACTIVE = create("active", "Active");
         public static final TranslatableConstant INACTIVE = create("inactive", "Inactive");
 
-        public static final TranslatableConstant ENERGY_AMOUNT = create("energy.amount", "%s");
-        public static final TranslatableConstant ENERGY_AMOUNT_WITH_CAPACITY = create("energy.amount_with_capacity", "%s/%s");
+        public static final TranslatableConstant ENERGY_STORED = create("energy.stored", "Stored: ");
+        public static final TranslatableConstant ENERGY_TIER = create("energy.tier", "Tier: ");
+        public static final TranslatableConstant ENERGY_AMOUNT = create("energy.amount", "%d");
+        public static final TranslatableConstant ENERGY_AMOUNT_WITH_CAPACITY = create("energy.amount_with_capacity", "%d/%d");
 
-        public static final TranslatableConstant FLUID_STORED = create("fluid.stored", "%s");
+        public static final TranslatableConstant FLUID_TYPE = create("fluid.type", "Fluid: ");
+        public static final TranslatableConstant FLUID_STORED = create("fluid.stored", "Stored: ");
         public static final TranslatableConstant FLUID_AMOUNT = create("fluid.amount", "%d");
         public static final TranslatableConstant FLUID_AMOUNT_WITH_CAPACITY = create("fluid.amount_with_capacity", "%d/%d");
         public static final TranslatableConstant EMPTY_FLUID = create("empty_fluid", "Alt + Shift Click to empty");
 
+        public static final TranslatableConstant HEAT_STORED = create("heat.stored", "Stored: ");
         public static final TranslatableConstant HEAT_AMOUNT = create("heat.amount", "%.1f");
         public static final TranslatableConstant HEAT_AMOUNT_WITH_CAPACITY = create("heat.amount_with_capacity", "%.1f");
 

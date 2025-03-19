@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-14T16:40:15.773413328	Recipes
+// 1.21.1	2025-03-19T18:23:15.274156182	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -94,7 +94,6 @@ d9e78271e89ef22578b0a93b67fdcee142468333 data/indref/advancement/recipes/tools/h
 a5d76f4605543967690cb3c85ae3112f471fb942 data/indref/advancement/recipes/tools/hazmat_leggings.json
 6f2fea1ccc8b50595f4ad882ac69ed073db8a8aa data/indref/advancement/recipes/tools/rock_cutter.json
 0cbd3050722c2ae2e60f770cfdf9bb8db348166c data/indref/advancement/recipes/tools/scanner.json
-3841d90856bc77d3c261451c6194b9cbdb6d1c79 data/indref/advancement/recipes/tools/thermometer.json
 f55142f25cd50df3ae63b78e260c522ce76213f5 data/indref/advancement/recipes/tools/toolbox.json
 31b05add040be43d3c21e50988da8f289d9ea35e data/indref/advancement/recipes/tools/tree_tap.json
 b6893e15832763588415a07db3a4fdb2f6e6fd94 data/indref/advancement/recipes/tools/wrench.json
@@ -253,7 +252,6 @@ d5c01db11ffd4cf8ceecb7567a3d4956e559dd57 data/indref/recipe/steel_rod.json
 0f3882e6d38edd148ff3ccad4fd6150ed566ce47 data/indref/recipe/terracotta_brick.json
 ed0b0a5ce3f9bff0751e4a1dc9405d40947033f7 data/indref/recipe/terracotta_brick_slab.json
 72043c8c9a14f71034dc75aa79600710eb5ac8ff data/indref/recipe/terracotta_bricks.json
-2aa377bd63f0e606825084d6b9ea7e909a509716 data/indref/recipe/thermometer.json
 e5b151d5b687034fcc498cb34c34bd767becaf28 data/indref/recipe/tin_block.json
 edc0cc3267ca3a9248f0c18389269d4e8ffe213c data/indref/recipe/tin_cable.json
 55b5c69becb7d039e5f5a154b39baf3d1fd9f525 data/indref/recipe/tin_ingot.json

@@ -140,6 +140,6 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
 
     @Override
     public List<ItemLike> getCompatibleItems() {
-        return Collections.singletonList(IRItems.THERMOMETER.get());
+        return Collections.emptyList(); //return List.of(IRItems.THERMOMETER.get());
     }
 }

@@ -4,7 +4,9 @@ import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.TooltipUtils;
+import com.indref.industrial_reforged.util.items.ItemBarUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,29 +39,30 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     }
 
     @Override
-    public int getBarWidth(ItemStack itemStack) {
-        return ItemUtils.energyForDurabilityBar(itemStack);
-    }
-
-    @Override
-    public int getBarColor(ItemStack itemStack) {
-        return ItemUtils.ENERGY_BAR_COLOR;
-    }
-
-    @Override
     public boolean isBarVisible(ItemStack p_150899_) {
         return true;
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
-        return 1;
+    public int getBarColor(ItemStack itemStack) {
+        return ItemBarUtils.energyBarColor(itemStack);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext p_339594_, List<Component> tooltip, TooltipFlag p_41424_) {
-        super.appendHoverText(stack, p_339594_, tooltip, p_41424_);
-        ItemUtils.addEnergyTooltip(tooltip, stack);
+    public int getBarWidth(ItemStack itemStack) {
+        return ItemBarUtils.energyBarWidth(itemStack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, ctx, tooltip, flag);
+
+        TooltipUtils.addEnergyTooltip(tooltip, stack);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
+        return 1;
     }
 
     @Override

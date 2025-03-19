@@ -2,7 +2,9 @@ package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.TooltipUtils;
+import com.indref.industrial_reforged.util.items.ItemBarUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,12 +16,12 @@ public abstract class SimpleHeatItem extends Item implements IHeatItem {
 
     @Override
     public int getBarWidth(ItemStack itemStack) {
-        return ItemUtils.heatForDurabilityBar(itemStack);
+        return ItemBarUtils.heatBarWidth(itemStack);
     }
 
     @Override
     public int getBarColor(ItemStack itemStack) {
-        return ItemUtils.HEAT_BAR_COLOR;
+        return ItemBarUtils.heatBarColor(itemStack);
     }
 
     @Override

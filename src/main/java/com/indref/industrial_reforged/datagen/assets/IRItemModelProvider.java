@@ -110,8 +110,8 @@ public class IRItemModelProvider extends ItemModelProvider {
 
         basicItem(IRItems.CASTING_SCRAPS);
 
-        overrideItemModel(7, basicItem(IRItems.THERMOMETER, extend(itemTexture(IRItems.THERMOMETER), "_0")), IRItemProperties.TEMPERATURE_KEY,
-                i -> basicItem(IRItems.THERMOMETER, "_" + i));
+//        overrideItemModel(7, basicItem(IRItems.THERMOMETER, extend(itemTexture(IRItems.THERMOMETER), "_0")), IRItemProperties.TEMPERATURE_KEY,
+//                i -> basicItem(IRItems.THERMOMETER, "_" + i));
         overrideItemModel(2, basicItem(IRItems.NANO_SABER), IRItemProperties.ACTIVE_KEY,
                 i -> i == 1 ? basicItem(extend(key(IRItems.NANO_SABER), "_active")) : basicItem(IRItems.NANO_SABER));
         overrideItemModel(2, basicItem(IRItems.BASIC_CHAINSAW), IRItemProperties.ACTIVE_KEY,

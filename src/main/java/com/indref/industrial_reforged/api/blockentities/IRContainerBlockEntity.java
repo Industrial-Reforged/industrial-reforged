@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.api.blockentities.container;
+package com.indref.industrial_reforged.api.blockentities;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
@@ -9,7 +9,6 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.SidedHeatHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
-import com.portingdeadmods.portingdeadlibs.api.capabilities.DynamicFluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -59,16 +58,6 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
                 IRContainerBlockEntity.this.onHeatChanged(oldAmount);
             }
         };
-    }
-
-    @Override
-    public DynamicFluidTank getFluidTank() {
-        return super.getFluidTank();
-    }
-
-    @Override
-    public void onFluidChanged() {
-        super.onFluidChanged();
     }
 
     public IEnergyStorage getEuStorage() {

@@ -30,7 +30,7 @@ public record EmptyCruciblePayload(BlockPos pos) implements CustomPacketPayload 
         context.enqueueWork(() -> {
             Level level = context.player().level();
             if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity be) {
-                DynamicFluidTank tank = be.getFluidTank();
+                IFluidHandler tank = be.getFluidHandler();
                 tank.drain(tank.getFluidInTank(0), IFluidHandler.FluidAction.EXECUTE);
             }
         }).exceptionally(err -> {

@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.DisplayUtils;
@@ -31,6 +30,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 public class FireboxControllerBlock extends ContainerBlock implements DisplayBlock {
@@ -85,7 +85,7 @@ public class FireboxControllerBlock extends ContainerBlock implements DisplayBlo
 
     @Override
     public List<ItemLike> getCompatibleItems() {
-        return List.of(IRItems.THERMOMETER.get());
+        return Collections.emptyList(); //return List.of(IRItems.THERMOMETER.get());
     }
 
     @Override

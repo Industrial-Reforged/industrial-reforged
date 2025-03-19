@@ -325,14 +325,14 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('#', ItemTags.PLANKS)
                 .unlockedBy("has_planks", has(ItemTags.PLANKS))
                 .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.THERMOMETER.get())
-                .pattern(" ##")
-                .pattern("#R#")
-                .pattern("R# ")
-                .define('R', Tags.Items.DUSTS_REDSTONE)
-                .define('#', Tags.Items.GLASS_PANES)
-                .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
-                .save(output);
+//        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.THERMOMETER.get())
+//                .pattern(" ##")
+//                .pattern("#R#")
+//                .pattern("R# ")
+//                .define('R', Tags.Items.DUSTS_REDSTONE)
+//                .define('#', Tags.Items.GLASS_PANES)
+//                .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+//                .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.TOOLBOX.get())
                 .pattern(" R ")

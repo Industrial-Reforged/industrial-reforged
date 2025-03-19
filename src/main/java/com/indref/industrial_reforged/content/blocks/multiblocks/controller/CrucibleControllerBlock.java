@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.content.blocks.multiblocks.controller;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
-import com.indref.industrial_reforged.client.item.IRItemProperties;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -12,10 +11,8 @@ import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.DisplayUtils;
-import com.indref.industrial_reforged.util.IRClientUtils;
 import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.mojang.serialization.MapCodec;
-import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.ChatFormatting;
@@ -39,6 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CrucibleControllerBlock extends RotatableContainerBlock implements DisplayBlock {
@@ -81,7 +79,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
         if (level.getBlockEntity(blockPos) instanceof CrucibleBlockEntity be && !be.getFluidHandler().getFluidInTank(0).isEmpty()) {
             ItemStack stack = IRItems.CASTING_SCRAPS.toStack();
-            stack.set(IRDataComponents.SINGLE_FLUID, new SingleFluidStack(be.getFluidTank().getFluidInTank(0)));
+            stack.set(IRDataComponents.SINGLE_FLUID, new SingleFluidStack(be.getFluidHandler().getFluidInTank(0)));
             Containers.dropItemStack(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), stack);
         }
 
@@ -105,7 +103,7 @@ public class CrucibleControllerBlock extends RotatableContainerBlock implements 
 
     @Override
     public List<ItemLike> getCompatibleItems() {
-        return List.of(IRItems.THERMOMETER.get());
+        return Collections.emptyList(); //return List.of(IRItems.THERMOMETER.get());
     }
 
     @Override

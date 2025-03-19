@@ -89,7 +89,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.HAMMER, "Hammer");
         addItem(IRItems.WRENCH, "Wrench");
         addItem(IRItems.SCANNER, "Scanner");
-        addItem(IRItems.THERMOMETER, "Thermometer");
+        //addItem(IRItems.THERMOMETER, "Thermometer");
         addItem(IRItems.NANO_SABER, "Nano Saber");
         addItem(IRItems.TOOLBOX, "Toolbox");
         addItem(IRItems.BLUEPRINT, "Blueprint");

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.machines;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;

@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-14T16:40:15.737107926	Item Models: indref
+// 1.21.1	2025-03-19T18:23:15.263638954	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -149,14 +149,6 @@ bd310326f974ced4aa3b514962a338074a84c66b assets/indref/models/item/sticky_resin.
 35a38e22a1795635d360c6ad506af5e91558543d assets/indref/models/item/terracotta_brick.json
 98b393533956f419b2270c52a9c4e07c7376ba32 assets/indref/models/item/terracotta_brick_slab.json
 6ed2aa51a31667749d2b3bd429ecfbe89beebb8a assets/indref/models/item/terracotta_bricks.json
-0d97006ac1f6e78c74fb2e4167af48a30f4707de assets/indref/models/item/thermometer.json
-43b3da3f8742e77b1ebcd7ca212f99dea3bab49f assets/indref/models/item/thermometer_0.json
-6a191180a00901fc6fa8438e3b85ef73535e9655 assets/indref/models/item/thermometer_1.json
-7ec4437a313240277878409ccea7c7ca7aef833b assets/indref/models/item/thermometer_2.json
-7b1467e561b9ac710facf7a052ef8c99a00fb633 assets/indref/models/item/thermometer_3.json
-24683e61f6c9ea330f5e9661613cb2b7c5cc7976 assets/indref/models/item/thermometer_4.json
-17d836d074055fa95d0df034f9c3275843fdd2bb assets/indref/models/item/thermometer_5.json
-1413824b161a8e2de9762128cd6ea4dc63b184bf assets/indref/models/item/thermometer_6.json
 95c57e78e6a282182f30281e59ea16685611f46c assets/indref/models/item/tin_block.json
 d68dfb8a8e813e0bcb5ea699c1dfe4decccdea23 assets/indref/models/item/tin_cable.json
 eaa16d4a43c758e9bca5a5bf4283c3d613975f02 assets/indref/models/item/tin_ingot.json

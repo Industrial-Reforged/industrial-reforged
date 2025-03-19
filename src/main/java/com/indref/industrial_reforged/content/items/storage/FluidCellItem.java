@@ -2,8 +2,7 @@ package com.indref.industrial_reforged.content.items.storage;
 
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.util.ItemUtils;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +25,6 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 

@@ -6,14 +6,15 @@ import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.util.ItemUtils;
+import com.indref.industrial_reforged.util.TooltipUtils;
+import com.indref.industrial_reforged.util.items.ItemBarUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
@@ -107,20 +108,20 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public int getBarColor(ItemStack p_150901_) {
-        return ItemUtils.ENERGY_BAR_COLOR;
+    public int getBarColor(ItemStack itemStack) {
+        return ItemBarUtils.energyBarColor(itemStack);
     }
 
     @Override
-    public int getBarWidth(ItemStack p_150900_) {
-        return ItemUtils.energyForDurabilityBar(p_150900_);
+    public int getBarWidth(ItemStack itemStack) {
+        return ItemBarUtils.energyBarWidth(itemStack);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, ctx, tooltip, flag);
 
-        ItemUtils.addEnergyTooltip(tooltip, stack);
+        TooltipUtils.addEnergyTooltip(tooltip, stack);
     }
 
     @Override

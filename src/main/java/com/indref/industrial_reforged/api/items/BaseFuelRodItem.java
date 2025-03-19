@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items;
 
-import com.indref.industrial_reforged.util.ItemUtils;
-import com.mojang.datafixers.util.Pair;
+import com.indref.industrial_reforged.util.items.ItemBarUtils;
+import com.indref.industrial_reforged.util.items.ItemUtils;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,13 +17,13 @@ public abstract class BaseFuelRodItem extends Item implements MultiBarItem {
     @Override
     public @NotNull List<IntIntPair> getBarColorsAndWidths(ItemStack itemStack) {
         return List.of(
-                IntIntPair.of(ItemUtils.HEAT_BAR_COLOR, 10),
-                IntIntPair.of(ItemUtils.ENERGY_BAR_COLOR, 5)
+                IntIntPair.of(ItemBarUtils.heatBarColor(itemStack), ItemBarUtils.heatBarWidth(itemStack)),
+                IntIntPair.of(ItemBarUtils.energyBarColor(itemStack), ItemBarUtils.energyBarWidth(itemStack))
         );
     }
 
     @Override
-    public boolean isBarVisible(ItemStack p_150899_) {
+    public boolean isBarVisible(ItemStack stack) {
         return true;
     }
 }

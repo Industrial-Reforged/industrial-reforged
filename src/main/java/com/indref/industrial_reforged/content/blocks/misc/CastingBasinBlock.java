@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.blocks.misc;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;

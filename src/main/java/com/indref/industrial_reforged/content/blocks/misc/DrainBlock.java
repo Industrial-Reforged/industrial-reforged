@@ -1,20 +1,15 @@
 package com.indref.industrial_reforged.content.blocks.misc;
 
-import com.indref.industrial_reforged.api.blockentities.container.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.DrainBlockEntity;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,8 +18,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class DrainBlock extends RotatableContainerBlock implements WrenchableBlock {
     public DrainBlock(Properties p_49224_) {

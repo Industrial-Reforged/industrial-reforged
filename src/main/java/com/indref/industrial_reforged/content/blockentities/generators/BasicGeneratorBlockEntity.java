@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.content.blockentities.generators;
 
 import com.google.common.collect.ImmutableMap;
-import com.indref.industrial_reforged.api.blockentities.generator.GeneratorBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.machine.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -41,8 +41,6 @@ import java.util.Optional;
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
 public class BasicGeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, GeneratorBlockEntity {
-    public static final int GENERATION_AMOUNT = 3;
-
     private int burnTime;
     private int maxBurnTime;
 
@@ -66,6 +64,11 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
 
     public int getMaxBurnTime() {
         return maxBurnTime;
+    }
+
+    @Override
+    public int getGenerationAmount() {
+        return 3;
     }
 
     @Override
@@ -97,7 +100,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         if (energyStorage != null) {
             if (this.burnTime > 0) {
                 if (!level.isClientSide()) {
-                    int filled = energyStorage.tryFillEnergy(GENERATION_AMOUNT, remove);
+                    int filled = energyStorage.tryFillEnergy(getGenerationAmount(), remove);
                     if (filled > 0) {
                         this.burnTime--;
                     }
