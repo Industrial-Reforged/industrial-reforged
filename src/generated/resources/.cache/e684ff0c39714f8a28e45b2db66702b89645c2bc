@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-19T18:23:15.263638954	Item Models: indref
+// 1.21.1	2025-03-21T18:39:15.514381117	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -11,7 +11,8 @@ d9370afa44b140f62ded0ef824d63ce15a50dd93 assets/indref/models/item/advanced_batt
 386a3105789fe33cb5062ac5c8b123ba8e4e15ce assets/indref/models/item/advanced_chainsaw.json
 ca45b3c9346a9b96826e20b7afbd6d04cfa9cfe3 assets/indref/models/item/advanced_chainsaw_active.json
 0f6c88e42324b807f53112c55dc39cb05632d0a2 assets/indref/models/item/advanced_circuit.json
-def1e187c13961c0da4733dbd741b3424f36f5cd assets/indref/models/item/advanced_drill.json
+0315cdf5eeddfc600bbf810a417fb5bcb99d5f1c assets/indref/models/item/advanced_drill.json
+fa81a283e888087586fe5c1100d0e354e6cbaa6b assets/indref/models/item/advanced_drill_active.json
 22bd7f6be31106077008150949f43699fd5d5469 assets/indref/models/item/aluminum_block.json
 a6360bd18b10a80d5bb89aeee949fb687beb55f0 assets/indref/models/item/aluminum_ingot.json
 9853d030e0ddfe99d6531f21d77575b016f07795 assets/indref/models/item/antenna.json
@@ -25,7 +26,8 @@ f201c8b924375b6ba0aeed5adac359159a9bff4c assets/indref/models/item/basic_battery
 290e0d59b71ab91fde2c9af1a68a7c8f6a2fe9aa assets/indref/models/item/basic_chainsaw.json
 09be2271590fe38e10caa37951b07ffe2af58d48 assets/indref/models/item/basic_chainsaw_active.json
 179f9ee43b2b48d7ccb02eefc5bcbeb0c1c9855b assets/indref/models/item/basic_circuit.json
-0ea478dc7f54e25e2affccf869e8992b73e7ac3f assets/indref/models/item/basic_drill.json
+8917d3f860097fe4f81d21e63c03cd5fbe96b4c2 assets/indref/models/item/basic_drill.json
+1913d1e06bd1105c1769d6126d5d647fe7f27524 assets/indref/models/item/basic_drill_active.json
 b5701c30cef2e6b6d353e76d5ba3c02b673feb10 assets/indref/models/item/basic_generator.json
 63ddb958a9699cefcc513ff4a69b9021201f311a assets/indref/models/item/basic_machine_frame.json
 f0d3a2aab723fb2343fac252bd6ff776722a4e45 assets/indref/models/item/bauxite_ore.json

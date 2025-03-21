@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.item.IRItemProperties;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
+import com.indref.industrial_reforged.content.items.tools.ElectricChainsawItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -112,12 +113,11 @@ public class IRItemModelProvider extends ItemModelProvider {
 
 //        overrideItemModel(7, basicItem(IRItems.THERMOMETER, extend(itemTexture(IRItems.THERMOMETER), "_0")), IRItemProperties.TEMPERATURE_KEY,
 //                i -> basicItem(IRItems.THERMOMETER, "_" + i));
-        overrideItemModel(2, basicItem(IRItems.NANO_SABER), IRItemProperties.ACTIVE_KEY,
-                i -> i == 1 ? basicItem(extend(key(IRItems.NANO_SABER), "_active")) : basicItem(IRItems.NANO_SABER));
-        overrideItemModel(2, basicItem(IRItems.BASIC_CHAINSAW), IRItemProperties.ACTIVE_KEY,
-                i -> i == 1 ? basicItem(extend(key(IRItems.BASIC_CHAINSAW), "_active")) : basicItem(IRItems.BASIC_CHAINSAW));
-        overrideItemModel(2, basicItem(IRItems.ADVANCED_CHAINSAW), IRItemProperties.ACTIVE_KEY,
-                i -> i == 1 ? basicItem(extend(key(IRItems.ADVANCED_CHAINSAW), "_active")) : basicItem(IRItems.ADVANCED_CHAINSAW));
+        activeModel(IRItems.NANO_SABER);
+        activeModel(IRItems.BASIC_CHAINSAW);
+        activeModel(IRItems.ADVANCED_CHAINSAW);
+        activeModel(IRItems.BASIC_DRILL);
+        activeModel(IRItems.ADVANCED_DRILL);
 
         basicItem(IRItems.ALUMINUM_INGOT);
         basicItem(IRItems.IRIDIUM_INGOT);
@@ -156,6 +156,11 @@ public class IRItemModelProvider extends ItemModelProvider {
         fenceInventory(name(IRBlocks.IRON_FENCE), blockTexture(Blocks.IRON_BLOCK));
 
         blockItems();
+    }
+
+    private void activeModel(ItemLike item) {
+        overrideItemModel(2, basicItem(item), IRItemProperties.ACTIVE_KEY,
+                i -> i == 1 ? basicItem(extend(key(item), "_active")) : basicItem(item));
     }
 
     public ItemModelBuilder basicItem(ItemLike item, ResourceLocation texture) {

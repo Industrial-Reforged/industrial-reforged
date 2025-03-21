@@ -17,31 +17,12 @@ import net.neoforged.neoforge.common.ItemAbility;
 
 public class ElectricChainsawItem extends ElectricDiggerItem {
     public ElectricChainsawItem(float baseAttackDamage, float attackSpeed, int energyUsage, Holder<EnergyTier> energyTier, Tier tier, Properties properties) {
-        super(baseAttackDamage, attackSpeed, BlockTags.MINEABLE_WITH_AXE, energyUsage, energyTier, tier, properties.component(IRDataComponents.ACTIVE, false));
+        super(baseAttackDamage, attackSpeed, BlockTags.MINEABLE_WITH_AXE, energyUsage, energyTier, tier, properties);
     }
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         return ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
-
-        if (entity instanceof Player player) {
-            ItemStack itemInHand = player.getMainHandItem();
-
-            if (itemInHand.is(this)) {
-                if (!stack.get(IRDataComponents.ACTIVE)) {
-                    stack.set(IRDataComponents.ACTIVE, true);
-                }
-            } else {
-                if (stack.get(IRDataComponents.ACTIVE)) {
-                    stack.set(IRDataComponents.ACTIVE, false);
-                }
-            }
-        }
     }
 
 }

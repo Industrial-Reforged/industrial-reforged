@@ -79,13 +79,13 @@ public final class IndustrialReforgedClient {
 
     private static void registerItemProperties() {
         ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
-        // ItemProperties.register(IRItems.THERMOMETER.get(), IRItemProperties.TEMPERATURE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getTemperature);
-        ItemProperties.register(IRItems.BASIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
-        ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
+        ItemProperties.register(IRItems.BASIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
+        ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
+        ItemProperties.register(IRItems.BASIC_DRILL.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
+        ItemProperties.register(IRItems.ADVANCED_DRILL.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
         for (Item item : BuiltInRegistries.ITEM) {
-            if (item instanceof BatteryItem batteryItem) {
-                ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY,
-                        (stack, level, living, id) -> batteryItem.getEnergyStage(stack));
+            if (item instanceof BatteryItem) {
+                ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getBatteryStage);
             }
         }
     }

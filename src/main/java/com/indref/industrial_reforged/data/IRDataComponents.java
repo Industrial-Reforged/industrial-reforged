@@ -29,8 +29,6 @@ public final class IRDataComponents {
             () -> builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
     public static final Supplier<DataComponentType<Integer>> THERMOMETER_STAGE = registerDataComponentType("thermometer_stage",
             () -> builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final Supplier<DataComponentType<Integer>> BATTERY_STAGE = registerDataComponentType("battery_stage",
-            () -> builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final Supplier<DataComponentType<ComponentBlueprint>> BLUEPRINT = registerDataComponentType("blueprint",
             () -> builder -> builder.persistent(ComponentBlueprint.CODEC).networkSynchronized(ComponentBlueprint.STREAM_CODEC));
     public static final Supplier<DataComponentType<ComponentTapeMeasure>> TAPE_MEASURE = registerDataComponentType("tape_measure_data",

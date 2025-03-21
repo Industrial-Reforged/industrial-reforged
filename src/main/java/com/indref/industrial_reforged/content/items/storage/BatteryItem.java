@@ -29,7 +29,7 @@ public class BatteryItem extends SimpleEnergyItem {
     }
 
     public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int capacity, int stages) {
-        super(properties.component(IRDataComponents.BATTERY_STAGE, 0), energyTier);
+        super(properties, energyTier);
         this.capacity = capacity;
         this.stages = stages;
     }
@@ -43,7 +43,7 @@ public class BatteryItem extends SimpleEnergyItem {
         return stages;
     }
 
-    public float getEnergyStage(ItemStack itemStack) {
+    public float getBatteryStage(ItemStack itemStack) {
         IEnergyStorage energyStorage = getEnergyCap(itemStack);
         return (float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity() * this.stages;
     }

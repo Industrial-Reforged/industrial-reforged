@@ -14,8 +14,8 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
 public class ElectricDrillItem extends ElectricDiggerItem {
-    public ElectricDrillItem(float p_204108_, float p_204109_, int energyUsage, Holder<EnergyTier> energyTier, Tier tier, Properties p_204112_) {
-        super(p_204108_, p_204109_, BlockTags.MINEABLE_WITH_PICKAXE, energyUsage, energyTier, tier, p_204112_);
+    public ElectricDrillItem(float p_204108_, float p_204109_, int energyUsage, Holder<EnergyTier> energyTier, Tier tier, Properties properties) {
+        super(p_204108_, p_204109_, BlockTags.MINEABLE_WITH_PICKAXE, energyUsage, energyTier, tier, properties);
     }
 
     @Override
