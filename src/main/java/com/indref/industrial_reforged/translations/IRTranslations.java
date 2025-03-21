@@ -50,7 +50,7 @@ public final class IRTranslations {
 
         public static final TranslatableConstant HEAT_STORED = create("heat.stored", "Stored: ");
         public static final TranslatableConstant HEAT_AMOUNT = create("heat.amount", "%.1f");
-        public static final TranslatableConstant HEAT_AMOUNT_WITH_CAPACITY = create("heat.amount_with_capacity", "%.1f");
+        public static final TranslatableConstant HEAT_AMOUNT_WITH_CAPACITY = create("heat.amount_with_capacity", "%.1f/%.1f");
 
         public static final TranslatableConstant MELTING_NOT_POSSIBLE = create("melting.not_possible", "Melting not possible");
         public static final TranslatableConstant MELTING_PROGRESS = create("melting.progress", "%.1f/%.1f");

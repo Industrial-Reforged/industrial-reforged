@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -282,8 +283,8 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         }
     }
 
-    private float getHeatDecay() {
-        return 0.12f;
+    public float getHeatDecay() {
+        return IRConfig.crucibleHeatDecay;
     }
 
     protected void tickHeat() {

@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
@@ -56,7 +57,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, int heatCapacity) {
         super(blockEntityType, blockPos, blockState);
         addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
-        addHeatStorage(heatCapacity, getProductionAmount(), fireboxTier.getMaxHeatOutput());
+        addHeatStorage(heatCapacity, 10, fireboxTier.getMaxHeatOutput());
         this.fireboxTier = fireboxTier;
         this.multiblockData = MultiblockData.EMPTY;
         this.aboveBlockCapCache = new HashMap<>();
@@ -83,8 +84,12 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
         return this.burnTime > 0;
     }
 
+    public float getHeatDecay() {
+        return IRConfig.fireboxHeatDecay;
+    }
+
     public float getProductionAmount() {
-        return 0.55f;
+        return IRConfig.fireboxHeatProduction;
     }
 
     @Override
@@ -196,13 +201,9 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
         }
     }
 
-    private float getHeatDecay() {
-        return 0.12f;
-    }
-
     protected void tickHeat() {
         float heatDiff = getHeatStorage().getHeatStored() - getHeatStorage().getLastHeatStored();
-        if (heatDiff <= 0) {
+        if (heatDiff <= 0 && burnTime == 0) {
             getHeatStorage().drain(getHeatDecay() + Math.abs(getHeatDecay() * heatDiff), false);
         }
     }

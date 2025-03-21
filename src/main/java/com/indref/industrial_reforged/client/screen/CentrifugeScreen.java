@@ -25,16 +25,17 @@ public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu>
 
     @Override
     protected void init() {
+        super.init();
+
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
-        super.init();
-        EnergyBarWidget energyBarWidget = addRenderableWidget(
+        EnergyBarWidget energyBarWidget = addRenderableOnly(
                 new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), "EU", true)
         );
         addRenderableWidget(
                 new FluidTankWidget(this.leftPos + 142, this.topPos + 24, FluidTankWidget.TankVariants.SMALL, menu.blockEntity)
         );
-        addRenderableWidget(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
+        addRenderableOnly(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
     }
 
     @Override

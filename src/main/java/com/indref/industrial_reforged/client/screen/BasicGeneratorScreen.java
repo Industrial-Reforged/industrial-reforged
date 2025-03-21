@@ -32,10 +32,10 @@ public class BasicGeneratorScreen extends PDLAbstractContainerScreen<BasicGenera
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
-        EnergyBarWidget energyBarWidget = addRenderableWidget(
+        EnergyBarWidget energyBarWidget = addRenderableOnly(
                 new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), "EU", true)
         );
-        addRenderableWidget(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
+        addRenderableOnly(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
     }
 
     @Override

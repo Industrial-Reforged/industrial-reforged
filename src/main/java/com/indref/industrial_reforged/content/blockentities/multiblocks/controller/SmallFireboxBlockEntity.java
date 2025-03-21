@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
@@ -68,12 +69,18 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
     @Override
     public void commonTick() {
         if (actualBlockEntity()) {
+            getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
+
             tickRecipe();
 
             tickIO();
 
             if (getBlockState().getValue(SmallFireboxMultiblock.FORMED) && this.getBurnTime() > 0 && level.isClientSide() && level.random.nextInt(0, 35) == 0) {
                 level.playLocalSound(worldPosition, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 2.0F, 1.0F, false);
+            }
+
+            if (!level.isClientSide()) {
+                tickHeat();
             }
         }
 
@@ -95,6 +102,14 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
                 }
             }
         }
+    }
+
+    public float getHeatDecay() {
+        return IRConfig.smallFireboxHeatDecay;
+    }
+
+    public float getProductionAmount() {
+        return IRConfig.smallFireboxHeatProduction;
     }
 
     @Override

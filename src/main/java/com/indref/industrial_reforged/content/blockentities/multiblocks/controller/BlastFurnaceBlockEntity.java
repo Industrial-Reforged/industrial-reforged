@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -217,8 +218,8 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         }
     }
 
-    private float getHeatDecay() {
-        return 0.12f;
+    public float getHeatDecay() {
+        return IRConfig.blastFurnaceHeatDecay;
     }
 
     protected void tickHeat() {

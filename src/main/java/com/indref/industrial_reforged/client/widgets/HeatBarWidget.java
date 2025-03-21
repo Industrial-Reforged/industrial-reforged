@@ -12,6 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class HeatBarWidget extends AbstractWidget {
     public static final ResourceLocation HEAT_BAR_SPRITE = IndustrialReforged.rl("heat_bar");
     public static final ResourceLocation HEAT_BAR_EMPTY_SPRITE = IndustrialReforged.rl("heat_bar_empty");
@@ -32,7 +35,9 @@ public class HeatBarWidget extends AbstractWidget {
         guiGraphics.blitSprite(HEAT_BAR_SPRITE, width - 2, height - 2, 0, 0, getX() + 1, getY() + 1, Mth.ceil((width - 2) * progress), height - 2);
 
         if (isHovered) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, IRTranslations.Tooltip.HEAT_AMOUNT_WITH_CAPACITY.component(heatStored, heatCapacity)
+            float roundedHeat = Math.round(heatStored * 10) / 10.0f;
+            float roundedCapacity = Math.round(heatCapacity * 10) / 10.0f;
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, IRTranslations.Tooltip.HEAT_AMOUNT_WITH_CAPACITY.component(roundedHeat, roundedCapacity)
                     .append(IRTranslations.General.HEAT_UNIT.component()), mouseX, mouseY);
         }
     }
