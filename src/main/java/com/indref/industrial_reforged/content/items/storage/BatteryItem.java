@@ -21,22 +21,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BatteryItem extends SimpleEnergyItem {
-    private final int capacity;
     private final int stages;
 
-    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int stages) {
-        this(properties, energyTier, energyTier.value().defaultCapacity(), stages);
-    }
-
-    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int capacity, int stages) {
-        super(properties, energyTier);
-        this.capacity = capacity;
+    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int defaultEnergyCapacity, int stages) {
+        super(properties, energyTier, defaultEnergyCapacity);
         this.stages = stages;
-    }
-
-    @Override
-    public int getDefaultEnergyCapacity() {
-        return this.capacity;
     }
 
     public int getStages() {

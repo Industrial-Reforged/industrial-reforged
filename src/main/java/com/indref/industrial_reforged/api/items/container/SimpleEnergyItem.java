@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
-import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,11 +15,18 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
+    protected final int defaultEnergyCapacity;
     private final Holder<EnergyTier> energyTier;
 
-    public SimpleEnergyItem(Properties properties, Holder<EnergyTier> energyTier) {
-        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEuStorage(0, energyTier.value().defaultCapacity())));
+    public SimpleEnergyItem(Properties properties, Holder<EnergyTier> energyTier, int defaultEnergyCapacity) {
+        super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEuStorage(defaultEnergyCapacity)));
+        this.defaultEnergyCapacity = defaultEnergyCapacity;
         this.energyTier = energyTier;
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return defaultEnergyCapacity;
     }
 
     @Override

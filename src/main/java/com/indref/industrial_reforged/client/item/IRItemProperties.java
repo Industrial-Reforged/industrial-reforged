@@ -1,7 +1,12 @@
 package com.indref.industrial_reforged.client.item;
 
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
+import com.indref.industrial_reforged.content.items.tools.ElectricChainsawItem;
+import com.indref.industrial_reforged.content.items.tools.ElectricDrillItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,7 +27,14 @@ public final class IRItemProperties {
     }
 
     public static float isItemHeld(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-        return entity != null && entity.getMainHandItem().is(stack.getItem()) && stack.getCapability(Capabilities.EnergyStorage.ITEM).getEnergyStored() > 0 ? 1 : 0;
+        @Nullable IEnergyStorage capability = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        boolean runAnimation = true;
+        if (stack.getItem() instanceof ElectricChainsawItem) {
+            runAnimation = IRConfig.chainsawItemAnimation;
+        } else if (stack.getItem() instanceof ElectricDrillItem) {
+            runAnimation = IRConfig.drillItemAnimation;
+        }
+        return entity != null && entity.getMainHandItem().is(stack.getItem()) && capability != null && capability.getEnergyStored() > 0 ? 1 : 0;
     }
 
     public static float getBatteryStage(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {

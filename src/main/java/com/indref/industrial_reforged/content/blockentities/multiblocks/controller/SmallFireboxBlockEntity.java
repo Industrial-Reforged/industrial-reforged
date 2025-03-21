@@ -31,7 +31,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
     private final Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
 
     public SmallFireboxBlockEntity(BlockPos pos, BlockState state) {
-        super(IRBlockEntityTypes.SMALL_FIREBOX.get(), pos, state, FireboxTiers.SMALL, 1800);
+        super(IRBlockEntityTypes.SMALL_FIREBOX.get(), pos, state, FireboxTiers.SMALL, IRConfig.smallFireboxHeatCapacity);
         this.aboveBlockCapCache = new HashMap<>();
     }
 

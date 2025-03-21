@@ -10,10 +10,12 @@ import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blocks.multiblocks.controller.CrucibleControllerBlock;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.IRClientUtils;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
@@ -42,6 +44,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -70,10 +73,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     public static final int SLOTS = 9;
     private static final int CASTING_SPEED = 3;
     private final CrucibleTier tier;
+
     private MultiblockData multiblockData;
 
+    private Item expectedCast;
     // Block that can be filled when turning crucible
-    public BlockCapabilityCache<IFluidHandler, Direction> fillBlockCache;
+    public BlockCapabilityCache<IFluidHandler, Direction> basinFluidHandlerCache;
     // Recipe cache
     private final Int2ObjectMap<CrucibleSmeltingRecipe> recipeCache;
 
@@ -94,17 +99,19 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         this.multiblockData = MultiblockData.EMPTY;
         this.recipeCache = new Int2ObjectOpenHashMap<>(SLOTS);
         addItemHandler(9, 1);
-        addFluidTank(9000);
-        addHeatStorage(tier.getHeatCapacity());
+        addFluidTank(IRConfig.crucibleFluidCapacity);
+        addHeatStorage(IRConfig.crucibleHeatCapacity);
     }
 
     public void turn() {
         if (!this.turnedOver && canTurn()) {
             BlockEntity blockEntity = level.getBlockEntity(getBasinPos());
             if (blockEntity != null) {
+                IItemHandler basinItemHandler = CapabilityUtils.itemHandlerCapability(blockEntity);
+                this.expectedCast = basinItemHandler.getStackInSlot(CastingBasinBlockEntity.CAST_SLOT).getItem();
                 IFluidHandler basinFluidTank = CapabilityUtils.fluidHandlerCapability(blockEntity);
                 IFluidHandler fluidTank = getFluidHandler();
-                this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0), fluidTank.getFluidInTank(0).getAmount() / CASTING_SPEED);
+                this.maxTurnTime = Math.min(basinFluidTank.getTankCapacity(0) - basinFluidTank.getFluidInTank(0).getAmount(), fluidTank.getFluidInTank(0).getAmount() / CASTING_SPEED);
                 this.inUse = 70;
                 this.speed = 70;
                 this.turnedOver = true;
@@ -145,7 +152,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     public boolean canTurn() {
         if (level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be) {
-            return be.hasMoldAndEmpty();
+            return be.hasMoldAndNotFull();
         }
         return false;
     }
@@ -191,7 +198,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     private void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
-            this.fillBlockCache = BlockCapabilityCache.create(
+            this.basinFluidHandlerCache = BlockCapabilityCache.create(
                     Capabilities.FluidHandler.BLOCK,
                     serverLevel,
                     getBasinPos(),
@@ -266,11 +273,29 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
         if (!level.isClientSide()) {
             tickHeat();
+
+            // ensure that the basin has the correct cast
+            if (isTurnedOver()) {
+                if (level.getBlockEntity(getBasinPos()) instanceof CastingBasinBlockEntity be) {
+                    ItemStack castingMold = be.getItemHandler().getStackInSlot(CastingBasinBlockEntity.CAST_SLOT);
+                    if (!castingMold.is(this.expectedCast)) {
+                        CastingMoldValue mold = CastingBasinBlockEntity.getMold(castingMold.getItem());
+                        if (mold != null) {
+                            this.maxTurnTime = mold.capacity();
+                            this.expectedCast = castingMold.getItem();
+                        } else {
+                            this.maxTurnTime = 0;
+                            this.expectedCast = null;
+                        }
+                    }
+                }
+            }
         }
+
     }
 
     private void tickRedstone() {
-        if (this.isPowered()) {
+        if (this.isPowered() && !getFluidHandler().getFluidInTank(0).isEmpty()) {
             if (this.inUse == 0) {
                 if (!this.isTurnedOver()) {
                     this.turn();
@@ -296,8 +321,8 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     private void fillBlock() {
         if (!level.isClientSide()) {
-            if (turnedOver && inUse == 0 && fillBlockCache != null) {
-                IFluidHandler fluidHandler = fillBlockCache.getCapability();
+            if (turnedOver && inUse == 0 && basinFluidHandlerCache != null) {
+                IFluidHandler fluidHandler = basinFluidHandlerCache.getCapability();
 
                 if (fluidHandler != null) {
                     FluidStack drained = getFluidHandler().drain(CASTING_SPEED, IFluidHandler.FluidAction.EXECUTE);

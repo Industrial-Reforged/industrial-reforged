@@ -28,11 +28,11 @@ public class CrucibleProgressRenderer implements IItemDecorator {
         if (meltingType == 1) {
             int barWidth = tag.getInt(BARWIDTH_KEY);
             int width = 1;
-            int i = ItemBarUtils.heatBarWidth(itemStack);
+            int color = ItemBarUtils.heatBarColor(itemStack);
             int j = xOffset + 2;
             int k = yOffset + 13;
             guiGraphics.fill(RenderType.guiOverlay(), j, k + 2, j + 2, k - 10, -16777216);
-            guiGraphics.fill(RenderType.guiOverlay(), j, k + 1, j + width, k - barWidth, i | 0xFF000000);
+            guiGraphics.fill(RenderType.guiOverlay(), j, k + 1, j + width, k - barWidth, color | 0xFF000000);
         } else if (meltingType == 2) {
             GuiUtils.drawWithZ(guiGraphics, DISABLED_TEXTURE, xOffset, yOffset, 200, 16, 16);
         }

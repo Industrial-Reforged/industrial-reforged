@@ -17,8 +17,8 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class ElectricWrenchItem extends SimpleEnergyItem {
-    public ElectricWrenchItem(Item.Properties properties, Holder<EnergyTier> energyTier) {
-        super(properties, energyTier);
+    public ElectricWrenchItem(Item.Properties properties, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+        super(properties, energyTier, defaultEnergyCapacity);
     }
 
     @Override

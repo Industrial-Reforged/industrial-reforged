@@ -23,8 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScannerItem extends SimpleEnergyItem {
-    public ScannerItem(Properties p_41383_, Holder<EnergyTier> energyTier) {
-        super(p_41383_, energyTier);
+    private final int energyUsage;
+
+    public ScannerItem(Properties p_41383_, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+        super(p_41383_, energyTier, defaultEnergyCapacity);
+        this.energyUsage = energyUsage;
+    }
+
+    public int getEnergyUsage() {
+        return energyUsage;
     }
 
     @Override

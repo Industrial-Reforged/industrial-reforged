@@ -77,8 +77,13 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
             int fluidCapacity = fluidHandler.getTankCapacity(0);
             int alpha = 1;
 
-            if (fluidStack.isEmpty())
-                return;
+            if (fluidStack.isEmpty()) {
+                fluidStack = castingTableBlockEntity.getRememberedFluid();
+                if (fluidStack.isEmpty()) {
+                    return;
+                }
+            }
+
 
             float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
 

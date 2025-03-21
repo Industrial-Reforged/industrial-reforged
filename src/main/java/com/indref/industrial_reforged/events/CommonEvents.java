@@ -36,20 +36,6 @@ public final class CommonEvents {
         public static FluidStack playerInCrucibleFluid = null;
 
         @SubscribeEvent
-        public static void appendTooltips(ItemTooltipEvent event) {
-            ItemStack item = event.getItemStack();
-            CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
-            int meltingType = tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY);
-            if (meltingType == 1) {
-                event.getToolTip().add(IRTranslations.Tooltip.MELTING_PROGRESS
-                        .component(tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY))
-                        .withStyle(ChatFormatting.GRAY));
-            } else if (meltingType == 2) {
-                event.getToolTip().add(IRTranslations.Tooltip.MELTING_NOT_POSSIBLE.component().withStyle(ChatFormatting.GRAY));
-            }
-        }
-
-        @SubscribeEvent
         public static void renderLevel(RenderLevelStageEvent event) {
             renderMultiblockPreview(event);
         }
@@ -99,8 +85,6 @@ public final class CommonEvents {
                 MultiblockPreviewRenderer.renderPreview(multiblock, firstPos, mc.level, HorizontalDirection.NORTH, poseStack, bufferSource, cameraPos);
             }
         }
-
-
 
     }
 }

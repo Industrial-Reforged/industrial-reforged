@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.items.tools;
 
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
@@ -29,8 +30,22 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class NanoSaberItem extends ElectricSwordItem {
-    public NanoSaberItem(Properties properties, Holder<EnergyTier> energyTier) {
+    private final int energyUsage;
+    private final int energyCapacity;
+
+    public NanoSaberItem(Properties properties, Holder<EnergyTier> energyTier, int energyUsage, int energyCapacity) {
         super(energyTier, Tiers.DIAMOND, -1, -3F, properties.component(IRDataComponents.ACTIVE, false));
+        this.energyUsage = energyUsage;
+        this.energyCapacity = energyCapacity;
+    }
+
+    public int getEnergyUsage() {
+        return energyUsage;
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return energyCapacity;
     }
 
     public @NotNull ItemAttributeModifiers createAttributes(ItemStack stack) {
@@ -39,8 +54,8 @@ public class NanoSaberItem extends ElectricSwordItem {
                 ItemAttributeModifiers.Builder modifiers = ItemAttributeModifiers.builder();
 
                 if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
-                    modifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "attack_modifier"), 19, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-                    modifiers.add(Attributes.ATTACK_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "attack_speed"), 1.2F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    modifiers.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "attack_modifier"), IRConfig.nanoSaberAttackDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    modifiers.add(Attributes.ATTACK_SPEED, new AttributeModifier(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "attack_speed"), IRConfig.nanoSaberAttackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
                 }
 
                 return modifiers.build();
@@ -102,6 +117,6 @@ public class NanoSaberItem extends ElectricSwordItem {
 
     @Override
     public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
-        return 25;
+        return getEnergyUsage();
     }
 }

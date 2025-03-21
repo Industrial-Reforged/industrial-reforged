@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.generators;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -51,7 +52,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
             boolean canInsertBattery = slot == 1 && item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null;
             return canInsertFuel || canInsertBattery;
         });
-        addEuStorage(EnergyTiers.LOW);
+        addEuStorage(EnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
     }
 
     public boolean isActive() {

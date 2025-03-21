@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.data.IRDataComponents;
@@ -184,6 +185,9 @@ public final class IndustrialReforged {
     private static void registerMBPartCaps(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE_PART.get(), BlastFurnacePartBlockEntity::exposeItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE_PART.get(), BlastFurnacePartBlockEntity::exposeFluidHandler);
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE_PART.get(), CruciblePartBlockEntity::exposeItemHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.CRUCIBLE_PART.get(), CruciblePartBlockEntity::exposeFluidHandler);
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {

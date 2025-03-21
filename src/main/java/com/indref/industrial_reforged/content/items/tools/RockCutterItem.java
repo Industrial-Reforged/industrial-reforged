@@ -15,8 +15,16 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class RockCutterItem extends ElectricDiggerItem {
-    public RockCutterItem(float baseAttackDamage, float attackSpeed, Holder<EnergyTier> energyTier, Tier tier, Properties properties) {
-        super(baseAttackDamage, attackSpeed, BlockTags.MINEABLE_WITH_PICKAXE, energyTier.value().maxOutput() / 2, energyTier, tier, properties);
+    private final int energyCapacity;
+
+    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+        super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_PICKAXE, energyTier, energyUsage, defaultEnergyCapacity);
+        this.energyCapacity = defaultEnergyCapacity;
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return this.energyCapacity;
     }
 
     @Override

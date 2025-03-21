@@ -23,7 +23,7 @@ public final class IRConfig {
     private static final ModConfigSpec.IntValue DRAIN_FLUID_CAPACITY =
             blockFluidCapacity("drain", "Drain", 1_000);
     private static final ModConfigSpec.IntValue CENTRIFUGE_FLUID_CAPACITY =
-            blockFluidCapacity("centrifuge", "Centrifuge", 1_000);
+            blockFluidCapacity("centrifuge", "Centrifuge", 4_000);
 
     // Item Energy Capacity
     // LOW
@@ -42,25 +42,60 @@ public final class IRConfig {
 
     // MEDIUM
     private static final ModConfigSpec.IntValue SCANNER_ENERGY_CAPACITY =
-            itemEnergyCapacity("scanner", "Scanner", 4_000);
+            itemEnergyCapacity("scanner", "Scanner", 16_000);
 
     // HIGH
     private static final ModConfigSpec.IntValue NANO_SABER_ENERGY_CAPACITY =
-            itemEnergyCapacity("nano_saber", "Nano Saber", 4_000);
+            itemEnergyCapacity("nano_saber", "Nano Saber", 32_000);
     private static final ModConfigSpec.IntValue ADVANCED_DRILL_ENERGY_CAPACITY =
-            itemEnergyCapacity("advanced_drill", "Advanced Drill", 4_000);
+            itemEnergyCapacity("advanced_drill", "Advanced Drill", 32_000);
     private static final ModConfigSpec.IntValue ADVANCED_CHAINSAW_ENERGY_CAPACITY =
-            itemEnergyCapacity("advanced_chainsaw", "Advanced Chainsaw", 4_000);
+            itemEnergyCapacity("advanced_chainsaw", "Advanced Chainsaw", 32_000);
     private static final ModConfigSpec.IntValue ADVANCED_BATTERY_ENERGY_CAPACITY =
-            itemEnergyCapacity("advanced_battery", "Advanced Battery", 4_000);
+            itemEnergyCapacity("advanced_battery", "Advanced Battery", 32_000);
 
     // INSANE
     private static final ModConfigSpec.IntValue ULTIMATE_BATTERY_ENERGY_CAPACITY =
-            itemEnergyCapacity("ultimate_battery", "Ultimate Battery", 4_000);
+            itemEnergyCapacity("ultimate_battery", "Ultimate Battery", 128_000);
+
+    // Item Energy Usage
+    // LOW
+    private static final ModConfigSpec.IntValue BASIC_DRILL_ENERGY_USAGE =
+            itemEnergyUsage("basic_drill", "Basic Drill", 16);
+    private static final ModConfigSpec.IntValue BASIC_CHAINSAW_ENERGY_USAGE =
+            itemEnergyUsage("basic_chainsaw", "Basic Chainsaw", 16);
+    private static final ModConfigSpec.IntValue ELECTRIC_HOE_ENERGY_USAGE =
+            itemEnergyUsage("electric_hoe", "Electric Hoe", 16);
+    private static final ModConfigSpec.IntValue ELECTRIC_TREE_TAP_ENERGY_USAGE =
+            itemEnergyUsage("electric_tree_tap", "Electric Tree Tap", 16);
+    private static final ModConfigSpec.IntValue ROCK_CUTTER_ENERGY_USAGE =
+            itemEnergyUsage("rock_cutter", "Rock Cutter", 16);
+
+    // MEDIUM
+    private static final ModConfigSpec.IntValue SCANNER_ENERGY_USAGE =
+            itemEnergyUsage("scanner", "Scanner", 32);
+
+    // HIGH
+    private static final ModConfigSpec.IntValue NANO_SABER_ENERGY_USAGE =
+            itemEnergyUsage("nano_saber", "Nano Saber", 64);
+    private static final ModConfigSpec.IntValue ADVANCED_DRILL_ENERGY_USAGE =
+            itemEnergyUsage("advanced_drill", "Advanced Drill", 64);
+    private static final ModConfigSpec.IntValue ADVANCED_CHAINSAW_ENERGY_USAGE =
+            itemEnergyUsage("advanced_chainsaw", "Advanced Chainsaw", 64);
 
     // Item Fluid Capacity
     private static final ModConfigSpec.IntValue FLUID_CELL_FLUID_CAPACITY =
             itemFluidCapacity("fluid_cell", "Fluid Cell", 4_000);
+
+    // Block Heat Capacity
+    private static final ModConfigSpec.DoubleValue SMALL_FIREBOX_HEAT_CAPACITY =
+            blockHeatCapacity("small_firebox", "Small Firebox", 1_800);
+    private static final ModConfigSpec.DoubleValue FIREBOX_HEAT_CAPACITY =
+            blockHeatCapacity("firebox", "Firebox", 2_400);
+    private static final ModConfigSpec.DoubleValue BLAST_FURNACE_HEAT_CAPACITY =
+            blockHeatCapacity("blast_furnace", "Blast Furnace", 1_800);
+    private static final ModConfigSpec.DoubleValue CRUCIBLE_HEAT_CAPACITY =
+            blockHeatCapacity("crucible", "Crucible", 2_400);
 
     // Block Heat Production
     private static final ModConfigSpec.DoubleValue SMALL_FIREBOX_PRODUCTION =
@@ -79,6 +114,19 @@ public final class IRConfig {
     private static final ModConfigSpec.DoubleValue CRUCIBLE_DECAY =
             heatDecay("crucible", "Crucible", 0.22);
 
+    private static final ModConfigSpec.DoubleValue NANO_SABER_ATTACK_SPEED = BUILDER
+            .comment("The Nano Saber's attack speed when activated")
+            .defineInRange("items.nano_saber_attack_speed", 1.2, 0, Integer.MAX_VALUE);
+    private static final ModConfigSpec.IntValue NANO_SABER_ATTACK_DAMAGE = BUILDER
+            .comment("The Nano Saber's attack damage when activated")
+            .defineInRange("items.nano_saber_attack_damage", 19, 0, Integer.MAX_VALUE);
+
+    // Item Animations
+    private static final ModConfigSpec.BooleanValue CHAINSAW_ITEM_ANIMATION =
+            itemAnimation("chainsaw", "Chainsaw", true);
+    private static final ModConfigSpec.BooleanValue DRILL_ITEM_ANIMATION =
+            itemAnimation("drill", "Drill", true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     public static int basicGeneratorEnergyCapacity;
@@ -88,6 +136,11 @@ public final class IRConfig {
     public static int blastFurnaceFluidCapacity;
     public static int drainFluidCapacity;
     public static int centrifugeFluidCapacity;
+
+    public static float smallFireboxHeatCapacity;
+    public static float fireboxHeatCapacity;
+    public static float crucibleHeatCapacity;
+    public static float blastFurnaceHeatCapacity;
 
     public static int basicDrillCapacity;
     public static int basicChainsawCapacity;
@@ -102,6 +155,16 @@ public final class IRConfig {
     public static int advancedBatteryCapacity;
     public static int ultimateBatteryCapacity;
 
+    public static int basicDrillEnergyUsage;
+    public static int basicChainsawEnergyUsage;
+    public static int electricHoeEnergyUsage;
+    public static int electricTreeTapEnergyUsage;
+    public static int rockCutterEnergyUsage;
+    public static int scannerEnergyUsage;
+    public static int nanoSaberEnergyUsage;
+    public static int advancedDrillEnergyUsage;
+    public static int advancedChainsawEnergyUsage;
+
     public static int fluidCellCapacity;
 
     public static float smallFireboxHeatProduction;
@@ -112,8 +175,14 @@ public final class IRConfig {
     public static float crucibleHeatDecay;
     public static float blastFurnaceHeatDecay;
 
+    public static boolean drillItemAnimation;
+    public static boolean chainsawItemAnimation;
+
+    public static float nanoSaberAttackSpeed;
+    public static int nanoSaberAttackDamage;
+
     @SubscribeEvent
-    public static void onConfigReload(ModConfigEvent.Reloading event) {
+    public static void onConfigReload(ModConfigEvent event) {
         basicGeneratorEnergyCapacity = BASIC_GENERATOR_ENERGY_CAPACITY.getAsInt();
         centrifugeEnergyCapacity = CENTRIFUGE_ENERGY_CAPACITY.getAsInt();
 
@@ -121,6 +190,11 @@ public final class IRConfig {
         blastFurnaceFluidCapacity = BLAST_FURNACE_FLUID_CAPACITY.getAsInt();
         drainFluidCapacity = DRAIN_FLUID_CAPACITY.getAsInt();
         centrifugeFluidCapacity = CENTRIFUGE_FLUID_CAPACITY.getAsInt();
+
+        smallFireboxHeatCapacity = (float) SMALL_FIREBOX_HEAT_CAPACITY.getAsDouble();
+        fireboxHeatCapacity = (float) FIREBOX_HEAT_CAPACITY.getAsDouble();
+        crucibleHeatCapacity = (float) CRUCIBLE_HEAT_CAPACITY.getAsDouble();
+        blastFurnaceHeatCapacity = (float) CRUCIBLE_HEAT_CAPACITY.getAsDouble();
 
         basicDrillCapacity = BASIC_DRILL_ENERGY_CAPACITY.getAsInt();
         basicChainsawCapacity = BASIC_CHAINSAW_ENERGY_CAPACITY.getAsInt();
@@ -135,6 +209,16 @@ public final class IRConfig {
         advancedBatteryCapacity = ADVANCED_BATTERY_ENERGY_CAPACITY.getAsInt();
         ultimateBatteryCapacity = ULTIMATE_BATTERY_ENERGY_CAPACITY.getAsInt();
 
+        basicDrillEnergyUsage = BASIC_DRILL_ENERGY_USAGE.getAsInt();
+        basicChainsawEnergyUsage = BASIC_CHAINSAW_ENERGY_USAGE.getAsInt();
+        electricHoeEnergyUsage = ELECTRIC_HOE_ENERGY_USAGE.getAsInt();
+        electricTreeTapEnergyUsage = ELECTRIC_TREE_TAP_ENERGY_USAGE.getAsInt();
+        rockCutterEnergyUsage = ROCK_CUTTER_ENERGY_USAGE.getAsInt();
+        scannerEnergyUsage = SCANNER_ENERGY_USAGE.getAsInt();
+        nanoSaberEnergyUsage = NANO_SABER_ENERGY_USAGE.getAsInt();
+        advancedDrillEnergyUsage = ADVANCED_DRILL_ENERGY_USAGE.getAsInt();
+        advancedChainsawEnergyUsage = ADVANCED_CHAINSAW_ENERGY_USAGE.getAsInt();
+
         fluidCellCapacity = FLUID_CELL_FLUID_CAPACITY.getAsInt();
 
         smallFireboxHeatProduction = (float) SMALL_FIREBOX_PRODUCTION.getAsDouble();
@@ -144,54 +228,72 @@ public final class IRConfig {
         fireboxHeatDecay = (float) FIREBOX_DECAY.getAsDouble();
         crucibleHeatDecay = (float) CRUCIBLE_DECAY.getAsDouble();
         blastFurnaceHeatDecay = (float) BLAST_FURNACE_DECAY.getAsDouble();
+
+        chainsawItemAnimation = CHAINSAW_ITEM_ANIMATION.getAsBoolean();
+        drillItemAnimation = DRILL_ITEM_ANIMATION.getAsBoolean();
+
+        nanoSaberAttackDamage = NANO_SABER_ATTACK_DAMAGE.getAsInt();
+        nanoSaberAttackSpeed = (float) NANO_SABER_ATTACK_SPEED.getAsDouble();
     }
 
     private static ModConfigSpec.DoubleValue heatProduction(String blockId, String name, double heatProduction) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("blocks.heat." + blockId + "_production", heatProduction, 0.0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s heat production")
+                .defineInRange("blocks.heat.production." + blockId, heatProduction, 0.0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.DoubleValue heatDecay(String blockId, String name, double heatDecay) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("blocks.heat." + blockId + "_decay", heatDecay, 0.0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s heat decay")
+                .defineInRange("blocks.heat.decay." + blockId, heatDecay, 0.0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.IntValue blockEnergyCapacity(String blockId, String name, int defaultCapacity) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("blocks.energy." + blockId + "_capacity", defaultCapacity, 0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s energy capacity")
+                .defineInRange("blocks.energy.capacity." + blockId, defaultCapacity, 0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.IntValue blockFluidCapacity(String blockId, String name, int defaultCapacity) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("blocks.fluid." + blockId + "_capacity", defaultCapacity, 0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s fluid capacity")
+                .defineInRange("blocks.fluid.capacity." + blockId, defaultCapacity, 0, Integer.MAX_VALUE);
     }
 
-    private static ModConfigSpec.IntValue blockHeatCapacity(String blockId, String name, int defaultCapacity) {
+    private static ModConfigSpec.DoubleValue blockHeatCapacity(String blockId, String name, double defaultCapacity) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("blocks.heat." + blockId + "_capacity", defaultCapacity, 0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s heat capacity")
+                .defineInRange("blocks.heat.capacity" + blockId, defaultCapacity, 0, Integer.MAX_VALUE);
+    }
+
+    private static ModConfigSpec.IntValue itemEnergyUsage(String itemId, String name, int defaultUsage) {
+        return BUILDER
+                .comment("The " + name + "'s energy usage")
+                .defineInRange("items.energy.usage." + itemId, defaultUsage, 0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.IntValue itemEnergyCapacity(String itemId, String name, int defaultCapacity) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("items.energy." + itemId + "_capacity", defaultCapacity, 0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s energy capacity")
+                .defineInRange("items.energy.capacity." + itemId, defaultCapacity, 0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.IntValue itemFluidCapacity(String itemId, String name, int defaultCapacity) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("items.fluid." + itemId + "_capacity", defaultCapacity, 0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s fluid capacity")
+                .defineInRange("items.fluid.capacity." + itemId, defaultCapacity, 0, Integer.MAX_VALUE);
     }
 
-    private static ModConfigSpec.IntValue itemHeatCapacity(String itemId, String name, int defaultCapacity) {
+    private static ModConfigSpec.DoubleValue itemHeatCapacity(String itemId, String name, double defaultCapacity) {
         return BUILDER
-                .comment("The " + name + "'s capacity")
-                .defineInRange("items.heat." + itemId + "_capacity", defaultCapacity, 0, Integer.MAX_VALUE);
+                .comment("The " + name + "'s heat capacity")
+                .defineInRange("items.heat.capacity." + itemId, defaultCapacity, 0, Integer.MAX_VALUE);
+    }
+
+    private static ModConfigSpec.BooleanValue itemAnimation(String itemId, String name, boolean defaultValue) {
+        return BUILDER
+                .comment("Whether to run " + name + "'s animation")
+                .define("items.animation." + itemId + "_animation", defaultValue);
     }
 
 }

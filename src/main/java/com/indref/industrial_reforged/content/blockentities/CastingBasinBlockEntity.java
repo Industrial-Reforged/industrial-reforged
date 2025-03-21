@@ -23,6 +23,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +38,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
 
     private ResourceLocation recipeId;
     private RecipeHolder<CrucibleCastingRecipe> recipe;
+    private FluidStack rememberedFluid;
 
     public CastingBasinBlockEntity(BlockPos pos, BlockState state) {
         super(IRBlockEntityTypes.CASTING_BASIN.get(), pos, state);
@@ -46,6 +48,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
                 (slot, item) -> slot == 0 && getMold(item.getItem()) != null
         );
         addFluidTank(0);
+        this.rememberedFluid = FluidStack.EMPTY;
     }
 
     @Override
@@ -54,25 +57,38 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         updateRecipe(true);
         if (slot == 0) {
             CastingMoldValue moldValue = getMold(getItemHandler().getStackInSlot(slot).getItem());
+            DynamicFluidTank fluidTank = getFluidTank();
             if (moldValue != null) {
-                getFluidTank().setCapacity(moldValue.capacity());
+                fluidTank.setCapacity(moldValue.capacity());
+                int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
+                this.rememberedFluid = this.rememberedFluid.copyWithAmount(this.rememberedFluid.getAmount() - filled);
                 update();
             } else {
-                getFluidTank().setCapacity(0);
+                FluidStack fluid = fluidTank.getFluid();
+                if (fluid.is(this.rememberedFluid.getFluid())) {
+                    this.rememberedFluid = this.rememberedFluid.copyWithAmount(this.rememberedFluid.getAmount() + fluid.getAmount());
+                } else {
+                    this.rememberedFluid = fluid.copy();
+                }
+                fluidTank.setCapacity(0);
                 update();
             }
         }
+    }
+
+    public FluidStack getRememberedFluid() {
+        return rememberedFluid;
     }
 
     public boolean hasMold() {
         return !getItemHandler().getStackInSlot(0).isEmpty() && getItemHandler().getStackInSlot(1).isEmpty();
     }
 
-    public boolean hasMoldAndEmpty() {
-        return !getItemHandler().getStackInSlot(0).isEmpty() && getItemHandler().getStackInSlot(1).isEmpty() && getFluidTank().getFluid().isEmpty();
+    public boolean hasMoldAndNotFull() {
+        return !getItemHandler().getStackInSlot(0).isEmpty() && getItemHandler().getStackInSlot(1).isEmpty() && getFluidTank().getFluidAmount() < getFluidTank().getCapacity();
     }
 
-    public @Nullable CastingMoldValue getMold(Item item) {
+    public static @Nullable CastingMoldValue getMold(Item item) {
         return RegistryUtils.holder(BuiltInRegistries.ITEM, item).getData(IRDataMaps.CASTING_MOLDS);
     }
 
@@ -214,6 +230,11 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         } else {
             this.recipeId = null;
         }
+        if (tag.contains("remembered_fluid")) {
+            this.rememberedFluid = FluidStack.parseOptional(provider, tag.getCompound("remembered_fluid"));
+        } else {
+            this.rememberedFluid = FluidStack.EMPTY;
+        }
     }
 
     @Override
@@ -221,6 +242,9 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         tag.putInt("duration", this.duration);
         tag.putInt("maxDuration", this.maxDuration);
         tag.putString("recipe_id", this.recipe != null ? this.recipe.id().toString() : "NORECIPE");
+        if (this.rememberedFluid != null && !this.rememberedFluid.isEmpty()) {
+            tag.put("remembered_fluid", this.rememberedFluid.saveOptional(provider));
+        }
     }
 
 }

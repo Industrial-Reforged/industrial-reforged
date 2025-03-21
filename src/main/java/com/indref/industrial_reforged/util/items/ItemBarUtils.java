@@ -15,8 +15,11 @@ public final class ItemBarUtils {
 
     public static int heatBarWidth(ItemStack stack) {
         IHeatStorage heatStorage = stack.getCapability(IRCapabilities.HeatStorage.ITEM);
-        float ratio = heatStorage.getHeatStored() / heatStorage.getHeatCapacity();
-        return Math.round(13.0F - ((1 - ratio) * 13.0F));
+        if (heatStorage != null) {
+            float ratio = heatStorage.getHeatStored() / heatStorage.getHeatCapacity();
+            return Math.round(13.0F - ((1 - ratio) * 13.0F));
+        }
+        return 0;
     }
 
     public static int energyBarColor(ItemStack stack) {
@@ -24,6 +27,6 @@ public final class ItemBarUtils {
     }
 
     public static int heatBarColor(ItemStack stack) {
-        return FastColor.ARGB32.color(255, 255, 255, 255);
+        return FastColor.ARGB32.color(255, 255, 128, 6);
     }
 }

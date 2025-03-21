@@ -60,8 +60,8 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     public BlastFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState);
         addItemHandler(2);
-        addFluidTank(9000);
-        addHeatStorage(2000);
+        addFluidTank(IRConfig.blastFurnaceFluidCapacity);
+        addHeatStorage(IRConfig.blastFurnaceHeatCapacity);
         this.multiblockData = MultiblockData.EMPTY;
     }
 

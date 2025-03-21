@@ -54,7 +54,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
 
     private final Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
 
-    public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, int heatCapacity) {
+    public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, float heatCapacity) {
         super(blockEntityType, blockPos, blockState);
         addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
         addHeatStorage(heatCapacity, 10, fireboxTier.getMaxHeatOutput());
@@ -64,7 +64,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     }
 
     public FireboxBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(IRBlockEntityTypes.FIREBOX.get(), blockPos, blockState, FireboxTiers.REFRACTORY, 4000);
+        this(IRBlockEntityTypes.FIREBOX.get(), blockPos, blockState, FireboxTiers.REFRACTORY, IRConfig.fireboxHeatCapacity);
     }
 
     @Override

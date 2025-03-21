@@ -31,38 +31,4 @@ public final class NeoforgeEvents {
             }
         }
     }
-
-    @EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.GAME)
-    public static final class CommonBus {
-        @SubscribeEvent
-        public static void playerTick(PlayerTickEvent.Pre event) {
-            if (event.getEntity().level().isClientSide()) return;
-
-            Player player = event.getEntity();
-            Level level = player.level();
-
-            NonNullList<ItemStack> items = player.getInventory().items;
-            for (ItemStack item : items) {
-                CompoundTag tag = ItemUtils.getImmutableTag(item).copyTag();
-                int meltingType = tag.getInt(CrucibleProgressRenderer.IS_MELTING_KEY);
-                if (meltingType == 1) {
-                    if (level.getGameTime() % 20 == 0) {
-                        tag.putFloat(CrucibleProgressRenderer.BARWIDTH_KEY, tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) - 1);
-                        item.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-                        Registry<DamageType> damageTypes = player.damageSources().damageTypes;
-                        player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 4);
-                    }
-
-                    if (tag.getFloat(CrucibleProgressRenderer.BARWIDTH_KEY) <= 0) {
-                        item.remove(DataComponents.CUSTOM_DATA);
-                    }
-                } else if (meltingType == 2) {
-                    item.remove(DataComponents.CUSTOM_DATA);
-                    Registry<DamageType> damageTypes = player.damageSources().damageTypes;
-                    player.hurt(new DamageSource(damageTypes.getHolderOrThrow(DamageTypes.IN_FIRE)), 3);
-                }
-            }
-        }
-
-    }
 }

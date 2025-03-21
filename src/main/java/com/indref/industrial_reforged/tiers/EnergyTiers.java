@@ -14,8 +14,8 @@ public final class EnergyTiers {
     public static final Holder<EnergyTier> LOW = register("low", ChatFormatting.WHITE.getColor(), 16, 4_000);
     public static final Holder<EnergyTier> MEDIUM = register("medium", ChatFormatting.GOLD.getColor(),64, 16_000);
     public static final Holder<EnergyTier> HIGH = register("high", ChatFormatting.BLUE.getColor(),128, 32_000);
-    public static final Holder<EnergyTier> EXTREME = register("extreme", ChatFormatting.GREEN.getColor(), 512, 256_000);
-    public static final Holder<EnergyTier> INSANE = register("insane", ChatFormatting.RED.getColor(), 1024, 512_000);
+    public static final Holder<EnergyTier> EXTREME = register("extreme", ChatFormatting.GREEN.getColor(), 512, 64_000);
+    public static final Holder<EnergyTier> INSANE = register("insane", ChatFormatting.RED.getColor(), 1024, 128_000);
     public static final Holder<EnergyTier> CREATIVE = register("creative", ChatFormatting.LIGHT_PURPLE.getColor(), Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     public static Holder<EnergyTier> register(String name, int color, int throughput, int capacity) {

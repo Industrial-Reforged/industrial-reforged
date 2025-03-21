@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.registries;
 
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.content.items.misc.CastingScrapsItem;
 import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
-import com.indref.industrial_reforged.content.items.reactor.UraniumFuelRodItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
@@ -40,29 +40,39 @@ public final class IRItems {
     public static final DeferredItem<HammerItem> HAMMER = toolItem("hammer", HammerItem::new);
     //public static final DeferredItem<ThermometerItem> THERMOMETER = toolItem("thermometer", ThermometerItem::new);
     public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
-            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH));
+            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH, IRConfig.nanoSaberEnergyUsage, IRConfig.nanoSaberCapacity));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
-            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM));
+            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, IRConfig.scannerEnergyUsage, IRConfig.scannerCapacity));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
-            () -> new RockCutterItem(1, -2.8F, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
+            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, IRConfig.rockCutterEnergyUsage, IRConfig.rockCutterCapacity));
     public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
-            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW));
+            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, IRConfig.electricTreeTapEnergyUsage, IRConfig.electricTreeTapCapacity));
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
-            () -> new ElectricHoeItem(EnergyTiers.LOW.value(), Tiers.IRON, 1, -2.8F, new Item.Properties()));
+            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, IRConfig.electricHoeEnergyUsage, IRConfig.electricHoeCapacity));
     public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = registerItem("basic_drill",
-            () -> new ElectricDrillItem(1, -2.8F, 54, EnergyTiers.LOW, Tiers.IRON, new Item.Properties()));
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, IRConfig.basicDrillEnergyUsage, IRConfig.basicDrillCapacity));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new ElectricDrillItem(1, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, EnergyTiers.HIGH, IRConfig.advancedDrillEnergyUsage, IRConfig.advancedDrillCapacity));
     public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = registerItem("basic_chainsaw",
-            () -> new ElectricChainsawItem(5, -2.8F, 54, EnergyTiers.LOW, Tiers.GOLD, new Item.Properties()));
+            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, EnergyTiers.LOW, IRConfig.basicChainsawEnergyUsage, IRConfig.basicChainsawCapacity));
     public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = registerItem("advanced_chainsaw",
-            () -> new ElectricChainsawItem(7, -2.8F, 96, EnergyTiers.HIGH, Tiers.DIAMOND, new Item.Properties()));
-    public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
-            () -> new BlueprintItem(new Item.Properties()));
+            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, EnergyTiers.HIGH, IRConfig.advancedChainsawEnergyUsage, IRConfig.advancedChainsawCapacity));
 
     // Item storages
+    public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, IRConfig.basicBatteryCapacity, 6));
+    public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = registerItem("advanced_battery",
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, IRConfig.advancedBatteryCapacity, 8));
+    public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = registerItem("ultimate_battery",
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, IRConfig.ultimateBatteryCapacity, 9));
     public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
-            () -> new FluidCellItem(new Item.Properties().stacksTo(16), 1000));
+            () -> new FluidCellItem(new Item.Properties().stacksTo(16), IRConfig.fluidCellCapacity));
+    public static final DyedItemColor EMPTY_COLOR = new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), false);
+    public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
+            () -> new ToolboxItem(new Item.Properties()
+                    .stacksTo(1)
+                    .component(DataComponents.DYED_COLOR, EMPTY_COLOR)));
+
     public static final DeferredItem<Item> ANTENNA = registerStandardItem("antenna");
     public static final DeferredItem<Item> ELECTRIC_MOTOR = registerItem("electric_motor",
             () -> new Item(new Item.Properties()));
@@ -72,17 +82,8 @@ public final class IRItems {
     public static final DeferredItem<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
     public static final DeferredItem<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
     public static final DeferredItem<Item> PLANT_BALL = registerStandardItem("plant_ball");
-    public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, 6));
-    public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = registerItem("advanced_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, 8));
-    public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = registerItem("ultimate_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, 9));
-    public static final DyedItemColor EMPTY_COLOR = new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), false);
-    public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
-            () -> new ToolboxItem(new Item.Properties()
-                    .stacksTo(1)
-                    .component(DataComponents.DYED_COLOR, EMPTY_COLOR)));
+    public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
+            () -> new BlueprintItem(new Item.Properties()));
 
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",

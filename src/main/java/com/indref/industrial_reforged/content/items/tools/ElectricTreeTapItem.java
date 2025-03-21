@@ -18,8 +18,22 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class ElectricTreeTapItem extends SimpleEnergyItem {
-    public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier) {
-        super(properties, energyTier);
+    private final int energyUsage;
+    private final int energyCapacity;
+
+    public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+        super(properties, energyTier, defaultEnergyCapacity);
+        this.energyUsage = energyUsage;
+        this.energyCapacity = defaultEnergyCapacity;
+    }
+
+    public int getEnergyUsage() {
+        return energyUsage;
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return this.energyCapacity;
     }
 
     @Override
@@ -31,14 +45,14 @@ public class ElectricTreeTapItem extends SimpleEnergyItem {
         IEnergyStorage energyStorage = getEnergyCap(itemInHand);
 
         if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
-            if (energyStorage.getEnergyStored() >= 10) {
+            if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
                 level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
                 ItemStack resinDrop = new ItemStack(IRItems.STICKY_RESIN.get());
                 RandomSource random = useOnContext.getLevel().random;
                 int randomInt = random.nextInt(1, 4);
                 resinDrop.setCount(randomInt);
                 ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
-                energyStorage.tryDrainEnergy(10, false);
+                energyStorage.tryDrainEnergy(getEnergyUsage(), false);
                 return InteractionResult.SUCCESS;
             }
         }

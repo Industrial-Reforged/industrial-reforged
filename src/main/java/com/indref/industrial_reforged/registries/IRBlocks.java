@@ -50,19 +50,12 @@ public final class IRBlocks {
     public static final List<DeferredBlock<?>> AXE_MINEABLE = new ArrayList<>();
     public static final List<DeferredBlock<?>> PICKAXE_MINEABLE = new ArrayList<>();
 
-    public static final DeferredBlock<CableBlock> TIN_CABLE = pickaxeMineable(registerBlockAndItem("tin_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.of()
-                    .sound(SoundType.WOOL)
-                    .mapColor(MapColor.COLOR_BLACK)
-                    .strength(0.8f), 6, EnergyTiers.LOW), true, false));
-    public static final DeferredBlock<CableBlock> COPPER_CABLE = pickaxeMineable(registerBlockAndItem("copper_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.MEDIUM), true, false));
-    public static final DeferredBlock<CableBlock> GOLD_CABLE = pickaxeMineable(registerBlockAndItem("gold_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.HIGH), true, false));
-    public static final DeferredBlock<CableBlock> STEEL_CABLE = pickaxeMineable(registerBlockAndItem("steel_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.EXTREME), true, false));
-    //    public static final DeferredBlock<MiningPipeBlock> MINING_PIPE = registerBlockAndItem("mining_pipe",
-//            () -> new MiningPipeBlock(BlockBehaviour.Properties.of().noOcclusion()), $ -> () -> new MiningPipeBlockItem(new Item.Properties()), true, true);
+    // EARLY GAME BLOCKS
+    public static final DeferredBlock<DrainBlock> DRAIN = pickaxeAxeMineable(registerBlockAndItem("drain",
+            () -> new DrainBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTER))));
+    public static final DeferredBlock<CraftingStationBlock> CRAFTING_STATION = axeMineable(registerBlockAndItem("crafting_station",
+            () -> new CraftingStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE))));
+    // BLAST FURNACE
     public static final DeferredBlock<Block> BLAST_FURNACE_BRICKS = pickaxeMineable(registerBlockAndItem("blast_furnace_bricks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<BlastFurnaceHatchBlock> BLAST_FURNACE_HATCH = pickaxeMineable(registerBlockAndItem("blast_furnace_hatch",
@@ -71,6 +64,7 @@ public final class IRBlocks {
             () -> new BlastFurnaceController(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE)), false));
     public static final DeferredBlock<BlastFurnacePartBlock> BLAST_FURNACE_PART = pickaxeMineable(registerBlock("blast_furnace_part",
             () -> new BlastFurnacePartBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
+
     public static final DeferredBlock<SmallFireboxHatchBlock> SMALL_FIREBOX_HATCH = pickaxeMineable(registerBlockAndItem("small_firebox_hatch",
             () -> new SmallFireboxHatchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL))));
     public static final DeferredBlock<Block> REFRACTORY_STONE = pickaxeMineable(registerBlockAndItem("refractory_stone",
@@ -94,19 +88,28 @@ public final class IRBlocks {
     public static final DeferredBlock<FaucetBlock> BLAST_FURNACE_FAUCET = pickaxeMineable(registerBlockAndItem("blast_furnace_faucet",
             () -> new FaucetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), IRBlocks.BLAST_FURNACE_BRICKS.get())));
     public static final DeferredBlock<CastingBasinBlock> CERAMIC_CASTING_BASIN = pickaxeMineable(registerBlockAndItem("ceramic_casting_basin",
-            () -> new CastingBasinBlock(BlockBehaviour.Properties.of().noOcclusion(), IRBlocks.TERRACOTTA_BRICKS.get())));
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(TERRACOTTA_BRICKS.get()), IRBlocks.TERRACOTTA_BRICKS.get())));
     public static final DeferredBlock<CastingBasinBlock> BLAST_FURNACE_CASTING_BASIN = pickaxeMineable(registerBlockAndItem("blast_furnace_casting_basin",
-            () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).noOcclusion(), IRBlocks.BLAST_FURNACE_BRICKS.get())));
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), IRBlocks.BLAST_FURNACE_BRICKS.get())));
+    // MACHINES
     public static final DeferredBlock<MachineFrameBlock> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
             () -> new MachineFrameBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))));
     public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = pickaxeMineable(registerBlockAndItem("centrifuge",
             () -> new CentrifugeBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
     public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR = pickaxeMineable(registerBlockAndItem("basic_generator",
             () -> new BasicGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
-    public static final DeferredBlock<DrainBlock> DRAIN = pickaxeAxeMineable(registerBlockAndItem("drain",
-            () -> new DrainBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTER))));
-    public static final DeferredBlock<CraftingStationBlock> CRAFTING_STATION = axeMineable(registerBlockAndItem("crafting_station",
-            () -> new CraftingStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE))));
+    // CABLES
+    public static final DeferredBlock<CableBlock> TIN_CABLE = pickaxeMineable(registerBlockAndItem("tin_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.of()
+                    .sound(SoundType.WOOL)
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(0.8f), 6, EnergyTiers.LOW), true, false));
+    public static final DeferredBlock<CableBlock> COPPER_CABLE = pickaxeMineable(registerBlockAndItem("copper_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.MEDIUM), true, false));
+    public static final DeferredBlock<CableBlock> GOLD_CABLE = pickaxeMineable(registerBlockAndItem("gold_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.HIGH), true, false));
+    public static final DeferredBlock<CableBlock> STEEL_CABLE = pickaxeMineable(registerBlockAndItem("steel_cable",
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.EXTREME), true, false));
     public static final DeferredBlock<FenceBlock> IRON_FENCE = pickaxeMineable(registerBlockAndItem("iron_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), true, false));
     public static final DeferredBlock<Block> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",

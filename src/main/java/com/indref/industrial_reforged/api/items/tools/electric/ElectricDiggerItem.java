@@ -8,7 +8,6 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
-import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -39,11 +38,11 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     private final TagKey<Block> blocks;
     protected final Holder<EnergyTier> energyTier;
 
-    public ElectricDiggerItem(float baseAttackDamage, float attackSpeed, TagKey<Block> blocks, int energyUsage, Holder<EnergyTier> energyTier, Tier tier, Properties properties) {
+    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEuStorage(energyTier.value().defaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity)));
         this.baseAttackDamage = baseAttackDamage;
         this.attackSpeed = attackSpeed;
         this.energyUsage = energyUsage;

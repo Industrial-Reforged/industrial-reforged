@@ -8,7 +8,6 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.util.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
-import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -31,10 +30,24 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class ElectricHoeItem extends HoeItem implements IEnergyItem {
-    public ElectricHoeItem(EnergyTier energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
+    private final int energyUsage;
+    private final int defaultEnergyCapacity;
+
+    public ElectricHoeItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
         super(tier, properties.stacksTo(1)
                 .attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEuStorage(0, energyTier.defaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity)));
+        this.energyUsage = energyUsage;
+        this.defaultEnergyCapacity = defaultEnergyCapacity;
+    }
+
+    public int getEnergyUsage() {
+        return energyUsage;
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return defaultEnergyCapacity;
     }
 
     @Override
@@ -68,11 +81,11 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem {
             ItemStack itemStack = player.getItemInHand(context.getHand());
             Predicate<UseOnContext> predicate = pair.getFirst();
             Consumer<UseOnContext> consumer = pair.getSecond();
-            if (predicate.test(context) && energyStorage.getEnergyStored() >= 10) {
+            if (predicate.test(context) && energyStorage.getEnergyStored() >= getEnergyUsage()) {
                 level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!level.isClientSide()) {
                     consumer.accept(context);
-                    energyStorage.tryDrainEnergy(10, false);
+                    energyStorage.tryDrainEnergy(getEnergyUsage(), false);
                 }
 
                 return InteractionResult.sidedSuccess(level.isClientSide());

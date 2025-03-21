@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.machines;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -46,8 +47,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
-        addEuStorage(EnergyTiers.LOW);
-        addFluidTank(8000);
+        addEuStorage(EnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
+        addFluidTank(IRConfig.centrifugeFluidCapacity);
         addItemHandler(6, ((slot, itemStack) -> slot == 0
                 || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
     }

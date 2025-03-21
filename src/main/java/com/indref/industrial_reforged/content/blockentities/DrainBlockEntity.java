@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 public class DrainBlockEntity extends IRContainerBlockEntity {
     public DrainBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.DRAIN.get(), p_155229_, p_155230_);
-        addFluidTank(16000);
+        addFluidTank(IRConfig.drainFluidCapacity);
     }
 
     @Override
