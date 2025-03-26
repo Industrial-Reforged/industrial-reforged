@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
+import com.indref.industrial_reforged.api.items.tools.electric.ElectricToolItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -9,15 +10,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
-public class ElectricTreeTapItem extends SimpleEnergyItem {
+public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToolItem {
     private final int energyUsage;
     private final int energyCapacity;
 
@@ -45,17 +49,28 @@ public class ElectricTreeTapItem extends SimpleEnergyItem {
         IEnergyStorage energyStorage = getEnergyCap(itemInHand);
 
         if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
-            if (energyStorage.getEnergyStored() >= getEnergyUsage()) {
+            Player player = useOnContext.getPlayer();
+            if (canWork(itemInHand, player)) {
                 level.setBlockAndUpdate(blockPos, blockState.setValue(RESIN, false));
                 ItemStack resinDrop = new ItemStack(IRItems.STICKY_RESIN.get());
                 RandomSource random = useOnContext.getLevel().random;
                 int randomInt = random.nextInt(1, 4);
                 resinDrop.setCount(randomInt);
-                ItemHandlerHelper.giveItemToPlayer(useOnContext.getPlayer(), resinDrop);
-                energyStorage.tryDrainEnergy(getEnergyUsage(), false);
+                ItemHandlerHelper.giveItemToPlayer(player, resinDrop);
+                consumeEnergy(itemInHand, player);
                 return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.FAIL;
+    }
+
+    @Override
+    public boolean requireEnergyToWork(ItemStack itemStack, Entity player) {
+        return true;
+    }
+
+    @Override
+    public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
+        return this.energyUsage;
     }
 }

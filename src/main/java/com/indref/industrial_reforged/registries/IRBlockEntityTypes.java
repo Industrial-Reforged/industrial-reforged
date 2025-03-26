@@ -14,8 +14,8 @@ import com.indref.industrial_reforged.content.blockentities.multiblocks.controll
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.SmallFireboxBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.FireboxPartBlockEntity;
-import com.indref.industrial_reforged.content.blocks.misc.CastingBasinBlock;
-import com.indref.industrial_reforged.content.blocks.misc.FaucetBlock;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.FaucetBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;

@@ -1,9 +1,6 @@
 {
   "values": [
-    "indref:tin_cable",
-    "indref:copper_cable",
-    "indref:gold_cable",
-    "indref:steel_cable",
+    "indref:drain",
     "indref:blast_furnace_bricks",
     "indref:blast_furnace_hatch",
     "indref:blast_furnace_controller",
@@ -24,7 +21,10 @@
     "indref:basic_machine_frame",
     "indref:centrifuge",
     "indref:basic_generator",
-    "indref:drain",
+    "indref:tin_cable",
+    "indref:copper_cable",
+    "indref:gold_cable",
+    "indref:steel_cable",
     "indref:iron_fence",
     "indref:bauxite_ore",
     "indref:deepslate_bauxite_ore",

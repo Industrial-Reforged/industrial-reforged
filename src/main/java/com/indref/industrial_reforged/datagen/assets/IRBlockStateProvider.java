@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blocks.misc.CastingBasinBlock;
-import com.indref.industrial_reforged.content.blocks.misc.FaucetBlock;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.FaucetBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.core.Direction;

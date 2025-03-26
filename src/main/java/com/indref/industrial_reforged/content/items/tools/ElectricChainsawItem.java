@@ -9,9 +9,11 @@ import net.minecraft.world.item.Tier;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
+import java.util.function.IntSupplier;
+
 public class ElectricChainsawItem extends ElectricDiggerItem {
 
-    public ElectricChainsawItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+    public ElectricChainsawItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_AXE, energyTier, energyUsage, defaultEnergyCapacity);
     }
 

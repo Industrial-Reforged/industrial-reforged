@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-21T18:40:16.494857352	Tags for minecraft:item mod id vanilla
+// 1.21.1	2025-03-26T19:00:28.099955168	Tags for minecraft:item mod id vanilla
 bf4207125fec838572bf88021bbbaeb2269993f9 data/c/tags/item/bricks.json
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
@@ -59,7 +59,7 @@ fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json
 0b79414d07652b0536049e1e7ea3b0a3a88e742b data/c/tags/item/wires/steel.json
 71051527a733b38d16af3551c77c971f5928095e data/c/tags/item/wires/tin.json
-36364f8989122dcb8aa5367e933974248b3e28f1 data/indref/tags/item/molds.json
+e322d14c138ce773447932d48bbd03fe6dc4fa73 data/indref/tags/item/molds.json
 58b05a4da836c7c814c64c079ffc32ca0bc145da data/minecraft/tags/item/dyeable.json
 7ec99157ac16a38de2ac0d390dc224f1fbe49af4 data/minecraft/tags/item/fence_gates.json
 9fc4940b4b0bec19481be6ce8ee18150a36574fd data/minecraft/tags/item/leaves.json

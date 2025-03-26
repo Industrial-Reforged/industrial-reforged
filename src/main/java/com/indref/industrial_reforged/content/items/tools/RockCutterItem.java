@@ -13,18 +13,19 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
+import java.util.function.IntSupplier;
 
 public class RockCutterItem extends ElectricDiggerItem {
-    private final int energyCapacity;
+    private final IntSupplier energyCapacity;
 
-    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_PICKAXE, energyTier, energyUsage, defaultEnergyCapacity);
         this.energyCapacity = defaultEnergyCapacity;
     }
 
     @Override
     public int getDefaultEnergyCapacity() {
-        return this.energyCapacity;
+        return this.energyCapacity.getAsInt();
     }
 
     @Override

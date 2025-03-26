@@ -69,27 +69,18 @@ public final class IndustrialReforged {
         modEventBus.addListener(this::registerPayloads);
 
         IRFluids.HELPER.register(modEventBus);
-
         IRItems.ITEMS.register(modEventBus);
-
         IRBlocks.BLOCKS.register(modEventBus);
-
         IRMultiblocks.MULTIBLOCKS.register(modEventBus);
-
         IRBlockEntityTypes.BLOCK_ENTITIES.register(modEventBus);
-
         IRMenuTypes.MENUS.register(modEventBus);
-
         IRTabs.CREATIVE_TABS.register(modEventBus);
-
         IRRecipes.SERIALIZERS.register(modEventBus);
-
         IRDataComponents.DATA_COMPONENT_TYPES.register(modEventBus);
-
         IRPlacerTypes.FOLIAGE_PLACERS.register(modEventBus);
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
-
         IRAttachmentTypes.ATTACHMENTS.register(modEventBus);
+        IRSoundEvents.SOUND_EVENTS.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
     }

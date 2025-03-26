@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.util.items.ItemBarUtils;
 import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -66,7 +67,7 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     }
 
     @Override
-    public boolean requireEnergyToWork(ItemStack itemStack, Player player) {
+    public boolean requireEnergyToWork(ItemStack itemStack, Entity player) {
         return true;
     }
 }

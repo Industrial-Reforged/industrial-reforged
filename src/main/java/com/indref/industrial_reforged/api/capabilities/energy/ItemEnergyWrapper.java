@@ -11,6 +11,9 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
     public ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTier, int initialCapacity) {
         this(itemStack, energyTier);
         this.setEnergyCapacity(initialCapacity);
+        if (itemStack.getItem() instanceof IEnergyItem energyItem) {
+            energyItem.initEnergyStorage(this, itemStack);
+        }
     }
 
     @Override

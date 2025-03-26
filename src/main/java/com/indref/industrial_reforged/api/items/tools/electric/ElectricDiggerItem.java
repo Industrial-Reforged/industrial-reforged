@@ -28,31 +28,40 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.IntSupplier;
 
 public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyItem, ElectricToolItem {
     private final float baseAttackDamage;
     private final float attackSpeed;
-    private final int energyUsage;
-    private final float mineSpeed;
+    private final IntSupplier energyUsage;
     private final Tier tier;
+    @org.jetbrains.annotations.NotNull
+    private final IntSupplier defaultEnergyCapacity;
     private final TagKey<Block> blocks;
     protected final Holder<EnergyTier> energyTier;
 
-    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity)));
+                .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity.getAsInt())));
         this.baseAttackDamage = baseAttackDamage;
         this.attackSpeed = attackSpeed;
         this.energyUsage = energyUsage;
         this.blocks = blocks;
         this.energyTier = energyTier;
-        this.mineSpeed = tier.getSpeed();
         this.tier = tier;
+        this.defaultEnergyCapacity = defaultEnergyCapacity;
     }
 
-    // TODO: Item is only supposed to work when there is enough energy
+    @Override
+    public void initEnergyStorage(IEnergyStorage energyStorage, ItemStack itemStack) {
+        if (energyStorage.getEnergyStored() == 0) {
+            itemStack.remove(DataComponents.TOOL);
+        } else {
+            itemStack.set(DataComponents.TOOL, tier.createToolProperties(this.blocks));
+        }
+    }
 
     @Override
     public void onEnergyChanged(ItemStack itemStack, int oldAmount) {
@@ -66,12 +75,17 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
                         : 0,
                 attackSpeed
         ));
+        if (energyStorage.getEnergyStored() == 0) {
+            itemStack.remove(DataComponents.TOOL);
+        } else if (oldAmount == 0) {
+            itemStack.set(DataComponents.TOOL, tier.createToolProperties(this.blocks));
+        }
     }
 
     @Override
     public boolean mineBlock(ItemStack stack, Level p_41417_, BlockState p_41418_, BlockPos p_41419_, LivingEntity entity) {
         Player player = entity instanceof Player player0 ? player0 : null;
-        if (requireEnergyToWork(stack, player)) {
+        if (canWork(stack, player)) {
             IEnergyStorage energyStorage = getEnergyCap(stack);
             int energyUsage = getEnergyUsage(stack, player);
             energyStorage.tryDrainEnergy(energyUsage, false);
@@ -82,18 +96,12 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity p_40995_, LivingEntity entity) {
         Player player = entity instanceof Player player0 ? player0 : null;
-        if (requireEnergyToWork(stack, player)) {
+        if (canWork(stack, player)) {
             IEnergyStorage energyStorage = getEnergyCap(stack);
             int energyUsage = (int) (getEnergyUsage(stack, player) * 1.5f);
             energyStorage.tryDrainEnergy(energyUsage, false);
         }
         return true;
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack pStack, BlockState pState) {
-        int energyUsage = getEnergyUsage(pStack, null);
-        return !requireEnergyToWork(pStack, null) || getEnergyCap(pStack).tryDrainEnergy(energyUsage, true) > 0 ? 12f : 1f;
     }
 
     @Override
@@ -124,13 +132,18 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public boolean requireEnergyToWork(ItemStack itemStack, Player player) {
+    public boolean requireEnergyToWork(ItemStack itemStack, Entity player) {
         return true;
     }
 
     @Override
     public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
-        return this.energyUsage;
+        return this.energyUsage.getAsInt();
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return this.defaultEnergyCapacity.getAsInt();
     }
 
     @Override

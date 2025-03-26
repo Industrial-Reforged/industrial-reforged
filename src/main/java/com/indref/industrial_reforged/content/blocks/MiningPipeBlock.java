@@ -1,7 +1,6 @@
-package com.indref.industrial_reforged.content.blocks.misc;
+package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
-import com.indref.industrial_reforged.registries.IRBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

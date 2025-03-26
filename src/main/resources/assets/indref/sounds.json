@@ -1,0 +1,9 @@
+{
+  "hammering": {
+    "category": "players",
+    "subtitle": "indref.hammering",
+    "sounds": [
+      "indref:hammering"
+    ]
+  }
+}

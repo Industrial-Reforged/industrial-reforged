@@ -1,10 +1,9 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.content.blocks.misc.CastingBasinBlock;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
 import com.mojang.blaze3d.vertex.PoseStack;

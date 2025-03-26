@@ -18,6 +18,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.component.Tool;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -44,19 +45,19 @@ public final class IRItems {
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
             () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, IRConfig.scannerEnergyUsage, IRConfig.scannerCapacity));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
-            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, IRConfig.rockCutterEnergyUsage, IRConfig.rockCutterCapacity));
+            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
     public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
             () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, IRConfig.electricTreeTapEnergyUsage, IRConfig.electricTreeTapCapacity));
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
             () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, IRConfig.electricHoeEnergyUsage, IRConfig.electricHoeCapacity));
     public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = registerItem("basic_drill",
-            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, IRConfig.basicDrillEnergyUsage, IRConfig.basicDrillCapacity));
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, EnergyTiers.HIGH, IRConfig.advancedDrillEnergyUsage, IRConfig.advancedDrillCapacity));
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedDrillEnergyUsage, () -> IRConfig.advancedDrillCapacity));
     public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = registerItem("basic_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, EnergyTiers.LOW, IRConfig.basicChainsawEnergyUsage, IRConfig.basicChainsawCapacity));
+            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
     public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = registerItem("advanced_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, EnergyTiers.HIGH, IRConfig.advancedChainsawEnergyUsage, IRConfig.advancedChainsawCapacity));
+            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedChainsawEnergyUsage, () -> IRConfig.advancedChainsawCapacity));
 
     // Item storages
     public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",

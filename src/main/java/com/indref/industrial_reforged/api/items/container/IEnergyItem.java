@@ -11,6 +11,10 @@ public interface IEnergyItem {
         return itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
     }
 
+    // We have to pass the energy storage here, as it is not fully initialized yet
+    default void initEnergyStorage(IEnergyStorage energyStorage, ItemStack itemStack) {
+    }
+
     default void onEnergyChanged(ItemStack itemStack, int oldAmount) {
     }
 

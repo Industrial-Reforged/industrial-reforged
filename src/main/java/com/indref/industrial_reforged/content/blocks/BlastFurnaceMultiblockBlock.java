@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.blocks.misc;
+package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.translations.IRTranslations;
 import net.minecraft.ChatFormatting;
@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.List;
 
-public class BlastFurnaceController extends Block {
-    public BlastFurnaceController(Properties properties) {
+public class BlastFurnaceMultiblockBlock extends Block {
+    public BlastFurnaceMultiblockBlock(Properties properties) {
         super(properties);
     }
 

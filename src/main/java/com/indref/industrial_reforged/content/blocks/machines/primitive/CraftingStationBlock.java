@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.blocks.misc;
+package com.indref.industrial_reforged.content.blocks.machines.primitive;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;

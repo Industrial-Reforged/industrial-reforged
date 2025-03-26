@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.registries.IRSoundEvents;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.world.InteractionResult;
@@ -22,9 +23,11 @@ public class HammerItem extends Item {
                 if (controllerState.is(multiblock.getUnformedController())) {
                     try {
                         boolean formed = multiblock.form(useOnContext.getLevel(), useOnContext.getClickedPos(), useOnContext.getPlayer());
-                        return formed
-                                ? InteractionResult.SUCCESS
-                                : InteractionResult.FAIL;
+                        if (formed) {
+                            useOnContext.getPlayer().playSound(IRSoundEvents.HAMMERING.get(), 1, 0.85f);
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.FAIL;
                     } catch (Exception e) {
                         IndustrialReforged.LOGGER.error("Encountered err", e);
                     }

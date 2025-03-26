@@ -159,8 +159,8 @@ public class IRItemModelProvider extends ItemModelProvider {
     }
 
     private void activeModel(ItemLike item) {
-        overrideItemModel(2, basicItem(item), IRItemProperties.ACTIVE_KEY,
-                i -> i == 1 ? basicItem(extend(key(item), "_active")) : basicItem(item));
+        overrideItemModel(2, handheldItem(item), IRItemProperties.ACTIVE_KEY,
+                i -> i == 1 ? handheldItem(extend(key(item), "_active")) : handheldItem(item));
     }
 
     public ItemModelBuilder basicItem(ItemLike item, ResourceLocation texture) {
@@ -230,7 +230,7 @@ public class IRItemModelProvider extends ItemModelProvider {
     }
 
     public ItemModelBuilder handheldItem(ItemLike itemLike) {
-        return basicItem(itemLike, "");
+        return handheldItem(itemLike, "");
     }
 
     public ItemModelBuilder handheldItem(ItemLike item, String suffix) {

@@ -27,14 +27,21 @@ public final class IRItemProperties {
     }
 
     public static float isItemHeld(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-        @Nullable IEnergyStorage capability = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
-        boolean runAnimation = true;
-        if (stack.getItem() instanceof ElectricChainsawItem) {
-            runAnimation = IRConfig.chainsawItemAnimation;
-        } else if (stack.getItem() instanceof ElectricDrillItem) {
-            runAnimation = IRConfig.drillItemAnimation;
+        if (entity != null) {
+            ItemStack mainHandItem = entity.getMainHandItem();
+            @Nullable IEnergyStorage capability = mainHandItem.getCapability(IRCapabilities.EnergyStorage.ITEM);
+            boolean runAnimation = true;
+            if (stack.getItem() instanceof ElectricChainsawItem) {
+                runAnimation = IRConfig.chainsawItemAnimation;
+            } else if (stack.getItem() instanceof ElectricDrillItem) {
+                runAnimation = IRConfig.drillItemAnimation;
+            }
+            return runAnimation
+                    && mainHandItem.equals(stack)
+                    && capability != null
+                    && capability.getEnergyStored() > 0 ? 1 : 0;
         }
-        return entity != null && entity.getMainHandItem().is(stack.getItem()) && capability != null && capability.getEnergyStored() > 0 ? 1 : 0;
+        return 0;
     }
 
     public static float getBatteryStage(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {

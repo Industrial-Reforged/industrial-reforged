@@ -1,19 +1,13 @@
-package com.indref.industrial_reforged.content.blocks.misc;
+package com.indref.industrial_reforged.content.blocks.machines.primitive;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
-import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.serialization.MapCodec;
 import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
