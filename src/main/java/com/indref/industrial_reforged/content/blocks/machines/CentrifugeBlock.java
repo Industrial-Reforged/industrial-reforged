@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blocks.machines;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blocks.MachineBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.mojang.serialization.MapCodec;
@@ -10,11 +11,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-public class CentrifugeBlock extends ContainerBlock implements WrenchableBlock {
+public class CentrifugeBlock extends MachineBlock implements WrenchableBlock {
 
     public CentrifugeBlock(Properties properties) {
         super(properties);
@@ -23,7 +25,7 @@ public class CentrifugeBlock extends ContainerBlock implements WrenchableBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(ACTIVE));
+        super.createBlockStateDefinition(builder.add(ACTIVE).add(BlockStateProperties.HORIZONTAL_FACING));
     }
 
     @Override

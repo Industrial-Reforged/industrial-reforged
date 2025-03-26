@@ -42,6 +42,6 @@ public record SidedEnergyHandler(IEnergyStorage innerHandler, IOAction action) i
 
     @Override
     public int tryFillEnergy(int value, boolean simulate) {
-        return action == IOAction.EXTRACT || action == IOAction.BOTH ? innerHandler.tryFillEnergy(value, simulate) : 0;
+        return action == IOAction.INSERT || action == IOAction.BOTH ? innerHandler.tryFillEnergy(value, simulate) : 0;
     }
 }

@@ -4,16 +4,25 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class MachineBlockEntity extends IRContainerBlockEntity {
     private @Nullable ChargingSlot batterySlot;
+    private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
+        this.caches = new ArrayList<>();
     }
 
     public void addBatterySlot(ChargingSlot chargingSlot) {
@@ -26,6 +35,33 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity {
         if (this.batterySlot != null) {
             tickBatterySlot();
         }
+
+        if (spreadEnergy() && !level.isClientSide()) {
+            int amountPerBlock = getAmountPerBlock();
+            for (BlockCapabilityCache<IEnergyStorage, Direction> cache : this.caches) {
+                IEnergyStorage energyStorage = cache.getCapability();
+                if (energyStorage != null) {
+                    int filled = energyStorage.tryFillEnergy(amountPerBlock, false);
+                    getEuStorage().tryDrainEnergy(filled, false);
+                }
+            }
+        }
+    }
+
+    private int getAmountPerBlock() {
+        int blocks = 0;
+        for (BlockCapabilityCache<IEnergyStorage, Direction> cache : this.caches) {
+            if (cache.getCapability() != null) {
+                blocks++;
+            }
+        }
+        int amountPerBlock;
+        if (getEuStorage().getEnergyStored() >= getEuStorage().getMaxOutput() * blocks) {
+            amountPerBlock = getEuStorage().getMaxOutput();
+        } else {
+            amountPerBlock = getEuStorage().getEnergyStored() / blocks;
+        }
+        return amountPerBlock;
     }
 
     private void tickBatterySlot() {
@@ -43,6 +79,25 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity {
                 int filled = energyStorage.tryFillEnergy(drained, true);
                 int newDrained = itemEnergyStorage.tryDrainEnergy(filled, false);
                 energyStorage.tryFillEnergy(newDrained, false);
+            }
+        }
+    }
+
+    public boolean spreadEnergy() {
+        return false;
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+
+        initCapCache();
+    }
+
+    public void initCapCache() {
+        if (level instanceof ServerLevel serverLevel) {
+            for (Direction direction : Direction.values()) {
+                this.caches.add(BlockCapabilityCache.create(IRCapabilities.EnergyStorage.BLOCK, serverLevel, worldPosition.relative(direction), direction));
             }
         }
     }

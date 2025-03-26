@@ -12,6 +12,7 @@ import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.SidedCapUtils;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -190,6 +191,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                     Direction.WEST, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4}),
                     Direction.DOWN, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4})
             );
+        } else if (capability == IRCapabilities.EnergyStorage.BLOCK) {
+            return SidedCapUtils.allInsert(0);
         }
         return ImmutableMap.of();
     }

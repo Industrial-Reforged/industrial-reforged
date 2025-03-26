@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blocks.generators;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.RotatableMachineBlock;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -37,7 +38,7 @@ import java.util.List;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-public class BasicGeneratorBlock extends RotatableContainerBlock implements WrenchableBlock, DisplayBlock {
+public class BasicGeneratorBlock extends RotatableMachineBlock implements WrenchableBlock, DisplayBlock {
     public BasicGeneratorBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));

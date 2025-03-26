@@ -55,6 +55,11 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         addEuStorage(EnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
     }
 
+    @Override
+    public boolean spreadEnergy() {
+        return true;
+    }
+
     public boolean isActive() {
         return this.burnTime > 0;
     }
