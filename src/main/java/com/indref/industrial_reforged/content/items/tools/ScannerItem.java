@@ -38,19 +38,19 @@ public class ScannerItem extends SimpleEnergyItem implements ElectricToolItem {
         return energyUsage.getAsInt();
     }
 
-    @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
-
-        if (entity instanceof Player player) {
-            if (player.getMainHandItem().equals(stack)) {
-                BlockHitResult playerPOVHitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
-                if (playerPOVHitResult.getType() == HitResult.Type.BLOCK) {
-                    if (level.getBlockState(playerPOVHitResult.getBlockPos()).) {
-
-                    }
-                }
-            }
-        }
-    }
+//    @Override
+//    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+//        super.inventoryTick(stack, level, entity, slotId, isSelected);
+//
+//        if (entity instanceof Player player) {
+//            if (player.getMainHandItem().equals(stack)) {
+//                BlockHitResult playerPOVHitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+//                if (playerPOVHitResult.getType() == HitResult.Type.BLOCK) {
+//                    if (level.getBlockState(playerPOVHitResult.getBlockPos()).) {
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
