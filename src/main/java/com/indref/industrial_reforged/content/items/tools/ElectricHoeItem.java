@@ -30,29 +30,30 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 
 public class ElectricHoeItem extends HoeItem implements IEnergyItem, ElectricToolItem {
     private final Holder<EnergyTier> energyTier;
-    private final int energyUsage;
-    private final int defaultEnergyCapacity;
+    private final IntSupplier energyUsage;
+    private final IntSupplier defaultEnergyCapacity;
 
-    public ElectricHoeItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+    public ElectricHoeItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(tier, properties.stacksTo(1)
                 .attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity)));
+                .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity.getAsInt())));
         this.energyTier = energyTier;
         this.energyUsage = energyUsage;
         this.defaultEnergyCapacity = defaultEnergyCapacity;
     }
 
     public int getEnergyUsage() {
-        return energyUsage;
+        return energyUsage.getAsInt();
     }
 
     @Override
     public int getDefaultEnergyCapacity() {
-        return defaultEnergyCapacity;
+        return defaultEnergyCapacity.getAsInt();
     }
 
     @Override
@@ -117,6 +118,6 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem, ElectricToo
 
     @Override
     public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
-        return energyUsage;
+        return getEnergyUsage();
     }
 }

@@ -41,15 +41,15 @@ public final class IRItems {
     public static final DeferredItem<HammerItem> HAMMER = toolItem("hammer", HammerItem::new);
     //public static final DeferredItem<ThermometerItem> THERMOMETER = toolItem("thermometer", ThermometerItem::new);
     public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
-            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH, IRConfig.nanoSaberEnergyUsage, IRConfig.nanoSaberCapacity));
+            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.nanoSaberEnergyUsage, () -> IRConfig.nanoSaberCapacity));
     public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
-            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, IRConfig.scannerEnergyUsage, IRConfig.scannerCapacity));
+            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
             () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
     public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
-            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, IRConfig.electricTreeTapEnergyUsage, IRConfig.electricTreeTapCapacity));
+            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.electricTreeTapEnergyUsage, () -> IRConfig.electricTreeTapCapacity));
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
-            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, IRConfig.electricHoeEnergyUsage, IRConfig.electricHoeCapacity));
+            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, () -> IRConfig.electricHoeEnergyUsage, () -> IRConfig.electricHoeCapacity));
     public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = registerItem("basic_drill",
             () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
@@ -61,13 +61,13 @@ public final class IRItems {
 
     // Item storages
     public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, IRConfig.basicBatteryCapacity, 6));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.basicBatteryCapacity, 6));
     public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = registerItem("advanced_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, IRConfig.advancedBatteryCapacity, 8));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.advancedBatteryCapacity, 8));
     public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = registerItem("ultimate_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, IRConfig.ultimateBatteryCapacity, 9));
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, () -> IRConfig.ultimateBatteryCapacity, 9));
     public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
-            () -> new FluidCellItem(new Item.Properties().stacksTo(16), IRConfig.fluidCellCapacity));
+            () -> new FluidCellItem(new Item.Properties().stacksTo(16), () -> IRConfig.fluidCellCapacity));
     public static final DyedItemColor EMPTY_COLOR = new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), false);
     public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
             () -> new ToolboxItem(new Item.Properties()

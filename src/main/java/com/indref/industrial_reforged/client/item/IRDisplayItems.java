@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.client.item;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import com.indref.industrial_reforged.util.IRHooks;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;

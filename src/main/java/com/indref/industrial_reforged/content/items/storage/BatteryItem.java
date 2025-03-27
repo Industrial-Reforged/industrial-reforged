@@ -19,11 +19,12 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.IntSupplier;
 
 public class BatteryItem extends SimpleEnergyItem {
     private final int stages;
 
-    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, int defaultEnergyCapacity, int stages) {
+    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier defaultEnergyCapacity, int stages) {
         super(properties, energyTier, defaultEnergyCapacity);
         this.stages = stages;
     }

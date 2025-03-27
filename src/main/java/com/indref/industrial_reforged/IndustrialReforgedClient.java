@@ -2,7 +2,7 @@ package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
+import com.indref.industrial_reforged.api.items.tools.ClientDisplayItem;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.item.IRDisplayItems;
 import com.indref.industrial_reforged.client.item.IRItemProperties;
@@ -63,7 +63,7 @@ public final class IndustrialReforgedClient {
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
-    public static final Map<Item, DisplayItem> DISPLAY_ITEMS = new HashMap<>();
+    public static final Map<Item, ClientDisplayItem> DISPLAY_ITEMS = new HashMap<>();
 
     private void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {

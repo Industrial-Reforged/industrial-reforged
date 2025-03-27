@@ -28,24 +28,25 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.IntSupplier;
 
 public class NanoSaberItem extends ElectricSwordItem {
-    private final int energyUsage;
-    private final int energyCapacity;
+    private final IntSupplier energyUsage;
+    private final IntSupplier energyCapacity;
 
-    public NanoSaberItem(Properties properties, Holder<EnergyTier> energyTier, int energyUsage, int energyCapacity) {
+    public NanoSaberItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
         super(energyTier, Tiers.DIAMOND, -1, -3F, properties.component(IRDataComponents.ACTIVE, false));
         this.energyUsage = energyUsage;
         this.energyCapacity = energyCapacity;
     }
 
     public int getEnergyUsage() {
-        return energyUsage;
+        return energyUsage.getAsInt();
     }
 
     @Override
     public int getDefaultEnergyCapacity() {
-        return energyCapacity;
+        return energyCapacity.getAsInt();
     }
 
     public @NotNull ItemAttributeModifiers createAttributes(ItemStack stack) {

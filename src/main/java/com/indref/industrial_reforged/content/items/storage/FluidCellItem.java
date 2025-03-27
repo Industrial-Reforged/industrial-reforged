@@ -26,12 +26,14 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
+import java.util.function.IntSupplier;
+
 import static net.minecraft.world.level.block.LiquidBlock.LEVEL;
 
 public class FluidCellItem extends SimpleFluidItem {
-    private final int capacity;
+    private final IntSupplier capacity;
 
-    public FluidCellItem(Properties properties, int capacity) {
+    public FluidCellItem(Properties properties, IntSupplier capacity) {
         super(properties);
         this.capacity = capacity;
     }
@@ -93,7 +95,7 @@ public class FluidCellItem extends SimpleFluidItem {
 
     @Override
     public int getFluidCapacity() {
-        return this.capacity;
+        return this.capacity.getAsInt();
     }
 
 }

@@ -19,25 +19,27 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.IntSupplier;
+
 import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
 public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToolItem {
-    private final int energyUsage;
-    private final int energyCapacity;
+    private final IntSupplier energyUsage;
+    private final IntSupplier energyCapacity;
 
-    public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier, int energyUsage, int defaultEnergyCapacity) {
+    public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, energyTier, defaultEnergyCapacity);
         this.energyUsage = energyUsage;
         this.energyCapacity = defaultEnergyCapacity;
     }
 
     public int getEnergyUsage() {
-        return energyUsage;
+        return energyUsage.getAsInt();
     }
 
     @Override
     public int getDefaultEnergyCapacity() {
-        return this.energyCapacity;
+        return this.energyCapacity.getAsInt();
     }
 
     @Override
@@ -71,6 +73,6 @@ public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToo
 
     @Override
     public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
-        return this.energyUsage;
+        return this.energyUsage.getAsInt();
     }
 }

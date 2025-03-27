@@ -1,10 +1,8 @@
 package com.indref.industrial_reforged.api.events;
 
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.Event;

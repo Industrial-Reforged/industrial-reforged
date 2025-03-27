@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.client.hud;
 
 import com.indref.industrial_reforged.IndustrialReforgedClient;
-import com.indref.industrial_reforged.api.items.tools.DisplayItem;
+import com.indref.industrial_reforged.api.items.tools.ClientDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +28,8 @@ public class ScannerInfoOverlay {
                 }
             }
             if (!item.isEmpty()) {
-                DisplayItem displayItem = IndustrialReforgedClient.DISPLAY_ITEMS.get(item.getItem());
-                displayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos(), item);
+                ClientDisplayItem clientDisplayItem = IndustrialReforgedClient.DISPLAY_ITEMS.get(item.getItem());
+                clientDisplayItem.displayOverlay(guiGraphics, x, y, lineOffset, level, player, blockHitResult.getBlockPos(), item);
             }
         }
     };
