@@ -2,10 +2,10 @@ package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.client.widgets.EnergyBarWidget;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.client.widgets.BatterySlotWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
-import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.EnergyBarWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +33,7 @@ public class BasicGeneratorScreen extends PDLAbstractContainerScreen<BasicGenera
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         EnergyBarWidget energyBarWidget = addRenderableOnly(
-                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), "EU", true)
+                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
         );
         addRenderableOnly(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
     }

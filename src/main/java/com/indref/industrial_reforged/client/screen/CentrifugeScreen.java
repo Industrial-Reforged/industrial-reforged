@@ -2,11 +2,11 @@ package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.client.widgets.EnergyBarWidget;
 import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.client.widgets.BatterySlotWidget;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
-import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.EnergyBarWidget;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -30,7 +30,7 @@ public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu>
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
         EnergyBarWidget energyBarWidget = addRenderableOnly(
-                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), "EU", true)
+                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
         );
         addRenderableWidget(
                 new FluidTankWidget(this.leftPos + 142, this.topPos + 24, FluidTankWidget.TankVariants.SMALL, menu.blockEntity)
