@@ -185,11 +185,6 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void miscRecipes() {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.RUBBER_SHEET.get(), 3)
-                .requires(IRItems.RUBBER, 2)
-                .unlockedBy("has_rubber", has(IRItems.RUBBER))
-                .save(output);
-
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK.get(), 2)
                 .requires(Items.CLAY_BALL, 3)
                 .unlockedBy("has_clay", has(Items.CLAY_BALL))
@@ -243,10 +238,10 @@ public class IRRecipeProvider extends RecipeProvider {
                 .save(output);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CIRCUIT_BOARD.get(), 2)
-                .requires(CTags.Items.RUBBER_SHEET)
-                .requires(CTags.Items.RUBBER_SHEET)
+                .requires(CTags.Items.RUBBER)
+                .requires(CTags.Items.RUBBER)
                 .requires(IRItems.PLANT_MASS, 3)
-                .unlockedBy("has_rubber_sheet", has(CTags.Items.RUBBER_SHEET))
+                .unlockedBy("has_rubber", has(CTags.Items.RUBBER))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.BASIC_CIRCUIT.get())
@@ -454,8 +449,8 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("LRL")
                 .define('W', Items.YELLOW_WOOL)
                 .define('L', CTags.Items.LEAD_INGOT)
-                .define('R', IRItems.RUBBER_SHEET)
-                .unlockedBy("has_rubber_sheet", has(IRItems.RUBBER_SHEET.get()))
+                .define('R', IRItems.RUBBER)
+                .unlockedBy("has_rubber", has(IRItems.RUBBER.get()))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.HAZMAT_LEGGINGS.get())
@@ -463,16 +458,16 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("W W")
                 .pattern("R R")
                 .define('W', Items.YELLOW_WOOL)
-                .define('R', IRItems.RUBBER_SHEET)
-                .unlockedBy("has_rubber_sheet", has(IRItems.RUBBER_SHEET.get()))
+                .define('R', IRItems.RUBBER)
+                .unlockedBy("has_rubber", has(IRItems.RUBBER.get()))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.HAZMAT_BOOTS.get())
                 .pattern("R R")
                 .pattern("L L")
                 .define('L', CTags.Items.LEAD_INGOT)
-                .define('R', IRItems.RUBBER_SHEET)
-                .unlockedBy("has_rubber_sheet", has(IRItems.RUBBER_SHEET.get()))
+                .define('R', IRItems.RUBBER)
+                .unlockedBy("has_rubber", has(IRItems.RUBBER.get()))
                 .save(output);
     }
 
@@ -807,9 +802,9 @@ public class IRRecipeProvider extends RecipeProvider {
     // -- HELPER METHODS --
     private void cable(TagKey<Item> wireMaterial, ItemLike cable) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, cable)
-                .requires(CTags.Items.RUBBER_SHEET)
+                .requires(CTags.Items.RUBBER)
                 .requires(wireMaterial)
-                .unlockedBy("has_rubber_sheet", has(CTags.Items.RUBBER_SHEET))
+                .unlockedBy("has_rubber", has(CTags.Items.RUBBER))
                 .save(output);
     }
 

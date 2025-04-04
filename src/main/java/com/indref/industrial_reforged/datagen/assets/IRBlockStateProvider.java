@@ -34,7 +34,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         blockModel(IRBlocks.BASIC_GENERATOR)
                 .front(this::machineTexture, "_front")
-                .rotatable()
+                .horizontalFacing()
                 .active()
                 .create();
 
@@ -44,12 +44,19 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .active()
                 .create();
 
+        blockModel(IRBlocks.BATTERY_BOX)
+                .top(this::machineTexture, "_top")
+                .bottom(this::machineTexture, "_bottom")
+                .defaultTexture(this::machineTexture)
+                .facing()
+                .create();
+
         blockModel(IRBlocks.CRAFTING_STATION)
                 .top(this::machineTexture, "_top")
                 .sides(this::machineTexture, "_side")
                 .front(this::machineTexture, "_front")
                 .bottom(this::machineTexture, "_bottom")
-                .rotatable()
+                .horizontalFacing()
                 .create();
 
         blockModel(IRBlocks.DRAIN)
@@ -57,7 +64,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .sides(this::machineTexture, "_side")
                 .front(this::machineTexture, "_front")
                 .bottom(this::machineTexture, "_bottom")
-                .rotatable()
+                .horizontalFacing()
                 .create();
 
         blockModel(IRBlocks.WOODEN_SCAFFOLDING)
@@ -311,7 +318,8 @@ public class IRBlockStateProvider extends BlockStateProvider {
         private final Block block;
 
         private boolean active;
-        private boolean rotatable;
+        private boolean horizontalFacing;
+        private boolean facing;
         private boolean cutout;
         private ResourceLocation up;
         private ResourceLocation down;
@@ -337,8 +345,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
             return this;
         }
 
-        public ModelBuilder rotatable() {
-            this.rotatable = true;
+        public ModelBuilder facing() {
+            this.facing = true;
+            return this;
+        }
+
+        public ModelBuilder horizontalFacing() {
+            this.horizontalFacing = true;
             return this;
         }
 
@@ -353,6 +366,19 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         public ModelBuilder front(BiFunction<Block, String, ResourceLocation> frontTexture, String suffix) {
             return front(frontTexture.apply(this.block, suffix));
+        }
+
+        public ModelBuilder back(ResourceLocation backTexture) {
+            this.south = backTexture;
+            return this;
+        }
+
+        public ModelBuilder back(Function<Block, ResourceLocation> backTexture) {
+            return back(backTexture.apply(this.block));
+        }
+
+        public ModelBuilder back(BiFunction<Block, String, ResourceLocation> backTexture, String suffix) {
+            return back(backTexture.apply(this.block, suffix));
         }
 
         public ModelBuilder sides(ResourceLocation sidesTexture) {
@@ -459,7 +485,31 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         private void createBlockState(BlockModelBuilder activeBuilder, BlockModelBuilder inactiveBuilder) {
             VariantBlockStateBuilder builder = getVariantBuilder(block);
-            if (this.rotatable) {
+            if (this.facing) {
+                for (Direction dir : BlockStateProperties.FACING.getPossibleValues()) {
+                    if (this.active) {
+                        builder.partialState().with(ACTIVE, true).with(BlockStateProperties.FACING, dir)
+                                .modelForState()
+                                .modelFile(activeBuilder)
+                                .rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
+                                .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 180) % 360)
+                                .addModel()
+                                .partialState().with(ACTIVE, false).with(BlockStateProperties.FACING, dir)
+                                .modelForState()
+                                .modelFile(inactiveBuilder)
+                                .rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
+                                .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 180) % 360)
+                                .addModel();
+                    } else {
+                        builder.partialState().with(BlockStateProperties.FACING, dir)
+                                .modelForState()
+                                .modelFile(inactiveBuilder)
+                                .rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
+                                .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 180) % 360)
+                                .addModel();;
+                    }
+                }
+            } else if (this.horizontalFacing) {
                 for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
                     if (this.active) {
                         builder.partialState().with(ACTIVE, true).with(BlockStateProperties.HORIZONTAL_FACING, dir)

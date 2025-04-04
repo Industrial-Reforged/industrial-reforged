@@ -23,7 +23,7 @@ public final class IRArmorMaterials {
         p_323378_.put(ArmorItem.Type.CHESTPLATE, 6);
         p_323378_.put(ArmorItem.Type.HELMET, 2);
         p_323378_.put(ArmorItem.Type.BODY, 5);
-    }), 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER_SHEET.get()));
+    }), 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER.get()));
 
     public static final Holder<ArmorMaterial> NANO = register("nano", Util.make(new EnumMap<>(ArmorItem.Type.class), (protection) -> {
         protection.put(ArmorItem.Type.HELMET, 1);

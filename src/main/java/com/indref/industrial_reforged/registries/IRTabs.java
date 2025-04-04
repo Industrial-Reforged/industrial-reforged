@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.registries;
 
+import com.google.common.collect.Comparators;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -9,6 +10,8 @@ import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.translations.IRTranslations;
+import com.indref.industrial_reforged.util.tabs.ItemTabOrdering;
+import com.indref.industrial_reforged.util.tabs.TabOrdering;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
@@ -31,9 +34,9 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public final class IRTabs {
     /**
@@ -49,17 +52,37 @@ public final class IRTabs {
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRItems.HAMMER.get()))
             .displayItems((parameters, output) -> {
-                for (DeferredItem<?> item : IRItems.TAB_ITEMS) {
-                    if (item.asItem() instanceof RockCutterItem) {
-                        addRockCutter(output, parameters, item);
-                    } else if (item.asItem() instanceof IEnergyItem) {
-                        addPoweredItem(output, item);
-                    } else if (item.asItem() instanceof FluidCellItem) {
-                        addVariantForAllFluids(output, item);
-                    } else if (item.asItem() instanceof ToolboxItem) {
-                        addVariantForAllColors(output, item);
-                    }else {
-                        addItem(output, item);
+                Map<TabOrdering, Map<Integer, DeferredItem<?>>> sortedItems = IRItems.TAB_ITEMS.entrySet()
+                        .stream()
+                        .filter(e -> !e.getKey().isNone())
+                        .sorted(Comparator.comparingInt(entry -> entry.getKey().getPriority()))
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                e -> e.getValue().entrySet()
+                                        .stream()
+                                        .sorted(Map.Entry.comparingByKey())
+                                        .collect(Collectors.toMap(
+                                                Map.Entry::getKey,
+                                                Map.Entry::getValue,
+                                                (a, b) -> a,
+                                                LinkedHashMap::new
+                                        )),
+                                (a, b) -> a,
+                                LinkedHashMap::new
+                        ));
+                for (Map<Integer, DeferredItem<?>> entry : sortedItems.values()) {
+                    for (DeferredItem<?> item : entry.values()) {
+                        if (item.asItem() instanceof RockCutterItem) {
+                            addRockCutter(output, parameters, item);
+                        } else if (item.asItem() instanceof IEnergyItem) {
+                            addPoweredItem(output, item);
+                        } else if (item.asItem() instanceof FluidCellItem) {
+                            addVariantForAllFluids(output, item);
+                        } else if (item.asItem() instanceof ToolboxItem) {
+                            addVariantForAllColors(output, item);
+                        } else {
+                            addItem(output, item);
+                        }
                     }
                 }
 

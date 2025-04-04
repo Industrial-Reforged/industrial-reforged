@@ -13,182 +13,233 @@ import com.indref.industrial_reforged.content.items.tools.*;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.tiers.IRArmorMaterials;
 import com.indref.industrial_reforged.util.SingleFluidStack;
+import com.indref.industrial_reforged.util.tabs.ItemTabOrdering;
+import com.indref.industrial_reforged.util.tabs.TabOrdering;
+import com.indref.industrial_reforged.util.tabs.TabPosition;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.item.component.Tool;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class IRItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IndustrialReforged.MODID);
     public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
-    public static final List<DeferredItem<?>> TAB_ITEMS = new ArrayList<>();
+    public static final Map<TabOrdering, Map<Integer, DeferredItem<?>>> TAB_ITEMS = new HashMap<>();
     public static final Map<DeferredItem<?>, CastingMoldValue> MOLD_ITEMS = new HashMap<>();
-
-    // Tools
-    public static final DeferredItem<WrenchItem> WRENCH = toolItem("wrench", WrenchItem::new);
-    public static final DeferredItem<TreeTapItem> TREE_TAP = toolItem("tree_tap", TreeTapItem::new);
-    public static final DeferredItem<HammerItem> HAMMER = toolItem("hammer", HammerItem::new);
-    //public static final DeferredItem<ThermometerItem> THERMOMETER = toolItem("thermometer", ThermometerItem::new);
-    public static final DeferredItem<NanoSaberItem> NANO_SABER = registerItem("nano_saber",
-            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.nanoSaberEnergyUsage, () -> IRConfig.nanoSaberCapacity));
-    public static final DeferredItem<ScannerItem> SCANNER = registerItem("scanner",
-            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
-    public static final DeferredItem<RockCutterItem> ROCK_CUTTER = registerItem("rock_cutter",
-            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
-    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = registerItem("electric_tree_tap",
-            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.electricTreeTapEnergyUsage, () -> IRConfig.electricTreeTapCapacity));
-    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = registerItem("electric_hoe",
-            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, () -> IRConfig.electricHoeEnergyUsage, () -> IRConfig.electricHoeCapacity));
-    public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = registerItem("basic_drill",
-            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
-    public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = registerItem("advanced_drill",
-            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedDrillEnergyUsage, () -> IRConfig.advancedDrillCapacity));
-    public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = registerItem("basic_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
-    public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = registerItem("advanced_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedChainsawEnergyUsage, () -> IRConfig.advancedChainsawCapacity));
-
-    // Item storages
-    public static final DeferredItem<BatteryItem> BASIC_BATTERY = registerItem("basic_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.basicBatteryCapacity, 6));
-    public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = registerItem("advanced_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.advancedBatteryCapacity, 8));
-    public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = registerItem("ultimate_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, () -> IRConfig.ultimateBatteryCapacity, 9));
-    public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
-            () -> new FluidCellItem(new Item.Properties().stacksTo(16), () -> IRConfig.fluidCellCapacity));
     public static final DyedItemColor EMPTY_COLOR = new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), false);
+
+    // primitive tools
+    public static final DeferredItem<WrenchItem> WRENCH = primitiveToolItem("wrench", WrenchItem::new);
+    public static final DeferredItem<TreeTapItem> TREE_TAP = primitiveToolItem("tree_tap", TreeTapItem::new);
+    public static final DeferredItem<HammerItem> HAMMER = primitiveToolItem("hammer", HammerItem::new);
+    public static final DeferredItem<BlueprintItem> BLUEPRINT = primitiveToolItem("blueprint", BlueprintItem::new);
     public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
             () -> new ToolboxItem(new Item.Properties()
                     .stacksTo(1)
-                    .component(DataComponents.DYED_COLOR, EMPTY_COLOR)));
+                    .component(DataComponents.DYED_COLOR, EMPTY_COLOR)), ItemTabOrdering.noPosition());
 
-    public static final DeferredItem<Item> ANTENNA = registerStandardItem("antenna");
-    public static final DeferredItem<Item> ELECTRIC_MOTOR = registerItem("electric_motor",
-            () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> CIRCUIT_BOARD = registerItem("circuit_board",
-            () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> BASIC_CIRCUIT = registerStandardItem("basic_circuit");
-    public static final DeferredItem<Item> ADVANCED_CIRCUIT = registerStandardItem("advanced_circuit");
-    public static final DeferredItem<Item> ULTIMATE_CIRCUIT = registerStandardItem("ultimate_circuit");
-    public static final DeferredItem<Item> PLANT_BALL = registerStandardItem("plant_ball");
-    public static final DeferredItem<BlueprintItem> BLUEPRINT = registerItem("blueprint",
-            () -> new BlueprintItem(new Item.Properties()));
+    // electric tools
+    // low
+    public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = electricToolItem("electric_tree_tap",
+            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.electricTreeTapEnergyUsage, () -> IRConfig.electricTreeTapCapacity));
+    public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = electricToolItem("electric_hoe",
+            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, () -> IRConfig.electricHoeEnergyUsage, () -> IRConfig.electricHoeCapacity));
+    public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = electricToolItem("basic_drill",
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
+    public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = electricToolItem("basic_chainsaw",
+            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
+    public static final DeferredItem<RockCutterItem> ROCK_CUTTER = electricToolItem("rock_cutter",
+            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
+    public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = electricToolItem("advanced_drill",
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedDrillEnergyUsage, () -> IRConfig.advancedDrillCapacity));
+    public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = electricToolItem("advanced_chainsaw",
+            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedChainsawEnergyUsage, () -> IRConfig.advancedChainsawCapacity));
+    // medium
+    public static final DeferredItem<ScannerItem> SCANNER = electricToolItem("scanner",
+            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
+    // high
+    public static final DeferredItem<NanoSaberItem> NANO_SABER = electricToolItem("nano_saber",
+            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.nanoSaberEnergyUsage, () -> IRConfig.nanoSaberCapacity));
+
+    // Item storages
+    public static final DeferredItem<BatteryItem> BASIC_BATTERY = batteryItem("basic_battery",
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.basicBatteryCapacity, 6));
+    public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = batteryItem("advanced_battery",
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.advancedBatteryCapacity, 8));
+    public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = batteryItem("ultimate_battery",
+            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, () -> IRConfig.ultimateBatteryCapacity, 9));
+    public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
+            () -> new FluidCellItem(new Item.Properties().stacksTo(16), () -> IRConfig.fluidCellCapacity), ItemTabOrdering.noPosition());
+
+    public static final DeferredItem<Item> ANTENNA = electricComponent("antenna");
+    public static final DeferredItem<Item> ELECTRIC_MOTOR = electricComponent("electric_motor");
+    public static final DeferredItem<Item> CIRCUIT_BOARD = registerStandardItem("circuit_board", ItemTabOrdering.CIRCUITS.withPosition(0));
+    public static final DeferredItem<Item> BASIC_CIRCUIT = circuitItem("basic_circuit");
+    public static final DeferredItem<Item> ADVANCED_CIRCUIT = circuitItem("advanced_circuit");
+    public static final DeferredItem<Item> ULTIMATE_CIRCUIT = circuitItem("ultimate_circuit");
 
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",
-            () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties()), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_LEGGINGS = registerItem("hazmat_leggings",
-            () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new HazmatSuiteItem(ArmorItem.Type.LEGGINGS, new Item.Properties()), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_CHESTPLATE = registerItem("hazmat_chestplate",
-            () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties()), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_HELMET = registerItem("hazmat_helmet",
-            () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties()));
-//    public static final DeferredItem<JetpackItem> JETPACK = registerItem("jetpack",
-//            () -> new JetpackItem(ArmorMaterials.IRON, new Item.Properties()));
+            () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties()), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
 
-    //misc
-    // This shouldnt be used. Migrate to regular rubber
-    @Deprecated
-    public static final DeferredItem<Item> RUBBER_SHEET = registerStandardItem("rubber_sheet");
-    public static final DeferredItem<Item> PLANT_MASS = registerStandardItem("plant_mass");
-    public static final DeferredItem<Item> RUBBER = registerStandardItem("rubber");
-    public static final DeferredItem<Item> SANDY_BRICK = registerStandardItem("sandy_brick");
-    public static final DeferredItem<Item> STICKY_RESIN = registerStandardItem("sticky_resin");
-    public static final DeferredItem<Item> COAL_DUST = registerStandardItem("coal_dust");
-    public static final DeferredItem<Item> CARBON_PLATE = registerStandardItem("carbon_plate");
-    public static final DeferredItem<Item> WOODEN_PLATE = registerStandardItem("wooden_plate");
-    public static final DeferredItem<Item> TERRACOTTA_BRICK = registerStandardItem("terracotta_brick");
-    public static final DeferredItem<FertilizerItem> FERTILIZER = registerItem("fertilizer",
-            () -> new FertilizerItem(new Item.Properties()));
-    public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold");
+    // primitive components
+    public static final DeferredItem<Item> STICKY_RESIN = primitiveComponent("sticky_resin");
+    public static final DeferredItem<Item> RUBBER = primitiveComponent("rubber");
+    public static final DeferredItem<Item> PLANT_BALL = primitiveComponent("plant_ball");
+    public static final DeferredItem<Item> PLANT_MASS = primitiveComponent("plant_mass");
+    public static final DeferredItem<Item> SANDY_BRICK = primitiveComponent("sandy_brick");
+    public static final DeferredItem<Item> TERRACOTTA_BRICK = primitiveComponent("terracotta_brick");
+    public static final DeferredItem<Item> WOODEN_PLATE = primitiveComponent("wooden_plate");
+
+    // misc items
+    public static final DeferredItem<FertilizerItem> FERTILIZER = miscItem("fertilizer", FertilizerItem::new);
+
+    // casting molds
+    public static final DeferredItem<Item> CLAY_MOLD_BLANK = registerStandardItem("clay_mold", ItemTabOrdering.CASTING_MOLDS.withPosition(0));
     public static final DeferredItem<Item> CLAY_MOLD_INGOT = moldItem("ingot", 111, true);
     public static final DeferredItem<Item> CLAY_MOLD_PLATE = moldItem("plate", 111, true);
     public static final DeferredItem<Item> CLAY_MOLD_WIRE = moldItem("wire", 37, true);
     public static final DeferredItem<Item> CLAY_MOLD_ROD = moldItem("rod", 111, true);
 
     public static final DeferredItem<Item> CASTING_SCRAPS = registerItem("casting_scraps",
-            () -> new CastingScrapsItem(new Item.Properties().component(IRDataComponents.SINGLE_FLUID, SingleFluidStack.EMPTY)), false);
+            () -> new CastingScrapsItem(new Item.Properties().component(IRDataComponents.SINGLE_FLUID, SingleFluidStack.EMPTY)), ItemTabOrdering.noPosition());
 
     //ores
-    public static final DeferredItem<Item> RAW_BAUXITE = registerStandardItem("raw_bauxite");
-    public static final DeferredItem<Item> RAW_CHROMIUM = registerStandardItem("raw_chromium");
-    public static final DeferredItem<Item> RAW_IRIDIUM = registerStandardItem("raw_iridium");
-    public static final DeferredItem<Item> RAW_LEAD = registerStandardItem("raw_lead");
-    public static final DeferredItem<Item> RAW_NICKEL = registerStandardItem("raw_nickel");
-    public static final DeferredItem<Item> RAW_TIN = registerStandardItem("raw_tin");
-    public static final DeferredItem<Item> RAW_URANIUM = registerStandardItem("raw_uranium");
+    public static final DeferredItem<Item> RAW_BAUXITE = rawOreItem("bauxite");
+    public static final DeferredItem<Item> RAW_CHROMIUM = rawOreItem("chromium");
+    public static final DeferredItem<Item> RAW_IRIDIUM = rawOreItem("iridium");
+    public static final DeferredItem<Item> RAW_LEAD = rawOreItem("lead");
+    public static final DeferredItem<Item> RAW_NICKEL = rawOreItem("nickel");
+    public static final DeferredItem<Item> RAW_TIN = rawOreItem("tin");
+    public static final DeferredItem<Item> RAW_URANIUM = rawOreItem("uranium");
 
     // ingots
-    public static final DeferredItem<Item> ALUMINUM_INGOT = registerStandardItem("aluminum_ingot");
-    public static final DeferredItem<Item> TITANIUM_INGOT = registerStandardItem("titanium_ingot");
-    public static final DeferredItem<Item> CHROMIUM_INGOT = registerStandardItem("chromium_ingot");
-    public static final DeferredItem<Item> IRIDIUM_INGOT = registerStandardItem("iridium_ingot");
-    public static final DeferredItem<Item> LEAD_INGOT = registerStandardItem("lead_ingot");
-    public static final DeferredItem<Item> NICKEL_INGOT = registerStandardItem("nickel_ingot");
-    public static final DeferredItem<Item> TIN_INGOT = registerStandardItem("tin_ingot");
-    public static final DeferredItem<Item> URANIUM_INGOT = registerStandardItem("uranium_ingot");
-    public static final DeferredItem<Item> STEEL_INGOT = registerStandardItem("steel_ingot");
+    public static final DeferredItem<Item> ALUMINUM_INGOT = ingotItem("aluminum");
+    public static final DeferredItem<Item> TITANIUM_INGOT = ingotItem("titanium");
+    public static final DeferredItem<Item> CHROMIUM_INGOT = ingotItem("chromium");
+    public static final DeferredItem<Item> IRIDIUM_INGOT = ingotItem("iridium");
+    public static final DeferredItem<Item> LEAD_INGOT = ingotItem("lead");
+    public static final DeferredItem<Item> NICKEL_INGOT = ingotItem("nickel");
+    public static final DeferredItem<Item> TIN_INGOT = ingotItem("tin");
+    public static final DeferredItem<Item> URANIUM_INGOT = ingotItem("uranium");
+    public static final DeferredItem<Item> STEEL_INGOT = ingotItem("steel");
 
     // Plates
-    public static final DeferredItem<Item> IRON_PLATE = registerStandardItem("iron_plate");
-    public static final DeferredItem<Item> COPPER_PLATE = registerStandardItem("copper_plate");
-    public static final DeferredItem<Item> STEEL_PLATE = registerStandardItem("steel_plate");
-    public static final DeferredItem<Item> TIN_PLATE = registerStandardItem("tin_plate");
+    public static final DeferredItem<Item> IRON_PLATE = plateItem("iron");
+    public static final DeferredItem<Item> COPPER_PLATE = plateItem("copper");
+    public static final DeferredItem<Item> STEEL_PLATE = plateItem("steel");
+    public static final DeferredItem<Item> TIN_PLATE = plateItem("tin");
+    public static final DeferredItem<Item> CARBON_PLATE = plateItem("carbon");
+
+    // Dusts
+    public static final DeferredItem<Item> COAL_DUST = dustItem("coal");
+    public static final DeferredItem<Item> STEEL_DUST = dustItem("steel");
+    public static final DeferredItem<Item> COPPER_DUST = dustItem("copper");
 
     // Rods
-    public static final DeferredItem<Item> IRON_ROD = registerStandardItem("iron_rod");
-    public static final DeferredItem<Item> STEEL_ROD = registerStandardItem("steel_rod");
+    public static final DeferredItem<Item> IRON_ROD = rodItem("iron");
+    public static final DeferredItem<Item> STEEL_ROD = rodItem("steel");
 
     // Wires
-    public static final DeferredItem<Item> TIN_WIRE = registerStandardItem("tin_wire");
-    public static final DeferredItem<Item> COPPER_WIRE = registerStandardItem("copper_wire");
-    public static final DeferredItem<Item> GOLD_WIRE = registerStandardItem("gold_wire");
-    public static final DeferredItem<Item> STEEL_WIRE = registerStandardItem("steel_wire");
+    public static final DeferredItem<Item> TIN_WIRE = wireItem("tin");
+    public static final DeferredItem<Item> COPPER_WIRE = wireItem("copper");
+    public static final DeferredItem<Item> GOLD_WIRE = wireItem("gold");
+    public static final DeferredItem<Item> STEEL_WIRE = wireItem("steel");
 
-    // Wires
-    public static final DeferredItem<Item> STEEL_DUST = registerStandardItem("steel_dust");
-    public static final DeferredItem<Item> COPPER_DUST = registerStandardItem("copper_dust");
-
-    static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item, boolean addToTab) {
-        DeferredItem<T> deferredItem = ITEMS.register(name, item);
-        if (addToTab) {
-            TAB_ITEMS.add(deferredItem);
-        }
-        return deferredItem;
+    static DeferredItem<Item> primitiveComponent(String name) {
+        return registerStandardItem(name, calculateTabPosition(ItemTabOrdering.PRIMITIVE_COMPONENTS));
     }
 
-    static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item) {
-        DeferredItem<T> deferredItem = ITEMS.register(name, item);
-        TAB_ITEMS.add(deferredItem);
-        return deferredItem;
+    static DeferredItem<Item> electricComponent(String name) {
+        return registerStandardItem(name, calculateTabPosition(ItemTabOrdering.ELECTRIC_COMPONENTS));
     }
 
-    private static DeferredItem<Item> registerStandardItem(String name) {
-        DeferredItem<Item> deferredItem = ITEMS.registerSimpleItem(name);
-        TAB_ITEMS.add(deferredItem);
-        return deferredItem;
+    static DeferredItem<Item> circuitItem(String name) {
+        return registerStandardItem(name, calculateTabPosition(ItemTabOrdering.CIRCUITS));
     }
 
-    private static DeferredItem<Item> moldItem(String moldType, int capacity, boolean consumeCast) {
-        DeferredItem<Item> item = registerStandardItem("clay_mold_" + moldType);
+    static <T extends Item> DeferredItem<T> miscItem(String name, Function<Item.Properties, T> itemConstructor) {
+        return registerItem(name, () -> itemConstructor.apply(new Item.Properties()), calculateTabPosition(ItemTabOrdering.MISC_ITEMS));
+    }
+
+    static DeferredItem<Item> rawOreItem(String postfix) {
+        return registerStandardItem("raw_" + postfix, calculateTabPosition(ItemTabOrdering.RAW_ORES));
+    }
+
+    static DeferredItem<Item> ingotItem(String prefix) {
+        return registerStandardItem(prefix + "_ingot", calculateTabPosition(ItemTabOrdering.INGOTS));
+    }
+
+    static DeferredItem<Item> plateItem(String prefix) {
+        return registerStandardItem(prefix + "_plate", calculateTabPosition(ItemTabOrdering.PLATES));
+    }
+
+    static DeferredItem<Item> dustItem(String prefix) {
+        return registerStandardItem(prefix + "_dust", calculateTabPosition(ItemTabOrdering.DUSTS));
+    }
+
+    static DeferredItem<Item> wireItem(String prefix) {
+        return registerStandardItem(prefix + "_wire", calculateTabPosition(ItemTabOrdering.WIRES));
+    }
+
+    static DeferredItem<Item> rodItem(String prefix) {
+        return registerStandardItem(prefix + "_rod", calculateTabPosition(ItemTabOrdering.RODS));
+    }
+
+    static DeferredItem<Item> moldItem(String moldType, int capacity, boolean consumeCast) {
+        DeferredItem<Item> item = registerStandardItem("clay_mold_" + moldType, calculateTabPosition(ItemTabOrdering.CASTING_MOLDS));
         MOLD_ITEMS.put(item, new CastingMoldValue(capacity, consumeCast));
         return item;
     }
 
-    private static <T extends Item> DeferredItem<T> toolItem(String name, Function<Item.Properties, T> itemConstructor) {
-        return registerItem(name, () -> itemConstructor.apply(new Item.Properties().stacksTo(1)));
+    static <T extends Item> DeferredItem<T> primitiveToolItem(String name, Function<Item.Properties, T> itemConstructor) {
+        return registerItem(name, () -> itemConstructor.apply(new Item.Properties().stacksTo(1)), calculateTabPosition(ItemTabOrdering.PRIMITIVE_COMPONENTS));
+    }
+
+    static <T extends Item> DeferredItem<T> electricToolItem(String name, Supplier<T> itemConstructor) {
+        return registerItem(name, itemConstructor, calculateTabPosition(ItemTabOrdering.PRIMITIVE_COMPONENTS));
+    }
+
+    static DeferredItem<BatteryItem> batteryItem(String name, Supplier<BatteryItem> itemConstructor) {
+        return registerItem(name, itemConstructor, calculateTabPosition(ItemTabOrdering.BATTERIES));
+    }
+
+    static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item, TabPosition position) {
+        DeferredItem<T> deferredItem = ITEMS.register(name, item);
+        putTabItem(position, deferredItem);
+        return deferredItem;
+    }
+
+    static DeferredItem<Item> registerStandardItem(String name, TabPosition position) {
+        DeferredItem<Item> deferredItem = ITEMS.registerSimpleItem(name);
+        putTabItem(position, deferredItem);
+        return deferredItem;
+    }
+
+    // helper methods
+
+    private static void putTabItem(TabPosition position, DeferredItem<?> deferredItem) {
+        TAB_ITEMS.computeIfAbsent(position.orderingCategory(), k -> new Int2ObjectOpenHashMap<>())
+                .put(position.categoryPosition(), deferredItem);
+    }
+
+    private static TabPosition calculateTabPosition(ItemTabOrdering tabOrdering) {
+        return tabOrdering.withPosition(TAB_ITEMS.getOrDefault(tabOrdering, Collections.emptyMap()).size());
     }
 
 }

@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -43,6 +44,10 @@ public class IRItemModelProvider extends ItemModelProvider {
         parentItemBlock(IRBlocks.RUBBER_TREE_BUTTON.get().asItem(), "_inventory");
         parentItemBlock(IRBlocks.RUBBER_TREE_FENCE.get().asItem(), "_inventory");
         parentItemBlock(IRBlocks.RUBBER_TREE_TRAPDOOR.get().asItem(), "_bottom");
+        getBuilder(name(IRBlocks.BATTERY_BOX))
+                .parent(new ModelFile.UncheckedModelFile(IndustrialReforged.rl("block/battery_box")))
+                .texture("up", machineTexture(IRBlocks.BATTERY_BOX.get(), ""))
+                .texture("north", machineTexture(IRBlocks.BATTERY_BOX.get(), "_top"));
 
         for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
             if (fluid instanceof MoltenMetalFluid) {
@@ -70,7 +75,6 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.WOODEN_PLATE);
         basicItem(IRItems.PLANT_MASS);
         basicItem(IRItems.RUBBER);
-        basicItem(IRItems.RUBBER_SHEET);
         basicItem(IRItems.SANDY_BRICK);
         basicItem(IRItems.TERRACOTTA_BRICK);
         basicItem(IRItems.STICKY_RESIN);
@@ -249,6 +253,17 @@ public class IRItemModelProvider extends ItemModelProvider {
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(name.getNamespace(), "block/" + folder + name.getPath()));
     }
 
+    private ResourceLocation machineTexture(Block block, String suffix) {
+        return blockTexture(block, "machine", suffix);
+    }
+
+    private ResourceLocation blockTexture(Block block, String textureFolder, String suffix) {
+        ResourceLocation name = key(block);
+        if (textureFolder == null || textureFolder.trim().isEmpty())
+            return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath() + suffix);
+        return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + textureFolder + "/" + name.getPath() + suffix);
+    }
+
     private ItemModelBuilder parentItemBlock(Item item) {
         return parentItemBlock(item, "");
     }
@@ -259,28 +274,8 @@ public class IRItemModelProvider extends ItemModelProvider {
                 .parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(name.getNamespace(), "block/" + name.getPath() + suffix)));
     }
 
-    private ResourceLocation inDir(ResourceLocation rl, String directory) {
-        StringBuilder path = new StringBuilder();
-        String[] dirs = rl.getPath().split("/");
-        for (int i = 0; i < dirs.length; i++) {
-            if (i == dirs.length - 1) {
-                path.append(directory).append("/");
-            }
-            path.append(dirs[i]).append(i != dirs.length - 1 ? "/" : "");
-        }
-        return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), path.toString());
-    }
-
     private static @NotNull ResourceLocation key(ItemLike item) {
         return BuiltInRegistries.ITEM.getKey(item.asItem());
-    }
-
-    private static @NotNull String namespace(ItemLike item) {
-        return key(item).getNamespace();
-    }
-
-    private static @NotNull ResourceLocation loc(String namespace, String path) {
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
     }
 
     public String name(ItemLike item) {

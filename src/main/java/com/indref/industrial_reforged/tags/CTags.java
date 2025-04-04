@@ -21,7 +21,6 @@ public final class CTags {
 
     public static class Items {
         public static final TagKey<Item> PLATES = bind("plates");
-        public static final TagKey<Item> RUBBER_SHEET = bind("plates/rubber");
         public static final TagKey<Item> IRON_PLATE = bind("plates/iron");
         public static final TagKey<Item> COPPER_PLATE = bind("plates/copper");
         public static final TagKey<Item> STEEL_PLATE = bind("plates/steel");
@@ -82,6 +81,8 @@ public final class CTags {
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_URANIUM = bind("storage_blocks/raw_uranium");
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_IRIDIUM = bind("storage_blocks/raw_iridium");
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_BAUXITE = bind("storage_blocks/raw_titanium");
+
+        public static final TagKey<Item> RUBBER = bind("rubber");
 
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", path));

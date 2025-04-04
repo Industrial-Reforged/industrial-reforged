@@ -157,7 +157,7 @@ public class EnergyNet {
     }
 
     private static boolean canAcceptEnergy(IEnergyStorage energyStorage, int amount) {
-        return energyStorage.canFillEnergy() && energyStorage.getEnergyStored() < energyStorage.getEnergyCapacity();
+        return energyStorage.canFillEnergy() && energyStorage.getEnergyStored() + amount < energyStorage.getEnergyCapacity();
     }
 
     public CompoundTag serializeNBT() {

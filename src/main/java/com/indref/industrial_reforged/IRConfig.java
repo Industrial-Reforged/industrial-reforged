@@ -14,6 +14,8 @@ public final class IRConfig {
             blockEnergyCapacity("basic_generator", "Basic Generator", 4_000);
     private static final ModConfigSpec.IntValue CENTRIFUGE_ENERGY_CAPACITY =
             blockEnergyCapacity("centrifuge", "Centrifuge", 4_000);
+    private static final ModConfigSpec.IntValue BATTERY_BOX_ENERGY_CAPACITY =
+            blockEnergyCapacity("battery_box", "Battery Box", 4_000);
 
     // Block Fluid Capacity
     private static final ModConfigSpec.IntValue CRUCIBLE_FLUID_CAPACITY =
@@ -131,6 +133,7 @@ public final class IRConfig {
 
     public static int basicGeneratorEnergyCapacity;
     public static int centrifugeEnergyCapacity;
+    public static int batteryBoxEnergyCapacity;
 
     public static int crucibleFluidCapacity;
     public static int blastFurnaceFluidCapacity;
@@ -185,6 +188,7 @@ public final class IRConfig {
     public static void onConfigReload(ModConfigEvent event) {
         basicGeneratorEnergyCapacity = BASIC_GENERATOR_ENERGY_CAPACITY.getAsInt();
         centrifugeEnergyCapacity = CENTRIFUGE_ENERGY_CAPACITY.getAsInt();
+        batteryBoxEnergyCapacity = BATTERY_BOX_ENERGY_CAPACITY.getAsInt();
 
         crucibleFluidCapacity = CRUCIBLE_FLUID_CAPACITY.getAsInt();
         blastFurnaceFluidCapacity = BLAST_FURNACE_FLUID_CAPACITY.getAsInt();

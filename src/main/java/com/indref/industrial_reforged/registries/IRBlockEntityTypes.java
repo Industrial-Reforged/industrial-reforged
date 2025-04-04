@@ -1,14 +1,11 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.content.blockentities.*;
 import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.machines.CentrifugeBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.CraftingStationBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.DrainBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
-import com.indref.industrial_reforged.content.blockentities.FaucetBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
@@ -64,6 +61,10 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("basic_generator", () ->
                     BlockEntityType.Builder.of(BasicGeneratorBlockEntity::new,
                             IRBlocks.BASIC_GENERATOR.get()).build(null));
+    public static final Supplier<BlockEntityType<BatteryBoxBlockEntity>> BATTERY_BOX =
+            BLOCK_ENTITIES.register("battery_box", () ->
+                    BlockEntityType.Builder.of(BatteryBoxBlockEntity::new,
+                            IRBlocks.BATTERY_BOX.get()).build(null));
     public static final Supplier<BlockEntityType<CraftingStationBlockEntity>> CRAFTING_STATION =
             BLOCK_ENTITIES.register("crafting_station", () ->
                     BlockEntityType.Builder.of(CraftingStationBlockEntity::new,

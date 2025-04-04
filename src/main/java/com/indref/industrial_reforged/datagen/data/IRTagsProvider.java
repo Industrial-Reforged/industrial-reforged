@@ -156,7 +156,6 @@ public class IRTagsProvider {
 
         private void plates() {
             tag(CTags.Items.PLATES,
-                    CTags.Items.RUBBER_SHEET,
                     CTags.Items.IRON_PLATE,
                     CTags.Items.COPPER_PLATE,
                     CTags.Items.TIN_PLATE,
@@ -165,7 +164,7 @@ public class IRTagsProvider {
                     CTags.Items.CARBON_PLATE
             );
 
-            tag(CTags.Items.RUBBER_SHEET, IRItems.RUBBER_SHEET);
+            tag(CTags.Items.RUBBER, IRItems.RUBBER);
             tag(CTags.Items.WOODEN_PLATE, IRItems.WOODEN_PLATE);
             tag(CTags.Items.CARBON_PLATE, IRItems.CARBON_PLATE);
             tag(CTags.Items.IRON_PLATE, IRItems.IRON_PLATE);

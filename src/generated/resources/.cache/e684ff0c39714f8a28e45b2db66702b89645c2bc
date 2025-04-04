@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-26T19:00:28.089510367	Item Models: indref
+// 1.21.1	2025-04-02T14:57:28.570663211	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -8,11 +8,11 @@ f15fcef0c00019d705902fdff0189f266f5b54aa assets/indref/models/item/advanced_batt
 007a312b20fad06bdde7e0041361bd6433a78d62 assets/indref/models/item/advanced_battery_5.json
 c03d6914bd85560fca39c700fdb2e5f67d455d9a assets/indref/models/item/advanced_battery_6.json
 d9370afa44b140f62ded0ef824d63ce15a50dd93 assets/indref/models/item/advanced_battery_7.json
-386a3105789fe33cb5062ac5c8b123ba8e4e15ce assets/indref/models/item/advanced_chainsaw.json
-ca45b3c9346a9b96826e20b7afbd6d04cfa9cfe3 assets/indref/models/item/advanced_chainsaw_active.json
+33353295830e016f2f40ecc208fdebd96ec482e2 assets/indref/models/item/advanced_chainsaw.json
+39fb5c4551c24808084e5761dfe733e0a7f10535 assets/indref/models/item/advanced_chainsaw_active.json
 0f6c88e42324b807f53112c55dc39cb05632d0a2 assets/indref/models/item/advanced_circuit.json
-0315cdf5eeddfc600bbf810a417fb5bcb99d5f1c assets/indref/models/item/advanced_drill.json
-fa81a283e888087586fe5c1100d0e354e6cbaa6b assets/indref/models/item/advanced_drill_active.json
+2c5e71c6228d052ed994fa9391212114fc8ad9e3 assets/indref/models/item/advanced_drill.json
+47063f00ce13d598d15a8d88932496238094c682 assets/indref/models/item/advanced_drill_active.json
 22bd7f6be31106077008150949f43699fd5d5469 assets/indref/models/item/aluminum_block.json
 a6360bd18b10a80d5bb89aeee949fb687beb55f0 assets/indref/models/item/aluminum_ingot.json
 9853d030e0ddfe99d6531f21d77575b016f07795 assets/indref/models/item/antenna.json
@@ -23,13 +23,14 @@ e6ca2501564249d74c7e0d436c0b71974a8074b9 assets/indref/models/item/basic_battery
 ad95c0e40cbbd6534800dfcec18ffc4389522027 assets/indref/models/item/basic_battery_3.json
 34c1f77b8b499e14c1ab508fd3ffabd7ebde7b5d assets/indref/models/item/basic_battery_4.json
 f201c8b924375b6ba0aeed5adac359159a9bff4c assets/indref/models/item/basic_battery_5.json
-290e0d59b71ab91fde2c9af1a68a7c8f6a2fe9aa assets/indref/models/item/basic_chainsaw.json
-09be2271590fe38e10caa37951b07ffe2af58d48 assets/indref/models/item/basic_chainsaw_active.json
+01e004f5cfc68eaa01faad1cecdf6212b3e1ce63 assets/indref/models/item/basic_chainsaw.json
+f678356054e55bebfca1c847c2686520b07dd40a assets/indref/models/item/basic_chainsaw_active.json
 179f9ee43b2b48d7ccb02eefc5bcbeb0c1c9855b assets/indref/models/item/basic_circuit.json
-8917d3f860097fe4f81d21e63c03cd5fbe96b4c2 assets/indref/models/item/basic_drill.json
-1913d1e06bd1105c1769d6126d5d647fe7f27524 assets/indref/models/item/basic_drill_active.json
+4ae3290122a4a9afe88b844b140a2e9cc0d14b01 assets/indref/models/item/basic_drill.json
+727aa7295fad037c09f027942067a19d0397b915 assets/indref/models/item/basic_drill_active.json
 b5701c30cef2e6b6d353e76d5ba3c02b673feb10 assets/indref/models/item/basic_generator.json
 63ddb958a9699cefcc513ff4a69b9021201f311a assets/indref/models/item/basic_machine_frame.json
+74c2767395af9150abf3b6f4604354825f1937cd assets/indref/models/item/battery_box.json
 f0d3a2aab723fb2343fac252bd6ff776722a4e45 assets/indref/models/item/bauxite_ore.json
 c0d39c68d88bf39ca8b8bff827f68a68f111c968 assets/indref/models/item/bio_mass_bucket.json
 3d7ea1aebe5cc7a2708dbb7758b117a54d12570f assets/indref/models/item/blast_furnace_bricks.json
@@ -95,8 +96,8 @@ bdcc51256c3f1c33907e967e4c310b44a15fdfa7 assets/indref/models/item/lead_ingot.js
 b259f158bf507e516264c0e8366516d487add201 assets/indref/models/item/molten_nickel_bucket.json
 aa564b47ece28be8cfaf6bd4b71ca52e29949cec assets/indref/models/item/molten_steel_bucket.json
 9b8951cc93608cb5ca67d5de86f3098447fdbf40 assets/indref/models/item/molten_tin_bucket.json
-e9b14d27cb70d554643cc54150a92e383eda360e assets/indref/models/item/nano_saber.json
-bc2abcd23c1dfed563b4fe5b443bd3188a36ef2e assets/indref/models/item/nano_saber_active.json
+79aad40515a74bcd8bce9f2fd776b6446ecee0cc assets/indref/models/item/nano_saber.json
+9bc33c6255209392667339a51d144901305564ec assets/indref/models/item/nano_saber_active.json
 aa2590929c4b324a619fa2115c1e3a0d2230148a assets/indref/models/item/nickel_block.json
 bdc030641dd7ef9d4bdb312e287dcdefc451d18c assets/indref/models/item/nickel_ingot.json
 6eb1cc151c41d4633ba9336ae83403a5a35c64a6 assets/indref/models/item/nickel_ore.json

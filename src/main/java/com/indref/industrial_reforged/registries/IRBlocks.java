@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.SimpleWrenchableBlock;
+import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
 import com.indref.industrial_reforged.content.blocks.BlastFurnaceMultiblockBlock;
 import com.indref.industrial_reforged.content.blocks.CoilBlock;
 import com.indref.industrial_reforged.content.blocks.TerracottaBricks;
@@ -104,6 +105,8 @@ public final class IRBlocks {
             () -> new CentrifugeBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
     public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR = pickaxeMineable(registerBlockAndItem("basic_generator",
             () -> new BasicGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
+    public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = pickaxeMineable(registerBlockAndItem("battery_box",
+            () -> new BatteryBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), true, false));
     // CABLES
     public static final DeferredBlock<CableBlock> TIN_CABLE = pickaxeMineable(registerBlockAndItem("tin_cable",
             () -> new CableBlock(BlockBehaviour.Properties.of()
