@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.transportation.energy.EnergyNet;
+import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
 import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.tiers.EnergyTiers;

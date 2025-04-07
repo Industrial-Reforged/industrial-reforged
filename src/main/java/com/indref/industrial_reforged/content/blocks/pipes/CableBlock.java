@@ -2,25 +2,31 @@ package com.indref.industrial_reforged.content.blocks.pipes;
 
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.transportation.energy.EnergyNet;
+import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
+import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
 import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.util.BlockUtils;
+import com.indref.industrial_reforged.transportation.energy.NetworkManager;
+import com.indref.industrial_reforged.transportation.energy.NetworkNode;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class CableBlock extends PipeBlock {
@@ -32,66 +38,60 @@ public class CableBlock extends PipeBlock {
     }
 
     @Override
-    public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState oldState, boolean p_60570_) {
-        // perform this check to ensure that block is actually placed and not just block states updating
-        if (oldState.is(Blocks.AIR) && level instanceof ServerLevel serverLevel) {
-            EnergyNetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
-            // Adds the net
-            EnergyNet net = nets.getEnets().getOrCreateNetAndPush(blockPos);
-            nets.setDirty();
-            for (Direction dir : Direction.values()) {
-                BlockPos offsetPos = blockPos.relative(dir);
-                Block block = level.getBlockState(offsetPos).getBlock();
-                if (block instanceof CableBlock) {
-                    Optional<EnergyNet> network = nets.getEnets().getNetwork(offsetPos);
-                    if (network.isPresent() && network.get() != net) {
-                        nets.getEnets().mergeNets(net, network.get());
-                        nets.setDirty();
-                    }
-                } else {
-                    BlockEntity blockEntity = level.getBlockEntity(offsetPos);
-                    if (blockEntity != null) {
-                        IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
-                        if (energyStorage != null) {
-                            Optional<EnergyNet> network = nets.getEnets().getNetwork(blockPos);
-                            network.ifPresent(energyNet -> energyNet.add(offsetPos, EnergyNet.EnergyTypes.INTERACTORS));
-                        }
-                    }
-                }
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+
+        int connectionsAmount = 0;
+        boolean[] connections = new boolean[6];
+        Direction[] directions = new Direction[6];
+
+        for (Direction dir : Direction.values()) {
+            boolean value = state.getValue(CONNECTION[dir.get3DDataValue()]);
+            connections[dir.get3DDataValue()] = value;
+            if (value) {
+                directions[dir.get3DDataValue()] = dir;
+                connectionsAmount++;
+            } else {
+                directions[dir.get3DDataValue()] = null;
+            }
+        }
+
+        if (connectionsAmount != 2
+                || ((!connections[0] || !connections[1])
+                && (!connections[2] || !connections[3])
+                && (!connections[4] || !connections[5]))) {
+
+            NetworkManager.addNode(level, pos, directions);
+        } else {
+            if (NetworkManager.hasNode(pos)) {
+                NetworkManager.removeNode(level, pos);
             }
         }
     }
 
     @Override
-    public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState, boolean p_60519_) {
-        super.onRemove(blockState, level, blockPos, newState, p_60519_);
-        // perform this check to ensure that block was actually removed and not just block states updating
-        if (!newState.is(blockState.getBlock()) && level instanceof ServerLevel serverLevel) {
-            EnergyNetsSavedData nets = EnergyNetUtils.getEnergyNets(serverLevel);
-            nets.getEnets().splitNets(blockPos);
-            nets.getEnets().removeNetwork(blockPos);
-            // Tell the level to save it
-            nets.setDirty();
-        }
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        NetworkNodeRenderer.selectedNode = NetworkManager.getNode(pos);
+        return InteractionResult.SUCCESS;
     }
 
-    @SuppressWarnings("OptionalIsPresent")
     @Override
     public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
-        if (level instanceof ServerLevel serverLevel) {
-            Optional<EnergyNet> network = EnergyNetUtils.getEnergyNets(serverLevel).getEnets().getNetwork(blockPos);
-            BlockEntity entity = level.getBlockEntity(facingBlockPos);
-            if (entity != null && CapabilityUtils.energyStorageCapability(entity) != null) {
-                if (network.isPresent()) {
-                    network.get().add(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
-                }
-            } else if (network.isPresent() && network.get().get(EnergyNet.EnergyTypes.INTERACTORS).contains(facingBlockPos)) {
-                if (facingBlockState.isEmpty()) {
-                    network.get().remove(facingBlockPos, EnergyNet.EnergyTypes.INTERACTORS);
-                }
-            }
-        }
+
+//        if (NetworkManager.hasNode(blockPos) && NetworkManager.hasNode(facingBlockPos)) {
+//            NetworkManager.getNode(blockPos).getNext().put(facingDirection, NetworkManager.getNode(facingBlockPos));
+//        }
+
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+
+        if (NetworkManager.hasNode(pos)) {
+            NetworkManager.removeNode(level, pos);
+        }
     }
 
     public Holder<EnergyTier> getEnergyTier() {
@@ -107,5 +107,24 @@ public class CableBlock extends PipeBlock {
     public boolean canConnectTo(BlockEntity connectTo) {
         return CapabilityUtils.energyStorageCapability(connectTo) != null
                 || CapabilityUtils.blockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo) != null;
+    }
+
+    public static boolean shouldHaveNode(Level level, BlockPos pos) {
+        BlockState blockState = level.getBlockState(pos);
+        if (blockState.getBlock() instanceof CableBlock) {
+            int connectionsAmount = 0;
+            Direction[] directions = new Direction[6];
+
+            for (Direction dir : Direction.values()) {
+                if (blockState.getValue(CONNECTION[dir.get3DDataValue()])) {
+                    directions[connectionsAmount] = dir;
+                    connectionsAmount++;
+                }
+            }
+
+            return connectionsAmount != 2 && directions[0].getOpposite() != directions[1];
+
+        }
+        return false;
     }
 }

@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.translations.IRTranslations;
+import com.indref.industrial_reforged.transportation.energy.NetworkManager;
+import com.indref.industrial_reforged.transportation.energy.NetworkNode;
 import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.portingdeadmods.portingdeadlibs.api.client.renderers.multiblocks.MultiblockPreviewRenderer;
@@ -30,6 +33,9 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
+
+import java.util.Map;
 
 public final class CommonEvents {
     @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
@@ -60,30 +66,39 @@ public final class CommonEvents {
         }
 
         public static void renderMultiblockPreview(RenderLevelStageEvent event) {
-            if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
+            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+                Vec3 cameraPos = event.getCamera().getPosition();
 
-            Vec3 cameraPos = event.getCamera().getPosition();
+                Minecraft mc = Minecraft.getInstance();
+                PoseStack poseStack = event.getPoseStack();
+                MultiBufferSource.BufferSource bufferSource = event.getLevelRenderer().renderBuffers.bufferSource();
 
-            Minecraft mc = Minecraft.getInstance();
-            PoseStack poseStack = event.getPoseStack();
-            MultiBufferSource.BufferSource bufferSource = event.getLevelRenderer().renderBuffers.bufferSource();
+                ItemStack itemStack = mc.player.getMainHandItem();
 
-            ItemStack itemStack = mc.player.getMainHandItem();
+                if (!itemStack.has(IRDataComponents.BLUEPRINT)) {
+                    itemStack = mc.player.getOffhandItem();
+                }
 
-            if (!itemStack.has(IRDataComponents.BLUEPRINT)) {
-                itemStack = mc.player.getOffhandItem();
-            }
+                if (itemStack.has(IRDataComponents.BLUEPRINT)) {
+                    ComponentBlueprint blueprint = itemStack.getOrDefault(IRDataComponents.BLUEPRINT, ComponentBlueprint.EMPTY);
+                    if (blueprint.controllerPos() == null || blueprint.direction() == null || blueprint.multiblock() == null)
+                        return;
 
-            if (itemStack.has(IRDataComponents.BLUEPRINT)) {
-                ComponentBlueprint blueprint = itemStack.getOrDefault(IRDataComponents.BLUEPRINT, ComponentBlueprint.EMPTY);
-                if (blueprint.controllerPos() == null || blueprint.direction() == null || blueprint.multiblock() == null)
-                    return;
+                    Multiblock multiblock = blueprint.multiblock();
+                    Vec3i relativeControllerPos = MultiblockHelper.getRelativeControllerPos(multiblock);
+                    BlockPos firstPos = MultiblockHelper.getFirstBlockPos(blueprint.direction(), blueprint.controllerPos(), relativeControllerPos);
 
-                Multiblock multiblock = blueprint.multiblock();
-                Vec3i relativeControllerPos = MultiblockHelper.getRelativeControllerPos(multiblock);
-                BlockPos firstPos = MultiblockHelper.getFirstBlockPos(blueprint.direction(), blueprint.controllerPos(), relativeControllerPos);
-
-                MultiblockPreviewRenderer.renderPreview(multiblock, firstPos, mc.level, HorizontalDirection.NORTH, poseStack, bufferSource, cameraPos);
+                    MultiblockPreviewRenderer.renderPreview(multiblock, firstPos, mc.level, HorizontalDirection.NORTH, poseStack, bufferSource, cameraPos);
+                }
+                if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+                    for (NetworkNode node : NetworkManager.NODES.values()) {
+                        NetworkNodeRenderer.render(node, poseStack, bufferSource, cameraPos);
+                    }
+//
+//                    if (NetworkNodeRenderer.selectedNode != null) {
+//                        NetworkNodeRenderer.render(NetworkNodeRenderer.selectedNode, poseStack, bufferSource, cameraPos);
+//                    }
+                }
             }
         }
 

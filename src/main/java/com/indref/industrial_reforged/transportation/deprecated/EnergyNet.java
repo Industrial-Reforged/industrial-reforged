@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.transportation.energy;
+package com.indref.industrial_reforged.transportation.deprecated;
 
 import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;

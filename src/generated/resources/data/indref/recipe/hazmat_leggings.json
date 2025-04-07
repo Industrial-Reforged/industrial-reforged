@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "R": {
-      "item": "indref:rubber_sheet"
+      "item": "indref:rubber"
     },
     "W": {
       "item": "minecraft:yellow_wool"

@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-03T16:52:43.756393727	Tags for minecraft:item mod id vanilla
+// 1.21.1	2025-04-05T17:51:52.168563695	Tags for minecraft:item mod id vanilla
 bf4207125fec838572bf88021bbbaeb2269993f9 data/c/tags/item/bricks.json
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
@@ -18,11 +18,10 @@ d4cb1130ab1f69ab6e3f347a1549b89d1fbed827 data/c/tags/item/ores/chromium.json
 9b17ec8ae49796ecec62976e1254ee4b18948845 data/c/tags/item/ores/nickel.json
 52989a86b4200aa37f4a421862492c023b5aedc4 data/c/tags/item/ores/tin.json
 cfd2b417851dbd2c32a5cfee0c767bcdc960376d data/c/tags/item/ores/uranium.json
-87e5fd25056df0a3672488d0fdfc24d095e14755 data/c/tags/item/plates.json
+80489ddcec918d0ae7f1059935e17067704ca346 data/c/tags/item/plates.json
 c1727d7fa2789634e60febb3c49fc1f423aef23e data/c/tags/item/plates/carbon.json
 bf279439bd2ce4fb30125e1fe9e4e3ac0fffc7e8 data/c/tags/item/plates/copper.json
 2795cfc71507e98b1db8b64b20043130da17ba80 data/c/tags/item/plates/iron.json
-cdb9737a4d1ac63a74f79454d16d3b21fbb4ac18 data/c/tags/item/plates/rubber.json
 149e5cbebccf54f6458556eec888b40f8e494177 data/c/tags/item/plates/steel.json
 e952c7967f2f80de39dc6393d39763b2bf62698b data/c/tags/item/plates/tin.json
 ec630d7400e595c88703e72426cd6f42e2c3f2eb data/c/tags/item/plates/wooden.json
@@ -37,6 +36,7 @@ ab65eb73223123d9113f08f6dfaa60130c3132a8 data/c/tags/item/raw_materials/chromium
 955dc240e4fbccaf2a151bbbf18c91887edf86f5 data/c/tags/item/rods.json
 369e827c9ff58225e932cc9aa91271a422c736ca data/c/tags/item/rods/iron.json
 f20b48561eaabaafee991270e2dcd9eff7e46d87 data/c/tags/item/rods/steel.json
+ffc704ec08743932c8b76aea7be30c68b43349de data/c/tags/item/rubber.json
 c33ac2c1ff5d3891ee8e1027c5fa30ffe0e8dc1b data/c/tags/item/storage_blocks.json
 96479469427c8e1adf92b4a19cf921291afb43b1 data/c/tags/item/storage_blocks/aluminum.json
 281d5dabfe36b80b7588a8f9c2d6b0c80ada84d3 data/c/tags/item/storage_blocks/iridium.json
@@ -59,7 +59,7 @@ fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json
 0b79414d07652b0536049e1e7ea3b0a3a88e742b data/c/tags/item/wires/steel.json
 71051527a733b38d16af3551c77c971f5928095e data/c/tags/item/wires/tin.json
-e9651962f3d85263f13c0c88db91e22995153c54 data/indref/tags/item/molds.json
+d33b96e1adfd6fcbe8feaf0029cbd1f3270b06e9 data/indref/tags/item/molds.json
 58b05a4da836c7c814c64c079ffc32ca0bc145da data/minecraft/tags/item/dyeable.json
 7ec99157ac16a38de2ac0d390dc224f1fbe49af4 data/minecraft/tags/item/fence_gates.json
 9fc4940b4b0bec19481be6ce8ee18150a36574fd data/minecraft/tags/item/leaves.json

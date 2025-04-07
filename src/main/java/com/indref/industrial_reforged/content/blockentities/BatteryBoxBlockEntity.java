@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
 import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.transportation.energy.EnergyNet;
+import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;

@@ -3,10 +3,10 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:plates/rubber"
+      "tag": "c:rubber"
     },
     {
-      "tag": "c:plates/rubber"
+      "tag": "c:rubber"
     },
     {
       "item": "indref:plant_mass"

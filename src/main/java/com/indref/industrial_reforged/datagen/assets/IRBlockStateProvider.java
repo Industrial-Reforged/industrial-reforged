@@ -46,7 +46,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         blockModel(IRBlocks.BATTERY_BOX)
                 .top(this::machineTexture, "_top")
-                .bottom(this::machineTexture, "_bottom")
                 .defaultTexture(this::machineTexture)
                 .facing()
                 .create();

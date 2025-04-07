@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.data.saved;
 
-import com.indref.industrial_reforged.transportation.energy.EnergyNets;
+import com.indref.industrial_reforged.transportation.deprecated.EnergyNets;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

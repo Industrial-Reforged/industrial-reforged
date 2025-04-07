@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_rubber_sheet": {
+    "has_rubber": {
       "conditions": {
         "items": [
           {
-            "items": "#c:plates/rubber"
+            "items": "#c:rubber"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_rubber_sheet"
+      "has_rubber"
     ]
   ],
   "rewards": {

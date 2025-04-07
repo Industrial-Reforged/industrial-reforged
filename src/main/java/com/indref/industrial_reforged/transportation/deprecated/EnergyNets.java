@@ -1,8 +1,7 @@
-package com.indref.industrial_reforged.transportation.energy;
+package com.indref.industrial_reforged.transportation.deprecated;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
-import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,8 +1,8 @@
 {
   "values": [
-    "indref:clay_mold_plate",
-    "indref:clay_mold_rod",
+    "indref:clay_mold_wire",
     "indref:clay_mold_ingot",
-    "indref:clay_mold_wire"
+    "indref:clay_mold_plate",
+    "indref:clay_mold_rod"
   ]
 }

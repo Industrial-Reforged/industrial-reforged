@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-03T16:52:43.771375415	Block States: indref
+// 1.21.1	2025-04-05T17:51:52.172457988	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 b269694801416e295b87a1190e8aabbc2733f47c assets/indref/blockstates/basic_generator.json
 3cbec80a2e1b5742c04822848fad846cbec7f92a assets/indref/blockstates/basic_machine_frame.json
@@ -75,7 +75,7 @@ a215aec48f9f55d5fe65d30d2f62c32a432e81f8 assets/indref/blockstates/uranium_ore.j
 69dfb4bf05287123c52634f3cc713d12a4bc6fea assets/indref/models/block/basic_generator.json
 cc7996bf1cfc3b9708cbc00484536c30cd7321a4 assets/indref/models/block/basic_generator_active.json
 d48d25e96a11a0caafcaa255b08a40f39b943e11 assets/indref/models/block/basic_machine_frame.json
-2b7f1c570bc0980fd39b890a417b85ef14f9dd16 assets/indref/models/block/battery_box.json
+7c1ffc5dffce4b3a5f0e9b3cebca3a19062212df assets/indref/models/block/battery_box.json
 2df84f617919b06948fe28b3b79fefd83b95d871 assets/indref/models/block/battery_box_active.json
 5d9b8883e613b20ceb1bca50a18afdba3200689d assets/indref/models/block/bauxite_ore.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_bricks.json
