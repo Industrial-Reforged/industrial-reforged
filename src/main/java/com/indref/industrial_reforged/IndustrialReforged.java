@@ -81,12 +81,14 @@ public final class IndustrialReforged {
         IRPlacerTypes.TRUNK_PLACERS.register(modEventBus);
         IRAttachmentTypes.ATTACHMENTS.register(modEventBus);
         IRSoundEvents.SOUND_EVENTS.register(modEventBus);
+        IRNetworks.NETWORKS.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
     }
 
     private void registerRegistries(NewRegistryEvent event) {
         event.register(IRRegistries.ENERGY_TIER);
+        event.register(IRRegistries.NETWORK);
     }
 
     private void registerDataMaps(RegisterDataMapTypesEvent event) {

@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks.pipes;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
+import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
 import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -61,7 +62,7 @@ public class CableBlock extends PipeBlock {
                 && (!connections[2] || !connections[3])
                 && (!connections[4] || !connections[5]))) {
 
-            NetworkManager.addNode(level, pos, directions);
+            NetworkManager.addNode(IRNetworks.ENERGY_NETWORK.get(), level, pos, directions);
         } else {
             if (NetworkManager.hasNode(pos)) {
                 NetworkManager.removeNode(level, pos);
@@ -89,8 +90,10 @@ public class CableBlock extends PipeBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
 
-        if (NetworkManager.hasNode(pos)) {
-            NetworkManager.removeNode(level, pos);
+        if (!state.is(newState.getBlock())) {
+            if (NetworkManager.hasNode(pos)) {
+                NetworkManager.removeNode(level, pos);
+            }
         }
     }
 
@@ -109,22 +112,4 @@ public class CableBlock extends PipeBlock {
                 || CapabilityUtils.blockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo) != null;
     }
 
-    public static boolean shouldHaveNode(Level level, BlockPos pos) {
-        BlockState blockState = level.getBlockState(pos);
-        if (blockState.getBlock() instanceof CableBlock) {
-            int connectionsAmount = 0;
-            Direction[] directions = new Direction[6];
-
-            for (Direction dir : Direction.values()) {
-                if (blockState.getValue(CONNECTION[dir.get3DDataValue()])) {
-                    directions[connectionsAmount] = dir;
-                    connectionsAmount++;
-                }
-            }
-
-            return connectionsAmount != 2 && directions[0].getOpposite() != directions[1];
-
-        }
-        return false;
-    }
 }

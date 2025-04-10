@@ -1,0 +1,7 @@
+{
+  "parent": "indref:block/battery_box",
+  "textures": {
+    "north": "indref:block/machine/battery_box_top",
+    "up": "indref:block/machine/battery_box"
+  }
+}

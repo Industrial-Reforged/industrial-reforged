@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-05T17:51:52.176503685	Recipes
+// 1.21.1	2025-04-09T14:23:18.343635473	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -199,9 +199,9 @@ db9c604c41e5991685a296a5e58a6dcf78f2efd3 data/indref/recipe/electric_tree_tap.js
 2f6209641a0501019d9f22bd10654ee88a87c3ce data/indref/recipe/gold_cable.json
 6ddfc1749b8f9db2e69210eef5cb859d10fa664c data/indref/recipe/hammer.json
 603eb86c3a7a6f5e7ab667a4b198afbc00a44828 data/indref/recipe/hazmat_boots.json
-bf747b397e76a5a4fdfa02da18ca0ced216a3c2c data/indref/recipe/hazmat_chestplate.json
-ad0f5176f0f52b214e214e1d55a71734db971365 data/indref/recipe/hazmat_helmet.json
-14c6de4a6b4fae617c33ee6b5e8c5b72cf3a6b70 data/indref/recipe/hazmat_leggings.json
+8c81dd87f5f5db97f8d7ca0b04656086b9a0e2d5 data/indref/recipe/hazmat_chestplate.json
+30c9a81cff74a68828932f5c116ea2b12b76600c data/indref/recipe/hazmat_helmet.json
+78a8489aa002c10cd44902e6b15aaf931e4a011f data/indref/recipe/hazmat_leggings.json
 4ce20c33a0870c118c71bf7dc801dc180dc21042 data/indref/recipe/iridium_block.json
 a43db2c5703ee4b0a2ac9812f7f6e2df255d3b3e data/indref/recipe/iridium_ingot.json
 99b36b972dfb30109fffe5d05a7edc64c2df80d7 data/indref/recipe/iron_fence.json

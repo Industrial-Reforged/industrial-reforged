@@ -16,19 +16,6 @@
               "block": "indref:ceramic_crucible_wall",
               "condition": "minecraft:block_state_property",
               "properties": {
-                "crucible_wall": "edge_top"
-              }
-            }
-          ],
-          "name": "indref:terracotta_bricks"
-        },
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "indref:ceramic_crucible_wall",
-              "condition": "minecraft:block_state_property",
-              "properties": {
                 "crucible_wall": "wall_top"
               }
             }
@@ -42,11 +29,11 @@
               "block": "indref:ceramic_crucible_wall",
               "condition": "minecraft:block_state_property",
               "properties": {
-                "crucible_wall": "edge_bottom"
+                "crucible_wall": "fence"
               }
             }
           ],
-          "name": "indref:terracotta_bricks"
+          "name": "indref:iron_fence"
         },
         {
           "type": "minecraft:item",
@@ -68,11 +55,24 @@
               "block": "indref:ceramic_crucible_wall",
               "condition": "minecraft:block_state_property",
               "properties": {
-                "crucible_wall": "fence"
+                "crucible_wall": "edge_top"
               }
             }
           ],
-          "name": "indref:iron_fence"
+          "name": "indref:terracotta_bricks"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "indref:ceramic_crucible_wall",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "crucible_wall": "edge_bottom"
+              }
+            }
+          ],
+          "name": "indref:terracotta_bricks"
         }
       ],
       "rolls": 1.0

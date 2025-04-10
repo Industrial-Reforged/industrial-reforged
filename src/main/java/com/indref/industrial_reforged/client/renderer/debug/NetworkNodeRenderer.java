@@ -19,9 +19,9 @@ import org.joml.Matrix4f;
 import java.util.Map;
 
 public final class NetworkNodeRenderer {
-    public static NetworkNode selectedNode;
+    public static NetworkNode<?> selectedNode;
 
-    public static void render(NetworkNode node, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 cameraPos) {
+    public static void render(NetworkNode<?> node, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 cameraPos) {
         RenderSystem.disableDepthTest();   // Don't test depth
         RenderSystem.depthMask(false);    // Don't write to depth buffer
         RenderSystem.disableCull();
@@ -62,7 +62,7 @@ public final class NetworkNodeRenderer {
         poseStack.popPose();
 
         if (node == selectedNode) {
-            for (Map.Entry<Direction, NetworkNode> entry : node.getNext().entrySet()) {
+            for (Map.Entry<Direction, ? extends NetworkNode<?>> entry : node.getNext().entrySet()) {
                 if (entry.getValue() != null) {
                     BlockPos pos = entry.getValue().getPos();
                     poseStack.pushPose();
@@ -76,13 +76,15 @@ public final class NetworkNodeRenderer {
         }
 
         int i = 0;
-        for (Map.Entry<Direction, NetworkNode> entry : node.getNext().entrySet()) {
+        for (Map.Entry<Direction, ? extends NetworkNode<?>> entry : node.getNext().entrySet()) {
             Direction direction = entry.getKey();
             poseStack.pushPose();
             {
                 poseStack.translate(0.5, 0.5, 0.5);
-                BlockPos pos = entry.getValue().getPos();
-                DebugRenderer.renderFloatingText(poseStack, bufferSource, String.format("%s: %d, %d, %d", direction.toString(), pos.getX(), pos.getY(), pos.getZ()), node.getPos().getX(), node.getPos().getY() + (3f - i / 2f), node.getPos().getZ(), -1);
+                if (entry.getValue() != null) {
+                    BlockPos pos = entry.getValue().getPos();
+                    DebugRenderer.renderFloatingText(poseStack, bufferSource, String.format("%s: %d, %d, %d", direction.toString(), pos.getX(), pos.getY(), pos.getZ()), node.getPos().getX(), node.getPos().getY() + (3f - i / 2f), node.getPos().getZ(), -1);
+                }
             }
             poseStack.popPose();
             i++;
@@ -127,37 +129,37 @@ public final class NetworkNodeRenderer {
         float yBottom = -0.25f;
         float yTop = 0.5f;
 
-// FRONT FACE
+        // FRONT FACE
         consumer.addVertex(matrix, x - halfSize, yBottom, z - halfSize).setColor(r, g, b, a).setNormal(0, 0, -1);
         consumer.addVertex(matrix, x + halfSize, yBottom, z - halfSize).setColor(r, g, b, a).setNormal(0, 0, -1);
         consumer.addVertex(matrix, x + halfSize, yTop, z - halfSize).setColor(r, g, b, a).setNormal(0, 0, -1);
         consumer.addVertex(matrix, x - halfSize, yTop, z - halfSize).setColor(r, g, b, a).setNormal(0, 0, -1);
 
-// BACK FACE
+        // BACK FACE
         consumer.addVertex(matrix, x + halfSize, yBottom, z + halfSize).setColor(r, g, b, a).setNormal(0, 0, 1);
         consumer.addVertex(matrix, x - halfSize, yBottom, z + halfSize).setColor(r, g, b, a).setNormal(0, 0, 1);
         consumer.addVertex(matrix, x - halfSize, yTop, z + halfSize).setColor(r, g, b, a).setNormal(0, 0, 1);
         consumer.addVertex(matrix, x + halfSize, yTop, z + halfSize).setColor(r, g, b, a).setNormal(0, 0, 1);
 
-// LEFT FACE
+        // LEFT FACE
         consumer.addVertex(matrix, x - halfSize, yBottom, z + halfSize).setColor(r, g, b, a).setNormal(-1, 0, 0);
         consumer.addVertex(matrix, x - halfSize, yBottom, z - halfSize).setColor(r, g, b, a).setNormal(-1, 0, 0);
         consumer.addVertex(matrix, x - halfSize, yTop, z - halfSize).setColor(r, g, b, a).setNormal(-1, 0, 0);
         consumer.addVertex(matrix, x - halfSize, yTop, z + halfSize).setColor(r, g, b, a).setNormal(-1, 0, 0);
 
-// RIGHT FACE
+        // RIGHT FACE
         consumer.addVertex(matrix, x + halfSize, yBottom, z - halfSize).setColor(r, g, b, a).setNormal(1, 0, 0);
         consumer.addVertex(matrix, x + halfSize, yBottom, z + halfSize).setColor(r, g, b, a).setNormal(1, 0, 0);
         consumer.addVertex(matrix, x + halfSize, yTop, z + halfSize).setColor(r, g, b, a).setNormal(1, 0, 0);
         consumer.addVertex(matrix, x + halfSize, yTop, z - halfSize).setColor(r, g, b, a).setNormal(1, 0, 0);
 
-// TOP FACE
+        // TOP FACE
         consumer.addVertex(matrix, x - halfSize, yTop, z - halfSize).setColor(r, g, b, a).setNormal(0, 1, 0);
         consumer.addVertex(matrix, x + halfSize, yTop, z - halfSize).setColor(r, g, b, a).setNormal(0, 1, 0);
         consumer.addVertex(matrix, x + halfSize, yTop, z + halfSize).setColor(r, g, b, a).setNormal(0, 1, 0);
         consumer.addVertex(matrix, x - halfSize, yTop, z + halfSize).setColor(r, g, b, a).setNormal(0, 1, 0);
 
-// BOTTOM FACE
+        // BOTTOM FACE
         consumer.addVertex(matrix, x - halfSize, yBottom, z + halfSize).setColor(r, g, b, a).setNormal(0, -1, 0);
         consumer.addVertex(matrix, x + halfSize, yBottom, z + halfSize).setColor(r, g, b, a).setNormal(0, -1, 0);
         consumer.addVertex(matrix, x + halfSize, yBottom, z - halfSize).setColor(r, g, b, a).setNormal(0, -1, 0);

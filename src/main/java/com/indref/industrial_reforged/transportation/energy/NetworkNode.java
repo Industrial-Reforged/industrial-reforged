@@ -1,7 +1,8 @@
 package com.indref.industrial_reforged.transportation.energy;
 
+import com.indref.industrial_reforged.api.transportation.TransportNetwork;
+import com.indref.industrial_reforged.api.transportation.Transporting;
 import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -10,37 +11,39 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NetworkNode {
+public class NetworkNode<T> {
     private final BlockPos pos;
-    private final Map<Direction, NetworkNode> next;
+    private final Map<Direction, NetworkNode<T>> next;
+    private final Transporting<T> transporting;
 
-    public NetworkNode(BlockPos pos) {
+    public NetworkNode(TransportNetwork<T> network, BlockPos pos) {
         this.pos = pos;
         this.next = new HashMap<>();
+        this.transporting = new Transporting<>();
     }
 
-    public void invalidate(Level level, NetworkNode removedNode, Direction removedDirection) {
+    public void setChanged(Level level, NetworkNode<T> originNode, Direction changedDirection) {
         BlockState blockState = level.getBlockState(pos);
         if (blockState.getBlock() instanceof CableBlock) {
-            boolean connected = blockState.getValue(CableBlock.CONNECTION[removedDirection.get3DDataValue()]);
-            BlockPos relative = pos.relative(removedDirection);
+            boolean connected = blockState.getValue(CableBlock.CONNECTION[changedDirection.get3DDataValue()]);
+            BlockPos relative = pos.relative(changedDirection);
             if (connected) {
-                if (NetworkManager.hasNode(relative)/* || CableBlock.shouldHaveNode(level, relative)*/) {
-                    next.put(removedDirection, NetworkManager.getNode(relative));
+                if (NetworkManager.hasNode(relative)) {
+                    next.put(changedDirection, NetworkManager.getNodeByType(relative));
                 } else {
-                    NetworkNode nextNode = NetworkManager.findNextNode(this, pos, removedDirection);
+                    NetworkNode<T> nextNode = NetworkManager.findNextNode(this, pos, changedDirection);
                     if (nextNode != null) {
-                        next.put(removedDirection, nextNode);
+                        next.put(changedDirection, nextNode);
                     } else {
-                        next.remove(removedDirection);
+                        next.remove(changedDirection);
                     }
                 }
             } else {
-                NetworkNode nextNode = NetworkManager.findNextNode(this, pos, removedDirection);
+                NetworkNode<T> nextNode = NetworkManager.findNextNode(this, pos, changedDirection);
                 if (nextNode != null) {
-                    next.put(removedDirection, nextNode);
+                    next.put(changedDirection, nextNode);
                 } else {
-                    next.remove(removedDirection);
+                    next.remove(changedDirection);
                 }
             }
         }
@@ -50,7 +53,7 @@ public class NetworkNode {
         return pos;
     }
 
-    public Map<Direction, NetworkNode> getNext() {
+    public Map<Direction, NetworkNode<T>> getNext() {
         return next;
     }
 }

@@ -61,7 +61,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
         blockModel(IRBlocks.DRAIN)
                 .top(this::machineTexture, "_top")
                 .sides(this::machineTexture, "_side")
-                .front(this::machineTexture, "_front")
                 .bottom(this::machineTexture, "_bottom")
                 .horizontalFacing()
                 .create();

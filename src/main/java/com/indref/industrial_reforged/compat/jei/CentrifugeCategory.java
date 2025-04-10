@@ -105,7 +105,7 @@ public class CentrifugeCategory implements IRecipeCategory<CentrifugeRecipe> {
         boolean shouldRenderTooltip = shouldRenderTooltip(energyBarX, energyBarY, (int) mouseX, (int) mouseY);
         if (shouldRenderTooltip) {
             tooltip.add(IRTranslations.General.ENERGY_NAME.component());
-            tooltip.add(IRTranslations.Jei.ENERGY_USAGE.component(IRTranslations.General.ENERGY_UNIT, recipe.energy()));
+            tooltip.add(IRTranslations.Jei.ENERGY_USAGE.component(IRTranslations.General.ENERGY_UNIT.component().getString(), recipe.energy()));
         }
     }
 

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "indref:block/machine/battery_box",
+    "east": "indref:block/machine/battery_box",
+    "north": "indref:block/machine/battery_box",
+    "particle": "indref:block/machine/battery_box",
+    "south": "indref:block/machine/battery_box",
+    "up": "indref:block/machine/battery_box_top",
+    "west": "indref:block/machine/battery_box"
+  }
+}
