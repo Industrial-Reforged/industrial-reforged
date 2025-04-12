@@ -33,7 +33,7 @@ public class EnergyNet {
         this.interactors = new HashSet<>();
         transmitters.add(blockPos);
         if (level.getBlockState(blockPos).getBlock() instanceof CableBlock cableBlock) {
-            this.energyTier = Optional.of(cableBlock.getEnergyTier().value());
+            this.energyTier = Optional.of(cableBlock.getEnergyTier().get());
         } else {
             this.energyTier = Optional.empty();
         }
@@ -188,7 +188,7 @@ public class EnergyNet {
         interactors = iPositions;
         if (!transmitters.isEmpty()) {
             if (level.getBlockState(transmitters.stream().findFirst().get()).getBlock() instanceof CableBlock cableBlock) {
-                this.energyTier = Optional.of(cableBlock.getEnergyTier().value());
+                this.energyTier = Optional.of(cableBlock.getEnergyTier().get());
                 return;
             }
         }

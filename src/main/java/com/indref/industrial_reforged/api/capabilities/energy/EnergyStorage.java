@@ -1,21 +1,23 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.registries.IREnergyTiers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 
-public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundTag> {
-    public static final EnergyStorage EMPTY = new EnergyStorage(EnergyTiers.NONE);
+import java.util.function.Supplier;
 
-    private final Holder<EnergyTier> energyTier;
+public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundTag> {
+    public static final EnergyStorage EMPTY = new EnergyStorage(IREnergyTiers.NONE);
+
+    private final Supplier<EnergyTier> energyTier;
     private int energyStored;
     private int energyCapacity;
 
-    public EnergyStorage(Holder<EnergyTier> energyTier) {
+    public EnergyStorage(Supplier<EnergyTier> energyTier) {
         this.energyTier = energyTier;
     }
 
@@ -46,7 +48,7 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable<CompoundT
     }
 
     @Override
-    public Holder<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 

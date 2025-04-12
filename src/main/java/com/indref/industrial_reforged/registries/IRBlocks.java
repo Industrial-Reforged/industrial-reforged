@@ -24,7 +24,6 @@ import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLeavesBlock
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
 import com.indref.industrial_reforged.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
 import com.indref.industrial_reforged.tiers.FireboxTiers;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -112,13 +111,13 @@ public final class IRBlocks {
             () -> new CableBlock(BlockBehaviour.Properties.of()
                     .sound(SoundType.WOOL)
                     .mapColor(MapColor.COLOR_BLACK)
-                    .strength(0.8f), 6, EnergyTiers.LOW), true, false));
+                    .strength(0.8f), 6, IREnergyTiers.LOW), true, false));
     public static final DeferredBlock<CableBlock> COPPER_CABLE = pickaxeMineable(registerBlockAndItem("copper_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.MEDIUM), true, false));
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, IREnergyTiers.MEDIUM), true, false));
     public static final DeferredBlock<CableBlock> GOLD_CABLE = pickaxeMineable(registerBlockAndItem("gold_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.HIGH), true, false));
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, IREnergyTiers.HIGH), true, false));
     public static final DeferredBlock<CableBlock> STEEL_CABLE = pickaxeMineable(registerBlockAndItem("steel_cable",
-            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, EnergyTiers.EXTREME), true, false));
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, IREnergyTiers.EXTREME), true, false));
     public static final DeferredBlock<FenceBlock> IRON_FENCE = pickaxeMineable(registerBlockAndItem("iron_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), true, false));
     public static final DeferredBlock<Block> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",

@@ -4,8 +4,10 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 
+import java.util.function.Supplier;
+
 public interface IEnergyStorage {
-    Holder<EnergyTier> getEnergyTier();
+    Supplier<EnergyTier> getEnergyTier();
 
     default void onEnergyChanged(int oldAmount) {
     }
@@ -73,11 +75,11 @@ public interface IEnergyStorage {
     void setEnergyCapacity(int value);
 
     default int getMaxInput() {
-        return getEnergyTier().value().maxInput();
+        return getEnergyTier().get().maxInput();
     }
 
     default int getMaxOutput() {
-        return getEnergyTier().value().maxOutput();
+        return getEnergyTier().get().maxOutput();
     }
 
     default boolean canFillEnergy() {

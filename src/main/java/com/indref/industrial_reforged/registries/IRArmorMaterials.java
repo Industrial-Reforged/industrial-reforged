@@ -1,22 +1,27 @@
-package com.indref.industrial_reforged.tiers;
+package com.indref.industrial_reforged.registries;
 
-import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.IRRegistries;
+import com.indref.industrial_reforged.IndustrialReforged;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Supplier;
 
 public final class IRArmorMaterials {
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, IndustrialReforged.MODID);
+
     public static final Holder<ArmorMaterial> HAZMAT = register("hazmat", Util.make(new EnumMap<>(ArmorItem.Type.class), (p_323378_) -> {
         p_323378_.put(ArmorItem.Type.BOOTS, 2);
         p_323378_.put(ArmorItem.Type.LEGGINGS, 5);
@@ -38,14 +43,14 @@ public final class IRArmorMaterials {
         return register(p_323589_, p_323819_, p_323636_, p_323958_, p_323937_, p_323731_, p_323970_, list);
     }
 
-    private static Holder<ArmorMaterial> register(String p_323865_, EnumMap<ArmorItem.Type, Integer> p_324599_, int p_324319_, Holder<SoundEvent> p_324145_, float p_323494_, float p_324549_, Supplier<Ingredient> p_323845_, List<ArmorMaterial.Layer> p_323990_) {
-        EnumMap<ArmorItem.Type, Integer> enummap = new EnumMap<>(ArmorItem.Type.class);
+    private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> defenseMap, int enchantmentValue, Holder<SoundEvent> equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, List<ArmorMaterial.Layer> layers) {
+        EnumMap<ArmorItem.Type, Integer> defense = new EnumMap<>(ArmorItem.Type.class);
         ArmorItem.Type[] armorItemTypes = ArmorItem.Type.values();
 
         for (ArmorItem.Type armoritem$type : armorItemTypes) {
-            enummap.put(armoritem$type, p_324599_.get(armoritem$type));
+            defense.put(armoritem$type, defenseMap.get(armoritem$type));
         }
 
-        return Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL, ResourceLocation.parse(p_323865_), new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, p_323990_, p_323494_, p_324549_));
+        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(defense, enchantmentValue, equipSound, repairIngredient, layers, toughness, knockbackResistance));
     }
 }

@@ -1,12 +1,13 @@
 package com.indref.industrial_reforged.datagen.assets;
 
+import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRTabs;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Holder;
@@ -56,13 +57,13 @@ public class IREnUSLangProvider extends LanguageProvider {
             add(entry.getKey(), entry.getValue());
         }
 
-        addEnergyTier(EnergyTiers.NONE, "None");
-        addEnergyTier(EnergyTiers.LOW, "Low");
-        addEnergyTier(EnergyTiers.MEDIUM, "Medium");
-        addEnergyTier(EnergyTiers.HIGH, "High");
-        addEnergyTier(EnergyTiers.EXTREME, "Extreme");
-        addEnergyTier(EnergyTiers.INSANE, "Insane");
-        addEnergyTier(EnergyTiers.CREATIVE, "Creative");
+        addEnergyTier(IREnergyTiers.NONE, "None");
+        addEnergyTier(IREnergyTiers.LOW, "Low");
+        addEnergyTier(IREnergyTiers.MEDIUM, "Medium");
+        addEnergyTier(IREnergyTiers.HIGH, "High");
+        addEnergyTier(IREnergyTiers.EXTREME, "Extreme");
+        addEnergyTier(IREnergyTiers.INSANE, "Insane");
+        addEnergyTier(IREnergyTiers.CREATIVE, "Creative");
 
         add("*.desc.melting_progress", "Melting Progress");
         add("*.desc.melting_not_possible", "Melting Not Possible");
@@ -249,8 +250,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         add("title." + IndustrialReforged.MODID + "." + key, val);
     }
 
-    private void addEnergyTier(Holder<EnergyTier> key, String val) {
-        add("energy_tier." + IndustrialReforged.MODID + "." + key.value().name(), val);
+    private void addEnergyTier(Supplier<EnergyTier> key, String val) {
+        add("energy_tier." + IndustrialReforged.MODID + "." + IRRegistries.ENERGY_TIER.getKey(key.get()), val);
     }
 
     private void addTooltip(String key, String val) {

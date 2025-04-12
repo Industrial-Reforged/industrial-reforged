@@ -448,8 +448,9 @@ public class IRBlockStateProvider extends BlockStateProvider {
         }
 
         public void create() {
-            BlockModelBuilder activeBuilder = models().withExistingParent(name(block) + "_active", "cube");
+            BlockModelBuilder activeBuilder = null;
             if (this.active) {
+                activeBuilder = models().withExistingParent(name(block) + "_active", "cube");
                 activeBuilder.texture("down", activeTextureOrDefault(this.down));
                 activeBuilder.texture("up", activeTextureOrDefault(this.up));
                 activeBuilder.texture("north", activeTextureOrDefault(this.north));
@@ -457,6 +458,9 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 activeBuilder.texture("south", activeTextureOrDefault(this.south));
                 activeBuilder.texture("west", activeTextureOrDefault(this.west));
                 activeBuilder.texture("particle", textureOrDefault(this.particle));
+                if (cutout) {
+                    activeBuilder.renderType("cutout");
+                }
             }
             BlockModelBuilder inactiveBuilder = models().withExistingParent(name(block), "cube");
             inactiveBuilder.texture("down", textureOrDefault(this.down));
@@ -467,7 +471,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
             inactiveBuilder.texture("west", textureOrDefault(this.west));
             inactiveBuilder.texture("particle", textureOrDefault(this.particle));
             if (cutout) {
-                activeBuilder.renderType("cutout");
                 inactiveBuilder.renderType("cutout");
             }
             createBlockState(activeBuilder, inactiveBuilder);
@@ -504,7 +507,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
                                 .modelFile(inactiveBuilder)
                                 .rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
                                 .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 180) % 360)
-                                .addModel();;
+                                .addModel();
                     }
                 }
             } else if (this.horizontalFacing) {

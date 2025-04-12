@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
+import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
@@ -15,6 +16,11 @@ import com.indref.industrial_reforged.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.networking.*;
+import com.indref.industrial_reforged.networking.crucible.CrucibleControllerPayload;
+import com.indref.industrial_reforged.networking.crucible.CrucibleMeltingProgressPayload;
+import com.indref.industrial_reforged.networking.crucible.CrucibleTurnPayload;
+import com.indref.industrial_reforged.networking.crucible.EmptyCruciblePayload;
+import com.indref.industrial_reforged.networking.transportation.*;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.logging.LogUtils;
@@ -28,6 +34,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
@@ -82,6 +89,8 @@ public final class IndustrialReforged {
         IRAttachmentTypes.ATTACHMENTS.register(modEventBus);
         IRSoundEvents.SOUND_EVENTS.register(modEventBus);
         IRNetworks.NETWORKS.register(modEventBus);
+        IREnergyTiers.ENERGY_TIERS.register(modEventBus);
+        IRArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
     }
@@ -194,6 +203,17 @@ public final class IndustrialReforged {
         registrar.playToClient(PowerBlockEntityPayload.TYPE, PowerBlockEntityPayload.STREAM_CODEC, PowerBlockEntityPayload::handle);
         registrar.playToClient(BasinFluidChangedPayload.TYPE, BasinFluidChangedPayload.STREAM_CODEC, BasinFluidChangedPayload::handle);
         registrar.playToClient(FaucetSetRenderStack.TYPE, FaucetSetRenderStack.STREAM_CODEC, FaucetSetRenderStack::handle);
+
+        for (TransportNetwork<?> network : IRRegistries.NETWORK) {
+            registrar.playToClient(AddNetworkNodePayload.type(network), AddNetworkNodePayload.streamCodec(network), AddNetworkNodePayload::handle);
+            registrar.playToClient(RemoveNetworkNodePayload.type(network), RemoveNetworkNodePayload.streamCodec(network), RemoveNetworkNodePayload::handle);
+            registrar.playToClient(SyncNetworkNodePayload.type(network), SyncNetworkNodePayload.streamCodec(network), SyncNetworkNodePayload::handle);
+        }
+
+        registrar.playToClient(AddNextNodePayload.TYPE, AddNextNodePayload.STREAM_CODEC, AddNextNodePayload::handle);
+        registrar.playToClient(RemoveNextNodePayload.TYPE, RemoveNextNodePayload.STREAM_CODEC, RemoveNextNodePayload::handle);
+        registrar.playToClient(SyncNextNodePayload.TYPE, SyncNextNodePayload.STREAM_CODEC, SyncNextNodePayload::handle);
+
     }
 
     public static ResourceLocation rl(String path) {

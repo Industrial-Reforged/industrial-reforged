@@ -10,9 +10,10 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class ElectricDrillItem extends ElectricDiggerItem {
-    public ElectricDrillItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
+    public ElectricDrillItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
         super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_PICKAXE, energyTier, energyUsage, energyCapacity);
     }
 

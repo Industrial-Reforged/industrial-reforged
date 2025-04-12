@@ -22,6 +22,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
     private EnergyStorage euStorage;
@@ -31,11 +32,11 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
 
-    protected final void addEuStorage(Holder<EnergyTier> energyTier) {
-        addEuStorage(energyTier, energyTier.value().defaultCapacity());
+    protected final void addEuStorage(Supplier<EnergyTier> energyTier) {
+        addEuStorage(energyTier, energyTier.get().defaultCapacity());
     }
 
-    protected final void addEuStorage(Holder<EnergyTier> energyTier, int energyCapacity) {
+    protected final void addEuStorage(Supplier<EnergyTier> energyTier, int energyCapacity) {
         this.euStorage = new EnergyStorage(energyTier) {
             @Override
             public void onEnergyChanged(int oldAmount) {

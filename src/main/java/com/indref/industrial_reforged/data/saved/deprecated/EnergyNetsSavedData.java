@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.data.saved;
+package com.indref.industrial_reforged.data.saved.deprecated;
 
 import com.indref.industrial_reforged.transportation.deprecated.EnergyNets;
 import net.minecraft.core.HolderLookup;

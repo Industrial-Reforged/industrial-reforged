@@ -14,11 +14,12 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class RockCutterItem extends ElectricDiggerItem {
     private final IntSupplier energyCapacity;
 
-    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_PICKAXE, energyTier, energyUsage, defaultEnergyCapacity);
         this.energyCapacity = defaultEnergyCapacity;
     }

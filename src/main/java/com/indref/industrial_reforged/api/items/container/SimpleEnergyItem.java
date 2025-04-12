@@ -14,12 +14,13 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     protected final IntSupplier defaultEnergyCapacity;
-    private final Holder<EnergyTier> energyTier;
+    private final Supplier<EnergyTier> energyTier;
 
-    public SimpleEnergyItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier defaultEnergyCapacity) {
+    public SimpleEnergyItem(Properties properties, Supplier<EnergyTier> energyTier, IntSupplier defaultEnergyCapacity) {
         super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEuStorage(defaultEnergyCapacity.getAsInt())));
         this.defaultEnergyCapacity = defaultEnergyCapacity;
         this.energyTier = energyTier;
@@ -62,7 +63,7 @@ public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     }
 
     @Override
-    public Holder<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 }

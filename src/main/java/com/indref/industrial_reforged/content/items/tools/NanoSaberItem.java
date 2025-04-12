@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
@@ -29,24 +30,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class NanoSaberItem extends ElectricSwordItem {
-    private final IntSupplier energyUsage;
-    private final IntSupplier energyCapacity;
-
-    public NanoSaberItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
-        super(energyTier, Tiers.DIAMOND, -1, -3F, properties.component(IRDataComponents.ACTIVE, false));
-        this.energyUsage = energyUsage;
-        this.energyCapacity = energyCapacity;
-    }
-
-    public int getEnergyUsage() {
-        return energyUsage.getAsInt();
-    }
-
-    @Override
-    public int getDefaultEnergyCapacity() {
-        return energyCapacity.getAsInt();
+    public NanoSaberItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
+        super(properties.component(IRDataComponents.ACTIVE, false), tier, baseAttackDamage, baseAttackSpeed, energyTier, energyUsage, energyCapacity);
     }
 
     public @NotNull ItemAttributeModifiers createAttributes(ItemStack stack) {
@@ -102,7 +90,7 @@ public class NanoSaberItem extends ElectricSwordItem {
     }
 
     @Override
-    public Holder<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 
@@ -114,10 +102,5 @@ public class NanoSaberItem extends ElectricSwordItem {
             tooltip.add(IRTranslations.Tooltip.INACTIVE.component().withStyle(ChatFormatting.RED));
         }
         super.appendHoverText(stack, ctx, tooltip, p41424);
-    }
-
-    @Override
-    public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
-        return getEnergyUsage();
     }
 }

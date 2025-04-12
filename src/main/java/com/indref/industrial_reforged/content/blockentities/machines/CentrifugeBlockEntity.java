@@ -8,7 +8,7 @@ import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -48,7 +48,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
-        addEuStorage(EnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
+        addEuStorage(IREnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
         addFluidTank(IRConfig.centrifugeFluidCapacity);
         addItemHandler(6, ((slot, itemStack) -> slot == 0
                 || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));

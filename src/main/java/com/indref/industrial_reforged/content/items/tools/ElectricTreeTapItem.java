@@ -20,6 +20,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import static com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock.RESIN;
 
@@ -27,7 +28,7 @@ public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToo
     private final IntSupplier energyUsage;
     private final IntSupplier energyCapacity;
 
-    public ElectricTreeTapItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricTreeTapItem(Properties properties, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, energyTier, defaultEnergyCapacity);
         this.energyUsage = energyUsage;
         this.energyCapacity = defaultEnergyCapacity;

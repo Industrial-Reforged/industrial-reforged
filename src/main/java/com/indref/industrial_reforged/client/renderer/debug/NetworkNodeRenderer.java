@@ -1,15 +1,11 @@
 package com.indref.industrial_reforged.client.renderer.debug;
 
-import com.indref.industrial_reforged.transportation.energy.NetworkNode;
+import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.portingdeadmods.portingdeadlibs.utils.renderers.PDLRenderTypes;
-import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.debug.DebugRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,62 +28,68 @@ public final class NetworkNodeRenderer {
             poseStack.translate((double) node.getPos().getX() - cameraPos.x(), (double) node.getPos().getY() - cameraPos.y(), (double) node.getPos().getZ() - cameraPos.z());
             renderCube(consumer, poseStack.last().pose(), node == selectedNode ? 100 : 0, 255, node == selectedNode ? 100 : 0, 70);
             VertexConsumer consumer2 = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);
-            for (Direction direction : node.getNext().keySet()) {
-                poseStack.pushPose();
-                {
-                    poseStack.translate(-0.5, 0, -0.5);
-                    if (direction == Direction.UP) {
-                        poseStack.translate(0, 0.75, 0);
-                    } else if (direction == Direction.DOWN) {
-                        poseStack.translate(0, 0.25, 2);
-                    } else if (direction.getAxis() == Direction.Axis.X) {
-                        if (direction == Direction.WEST) {
-                            poseStack.translate(0.75, 1.5, 0);
-                        } else {
-                            poseStack.translate(1.25, 1.5, 2);
-                        }
-                    } else if (direction.getAxis() == Direction.Axis.Z) {
-                        if (direction == Direction.SOUTH) {
-                            poseStack.translate(0, 1.5, 1.25);
-                        } else {
-                            poseStack.translate(2, 1.5, 0.75);
-                        }
-                    }
-                    poseStack.mulPose(direction.getRotation());
-                    renderLine(consumer2, poseStack.last().pose(), 255, 0, 0, 200, direction);
-                }
-                poseStack.popPose();
-            }
-        }
-        poseStack.popPose();
-
-        if (node == selectedNode) {
-            for (Map.Entry<Direction, ? extends NetworkNode<?>> entry : node.getNext().entrySet()) {
-                if (entry.getValue() != null) {
-                    BlockPos pos = entry.getValue().getPos();
+            if (node.getNext() != null) {
+                for (Direction direction : node.getNext().keySet()) {
                     poseStack.pushPose();
                     {
-                        poseStack.translate((double) pos.getX() - cameraPos.x(), (double) pos.getY() - cameraPos.y(), (double) pos.getZ() - cameraPos.z());
-                        renderCube(consumer, poseStack.last().pose(), 0, 0, 0, 200);
+                        poseStack.translate(-0.5, 0, -0.5);
+                        if (direction == Direction.UP) {
+                            poseStack.translate(0, 0.75, 0);
+                        } else if (direction == Direction.DOWN) {
+                            poseStack.translate(0, 0.25, 2);
+                        } else if (direction.getAxis() == Direction.Axis.X) {
+                            if (direction == Direction.WEST) {
+                                poseStack.translate(0.75, 1.5, 0);
+                            } else {
+                                poseStack.translate(1.25, 1.5, 2);
+                            }
+                        } else if (direction.getAxis() == Direction.Axis.Z) {
+                            if (direction == Direction.SOUTH) {
+                                poseStack.translate(0, 1.5, 1.25);
+                            } else {
+                                poseStack.translate(2, 1.5, 0.75);
+                            }
+                        }
+                        poseStack.mulPose(direction.getRotation());
+                        renderLine(consumer2, poseStack.last().pose(), 255, 0, 0, 200, direction);
                     }
                     poseStack.popPose();
                 }
             }
         }
+        poseStack.popPose();
 
-        int i = 0;
-        for (Map.Entry<Direction, ? extends NetworkNode<?>> entry : node.getNext().entrySet()) {
-            Direction direction = entry.getKey();
-            poseStack.pushPose();
-            {
-                poseStack.translate(0.5, 0.5, 0.5);
-                if (entry.getValue() != null) {
-                    BlockPos pos = entry.getValue().getPos();
-                    DebugRenderer.renderFloatingText(poseStack, bufferSource, String.format("%s: %d, %d, %d", direction.toString(), pos.getX(), pos.getY(), pos.getZ()), node.getPos().getX(), node.getPos().getY() + (3f - i / 2f), node.getPos().getZ(), -1);
+        if (node == selectedNode) {
+            if (node.getNext() != null) {
+                for (Map.Entry<Direction, ? extends NetworkNode<?>> entry : node.getNext().entrySet()) {
+                    if (entry.getValue() != null) {
+                        BlockPos pos = entry.getValue().getPos();
+                        poseStack.pushPose();
+                        {
+                            poseStack.translate((double) pos.getX() - cameraPos.x(), (double) pos.getY() - cameraPos.y(), (double) pos.getZ() - cameraPos.z());
+                            renderCube(consumer, poseStack.last().pose(), 0, 0, 0, 200);
+                        }
+                        poseStack.popPose();
+                    }
                 }
             }
-            poseStack.popPose();
-            i++;
+        }
+
+        int i = 0;
+        if (node.getNext() != null) {
+            for (Map.Entry<Direction, ? extends NetworkNode<?>> entry : node.getNext().entrySet()) {
+                Direction direction = entry.getKey();
+                poseStack.pushPose();
+                {
+                    poseStack.translate(0.5, 0.5, 0.5);
+                    if (entry.getValue() != null) {
+                        BlockPos pos = entry.getValue().getPos();
+                        DebugRenderer.renderFloatingText(poseStack, bufferSource, String.format("%s: %d, %d, %d", direction.toString(), pos.getX(), pos.getY(), pos.getZ()), node.getPos().getX(), node.getPos().getY() + (3f - i / 2f), node.getPos().getZ(), -1);
+                    }
+                }
+                poseStack.popPose();
+                i++;
+            }
         }
 
         RenderSystem.depthMask(true);

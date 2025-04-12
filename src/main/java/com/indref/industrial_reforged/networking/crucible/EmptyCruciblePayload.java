@@ -1,10 +1,7 @@
-package com.indref.industrial_reforged.networking;
+package com.indref.industrial_reforged.networking.crucible;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.portingdeadmods.portingdeadlibs.api.capabilities.DynamicFluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

@@ -29,18 +29,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyItem, ElectricToolItem {
     private final float baseAttackDamage;
     private final float attackSpeed;
-    private final IntSupplier energyUsage;
     private final Tier tier;
     @org.jetbrains.annotations.NotNull
-    private final IntSupplier defaultEnergyCapacity;
     private final TagKey<Block> blocks;
-    protected final Holder<EnergyTier> energyTier;
+    protected final Supplier<EnergyTier> energyTier;
+    private final IntSupplier energyUsage;
+    private final IntSupplier defaultEnergyCapacity;
 
-    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
@@ -147,7 +148,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public Holder<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 }

@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.client.widgets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.screen.CrucibleScreen;
-import com.indref.industrial_reforged.networking.EmptyCruciblePayload;
+import com.indref.industrial_reforged.networking.crucible.EmptyCruciblePayload;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;

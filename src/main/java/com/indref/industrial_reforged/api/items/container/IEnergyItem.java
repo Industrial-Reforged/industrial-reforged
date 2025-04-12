@@ -6,6 +6,8 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.function.Supplier;
+
 public interface IEnergyItem {
     default IEnergyStorage getEnergyCap(ItemStack itemStack) {
         return itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
@@ -19,8 +21,8 @@ public interface IEnergyItem {
     }
 
     default int getDefaultEnergyCapacity() {
-       return getEnergyTier().value().defaultCapacity();
+       return getEnergyTier().get().defaultCapacity();
     }
 
-    Holder<EnergyTier> getEnergyTier();
+    Supplier<EnergyTier> getEnergyTier();
 }

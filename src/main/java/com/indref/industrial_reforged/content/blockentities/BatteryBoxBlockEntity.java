@@ -4,9 +4,9 @@ import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
-import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
+import com.indref.industrial_reforged.data.saved.deprecated.EnergyNetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
@@ -28,7 +28,7 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity {
 
     public BatteryBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.BATTERY_BOX.get(), blockPos, blockState);
-        addEuStorage(EnergyTiers.LOW, IRConfig.batteryBoxEnergyCapacity);
+        addEuStorage(IREnergyTiers.LOW, IRConfig.batteryBoxEnergyCapacity);
 
         this.sidedInteractions = new HashMap<>();
     }
@@ -43,7 +43,7 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity {
                 EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
                 Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
                 if (enet.isPresent()) {
-                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().value().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
+                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().get().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
                     thisEnergyStorage.tryDrainEnergy(filled, false);
                 }
             }

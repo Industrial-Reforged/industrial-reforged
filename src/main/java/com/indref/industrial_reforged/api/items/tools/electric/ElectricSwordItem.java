@@ -16,17 +16,38 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem, ElectricToolItem {
-    protected final Holder<EnergyTier> energyTier;
+    protected final Supplier<EnergyTier> energyTier;
+    private final IntSupplier energyUsage;
+    private final IntSupplier energyCapacity;
 
-    public ElectricSwordItem(Holder<EnergyTier> energyTier, Tier tier, int baseAttackDamage, float baseAttackSpeed, Properties properties) {
+    public ElectricSwordItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
         super(tier, properties
                 .attributes(SwordItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
-                .component(IRDataComponents.ENERGY, new ComponentEuStorage(0, energyTier.value().defaultCapacity())));
+                .component(IRDataComponents.ENERGY, new ComponentEuStorage(0, energyCapacity.getAsInt())));
         this.energyTier = energyTier;
+        this.energyUsage = energyUsage;
+        this.energyCapacity = energyCapacity;
+    }
+
+    public int getEnergyUsage() {
+        return energyUsage.getAsInt();
+    }
+
+    @Override
+    public int getDefaultEnergyCapacity() {
+        return energyCapacity.getAsInt();
+    }
+
+    @Override
+    public int getEnergyUsage(ItemStack itemStack, @Nullable Entity entity) {
+        return getEnergyUsage();
     }
 
     @Override

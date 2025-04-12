@@ -17,9 +17,10 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class ElectricWrenchItem extends SimpleEnergyItem {
-    public ElectricWrenchItem(Item.Properties properties, Holder<EnergyTier> energyTier, int energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricWrenchItem(Item.Properties properties, Supplier<EnergyTier> energyTier, int energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, energyTier, defaultEnergyCapacity);
     }
 

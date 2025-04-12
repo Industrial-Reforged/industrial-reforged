@@ -5,13 +5,15 @@ import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.Holder;
 
+import java.util.function.Supplier;
+
 public record SidedEnergyHandler(IEnergyStorage innerHandler, IOAction action) implements IEnergyStorage {
     public SidedEnergyHandler(IEnergyStorage innerHandler, Pair<IOAction, int[]> action) {
         this(innerHandler, action.first());
     }
 
     @Override
-    public Holder<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTier> getEnergyTier() {
         return innerHandler.getEnergyTier();
     }
 

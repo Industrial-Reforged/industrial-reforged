@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.items.armor;
 
-import com.indref.industrial_reforged.tiers.IRArmorMaterials;
+import com.indref.industrial_reforged.registries.IRArmorMaterials;
 import net.minecraft.world.item.ArmorItem;
 
 public class HazmatSuiteItem extends ArmorItem {

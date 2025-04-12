@@ -7,8 +7,10 @@ import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 
-public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTier) implements IEnergyStorage {
-    public ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTier, int initialCapacity) {
+import java.util.function.Supplier;
+
+public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier) implements IEnergyStorage {
+    public ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier, int initialCapacity) {
         this(itemStack, energyTier);
         this.setEnergyCapacity(initialCapacity);
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {
@@ -17,7 +19,7 @@ public record ItemEnergyWrapper(ItemStack itemStack, Holder<EnergyTier> energyTi
     }
 
     @Override
-    public Holder<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTier> getEnergyTier() {
         return energyTier;
     }
 

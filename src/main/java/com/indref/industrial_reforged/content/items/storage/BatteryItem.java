@@ -20,11 +20,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class BatteryItem extends SimpleEnergyItem {
     private final int stages;
 
-    public BatteryItem(Properties properties, Holder<EnergyTier> energyTier, IntSupplier defaultEnergyCapacity, int stages) {
+    public BatteryItem(Properties properties, Supplier<EnergyTier> energyTier, IntSupplier defaultEnergyCapacity, int stages) {
         super(properties, energyTier, defaultEnergyCapacity);
         this.stages = stages;
     }
@@ -51,13 +52,13 @@ public class BatteryItem extends SimpleEnergyItem {
                     IEnergyStorage energyStorage = getEnergyCap(itemStack);
                     if (energyStorage != null) {
                         // TODO: Possibly round robin this?
-                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().value().maxOutput(), false);
+                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().get().maxOutput(), false);
                         energyStorage.tryFillEnergy(drained, false);
                     } else {
                         net.neoforged.neoforge.energy.@Nullable IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (feEnergyStorage == null) continue;
 
-                        feEnergyStorage.receiveEnergy(getEnergyTier().value().maxOutput(), false);
+                        feEnergyStorage.receiveEnergy(getEnergyTier().get().maxOutput(), false);
                     }
                 }
             }

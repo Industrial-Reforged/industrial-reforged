@@ -8,9 +8,9 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
-import com.indref.industrial_reforged.data.saved.EnergyNetsSavedData;
+import com.indref.industrial_reforged.data.saved.deprecated.EnergyNetsSavedData;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
+import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.EnergyNetUtils;
@@ -52,7 +52,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
             boolean canInsertBattery = slot == 1 && item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null;
             return canInsertFuel || canInsertBattery;
         });
-        addEuStorage(EnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
+        addEuStorage(IREnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                 EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
                 Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
                 if (enet.isPresent()) {
-                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().value().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
+                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().get().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
                     thisEnergyStorage.tryDrainEnergy(filled, false);
                 }
             }

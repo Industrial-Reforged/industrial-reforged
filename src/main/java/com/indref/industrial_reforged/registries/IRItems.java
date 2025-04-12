@@ -12,8 +12,6 @@ import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.content.items.tools.*;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
-import com.indref.industrial_reforged.tiers.EnergyTiers;
-import com.indref.industrial_reforged.tiers.IRArmorMaterials;
 import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.indref.industrial_reforged.util.tabs.ItemTabOrdering;
 import com.indref.industrial_reforged.util.tabs.TabOrdering;
@@ -50,33 +48,33 @@ public final class IRItems {
     // electric tools
     // low
     public static final DeferredItem<ElectricTreeTapItem> ELECTRIC_TREE_TAP = electricToolItem("electric_tree_tap",
-            () -> new ElectricTreeTapItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.electricTreeTapEnergyUsage, () -> IRConfig.electricTreeTapCapacity));
+            () -> new ElectricTreeTapItem(new Item.Properties(), IREnergyTiers.LOW, () -> IRConfig.electricTreeTapEnergyUsage, () -> IRConfig.electricTreeTapCapacity));
     public static final DeferredItem<ElectricHoeItem> ELECTRIC_HOE = electricToolItem("electric_hoe",
-            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, EnergyTiers.LOW, () -> IRConfig.electricHoeEnergyUsage, () -> IRConfig.electricHoeCapacity));
+            () -> new ElectricHoeItem(new Item.Properties(), Tiers.IRON, 1, -2.8F, IREnergyTiers.LOW, () -> IRConfig.electricHoeEnergyUsage, () -> IRConfig.electricHoeCapacity));
     public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = electricToolItem("basic_drill",
-            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
     public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = electricToolItem("basic_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
+            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = electricToolItem("rock_cutter",
-            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, EnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
+            () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = electricToolItem("advanced_drill",
-            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedDrillEnergyUsage, () -> IRConfig.advancedDrillCapacity));
+            () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.DIAMOND, IREnergyTiers.HIGH, () -> IRConfig.advancedDrillEnergyUsage, () -> IRConfig.advancedDrillCapacity));
     public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = electricToolItem("advanced_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, EnergyTiers.HIGH, () -> IRConfig.advancedChainsawEnergyUsage, () -> IRConfig.advancedChainsawCapacity));
+            () -> new ElectricChainsawItem(new Item.Properties(), 7, -2.8F, Tiers.DIAMOND, IREnergyTiers.HIGH, () -> IRConfig.advancedChainsawEnergyUsage, () -> IRConfig.advancedChainsawCapacity));
     // medium
     public static final DeferredItem<ScannerItem> SCANNER = electricToolItem("scanner",
-            () -> new ScannerItem(new Item.Properties(), EnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
+            () -> new ScannerItem(new Item.Properties(), IREnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
     // high
     public static final DeferredItem<NanoSaberItem> NANO_SABER = electricToolItem("nano_saber",
-            () -> new NanoSaberItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.nanoSaberEnergyUsage, () -> IRConfig.nanoSaberCapacity));
+            () -> new NanoSaberItem(new Item.Properties(), Tiers.DIAMOND, -1, -3F, IREnergyTiers.HIGH, () -> IRConfig.nanoSaberEnergyUsage, () -> IRConfig.nanoSaberCapacity));
 
     // Item storages
     public static final DeferredItem<BatteryItem> BASIC_BATTERY = batteryItem("basic_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.LOW, () -> IRConfig.basicBatteryCapacity, 6));
+            () -> new BatteryItem(new Item.Properties(), IREnergyTiers.LOW, () -> IRConfig.basicBatteryCapacity, 6));
     public static final DeferredItem<BatteryItem> ADVANCED_BATTERY = batteryItem("advanced_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.HIGH, () -> IRConfig.advancedBatteryCapacity, 8));
+            () -> new BatteryItem(new Item.Properties(), IREnergyTiers.HIGH, () -> IRConfig.advancedBatteryCapacity, 8));
     public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = batteryItem("ultimate_battery",
-            () -> new BatteryItem(new Item.Properties(), EnergyTiers.INSANE, () -> IRConfig.ultimateBatteryCapacity, 9));
+            () -> new BatteryItem(new Item.Properties(), IREnergyTiers.INSANE, () -> IRConfig.ultimateBatteryCapacity, 9));
     public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
             () -> new FluidCellItem(new Item.Properties().stacksTo(16), () -> IRConfig.fluidCellCapacity), ItemTabOrdering.noPosition());
 

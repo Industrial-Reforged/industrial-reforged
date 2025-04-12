@@ -1,8 +1,7 @@
-package com.indref.industrial_reforged.networking;
+package com.indref.industrial_reforged.networking.crucible;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;

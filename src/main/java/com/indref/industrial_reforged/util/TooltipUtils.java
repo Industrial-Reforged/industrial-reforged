@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.translations.IRTranslations;
+import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
+import com.portingdeadmods.portingdeadlibs.utils.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
@@ -29,11 +32,11 @@ public final class TooltipUtils {
                             .append(IRTranslations.General.ENERGY_UNIT.component()
                                     .withColor(FastColor.ARGB32.color(255, 245, 192, 89)))
             );
-            EnergyTier tier = energyStorage.getEnergyTier().value();
+            EnergyTier tier = energyStorage.getEnergyTier().get();
             tooltip.add(
                     IRTranslations.Tooltip.ENERGY_TIER.component()
                             .withStyle(ChatFormatting.GRAY)
-                            .append(tier.getTranslation().copy().withColor(tier.color()))
+                            .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withColor(tier.color()))
             );
         }
     }

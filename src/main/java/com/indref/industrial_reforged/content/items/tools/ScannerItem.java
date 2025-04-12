@@ -14,11 +14,12 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class ScannerItem extends SimpleEnergyItem implements ElectricToolItem {
     private final IntSupplier energyUsage;
 
-    public ScannerItem(Properties p_41383_, Holder<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ScannerItem(Properties p_41383_, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(p_41383_, energyTier, defaultEnergyCapacity);
         this.energyUsage = energyUsage;
     }
