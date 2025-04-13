@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-09T14:23:18.343635473	Recipes
+// 1.21.1	2025-04-12T19:05:04.773640682	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -27,6 +27,7 @@ af41a128a29fc24c5a37794a57f077d8a57e3284 data/indref/advancement/recipes/buildin
 83f3a89ded9428bce81b2f7d5b3806179737895d data/indref/advancement/recipes/building_blocks/wooden_scaffolding.json
 0922685f78b27e6ee73bb8377bba21361c9007bc data/indref/advancement/recipes/decorations/basic_generator.json
 db325b076034d2cb266bbcd935401bf22edcea99 data/indref/advancement/recipes/decorations/basic_machine_frame.json
+4d561f31359a354dc93c1c63608ba17ee9763b77 data/indref/advancement/recipes/decorations/battery_box.json
 6b569ada3e8a3c36a07417a76eea679222fec04c data/indref/advancement/recipes/decorations/blast_furnace_casting_basin.json
 746d5dec715745b2de230a0719a6da19a1e73f12 data/indref/advancement/recipes/decorations/blast_furnace_faucet.json
 6f1f91e49f80f7df7e9d54ff5f0910fbe7736f16 data/indref/advancement/recipes/decorations/blast_furnace_hatch.json
@@ -108,6 +109,7 @@ b67111755cb5dfaf5918c7a4bd47e97ef0dfa3b0 data/indref/recipe/basic_battery.json
 0b1016b30c7824cc1b7c911698961cfea29b30fd data/indref/recipe/basic_drill.json
 81ddf1e73b4446fc9092d904664d48bf9a7434eb data/indref/recipe/basic_generator.json
 f3e455e124b5b801f205654a7da860de670ba189 data/indref/recipe/basic_machine_frame.json
+ed91f869165f8916cb6c23243fcc3ecd08bc5668 data/indref/recipe/battery_box.json
 a6cbf583459fdeafc435a4198f9ab68a69e32a34 data/indref/recipe/blast_furnace/ingots/iron_coals.json
 2389c081d882d6d30546b37022dcfa2d2d505620 data/indref/recipe/blast_furnace/ores/bauxite.json
 4b1b9b813ed83f5ec5c6007069fe10bea263e803 data/indref/recipe/blast_furnace/raw_bauxite.json
@@ -132,7 +134,7 @@ d3efdcbb23f638cc4941c7f19cd9f2d0773a4c9b data/indref/recipe/clay_mold.json
 796dd3999616e5a1d7d92e0dab55fd18b2a84f88 data/indref/recipe/coil.json
 f24a91fbfec8fa95a0c867a0b0091d36be0bb1e2 data/indref/recipe/coil_from_ingots.json
 93973f377b0afdbcf11ba0110cf292eb5fdb2c9d data/indref/recipe/copper_cable.json
-fe1993473d80d000db4edd36770dcdd3e53d6fb8 data/indref/recipe/crafting_station.json
+547aa008a53d8d0cf8c1a463d0306608b721e024 data/indref/recipe/crafting_station.json
 461f8e92ef44bbbb13808f03d2e9dd771066101c data/indref/recipe/crucible_casting/to_aluminum_ingot.json
 f88a440679ef489a099201928cf820d882945e12 data/indref/recipe/crucible_casting/to_copper_ingot.json
 471ea3bce4a1c402e6a3222d58bd7a5db54b280e data/indref/recipe/crucible_casting/to_copper_plate.json
@@ -191,7 +193,7 @@ a932f11c2b2d63e773faf4be492e1ad8e0c16e38 data/indref/recipe/crucible_melting/sto
 779af1d40dc09b64c49142a860528c682943be3a data/indref/recipe/crucible_melting/wires/gold.json
 b7aa538ca3a5c8114071a3bd801a9bf8050d3469 data/indref/recipe/crucible_melting/wires/steel.json
 5dc4966df2c04c56ef0e5c961b76855ba8d190f6 data/indref/recipe/crucible_melting/wires/tin.json
-03cb3b11336482ffc23e2be7147d14d1b8d30eab data/indref/recipe/drain.json
+d04dfb3e3a1e32f32852169dcc71a7f5fbe23210 data/indref/recipe/drain.json
 2bdab517d10347d5659ce11de96958917c530e71 data/indref/recipe/electric_hoe.json
 67107c5f59e1c9c933374e412af850b223bd4919 data/indref/recipe/electric_motor.json
 db9c604c41e5991685a296a5e58a6dcf78f2efd3 data/indref/recipe/electric_tree_tap.json

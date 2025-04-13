@@ -18,7 +18,7 @@ public final class IRFluids {
     public static final MoltenMetalFluid MOLTEN_COPPER = HELPER.registerFluid(new MoltenMetalFluid("molten_copper",
             new Vec3i(231, 124, 86)));
     public static final MoltenMetalFluid MOLTEN_IRON = HELPER.registerFluid(new MoltenMetalFluid("molten_iron",
-            new Vec3i(176, 56, 56)));
+            new Vec3i(216, 175, 147)));
     public static final MoltenMetalFluid MOLTEN_TIN = HELPER.registerFluid(new MoltenMetalFluid("molten_tin",
             new Vec3i(168, 181, 168)));
     public static final MoltenMetalFluid MOLTEN_NICKEL = HELPER.registerFluid(new MoltenMetalFluid("molten_nickel",

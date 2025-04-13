@@ -49,15 +49,30 @@ public class CableBlock extends PipeBlock {
                 }
             }
 
-            if (connectionsAmount == 2
+            boolean interactorConnection = false;
+            for (Direction dir : directions) {
+                if (dir != null && !(level.getBlockState(pos.relative(dir)).getBlock() instanceof CableBlock)) {
+                    interactorConnection = true;
+                    break;
+                }
+            }
+
+            if (interactorConnection) {
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions);
+            } else if ((connectionsAmount == 2
                     && ((connections[0] && connections[1])
                     || (connections[2] && connections[3])
-                    || (connections[4] && connections[5]))) {
+                    || (connections[4] && connections[5])))) {
+
+                if (IRNetworks.ENERGY_NETWORK.get().hasNodeAt(serverLevel, pos)) {
+                    IRNetworks.ENERGY_NETWORK.get().removeNodeAndUpdate(serverLevel, pos);
+                }
+            } else if (connectionsAmount == 1 || connectionsAmount == 0) {
                 if (IRNetworks.ENERGY_NETWORK.get().hasNodeAt(serverLevel, pos)) {
                     IRNetworks.ENERGY_NETWORK.get().removeNodeAndUpdate(serverLevel, pos);
                 }
             } else {
-                IRNetworks.ENERGY_NETWORK.get().addNode(serverLevel, pos, directions);
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions);
             }
         }
 

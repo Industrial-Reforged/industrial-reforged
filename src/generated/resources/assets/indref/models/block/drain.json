@@ -3,7 +3,7 @@
   "textures": {
     "down": "indref:block/machine/drain_bottom",
     "east": "indref:block/machine/drain_side",
-    "north": "indref:block/machine/drain_front",
+    "north": "indref:block/machine/drain_side",
     "particle": "indref:block/basic_machine_frame",
     "south": "indref:block/machine/drain_side",
     "up": "indref:block/machine/drain_top",

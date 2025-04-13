@@ -685,13 +685,23 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_machine_frame", has(IRBlocks.BASIC_MACHINE_FRAME.get()))
                 .save(output);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.BATTERY_BOX.get())
+                .pattern("#C#")
+                .pattern("BBB")
+                .pattern("###")
+                .define('#', ItemTags.PLANKS)
+                .define('B', IRItems.BASIC_BATTERY)
+                .define('C', IRBlocks.COPPER_CABLE)
+                .unlockedBy("has_battery", has(IRItems.BASIC_BATTERY.get()))
+                .save(output);
+
         // "MANUAL" Machines
 
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.CRAFTING_STATION.get())
                 .pattern("WWW")
                 .pattern("#R#")
                 .pattern("#C#")
-                .define('W', ItemTags.WOOL)
+                .define('W', Items.RED_WOOL)
                 .define('#', ItemTags.PLANKS)
                 .define('R', Blocks.CRAFTING_TABLE)
                 .define('C', Blocks.CHEST)
@@ -700,7 +710,7 @@ public class IRRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.DRAIN.get())
                 .pattern("PBP")
-                .pattern("#U#")
+                .pattern("PUP")
                 .pattern("###")
                 .define('P', ItemTags.PLANKS)
                 .define('#', Tags.Items.COBBLESTONES)

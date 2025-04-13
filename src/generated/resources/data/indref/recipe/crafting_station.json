@@ -12,7 +12,7 @@
       "item": "minecraft:crafting_table"
     },
     "W": {
-      "tag": "minecraft:wool"
+      "item": "minecraft:red_wool"
     }
   },
   "pattern": [

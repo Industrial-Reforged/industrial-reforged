@@ -33,7 +33,10 @@ public record RemoveNextNodePayload(TransportNetwork<?> network, BlockPos nodePo
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            ClientNodes.NODES.get(network).get(nodePos).removeNext(direction);
+            NetworkNode<?> networkNode = ClientNodes.NODES.get(network).get(nodePos);
+            if (networkNode != null) {
+                networkNode.removeNext(direction);
+            }
         }).exceptionally(err -> {
             IndustrialReforged.LOGGER.error("Failed to handle RemoveNextNodePayload");
             return null;

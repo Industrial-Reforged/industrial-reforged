@@ -33,11 +33,14 @@ public final class TooltipUtils {
                                     .withColor(FastColor.ARGB32.color(255, 245, 192, 89)))
             );
             EnergyTier tier = energyStorage.getEnergyTier().get();
-            tooltip.add(
-                    IRTranslations.Tooltip.ENERGY_TIER.component()
-                            .withStyle(ChatFormatting.GRAY)
-                            .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withColor(tier.color()))
-            );
+            ChatFormatting format = tier.chatFormatting();
+            if (format != null) {
+                tooltip.add(
+                        IRTranslations.Tooltip.ENERGY_TIER.component()
+                                .withStyle(ChatFormatting.GRAY)
+                                .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withStyle(format))
+                );
+            }
         }
     }
 

@@ -51,42 +51,48 @@ public class NetworkNode<T> {
             BlockPos relative = pos.relative(changedDirection);
             if (connected) {
                 if (this.network.hasNodeAt(level, relative)) {
-                    next.put(changedDirection, this.network.getNode(level, relative));
+                    NetworkNode<T> node = this.network.getNode(level, relative);
+                    node.setChanged(level, originNode, changedDirection);
+                    next.put(changedDirection, node);
                     this.network.setServerNodesChanged(level);
                     if (this.network.isSynced()) {
                         PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, relative));
                     }
                 } else {
-                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
+                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, changedDirection);
                     if (nextNode != null) {
+                        nextNode.setChanged(level, originNode, changedDirection);
                         next.put(changedDirection, nextNode);
                         this.network.setServerNodesChanged(level);
                         if (this.network.isSynced()) {
                             PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
                         }
                     } else {
-                        next.remove(changedDirection);
-                        this.network.setServerNodesChanged(level);
-                        if (this.network.isSynced()) {
-                            PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
+                        NetworkNode<T> node = next.remove(changedDirection);
+                        if (node != null) {
+                            node.setChanged(level, originNode, changedDirection);
+                            this.network.setServerNodesChanged(level);
+                            if (this.network.isSynced()) {
+                                PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
+                            }
                         }
                     }
                 }
             } else {
-                NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
-                if (nextNode != null) {
-                    next.put(changedDirection, nextNode);
-                    this.network.setServerNodesChanged(level);
-                    if (this.network.isSynced()) {
-                        PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
-                    }
-                } else {
-                    next.remove(changedDirection);
-                    this.network.setServerNodesChanged(level);
-                    if (this.network.isSynced()) {
-                        PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
-                    }
-                }
+//                NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
+//                if (nextNode != null) {
+//                    next.put(changedDirection, nextNode);
+//                    this.network.setServerNodesChanged(level);
+//                    if (this.network.isSynced()) {
+//                        PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
+//                    }
+//                } else {
+//                    next.remove(changedDirection);
+//                    this.network.setServerNodesChanged(level);
+//                    if (this.network.isSynced()) {
+//                        PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
+//                    }
+//                }
             }
         }
     }

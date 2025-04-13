@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "B": {
+      "item": "indref:basic_battery"
+    },
+    "C": {
+      "item": "indref:copper_cable"
+    }
+  },
+  "pattern": [
+    "#C#",
+    "BBB",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:battery_box"
+  }
+}
