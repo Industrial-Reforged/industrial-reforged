@@ -75,17 +75,6 @@ public class IRRecipeProvider extends RecipeProvider {
         // Compacting recipes
         rawOreToBlockRecipes();
         ingotToBlockRecipes();
-
-        SpecialRecipeBuilder.special(MoldCraftingRecipe::new)
-                .save(output, IndustrialReforged.rl("mold_crafting"));
-
-        for (Map.Entry<ResourceKey<Item>, TagKey<Item>> entry : BuiltInRegistries.ITEM.getDataMap(IRDataMaps.MOLD_INGREDIENTS).entrySet()) {
-            Item item = BuiltInRegistries.ITEM.get(entry.getKey());
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK.get())
-                    .requires(item)
-                    .unlockedBy("has_mold", has(item))
-                    .save(output, IndustrialReforged.rl("clay_mold_from_" + entry.getKey().location().getPath()));
-        }
     }
 
     private void multiblockRecipes() {
@@ -270,8 +259,8 @@ public class IRRecipeProvider extends RecipeProvider {
 
         plantBallRecipes();
 
-        stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, IRBlocks.REFRACTORY_STONE);
-        stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_STONE, IRBlocks.REFRACTORY_BRICK);
+//        stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, IRBlocks.REFRACTORY_STONE);
+//        stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_STONE, IRBlocks.REFRACTORY_BRICK);
     }
 
     private void plantBallRecipes() {
@@ -299,6 +288,11 @@ public class IRRecipeProvider extends RecipeProvider {
 
     private void smeltingRecipes() {
         ingotSmeltingRecipes();
+
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(IRItems.STICKY_RESIN), RecipeCategory.MISC, IRItems.RUBBER, 0.7f, 200)
+                .unlockedBy("has_sticky_resin", has(IRItems.STICKY_RESIN))
+                .save(output);
+
     }
 
     private void toolRecipes() {
@@ -560,6 +554,7 @@ public class IRRecipeProvider extends RecipeProvider {
         rodCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_ROD);
         rodCastingRecipe(IRFluids.MOLTEN_IRON, IRItems.IRON_ROD);
 
+        plateCastingRecipe(IRFluids.MOLTEN_ALUMINUM, IRItems.ALUMINUM_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_IRON, IRItems.IRON_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_PLATE);

@@ -29,6 +29,7 @@ public class NetworkNode<T> {
     private Map<Direction, NetworkNode<T>> next;
     private Map<Direction, BlockPos> uninitializedNext;
     private final Transporting<T> transporting;
+    private boolean dead;
 
     public NetworkNode(TransportNetwork<T> network, BlockPos pos) {
         this.network = network;
@@ -37,11 +38,12 @@ public class NetworkNode<T> {
         this.transporting = new Transporting<>(network);
     }
 
-    public NetworkNode(TransportNetwork<?> network, BlockPos pos, Map<Direction, BlockPos> next, Transporting<T> transporting) {
+    public NetworkNode(TransportNetwork<?> network, BlockPos pos, Map<Direction, BlockPos> next, Transporting<T> transporting, boolean dead) {
         this.network = (TransportNetwork<T>) network;
         this.pos = pos;
         this.uninitializedNext = next;
         this.transporting = transporting;
+        this.dead = dead;
     }
 
     public void setChanged(ServerLevel level, NetworkNode<T> originNode, Direction changedDirection) {
@@ -51,48 +53,27 @@ public class NetworkNode<T> {
             BlockPos relative = pos.relative(changedDirection);
             if (connected) {
                 if (this.network.hasNodeAt(level, relative)) {
-                    NetworkNode<T> node = this.network.getNode(level, relative);
-                    node.setChanged(level, originNode, changedDirection);
-                    next.put(changedDirection, node);
+                    next.put(changedDirection, this.network.getNode(level, relative));
                     this.network.setServerNodesChanged(level);
                     if (this.network.isSynced()) {
                         PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, relative));
                     }
                 } else {
-                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, changedDirection);
+                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
                     if (nextNode != null) {
-                        nextNode.setChanged(level, originNode, changedDirection);
                         next.put(changedDirection, nextNode);
                         this.network.setServerNodesChanged(level);
                         if (this.network.isSynced()) {
                             PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
                         }
                     } else {
-                        NetworkNode<T> node = next.remove(changedDirection);
-                        if (node != null) {
-                            node.setChanged(level, originNode, changedDirection);
-                            this.network.setServerNodesChanged(level);
-                            if (this.network.isSynced()) {
-                                PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
-                            }
+                        next.remove(changedDirection);
+                        this.network.setServerNodesChanged(level);
+                        if (this.network.isSynced()) {
+                            PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
                         }
                     }
                 }
-            } else {
-//                NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
-//                if (nextNode != null) {
-//                    next.put(changedDirection, nextNode);
-//                    this.network.setServerNodesChanged(level);
-//                    if (this.network.isSynced()) {
-//                        PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
-//                    }
-//                } else {
-//                    next.remove(changedDirection);
-//                    this.network.setServerNodesChanged(level);
-//                    if (this.network.isSynced()) {
-//                        PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
-//                    }
-//                }
             }
         }
     }
@@ -121,6 +102,10 @@ public class NetworkNode<T> {
         this.next.put(direction, (NetworkNode<T>) node);
     }
 
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
     public Map<Direction, NetworkNode<T>> getNext() {
         return next;
     }
@@ -133,8 +118,13 @@ public class NetworkNode<T> {
         return uninitializedNext != null && next == null;
     }
 
+    public boolean isDead() {
+        return dead;
+    }
+
     private Map<Direction, BlockPos> getNextAsPos() {
-        return next.entrySet().stream()
+        Map<Direction, NetworkNode> snapshot = new HashMap<>(next);
+        return snapshot.entrySet().stream()
                 .filter(e -> e.getValue() != null)
                 .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().getPos()))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
@@ -145,7 +135,8 @@ public class NetworkNode<T> {
                 CodecUtils.registryCodec(IRRegistries.NETWORK).fieldOf("network").forGetter(NetworkNode::getNetwork),
                 BlockPos.CODEC.fieldOf("pos").forGetter(NetworkNode::getPos),
                 Codec.unboundedMap(StringRepresentable.fromEnum(Direction::values), BlockPos.CODEC).fieldOf("next").forGetter(NetworkNode::getNextAsPos),
-                Transporting.codec(network.codec()).fieldOf("transporting").forGetter(NetworkNode::getTransporting)
+                Transporting.codec(network.codec()).fieldOf("transporting").forGetter(NetworkNode::getTransporting),
+                Codec.BOOL.fieldOf("dead").forGetter(NetworkNode::isDead)
         ).apply(inst, NetworkNode::new));
     }
 
@@ -159,6 +150,8 @@ public class NetworkNode<T> {
                 NetworkNode::getNextAsPos,
                 Transporting.streamCodec(network.streamCodec()),
                 NetworkNode::getTransporting,
+                ByteBufCodecs.BOOL,
+                NetworkNode::isDead,
                 NetworkNode::new
         );
     }

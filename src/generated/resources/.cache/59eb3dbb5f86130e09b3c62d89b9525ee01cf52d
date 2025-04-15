@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-12T19:05:04.769306669	Loot Tables
+// 1.21.1	2025-04-15T20:00:44.136588381	Loot Tables
 247264bc26773fb3e253e6c2f9bbcd11e39daab8 data/indref/loot_table/blocks/aluminum_block.json
 30b46342ea38fb9d16bacdc6081f6e748404199c data/indref/loot_table/blocks/basic_generator.json
 12b3fe9eb29c730c49154c7870959f136fd1c906 data/indref/loot_table/blocks/basic_machine_frame.json
@@ -12,7 +12,7 @@ e4e73e5ffe666253bebb888e6cec4674cc90f293 data/indref/loot_table/blocks/blast_fur
 e28463e8f36e083f1a9fd1525c68ddce72bc1e8f data/indref/loot_table/blocks/centrifuge.json
 f199541d1fcfba3ff3f6f1799e8b5d0acdb3834f data/indref/loot_table/blocks/ceramic_casting_basin.json
 2ba5e8677961fd13e0bcd43dfd348112d3dc6bb1 data/indref/loot_table/blocks/ceramic_crucible_controller.json
-29a39f0411a5f8b136ebe9f441183e8b67db0584 data/indref/loot_table/blocks/ceramic_crucible_wall.json
+7457013a82232e5ba72247c8504eb32f7ab3eefd data/indref/loot_table/blocks/ceramic_crucible_wall.json
 62cf1cb2db54d304c349132172c7482e8f727bd1 data/indref/loot_table/blocks/chromium_block.json
 2b816aa6a1803025e3f5cc125a74a806f1cdfb44 data/indref/loot_table/blocks/chromium_ore.json
 3d627cb4c4ab4f21acc234bfb74d99cd5f24639c data/indref/loot_table/blocks/coil.json
@@ -44,7 +44,6 @@ b0f3f548fd6c60859e542d3a3ab11f94a7e96a32 data/indref/loot_table/blocks/raw_iridi
 f0dd32556ddb3514e69645cc39b944c9b5855d4c data/indref/loot_table/blocks/raw_tin_block.json
 19540ae1324f403250dd7aced7ec9ad4578720b5 data/indref/loot_table/blocks/raw_uranium_block.json
 6cc8ff849241c699a63f97426bb5bfdb15d81f79 data/indref/loot_table/blocks/refractory_brick.json
-2c2c3d4e30b149b9d420dcd5ea3cf1bad912c354 data/indref/loot_table/blocks/refractory_stone.json
 c384fd1627a3106c1e0a84e8301299137e17bbc4 data/indref/loot_table/blocks/rubber_tree_button.json
 b3d9759f86084937ca6766325f1773e10bfcedbe data/indref/loot_table/blocks/rubber_tree_door.json
 08b9c60d4d5503617c2429a16d8f3e41300e7856 data/indref/loot_table/blocks/rubber_tree_fence.json

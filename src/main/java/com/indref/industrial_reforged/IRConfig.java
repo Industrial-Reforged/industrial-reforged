@@ -186,6 +186,8 @@ public final class IRConfig {
 
     @SubscribeEvent
     public static void onConfigReload(ModConfigEvent event) {
+        if (event.getConfig().getSpec() != SPEC) return;
+
         basicGeneratorEnergyCapacity = BASIC_GENERATOR_ENERGY_CAPACITY.getAsInt();
         centrifugeEnergyCapacity = CENTRIFUGE_ENERGY_CAPACITY.getAsInt();
         batteryBoxEnergyCapacity = BATTERY_BOX_ENERGY_CAPACITY.getAsInt();

@@ -44,11 +44,12 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .active()
                 .create();
 
-        blockModel(IRBlocks.BATTERY_BOX)
-                .top(this::machineTexture, "_top")
-                .defaultTexture(this::machineTexture)
-                .facing()
-                .create();
+        // TODO: CTM Datagen
+//        blockModel(IRBlocks.BATTERY_BOX)
+//                .top(this::machineTexture, "_top")
+//                .defaultTexture(this::machineTexture)
+//                .facing()
+//                .create();
 
         blockModel(IRBlocks.CRAFTING_STATION)
                 .top(this::machineTexture, "_top")
@@ -80,12 +81,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         simpleBlock(IRBlocks.BLAST_FURNACE_BRICKS.get());
 
-        simpleBlock(IRBlocks.REFRACTORY_STONE.get());
         simpleBlock(IRBlocks.REFRACTORY_BRICK.get());
-        simpleBlock(IRBlocks.BASIC_MACHINE_FRAME.get());
+        //simpleBlock(IRBlocks.BASIC_MACHINE_FRAME.get());
         simpleBlock(IRBlocks.TERRACOTTA_BRICKS.get());
-        slabBlock(IRBlocks.TERRACOTTA_BRICK_SLAB.get(), blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()),
-                blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()));
+        slabBlock(IRBlocks.TERRACOTTA_BRICK_SLAB.get(),
+                blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()),
+                blockTexture(IRBlocks.TERRACOTTA_BRICKS.get())
+        );
 
         fenceBlock(IRBlocks.IRON_FENCE.get(), blockTexture(Blocks.IRON_BLOCK));
 

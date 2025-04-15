@@ -1,0 +1,22 @@
+{
+  "type": "fusion:connecting",
+  "parent": "minecraft:block/cube",
+  "connections": {
+    "type": "fusion:or",
+    "predicates": [
+      {
+        "type": "fusion:is_same_block"
+      }
+    ]
+  },
+  "loader": "fusion:model",
+  "textures": {
+    "down": "indref:block/machine/battery_box_connecting",
+    "east": "indref:block/machine/battery_box_connecting",
+    "north": "indref:block/machine/battery_box_connecting",
+    "particle": "indref:block/machine/battery_box_connecting",
+    "south": "indref:block/machine/battery_box_connecting",
+    "up": "indref:block/machine/battery_box_top_connecting",
+    "west": "indref:block/machine/battery_box_connecting"
+  }
+}

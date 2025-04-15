@@ -9,7 +9,7 @@ import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
-import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;

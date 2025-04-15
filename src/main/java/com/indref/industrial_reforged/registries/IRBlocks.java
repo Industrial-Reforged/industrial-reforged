@@ -23,8 +23,8 @@ import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
-import com.indref.industrial_reforged.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.content.multiblocks.tiers.CrucibleTiers;
+import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
@@ -73,8 +73,6 @@ public final class IRBlocks {
 
     public static final DeferredBlock<SmallFireboxHatchBlock> SMALL_FIREBOX_HATCH = pickaxeMineable(registerBlockAndItem("small_firebox_hatch",
             () -> new SmallFireboxHatchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL))));
-    public static final DeferredBlock<Block> REFRACTORY_STONE = pickaxeMineable(registerBlockAndItem("refractory_stone",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).sound(SoundType.STONE))));
     public static final DeferredBlock<CoilBlock> COIL = pickaxeMineable(registerBlockAndItem("coil",
             () -> new CoilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK))));
     public static final DeferredBlock<Block> REFRACTORY_BRICK = pickaxeMineable(registerBlockAndItem("refractory_brick",

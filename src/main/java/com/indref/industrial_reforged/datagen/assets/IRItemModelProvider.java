@@ -4,7 +4,6 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.item.IRItemProperties;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
-import com.indref.industrial_reforged.content.items.tools.ElectricChainsawItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -107,9 +106,9 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.HAZMAT_LEGGINGS);
         basicItem(IRItems.HAZMAT_BOOTS);
 
-        battery(IRItems.BASIC_BATTERY.get());
-        battery(IRItems.ADVANCED_BATTERY.get());
-        battery(IRItems.ULTIMATE_BATTERY.get());
+        batteryModel(IRItems.BASIC_BATTERY.get());
+        batteryModel(IRItems.ADVANCED_BATTERY.get());
+        batteryModel(IRItems.ULTIMATE_BATTERY.get());
 
         fluidCell(IRItems.FLUID_CELL);
 
@@ -144,6 +143,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.COPPER_DUST);
         basicItem(IRItems.STEEL_DUST);
 
+        basicItem(IRItems.ALUMINUM_PLATE);
         basicItem(IRItems.COPPER_PLATE);
         basicItem(IRItems.IRON_PLATE);
         basicItem(IRItems.STEEL_PLATE);
@@ -160,6 +160,11 @@ public class IRItemModelProvider extends ItemModelProvider {
         fenceInventory(name(IRBlocks.IRON_FENCE), blockTexture(Blocks.IRON_BLOCK));
 
         blockItems();
+    }
+
+    private void batteryModel(BatteryItem item) {
+        overrideItemModel(item.getStages(), basicItem(item, extend(itemTexture(item), "_0")), IRItemProperties.BATTERY_STAGE_KEY,
+                i -> basicItem(item, "_" + i));
     }
 
     private void activeModel(ItemLike item) {
@@ -198,11 +203,6 @@ public class IRItemModelProvider extends ItemModelProvider {
                     .predicate(key, i)
                     .end();
         }
-    }
-
-    private void battery(BatteryItem item) {
-        overrideItemModel(item.getStages(), basicItem(item, extend(itemTexture(item), "_0")), IRItemProperties.BATTERY_STAGE_KEY,
-                i -> basicItem(item, "_" + i));
     }
 
     private void bucket(Fluid f) {

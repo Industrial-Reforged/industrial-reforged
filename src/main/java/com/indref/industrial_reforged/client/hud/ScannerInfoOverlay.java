@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.client.hud;
 
-import com.indref.industrial_reforged.IndustrialReforgedClient;
+import com.indref.industrial_reforged.client.IndustrialReforgedClient;
 import com.indref.industrial_reforged.api.items.tools.ClientDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.LayeredDraw;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class ScannerInfoOverlay {
+public final class ScannerInfoOverlay {
     public static final LayeredDraw.Layer HUD_SCANNER_INFO = (guiGraphics, delta) -> {
         Minecraft minecraft = Minecraft.getInstance();
         int lineOffset = 0;

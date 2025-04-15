@@ -41,8 +41,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Cache recipe
-
 /**
  * This is the blockentity for the blast furnace.
  * It is attached to the blast furnace hatch.

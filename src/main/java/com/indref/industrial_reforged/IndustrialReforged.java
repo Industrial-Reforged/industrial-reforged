@@ -20,8 +20,11 @@ import com.indref.industrial_reforged.networking.crucible.CrucibleControllerPayl
 import com.indref.industrial_reforged.networking.crucible.CrucibleMeltingProgressPayload;
 import com.indref.industrial_reforged.networking.crucible.CrucibleTurnPayload;
 import com.indref.industrial_reforged.networking.crucible.EmptyCruciblePayload;
+import com.indref.industrial_reforged.networking.molds.SetCastingMoldPayload;
+import com.indref.industrial_reforged.networking.molds.SyncCastingMoldsPayload;
 import com.indref.industrial_reforged.networking.transportation.*;
 import com.indref.industrial_reforged.registries.*;
+import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.util.Utils;
 import com.mojang.logging.LogUtils;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
@@ -32,10 +35,15 @@ import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.CapabilityRegistrationHelper;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -49,8 +57,12 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -59,9 +71,12 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @Mod(IndustrialReforged.MODID)
 public final class IndustrialReforged {
@@ -74,6 +89,8 @@ public final class IndustrialReforged {
         modEventBus.addListener(this::onRegister);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::registerPayloads);
+
+        NeoForge.EVENT_BUS.addListener(this::onDatapackReload);
 
         IRFluids.HELPER.register(modEventBus);
         IRItems.ITEMS.register(modEventBus);
@@ -93,6 +110,17 @@ public final class IndustrialReforged {
         IRArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
+    }
+
+    private void onDatapackReload(OnDatapackSyncEvent event) {
+        Stream<ServerPlayer> relevantPlayers = event.getRelevantPlayers();
+        relevantPlayers.forEach(player -> {
+            Optional<HolderSet.Named<Item>> named = BuiltInRegistries.ITEM.getTag(IRTags.Items.MOLDS);
+            named.ifPresent(holders -> {
+                List<Item> list = holders.stream().map(Holder::value).toList();
+                PacketDistributor.sendToPlayer(player, new SyncCastingMoldsPayload(list));
+            });
+        });
     }
 
     private void registerRegistries(NewRegistryEvent event) {
@@ -204,6 +232,8 @@ public final class IndustrialReforged {
         registrar.playToClient(BasinFluidChangedPayload.TYPE, BasinFluidChangedPayload.STREAM_CODEC, BasinFluidChangedPayload::handle);
         registrar.playToClient(FaucetSetRenderStack.TYPE, FaucetSetRenderStack.STREAM_CODEC, FaucetSetRenderStack::handle);
 
+
+        // Transport network
         for (TransportNetwork<?> network : IRRegistries.NETWORK) {
             registrar.playToClient(AddNetworkNodePayload.type(network), AddNetworkNodePayload.streamCodec(network), AddNetworkNodePayload::handle);
             registrar.playToClient(RemoveNetworkNodePayload.type(network), RemoveNetworkNodePayload.streamCodec(network), RemoveNetworkNodePayload::handle);
@@ -214,6 +244,10 @@ public final class IndustrialReforged {
         registrar.playToClient(RemoveNextNodePayload.TYPE, RemoveNextNodePayload.STREAM_CODEC, RemoveNextNodePayload::handle);
         registrar.playToClient(SyncNextNodePayload.TYPE, SyncNextNodePayload.STREAM_CODEC, SyncNextNodePayload::handle);
 
+
+        // Casting molds
+        registrar.playToClient(SyncCastingMoldsPayload.TYPE, SyncCastingMoldsPayload.STREAM_CODEC, SyncCastingMoldsPayload::handle);
+        registrar.playToServer(SetCastingMoldPayload.TYPE, SetCastingMoldPayload.STREAM_CODEC, SetCastingMoldPayload::handle);
     }
 
     public static ResourceLocation rl(String path) {

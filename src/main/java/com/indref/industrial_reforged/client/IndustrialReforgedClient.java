@@ -1,8 +1,10 @@
-package com.indref.industrial_reforged;
+package com.indref.industrial_reforged.client;
 
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.tools.ClientDisplayItem;
+import com.indref.industrial_reforged.client.hud.CastingMoldSelectionOverlay;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
 import com.indref.industrial_reforged.client.item.IRDisplayItems;
 import com.indref.industrial_reforged.client.item.IRItemProperties;
@@ -19,9 +21,16 @@ import com.indref.industrial_reforged.client.screen.*;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
+import com.indref.industrial_reforged.networking.molds.SetCastingMoldPayload;
 import com.indref.industrial_reforged.registries.*;
+import com.indref.industrial_reforged.tags.IRTags;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.SingleFluidStack;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -30,9 +39,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -41,9 +52,14 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Mod(IndustrialReforgedClient.MODID)
@@ -60,6 +76,11 @@ public final class IndustrialReforgedClient {
         modEventBus.addListener(this::registerItemDecorations);
         modEventBus.addListener(this::registerMenuScreens);
 
+        NeoForge.EVENT_BUS.addListener(this::onScroll);
+        NeoForge.EVENT_BUS.addListener(this::onRightClick);
+        NeoForge.EVENT_BUS.addListener(this::appendTooltip);
+
+        modContainer.registerConfig(ModConfig.Type.CLIENT, IRClientConfig.SPEC);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
@@ -85,13 +106,51 @@ public final class IndustrialReforgedClient {
         ItemProperties.register(IRItems.ADVANCED_DRILL.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof BatteryItem) {
-                ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY, (ClampedItemPropertyFunction) IRItemProperties::getBatteryStage);
+                ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY, IRItemProperties::getBatteryStage);
             }
+        }
+    }
+
+    private void onRightClick(InputEvent.MouseButton.Pre event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            ItemStack mainHandItem = player.getMainHandItem();
+            if (event.getButton() == GLFW.GLFW_MOUSE_BUTTON_RIGHT && Screen.hasShiftDown() && mainHandItem.is(IRTags.Items.MOLDS)) {
+                List<Item> castingMoldItems = CastingMoldSelectionOverlay.CASTING_MOLD_ITEMS;
+                Item item = castingMoldItems.get(CastingMoldSelectionOverlay.INDEX.get());
+                if (!mainHandItem.is(item)) {
+                    PacketDistributor.sendToServer(new SetCastingMoldPayload(item));
+                    CastingMoldSelectionOverlay.INDEX.set(castingMoldItems.indexOf(item));
+                }
+            }
+        }
+    }
+
+    private void onScroll(InputEvent.MouseScrollingEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (Screen.hasShiftDown()) {
+            if (player.getMainHandItem().is(IRTags.Items.MOLDS)) {
+                int index = CastingMoldSelectionOverlay.INDEX.get();
+                int scrollDeltaY = (int) event.getScrollDeltaY();
+                if (index < CastingMoldSelectionOverlay.CASTING_MOLD_ITEMS.size() - 1 && scrollDeltaY < 0) {
+                    CastingMoldSelectionOverlay.INDEX.getAndIncrement();
+                } else if (index > 0 && scrollDeltaY > 0) {
+                    CastingMoldSelectionOverlay.INDEX.getAndDecrement();
+                }
+            }
+        }
+    }
+
+    private void appendTooltip(ItemTooltipEvent event) {
+        ItemStack itemStack = event.getItemStack();
+        if (itemStack.is(IRTags.Items.MOLDS)) {
+            event.getToolTip().add(IRTranslations.Tooltip.CASTING_MOLD.component().withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 
     private void registerGuiOverlays(RegisterGuiLayersEvent event) {
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(MODID, "scanner_info_overlay"), ScannerInfoOverlay.HUD_SCANNER_INFO);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(MODID, "casting_mold_overlay"), CastingMoldSelectionOverlay.HUD_CASTING_MOLD_SELECTION);
     }
 
     private static final CrucibleItemRenderer CRUCIBLE_ITEM_RENDERER = new CrucibleItemRenderer();

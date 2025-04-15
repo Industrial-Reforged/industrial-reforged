@@ -1,8 +1,6 @@
-// 1.21.1	2025-04-12T17:06:58.061924434	Block States: indref
+// 1.21.1	2025-04-15T18:54:15.958324911	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 b269694801416e295b87a1190e8aabbc2733f47c assets/indref/blockstates/basic_generator.json
-3cbec80a2e1b5742c04822848fad846cbec7f92a assets/indref/blockstates/basic_machine_frame.json
-cc7605ae3fdc5e6a63ed626ff1bf6b51bfb7a274 assets/indref/blockstates/battery_box.json
 d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.json
 88eb7647f5d97dcbf4b00de55b5e9563aa8101f3 assets/indref/blockstates/blast_furnace_bricks.json
 838f61b4f120fb4c4b2b9b587261a29717f7b514 assets/indref/blockstates/blast_furnace_casting_basin.json
@@ -42,7 +40,6 @@ d6db3c7209ccaf6258a97fe6cc4afe8a344600f2 assets/indref/blockstates/raw_nickel_bl
 f561679e0e344256f9a1133631835888f962b2b6 assets/indref/blockstates/raw_tin_block.json
 264b824fca791e5067b1c5dda83cb76d78e46078 assets/indref/blockstates/raw_uranium_block.json
 db2d01db199d449dacfe3b7a9134e3e193eb59cb assets/indref/blockstates/refractory_brick.json
-3729bbd23d65bdf6abfdaca348ece16f7d62d50b assets/indref/blockstates/refractory_stone.json
 2f0075407128a045454b787bf6319219a0bd78de assets/indref/blockstates/rubber_tree_button.json
 8dad6990bd75691ce1b21ae21deb1d4718f7e688 assets/indref/blockstates/rubber_tree_door.json
 162578e0d7397cbe696375f4f19ac4bc27a2ff10 assets/indref/blockstates/rubber_tree_fence.json
@@ -74,8 +71,6 @@ a215aec48f9f55d5fe65d30d2f62c32a432e81f8 assets/indref/blockstates/uranium_ore.j
 8f385309313021f49e14320a218c0639bb40e31a assets/indref/models/block/aluminum_block.json
 69dfb4bf05287123c52634f3cc713d12a4bc6fea assets/indref/models/block/basic_generator.json
 cc7996bf1cfc3b9708cbc00484536c30cd7321a4 assets/indref/models/block/basic_generator_active.json
-d48d25e96a11a0caafcaa255b08a40f39b943e11 assets/indref/models/block/basic_machine_frame.json
-7c1ffc5dffce4b3a5f0e9b3cebca3a19062212df assets/indref/models/block/battery_box.json
 5d9b8883e613b20ceb1bca50a18afdba3200689d assets/indref/models/block/bauxite_ore.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_bricks.json
 c5cd2277c21cf1deb48965d38ed4eb517fe48c73 assets/indref/models/block/blast_furnace_casting_basin.json
@@ -124,7 +119,6 @@ dc66286da02c9e8b6e4414ba6a1be39a98b1e6c7 assets/indref/models/block/raw_lead_blo
 ef200b41cdc100cf8751a87b757bb6a086736298 assets/indref/models/block/raw_tin_block.json
 fbd578bbb6f64c11ce92d105308dfe90f0748d83 assets/indref/models/block/raw_uranium_block.json
 7694978ab5288bee9a9ae1fa23ea65a0c757a322 assets/indref/models/block/refractory_brick.json
-efb2d1518a3e582aab3e32f790e67e6757155cea assets/indref/models/block/refractory_stone.json
 3e18bcdde5ccf9a7767b84148a5a75bdea76fd47 assets/indref/models/block/rubber_tree_button.json
 c9efef04f1ea70d19d61cf91d28c8ebdfc506813 assets/indref/models/block/rubber_tree_button_inventory.json
 2299df0c61d1a47f0925851e41929cb23ee4df1a assets/indref/models/block/rubber_tree_button_pressed.json

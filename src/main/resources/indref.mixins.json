@@ -6,6 +6,8 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "LevelRendererAccess"
+  ],
+  "mixins": [
+    "InventoryMixin"
   ]
 }

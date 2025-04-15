@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_refractory_brick": {
+    "has_sticky_resin": {
       "conditions": {
         "items": [
           {
-            "items": "indref:refractory_brick"
+            "items": "indref:sticky_resin"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:refractory_stone_from_refractory_brick_stonecutting"
+        "recipe": "indref:rubber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_refractory_brick"
+      "has_sticky_resin"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:refractory_stone_from_refractory_brick_stonecutting"
+      "indref:rubber"
     ]
   }
 }

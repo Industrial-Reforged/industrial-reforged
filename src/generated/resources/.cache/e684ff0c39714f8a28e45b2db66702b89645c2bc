@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-05T17:51:52.160487626	Item Models: indref
+// 1.21.1	2025-04-15T20:00:44.126298405	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -15,6 +15,7 @@ d9370afa44b140f62ded0ef824d63ce15a50dd93 assets/indref/models/item/advanced_batt
 47063f00ce13d598d15a8d88932496238094c682 assets/indref/models/item/advanced_drill_active.json
 22bd7f6be31106077008150949f43699fd5d5469 assets/indref/models/item/aluminum_block.json
 a6360bd18b10a80d5bb89aeee949fb687beb55f0 assets/indref/models/item/aluminum_ingot.json
+67fb8cf076043bef07167fc500ff7dbb76c07138 assets/indref/models/item/aluminum_plate.json
 9853d030e0ddfe99d6531f21d77575b016f07795 assets/indref/models/item/antenna.json
 2e0f8f0d0809b4812ff98dca7b0237b8495acbb4 assets/indref/models/item/basic_battery.json
 4cd030aafb38fe16878a030bba9b2d6369c0ab84 assets/indref/models/item/basic_battery_0.json
@@ -119,7 +120,6 @@ ff84a5142903e1e50f187bcbcf020edaf066b871 assets/indref/models/item/raw_tin.json
 0ef51acc61c086210666682651e581aee179487a assets/indref/models/item/raw_uranium.json
 937c282a4e5645ef4b6cd26b9ddbfb281eb79356 assets/indref/models/item/raw_uranium_block.json
 2ffb6a54d4e42ee49926fbe63095ccbdfb738c62 assets/indref/models/item/refractory_brick.json
-6b71bfe9fc5aedb54022565aca2671caaddc67f6 assets/indref/models/item/refractory_stone.json
 da377d5712cd0ced17092cc0f4e2c480b62622a0 assets/indref/models/item/rock_cutter.json
 e5fc4941153636173fa4e5295e131bdfe9d23dcf assets/indref/models/item/rubber.json
 c92afa4845f9fca7739e52005409cb4c4f9198b2 assets/indref/models/item/rubber_tree_button.json

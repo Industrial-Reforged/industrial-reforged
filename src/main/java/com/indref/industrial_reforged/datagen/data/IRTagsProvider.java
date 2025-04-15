@@ -62,6 +62,7 @@ public class IRTagsProvider {
             for (ItemLike item : IRItems.MOLD_ITEMS.keySet()) {
                 tag(IRTags.Items.MOLDS, item.asItem());
             }
+            tag(IRTags.Items.MOLDS, IRItems.CLAY_MOLD_BLANK);
 
             plates();
             wires();
@@ -168,6 +169,7 @@ public class IRTagsProvider {
             tag(CTags.Items.WOODEN_PLATE, IRItems.WOODEN_PLATE);
             tag(CTags.Items.CARBON_PLATE, IRItems.CARBON_PLATE);
             tag(CTags.Items.IRON_PLATE, IRItems.IRON_PLATE);
+            tag(CTags.Items.ALUMINUM_PLATE, IRItems.ALUMINUM_PLATE);
             tag(CTags.Items.COPPER_PLATE, IRItems.COPPER_PLATE);
             tag(CTags.Items.TIN_PLATE, IRItems.TIN_PLATE);
             tag(CTags.Items.STEEL_PLATE, IRItems.STEEL_PLATE);
@@ -334,7 +336,7 @@ public class IRTagsProvider {
                     IRBlocks.RAW_IRIDIUM_BLOCK.get()
             );
 
-            tag(Tags.Blocks.STONES, IRBlocks.REFRACTORY_STONE.get());
+//            tag(Tags.Blocks.STONES, IRBlocks.REFRACTORY_STONE.get());
 
             tag(BlockTags.CLIMBABLE, IRBlocks.WOODEN_SCAFFOLDING.get());
             tag(BlockTags.FALL_DAMAGE_RESETTING, IRBlocks.WOODEN_SCAFFOLDING.get());

@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.compat.jei;
 
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
 import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -15,17 +18,23 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.BlastFurnaceBlock;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +45,23 @@ public class IRJeiPlugin implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
         return ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "jei_plugin");
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        for (Item item : BuiltInRegistries.ITEM) {
+            IEnergyStorage energyStorage = item.getDefaultInstance().getCapability(IRCapabilities.EnergyStorage.ITEM);
+            if (energyStorage != null) {
+                registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> ingredient.get(IRDataComponents.ENERGY));
+            }
+            IFluidHandler fluidHandler = item.getDefaultInstance().getCapability(Capabilities.FluidHandler.ITEM);
+            if (fluidHandler != null) {
+                registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> ingredient.get(IRDataComponents.FLUID));
+            }
+        }
+
+        registration.registerSubtypeInterpreter(IRItems.TOOLBOX.get(), (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> ingredient.get(DataComponents.DYED_COLOR));
+
     }
 
     @Override
@@ -66,17 +92,6 @@ public class IRJeiPlugin implements IModPlugin {
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(BlastFurnaceCategory.RECIPE_TYPE, blastFurnaceRecipes);
 
-        List<RecipeHolder<CraftingRecipe>> recipes = new ArrayList<>();
-        for (Map.Entry<ResourceKey<Item>, TagKey<Item>> entry : BuiltInRegistries.ITEM.getDataMap(IRDataMaps.MOLD_INGREDIENTS).entrySet()) {
-            ResourceLocation rl = IndustrialReforged.rl("clay_mold_from_" + entry.getKey().location().getPath());
-            recipes.add(new RecipeHolder<>(rl, new ShapelessRecipe(
-                    "misc",
-                    CraftingBookCategory.MISC,
-                    BuiltInRegistries.ITEM.get(entry.getKey()).getDefaultInstance(),
-                    NonNullList.of(Ingredient.EMPTY, Ingredient.of(IRItems.CLAY_MOLD_BLANK), Ingredient.of(entry.getValue()))
-            )));
-        }
-        registration.addRecipes(RecipeTypes.CRAFTING, recipes);
     }
 
     @Override

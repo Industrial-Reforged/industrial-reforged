@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.data.saved.NodeNetworkSavedData;
 import com.indref.industrial_reforged.networking.transportation.AddNetworkNodePayload;
 import com.indref.industrial_reforged.networking.transportation.AddNextNodePayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNetworkNodePayload;
+import com.indref.industrial_reforged.networking.transportation.RemoveNextNodePayload;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -11,15 +12,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.wrapper.PlayerArmorInvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class TransportNetwork<T> {
     private final BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> nodeFactory;
@@ -44,33 +44,34 @@ public class TransportNetwork<T> {
         return this.nodeFactory.apply(this, pos);
     }
 
-    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections) {
+    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead) {
         NetworkNode<T> node = this.createNode(pos);
+        node.setDead(dead);
         this.addNode(level, pos, node);
         Map<Direction, NetworkNode<T>> next = node.getNext();
         for (Direction direction : connections) {
             if (direction != null) {
-                NetworkNode<T> nextNode1 = this.findNextNode(node, level, direction);
-                if (nextNode1 != null) {
-                    nextNode1.setChanged(level, node, direction);
-                }
                 BlockPos relative = pos.relative(direction);
                 if (this.hasNodeAt(level, relative)) {
-                    NetworkNode<T> node1 = this.getNode(level, relative);
-                    next.put(direction, node1);
-                    node1.setChanged(level, node, direction);
-                    this.setServerNodesChanged(level);
-                    if (this.isSynced()) {
-                        PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, pos, direction, relative));
+                    NetworkNode<T> nextNode = this.getNode(level, relative);
+                    if (!nextNode.isDead() && !node.isDead()) {
+                        next.put(direction, nextNode);
+                        nextNode.getNext().put(direction.getOpposite(), node);
+                        this.setServerNodesChanged(level);
+                        if (this.isSynced()) {
+                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, pos, direction, relative));
+                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, relative, direction.getOpposite(), pos));
+                        }
                     }
                 } else {
-                    NetworkNode<T> nextNode = this.findNextNode(node, level, direction);
-                    if (nextNode != null) {
+                    NetworkNode<T> nextNode = this.findNextNode(node, level, pos, direction);
+                    if (nextNode != null && !nextNode.isDead() && !node.isDead()) {
                         next.put(direction, nextNode);
-                        nextNode.setChanged(level, node, direction);
+                        nextNode.getNext().put(direction.getOpposite(), node);
                         this.setServerNodesChanged(level);
                         if (this.isSynced()) {
                             PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, pos, direction, nextNode.getPos()));
+                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, nextNode.getPos(), direction.getOpposite(), pos));
                         }
                     }
                 }
@@ -97,8 +98,14 @@ public class TransportNetwork<T> {
             Direction direction = nextNode.getKey();
             if (node1 != null) {
                 node1.setChanged(serverLevel, node, direction);
+                node1.getNext().remove(direction.getOpposite());
+
+                if (this.isSynced()) {
+                    PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this, node1.getPos(), direction.getOpposite()));
+                }
             }
         }
+        this.setServerNodesChanged(serverLevel);
     }
 
     public @Nullable NetworkNode<T> removeNode(ServerLevel serverLevel, BlockPos pos) {
@@ -137,27 +144,59 @@ public class TransportNetwork<T> {
         NodeNetworkSavedData.getNetworks(serverLevel).setDirty();
     }
 
-    // TODO: Use nearest node
-    public @Nullable NetworkNode<T> findNextNode(NetworkNode<T> selfNode, ServerLevel serverLevel, Direction direction) {
+    public @Nullable NetworkNode<T> findNextNode(NetworkNode<T> selfNode, ServerLevel serverLevel, BlockPos pos, Direction direction) {
         Map<BlockPos, NetworkNode<?>> nodes = this.getServerNodes(serverLevel);
+        Set<BlockPos> alignedPositions = new HashSet<>();
 
         for (Map.Entry<BlockPos, NetworkNode<?>> node1 : nodes.entrySet()) {
             if (node1.getValue() != selfNode) {
                 BlockPos pos1 = node1.getKey();
-                if (areNodesAligned(selfNode.getPos(), pos1, direction)) {
-                    return this.getNode(serverLevel, pos1);
+                if (areNodesAligned(pos, pos1, direction)) {
+                    alignedPositions.add(pos1);
                 }
             }
         }
+
+        if (!alignedPositions.isEmpty()) {
+            BlockPos nearestPos;
+            if (alignedPositions.size() == 1) {
+                nearestPos = alignedPositions.stream().findFirst().get();
+            } else {
+                nearestPos = sortByDirectionalDistance(pos, alignedPositions, direction).findFirst().get();
+            }
+            return this.getNode(serverLevel, nearestPos);
+        }
+
         return null;
     }
 
-    public static boolean areNodesAligned(BlockPos pos0, BlockPos pos1, Direction direction) {
+    private static boolean areNodesAligned(BlockPos pos0, BlockPos pos1, Direction direction) {
         int deltaX = Integer.signum(pos1.getX() - pos0.getX());
         int deltaY = Integer.signum(pos1.getY() - pos0.getY());
         int deltaZ = Integer.signum(pos1.getZ() - pos0.getZ());
 
         return deltaX == direction.getStepX() && deltaY == direction.getStepY() && deltaZ == direction.getStepZ();
+    }
+
+    private static Stream<BlockPos> sortByDirectionalDistance(BlockPos mainPos, Set<BlockPos> positions, Direction direction) {
+        return positions.stream()
+                .sorted(Comparator.comparingInt(pos -> getDirectionalDistance(mainPos, pos, direction)));
+    }
+
+    private static int getDirectionalDistance(BlockPos origin, BlockPos target, Direction direction) {
+        int diff;
+        switch (direction.getAxis()) {
+            case X -> diff = target.getX() - origin.getX();
+            case Y -> diff = target.getY() - origin.getY();
+            case Z -> diff = target.getZ() - origin.getZ();
+            default -> throw new IllegalArgumentException("Invalid axis");
+        }
+
+        if (direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
+            diff = -diff;
+        }
+
+        return diff;
     }
 
     public boolean isSynced() {

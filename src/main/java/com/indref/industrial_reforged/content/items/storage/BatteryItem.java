@@ -36,7 +36,7 @@ public class BatteryItem extends SimpleEnergyItem {
 
     public float getBatteryStage(ItemStack itemStack) {
         IEnergyStorage energyStorage = getEnergyCap(itemStack);
-        return (float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity() * this.stages;
+        return ((float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity()) * (this.stages - 1);
     }
 
     @Override

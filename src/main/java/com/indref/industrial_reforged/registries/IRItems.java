@@ -138,6 +138,7 @@ public final class IRItems {
     public static final DeferredItem<Item> STEEL_INGOT = ingotItem("steel");
 
     // Plates
+    public static final DeferredItem<Item> ALUMINUM_PLATE = plateItem("aluminum");
     public static final DeferredItem<Item> IRON_PLATE = plateItem("iron");
     public static final DeferredItem<Item> COPPER_PLATE = plateItem("copper");
     public static final DeferredItem<Item> STEEL_PLATE = plateItem("steel");

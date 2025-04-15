@@ -12,14 +12,10 @@ public final class IRRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
             DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, IndustrialReforged.MODID);
 
-    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<MoldCraftingRecipe>> MOLD_CRAFTING =
-            SERIALIZERS.register("mold_crafting", () -> new SimpleCraftingRecipeSerializer<>(MoldCraftingRecipe::new));
-
     static {
         SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.SERIALIZER);
         SERIALIZERS.register(CrucibleCastingRecipe.NAME, () -> CrucibleCastingRecipe.SERIALIZER);
         SERIALIZERS.register(BlastFurnaceRecipe.NAME, () -> BlastFurnaceRecipe.SERIALIZER);
         SERIALIZERS.register(CentrifugeRecipe.NAME, () -> CentrifugeRecipe.SERIALIZER);
-
     }
 }

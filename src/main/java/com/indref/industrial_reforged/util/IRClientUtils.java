@@ -7,4 +7,5 @@ public final class IRClientUtils {
     public static void setPlayerInCrucible(FluidStack crucibleFluid) {
         ClientEvents.playerInCrucibleFluid = crucibleFluid;
     }
+
 }

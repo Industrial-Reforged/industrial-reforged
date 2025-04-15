@@ -18,15 +18,15 @@ public final class NetworkNodeRenderer {
     public static NetworkNode<?> selectedNode;
 
     public static void render(NetworkNode<?> node, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 cameraPos) {
-        RenderSystem.disableDepthTest();   // Don't test depth
-        RenderSystem.depthMask(false);    // Don't write to depth buffer
+        RenderSystem.disableDepthTest();    // Don't test depth
+        RenderSystem.depthMask(false); // Don't write to depth buffer
         RenderSystem.disableCull();
         VertexConsumer consumer = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);
 
         poseStack.pushPose();
         {
             poseStack.translate((double) node.getPos().getX() - cameraPos.x(), (double) node.getPos().getY() - cameraPos.y(), (double) node.getPos().getZ() - cameraPos.z());
-            renderCube(consumer, poseStack.last().pose(), node == selectedNode ? 100 : 0, 255, node == selectedNode ? 100 : 0, 70);
+            renderCube(consumer, poseStack.last().pose(), node.isDead() ? 255 : (node == selectedNode ? 100 : 0), node.isDead() ? 0 : 255, node == selectedNode ? 100 : 0, 70);
             VertexConsumer consumer2 = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);
             if (node.getNext() != null) {
                 for (Direction direction : node.getNext().keySet()) {

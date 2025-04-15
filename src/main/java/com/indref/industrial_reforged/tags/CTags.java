@@ -22,6 +22,7 @@ public final class CTags {
     public static class Items {
         public static final TagKey<Item> PLATES = bind("plates");
         public static final TagKey<Item> IRON_PLATE = bind("plates/iron");
+        public static final TagKey<Item> ALUMINUM_PLATE = bind("plates/aluminum");
         public static final TagKey<Item> COPPER_PLATE = bind("plates/copper");
         public static final TagKey<Item> STEEL_PLATE = bind("plates/steel");
         public static final TagKey<Item> TIN_PLATE = bind("plates/tin");

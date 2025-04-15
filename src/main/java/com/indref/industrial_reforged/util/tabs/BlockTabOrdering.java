@@ -1,5 +1,9 @@
 package com.indref.industrial_reforged.util.tabs;
 
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.ItemLike;
+import org.apache.commons.lang3.function.TriConsumer;
+
 public enum BlockTabOrdering implements TabOrdering {
     PRIMITIVE_MACHINES,
     BASIC_MACHINES,
@@ -27,6 +31,11 @@ public enum BlockTabOrdering implements TabOrdering {
     @Override
     public boolean isNone() {
         return this == NONE;
+    }
+
+    @Override
+    public TriConsumer<CreativeModeTab.ItemDisplayParameters, CreativeModeTab.Output, ItemLike> tabAppendFunction() {
+        return null;
     }
 
     public int getPriority() {

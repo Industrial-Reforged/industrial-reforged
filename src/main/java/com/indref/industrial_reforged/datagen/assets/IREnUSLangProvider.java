@@ -119,6 +119,7 @@ public class IREnUSLangProvider extends LanguageProvider {
 
         addItem(IRItems.CASTING_SCRAPS, "Casting Scraps");
 
+        addItem(IRItems.ALUMINUM_PLATE, "Aluminum Plate");
         addItem(IRItems.IRON_PLATE, "Iron Plate");
         addItem(IRItems.COPPER_PLATE, "Copper Plate");
         addItem(IRItems.STEEL_PLATE, "Steel Plate");
@@ -177,10 +178,9 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.STEEL_CABLE, "Steel Cable");
 
         addBlock(IRBlocks.BASIC_MACHINE_FRAME, "Basic Machine Frame");
-//        addBlock(IRBlocks.MINING_PIPE, "Mining Pipe");
 
         addBlock(IRBlocks.REFRACTORY_BRICK, "Refractory Brick");
-        addBlock(IRBlocks.REFRACTORY_STONE, "Refractory Stone");
+        //addBlock(IRBlocks.REFRACTORY_STONE, "Refractory Stone");
         addBlock(IRBlocks.COIL, "Copper Coil");
 
         addBlock(IRBlocks.SMALL_FIREBOX_HATCH, "Small Firebox Hatch");

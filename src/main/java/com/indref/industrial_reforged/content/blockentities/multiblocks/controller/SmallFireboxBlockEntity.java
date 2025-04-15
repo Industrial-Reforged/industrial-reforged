@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.tiers.FireboxTiers;
+import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;

@@ -25,6 +25,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -128,25 +129,25 @@ public final class IRTabs {
         output.accept(stack);
     }
 
-    public static void addRockCutter(CreativeModeTab.Output output, CreativeModeTab.ItemDisplayParameters parameters, DeferredItem<?> item) {
+    public static void addRockCutter(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output, DeferredItem<?> item) {
         ItemStack stack = new ItemStack(item.get());
-        Holder.Reference<Enchantment> enchantment = parameters.holders().asGetterLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
+        Holder<Enchantment> enchantment = parameters.holders().holderOrThrow(Enchantments.SILK_TOUCH);
         stack.enchant(enchantment, 1);
 
         output.accept(stack);
         ItemStack energyStack = stack.copy();
-        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        IEnergyStorage energyStorage = energyStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
 
         output.accept(energyStack);
     }
 
-    public static void addVariantForAllFluids(CreativeModeTab.Output output, DeferredItem<?> item) {
+    public static void addVariantForAllFluids(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output, ItemLike item) {
         // Add base item
-        output.accept(item.get().getDefaultInstance());
+        output.accept(item.asItem().getDefaultInstance());
         Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = BuiltInRegistries.FLUID.entrySet();
         for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
-            ItemStack stack = new ItemStack(item.get());
+            ItemStack stack = new ItemStack(item.asItem());
             if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
                 stack.set(IRDataComponents.FLUID, SimpleFluidContent.copyOf(new FluidStack(fluid.getValue(), 1000)));
                 output.accept(stack);
