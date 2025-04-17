@@ -398,12 +398,6 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_battery", has(IRItems.BASIC_BATTERY))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.WOODEN_PLATE.get(), 4)
-                .pattern("LL")
-                .define('L', ItemTags.LOGS)
-                .unlockedBy("has_logs", has(ItemTags.LOGS))
-                .save(output);
-
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.ROCK_CUTTER.get())
                 .pattern("D# ")
                 .pattern(" D#")

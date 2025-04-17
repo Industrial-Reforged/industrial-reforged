@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-15T20:00:44.126298405	Item Models: indref
+// 1.21.1	2025-04-16T13:04:51.920643587	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -175,6 +175,5 @@ d53b27513da89806b1f5e15e6b7320bdadd06f4f assets/indref/models/item/ultimate_batt
 102d86ad7029cbbb7c1b1e69f85355bc51beaaee assets/indref/models/item/uranium_block.json
 5db48cace9829c208e0e34e7e925b22427c0161d assets/indref/models/item/uranium_ingot.json
 88845440414ad24920cef0607a34ef417429eb88 assets/indref/models/item/uranium_ore.json
-73742531f0b3772c43c66af9c0960628205bff1e assets/indref/models/item/wooden_plate.json
 ad13d8a9ecd29aa5beb5bfc074546573c3c2d3db assets/indref/models/item/wooden_scaffolding.json
 d191fc76dd049b1a4fc1d062b3a7837ccd6d79aa assets/indref/models/item/wrench.json

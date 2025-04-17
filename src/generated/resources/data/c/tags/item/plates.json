@@ -4,7 +4,6 @@
     "#c:plates/copper",
     "#c:plates/tin",
     "#c:plates/steel",
-    "#c:plates/wooden",
     "#c:plates/carbon"
   ]
 }

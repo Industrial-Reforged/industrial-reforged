@@ -3,7 +3,6 @@
     "#c:wires/tin",
     "#c:wires/copper",
     "#c:wires/gold",
-    "#c:wires/steel",
-    "#c:strings"
+    "#c:wires/steel"
   ]
 }

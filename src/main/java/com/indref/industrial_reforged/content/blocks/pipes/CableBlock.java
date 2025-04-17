@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.blocks.pipes;
 
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
+import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
 import com.indref.industrial_reforged.client.transportation.ClientNodes;
 import com.indref.industrial_reforged.registries.IRNetworks;
@@ -55,6 +56,15 @@ public class CableBlock extends PipeBlock {
                     || (connections[4] && connections[5]))) || connectionsAmount == 0) {
                 if (IRNetworks.ENERGY_NETWORK.get().hasNodeAt(serverLevel, pos)) {
                     IRNetworks.ENERGY_NETWORK.get().removeNodeAndUpdate(serverLevel, pos);
+                }
+
+                for (Direction direction : directions) {
+                    if (direction != null) {
+                        NetworkNode<Integer> nextNode = IRNetworks.ENERGY_NETWORK.get().findNextNode(null, serverLevel, pos, direction);
+                        if (nextNode != null) {
+                            nextNode.setChanged(serverLevel, null, direction);
+                        }
+                    }
                 }
             } else {
                 IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1);

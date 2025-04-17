@@ -144,7 +144,7 @@ public class TransportNetwork<T> {
         NodeNetworkSavedData.getNetworks(serverLevel).setDirty();
     }
 
-    public @Nullable NetworkNode<T> findNextNode(NetworkNode<T> selfNode, ServerLevel serverLevel, BlockPos pos, Direction direction) {
+    public @Nullable NetworkNode<T> findNextNode(@Nullable NetworkNode<T> selfNode, ServerLevel serverLevel, BlockPos pos, Direction direction) {
         Map<BlockPos, NetworkNode<?>> nodes = this.getServerNodes(serverLevel);
         Set<BlockPos> alignedPositions = new HashSet<>();
 

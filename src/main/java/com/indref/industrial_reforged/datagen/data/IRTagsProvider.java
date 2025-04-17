@@ -161,12 +161,10 @@ public class IRTagsProvider {
                     CTags.Items.COPPER_PLATE,
                     CTags.Items.TIN_PLATE,
                     CTags.Items.STEEL_PLATE,
-                    CTags.Items.WOODEN_PLATE,
                     CTags.Items.CARBON_PLATE
             );
 
             tag(CTags.Items.RUBBER, IRItems.RUBBER);
-            tag(CTags.Items.WOODEN_PLATE, IRItems.WOODEN_PLATE);
             tag(CTags.Items.CARBON_PLATE, IRItems.CARBON_PLATE);
             tag(CTags.Items.IRON_PLATE, IRItems.IRON_PLATE);
             tag(CTags.Items.ALUMINUM_PLATE, IRItems.ALUMINUM_PLATE);
@@ -180,15 +178,13 @@ public class IRTagsProvider {
                     CTags.Items.TIN_WIRE,
                     CTags.Items.COPPER_WIRE,
                     CTags.Items.GOLD_WIRE,
-                    CTags.Items.STEEL_WIRE,
-                    Tags.Items.STRINGS
+                    CTags.Items.STEEL_WIRE
             );
 
             tag(CTags.Items.TIN_WIRE, IRItems.TIN_WIRE);
             tag(CTags.Items.COPPER_WIRE, IRItems.COPPER_WIRE);
             tag(CTags.Items.GOLD_WIRE, IRItems.GOLD_WIRE);
             tag(CTags.Items.STEEL_WIRE, IRItems.STEEL_WIRE);
-            tag(Tags.Items.STRINGS, Items.STRING);
         }
 
         private void rods() {

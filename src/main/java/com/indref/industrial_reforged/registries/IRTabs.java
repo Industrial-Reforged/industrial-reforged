@@ -13,6 +13,7 @@ import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.tabs.ItemTabOrdering;
 import com.indref.industrial_reforged.util.tabs.TabOrdering;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
@@ -71,19 +72,10 @@ public final class IRTabs {
                                 (a, b) -> a,
                                 LinkedHashMap::new
                         ));
-                for (Map<Integer, DeferredItem<?>> entry : sortedItems.values()) {
-                    for (DeferredItem<?> item : entry.values()) {
-                        if (item.asItem() instanceof RockCutterItem) {
-                            addRockCutter(output, parameters, item);
-                        } else if (item.asItem() instanceof IEnergyItem) {
-                            addPoweredItem(output, item);
-                        } else if (item.asItem() instanceof FluidCellItem) {
-                            addVariantForAllFluids(output, item);
-                        } else if (item.asItem() instanceof ToolboxItem) {
-                            addVariantForAllColors(output, item);
-                        } else {
-                            addItem(output, item);
-                        }
+                for (Map.Entry<TabOrdering, Map<Integer, DeferredItem<?>>> entry : sortedItems.entrySet()) {
+                    TabOrdering ordering = entry.getKey();
+                    for (DeferredItem<?> item : entry.getValue().values()) {
+                        ordering.tabAppendFunction().accept(parameters, output, item);
                     }
                 }
 
@@ -94,18 +86,6 @@ public final class IRTabs {
                 }
             }).build());
 
-    private static void addVariantForAllColors(CreativeModeTab.Output output, DeferredItem<?> item) {
-        for (DyeColor color : DyeColor.values()) {
-            ItemStack itemStack = item.toStack();
-            int textureDiffuseColor = color.getTextureDiffuseColor();
-            Vec3i rgb = new Vec3i((int) Math.min(FastColor.ARGB32.red(textureDiffuseColor) * 1.4, 255),
-                    (int) Math.min(FastColor.ARGB32.blue(textureDiffuseColor) * 1.4, 255),
-                    (int) Math.min(FastColor.ARGB32.green(textureDiffuseColor) * 1.4, 255));
-            itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(FastColor.ARGB32.color(rgb.getX(), rgb.getY(), rgb.getZ()), false));
-            output.accept(itemStack);
-        }
-    }
-
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
             .title(IRTranslations.Tabs.BLOCKS.component())
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
@@ -115,53 +95,4 @@ public final class IRTabs {
                     output.accept(block);
                 }
             }).build());
-
-    private static void addItem(CreativeModeTab.Output output, DeferredItem<?> item) {
-        output.accept(item.get());
-    }
-
-    public static void addPoweredItem(CreativeModeTab.Output output, DeferredItem<?> item) {
-        output.accept(item.get().getDefaultInstance());
-        ItemStack stack = new ItemStack(item.get());
-        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
-        energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
-
-        output.accept(stack);
-    }
-
-    public static void addRockCutter(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output, DeferredItem<?> item) {
-        ItemStack stack = new ItemStack(item.get());
-        Holder<Enchantment> enchantment = parameters.holders().holderOrThrow(Enchantments.SILK_TOUCH);
-        stack.enchant(enchantment, 1);
-
-        output.accept(stack);
-        ItemStack energyStack = stack.copy();
-        IEnergyStorage energyStorage = energyStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
-        energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
-
-        output.accept(energyStack);
-    }
-
-    public static void addVariantForAllFluids(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output, ItemLike item) {
-        // Add base item
-        output.accept(item.asItem().getDefaultInstance());
-        Set<Map.Entry<ResourceKey<Fluid>, Fluid>> fluids = BuiltInRegistries.FLUID.entrySet();
-        for (Map.Entry<ResourceKey<Fluid>, Fluid> fluid : fluids) {
-            ItemStack stack = new ItemStack(item.asItem());
-            if (!fluid.getValue().equals(Fluids.EMPTY) && fluid.getValue().isSource(fluid.getValue().defaultFluidState())) {
-                stack.set(IRDataComponents.FLUID, SimpleFluidContent.copyOf(new FluidStack(fluid.getValue(), 1000)));
-                output.accept(stack);
-            }
-        }
-    }
-
-    /**
-     * Add a new item to a creative tab
-     *
-     * @param output Specify the creative tab
-     * @param block  Specify the item to add
-     */
-    private static <T extends Block> void addBlock(CreativeModeTab.Output output, DeferredBlock<T> block) {
-        output.accept(block.get());
-    }
 }

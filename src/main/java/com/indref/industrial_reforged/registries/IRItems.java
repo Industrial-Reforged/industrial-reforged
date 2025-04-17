@@ -33,17 +33,16 @@ public final class IRItems {
     public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
     public static final Map<TabOrdering, Map<Integer, DeferredItem<?>>> TAB_ITEMS = new HashMap<>();
     public static final Map<DeferredItem<?>, CastingMoldValue> MOLD_ITEMS = new HashMap<>();
-    public static final DyedItemColor EMPTY_COLOR = new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), false);
 
     // primitive tools
     public static final DeferredItem<WrenchItem> WRENCH = primitiveToolItem("wrench", WrenchItem::new);
     public static final DeferredItem<TreeTapItem> TREE_TAP = primitiveToolItem("tree_tap", TreeTapItem::new);
     public static final DeferredItem<HammerItem> HAMMER = primitiveToolItem("hammer", HammerItem::new);
     public static final DeferredItem<BlueprintItem> BLUEPRINT = primitiveToolItem("blueprint", BlueprintItem::new);
-    public static final DeferredItem<ToolboxItem> TOOLBOX = registerItem("toolbox",
+    public static final DeferredItem<ToolboxItem> TOOLBOX = toolBoxItem("toolbox",
             () -> new ToolboxItem(new Item.Properties()
                     .stacksTo(1)
-                    .component(DataComponents.DYED_COLOR, EMPTY_COLOR)), ItemTabOrdering.noPosition());
+                    .component(DataComponents.DYED_COLOR, new DyedItemColor(FastColor.ARGB32.color(255, 255, 255), true))));
 
     // electric tools
     // low
@@ -75,8 +74,8 @@ public final class IRItems {
             () -> new BatteryItem(new Item.Properties(), IREnergyTiers.HIGH, () -> IRConfig.advancedBatteryCapacity, 8));
     public static final DeferredItem<BatteryItem> ULTIMATE_BATTERY = batteryItem("ultimate_battery",
             () -> new BatteryItem(new Item.Properties(), IREnergyTiers.INSANE, () -> IRConfig.ultimateBatteryCapacity, 9));
-    public static final DeferredItem<FluidCellItem> FLUID_CELL = registerItem("fluid_cell",
-            () -> new FluidCellItem(new Item.Properties().stacksTo(16), () -> IRConfig.fluidCellCapacity), ItemTabOrdering.noPosition());
+    public static final DeferredItem<FluidCellItem> FLUID_CELL = fluidCellItem("fluid_cell",
+            () -> new FluidCellItem(new Item.Properties().stacksTo(16), () -> IRConfig.fluidCellCapacity));
 
     public static final DeferredItem<Item> ANTENNA = electricComponent("antenna");
     public static final DeferredItem<Item> ELECTRIC_MOTOR = electricComponent("electric_motor");
@@ -102,7 +101,6 @@ public final class IRItems {
     public static final DeferredItem<Item> PLANT_MASS = primitiveComponent("plant_mass");
     public static final DeferredItem<Item> SANDY_BRICK = primitiveComponent("sandy_brick");
     public static final DeferredItem<Item> TERRACOTTA_BRICK = primitiveComponent("terracotta_brick");
-    public static final DeferredItem<Item> WOODEN_PLATE = primitiveComponent("wooden_plate");
 
     // misc items
     public static final DeferredItem<FertilizerItem> FERTILIZER = miscItem("fertilizer", FertilizerItem::new);
@@ -210,12 +208,20 @@ public final class IRItems {
         return registerItem(name, () -> itemConstructor.apply(new Item.Properties().stacksTo(1)), calculateTabPosition(ItemTabOrdering.PRIMITIVE_COMPONENTS));
     }
 
-    static <T extends Item> DeferredItem<T> electricToolItem(String name, Supplier<T> itemConstructor) {
-        return registerItem(name, itemConstructor, calculateTabPosition(ItemTabOrdering.PRIMITIVE_COMPONENTS));
+    static DeferredItem<ToolboxItem> toolBoxItem(String name, Supplier<ToolboxItem> itemSupplier) {
+        return registerItem(name, itemSupplier, calculateTabPosition(ItemTabOrdering.TOOL_BOX));
     }
 
-    static DeferredItem<BatteryItem> batteryItem(String name, Supplier<BatteryItem> itemConstructor) {
-        return registerItem(name, itemConstructor, calculateTabPosition(ItemTabOrdering.BATTERIES));
+    static <T extends Item> DeferredItem<T> electricToolItem(String name, Supplier<T> itemSupplier) {
+        return registerItem(name, itemSupplier, calculateTabPosition(ItemTabOrdering.BASIC_ELECTRIC_TOOLS));
+    }
+
+    static DeferredItem<BatteryItem> batteryItem(String name, Supplier<BatteryItem> itemSupplier) {
+        return registerItem(name, itemSupplier, calculateTabPosition(ItemTabOrdering.BATTERIES));
+    }
+
+    static DeferredItem<FluidCellItem> fluidCellItem(String name, Supplier<FluidCellItem> itemSupplier) {
+        return registerItem(name, itemSupplier, calculateTabPosition(ItemTabOrdering.FLUID_CELLS));
     }
 
     static <T extends Item> DeferredItem<T> registerItem(String name, Supplier<T> item, TabPosition position) {

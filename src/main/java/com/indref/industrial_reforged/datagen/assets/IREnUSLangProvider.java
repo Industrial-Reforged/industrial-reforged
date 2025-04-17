@@ -125,7 +125,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.STEEL_PLATE, "Steel Plate");
         addItem(IRItems.TIN_PLATE, "Tin Plate");
         addItem(IRItems.CARBON_PLATE, "Carbon Plate");
-        addItem(IRItems.WOODEN_PLATE, "Wooden Plate");
 
         addItem(IRItems.IRON_ROD, "Iron Rod");
         addItem(IRItems.STEEL_ROD, "Steel Rod");
