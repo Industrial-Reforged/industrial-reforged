@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.api.transportation;
 
 import com.indref.industrial_reforged.IRRegistries;
-import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.networking.transportation.AddNextNodePayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNextNodePayload;
 import com.mojang.serialization.Codec;
@@ -14,8 +13,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,42 +45,42 @@ public class NetworkNode<T> {
     }
 
     public void setChanged(ServerLevel level, @Nullable NetworkNode<T> originNode, Direction changedDirection) {
-        BlockState blockState = level.getBlockState(pos);
-        if (blockState.getBlock() instanceof CableBlock) {
-            boolean connected = blockState.getValue(CableBlock.CONNECTION[changedDirection.get3DDataValue()]);
-            BlockPos relative = pos.relative(changedDirection);
-            if (connected) {
-                if (this.network.hasNodeAt(level, relative)) {
-                    NetworkNode<T> nextNode = this.network.getNode(level, relative);
-                    if (!nextNode.isDead()) {
-                        next.put(changedDirection, nextNode);
-                        nextNode.getNext().put(changedDirection.getOpposite(), this);
-                        this.network.setServerNodesChanged(level);
-                        if (this.network.isSynced()) {
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, relative));
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, relative, changedDirection, this.pos));
-                        }
-                    }
-                } else {
-                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
-                    if (nextNode != null && !nextNode.isDead()) {
-                        next.put(changedDirection, nextNode);
-                        nextNode.getNext().put(changedDirection.getOpposite(), this);
-                        this.network.setServerNodesChanged(level);
-                        if (this.network.isSynced()) {
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, nextNode.pos, changedDirection, this.pos));
-                        }
-                    } else {
-                        next.remove(changedDirection);
-                        this.network.setServerNodesChanged(level);
-                        if (this.network.isSynced()) {
-                            PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
-                        }
-                    }
-                }
-            }
-        }
+//        BlockState blockState = level.getBlockState(pos);
+//        if (blockState.getBlock() instanceof CableBlock) {
+//            boolean connected = blockState.getValue(CableBlock.CONNECTION[changedDirection.get3DDataValue()]);
+//            BlockPos relative = pos.relative(changedDirection);
+//            if (connected) {
+//                if (this.network.hasNodeAt(level, relative)) {
+//                    NetworkNode<T> nextNode = this.network.getNode(level, relative);
+//                    if (!nextNode.isDead()) {
+//                        next.put(changedDirection, nextNode);
+//                        nextNode.getNext().put(changedDirection.getOpposite(), this);
+//                        this.network.setServerNodesChanged(level);
+//                        if (this.network.isSynced()) {
+//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, relative));
+//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, relative, changedDirection, this.pos));
+//                        }
+//                    }
+//                } else {
+//                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
+//                    if (nextNode != null && !nextNode.isDead()) {
+//                        next.put(changedDirection, nextNode);
+//                        nextNode.getNext().put(changedDirection.getOpposite(), this);
+//                        this.network.setServerNodesChanged(level);
+//                        if (this.network.isSynced()) {
+//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
+//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, nextNode.pos, changedDirection, this.pos));
+//                        }
+//                    } else {
+//                        next.remove(changedDirection);
+//                        this.network.setServerNodesChanged(level);
+//                        if (this.network.isSynced()) {
+//                            PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void initialize(Map<BlockPos, NetworkNode<?>> nodes) {
@@ -104,6 +101,38 @@ public class NetworkNode<T> {
 
     public void removeNext(Direction direction) {
         this.next.remove(direction);
+    }
+
+    public void addNextNodeSynced(Direction direction, NetworkNode<T> nextNode) {
+        this.next.put(direction, nextNode);
+        if (this.network.isSynced()) {
+            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, direction, nextNode.getPos()));
+        }
+    }
+
+    public void removeNextNodeSynced(Direction direction) {
+        this.next.remove(direction);
+        if (this.network.isSynced()) {
+            PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, direction));
+        }
+    }
+
+    public void onNextNodeAdded(NetworkNode<T> originNode, Direction originNodeDirection) {
+        this.addNextNodeSynced(originNodeDirection, originNode);
+    }
+
+    public void onConnectionAdded(ServerLevel serverLevel, BlockPos updatedPos, Direction updatedPosDirection) {
+        NetworkNode<T> nextNode = this.network.findNextNode(null, serverLevel, this.pos, updatedPosDirection);
+        if (nextNode != null && !nextNode.isDead()) {
+            this.addNextNodeSynced(updatedPosDirection, nextNode);
+        }
+    }
+
+    public void onConnectionRemoved(ServerLevel serverLevel, BlockPos updatedPos, Direction updatedPosDirection) {
+        NetworkNode<T> nextNode = this.network.findNextNode(null, serverLevel, this.pos, updatedPosDirection);
+        if (nextNode != null) {
+            this.removeNextNodeSynced(updatedPosDirection);
+        }
     }
 
     public void addNext(Direction direction, NetworkNode<?> node) {

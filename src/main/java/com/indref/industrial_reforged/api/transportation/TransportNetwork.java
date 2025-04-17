@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.api.transportation;
 
 import com.indref.industrial_reforged.data.saved.NodeNetworkSavedData;
 import com.indref.industrial_reforged.networking.transportation.AddNetworkNodePayload;
-import com.indref.industrial_reforged.networking.transportation.AddNextNodePayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNetworkNodePayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNextNodePayload;
 import com.mojang.serialization.Codec;
@@ -44,35 +43,40 @@ public class TransportNetwork<T> {
         return this.nodeFactory.apply(this, pos);
     }
 
+    public void addConnection(ServerLevel serverLevel, BlockPos pos, Direction direction0, Direction direction1) {
+        NetworkNode<T> node0 = this.findNextNode(null, serverLevel, pos, direction0);
+        if (node0 != null && !node0.isDead()) {
+            node0.onConnectionAdded(serverLevel, pos, direction0.getOpposite());
+        }
+        NetworkNode<T> node1 = this.findNextNode(null, serverLevel, pos, direction1);
+        if (node1 != null && !node1.isDead()) {
+            node1.onConnectionAdded(serverLevel, pos, direction1.getOpposite());
+        }
+    }
+
+    public void removeConnection(ServerLevel serverLevel, BlockPos pos, Direction direction0, Direction direction1) {
+        NetworkNode<T> node0 = this.findNextNode(null, serverLevel, pos, direction0);
+        if (node0 != null) {
+            node0.onConnectionRemoved(serverLevel, pos, direction0.getOpposite());
+        }
+        NetworkNode<T> node1 = this.findNextNode(null, serverLevel, pos, direction1);
+        if (node1 != null) {
+            node1.onConnectionRemoved(serverLevel, pos, direction1.getOpposite());
+        }
+    }
+
     public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead) {
         NetworkNode<T> node = this.createNode(pos);
         node.setDead(dead);
         this.addNode(level, pos, node);
-        Map<Direction, NetworkNode<T>> next = node.getNext();
-        for (Direction direction : connections) {
-            if (direction != null) {
-                BlockPos relative = pos.relative(direction);
-                if (this.hasNodeAt(level, relative)) {
-                    NetworkNode<T> nextNode = this.getNode(level, relative);
-                    if (!nextNode.isDead() && !node.isDead()) {
-                        next.put(direction, nextNode);
-                        nextNode.getNext().put(direction.getOpposite(), node);
-                        this.setServerNodesChanged(level);
-                        if (this.isSynced()) {
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, pos, direction, relative));
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, relative, direction.getOpposite(), pos));
-                        }
-                    }
-                } else {
-                    NetworkNode<T> nextNode = this.findNextNode(node, level, pos, direction);
-                    if (nextNode != null && !nextNode.isDead() && !node.isDead()) {
-                        next.put(direction, nextNode);
-                        nextNode.getNext().put(direction.getOpposite(), node);
-                        this.setServerNodesChanged(level);
-                        if (this.isSynced()) {
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, pos, direction, nextNode.getPos()));
-                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this, nextNode.getPos(), direction.getOpposite(), pos));
-                        }
+
+        if (!dead) {
+            for (Direction connection : connections) {
+                if (connection != null) {
+                    NetworkNode<T> nextNode = this.findNextNode(node, level, pos, connection);
+                    if (nextNode != null && !nextNode.isDead()) {
+                        node.addNextNodeSynced(connection, nextNode);
+                        nextNode.onNextNodeAdded(node, connection.getOpposite());
                     }
                 }
             }
@@ -93,16 +97,11 @@ public class TransportNetwork<T> {
     public void removeNodeAndUpdate(ServerLevel serverLevel, BlockPos pos) {
         NetworkNode<T> node = this.removeNode(serverLevel, pos);
 
-        for (Map.Entry<Direction, ? extends NetworkNode<?>> nextNode : node.getNext().entrySet()) {
-            NetworkNode<T> node1 = (NetworkNode<T>) nextNode.getValue();
+        for (Map.Entry<Direction, NetworkNode<T>> nextNode : node.getNext().entrySet()) {
+            NetworkNode<T> node1 = nextNode.getValue();
             Direction direction = nextNode.getKey();
             if (node1 != null) {
-                node1.setChanged(serverLevel, node, direction);
-                node1.getNext().remove(direction.getOpposite());
-
-                if (this.isSynced()) {
-                    PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this, node1.getPos(), direction.getOpposite()));
-                }
+                node1.removeNextNodeSynced(direction.getOpposite());
             }
         }
         this.setServerNodesChanged(serverLevel);
@@ -145,14 +144,20 @@ public class TransportNetwork<T> {
     }
 
     public @Nullable NetworkNode<T> findNextNode(@Nullable NetworkNode<T> selfNode, ServerLevel serverLevel, BlockPos pos, Direction direction) {
+        return this.findNextNode(selfNode, serverLevel, pos, direction, Set.of());
+    }
+
+    public @Nullable NetworkNode<T> findNextNode(@Nullable NetworkNode<T> selfNode, ServerLevel serverLevel, BlockPos pos, Direction direction, Set<BlockPos> ignoredNodes) {
         Map<BlockPos, NetworkNode<?>> nodes = this.getServerNodes(serverLevel);
         Set<BlockPos> alignedPositions = new HashSet<>();
 
         for (Map.Entry<BlockPos, NetworkNode<?>> node1 : nodes.entrySet()) {
             if (node1.getValue() != selfNode) {
                 BlockPos pos1 = node1.getKey();
-                if (areNodesAligned(pos, pos1, direction)) {
-                    alignedPositions.add(pos1);
+                if (!ignoredNodes.contains(pos1)) {
+                    if (areNodesAligned(pos, pos1, direction)) {
+                        alignedPositions.add(pos1);
+                    }
                 }
             }
         }

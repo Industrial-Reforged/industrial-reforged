@@ -15,6 +15,8 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -52,15 +54,15 @@ public class IRJeiPlugin implements IModPlugin {
         for (Item item : BuiltInRegistries.ITEM) {
             IEnergyStorage energyStorage = item.getDefaultInstance().getCapability(IRCapabilities.EnergyStorage.ITEM);
             if (energyStorage != null) {
-                registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> ingredient.get(IRDataComponents.ENERGY));
+                registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> context == UidContext.Ingredient ? ingredient.get(IRDataComponents.ENERGY) : null);
             }
             IFluidHandler fluidHandler = item.getDefaultInstance().getCapability(Capabilities.FluidHandler.ITEM);
             if (fluidHandler != null) {
-                registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> ingredient.get(IRDataComponents.FLUID));
+                registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> context == UidContext.Ingredient ? ingredient.get(IRDataComponents.FLUID) : null);
             }
         }
 
-        registration.registerSubtypeInterpreter(IRItems.TOOLBOX.get(), (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> ingredient.get(DataComponents.DYED_COLOR));
+        registration.registerSubtypeInterpreter(IRItems.TOOLBOX.get(), (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> context == UidContext.Ingredient ? ingredient.get(DataComponents.DYED_COLOR) : null);
 
     }
 

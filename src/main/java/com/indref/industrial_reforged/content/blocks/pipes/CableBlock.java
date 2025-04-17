@@ -16,10 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class CableBlock extends PipeBlock {
@@ -58,13 +61,20 @@ public class CableBlock extends PipeBlock {
                     IRNetworks.ENERGY_NETWORK.get().removeNodeAndUpdate(serverLevel, pos);
                 }
 
+                Direction direction0 = null;
+                Direction direction1 = null;
                 for (Direction direction : directions) {
                     if (direction != null) {
-                        NetworkNode<Integer> nextNode = IRNetworks.ENERGY_NETWORK.get().findNextNode(null, serverLevel, pos, direction);
-                        if (nextNode != null) {
-                            nextNode.setChanged(serverLevel, null, direction);
+                        if (direction0 == null) {
+                            direction0 = direction;
+                        } else {
+                            direction1 = direction;
                         }
                     }
+                }
+
+                if (direction0 != null && direction1 != null) {
+                    IRNetworks.ENERGY_NETWORK.get().addConnection(serverLevel, pos, direction0, direction1);
                 }
             } else {
                 IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1);
@@ -100,10 +110,30 @@ public class CableBlock extends PipeBlock {
             if (!state.is(newState.getBlock())) {
                 if (IRNetworks.ENERGY_NETWORK.get().hasNodeAt(serverLevel, pos)) {
                     IRNetworks.ENERGY_NETWORK.get().removeNodeAndUpdate(serverLevel, pos);
+                } else {
+                    List<Direction> directions = getDirections(state);
+                    if (directions.size() == 2) {
+                        Direction direction0 = directions.getFirst();
+                        Direction direction1 = directions.get(1);
+                        if (direction0 == direction1.getOpposite()) {
+                            IRNetworks.ENERGY_NETWORK.get().removeConnection(serverLevel, pos, direction0, direction1);
+                        }
+                    }
                 }
+
             }
         }
 
+    }
+
+    private static List<Direction> getDirections(BlockState state) {
+        List<Direction> directions = new ArrayList<>();
+        for (Direction direction : Direction.values()) {
+            if (state.getValue(CONNECTION[direction.get3DDataValue()])) {
+                directions.add(direction);
+            }
+        }
+        return directions;
     }
 
     public Supplier<EnergyTier> getEnergyTier() {
