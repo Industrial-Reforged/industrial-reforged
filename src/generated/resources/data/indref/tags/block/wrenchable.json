@@ -1,0 +1,11 @@
+{
+  "values": [
+    "indref:basic_generator",
+    "indref:centrifuge",
+    "indref:battery_box",
+    "indref:tin_cable",
+    "indref:copper_cable",
+    "indref:gold_cable",
+    "indref:steel_cable"
+  ]
+}
