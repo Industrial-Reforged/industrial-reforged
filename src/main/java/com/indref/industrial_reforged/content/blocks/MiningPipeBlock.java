@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.content.blocks;
 
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.BOTTOM;
 
-public class MiningPipeBlock extends Block implements WrenchableBlock {
+public class MiningPipeBlock extends Block {
     private static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 0, 512);
 
     public MiningPipeBlock(Properties properties) {

@@ -11,6 +11,7 @@ import net.minecraft.world.level.material.Fluid;
 public final class IRTags {
     public static class Blocks {
         public static final TagKey<Block> RUBBER_LOG = bind("minecraft", "rubber_logs");
+        public static final TagKey<Block> WRENCHABLE = bind("wrenchable");
 
         private static TagKey<Block> bind(String path) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, path));

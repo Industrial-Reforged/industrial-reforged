@@ -32,10 +32,6 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
 
-    protected final void addEuStorage(Supplier<EnergyTier> energyTier) {
-        addEuStorage(energyTier, energyTier.get().defaultCapacity());
-    }
-
     protected final void addEuStorage(Supplier<EnergyTier> energyTier, int energyCapacity) {
         this.euStorage = new EnergyStorage(energyTier) {
             @Override

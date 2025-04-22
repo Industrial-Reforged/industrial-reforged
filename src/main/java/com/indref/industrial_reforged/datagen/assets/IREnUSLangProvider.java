@@ -168,6 +168,8 @@ public class IREnUSLangProvider extends LanguageProvider {
     private void addBlocks() {
         addBlock(IRBlocks.BASIC_GENERATOR, "Basic Generator");
         addBlock(IRBlocks.CENTRIFUGE, "Centrifuge");
+        addBlock(IRBlocks.BATTERY_BOX, "Battery Box");
+
         addBlock(IRBlocks.DRAIN, "Drain");
         addBlock(IRBlocks.CRAFTING_STATION, "Crafting Station");
 
@@ -179,7 +181,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.BASIC_MACHINE_FRAME, "Basic Machine Frame");
 
         addBlock(IRBlocks.REFRACTORY_BRICK, "Refractory Brick");
-        //addBlock(IRBlocks.REFRACTORY_STONE, "Refractory Stone");
         addBlock(IRBlocks.COIL, "Copper Coil");
 
         addBlock(IRBlocks.SMALL_FIREBOX_HATCH, "Small Firebox Hatch");

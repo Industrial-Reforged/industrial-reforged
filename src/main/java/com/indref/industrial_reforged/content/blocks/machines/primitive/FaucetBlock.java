@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blocks.machines.primitive;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.blocks.misc.CanAttachFaucetBlock;
 import com.indref.industrial_reforged.content.blockentities.FaucetBlockEntity;
 import com.indref.industrial_reforged.networking.PowerBlockEntityPayload;
@@ -41,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class FaucetBlock extends RotatableContainerBlock implements WrenchableBlock {
+public class FaucetBlock extends RotatableContainerBlock {
     private static final Map<Block, Block> ALTERNATE_VERSIONS = new HashMap<>();
     public static final VoxelShape SOUTH_SHAPE = Stream.of(
             Block.box(5, 5, 12, 11, 6, 16),

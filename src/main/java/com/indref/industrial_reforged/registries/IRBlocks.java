@@ -1,11 +1,7 @@
 package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blocks.SimpleWrenchableBlock;
-import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
-import com.indref.industrial_reforged.content.blocks.BlastFurnaceMultiblockBlock;
-import com.indref.industrial_reforged.content.blocks.CoilBlock;
-import com.indref.industrial_reforged.content.blocks.TerracottaBricks;
+import com.indref.industrial_reforged.content.blocks.*;
 import com.indref.industrial_reforged.content.blocks.generators.BasicGeneratorBlock;
 import com.indref.industrial_reforged.content.blocks.machines.CentrifugeBlock;
 import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
@@ -96,8 +92,8 @@ public final class IRBlocks {
     public static final DeferredBlock<CastingBasinBlock> BLAST_FURNACE_CASTING_BASIN = pickaxeMineable(registerBlockAndItem("blast_furnace_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), IRBlocks.BLAST_FURNACE_BRICKS.get())));
     // MACHINES
-    public static final DeferredBlock<SimpleWrenchableBlock> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
-            () -> new SimpleWrenchableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))));
+    public static final DeferredBlock<Block> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))));
     public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = pickaxeMineable(registerBlockAndItem("centrifuge",
             () -> new CentrifugeBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
     public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR = pickaxeMineable(registerBlockAndItem("basic_generator",
@@ -118,8 +114,8 @@ public final class IRBlocks {
             () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(TIN_CABLE.get()), 6, IREnergyTiers.EXTREME), true, false));
     public static final DeferredBlock<FenceBlock> IRON_FENCE = pickaxeMineable(registerBlockAndItem("iron_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), true, false));
-    public static final DeferredBlock<Block> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion())));
+    public static final DeferredBlock<WoodenScaffoldingBlock> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",
+            () -> new WoodenScaffoldingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion())));
 
     // Rubber
     public static final DeferredBlock<RubberTreeLogBlock> RUBBER_TREE_LOG = woodBlock("rubber_tree_log", RubberTreeLogBlock::new);

@@ -20,9 +20,7 @@ public interface IEnergyItem {
     default void onEnergyChanged(ItemStack itemStack, int oldAmount) {
     }
 
-    default int getDefaultEnergyCapacity() {
-       return getEnergyTier().get().defaultCapacity();
-    }
+    int getDefaultEnergyCapacity();
 
     Supplier<EnergyTier> getEnergyTier();
 }

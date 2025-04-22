@@ -2,10 +2,8 @@ package com.indref.industrial_reforged.content.blocks.machines;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.MachineBlock;
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.mojang.serialization.MapCodec;
-import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-public class CentrifugeBlock extends MachineBlock implements WrenchableBlock {
+public class CentrifugeBlock extends MachineBlock {
 
     public CentrifugeBlock(Properties properties) {
         super(properties);

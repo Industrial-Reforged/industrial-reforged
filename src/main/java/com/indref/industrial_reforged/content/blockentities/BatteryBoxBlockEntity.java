@@ -4,11 +4,8 @@ import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
-import com.indref.industrial_reforged.data.saved.deprecated.EnergyNetsSavedData;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
-import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
-import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
@@ -37,17 +34,18 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity {
     public void commonTick() {
         super.commonTick();
 
-        if (!level.isClientSide()) {
-            IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
-            if (level instanceof ServerLevel serverLevel) {
-                EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
-                Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
-                if (enet.isPresent()) {
-                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().get().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
-                    thisEnergyStorage.tryDrainEnergy(filled, false);
-                }
-            }
-        }
+        // FIXME: Reenable this
+//        if (!level.isClientSide()) {
+//            IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
+//            if (level instanceof ServerLevel serverLevel) {
+//                EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
+//                Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
+//                if (enet.isPresent()) {
+//                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().get().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
+//                    thisEnergyStorage.tryDrainEnergy(filled, false);
+//                }
+//            }
+//        }
     }
 
     public void onBlockUpdated() {

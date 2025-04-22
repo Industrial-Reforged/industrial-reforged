@@ -2,12 +2,10 @@ package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock;
 import com.indref.industrial_reforged.networking.PowerBlockEntityPayload;
 import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
@@ -48,7 +46,7 @@ import java.util.Optional;
 
 import static com.indref.industrial_reforged.content.multiblocks.CrucibleMultiblock.CRUCIBLE_WALL;
 
-public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBlock, DisplayBlock {
+public class CruciblePartBlock extends BaseEntityBlock implements DisplayBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private final CrucibleTier tier;
 
@@ -193,11 +191,6 @@ public class CruciblePartBlock extends BaseEntityBlock implements WrenchableBloc
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new CruciblePartBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    public Optional<Item> getDropItem() {
-        return Optional.of(IRBlocks.TERRACOTTA_BRICKS.get().asItem());
     }
 
     @Override

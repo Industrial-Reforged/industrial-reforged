@@ -7,13 +7,11 @@ import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.transportation.deprecated.EnergyNet;
-import com.indref.industrial_reforged.data.saved.deprecated.EnergyNetsSavedData;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
+import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
-import com.indref.industrial_reforged.util.EnergyNetUtils;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.SidedCapUtils;
 import it.unimi.dsi.fastutil.Pair;
@@ -37,7 +35,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
@@ -74,7 +71,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
 
     @Override
     public int getGenerationAmount() {
-        return 3;
+        return 10;
     }
 
     @Override
@@ -129,12 +126,9 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         if (!level.isClientSide()) {
             IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
             if (level instanceof ServerLevel serverLevel) {
-                EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
-                Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
-                if (enet.isPresent()) {
-                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().get().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
-                    thisEnergyStorage.tryDrainEnergy(filled, false);
-                }
+                int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
+                int remainder = IRNetworks.ENERGY_NETWORK.get().transport(serverLevel, this.worldPosition, min);
+                thisEnergyStorage.tryDrainEnergy(min - remainder, false);
             }
         }
     }

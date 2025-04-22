@@ -1,6 +1,6 @@
-// 1.21.1	2025-04-14T13:09:19.976046225	Tags for minecraft:block mod id indref
+// 1.21.1	2025-04-22T14:59:13.467489067	Tags for minecraft:block mod id indref
 e8bbb9941d99f1577cba384f72df9dd4c0e7b754 data/cable_facades/tags/block/supports_facade.json
-3b825820964a24faa9e84e7bddaa2bd6f141a382 data/minecraft/tags/block/climbable.json
+eb9c60518fb3ba2513464aaf63537be61f259f5c data/indref/tags/block/wrenchable.json
 3b825820964a24faa9e84e7bddaa2bd6f141a382 data/minecraft/tags/block/fall_damage_resetting.json
 7ec99157ac16a38de2ac0d390dc224f1fbe49af4 data/minecraft/tags/block/fence_gates.json
 78dad906beb19c9df69e27851cf8819fb51abf37 data/minecraft/tags/block/fences.json

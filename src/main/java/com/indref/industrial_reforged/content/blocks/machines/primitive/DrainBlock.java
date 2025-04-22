@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blocks.machines.primitive;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.blockentities.DrainBlockEntity;
 import com.indref.industrial_reforged.translations.IRTranslations;
@@ -19,7 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class DrainBlock extends RotatableContainerBlock implements WrenchableBlock {
+public class DrainBlock extends RotatableContainerBlock {
     public DrainBlock(Properties p_49224_) {
         super(p_49224_);
     }

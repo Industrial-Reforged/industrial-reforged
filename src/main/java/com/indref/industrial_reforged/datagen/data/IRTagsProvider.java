@@ -271,6 +271,15 @@ public class IRTagsProvider {
                     IRBlocks.STRIPPED_RUBBER_TREE_WOOD.get(),
                     IRBlocks.RUBBER_TREE_RESIN_HOLE.get()
             );
+            tag(IRTags.Blocks.WRENCHABLE,
+                    IRBlocks.BASIC_GENERATOR.get(),
+                    IRBlocks.CENTRIFUGE.get(),
+                    IRBlocks.BATTERY_BOX.get(),
+                    IRBlocks.TIN_CABLE.get(),
+                    IRBlocks.COPPER_CABLE.get(),
+                    IRBlocks.GOLD_CABLE.get(),
+                    IRBlocks.STEEL_CABLE.get()
+            );
 
             for (DeferredBlock<?> block : IRBlocks.AXE_MINEABLE) {
                 tag(BlockTags.MINEABLE_WITH_AXE, block.get());
@@ -332,9 +341,6 @@ public class IRTagsProvider {
                     IRBlocks.RAW_IRIDIUM_BLOCK.get()
             );
 
-//            tag(Tags.Blocks.STONES, IRBlocks.REFRACTORY_STONE.get());
-
-            tag(BlockTags.CLIMBABLE, IRBlocks.WOODEN_SCAFFOLDING.get());
             tag(BlockTags.FALL_DAMAGE_RESETTING, IRBlocks.WOODEN_SCAFFOLDING.get());
         }
 

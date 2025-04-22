@@ -28,6 +28,7 @@ public class NetworkNode<T> {
     private Map<Direction, BlockPos> uninitializedNext;
     private final Transporting<T> transporting;
     private boolean dead;
+    private boolean interactor;
 
     public NetworkNode(TransportNetwork<T> network, BlockPos pos) {
         this.network = network;
@@ -36,51 +37,13 @@ public class NetworkNode<T> {
         this.transporting = new Transporting<>(network);
     }
 
-    public NetworkNode(TransportNetwork<?> network, BlockPos pos, Map<Direction, BlockPos> next, Transporting<T> transporting, boolean dead) {
+    public NetworkNode(TransportNetwork<?> network, BlockPos pos, Map<Direction, BlockPos> next, Transporting<T> transporting, boolean dead, boolean interactor) {
         this.network = (TransportNetwork<T>) network;
         this.pos = pos;
         this.uninitializedNext = next;
         this.transporting = transporting;
         this.dead = dead;
-    }
-
-    public void setChanged(ServerLevel level, @Nullable NetworkNode<T> originNode, Direction changedDirection) {
-//        BlockState blockState = level.getBlockState(pos);
-//        if (blockState.getBlock() instanceof CableBlock) {
-//            boolean connected = blockState.getValue(CableBlock.CONNECTION[changedDirection.get3DDataValue()]);
-//            BlockPos relative = pos.relative(changedDirection);
-//            if (connected) {
-//                if (this.network.hasNodeAt(level, relative)) {
-//                    NetworkNode<T> nextNode = this.network.getNode(level, relative);
-//                    if (!nextNode.isDead()) {
-//                        next.put(changedDirection, nextNode);
-//                        nextNode.getNext().put(changedDirection.getOpposite(), this);
-//                        this.network.setServerNodesChanged(level);
-//                        if (this.network.isSynced()) {
-//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, relative));
-//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, relative, changedDirection, this.pos));
-//                        }
-//                    }
-//                } else {
-//                    NetworkNode<T> nextNode = this.network.findNextNode(this, level, pos, changedDirection);
-//                    if (nextNode != null && !nextNode.isDead()) {
-//                        next.put(changedDirection, nextNode);
-//                        nextNode.getNext().put(changedDirection.getOpposite(), this);
-//                        this.network.setServerNodesChanged(level);
-//                        if (this.network.isSynced()) {
-//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, this.pos, changedDirection, nextNode.pos));
-//                            PacketDistributor.sendToAllPlayers(new AddNextNodePayload(this.network, nextNode.pos, changedDirection, this.pos));
-//                        }
-//                    } else {
-//                        next.remove(changedDirection);
-//                        this.network.setServerNodesChanged(level);
-//                        if (this.network.isSynced()) {
-//                            PacketDistributor.sendToAllPlayers(new RemoveNextNodePayload(this.network, this.pos, changedDirection));
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        this.interactor = interactor;
     }
 
     public void initialize(Map<BlockPos, NetworkNode<?>> nodes) {
@@ -143,6 +106,10 @@ public class NetworkNode<T> {
         this.dead = dead;
     }
 
+    public void setInteractor(boolean interactor) {
+        this.interactor = interactor;
+    }
+
     public Map<Direction, NetworkNode<T>> getNext() {
         return next;
     }
@@ -159,6 +126,10 @@ public class NetworkNode<T> {
         return dead;
     }
 
+    public boolean isInteractor() {
+        return interactor;
+    }
+
     private Map<Direction, BlockPos> getNextAsPos() {
         Map<Direction, NetworkNode> snapshot = new HashMap<>(next);
         return snapshot.entrySet().stream()
@@ -173,7 +144,8 @@ public class NetworkNode<T> {
                 BlockPos.CODEC.fieldOf("pos").forGetter(NetworkNode::getPos),
                 Codec.unboundedMap(StringRepresentable.fromEnum(Direction::values), BlockPos.CODEC).fieldOf("next").forGetter(NetworkNode::getNextAsPos),
                 Transporting.codec(network.codec()).fieldOf("transporting").forGetter(NetworkNode::getTransporting),
-                Codec.BOOL.fieldOf("dead").forGetter(NetworkNode::isDead)
+                Codec.BOOL.fieldOf("dead").forGetter(NetworkNode::isDead),
+                Codec.BOOL.fieldOf("interactor").forGetter(NetworkNode::isInteractor)
         ).apply(inst, NetworkNode::new));
     }
 
@@ -189,6 +161,8 @@ public class NetworkNode<T> {
                 NetworkNode::getTransporting,
                 ByteBufCodecs.BOOL,
                 NetworkNode::isDead,
+                ByteBufCodecs.BOOL,
+                NetworkNode::isInteractor,
                 NetworkNode::new
         );
     }

@@ -26,7 +26,21 @@ public final class NetworkNodeRenderer {
         poseStack.pushPose();
         {
             poseStack.translate((double) node.getPos().getX() - cameraPos.x(), (double) node.getPos().getY() - cameraPos.y(), (double) node.getPos().getZ() - cameraPos.z());
-            renderCube(consumer, poseStack.last().pose(), node.isDead() ? 255 : (node == selectedNode ? 100 : 0), node.isDead() ? 0 : 255, node == selectedNode ? 100 : 0, 70);
+            int r = 0;
+            int g = 255;
+            int b = 0;
+            if (node == selectedNode) {
+                r = 100;
+                b = 100;
+            } else if (node.isDead()) {
+                r = 255;
+                g = 0;
+            } else if (node.isInteractor()) {
+                r = 150;
+                g = 0;
+                b = 200;
+            }
+            renderCube(consumer, poseStack.last().pose(), r, g, b, 70);
             VertexConsumer consumer2 = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);
             if (node.getNext() != null) {
                 for (Direction direction : node.getNext().keySet()) {

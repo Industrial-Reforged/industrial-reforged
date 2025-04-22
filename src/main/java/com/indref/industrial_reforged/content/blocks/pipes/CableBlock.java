@@ -33,6 +33,7 @@ public class CableBlock extends PipeBlock {
         this.energyTier = energyTier;
     }
 
+    // TODO: Create nodes for connections to interactors
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
@@ -41,6 +42,7 @@ public class CableBlock extends PipeBlock {
             int connectionsAmount = 0;
             boolean[] connections = new boolean[6];
             Direction[] directions = new Direction[6];
+            boolean interactorConnection = false;
 
             for (Direction dir : Direction.values()) {
                 boolean value = state.getValue(CONNECTION[dir.get3DDataValue()]);
@@ -48,6 +50,9 @@ public class CableBlock extends PipeBlock {
                 if (value) {
                     directions[dir.get3DDataValue()] = dir;
                     connectionsAmount++;
+                    if (IRNetworks.ENERGY_NETWORK.get().hasInteractorAt(serverLevel, pos, dir)) {
+                        interactorConnection = true;
+                    }
                 } else {
                     directions[dir.get3DDataValue()] = null;
                 }
@@ -73,11 +78,13 @@ public class CableBlock extends PipeBlock {
                     }
                 }
 
-                if (direction0 != null && direction1 != null) {
+                if (interactorConnection) {
+                    IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, false, true);
+                } else if (direction0 != null && direction1 != null) {
                     IRNetworks.ENERGY_NETWORK.get().addConnection(serverLevel, pos, direction0, direction1);
                 }
             } else {
-                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1);
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1, interactorConnection);
             }
         }
 

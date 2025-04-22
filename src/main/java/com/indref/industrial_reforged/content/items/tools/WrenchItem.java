@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
+import com.indref.industrial_reforged.api.blocks.CustomWrenchableBlock;
+import com.indref.industrial_reforged.tags.IRTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -48,28 +49,27 @@ public class WrenchItem extends Item {
         BlockState wrenchableBlock = level.getBlockState(clickPos);
         ItemStack itemInHand = useOnContext.getItemInHand();
 
-        if (wrenchableBlock.getBlock() instanceof WrenchableBlock iWrenchableBlockBlock
-                && iWrenchableBlockBlock.canWrench(level, clickPos, wrenchableBlock)
-                && player.isShiftKeyDown()) {
-            if (iWrenchableBlockBlock.getDropItem().isEmpty()) {
-                if (wrenchableBlock.hasBlockEntity()) {
-                    BlockEntity blockEntity = level.getBlockEntity(clickPos);
-                    ItemStack dropItem = new ItemStack(wrenchableBlock.getBlock().asItem());
-                    blockEntity.saveToItem(dropItem, level.registryAccess());
-                    ItemHandlerHelper.giveItemToPlayer(player, dropItem);
-                } else {
-                    ItemStack dropItem = wrenchableBlock.getBlock().asItem().getDefaultInstance();
-                    ItemHandlerHelper.giveItemToPlayer(player, dropItem);
-                }
-            } else {
-                ItemStack dropItem = iWrenchableBlockBlock.getDropItem().get().getDefaultInstance();
-                ItemHandlerHelper.giveItemToPlayer(player, dropItem);
+        if (wrenchableBlock.is(IRTags.Blocks.WRENCHABLE) && player.isShiftKeyDown()) {
+            ItemStack dropItemStack = new ItemStack(wrenchableBlock.getBlock());
+
+            if (wrenchableBlock.hasBlockEntity()) {
+                BlockEntity blockEntity = level.getBlockEntity(clickPos);
+                blockEntity.saveToItem(dropItemStack, level.registryAccess());
             }
-            if (isDamageable(itemInHand)) {
-                itemInHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(useOnContext.getHand()));
+
+            if (wrenchableBlock.getBlock() instanceof CustomWrenchableBlock customWrenchableBlock
+                    && customWrenchableBlock.canWrench(level, clickPos, wrenchableBlock)) {
+                dropItemStack = customWrenchableBlock.getCustomDropItem().copy();
             }
+
+            ItemHandlerHelper.giveItemToPlayer(player, dropItemStack);
+
+            itemInHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(useOnContext.getHand()));
+
             level.removeBlock(clickPos, false);
-        } else {
+
+            return InteractionResult.SUCCESS;
+        } else if (!player.isShiftKeyDown()) {
             for (Property<?> prop : wrenchableBlock.getProperties()) {
                 if (prop instanceof DirectionProperty directionProperty && prop.getName().equals("facing")) {
                     BlockState rotatedState = rotateBlock(wrenchableBlock, directionProperty, wrenchableBlock.getValue(directionProperty));
@@ -79,6 +79,7 @@ public class WrenchItem extends Item {
                 }
             }
         }
-        return InteractionResult.SUCCESS;
+
+        return InteractionResult.FAIL;
     }
 }

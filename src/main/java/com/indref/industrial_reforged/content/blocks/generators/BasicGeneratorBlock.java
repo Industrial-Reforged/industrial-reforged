@@ -3,14 +3,12 @@ package com.indref.industrial_reforged.content.blocks.generators;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.RotatableMachineBlock;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.blocks.WrenchableBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
-import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,7 +36,7 @@ import java.util.List;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-public class BasicGeneratorBlock extends RotatableMachineBlock implements WrenchableBlock, DisplayBlock {
+public class BasicGeneratorBlock extends RotatableMachineBlock implements DisplayBlock {
     public BasicGeneratorBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));

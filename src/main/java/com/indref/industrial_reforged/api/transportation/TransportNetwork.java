@@ -10,12 +10,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.util.TriPredicate;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -26,6 +29,7 @@ public class TransportNetwork<T> {
     private final Supplier<T> defaultValueSupplier;
     private final Function<BlockState, Float> lossPerBlockFunction;
     private final Function<BlockState, Float> transferSpeedFunction;
+    private final TriPredicate<Level, BlockPos, Direction> interactorCheckFunction;
     private final int maxConnectionDistance;
     private final StreamCodec<ByteBuf, T> streamCodec;
 
@@ -35,6 +39,7 @@ public class TransportNetwork<T> {
         this.defaultValueSupplier = builder.defaultValueSupplier;
         this.lossPerBlockFunction = builder.lossPerBlockFunction;
         this.transferSpeedFunction = builder.transferSpeedFunction;
+        this.interactorCheckFunction = builder.interactorCheckFunction;
         this.maxConnectionDistance = builder.maxConnectionDistance;
         this.streamCodec = builder.streamCodec;
     }
@@ -65,9 +70,10 @@ public class TransportNetwork<T> {
         }
     }
 
-    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead) {
+    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead, boolean interactor) {
         NetworkNode<T> node = this.createNode(pos);
         node.setDead(dead);
+        node.setInteractor(interactor);
         this.addNode(level, pos, node);
 
         if (!dead) {
@@ -125,6 +131,11 @@ public class TransportNetwork<T> {
         return getServerNodes(serverLevel).containsKey(pos);
     }
 
+    // TODO: We need to call this after a block update/cap invalidation
+    public boolean hasInteractorAt(ServerLevel serverLevel, BlockPos nodePos, Direction direction) {
+        return this.interactorCheckFunction.test(serverLevel, nodePos, direction);
+    }
+
     public Map<BlockPos, NetworkNode<?>> getServerNodes(ServerLevel level) {
         NodeNetworkSavedData networkSavedData = NodeNetworkSavedData.getNetworks(level);
         Map<TransportNetwork<?>, Map<BlockPos, NetworkNode<?>>> networks = networkSavedData.getNetworkNodes();
@@ -173,6 +184,14 @@ public class TransportNetwork<T> {
         }
 
         return null;
+    }
+
+    /**
+     * @param value The value to be transported
+     * @return the remaining value that was not transported anywhere
+     */
+    public T transport(ServerLevel serverLevel, BlockPos pos, T value) {
+        return value;
     }
 
     private static boolean areNodesAligned(BlockPos pos0, BlockPos pos1, Direction direction) {
@@ -230,6 +249,7 @@ public class TransportNetwork<T> {
         private final Supplier<T> defaultValueSupplier;
         private Function<BlockState, Float> lossPerBlockFunction = state -> 0F;
         private Function<BlockState, Float> transferSpeedFunction = state -> 1F;
+        private TriPredicate<Level, BlockPos, Direction> interactorCheckFunction = (l, p, d) -> false;
         private int maxConnectionDistance = -1;
         private StreamCodec<ByteBuf, T> streamCodec = null;
 
@@ -246,6 +266,11 @@ public class TransportNetwork<T> {
 
         public Builder<T> transferSpeed(Function<BlockState, Float> transferSpeedFunction) {
             this.transferSpeedFunction = transferSpeedFunction;
+            return this;
+        }
+
+        public Builder<T> interactorCheck(TriPredicate<Level, BlockPos, Direction> interactorCheckFunction) {
+            this.interactorCheckFunction = interactorCheckFunction;
             return this;
         }
 
