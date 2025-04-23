@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.blocks.pipes;
 
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
-import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
 import com.indref.industrial_reforged.client.transportation.ClientNodes;
 import com.indref.industrial_reforged.registries.IRNetworks;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +40,8 @@ public class CableBlock extends PipeBlock {
             int connectionsAmount = 0;
             boolean[] connections = new boolean[6];
             Direction[] directions = new Direction[6];
-            boolean interactorConnection = false;
+            BlockPos interactor = null;
+            Direction interactorConnection = null;
 
             for (Direction dir : Direction.values()) {
                 boolean value = state.getValue(CONNECTION[dir.get3DDataValue()]);
@@ -50,8 +49,9 @@ public class CableBlock extends PipeBlock {
                 if (value) {
                     directions[dir.get3DDataValue()] = dir;
                     connectionsAmount++;
-                    if (IRNetworks.ENERGY_NETWORK.get().hasInteractorAt(serverLevel, pos, dir)) {
-                        interactorConnection = true;
+                    if (IRNetworks.ENERGY_NETWORK.get().checkForInteractorAt(serverLevel, pos, dir)) {
+                        interactor = pos.relative(dir);
+                        interactorConnection = dir;
                     }
                 } else {
                     directions[dir.get3DDataValue()] = null;
@@ -78,14 +78,15 @@ public class CableBlock extends PipeBlock {
                     }
                 }
 
-                if (interactorConnection) {
-                    IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, false, true);
+                if (interactor != null) {
+                    IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, false, interactor, interactorConnection);
                 } else if (direction0 != null && direction1 != null) {
                     IRNetworks.ENERGY_NETWORK.get().addConnection(serverLevel, pos, direction0, direction1);
                 }
             } else {
-                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1, interactorConnection);
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1, interactor, interactorConnection);
             }
+
         }
 
     }
@@ -101,11 +102,21 @@ public class CableBlock extends PipeBlock {
 
     @Override
     public @NotNull BlockState updateShape(BlockState blockState, Direction facingDirection, BlockState facingBlockState, LevelAccessor level, BlockPos blockPos, BlockPos facingBlockPos) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (IRNetworks.ENERGY_NETWORK.get().checkForInteractorAt(serverLevel, blockPos, facingDirection)) {
+                int connectionsAmount = 0;
+                Direction[] directions = new Direction[6];
+                for (Direction direction : Direction.values()) {
+                    boolean value = blockState.getValue(CONNECTION[direction.get3DDataValue()]);
+                    if (value) {
+                        directions[direction.get3DDataValue()] = direction;
+                        connectionsAmount++;
+                    }
+                }
 
-//        if (NetworkManager.hasNode(blockPos) && NetworkManager.hasNode(facingBlockPos)) {
-//            NetworkManager.getNode(blockPos).getNext().put(facingDirection, NetworkManager.getNode(facingBlockPos));
-//        }
-
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, blockPos, directions, connectionsAmount == 1, facingBlockPos, facingDirection);
+            }
+        }
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);
     }
 

@@ -98,6 +98,10 @@ public final class ClientEvents {
                 for (NetworkNode<?> node : ClientNodes.NODES.getOrDefault(network, Collections.emptyMap()).values()) {
                     NetworkNodeRenderer.render(node, poseStack, bufferSource, cameraPos);
                 }
+
+                for (BlockPos interactor : ClientNodes.INTERACTORS.getOrDefault(network, Collections.emptySet())) {
+                    NetworkNodeRenderer.renderInteractor(interactor, poseStack, bufferSource, cameraPos);
+                }
             }
 
             if (NetworkNodeRenderer.selectedNode != null) {

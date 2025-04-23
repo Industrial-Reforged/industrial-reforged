@@ -1,9 +1,10 @@
 package com.indref.industrial_reforged.api.transportation;
 
 import com.indref.industrial_reforged.data.saved.NodeNetworkSavedData;
+import com.indref.industrial_reforged.networking.transportation.AddInteractorPayload;
 import com.indref.industrial_reforged.networking.transportation.AddNetworkNodePayload;
+import com.indref.industrial_reforged.networking.transportation.RemoveInteractorPayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNetworkNodePayload;
-import com.indref.industrial_reforged.networking.transportation.RemoveNextNodePayload;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -26,9 +26,9 @@ import java.util.stream.Stream;
 public class TransportNetwork<T> {
     private final BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> nodeFactory;
     private final Codec<T> transportingCodec;
-    private final Supplier<T> defaultValueSupplier;
-    private final Function<BlockState, Float> lossPerBlockFunction;
-    private final Function<BlockState, Float> transferSpeedFunction;
+    private final TransportingHandler<T> transportingHandler;
+    private final BiFunction<ServerLevel, NetworkNode<T>, Float> lossPerBlockFunction;
+    private final BiFunction<ServerLevel, NetworkNode<T>, Float> transferSpeedFunction;
     private final TriPredicate<Level, BlockPos, Direction> interactorCheckFunction;
     private final int maxConnectionDistance;
     private final StreamCodec<ByteBuf, T> streamCodec;
@@ -36,7 +36,7 @@ public class TransportNetwork<T> {
     private TransportNetwork(Builder<T> builder) {
         this.nodeFactory = builder.nodeFactory;
         this.transportingCodec = builder.transportingCodec;
-        this.defaultValueSupplier = builder.defaultValueSupplier;
+        this.transportingHandler = builder.transportingHandler;
         this.lossPerBlockFunction = builder.lossPerBlockFunction;
         this.transferSpeedFunction = builder.transferSpeedFunction;
         this.interactorCheckFunction = builder.interactorCheckFunction;
@@ -70,10 +70,33 @@ public class TransportNetwork<T> {
         }
     }
 
-    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead, boolean interactor) {
+    public void addInteractor(ServerLevel serverLevel, BlockPos interactorPos) {
+        NodeNetworkSavedData networks = NodeNetworkSavedData.getNetworks(serverLevel);
+        networks.getInteractors().computeIfAbsent(this, k -> new HashSet<>()).add(interactorPos);
+        networks.setDirty();
+        if (this.isSynced()) {
+            PacketDistributor.sendToAllPlayers(new AddInteractorPayload(this, interactorPos));
+        }
+
+    }
+
+    public void removeInteractor(ServerLevel serverLevel, BlockPos interactorPos) {
+        NodeNetworkSavedData networks = NodeNetworkSavedData.getNetworks(serverLevel);
+        networks.getInteractors().computeIfAbsent(this, k -> new HashSet<>()).remove(interactorPos);
+        networks.setDirty();
+        if (this.isSynced()) {
+            PacketDistributor.sendToAllPlayers(new RemoveInteractorPayload(this, interactorPos));
+        }
+
+    }
+
+    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead, @Nullable BlockPos interactorPos, @Nullable Direction interactorConnection) {
         NetworkNode<T> node = this.createNode(pos);
         node.setDead(dead);
-        node.setInteractor(interactor);
+        node.setInteractorConnection(interactorConnection);
+        if (interactorPos != null) {
+            this.addInteractor(level, interactorPos);
+        }
         this.addNode(level, pos, node);
 
         if (!dead) {
@@ -90,14 +113,13 @@ public class TransportNetwork<T> {
     }
 
     public void addNode(ServerLevel level, BlockPos pos, NetworkNode<T> node) {
-        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
-            NodeNetworkSavedData networks = NodeNetworkSavedData.getNetworks(serverLevel);
-            getServerNodes(serverLevel).put(pos, node);
-            networks.setDirty();
-            if (this.isSynced()) {
-                PacketDistributor.sendToAllPlayers(new AddNetworkNodePayload<>(this, pos, node));
-            }
+        NodeNetworkSavedData networks = NodeNetworkSavedData.getNetworks(level);
+        getServerNodes(level).put(pos, node);
+        networks.setDirty();
+        if (this.isSynced()) {
+            PacketDistributor.sendToAllPlayers(new AddNetworkNodePayload<>(this, pos, node));
         }
+
     }
 
     public void removeNodeAndUpdate(ServerLevel serverLevel, BlockPos pos) {
@@ -110,7 +132,16 @@ public class TransportNetwork<T> {
                 node1.removeNextNodeSynced(direction.getOpposite());
             }
         }
+
+        if (node.getInteractorConnection() != null) {
+            BlockPos relative = pos.relative(node.getInteractorConnection());
+            this.removeInteractor(serverLevel, relative);
+            if (this.isSynced()) {
+                PacketDistributor.sendToAllPlayers(new RemoveInteractorPayload(this, relative));
+            }
+        }
         this.setServerNodesChanged(serverLevel);
+
     }
 
     public @Nullable NetworkNode<T> removeNode(ServerLevel serverLevel, BlockPos pos) {
@@ -131,9 +162,13 @@ public class TransportNetwork<T> {
         return getServerNodes(serverLevel).containsKey(pos);
     }
 
-    // TODO: We need to call this after a block update/cap invalidation
-    public boolean hasInteractorAt(ServerLevel serverLevel, BlockPos nodePos, Direction direction) {
+    public boolean checkForInteractorAt(ServerLevel serverLevel, BlockPos nodePos, Direction direction) {
         return this.interactorCheckFunction.test(serverLevel, nodePos, direction);
+    }
+
+    public boolean hasInteractorAt(ServerLevel serverLevel, BlockPos interactorPos) {
+        NodeNetworkSavedData networks = NodeNetworkSavedData.getNetworks(serverLevel);
+        return networks.getInteractors().getOrDefault(this, Collections.emptySet()).contains(interactorPos);
     }
 
     public Map<BlockPos, NetworkNode<?>> getServerNodes(ServerLevel level) {
@@ -180,6 +215,17 @@ public class TransportNetwork<T> {
             } else {
                 nearestPos = sortByDirectionalDistance(pos, alignedPositions, direction).findFirst().get();
             }
+
+            if (this.maxConnectionDistance >= 0) {
+                int dx = Math.abs(pos.getX() - nearestPos.getX());
+                int dy = Math.abs(pos.getY() - nearestPos.getY());
+                int dz = Math.abs(pos.getZ() - nearestPos.getZ());
+
+                if (dx > maxConnectionDistance || dy > maxConnectionDistance || dz > maxConnectionDistance) {
+                    return null;
+                }
+            }
+
             return this.getNode(serverLevel, nearestPos);
         }
 
@@ -188,9 +234,34 @@ public class TransportNetwork<T> {
 
     /**
      * @param value The value to be transported
-     * @return the remaining value that was not transported anywhere
+     * @param directions the directions the value should be transported to (only relevant for initial node). If the array is empty, the value will be transported in all directions
+     * @return the remaining value that was not transported anywhere, returns {@link TransportingHandler#defaultValue()} if everything was distributed
      */
-    public T transport(ServerLevel serverLevel, BlockPos pos, T value) {
+    public T transport(ServerLevel serverLevel, BlockPos pos, T value, Direction... directions) {
+        if (this.getTransportingHandler().validTransportValue(value) && this.hasInteractorAt(serverLevel, pos)) {
+            Direction[] directions1;
+            if (directions.length == 0) {
+                directions1 = Direction.values();
+            } else {
+                directions1 = directions;
+            }
+            List<NetworkNode<T>> nodes = new ArrayList<>();
+            for (Direction direction : directions1) {
+                BlockPos relative = pos.relative(direction);
+                if (this.hasNodeAt(serverLevel, relative)) {
+                    nodes.add(this.getNode(serverLevel, relative));
+                }
+            }
+
+            List<T> split = this.transportingHandler.split(value, nodes.size());
+
+            for (int i = 0; i < nodes.size(); i++) {
+                nodes.get(i).getTransporting().setValue(split.get(i));
+            }
+
+            // TODO: Return remainder
+            return getTransportingHandler().defaultValue();
+        }
         return value;
     }
 
@@ -223,12 +294,16 @@ public class TransportNetwork<T> {
         return diff;
     }
 
+    public int getMaxConnectionDistance() {
+        return maxConnectionDistance;
+    }
+
     public boolean isSynced() {
         return streamCodec != null;
     }
 
-    public Supplier<T> defaultValueSupplier() {
-        return defaultValueSupplier;
+    public TransportingHandler<T> getTransportingHandler() {
+        return transportingHandler;
     }
 
     public Codec<T> codec() {
@@ -239,32 +314,32 @@ public class TransportNetwork<T> {
         return streamCodec;
     }
 
-    public static <T> Builder<T> builder(BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> factory, Codec<T> codec, Supplier<T> defaultValueSupplier) {
-        return new Builder<>(factory, codec, defaultValueSupplier);
+    public static <T> Builder<T> builder(BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> factory, Codec<T> codec, TransportingHandler<T> transportingHandler) {
+        return new Builder<>(factory, codec, transportingHandler);
     }
 
     public static final class Builder<T> {
         private final BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> nodeFactory;
         private final Codec<T> transportingCodec;
-        private final Supplier<T> defaultValueSupplier;
-        private Function<BlockState, Float> lossPerBlockFunction = state -> 0F;
-        private Function<BlockState, Float> transferSpeedFunction = state -> 1F;
+        private final TransportingHandler<T> transportingHandler;
+        private BiFunction<ServerLevel, NetworkNode<T>, Float> lossPerBlockFunction = (l, n) -> 0F;
+        private BiFunction<ServerLevel, NetworkNode<T>, Float> transferSpeedFunction = (l, n) -> 1F;
         private TriPredicate<Level, BlockPos, Direction> interactorCheckFunction = (l, p, d) -> false;
         private int maxConnectionDistance = -1;
         private StreamCodec<ByteBuf, T> streamCodec = null;
 
-        private Builder(BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> factory, Codec<T> transportingCodec, Supplier<T> defaultValueSupplier) {
+        private Builder(BiFunction<TransportNetwork<T>, BlockPos, NetworkNode<T>> factory, Codec<T> transportingCodec, TransportingHandler<T> transportingHandler) {
             this.nodeFactory = factory;
             this.transportingCodec = transportingCodec;
-            this.defaultValueSupplier = defaultValueSupplier;
+            this.transportingHandler = transportingHandler;
         }
 
-        public Builder<T> lossPerBlock(Function<BlockState, Float> lossPerBlockFunction) {
+        public Builder<T> lossPerBlock(BiFunction<ServerLevel, NetworkNode<T>, Float> lossPerBlockFunction) {
             this.lossPerBlockFunction = lossPerBlockFunction;
             return this;
         }
 
-        public Builder<T> transferSpeed(Function<BlockState, Float> transferSpeedFunction) {
+        public Builder<T> transferSpeed(BiFunction<ServerLevel, NetworkNode<T>, Float> transferSpeedFunction) {
             this.transferSpeedFunction = transferSpeedFunction;
             return this;
         }

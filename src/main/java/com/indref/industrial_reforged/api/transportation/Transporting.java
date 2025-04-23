@@ -22,11 +22,16 @@ public class Transporting<T> {
     }
 
     public @Nullable T getValue() {
-        return value != null ? value : network.defaultValueSupplier().get();
+        return value != null ? value : network.getTransportingHandler().defaultValue();
     }
 
     public TransportNetwork<T> getNetwork() {
         return network;
+    }
+
+    @Override
+    public String toString() {
+        return "Transporting{value=%s}".formatted(getValue());
     }
 
     private static <T> Transporting<T> fromValue(TransportNetwork<?> network, T value) {

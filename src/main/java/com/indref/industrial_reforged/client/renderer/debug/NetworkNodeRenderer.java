@@ -17,6 +17,26 @@ import java.util.Map;
 public final class NetworkNodeRenderer {
     public static NetworkNode<?> selectedNode;
 
+    public static void renderInteractor(BlockPos interactorPos, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 cameraPos) {
+        RenderSystem.disableDepthTest();    // Don't test depth
+        RenderSystem.depthMask(false); // Don't write to depth buffer
+        RenderSystem.disableCull();
+        VertexConsumer consumer = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);
+
+        poseStack.pushPose();
+        {
+            poseStack.translate((double) interactorPos.getX() - cameraPos.x(), (double) interactorPos.getY() - cameraPos.y(), (double) interactorPos.getZ() - cameraPos.z());
+            poseStack.scale(1.25f, 1.25f, 1.25f);
+            poseStack.translate(-0.1, -0.1, -0.1);
+            renderCube(consumer, poseStack.last().pose(), 255, 0, 255, 70);
+        }
+        poseStack.popPose();
+
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableCull();
+    }
+
     public static void render(NetworkNode<?> node, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 cameraPos) {
         RenderSystem.disableDepthTest();    // Don't test depth
         RenderSystem.depthMask(false); // Don't write to depth buffer
@@ -35,37 +55,24 @@ public final class NetworkNodeRenderer {
             } else if (node.isDead()) {
                 r = 255;
                 g = 0;
-            } else if (node.isInteractor()) {
-                r = 150;
+            } else if (node.getInteractorConnection() != null) {
+                r = 255;
                 g = 0;
-                b = 200;
+                b = 255;
             }
-            renderCube(consumer, poseStack.last().pose(), r, g, b, 70);
+
+            if (node.getInteractorConnection() == null) {
+                renderCube(consumer, poseStack.last().pose(), r, g, b, 70);
+            } else {
+                renderLine(poseStack, node.getInteractorConnection(), consumer, r, g, b, 70);
+            }
+
             VertexConsumer consumer2 = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);
             if (node.getNext() != null) {
                 for (Direction direction : node.getNext().keySet()) {
                     poseStack.pushPose();
                     {
-                        poseStack.translate(-0.5, 0, -0.5);
-                        if (direction == Direction.UP) {
-                            poseStack.translate(0, 0.75, 0);
-                        } else if (direction == Direction.DOWN) {
-                            poseStack.translate(0, 0.25, 2);
-                        } else if (direction.getAxis() == Direction.Axis.X) {
-                            if (direction == Direction.WEST) {
-                                poseStack.translate(0.75, 1.5, 0);
-                            } else {
-                                poseStack.translate(1.25, 1.5, 2);
-                            }
-                        } else if (direction.getAxis() == Direction.Axis.Z) {
-                            if (direction == Direction.SOUTH) {
-                                poseStack.translate(0, 1.5, 1.25);
-                            } else {
-                                poseStack.translate(2, 1.5, 0.75);
-                            }
-                        }
-                        poseStack.mulPose(direction.getRotation());
-                        renderLine(consumer2, poseStack.last().pose(), 255, 0, 0, 200, direction);
+                        renderLine(poseStack, direction, consumer2, 255, 0, 0, 200);
                     }
                     poseStack.popPose();
                 }
@@ -106,9 +113,38 @@ public final class NetworkNodeRenderer {
             }
         }
 
+        DebugRenderer.renderFloatingText(poseStack, bufferSource, String.format("Transporting: %s", node.getTransporting().toString()), node.getPos().getX(), node.getPos().getY() + (3f - i / 2f) + 0.5f, node.getPos().getZ(), -1);
+
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.enableCull();
+    }
+
+    private static void renderLine(PoseStack poseStack, Direction direction, VertexConsumer consumer2, int r, int g, int b, int a) {
+        poseStack.pushPose();
+        {
+            poseStack.translate(-0.5, 0, -0.5);
+            if (direction == Direction.UP) {
+                poseStack.translate(0, 0.75, 0);
+            } else if (direction == Direction.DOWN) {
+                poseStack.translate(0, 0.25, 2);
+            } else if (direction.getAxis() == Direction.Axis.X) {
+                if (direction == Direction.WEST) {
+                    poseStack.translate(0.75, 1.5, 0);
+                } else {
+                    poseStack.translate(1.25, 1.5, 2);
+                }
+            } else if (direction.getAxis() == Direction.Axis.Z) {
+                if (direction == Direction.SOUTH) {
+                    poseStack.translate(0, 1.5, 1.25);
+                } else {
+                    poseStack.translate(2, 1.5, 0.75);
+                }
+            }
+            poseStack.mulPose(direction.getRotation());
+            renderLine(consumer2, poseStack.last().pose(), r, g, b, a, direction);
+        }
+        poseStack.popPose();
     }
 
     private static void renderCube(VertexConsumer consumer, Matrix4f matrix, int r, int g, int b, int a) {

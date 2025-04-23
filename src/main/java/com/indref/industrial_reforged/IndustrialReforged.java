@@ -232,7 +232,6 @@ public final class IndustrialReforged {
         registrar.playToClient(BasinFluidChangedPayload.TYPE, BasinFluidChangedPayload.STREAM_CODEC, BasinFluidChangedPayload::handle);
         registrar.playToClient(FaucetSetRenderStack.TYPE, FaucetSetRenderStack.STREAM_CODEC, FaucetSetRenderStack::handle);
 
-
         // Transport network
         for (TransportNetwork<?> network : IRRegistries.NETWORK) {
             registrar.playToClient(AddNetworkNodePayload.type(network), AddNetworkNodePayload.streamCodec(network), AddNetworkNodePayload::handle);
@@ -244,6 +243,9 @@ public final class IndustrialReforged {
         registrar.playToClient(RemoveNextNodePayload.TYPE, RemoveNextNodePayload.STREAM_CODEC, RemoveNextNodePayload::handle);
         registrar.playToClient(SyncNextNodePayload.TYPE, SyncNextNodePayload.STREAM_CODEC, SyncNextNodePayload::handle);
 
+        registrar.playToClient(AddInteractorPayload.TYPE, AddInteractorPayload.STREAM_CODEC, AddInteractorPayload::handle);
+        registrar.playToClient(RemoveInteractorPayload.TYPE, RemoveInteractorPayload.STREAM_CODEC, RemoveInteractorPayload::handle);
+        registrar.playToClient(SyncInteractorPayload.TYPE, SyncInteractorPayload.STREAM_CODEC, SyncInteractorPayload::handle);
 
         // Casting molds
         registrar.playToClient(SyncCastingMoldsPayload.TYPE, SyncCastingMoldsPayload.STREAM_CODEC, SyncCastingMoldsPayload::handle);

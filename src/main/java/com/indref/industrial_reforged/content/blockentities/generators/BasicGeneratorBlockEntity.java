@@ -92,6 +92,8 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     public <T> Map<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
         if (capability == Capabilities.ItemHandler.BLOCK) {
             return SidedCapUtils.allInsert(0);
+        } else if (capability == IRCapabilities.EnergyStorage.BLOCK) {
+            return SidedCapUtils.allExtract(0);
         }
         return ImmutableMap.of();
     }

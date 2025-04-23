@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class NodeNetworkSavedData extends SavedData {
     private static final Codec<Set<BlockPos>> INTERACTORS_CODEC = CodecUtils.set(BlockPos.CODEC);
     private final Map<TransportNetwork<?>, Map<BlockPos, NetworkNode<?>>> networkNodes;
+    // TODO: Cache directions of interactor connections
     private final Map<TransportNetwork<?>, Set<BlockPos>> interactors;
 
     public NodeNetworkSavedData(Map<TransportNetwork<?>, Map<BlockPos, NetworkNode<?>>> networkNodes, Map<TransportNetwork<?>, Set<BlockPos>> interactors) {
@@ -42,6 +43,10 @@ public class NodeNetworkSavedData extends SavedData {
 
     public Map<TransportNetwork<?>, Map<BlockPos, NetworkNode<?>>> getNetworkNodes() {
         return networkNodes;
+    }
+
+    public Map<TransportNetwork<?>, Set<BlockPos>> getInteractors() {
+        return interactors;
     }
 
     private static SavedData.Factory<NodeNetworkSavedData> factory() {
@@ -78,7 +83,7 @@ public class NodeNetworkSavedData extends SavedData {
                         .resultOrPartial(err -> IndustrialReforged.LOGGER.error("Encountered error while decoding network interactors {}, {}", key, err))
                         .map(Pair::getFirst);
                 _interactors.ifPresent(blockPos -> {
-                    interactors.put(network, blockPos);
+                    interactors.put(network, new HashSet<>(blockPos));
                 });
             }
         }

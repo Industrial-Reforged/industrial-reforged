@@ -28,6 +28,7 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity {
         addEuStorage(IREnergyTiers.LOW, IRConfig.batteryBoxEnergyCapacity);
 
         this.sidedInteractions = new HashMap<>();
+        onBlockUpdated();
     }
 
     @Override
@@ -53,6 +54,10 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity {
             this.sidedInteractions.put(direction, Pair.of(IOAction.INSERT, new int[]{0}));
         }
         this.sidedInteractions.put(getBlockState().getValue(BatteryBoxBlock.FACING), Pair.of(IOAction.EXTRACT, new int[]{0}));
+        if (this.level != null) {
+            this.invalidateCapabilities();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 
     @Override
