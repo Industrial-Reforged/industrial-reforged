@@ -43,8 +43,8 @@ public final class CommonEvents {
     }
 
     private static <T> void sendSyncPayload(TransportNetwork<T> network, ServerPlayer serverPlayer) {
-        Map<BlockPos, NetworkNode<?>> serverNodes = network.getServerNodes(serverPlayer.serverLevel());
-        PacketDistributor.sendToPlayer(serverPlayer, new SyncNetworkNodePayload(network, new HashMap<>(serverNodes)));
+        Map<BlockPos, NetworkNode<T>> serverNodes = network.getServerNodes(serverPlayer.serverLevel());
+        PacketDistributor.sendToPlayer(serverPlayer, new SyncNetworkNodePayload<>(network, new HashMap<>(serverNodes)));
         PacketDistributor.sendToPlayer(serverPlayer, new SyncNextNodePayload(network));
 
 

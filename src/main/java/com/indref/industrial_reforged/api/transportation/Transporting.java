@@ -5,9 +5,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Transporting<T> {
     private final TransportNetwork<T> network;
@@ -23,6 +28,12 @@ public class Transporting<T> {
 
     public @Nullable T getValue() {
         return value != null ? value : network.getTransportingHandler().defaultValue();
+    }
+
+    public T removeValue() {
+        T valueCopy = this.value;
+        this.value = null;
+        return valueCopy;
     }
 
     public TransportNetwork<T> getNetwork() {
@@ -56,4 +67,5 @@ public class Transporting<T> {
                 Transporting::fromValue
         );
     }
+
 }

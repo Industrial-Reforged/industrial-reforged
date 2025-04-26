@@ -5,11 +5,10 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
+import com.indref.industrial_reforged.api.transportation.TransferSpeed;
 import com.indref.industrial_reforged.content.transportation.EnergyTransportingHandler;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -21,7 +20,7 @@ public final class IRNetworks {
             () -> TransportNetwork.builder(NetworkNode::new, Codec.INT, EnergyTransportingHandler.INSTANCE)
                     .synced(ByteBufCodecs.INT)
                     .lossPerBlock((level, node) -> 0.5F)
-                    .transferSpeed((level, node) -> 1.5F)
+                    .transferSpeed(TransferSpeed::instant)
                     .interactorCheck((level, nodePos, direction) ->
                             level.getCapability(IRCapabilities.EnergyStorage.BLOCK, nodePos.relative(direction), direction) != null
                     )

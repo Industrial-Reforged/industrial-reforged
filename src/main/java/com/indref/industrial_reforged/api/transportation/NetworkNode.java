@@ -15,10 +15,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class NetworkNode<T> {
@@ -28,12 +26,12 @@ public class NetworkNode<T> {
     private Map<Direction, BlockPos> uninitializedNext;
     private final Transporting<T> transporting;
     private boolean dead;
-    private Direction interactorConnection;
+    private Optional<Direction> interactorConnection;
 
     public NetworkNode(TransportNetwork<T> network, BlockPos pos) {
         this.network = network;
         this.pos = pos;
-        this.next = new HashMap<>();
+        this.next = new ConcurrentHashMap<>();
         this.transporting = new Transporting<>(network);
     }
 
@@ -43,11 +41,11 @@ public class NetworkNode<T> {
         this.uninitializedNext = next;
         this.transporting = transporting;
         this.dead = dead;
-        this.interactorConnection = interactorConnection.orElse(null);
+        this.interactorConnection = interactorConnection;
     }
 
     public void initialize(Map<BlockPos, NetworkNode<?>> nodes) {
-        this.next = new HashMap<>();
+        this.next = new ConcurrentHashMap<>();
         for (Map.Entry<Direction, BlockPos> entry : this.uninitializedNext.entrySet()) {
             this.next.put(entry.getKey(), (NetworkNode<T>) nodes.get(entry.getValue()));
         }
@@ -107,11 +105,19 @@ public class NetworkNode<T> {
     }
 
     public void setInteractorConnection(Direction interactorConnection) {
-        this.interactorConnection = interactorConnection;
+        this.interactorConnection = Optional.ofNullable(interactorConnection);
     }
 
     public Map<Direction, NetworkNode<T>> getNext() {
         return next;
+    }
+
+    public int getConnectionsAmount() {
+        return getNext().size() + getInteractorConnectionsAmount();
+    }
+
+    public int getInteractorConnectionsAmount() {
+        return interactorConnection != null ? 1 : 0;
     }
 
     public Transporting<T> getTransporting() {
@@ -127,15 +133,30 @@ public class NetworkNode<T> {
     }
 
     public Direction getInteractorConnection() {
-        return interactorConnection;
+        return interactorConnection.orElse(null);
     }
 
+    // FIXME: This does not work at all, it always returns an empty map
     private Map<Direction, BlockPos> getNextAsPos() {
-        Map<Direction, NetworkNode> snapshot = new HashMap<>(next);
-        return snapshot.entrySet().stream()
-                .filter(e -> e.getValue() != null)
-                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().getPos()))
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        if (next != null) {
+            Map<Direction, NetworkNode<T>> snapshot = new HashMap<>(next);
+            return snapshot.entrySet().stream()
+                    .filter(e -> e.getValue() != null)
+                    .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().getPos()))
+                    .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        }
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof NetworkNode<?> that)) return false;
+        return dead == that.dead && Objects.equals(network, that.network) && Objects.equals(pos, that.pos) && Objects.equals(next, that.next) && Objects.equals(uninitializedNext, that.uninitializedNext) && Objects.equals(transporting, that.transporting) && interactorConnection == that.interactorConnection;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(network, pos, transporting, dead, interactorConnection);
     }
 
     public static <T> Codec<NetworkNode<T>> codec(TransportNetwork<T> network) {
@@ -145,24 +166,24 @@ public class NetworkNode<T> {
                 Codec.unboundedMap(StringRepresentable.fromEnum(Direction::values), BlockPos.CODEC).fieldOf("next").forGetter(NetworkNode::getNextAsPos),
                 Transporting.codec(network.codec()).fieldOf("transporting").forGetter(NetworkNode::getTransporting),
                 Codec.BOOL.fieldOf("dead").forGetter(NetworkNode::isDead),
-                Direction.CODEC.optionalFieldOf("interactor").forGetter(node -> Optional.ofNullable(node.getInteractorConnection()))
+                Direction.CODEC.optionalFieldOf("interactor").forGetter(node -> node.interactorConnection)
         ).apply(inst, NetworkNode::new));
     }
 
     public static <T> StreamCodec<RegistryFriendlyByteBuf, NetworkNode<T>> streamCodec(TransportNetwork<T> network) {
         return StreamCodec.composite(
                 CodecUtils.registryStreamCodec(IRRegistries.NETWORK),
-                NetworkNode::getNetwork,
+                tNetworkNode1 -> tNetworkNode1.getNetwork(),
                 BlockPos.STREAM_CODEC,
                 NetworkNode::getPos,
                 ByteBufCodecs.map(HashMap::new, CodecUtils.enumStreamCodec(Direction.class), BlockPos.STREAM_CODEC),
-                NetworkNode::getNextAsPos,
+                tNetworkNode -> tNetworkNode.getNextAsPos(),
                 Transporting.streamCodec(network.streamCodec()),
                 NetworkNode::getTransporting,
                 ByteBufCodecs.BOOL,
                 NetworkNode::isDead,
                 ByteBufCodecs.optional(Direction.STREAM_CODEC),
-                node -> Optional.ofNullable(node.getInteractorConnection()),
+                node -> node.interactorConnection,
                 NetworkNode::new
         );
     }

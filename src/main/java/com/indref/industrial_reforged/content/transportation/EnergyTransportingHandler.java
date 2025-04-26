@@ -1,8 +1,13 @@
 package com.indref.industrial_reforged.content.transportation;
 
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.transportation.TransportingHandler;
 import com.indref.industrial_reforged.util.Utils;
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 
 import java.util.List;
 
@@ -40,7 +45,17 @@ public class EnergyTransportingHandler implements TransportingHandler<Integer> {
 
     @Override
     public Integer remove(Integer value, Integer toRemove) {
-        return Math.max(value - toRemove, defaultValue());
+        return Math.max(value - toRemove, this.defaultValue());
+    }
+
+    @Override
+    public Integer receive(ServerLevel level, BlockPos interactorPos, Direction direction, Integer value) {
+        IEnergyStorage energyStorage = level.getCapability(IRCapabilities.EnergyStorage.BLOCK, interactorPos, direction);
+        if (energyStorage != null) {
+            int filled = energyStorage.tryFillEnergy(value, false);
+            return Math.max(value - filled, this.defaultValue());
+        }
+        return value;
     }
 
 }
