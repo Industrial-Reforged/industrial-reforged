@@ -38,7 +38,6 @@ public final class IRItems {
     public static final DeferredItem<WrenchItem> WRENCH = primitiveToolItem("wrench", WrenchItem::new);
     public static final DeferredItem<TreeTapItem> TREE_TAP = primitiveToolItem("tree_tap", TreeTapItem::new);
     public static final DeferredItem<HammerItem> HAMMER = primitiveToolItem("hammer", HammerItem::new);
-    public static final DeferredItem<BlueprintItem> BLUEPRINT = primitiveToolItem("blueprint", BlueprintItem::new);
     public static final DeferredItem<ToolboxItem> TOOLBOX = toolBoxItem("toolbox",
             () -> new ToolboxItem(new Item.Properties()
                     .stacksTo(1)

@@ -93,7 +93,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         //addItem(IRItems.THERMOMETER, "Thermometer");
         addItem(IRItems.NANO_SABER, "Nano Saber");
         addItem(IRItems.TOOLBOX, "Toolbox");
-        addItem(IRItems.BLUEPRINT, "Blueprint");
         addItem(IRItems.FERTILIZER, "Fertilizer");
         addItem(IRItems.CLAY_MOLD_BLANK, "Clay Mold");
         addItem(IRItems.CLAY_MOLD_INGOT, "Clay Mold Ingot");

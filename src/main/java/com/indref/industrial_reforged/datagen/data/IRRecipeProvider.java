@@ -336,12 +336,6 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON))
                 .save(output);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, IRItems.BLUEPRINT.get())
-                .requires(Tags.Items.DYES_BLUE)
-                .requires(Items.PAPER)
-                .unlockedBy("has_paper", has(Items.PAPER))
-                .save(output);
-
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.BASIC_DRILL.get())
                 .pattern(" # ")
                 .pattern("#M#")

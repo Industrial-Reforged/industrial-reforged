@@ -11,12 +11,14 @@ import net.minecraft.core.Direction;
 import java.util.Objects;
 import java.util.Set;
 
-public final class NetworkRoute<T> {
+// TODO: Encode path as set of blockpos
+public class NetworkRoute<T> {
     private final BlockPos originPos;
     private final Set<NetworkNode<T>> path;
     private BlockPos interactorDest;
     private Direction interactorDirection;
     private int physicalDistance;
+    private boolean valid;
 
     public NetworkRoute(BlockPos originPos, Set<NetworkNode<T>> path) {
         this.originPos = originPos;
@@ -45,6 +47,10 @@ public final class NetworkRoute<T> {
         this.interactorDirection = interactorDirection;
     }
 
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
     public Direction getInteractorDirection() {
         return interactorDirection;
     }
@@ -65,11 +71,15 @@ public final class NetworkRoute<T> {
         return path;
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (NetworkRoute<T>) obj;
+        var that = (NetworkRoute<?>) obj;
         return Objects.equals(this.originPos, that.originPos) &&
                 Objects.equals(this.interactorDest, that.interactorDest) &&
                 Objects.equals(this.path, that.path);

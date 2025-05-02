@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.blockentities.machines;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
@@ -77,6 +78,12 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     protected void onItemsChanged(int slot) {
         super.onItemsChanged(slot);
         checkRecipe();
+    }
+
+    @Override
+    public void onEuChanged(int oldAmount) {
+        super.onEuChanged(oldAmount);
+        //IndustrialReforged.LOGGER.debug("Old: {}, amount: {}", oldAmount, getEuStorage().getEnergyStored());
     }
 
     private void checkRecipe() {

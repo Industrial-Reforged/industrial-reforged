@@ -1,8 +1,11 @@
 package com.indref.industrial_reforged.api.transportation;
 
 import com.indref.industrial_reforged.IRRegistries;
+import com.indref.industrial_reforged.api.transportation.cache.NetworkRoute;
 import com.indref.industrial_reforged.networking.transportation.AddNextNodePayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNextNodePayload;
+import com.indref.industrial_reforged.registries.IRNetworks;
+import com.indref.industrial_reforged.translations.IRTranslations;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
@@ -134,6 +137,19 @@ public class NetworkNode<T> {
 
     public Direction getInteractorConnection() {
         return interactorConnection.orElse(null);
+    }
+
+    public List<NetworkRoute<T>> getCachesReferencingThis(ServerLevel serverLevel) {
+        List<NetworkRoute<T>> affectedRoutes = new ArrayList<>();
+        Map<BlockPos, List<NetworkRoute<T>>> routes = this.network.getRouteCache(serverLevel).routes();
+        for (List<NetworkRoute<T>> value : routes.values()) {
+            for (NetworkRoute<T> route : value) {
+                if (route.getPath().contains(this)) {
+                    affectedRoutes.add(route);
+                }
+            }
+        }
+        return affectedRoutes;
     }
 
     // FIXME: This does not work at all, it always returns an empty map

@@ -64,13 +64,17 @@ public class TransportNetwork<T> {
     }
 
     public void removeConnection(ServerLevel serverLevel, BlockPos pos, Direction direction0, Direction direction1) {
-        NetworkNode<T> node0 = this.findNextNode(null, serverLevel, pos, direction0);
-        if (node0 != null) {
-            node0.onConnectionRemoved(serverLevel, pos, direction0.getOpposite());
-        }
+        removeConnectionInDir(serverLevel, pos, direction0);
+        removeConnectionInDir(serverLevel, pos, direction1);
+    }
+
+    private void removeConnectionInDir(ServerLevel serverLevel, BlockPos pos, Direction direction1) {
         NetworkNode<T> node1 = this.findNextNode(null, serverLevel, pos, direction1);
         if (node1 != null) {
             node1.onConnectionRemoved(serverLevel, pos, direction1.getOpposite());
+            for (NetworkRoute<T> route : node1.getCachesReferencingThis(serverLevel)) {
+                route.setValid(false);
+            }
         }
     }
 
@@ -247,7 +251,7 @@ public class TransportNetwork<T> {
     }
 
     /**
-     * @param value The value to be transported
+     * @param value      The value to be transported
      * @param directions the directions the value should be transported to (only relevant for initial node). If the array is empty, the value will be transported in all directions
      * @return the remaining value that was not transported anywhere, returns {@link TransportingHandler#defaultValue()} if everything was distributed
      */
@@ -278,23 +282,56 @@ public class TransportNetwork<T> {
             // the values will be stored in the network
             if (this.transferSpeedFunction.get().isInstant()) {
                 List<NetworkRoute<T>> routes = getRouteCache(serverLevel).computeIfAbsent(pos, k -> new ArrayList<>());
+                routes.clear();
                 if (routes.isEmpty()) {
                     List<NetworkRoute<T>> cache = new ArrayList<>();
                     for (NetworkNode<T> node : nodes) {
                         NetworkRoute<T> route = new NetworkRoute<>(pos, new HashSet<>());
                         traverse(serverLevel, node, route, cache);
                     }
-                    routes.addAll(cache);
+                    routes.addAll(optimizeRoutes(cache));
                     setServerNodesChanged(serverLevel);
                 }
 
-                NetworkRoute<T> route = routes.getFirst();
-                this.getTransportingHandler().receive(serverLevel, route.getInteractorDest(), route.getInteractorDirection(), value);
+                if (!routes.isEmpty()) {
+                    List<T> split1 = this.transportingHandler.split(value, routes.size());
+                    for (int i = 0; i < routes.size(); i++) {
+                        IndustrialReforged.LOGGER.debug("energy: {}", split1.get(i));
+                        NetworkRoute<T> route = routes.get(i);
+                        this.getTransportingHandler().receive(serverLevel, route.getInteractorDest(), route.getInteractorDirection(), split1.get(i));
+                    }
+                }
             }
 
             return getTransportingHandler().defaultValue();
         }
         return value;
+    }
+
+    // OPTIMIZING ROUTES
+    // First we gather all unique interactors origin pos is connected to
+    // Then we sort the routes by shortest physical distance
+    // Next we loop through all the sorted routes until we have a route for every interactor
+    private List<NetworkRoute<T>> optimizeRoutes(List<NetworkRoute<T>> routes) {
+        Set<BlockPos> uniqueInteractors = new HashSet<>();
+
+        for (NetworkRoute<T> route : routes) {
+            uniqueInteractors.add(route.getInteractorDest());
+        }
+
+        List<NetworkRoute<T>> optimizedRoutes = new ArrayList<>();
+        List<NetworkRoute<T>> list = routes.stream().sorted(Comparator.comparingInt(NetworkRoute::getPhysicalDistance)).toList();
+        for (NetworkRoute<T> route : list) {
+            if (uniqueInteractors.contains(route.getInteractorDest())) {
+                uniqueInteractors.remove(route.getInteractorDest());
+                optimizedRoutes.add(route);
+            }
+
+            if (uniqueInteractors.isEmpty()) {
+                break;
+            }
+        }
+        return optimizedRoutes;
     }
 
     // ALGORITHM FOR FINDING THE SHORTEST PATH

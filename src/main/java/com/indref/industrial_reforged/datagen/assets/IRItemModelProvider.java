@@ -58,7 +58,6 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.ADVANCED_CIRCUIT);
         basicItem(IRItems.ULTIMATE_CIRCUIT);
         basicItem(IRItems.ANTENNA);
-        basicItem(IRItems.BLUEPRINT);
         basicItem(IRItems.CLAY_MOLD_BLANK);
         basicItem(IRItems.CLAY_MOLD_INGOT);
         basicItem(IRItems.CLAY_MOLD_PLATE);
