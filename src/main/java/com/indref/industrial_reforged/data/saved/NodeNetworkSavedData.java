@@ -33,20 +33,27 @@ public class NodeNetworkSavedData extends SavedData {
     }
 
     public static NodeNetworkSavedData getNetworkData(ServerLevel serverLevel) {
-        return serverLevel.getDataStorage().computeIfAbsent(factory(), IndustrialReforged.rl("node_networks").toString());
+        return serverLevel.getDataStorage().computeIfAbsent(factory(serverLevel), IndustrialReforged.rl("node_networks").toString());
     }
 
-    private static SavedData.Factory<NodeNetworkSavedData> factory() {
-        return new SavedData.Factory<>(NodeNetworkSavedData::new, NodeNetworkSavedData::load);
+    private static SavedData.Factory<NodeNetworkSavedData> factory(ServerLevel serverLevel) {
+        return new Factory<>(NodeNetworkSavedData::new, (nbt, lookup) -> NodeNetworkSavedData.load(nbt, serverLevel));
     }
 
-    private static NodeNetworkSavedData load(CompoundTag tag, HolderLookup.Provider lookup) {
+    private static NodeNetworkSavedData load(CompoundTag tag, ServerLevel serverLevel) {
         CompoundTag nbt = tag.getCompound("node_network");
         Map<TransportNetwork<?>, NodeNetworkData<?>> data = new HashMap<>();
         for (String key : nbt.getAllKeys()) {
             TransportNetwork<?> network = IRRegistries.NETWORK.get(ResourceLocation.parse(key));
             NodeNetworkData<?> networkData = decodeData(network, nbt.get(key));
             data.put(network, networkData);
+        }
+        for (Map.Entry<TransportNetwork<?>, NodeNetworkData<?>> entry : data.entrySet()) {
+            for (NetworkNode<?> node : entry.getValue().nodes().values()) {
+                if (node.uninitialized()) {
+                    node.initialize(data.getOrDefault(entry.getKey(), NodeNetworkData.empty()).nodes());
+                }
+            }
         }
         return new NodeNetworkSavedData(data);
     }

@@ -4,8 +4,6 @@ import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.api.transportation.cache.NetworkRoute;
 import com.indref.industrial_reforged.networking.transportation.AddNextNodePayload;
 import com.indref.industrial_reforged.networking.transportation.RemoveNextNodePayload;
-import com.indref.industrial_reforged.registries.IRNetworks;
-import com.indref.industrial_reforged.translations.IRTranslations;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
@@ -47,7 +45,7 @@ public class NetworkNode<T> {
         this.interactorConnection = interactorConnection;
     }
 
-    public void initialize(Map<BlockPos, NetworkNode<?>> nodes) {
+    public void initialize(Map<BlockPos, ? extends NetworkNode<?>> nodes) {
         this.next = new ConcurrentHashMap<>();
         for (Map.Entry<Direction, BlockPos> entry : this.uninitializedNext.entrySet()) {
             this.next.put(entry.getKey(), (NetworkNode<T>) nodes.get(entry.getValue()));
