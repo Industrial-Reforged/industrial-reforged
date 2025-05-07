@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.api.transportation;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.transportation.cache.NetworkRoute;
 import com.indref.industrial_reforged.api.transportation.cache.RouteCache;
+import com.indref.industrial_reforged.data.IRRouteCache;
 import com.indref.industrial_reforged.data.saved.NodeNetworkData;
 import com.indref.industrial_reforged.data.saved.NodeNetworkSavedData;
 import com.indref.industrial_reforged.networking.transportation.AddInteractorPayload;
@@ -200,7 +200,7 @@ public class TransportNetwork<T> {
     }
 
     public RouteCache<T> getRouteCache(ServerLevel serverLevel) {
-        return getRawNetworkData(serverLevel).routeCache();
+        return IRRouteCache.getCache(this, serverLevel);
     }
 
     public void setServerNodesChanged(ServerLevel serverLevel) {
@@ -281,8 +281,7 @@ public class TransportNetwork<T> {
             // and return the remainder directly, otherwise there will be no remainder and
             // the values will be stored in the network
             if (this.transferSpeedFunction.get().isInstant()) {
-                List<NetworkRoute<T>> routes = getRouteCache(serverLevel).computeIfAbsent(pos, k -> new ArrayList<>());
-                routes.clear();
+                List<NetworkRoute<T>> routes = getCacheRoutes(serverLevel, pos);
                 if (routes.isEmpty()) {
                     List<NetworkRoute<T>> cache = new ArrayList<>();
                     for (NetworkNode<T> node : nodes) {
@@ -296,7 +295,6 @@ public class TransportNetwork<T> {
                 if (!routes.isEmpty()) {
                     List<T> split1 = this.transportingHandler.split(value, routes.size());
                     for (int i = 0; i < routes.size(); i++) {
-                        IndustrialReforged.LOGGER.debug("energy: {}", split1.get(i));
                         NetworkRoute<T> route = routes.get(i);
                         this.getTransportingHandler().receive(serverLevel, route.getInteractorDest(), route.getInteractorDirection(), split1.get(i));
                     }
@@ -306,6 +304,10 @@ public class TransportNetwork<T> {
             return getTransportingHandler().defaultValue();
         }
         return value;
+    }
+
+    private List<NetworkRoute<T>> getCacheRoutes(ServerLevel serverLevel, BlockPos pos) {
+        return IRRouteCache.getRoutes(this, serverLevel, pos);
     }
 
     // OPTIMIZING ROUTES

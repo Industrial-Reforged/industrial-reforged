@@ -7,11 +7,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
 import net.minecraft.core.BlockPos;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 public record RouteCache<T>(Map<BlockPos, List<NetworkRoute<T>>> routes) {
+    public RouteCache() {
+        this(new HashMap<>());
+    }
+
     public static <T> Codec<RouteCache<T>> codec(TransportNetwork<T> network) {
         return RecordCodecBuilder.create(inst -> inst.group(
                 Codec.unboundedMap(Codec.STRING, NetworkRoute.codec(network).listOf()).fieldOf("routes").forGetter(cache -> IRCodecUtils.encodePosMap(cache.routes))

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
+import com.indref.industrial_reforged.data.IRRouteCache;
 import com.indref.industrial_reforged.networking.transportation.SyncNetworkNodePayload;
 import com.indref.industrial_reforged.networking.transportation.SyncNextNodePayload;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -15,6 +16,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.AbstractMap;
@@ -42,12 +45,20 @@ public final class CommonEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        IRRouteCache.CACHE.clear();
+    }
+
+    @SubscribeEvent
+    public static void onServerStopped(ServerStoppedEvent event) {
+        IRRouteCache.CACHE.clear();
+    }
+
     private static <T> void sendSyncPayload(TransportNetwork<T> network, ServerPlayer serverPlayer) {
         Map<BlockPos, NetworkNode<T>> serverNodes = network.getServerNodes(serverPlayer.serverLevel());
         PacketDistributor.sendToPlayer(serverPlayer, new SyncNetworkNodePayload<>(network, new HashMap<>(serverNodes)));
         PacketDistributor.sendToPlayer(serverPlayer, new SyncNextNodePayload(network));
-
-
     }
 
 }

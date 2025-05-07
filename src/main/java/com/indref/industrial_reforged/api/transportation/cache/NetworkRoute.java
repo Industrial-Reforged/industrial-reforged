@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import java.util.Objects;
 import java.util.Set;
 
-// TODO: Encode path as set of blockpos
 public class NetworkRoute<T> {
     private final BlockPos originPos;
     private final Set<NetworkNode<T>> path;
@@ -29,7 +28,7 @@ public class NetworkRoute<T> {
         return RecordCodecBuilder.create(inst -> inst.group(
                 BlockPos.CODEC.fieldOf("origin_pos").forGetter(NetworkRoute::getOriginPos),
                 BlockPos.CODEC.fieldOf("interactor_dest").forGetter(NetworkRoute::getInteractorDest),
-                Direction.CODEC.fieldOf("interator_dir").forGetter(NetworkRoute::getInteractorDirection),
+                Direction.CODEC.fieldOf("interactor_dir").forGetter(NetworkRoute::getInteractorDirection),
                 Codec.INT.fieldOf("physical_distance").forGetter(NetworkRoute::getPhysicalDistance),
                 CodecUtils.set(NetworkNode.codec(network)).fieldOf("path").forGetter(NetworkRoute::getPath)
         ).apply(inst, NetworkRoute::codecNew));

@@ -14,23 +14,22 @@ import java.util.*;
 
 /** stores data for a single type of network
  * @param interactors TODO: Cache directions of interactor connections
- * @param routeCache TODO: We only want to encode a set of block positions rather than all of the nodes
  */
-public record NodeNetworkData<T>(Map<BlockPos, NetworkNode<T>> nodes, Set<BlockPos> interactors, RouteCache<T> routeCache) {
+public record NodeNetworkData<T>(Map<BlockPos, NetworkNode<T>> nodes, Set<BlockPos> interactors, List<BlockPos> cacheOriginPositions) {
     public static <T> Codec<NodeNetworkData<T>> codec(TransportNetwork<T> network) {
         return RecordCodecBuilder.create(inst -> inst.group(
                 Codec.unboundedMap(Codec.STRING, NetworkNode.codec(network)).fieldOf("nodes").forGetter(data -> IRCodecUtils.encodePosMap(data.nodes)),
                 BlockPos.CODEC.listOf().fieldOf("interactors").forGetter(data -> List.copyOf(data.interactors)),
-                RouteCache.codec(network).fieldOf("route_cache").forGetter(data -> data.routeCache)
+                BlockPos.CODEC.listOf().fieldOf("cache_origin_positions").forGetter(data -> data.cacheOriginPositions)
         ).apply(inst, NodeNetworkData::fromStringMap));
     }
 
-    private static <T> NodeNetworkData<T> fromStringMap(Map<String, NetworkNode<T>> stringNetworkNodeMap, List<BlockPos> interactors, RouteCache<T> routeCache) {
-        return new NodeNetworkData<>(IRCodecUtils.decodePosMap(stringNetworkNodeMap), new HashSet<>(interactors), routeCache);
+    private static <T> NodeNetworkData<T> fromStringMap(Map<String, NetworkNode<T>> stringNetworkNodeMap, List<BlockPos> interactors, List<BlockPos> cacheOriginPositions) {
+        return new NodeNetworkData<>(IRCodecUtils.decodePosMap(stringNetworkNodeMap), new HashSet<>(interactors), cacheOriginPositions);
     }
 
     public static <T> NodeNetworkData<T> empty() {
-        return new NodeNetworkData<>(new HashMap<>(), new HashSet<>(), new RouteCache<>(new HashMap<>()));
+        return new NodeNetworkData<>(new HashMap<>(), new HashSet<>(), new ArrayList<>());
     }
 
 }

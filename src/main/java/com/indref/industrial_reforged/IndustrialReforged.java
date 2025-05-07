@@ -71,10 +71,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -145,25 +142,39 @@ public final class IndustrialReforged {
                 }
 
                 // Check that multiblock has controller
-                Map<Pair<Predicate<BlockState>, Block>, Integer> revDef = Utils.reverseMap(def.def());
-                int controllerKey = revDef.get(multiblock.getUnformedController());
-                boolean hasController = false;
-                for (MultiblockLayer layer : multiblock.getLayout()) {
-                    for (int i : layer.layer()) {
-                        if (i == controllerKey) {
-                            hasController = true;
-                            break;
-                        }
+                OptionalInt controllerKey = OptionalInt.empty();
+                for (Map.Entry<Integer, Pair<Predicate<BlockState>, Block>> entry : def.def().entrySet()) {
+                    boolean hasController = entry.getValue().first().test(multiblock.getUnformedController().defaultBlockState());
+                    if (hasController) {
+                        controllerKey = OptionalInt.of(entry.getKey());
+                        break;
                     }
                 }
-                if (!hasController) {
-                    throw new IllegalStateException("Every multiblock needs to have at least one controller in it's layout. The controller is the block returned by Multiblock#getUnformedController(). Affected multiblock: "
-                            + multiblock);
+
+                if (controllerKey.isPresent()) {
+                    boolean hasController = false;
+                    for (MultiblockLayer layer : multiblock.getLayout()) {
+                        for (int i : layer.layer()) {
+                            if (i == controllerKey.getAsInt()) {
+                                hasController = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!hasController) {
+                        controllerKey = OptionalInt.empty();
+                    }
+
+                    // Check that multiblocks have block entity types
+                    if (multiblock.getMultiBlockEntityType() == null) {
+                        throw new IllegalStateException("Every multiblocks controller needs to have blockentity that keeps track of data relevant for formed multiblocks. The blockentity type however is null. Affected multiblock: " + multiblock);
+                    }
                 }
 
-                // Check that multiblocks have block entity types
-                if (multiblock.getMultiBlockEntityType() == null) {
-                    throw new IllegalStateException("Every multiblocks controller needs to have blockentity that keeps track of data relevant for formed multiblocks. The blockentity type however is null. Affected multiblock: " + multiblock);
+                if (controllerKey.isEmpty()) {
+                    throw new IllegalStateException("Every multiblock needs to have at least one controller in it's layout. The controller is the block returned by Multiblock#getUnformedController(). Affected multiblock: "
+                            + multiblock);
                 }
             }
         }
