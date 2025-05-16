@@ -18,14 +18,11 @@ public class CraftingStationScreen extends PDLAbstractContainerScreen<CraftingSt
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/crafting_station.png");
 
-    public CraftingStationScreen(CraftingStationMenu p_97741_, Inventory p_97742_, Component p_97743_) {
-        super(p_97741_, p_97742_, p_97743_);
+    public CraftingStationScreen(CraftingStationMenu menu, Inventory inv, Component title) {
+        super(menu, inv, title);
         this.imageHeight = 209;
-    }
-
-    @Override
-    protected void init() {
-        super.init();
+        this.inventoryLabelY = -1000;
+        this.imageWidth = 178;
     }
 
     @Override

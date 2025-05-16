@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -18,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class NodeNetworkSavedData extends SavedData {
+    private static final SavedData.Factory<NodeNetworkSavedData> FACTORY = new Factory<>(NodeNetworkSavedData::new, NodeNetworkSavedData::load);
     private final Map<TransportNetwork<?>, NodeNetworkData<?>> data;
 
     public NodeNetworkSavedData(Map<TransportNetwork<?>, NodeNetworkData<?>> data) {
@@ -33,14 +33,10 @@ public class NodeNetworkSavedData extends SavedData {
     }
 
     public static NodeNetworkSavedData getNetworkData(ServerLevel serverLevel) {
-        return serverLevel.getDataStorage().computeIfAbsent(factory(serverLevel), IndustrialReforged.rl("node_networks").toString());
+        return serverLevel.getDataStorage().computeIfAbsent(FACTORY, IndustrialReforged.rl("node_networks").toString());
     }
 
-    private static SavedData.Factory<NodeNetworkSavedData> factory(ServerLevel serverLevel) {
-        return new Factory<>(NodeNetworkSavedData::new, (nbt, lookup) -> NodeNetworkSavedData.load(nbt, serverLevel));
-    }
-
-    private static NodeNetworkSavedData load(CompoundTag tag, ServerLevel serverLevel) {
+    private static NodeNetworkSavedData load(CompoundTag tag, HolderLookup.Provider lookup) {
         CompoundTag nbt = tag.getCompound("node_network");
         Map<TransportNetwork<?>, NodeNetworkData<?>> data = new HashMap<>();
         for (String key : nbt.getAllKeys()) {

@@ -49,15 +49,31 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
         addStorageSlots(itemHandler);
         // Output slot
         this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 29));
-        // Blueprint
-        this.addSlot(new SlotItemHandler(itemHandler, BLUEPRINT_SLOT, 154, 29));
-        addPlayerHotbar(inv, 185);
-        addPlayerInventory(inv, 127);
+        addPlayerHotbar(inv, 186);
+        addPlayerInventory(inv, 128);
 
         for (int i = 0; i < 9; i++) {
             ItemStack itemStack = itemHandler.getStackInSlot(i + 18);
             this.craftSlots.setItem(i, itemStack);
         }
+    }
+
+    @Override
+    protected void addPlayerInventory(Inventory playerInventory, int y) {
+        for(int i = 0; i < 3; ++i) {
+            for(int l = 0; l < 9; ++l) {
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 9 + l * 18, y + i * 18));
+            }
+        }
+
+    }
+
+    @Override
+    protected void addPlayerHotbar(Inventory playerInventory, int y) {
+        for(int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 9 + i * 18, y));
+        }
+
     }
 
     @Override
@@ -74,7 +90,7 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
             CraftingInput craftinginput = container.asCraftInput();
             ServerPlayer serverplayer = (ServerPlayer) player;
             ItemStack itemstack = ItemStack.EMPTY;
-            Optional<RecipeHolder<CraftingRecipe>> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftinginput, level);
+            Optional<RecipeHolder<CraftingRecipe>> optional = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftinginput, level);
             if (optional.isPresent()) {
                 RecipeHolder<CraftingRecipe> recipeholder = optional.get();
                 CraftingRecipe craftingrecipe = recipeholder.value();
@@ -93,8 +109,8 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
 
 
     private void addCraftingSlots() {
-        int x = 37;
-        int y = 10;
+        int x = 38;
+        int y = 18;
         int index = 0;
         for (int yIndex = 0; yIndex < 3; yIndex++) {
             for (int xIndex = 0; xIndex < 3; xIndex++) {
@@ -105,8 +121,8 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
     }
 
     private void addStorageSlots(IItemHandler itemHandler) {
-        int x = 8;
-        int y = 82;
+        int x = 9;
+        int y = 84;
         int index = 0;
         for (int yIndex = 0; yIndex < 2; yIndex++) {
             for (int xIndex = 0; xIndex < 9; xIndex++) {

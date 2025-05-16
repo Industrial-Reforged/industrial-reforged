@@ -283,27 +283,44 @@ public class TransportNetwork<T> {
             if (this.transferSpeedFunction.get().isInstant()) {
                 List<NetworkRoute<T>> routes = getCacheRoutes(serverLevel, pos);
                 if (routes.isEmpty()) {
-                    List<NetworkRoute<T>> cache = new ArrayList<>();
-                    for (NetworkNode<T> node : nodes) {
-                        NetworkRoute<T> route = new NetworkRoute<>(pos, new HashSet<>());
-                        traverse(serverLevel, node, route, cache);
-                    }
-                    routes.addAll(optimizeRoutes(cache));
+                    routes = getRoutesForCache(serverLevel, pos, nodes);
                     setServerNodesChanged(serverLevel);
+                } else {
+                    for (NetworkRoute<T> route : routes) {
+                        if (!route.isValid()) {
+                            routes = getRoutesForCache(serverLevel, pos, nodes);
+                            setServerNodesChanged(serverLevel);
+                            break;
+                        }
+                    }
                 }
 
+                T remainder = this.getTransportingHandler().defaultValue();
                 if (!routes.isEmpty()) {
                     List<T> split1 = this.transportingHandler.split(value, routes.size());
                     for (int i = 0; i < routes.size(); i++) {
                         NetworkRoute<T> route = routes.get(i);
-                        this.getTransportingHandler().receive(serverLevel, route.getInteractorDest(), route.getInteractorDirection(), split1.get(i));
+                        remainder = this.getTransportingHandler().join(remainder, this.getTransportingHandler().receive(serverLevel, route.getInteractorDest(), route.getInteractorDirection(), split1.get(i)));
                     }
+                } else {
+                    remainder = value;
                 }
+
+                return remainder;
             }
 
             return getTransportingHandler().defaultValue();
         }
         return value;
+    }
+
+    private @NotNull List<NetworkRoute<T>> getRoutesForCache(ServerLevel serverLevel, BlockPos pos, List<NetworkNode<T>> nodes) {
+        List<NetworkRoute<T>> cache = new ArrayList<>();
+        for (NetworkNode<T> node : nodes) {
+            NetworkRoute<T> route = new NetworkRoute<>(pos, new HashSet<>());
+            traverse(serverLevel, node, route, cache);
+        }
+        return optimizeRoutes(cache);
     }
 
     private List<NetworkRoute<T>> getCacheRoutes(ServerLevel serverLevel, BlockPos pos) {
