@@ -1,5 +1,15 @@
 {
+  "type": "fusion:connecting",
   "parent": "minecraft:block/cube",
+  "connections": {
+    "type": "fusion:or",
+    "predicates": [
+      {
+        "type": "fusion:is_same_block"
+      }
+    ]
+  },
+  "loader": "fusion:model",
   "textures": {
     "down": "indref:block/machine/battery_box",
     "east": "indref:block/machine/battery_box",

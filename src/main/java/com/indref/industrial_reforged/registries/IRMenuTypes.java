@@ -27,9 +27,6 @@ public final class IRMenuTypes {
     public static final Supplier<MenuType<BasicGeneratorMenu>> BASIC_GENERATOR_MENU =
             registerMenuType("basic_generator_menu", BasicGeneratorMenu::new);
 
-    public static final Supplier<MenuType<BlueprintMenu>> BLUEPRINT_MENU =
-            registerMenuType("blue_print_menu", BlueprintMenu::new);
-
     private static <T extends AbstractContainerMenu>Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }

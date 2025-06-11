@@ -5,6 +5,8 @@ import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingB
 import com.indref.industrial_reforged.content.blocks.machines.primitive.FaucetBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
 import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRFluids;
+import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -43,13 +45,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 .sides(this::machineTexture, "_side")
                 .active()
                 .create();
-
-        // TODO: CTM Datagen
-//        blockModel(IRBlocks.BATTERY_BOX)
-//                .top(this::machineTexture, "_top")
-//                .defaultTexture(this::machineTexture)
-//                .facing()
-//                .create();
 
         blockModel(IRBlocks.CRAFTING_STATION)
                 .top(this::machineTexture, "_top")
@@ -97,6 +92,14 @@ public class IRBlockStateProvider extends BlockStateProvider {
         faucet(IRBlocks.BLAST_FURNACE_FAUCET, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 
         coilBlock(IRBlocks.COIL.get());
+
+        for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
+            existingModel(fluid.block.get(), Blocks.AIR);
+        }
+    }
+
+    public void existingModel(Block block, Block targetBlock) {
+        simpleBlock(block, models().getExistingFile(blockTexture(targetBlock)));
     }
 
     private void multiblockModels() {

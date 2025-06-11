@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "indref:block/basic_machine_frame_connected"
+    }
+  }
+}

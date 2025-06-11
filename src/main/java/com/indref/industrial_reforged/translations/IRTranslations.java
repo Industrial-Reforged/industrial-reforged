@@ -13,7 +13,7 @@ public final class IRTranslations {
     public static final class General {
         public static final TranslatableConstant FLUID_UNIT = create("unit.fluid", "mb");
         public static final TranslatableConstant ENERGY_UNIT = create("unit.energy", "EU");
-        public static final TranslatableConstant HEAT_UNIT = create("unit.heat", "°C");
+        public static final TranslatableConstant HEAT_UNIT = create("unit.heat", "HU");
 
         public static final TranslatableConstant ENERGY_NAME = create("name.energy", "Energy");
         public static final TranslatableConstant HEAT_NAME = create("name.heat", "Heat");

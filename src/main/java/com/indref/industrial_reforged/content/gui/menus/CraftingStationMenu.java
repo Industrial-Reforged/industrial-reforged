@@ -42,13 +42,13 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
         checkContainerSize(inv, 1);
         this.player = inv.player;
         this.access = ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos());
-        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
+        IItemHandler itemHandler = entity.getItemHandler();
         this.craftSlots = new ItemhandlerCraftingContainer(itemHandler, this, 3, 3);
 
         addCraftingSlots();
         addStorageSlots(itemHandler);
         // Output slot
-        this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 29));
+        this.addSlot(new ResultSlot(inv.player, craftSlots, resultSlots, 27, 131, 41));
         addPlayerHotbar(inv, 186);
         addPlayerInventory(inv, 128);
 
@@ -110,7 +110,7 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
 
     private void addCraftingSlots() {
         int x = 38;
-        int y = 18;
+        int y = 22;
         int index = 0;
         for (int yIndex = 0; yIndex < 3; yIndex++) {
             for (int xIndex = 0; xIndex < 3; xIndex++) {

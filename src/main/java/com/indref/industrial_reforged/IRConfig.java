@@ -108,13 +108,13 @@ public final class IRConfig {
 
     // Block Heat Decay
     private static final ModConfigSpec.DoubleValue SMALL_FIREBOX_DECAY =
-            heatDecay("small_firebox", "Small Firebox", 0.22);
+            heatDecay("small_firebox", "Small Firebox", 0.42);
     private static final ModConfigSpec.DoubleValue FIREBOX_DECAY =
-            heatDecay("firebox", "Firebox", 0.22);
+            heatDecay("firebox", "Firebox", 0.42);
     private static final ModConfigSpec.DoubleValue BLAST_FURNACE_DECAY =
-            heatDecay("blast_furnace", "Blast Furnace", 0.22);
+            heatDecay("blast_furnace", "Blast Furnace", 0.42);
     private static final ModConfigSpec.DoubleValue CRUCIBLE_DECAY =
-            heatDecay("crucible", "Crucible", 0.22);
+            heatDecay("crucible", "Crucible", 0.42);
 
     private static final ModConfigSpec.DoubleValue NANO_SABER_ATTACK_SPEED = BUILDER
             .comment("The Nano Saber's attack speed when activated")

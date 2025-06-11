@@ -5,8 +5,6 @@
   "refmap": "mixins.indref.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_21",
-  "client": [
-  ],
   "mixins": [
     "InventoryMixin"
   ]

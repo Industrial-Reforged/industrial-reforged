@@ -63,7 +63,6 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
             // Crucible legs
             this.model.renderCrucibleLegs(poseStack, vertexconsumer, packedLight, packedOverlay, -1);
 
-            // TODO: position correctly
             if (blockEntity.isTurnedOver() && blockEntity.inUse == 0 && !fluidInTank.isEmpty()) {
                 poseStack.pushPose();
                 {

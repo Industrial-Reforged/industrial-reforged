@@ -61,6 +61,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Mod(IndustrialReforgedClient.MODID)
 public final class IndustrialReforgedClient {
@@ -179,8 +180,6 @@ public final class IndustrialReforgedClient {
         event.register(IRMenuTypes.BLAST_FURNACE_MENU.get(), BlastFurnaceScreen::new);
         event.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
         event.register(IRMenuTypes.BASIC_GENERATOR_MENU.get(), BasicGeneratorScreen::new);
-
-        event.register(IRMenuTypes.BLUEPRINT_MENU.get(), BlueprintScreen::new);
     }
 
     private void registerItemDecorations(RegisterItemDecorationsEvent event) {

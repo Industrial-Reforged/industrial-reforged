@@ -3,7 +3,6 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
-import com.indref.industrial_reforged.content.items.misc.BlueprintItem;
 import com.indref.industrial_reforged.content.items.misc.CastingScrapsItem;
 import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
@@ -52,7 +51,7 @@ public final class IRItems {
     public static final DeferredItem<ElectricDrillItem> BASIC_DRILL = electricToolItem("basic_drill",
             () -> new ElectricDrillItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.basicDrillEnergyUsage, () -> IRConfig.basicDrillCapacity));
     public static final DeferredItem<ElectricChainsawItem> BASIC_CHAINSAW = electricToolItem("basic_chainsaw",
-            () -> new ElectricChainsawItem(new Item.Properties(), 5, -2.8F, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
+            () -> new ElectricChainsawItem(new Item.Properties(), -2.8F, 5, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.basicChainsawEnergyUsage, () -> IRConfig.basicChainsawCapacity));
     public static final DeferredItem<RockCutterItem> ROCK_CUTTER = electricToolItem("rock_cutter",
             () -> new RockCutterItem(new Item.Properties(), -2.8F, 1, Tiers.IRON, IREnergyTiers.LOW, () -> IRConfig.rockCutterEnergyUsage, () -> IRConfig.rockCutterCapacity));
     public static final DeferredItem<ElectricDrillItem> ADVANCED_DRILL = electricToolItem("advanced_drill",

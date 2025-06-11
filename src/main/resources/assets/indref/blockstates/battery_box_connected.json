@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "indref:block/battery_box_connected",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "indref:block/battery_box_connected",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "indref:block/battery_box_connected",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "indref:block/battery_box_connected",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "indref:block/battery_box_connected"
+    },
+    "facing=west": {
+      "model": "indref:block/battery_box_connected",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

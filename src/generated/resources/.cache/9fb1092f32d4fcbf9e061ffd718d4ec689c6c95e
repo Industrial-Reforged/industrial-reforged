@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-16T13:04:51.93062656	Recipes
+// 1.21.1	2025-06-11T10:09:20.186311097	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -85,7 +85,6 @@ f3e9bf55a05cd7537b8c32f86b1bb48ca0fe5e89 data/indref/advancement/recipes/tools/a
 e2c1a467fe055df5f0e67336f5f04254c5499b70 data/indref/advancement/recipes/tools/advanced_drill.json
 869f5c536025d45ab7b73ec9f216aee2b40714b0 data/indref/advancement/recipes/tools/basic_chainsaw.json
 1b811109001095bc969b36d6cd27aecdc84d7abd data/indref/advancement/recipes/tools/basic_drill.json
-2e9d329e90140ef81c67c8aa9f85d35125f49ece data/indref/advancement/recipes/tools/blueprint.json
 09b188bca8ffcd5bd86d798d06ca90f71eb85b21 data/indref/advancement/recipes/tools/electric_hoe.json
 858c89e1700a8bac7914e84d2c6f2f9f98df3366 data/indref/advancement/recipes/tools/electric_tree_tap.json
 eef097bbfcfb2859409a9f54761c1a69fba0c3b9 data/indref/advancement/recipes/tools/hammer.json
@@ -118,7 +117,6 @@ a6cbf583459fdeafc435a4198f9ab68a69e32a34 data/indref/recipe/blast_furnace/ingots
 1b72ba9a07bb116d051901baab0639ed672541e0 data/indref/recipe/blast_furnace_casting_basin.json
 6e7a0ea270c70ff47fe411f66716779b09611842 data/indref/recipe/blast_furnace_faucet.json
 893d6da1d1d5993088e16039a421140d45c8c1bd data/indref/recipe/blast_furnace_hatch.json
-6ad27dbf5aece5dd92fbd77e2e18ad55f891075d data/indref/recipe/blueprint.json
 0c048259e1637f6ef2f898806d82d64ecc1f9870 data/indref/recipe/centrifuge.json
 3384a967e7f7d689579ac465bbe9e7380deeb85a data/indref/recipe/centrifuge/clay_to_dirt.json
 ecf59d31a4ec30814b9924cf8795428ded1ef32c data/indref/recipe/centrifuge/foods/raw_meat_to_coal_dust.json
