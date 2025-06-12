@@ -56,6 +56,6 @@ public class CentrifugeMenu extends MachineContainerMenu<CentrifugeBlockEntity> 
 
     @Override
     protected int getMergeableSlotCount() {
-        return 0;
+        return 5;
     }
 }

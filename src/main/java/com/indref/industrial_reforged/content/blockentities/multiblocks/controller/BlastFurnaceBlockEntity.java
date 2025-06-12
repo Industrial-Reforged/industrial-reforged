@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
@@ -15,6 +17,7 @@ import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.Multibl
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,6 +55,7 @@ import java.util.List;
 public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
     private BlockPos mainControllerPos;
     private float duration;
+    private boolean active;
     private MultiblockData multiblockData;
     private BlastFurnaceRecipe recipe;
 
@@ -173,11 +177,27 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         return worldPosition.equals(mainControllerPos);
     }
 
+    public void setBlockActive(boolean value) {
+        level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlastFurnaceMultiblock.ACTIVE, value));
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(worldPosition)) {
+            if (level.getBlockEntity(pos) instanceof BlastFurnaceBlockEntity be) {
+                if (be.getActualBlockEntityPos() != null && be.getActualBlockEntityPos().equals(worldPosition)) {
+                    level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BlastFurnaceMultiblock.ACTIVE, value));
+                }
+            }
+        }
+    }
+
     public void commonTick() {
         getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
-        
+
         if (isMainController()) {
             if (recipe != null && getHeatStorage().getHeatStored() >= recipe.heat()) {
+                boolean nextActive = true;
+                if (this.active != nextActive) {
+                    setBlockActive(nextActive);
+                }
+                this.active = nextActive;
                 if (duration >= recipe.duration()) {
                     IFluidHandler fluidHandler = getFluidHandler();
                     IItemHandler itemHandler = getItemHandler();
@@ -207,6 +227,11 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
                     duration += progress;
                 }
             } else {
+                boolean nextActive = false;
+                if (this.active != nextActive) {
+                    setBlockActive(nextActive);
+                }
+                this.active = nextActive;
                 this.duration = 0;
             }
 
@@ -257,6 +282,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
             this.mainControllerPos = BlockPos.of(mainControllerPos1);
         }
         this.duration = tag.getFloat("duration");
+        this.active = tag.getBoolean("active");
     }
 
     @Override
@@ -269,6 +295,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         }
         tag.putBoolean("hasControllerPos", actualBlockEntityPos != null);
         tag.putFloat("duration", this.duration);
+        tag.putBoolean("active", this.active);
     }
 
 }

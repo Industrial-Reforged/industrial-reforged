@@ -56,7 +56,7 @@ public class FireBoxMenu extends PDLAbstractContainerMenu<FireboxBlockEntity> {
 
     @Override
     protected int getMergeableSlotCount() {
-        return 0;
+        return 1;
     }
 
     public Player getPlayer() {

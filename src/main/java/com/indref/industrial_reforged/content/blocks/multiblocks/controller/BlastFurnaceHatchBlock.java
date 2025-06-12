@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements CanAttachFaucetBlock {
     public BlastFurnaceHatchBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBlockState().setValue(BlastFurnaceMultiblock.ACTIVE, false));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements C
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
-        super.createBlockStateDefinition(p_49915_.add(BlastFurnaceMultiblock.BRICK_STATE));
+        super.createBlockStateDefinition(p_49915_.add(BlastFurnaceMultiblock.BRICK_STATE).add(BlastFurnaceMultiblock.ACTIVE));
     }
 
     @Override

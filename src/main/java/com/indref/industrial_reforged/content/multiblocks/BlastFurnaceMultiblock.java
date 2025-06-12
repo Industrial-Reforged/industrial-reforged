@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.apache.commons.lang3.IntegerRange;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 // The answer is: So my icons for multiblock classes all look the same :>
 public record BlastFurnaceMultiblock() implements Multiblock {
     public static final EnumProperty<BrickStates> BRICK_STATE = EnumProperty.create("brick_state", BlastFurnaceMultiblock.BrickStates.class);
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     @Override
     public Block getUnformedController() {

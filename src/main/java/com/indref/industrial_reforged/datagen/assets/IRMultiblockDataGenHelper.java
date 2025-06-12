@@ -111,12 +111,18 @@ public class IRMultiblockDataGenHelper {
         Block bricks = IRBlocks.BLAST_FURNACE_BRICKS.get();
 
         bsp.getVariantBuilder(hatch)
-                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.FORMED)
-                .modelForState().modelFile(blastFurnaceHatchModel(hatch, true)).addModel()
-                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.UNFORMED)
-                .modelForState().modelFile(blastFurnaceHatchModel(hatch, false)).addModel()
-                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.TOP)
-                .modelForState().modelFile(blastFurnaceHatchModel(hatch, false)).addModel();
+                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.FORMED).with(BlastFurnaceMultiblock.ACTIVE, false)
+                .modelForState().modelFile(blastFurnaceHatchModel(hatch, true, false)).addModel()
+                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.FORMED).with(BlastFurnaceMultiblock.ACTIVE, true)
+                .modelForState().modelFile(blastFurnaceHatchModel(hatch, true, true)).addModel()
+                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.UNFORMED).with(BlastFurnaceMultiblock.ACTIVE, false)
+                .modelForState().modelFile(blastFurnaceHatchModel(hatch, false, false)).addModel()
+                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.UNFORMED).with(BlastFurnaceMultiblock.ACTIVE, true)
+                .modelForState().modelFile(blastFurnaceHatchModel(hatch, false, true)).addModel()
+                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.TOP).with(BlastFurnaceMultiblock.ACTIVE, false)
+                .modelForState().modelFile(blastFurnaceHatchModel(hatch, false, false)).addModel()
+                .partialState().with(BlastFurnaceMultiblock.BRICK_STATE, BlastFurnaceMultiblock.BrickStates.TOP).with(BlastFurnaceMultiblock.ACTIVE, true)
+                .modelForState().modelFile(blastFurnaceHatchModel(hatch, false, true)).addModel();
 
         VariantBlockStateBuilder builder = bsp.getVariantBuilder(part);
         for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
@@ -130,11 +136,12 @@ public class IRMultiblockDataGenHelper {
         }
     }
 
-    private @NotNull BlockModelBuilder blastFurnaceHatchModel(Block hatch, boolean formed) {
-        return bsp.models().cubeColumn(bsp.name(hatch) + (formed ? "_formed" : ""),
-                extend(multiblockLoc(hatch), formed ? "_formed" : ""),
+    private @NotNull BlockModelBuilder blastFurnaceHatchModel(Block hatch, boolean formed, boolean active) {
+        String suffix = formed ? "_formed" + (active ? "_active" : "") : "";
+        return bsp.models().cubeColumn(bsp.name(hatch) + suffix,
+                extend(multiblockLoc(hatch), suffix),
                 bsp.blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get())
-        ).texture("particle", bsp.blockTexture(IRBlocks.REFRACTORY_BRICK.get()));
+        ).texture("particle", bsp.blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
     }
 
     public ResourceLocation extend(ResourceLocation rl, String suffix) {

@@ -24,8 +24,8 @@ public class BlastFurnaceMenu extends MachineContainerMenu<BlastFurnaceBlockEnti
 
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
 
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 44, 37));
-        this.addSlot(new SlotItemHandler(itemHandler, 1, 18, 37));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 18, 37));
+        this.addSlot(new SlotItemHandler(itemHandler, 1, 44, 37));
 
         addPlayerHotbar(inv);
         addPlayerInventory(inv);
@@ -39,6 +39,6 @@ public class BlastFurnaceMenu extends MachineContainerMenu<BlastFurnaceBlockEnti
 
     @Override
     protected int getMergeableSlotCount() {
-        return 0;
+        return 2;
     }
 }

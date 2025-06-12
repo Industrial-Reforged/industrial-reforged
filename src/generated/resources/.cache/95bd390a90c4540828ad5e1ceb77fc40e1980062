@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-11T10:09:20.183080337	Block States: indref
+// 1.21.1	2025-06-12T22:59:32.12062952	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 b269694801416e295b87a1190e8aabbc2733f47c assets/indref/blockstates/basic_generator.json
 d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.json
@@ -6,7 +6,7 @@ d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.j
 88eb7647f5d97dcbf4b00de55b5e9563aa8101f3 assets/indref/blockstates/blast_furnace_bricks.json
 838f61b4f120fb4c4b2b9b587261a29717f7b514 assets/indref/blockstates/blast_furnace_casting_basin.json
 21df4a5213445e1a3599fdb83e82d74730151997 assets/indref/blockstates/blast_furnace_faucet.json
-eab39028c79a08ea8a012138fede88c71d488460 assets/indref/blockstates/blast_furnace_hatch.json
+d7029279a1067e266ca30335903899ab69ee7107 assets/indref/blockstates/blast_furnace_hatch.json
 ffb3b28edc08cd3d01be9926b44248d0ca6eb5fa assets/indref/blockstates/blast_furnace_part.json
 1178b47900680945ddb3ab906e5d75a7965a6bc2 assets/indref/blockstates/centrifuge.json
 8628c4b47a0cbdc0adcbf57556ee64f4379854f1 assets/indref/blockstates/ceramic_casting_basin.json
@@ -88,6 +88,7 @@ c5cd2277c21cf1deb48965d38ed4eb517fe48c73 assets/indref/models/block/blast_furnac
 cff1442e6a599b9ee470f1a6ce6e843061866f75 assets/indref/models/block/blast_furnace_faucet.json
 0cb272dc1abb8e0251155fe0732116171efea028 assets/indref/models/block/blast_furnace_hatch.json
 9e71e3439ae741ba1ac416645bd5b785a324326c assets/indref/models/block/blast_furnace_hatch_formed.json
+bb1dd13ec6829ec938675b88071c209e41dc99e9 assets/indref/models/block/blast_furnace_hatch_formed_active.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part_formed.json
 a1d6fe3394c7f4545785f420f4ae7d935c0a87fb assets/indref/models/block/centrifuge.json

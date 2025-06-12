@@ -19,18 +19,15 @@ public class BlastFurnaceScreen extends PDLAbstractContainerScreen<BlastFurnaceM
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/blast_furnace.png");
     private static final ResourceLocation PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
 
-    private final Inventory inventory;
-
-    public BlastFurnaceScreen(BlastFurnaceMenu p_97741_, Inventory p_97742_, Component p_97743_) {
-        super(p_97741_, p_97742_, p_97743_);
-        inventory = p_97742_;
+    public BlastFurnaceScreen(BlastFurnaceMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
     }
 
     @Override
     protected void init() {
         super.init();
         FluidTankWidget fluidTankWidget = new ClearableFluidTankWidget(this.leftPos + 97, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, this.getMenu().blockEntity);
-        HeatBarWidget heatDisplayWidget = new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 7, this.topPos + 55);
+        HeatBarWidget heatDisplayWidget = new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 7, this.topPos + 61);
 
         addRenderableWidget(fluidTankWidget);
         addRenderableWidget(heatDisplayWidget);

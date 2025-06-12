@@ -1,12 +1,21 @@
 {
   "variants": {
-    "brick_state=formed": {
+    "active=false,brick_state=formed": {
       "model": "indref:block/blast_furnace_hatch_formed"
     },
-    "brick_state=top": {
+    "active=false,brick_state=top": {
       "model": "indref:block/blast_furnace_hatch"
     },
-    "brick_state=unformed": {
+    "active=false,brick_state=unformed": {
+      "model": "indref:block/blast_furnace_hatch"
+    },
+    "active=true,brick_state=formed": {
+      "model": "indref:block/blast_furnace_hatch_formed_active"
+    },
+    "active=true,brick_state=top": {
+      "model": "indref:block/blast_furnace_hatch"
+    },
+    "active=true,brick_state=unformed": {
       "model": "indref:block/blast_furnace_hatch"
     }
   }
