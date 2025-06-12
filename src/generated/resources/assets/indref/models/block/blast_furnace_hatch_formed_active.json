@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "indref:block/blast_furnace_bricks",
+    "particle": "indref:block/refractory_brick",
+    "side": "indref:block/multiblock/blast_furnace_hatch_formed_active"
+  }
+}
