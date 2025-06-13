@@ -1,0 +1,15 @@
+{
+  "type": "indref:basin_casting",
+  "duration": 200,
+  "fluid": {
+    "amount": 37,
+    "fluid": "indref:molten_gold"
+  },
+  "mold_item": {
+    "tag": "indref:molds/wire"
+  },
+  "result": {
+    "count": 3,
+    "id": "indref:gold_wire"
+  }
+}

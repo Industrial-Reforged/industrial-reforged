@@ -25,6 +25,11 @@ public final class IRTags {
     public static class Items {
         public static final TagKey<Item> RUBBER_LOGS = bind("minecraft", "rubber_logs");
         public static final TagKey<Item> MOLDS = bind("molds");
+        public static final TagKey<Item> MOLDS_INGOT = bind("molds/ingot");
+        public static final TagKey<Item> MOLDS_PLATE = bind("molds/plate");
+        public static final TagKey<Item> MOLDS_ROD = bind("molds/rod");
+        public static final TagKey<Item> MOLDS_WIRE = bind("molds/wire");
+        public static final TagKey<Item> CLAY_MOLDS = bind("clay_molds");
 
         private static TagKey<Item> bind(String path) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, path));

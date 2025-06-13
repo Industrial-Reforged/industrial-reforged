@@ -30,10 +30,10 @@ public class IRDataMapProvider extends DataMapProvider {
             moldItem(item.getKey().get(), value.capacity(), value.consumeCast());
         }
 
-        moldIngredient(IRItems.CLAY_MOLD_INGOT, Tags.Items.INGOTS);
-        moldIngredient(IRItems.CLAY_MOLD_PLATE, CTags.Items.PLATES);
-        moldIngredient(IRItems.CLAY_MOLD_ROD, Tags.Items.RODS);
-        moldIngredient(IRItems.CLAY_MOLD_WIRE, CTags.Items.WIRES);
+        moldIngredient(IRItems.STEEL_MOLD_INGOT, Tags.Items.INGOTS);
+        moldIngredient(IRItems.STEEL_MOLD_PLATE, CTags.Items.PLATES);
+        moldIngredient(IRItems.STEEL_MOLD_WIRE, CTags.Items.WIRES);
+        moldIngredient(IRItems.STEEL_MOLD_ROD, Tags.Items.RODS);
 
         furnaceFuel(IRItems.COAL_DUST, 1600);
     }

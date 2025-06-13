@@ -1,0 +1,15 @@
+{
+  "type": "indref:basin_casting",
+  "duration": 200,
+  "fluid": {
+    "amount": 111,
+    "fluid": "indref:molten_aluminum"
+  },
+  "mold_item": {
+    "tag": "indref:molds/plate"
+  },
+  "result": {
+    "count": 1,
+    "id": "indref:aluminum_plate"
+  }
+}

@@ -22,7 +22,7 @@ public class InventoryMixin {
 
     @Inject(method = "swapPaint", at = @At("HEAD"), cancellable = true)
     private void inventoryMixin$swapPaint(double direction, CallbackInfo ci) {
-        if (Screen.hasShiftDown() && (player.getMainHandItem().is(IRTags.Items.MOLDS))) {
+        if (Screen.hasShiftDown() && (player.getMainHandItem().is(IRTags.Items.CLAY_MOLDS))) {
             ci.cancel();
         }
     }

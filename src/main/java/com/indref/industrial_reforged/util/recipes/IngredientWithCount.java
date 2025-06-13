@@ -16,9 +16,9 @@ import java.util.List;
 
 public record IngredientWithCount(Ingredient ingredient, int count) {
     public static final IngredientWithCount EMPTY = new IngredientWithCount(Ingredient.EMPTY, -1);
-    // Note: for implementation reasons count has to be above ingredient, otherwise we will get a JSON Null issue thingy
+    // Note: for implementation reasons amount has to be above fluidIngredient, otherwise we will get a JSON Null issue thingy
     private static final Codec<Pair<Integer, Ingredient>> PAIR_CODEC = Codec.pair(
-            Codec.INT.optionalFieldOf("count", 1).codec(),
+            Codec.INT.optionalFieldOf("amount", 1).codec(),
             Ingredient.CODEC
     );
 

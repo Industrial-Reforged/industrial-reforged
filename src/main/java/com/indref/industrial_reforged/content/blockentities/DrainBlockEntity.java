@@ -28,6 +28,7 @@ public class DrainBlockEntity extends IRContainerBlockEntity {
     @Override
     public void commonTick() {
         super.commonTick();
+
         FluidState fluidOnTop = level.getFluidState(worldPosition.above());
         if (fluidOnTop.is(FluidTags.WATER) && fluidOnTop.isSource()) {
             if (level.getGameTime() % 40 == 0) {

@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-12T22:59:32.110417106	Tags for minecraft:item mod id vanilla
+// 1.21.1	2025-06-13T21:04:31.763074537	Tags for minecraft:item mod id vanilla
 bf4207125fec838572bf88021bbbaeb2269993f9 data/c/tags/item/bricks.json
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
@@ -18,7 +18,7 @@ d4cb1130ab1f69ab6e3f347a1549b89d1fbed827 data/c/tags/item/ores/chromium.json
 9b17ec8ae49796ecec62976e1254ee4b18948845 data/c/tags/item/ores/nickel.json
 52989a86b4200aa37f4a421862492c023b5aedc4 data/c/tags/item/ores/tin.json
 cfd2b417851dbd2c32a5cfee0c767bcdc960376d data/c/tags/item/ores/uranium.json
-53fb87e96cbb7651c5d157a9a4de29ed9df3e4b5 data/c/tags/item/plates.json
+9e242fcf9fbc270a2fa78390705e2bb6092f2966 data/c/tags/item/plates.json
 06c58412692da6e69c7a274243fd7c79004bee5f data/c/tags/item/plates/aluminum.json
 c1727d7fa2789634e60febb3c49fc1f423aef23e data/c/tags/item/plates/carbon.json
 bf279439bd2ce4fb30125e1fe9e4e3ac0fffc7e8 data/c/tags/item/plates/copper.json
@@ -58,7 +58,12 @@ fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json
 0b79414d07652b0536049e1e7ea3b0a3a88e742b data/c/tags/item/wires/steel.json
 71051527a733b38d16af3551c77c971f5928095e data/c/tags/item/wires/tin.json
-1ce13f1d3a0e3209d87d3a785429dbf21dba626a data/indref/tags/item/molds.json
+860a3023ca932ea056a2e3900bd7da6dd2060cc4 data/indref/tags/item/clay_molds.json
+d019c0108bcdf3fb37e8a0a200ffd1f1d73d5116 data/indref/tags/item/molds.json
+42dcc1aa03895edadeaeb2c68552b7740801e42c data/indref/tags/item/molds/ingot.json
+c9533c077729f19f2611dec6f0464ecc35849487 data/indref/tags/item/molds/plate.json
+9aeed2af8552cb6cdefc5eeea83d0a3fc408b05e data/indref/tags/item/molds/rod.json
+57c2994bfd8df0b66670ae0a1b462858b99184ed data/indref/tags/item/molds/wire.json
 58b05a4da836c7c814c64c079ffc32ca0bc145da data/minecraft/tags/item/dyeable.json
 7ec99157ac16a38de2ac0d390dc224f1fbe49af4 data/minecraft/tags/item/fence_gates.json
 9fc4940b4b0bec19481be6ce8ee18150a36574fd data/minecraft/tags/item/leaves.json

@@ -91,6 +91,8 @@ public final class IRBlocks {
             () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(TERRACOTTA_BRICKS.get()), IRBlocks.TERRACOTTA_BRICKS.get())));
     public static final DeferredBlock<CastingBasinBlock> BLAST_FURNACE_CASTING_BASIN = pickaxeMineable(registerBlockAndItem("blast_furnace_casting_basin",
             () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), IRBlocks.BLAST_FURNACE_BRICKS.get())));
+    public static final DeferredBlock<CastingBasinBlock> WOODEN_CASTING_BASIN = pickaxeMineable(registerBlockAndItem("wooden_casting_basin",
+            () -> new CastingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL), Blocks.OAK_PLANKS)));
     // MACHINES
     public static final DeferredBlock<Block> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))));

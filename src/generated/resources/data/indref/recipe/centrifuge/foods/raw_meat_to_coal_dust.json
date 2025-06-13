@@ -2,8 +2,8 @@
   "type": "indref:centrifuge",
   "duration": 200,
   "energy": 100,
-  "ingredient": {
-    "count": 3,
+  "fluidIngredient": {
+    "amount": 3,
     "tag": "c:foods/raw_meat"
   },
   "result_fluid": {

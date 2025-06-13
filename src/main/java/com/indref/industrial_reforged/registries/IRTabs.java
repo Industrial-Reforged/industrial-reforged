@@ -51,8 +51,7 @@ public final class IRTabs {
      */
     public static final Supplier<CreativeModeTab> ITEMS = CREATIVE_TABS.register("items", () -> CreativeModeTab.builder()
             .title(IRTranslations.Tabs.ITEMS.component())
-            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .icon(() -> new ItemStack(IRItems.HAMMER.get()))
+            .icon(() -> new ItemStack(IRItems.WRENCH.get()))
             .displayItems((parameters, output) -> {
                 Map<TabOrdering, Map<Integer, DeferredItem<?>>> sortedItems = IRItems.TAB_ITEMS.entrySet()
                         .stream()
@@ -88,7 +87,6 @@ public final class IRTabs {
 
     public static final Supplier<CreativeModeTab> BLOCKS = CREATIVE_TABS.register("blocks", () -> CreativeModeTab.builder()
             .title(IRTranslations.Tabs.BLOCKS.component())
-            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {
                 for (DeferredItem<?> block : IRBlocks.TAB_BLOCKS) {

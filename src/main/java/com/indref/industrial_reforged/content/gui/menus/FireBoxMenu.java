@@ -39,11 +39,6 @@ public class FireBoxMenu extends PDLAbstractContainerMenu<FireboxBlockEntity> {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(Player p_38941_, int p_38942_) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     public boolean stillValid(Player player) {
         for (Block block : getBlockEntity().getType().getValidBlocks()) {
             boolean valid = stillValid(ContainerLevelAccess.create(level, getBlockEntity().getBlockPos()), player, block);

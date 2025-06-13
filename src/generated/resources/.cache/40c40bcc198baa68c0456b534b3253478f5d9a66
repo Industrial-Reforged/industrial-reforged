@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-22T14:59:13.467489067	Tags for minecraft:block mod id indref
+// 1.21.1	2025-06-13T23:05:21.058476144	Tags for minecraft:block mod id indref
 e8bbb9941d99f1577cba384f72df9dd4c0e7b754 data/cable_facades/tags/block/supports_facade.json
 eb9c60518fb3ba2513464aaf63537be61f259f5c data/indref/tags/block/wrenchable.json
 3b825820964a24faa9e84e7bddaa2bd6f141a382 data/minecraft/tags/block/fall_damage_resetting.json
@@ -7,7 +7,7 @@ eb9c60518fb3ba2513464aaf63537be61f259f5c data/indref/tags/block/wrenchable.json
 9fc4940b4b0bec19481be6ce8ee18150a36574fd data/minecraft/tags/block/leaves.json
 cedd081972b2581d1997db600bf27a93b8ef4657 data/minecraft/tags/block/logs_that_burn.json
 78e5df6e81b6c66f5cd0aae260ff63b13064660d data/minecraft/tags/block/mineable/axe.json
-7a75cc8c19c792a97feafefc2a0b13fdbd4d3b89 data/minecraft/tags/block/mineable/pickaxe.json
+18681be3e355aa9aa58e50b467142015bb1d13bd data/minecraft/tags/block/mineable/pickaxe.json
 dce852ee4b6760dbf8e046d09995beaefb6ec442 data/minecraft/tags/block/needs_diamond_tool.json
 80b3cd436214b2541091d6c0e553867311447ffb data/minecraft/tags/block/needs_iron_tool.json
 0960af57369e2e41576d0b691e7663c7fb27c117 data/minecraft/tags/block/needs_stone_tool.json

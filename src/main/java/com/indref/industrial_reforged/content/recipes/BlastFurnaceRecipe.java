@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content.recipes;
 
 import com.indref.industrial_reforged.util.recipes.*;
 import com.indref.industrial_reforged.util.Utils;
-import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
+import com.indref.industrial_reforged.content.recipes.recipeInputs.ItemRecipeInput;
 import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;

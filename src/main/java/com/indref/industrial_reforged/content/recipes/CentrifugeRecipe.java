@@ -1,7 +1,6 @@
 package com.indref.industrial_reforged.content.recipes;
 
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.indref.industrial_reforged.util.recipes.recipeInputs.ItemRecipeInput;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
 import net.minecraft.core.HolderLookup;

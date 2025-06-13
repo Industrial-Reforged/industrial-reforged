@@ -63,6 +63,10 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.CLAY_MOLD_PLATE);
         basicItem(IRItems.CLAY_MOLD_WIRE);
         basicItem(IRItems.CLAY_MOLD_ROD);
+        basicItem(IRItems.STEEL_MOLD_INGOT);
+        basicItem(IRItems.STEEL_MOLD_PLATE);
+        basicItem(IRItems.STEEL_MOLD_WIRE);
+        basicItem(IRItems.STEEL_MOLD_ROD);
         basicItem(IRItems.FERTILIZER);
         basicItem(IRFluids.OIL.getDeferredBucket());
         bucket(IRFluids.BIO_MASS.getStillFluid());

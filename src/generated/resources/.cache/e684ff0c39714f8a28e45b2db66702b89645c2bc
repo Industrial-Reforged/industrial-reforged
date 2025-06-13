@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-11T10:09:20.171433712	Item Models: indref
+// 1.21.1	2025-06-13T23:05:21.047753418	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -141,6 +141,10 @@ e8097615b990c426e81a6bdfa10da3a417840fec assets/indref/models/item/sandy_brick.j
 18b769cf3b50ad54937ddb654ebca8f3f21a647d assets/indref/models/item/steel_cable.json
 4c17a03062fbc985808345db322d2ad3bad9565f assets/indref/models/item/steel_dust.json
 c57423931f22cead423bb6aeebd430876c7950e9 assets/indref/models/item/steel_ingot.json
+039ebb40abe7e8e8e993e3637c14e9ec9685fcda assets/indref/models/item/steel_mold_ingot.json
+547365e131b291d7a62494ea9967a1e9221d26f1 assets/indref/models/item/steel_mold_plate.json
+9a14c2c59d6820d214f91fd55df9d575ac6f0c3c assets/indref/models/item/steel_mold_rod.json
+c8d46b6cc53dcfbfee6717e262db4ee59b7b8205 assets/indref/models/item/steel_mold_wire.json
 92abf2a6d76ac9b58d420610fd0bf4a0a40cdd02 assets/indref/models/item/steel_plate.json
 fbbbce99db5d114f8ef94c59ca2d9124d6d30163 assets/indref/models/item/steel_rod.json
 b50ecc9aa7ab1bb7a7208881c8c9dbae79ff72a8 assets/indref/models/item/steel_wire.json
@@ -174,5 +178,6 @@ d53b27513da89806b1f5e15e6b7320bdadd06f4f assets/indref/models/item/ultimate_batt
 102d86ad7029cbbb7c1b1e69f85355bc51beaaee assets/indref/models/item/uranium_block.json
 5db48cace9829c208e0e34e7e925b22427c0161d assets/indref/models/item/uranium_ingot.json
 88845440414ad24920cef0607a34ef417429eb88 assets/indref/models/item/uranium_ore.json
+bb5cd9582c45c6778bdf00a17aa5ad2a4842b1f0 assets/indref/models/item/wooden_casting_basin.json
 ad13d8a9ecd29aa5beb5bfc074546573c3c2d3db assets/indref/models/item/wooden_scaffolding.json
 d191fc76dd049b1a4fc1d062b3a7837ccd6d79aa assets/indref/models/item/wrench.json

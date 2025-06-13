@@ -22,7 +22,7 @@ public class HeatBarWidget extends AbstractWidget {
     private final IHeatStorage heatStorage;
 
     public HeatBarWidget(IHeatStorage heatStorage, int x, int y) {
-        super(x, y, 74, 4, CommonComponents.EMPTY);
+        super(x, y, 96, 8, CommonComponents.EMPTY);
         this.heatStorage = heatStorage;
     }
 
@@ -32,7 +32,7 @@ public class HeatBarWidget extends AbstractWidget {
         float heatStored = heatStorage.getHeatStored();
         float heatCapacity = heatStorage.getHeatCapacity();
         float progress = heatStored / heatCapacity;
-        guiGraphics.blitSprite(HEAT_BAR_SPRITE, width - 2, height - 2, 0, 0, getX() + 1, getY() + 1, Mth.ceil((width - 2) * progress), height - 2);
+        guiGraphics.blitSprite(HEAT_BAR_SPRITE, width, height, 0, 0, getX(), getY(), Mth.ceil(width * progress), height);
 
         if (isHovered) {
             float roundedHeat = Math.round(heatStored * 10) / 10.0f;

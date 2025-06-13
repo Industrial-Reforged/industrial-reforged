@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.recipes;
 
+import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -12,36 +13,59 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 public final class IRRecipeSerializer {
     protected static final class Casting {
         public static final Codec<Item> ITEM_CODEC = CodecUtils.registryCodec(BuiltInRegistries.ITEM);
         public static final StreamCodec<ByteBuf, Item> ITEM_STREAM_CODEC = CodecUtils.registryStreamCodec(BuiltInRegistries.ITEM);
 
-        static final MapCodec<CrucibleCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                FluidStack.OPTIONAL_CODEC.fieldOf("fluid").forGetter(CrucibleCastingRecipe::fluidStack),
-                ITEM_CODEC.fieldOf("mold_item").forGetter(CrucibleCastingRecipe::moldItem),
-                ItemStack.CODEC.fieldOf("result").forGetter(CrucibleCastingRecipe::resultStack),
-                Codec.INT.fieldOf("duration").forGetter(CrucibleCastingRecipe::duration)
-        ).apply(builder, CrucibleCastingRecipe::new));
+        static final MapCodec<BasinCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
+                Ingredient.CODEC.fieldOf("mold_item").forGetter(BasinCastingRecipe::ingredient),
+                FluidIngredientWithAmount.CODEC.fieldOf("fluid").forGetter(BasinCastingRecipe::fluidIngredient),
+                ItemStack.CODEC.fieldOf("result").forGetter(BasinCastingRecipe::resultStack),
+                Codec.INT.fieldOf("duration").forGetter(BasinCastingRecipe::duration)
+        ).apply(builder, BasinCastingRecipe::new));
 
-        static final StreamCodec<RegistryFriendlyByteBuf, CrucibleCastingRecipe> STREAM_CODEC = StreamCodec.composite(
-                FluidStack.STREAM_CODEC,
-                CrucibleCastingRecipe::fluidStack,
-                ITEM_STREAM_CODEC,
-                CrucibleCastingRecipe::moldItem,
+        static final StreamCodec<RegistryFriendlyByteBuf, BasinCastingRecipe> STREAM_CODEC = StreamCodec.composite(
+                Ingredient.CONTENTS_STREAM_CODEC,
+                BasinCastingRecipe::ingredient,
+                FluidIngredientWithAmount.STREAM_CODEC,
+                BasinCastingRecipe::fluidIngredient,
                 ItemStack.STREAM_CODEC,
-                CrucibleCastingRecipe::resultStack,
+                BasinCastingRecipe::resultStack,
                 ByteBufCodecs.INT,
-                CrucibleCastingRecipe::duration,
-                CrucibleCastingRecipe::new
+                BasinCastingRecipe::duration,
+                BasinCastingRecipe::new
+        );
+    }
+
+    protected static final class MoldCasting {
+        static final MapCodec<BasinMoldCastingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
+                Ingredient.CODEC.fieldOf("mold_ingredient").forGetter(BasinMoldCastingRecipe::ingredient),
+                FluidIngredientWithAmount.CODEC.fieldOf("fluid").forGetter(BasinMoldCastingRecipe::fluidIngredient),
+                ItemStack.CODEC.fieldOf("result").forGetter(BasinMoldCastingRecipe::resultStack),
+                Codec.INT.fieldOf("duration").forGetter(BasinMoldCastingRecipe::duration)
+        ).apply(builder, BasinMoldCastingRecipe::new));
+
+        static final StreamCodec<RegistryFriendlyByteBuf, BasinMoldCastingRecipe> STREAM_CODEC = StreamCodec.composite(
+                Ingredient.CONTENTS_STREAM_CODEC,
+                BasinMoldCastingRecipe::ingredient,
+                FluidIngredientWithAmount.STREAM_CODEC,
+                BasinMoldCastingRecipe::fluidIngredient,
+                ItemStack.STREAM_CODEC,
+                BasinMoldCastingRecipe::resultStack,
+                ByteBufCodecs.INT,
+                BasinMoldCastingRecipe::duration,
+                BasinMoldCastingRecipe::new
         );
     }
 
     protected static final class CrucibleMelting {
         static final MapCodec<CrucibleSmeltingRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                IngredientWithCount.CODEC.fieldOf("ingredient").forGetter(CrucibleSmeltingRecipe::ingredient),
+                IngredientWithCount.CODEC.fieldOf("fluidIngredient").forGetter(CrucibleSmeltingRecipe::ingredient),
                 FluidStack.CODEC.fieldOf("result").forGetter(CrucibleSmeltingRecipe::resultFluid),
                 Codec.INT.fieldOf("duration").forGetter(CrucibleSmeltingRecipe::duration),
                 Codec.INT.fieldOf("heat").forGetter(CrucibleSmeltingRecipe::heat)
@@ -62,7 +86,7 @@ public final class IRRecipeSerializer {
 
     protected static final class Centrifuge {
         static final MapCodec<CentrifugeRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                IngredientWithCount.CODEC.fieldOf("ingredient").forGetter(CentrifugeRecipe::ingredient),
+                IngredientWithCount.CODEC.fieldOf("fluidIngredient").forGetter(CentrifugeRecipe::ingredient),
                 ItemStack.CODEC.listOf().fieldOf("results").forGetter(CentrifugeRecipe::results),
                 FluidStack.OPTIONAL_CODEC.fieldOf("result_fluid").forGetter(CentrifugeRecipe::resultFluid),
                 Codec.INT.fieldOf("duration").forGetter(CentrifugeRecipe::duration),

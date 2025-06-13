@@ -1,10 +1,10 @@
 {
   "type": "indref:crucible_melting",
   "duration": 200,
-  "heat": 200,
-  "ingredient": {
+  "fluidIngredient": {
     "tag": "c:wires/tin"
   },
+  "heat": 200,
   "result": {
     "amount": 37,
     "id": "indref:molten_tin"

@@ -25,7 +25,7 @@ public final class CastingMoldSelectionOverlay {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;
         ItemStack mainHandItem = player.getMainHandItem();
-        if (mainHandItem.is(IRTags.Items.MOLDS) && Screen.hasShiftDown()) {
+        if (mainHandItem.is(IRTags.Items.CLAY_MOLDS) && Screen.hasShiftDown()) {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight() / 2;
             int length = CASTING_MOLD_ITEMS.size();

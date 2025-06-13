@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
-import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.content.recipes.BasinCastingRecipe;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
@@ -43,12 +43,12 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
     public void render(CastingBasinBlockEntity castingTableBlockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLight, int combinedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         IItemHandler itemHandler = castingTableBlockEntity.getItemHandler();
-        CrucibleCastingRecipe recipe = castingTableBlockEntity.getRecipe();
+        BasinCastingRecipe recipe = castingTableBlockEntity.getRecipe();
         ItemStack moldItem = itemHandler.getStackInSlot(0);
-        CastingMoldValue mold = castingTableBlockEntity.getMold(moldItem.getItem());
+        CastingMoldValue mold = CastingBasinBlockEntity.getMold(moldItem.getItem());
         ItemStack resultItem = recipe != null
-                && mold != null
-                && castingTableBlockEntity.getFluidHandler().getFluidInTank(0).getAmount() == mold.capacity() ? recipe.getResultItem(null) : itemHandler.getStackInSlot(1);
+                && ((mold != null
+                && castingTableBlockEntity.getFluidHandler().getFluidInTank(0).getAmount() == mold.capacity()) || CastingBasinBlockEntity.isMoldIngredient(moldItem)) ? recipe.getResultItem(null) : itemHandler.getStackInSlot(1);
 
         // This code for fading item and fluid texture is from Tinkers construct.
         // Thank you to the tinkers construct devs for this

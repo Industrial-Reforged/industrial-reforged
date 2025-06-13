@@ -1,0 +1,11 @@
+{
+  "features": {
+    "enabled": [
+      "indref:wip"
+    ]
+  },
+  "pack": {
+    "description": "Enable WIP Industrial Reforged Features. These might be lacking functionality or might not even work at all",
+    "pack_format": 48
+  }
+}

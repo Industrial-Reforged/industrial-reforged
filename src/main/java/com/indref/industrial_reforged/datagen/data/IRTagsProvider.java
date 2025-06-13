@@ -10,6 +10,7 @@ import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.tags.ModdedTags;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
@@ -51,7 +52,6 @@ public class IRTagsProvider {
                     IRItems.WRENCH,
                     IRItems.TREE_TAP,
                     IRItems.SCANNER
-                    //IRItems.THERMOMETER
             );
             tag(IRTags.Items.RUBBER_LOGS,
                     IRBlocks.RUBBER_TREE_LOG,
@@ -63,6 +63,16 @@ public class IRTagsProvider {
                 tag(IRTags.Items.MOLDS, item.asItem());
             }
             tag(IRTags.Items.MOLDS, IRItems.CLAY_MOLD_BLANK);
+            for (ItemLike item : IRItems.MOLD_ITEMS.keySet()) {
+                if (BuiltInRegistries.ITEM.getKey(item.asItem()).getPath().startsWith("clay_")) {
+                    tag(IRTags.Items.CLAY_MOLDS, item.asItem());
+                }
+            }
+            tag(IRTags.Items.CLAY_MOLDS, IRItems.CLAY_MOLD_BLANK);
+            tag(IRTags.Items.MOLDS_INGOT, IRItems.CLAY_MOLD_INGOT, IRItems.STEEL_MOLD_INGOT);
+            tag(IRTags.Items.MOLDS_PLATE, IRItems.CLAY_MOLD_PLATE, IRItems.STEEL_MOLD_PLATE);
+            tag(IRTags.Items.MOLDS_WIRE, IRItems.CLAY_MOLD_WIRE, IRItems.STEEL_MOLD_WIRE);
+            tag(IRTags.Items.MOLDS_ROD, IRItems.CLAY_MOLD_ROD, IRItems.STEEL_MOLD_ROD);
 
             plates();
             wires();
@@ -161,6 +171,7 @@ public class IRTagsProvider {
                     CTags.Items.COPPER_PLATE,
                     CTags.Items.TIN_PLATE,
                     CTags.Items.STEEL_PLATE,
+                    CTags.Items.ALUMINUM_PLATE,
                     CTags.Items.CARBON_PLATE
             );
 

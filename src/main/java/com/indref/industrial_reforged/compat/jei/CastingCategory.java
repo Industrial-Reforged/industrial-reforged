@@ -1,11 +1,12 @@
 package com.indref.industrial_reforged.compat.jei;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
+import com.indref.industrial_reforged.content.recipes.BasinCastingRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.translations.IRTranslations;
+import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
 import com.portingdeadmods.portingdeadlibs.utils.renderers.GuiUtils;
 import mezz.jei.api.constants.VanillaTypes;
@@ -30,14 +31,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
+import java.util.Optional;
+
+public class CastingCategory implements IRecipeCategory<BasinCastingRecipe> {
     private static final ResourceLocation PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
     private static final ResourceLocation SLOT_SPRITE = ResourceLocation.fromNamespaceAndPath("jei", "textures/jei/atlas/gui/output_slot.png");
     private static final ResourceLocation CASTING_BASIN_SPRITE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "casting_basin");
 
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "crucible_casting");
-    public static final RecipeType<CrucibleCastingRecipe> RECIPE_TYPE =
-            new RecipeType<>(UID, CrucibleCastingRecipe.class);
+    public static final RecipeType<BasinCastingRecipe> RECIPE_TYPE =
+            new RecipeType<>(UID, BasinCastingRecipe.class);
 
     private final IDrawable icon;
 
@@ -46,7 +49,7 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
     }
 
     @Override
-    public RecipeType<CrucibleCastingRecipe> getRecipeType() {
+    public RecipeType<BasinCastingRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -75,29 +78,35 @@ public class CastingCategory implements IRecipeCategory<CrucibleCastingRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder recipeLayoutBuilder, CrucibleCastingRecipe castingRecipe, IFocusGroup iFocusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder recipeLayoutBuilder, BasinCastingRecipe castingRecipe, IFocusGroup iFocusGroup) {
         int y = 0;
 
-        FluidStack fluidStack = castingRecipe.fluidStack();
-        recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, getPadding() + 2, y + 18)
-                .addFluidStack(fluidStack.getFluid(), fluidStack.getAmount())
-                .setFluidRenderer(fluidStack.getAmount(), false, 16, 16);
+        FluidIngredientWithAmount fluidIngredient = castingRecipe.fluidIngredient();
+        IRecipeSlotBuilder builder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, getPadding() + 2, y + 18);
+        for (FluidStack fluidStack : fluidIngredient.fluidIngredient().getStacks()) {
+            builder.addFluidStack(fluidStack.getFluid(), fluidIngredient.amount());
+        }
+        builder.setFluidRenderer(fluidIngredient.amount(), false, 16, 16);
 
         IRecipeSlotBuilder slotBuilder = recipeLayoutBuilder.addSlot(RecipeIngredientRole.CATALYST, getPadding() + 32, y)
-                .addItemStack(castingRecipe.moldItem().getDefaultInstance());
+                .addIngredients(castingRecipe.ingredient());
 
-        CastingMoldValue moldValue = RegistryUtils.holder(BuiltInRegistries.ITEM, castingRecipe.moldItem()).getData(IRDataMaps.CASTING_MOLDS);
-
-        if (moldValue.consumeCast()) {
-            slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(IRTranslations.Jei.ITEM_CONSUMED.component().withStyle(ChatFormatting.DARK_GRAY)));
-        }
+        slotBuilder.addRichTooltipCallback((recipeSlotView, tooltip) -> {
+            Optional<ItemStack> displayedItemStack = recipeSlotView.getDisplayedItemStack();
+            if (displayedItemStack.isPresent()) {
+                CastingMoldValue moldValue = RegistryUtils.holder(BuiltInRegistries.ITEM, displayedItemStack.get().getItem()).getData(IRDataMaps.CASTING_MOLDS);
+                if (moldValue != null && moldValue.consumeCast()) {
+                    tooltip.add(IRTranslations.Jei.ITEM_CONSUMED.component().withStyle(ChatFormatting.DARK_GRAY));
+                }
+            }
+        });
 
         recipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, getPadding() + 64, y + 19)
                 .addIngredients(Ingredient.of(castingRecipe.resultStack()));
     }
 
     @Override
-    public void draw(CrucibleCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(BasinCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         int y = 0;
 
         guiGraphics.blitSprite(PROGRESS_SPRITE, getPadding() + 28, y + 20, 24, 16);

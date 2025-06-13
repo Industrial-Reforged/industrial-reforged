@@ -40,7 +40,7 @@ public class CentrifugeMenu extends MachineContainerMenu<CentrifugeBlockEntity> 
         // Input slot
         addSlot(new SlotItemHandler(itemHandler, 0, 80, 41));
 
-        // Output tanks
+        // Output
         addSlot(new SlotItemHandler(itemHandler, 1, 80, 5));
         addSlot(new SlotItemHandler(itemHandler, 2, 116, 41));
         addSlot(new SlotItemHandler(itemHandler, 3, 80, 77));
@@ -56,6 +56,6 @@ public class CentrifugeMenu extends MachineContainerMenu<CentrifugeBlockEntity> 
 
     @Override
     protected int getMergeableSlotCount() {
-        return 5;
+        return 1;
     }
 }

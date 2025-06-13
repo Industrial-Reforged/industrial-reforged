@@ -1,0 +1,15 @@
+{
+  "type": "indref:basin_mold_casting",
+  "duration": 200,
+  "fluid": {
+    "amount": 333,
+    "fluid": "indref:molten_steel"
+  },
+  "mold_ingredient": {
+    "tag": "c:ingots"
+  },
+  "result": {
+    "count": 1,
+    "id": "indref:steel_mold_ingot"
+  }
+}

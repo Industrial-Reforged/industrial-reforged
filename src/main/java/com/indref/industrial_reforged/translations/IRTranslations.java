@@ -56,7 +56,7 @@ public final class IRTranslations {
         public static final TranslatableConstant MELTING_PROGRESS = create("melting.progress", "%.1f/%.1f");
 
         public static final TranslatableConstant MULTIBLOCK_HINT = create("multiblock.hint", "This is a multiblock, look at the Blueprint for building instructions");
-        public static final TranslatableConstant CASTING_MOLD = create("casting_mold", "Hold SHIFT and Scroll + Right Click to select the Casting Mold");
+        public static final TranslatableConstant CLAY_CASTING_MOLD = create("casting_mold", "Hold SHIFT and Scroll + Right Click to select the Casting Mold");
 
         private static TranslatableConstant create(String key, String defaultValue) {
             TranslatableConstant constant = create(key);

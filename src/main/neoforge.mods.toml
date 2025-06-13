@@ -11,6 +11,7 @@ displayName = "${mod_name}"
 authors = "${mod_authors}"
 
 description = '''${mod_description}'''
+featureFlags="META-INF/feature_flags.json"
 
 [[mixins]]
 config = "${mod_id}.mixins.json"

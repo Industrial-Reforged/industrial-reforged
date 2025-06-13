@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-12T22:59:32.12062952	Block States: indref
+// 1.21.1	2025-06-13T23:05:21.062719649	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 b269694801416e295b87a1190e8aabbc2733f47c assets/indref/blockstates/basic_generator.json
 d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.json
@@ -78,6 +78,7 @@ e6d16f39ec071b011d1e39ec372d11605d9fdfc3 assets/indref/blockstates/tin_ore.json
 cf418f10691edef460d31793708d2a951e16bdeb assets/indref/blockstates/titanium_block.json
 ee5165b75e4206665a9842606f0154b78592a591 assets/indref/blockstates/uranium_block.json
 a215aec48f9f55d5fe65d30d2f62c32a432e81f8 assets/indref/blockstates/uranium_ore.json
+e1ce92e4df884c364d9f4e8df5a31e84587199f7 assets/indref/blockstates/wooden_casting_basin.json
 0f9589b1e74fdf0e030a36ef4a853e1cf4500ffc assets/indref/blockstates/wooden_scaffolding.json
 8f385309313021f49e14320a218c0639bb40e31a assets/indref/models/block/aluminum_block.json
 69dfb4bf05287123c52634f3cc713d12a4bc6fea assets/indref/models/block/basic_generator.json
@@ -86,9 +87,9 @@ cc7996bf1cfc3b9708cbc00484536c30cd7321a4 assets/indref/models/block/basic_genera
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_bricks.json
 c5cd2277c21cf1deb48965d38ed4eb517fe48c73 assets/indref/models/block/blast_furnace_casting_basin.json
 cff1442e6a599b9ee470f1a6ce6e843061866f75 assets/indref/models/block/blast_furnace_faucet.json
-0cb272dc1abb8e0251155fe0732116171efea028 assets/indref/models/block/blast_furnace_hatch.json
-9e71e3439ae741ba1ac416645bd5b785a324326c assets/indref/models/block/blast_furnace_hatch_formed.json
-bb1dd13ec6829ec938675b88071c209e41dc99e9 assets/indref/models/block/blast_furnace_hatch_formed_active.json
+d8adaa5f2e87ebaeccd53bdf4963ee00ee48fcbd assets/indref/models/block/blast_furnace_hatch.json
+107c0e7de42c313596081c8f0229ca5e91cace04 assets/indref/models/block/blast_furnace_hatch_formed.json
+68db94d0c6e2182c33ecba573771a0d84c5fc21b assets/indref/models/block/blast_furnace_hatch_formed_active.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part.json
 1a0f9e7fb933482c31f039b8120123ad019fcfd1 assets/indref/models/block/blast_furnace_part_formed.json
 a1d6fe3394c7f4545785f420f4ae7d935c0a87fb assets/indref/models/block/centrifuge.json
@@ -192,6 +193,7 @@ a92fbdfeeeeb8ed52b71a5d7968e62153326d9b7 assets/indref/models/block/tin_block.js
 2098befb5694240e4468ccb686ff4d95ae88e149 assets/indref/models/block/titanium_block.json
 eb6983ed0bfa25182faceb60afc4e66dcc4f10ed assets/indref/models/block/uranium_block.json
 0435e110e9309535b01d6349183a41ca6d0b0045 assets/indref/models/block/uranium_ore.json
+bbca582fe170b791c9ab7d821c629be611e05cf0 assets/indref/models/block/wooden_casting_basin.json
 d1b4fa8e5bff8a8f9fae351d04d72a89b34a3fbf assets/indref/models/block/wooden_scaffolding.json
 498fd40c5272d52ef8ac45ef34481242c9f958c1 assets/indref/models/item/coil.json
 f66c6d87ab60b665bad50e1aacff70e6b3284e58 assets/indref/models/item/rubber_tree_leaves.json

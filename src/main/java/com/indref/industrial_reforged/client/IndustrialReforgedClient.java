@@ -1,6 +1,5 @@
 package com.indref.industrial_reforged.client;
 
-import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.tools.ClientDisplayItem;
@@ -61,7 +60,6 @@ import org.lwjgl.glfw.GLFW;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Mod(IndustrialReforgedClient.MODID)
 public final class IndustrialReforgedClient {
@@ -116,7 +114,7 @@ public final class IndustrialReforgedClient {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             ItemStack mainHandItem = player.getMainHandItem();
-            if (event.getButton() == GLFW.GLFW_MOUSE_BUTTON_RIGHT && Screen.hasShiftDown() && mainHandItem.is(IRTags.Items.MOLDS)) {
+            if (event.getButton() == GLFW.GLFW_MOUSE_BUTTON_RIGHT && Screen.hasShiftDown() && mainHandItem.is(IRTags.Items.CLAY_MOLDS)) {
                 List<Item> castingMoldItems = CastingMoldSelectionOverlay.CASTING_MOLD_ITEMS;
                 Item item = castingMoldItems.get(CastingMoldSelectionOverlay.INDEX.get());
                 if (!mainHandItem.is(item)) {
@@ -130,7 +128,7 @@ public final class IndustrialReforgedClient {
     private void onScroll(InputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (Screen.hasShiftDown()) {
-            if (player.getMainHandItem().is(IRTags.Items.MOLDS)) {
+            if (player.getMainHandItem().is(IRTags.Items.CLAY_MOLDS)) {
                 int index = CastingMoldSelectionOverlay.INDEX.get();
                 int scrollDeltaY = (int) event.getScrollDeltaY();
                 if (index < CastingMoldSelectionOverlay.CASTING_MOLD_ITEMS.size() - 1 && scrollDeltaY < 0) {
@@ -144,8 +142,8 @@ public final class IndustrialReforgedClient {
 
     private void appendTooltip(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
-        if (itemStack.is(IRTags.Items.MOLDS)) {
-            event.getToolTip().add(IRTranslations.Tooltip.CASTING_MOLD.component().withStyle(ChatFormatting.DARK_GRAY));
+        if (itemStack.is(IRTags.Items.CLAY_MOLDS)) {
+            event.getToolTip().add(IRTranslations.Tooltip.CLAY_CASTING_MOLD.component().withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 

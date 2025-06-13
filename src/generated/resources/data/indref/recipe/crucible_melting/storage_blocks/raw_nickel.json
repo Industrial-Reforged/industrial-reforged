@@ -1,10 +1,10 @@
 {
   "type": "indref:crucible_melting",
   "duration": 200,
-  "heat": 200,
-  "ingredient": {
+  "fluidIngredient": {
     "tag": "c:storage_blocks/raw_nickel"
   },
+  "heat": 200,
   "result": {
     "amount": 1666,
     "id": "indref:molten_nickel"

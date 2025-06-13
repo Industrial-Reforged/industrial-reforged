@@ -4,19 +4,17 @@ import com.google.common.collect.ImmutableList;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.recipes.*;
-import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
+import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -30,10 +28,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class IRRecipeProvider extends RecipeProvider {
@@ -70,6 +68,7 @@ public class IRRecipeProvider extends RecipeProvider {
         blastFurnaceRecipes();
         crucibleSmeltingRecipes();
         castingRecipes();
+        moldCastingRecipes();
         centrifugeRecipes();
 
         // Compacting recipes
@@ -90,6 +89,13 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("###")
                 .define('#', IRBlocks.BLAST_FURNACE_BRICKS.get())
                 .unlockedBy("has_blast_furnace_brick", has(IRBlocks.BLAST_FURNACE_BRICKS.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.WOODEN_CASTING_BASIN.get())
+                .pattern("# #")
+                .pattern("###")
+                .define('#', ItemTags.PLANKS)
+                .unlockedBy("has_planks", has(ItemTags.PLANKS))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.BLAST_FURNACE_FAUCET.get())
@@ -249,12 +255,12 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("# #")
                 .define('#', Tags.Items.RODS_WOODEN)
                 .define('P', ItemTags.PLANKS)
-                .unlockedBy("has_iron_ingot", has(Tags.Items.RODS_WOODEN))
+                .unlockedBy("has_wooden_rods", has(Tags.Items.RODS_WOODEN))
                 .save(output);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK)
-                .requires(IRTags.Items.MOLDS)
-                .unlockedBy("has_item", has(IRTags.Items.MOLDS))
+                .requires(IRTags.Items.CLAY_MOLDS)
+                .unlockedBy("has_item", has(IRTags.Items.CLAY_MOLDS))
                 .save(output, IndustrialReforged.rl("uncraft_clay_mold"));
 
         plantBallRecipes();
@@ -525,6 +531,13 @@ public class IRRecipeProvider extends RecipeProvider {
         ));
     }
 
+    private void moldCastingRecipes() {
+        moldCastingRecipe(Tags.Items.INGOTS, IRFluids.MOLTEN_STEEL, IRItems.STEEL_MOLD_INGOT);
+        moldCastingRecipe(CTags.Items.PLATES, IRFluids.MOLTEN_STEEL, IRItems.STEEL_MOLD_PLATE);
+        moldCastingRecipe(Tags.Items.RODS, IRFluids.MOLTEN_STEEL, IRItems.STEEL_MOLD_ROD);
+        moldCastingRecipe(CTags.Items.WIRES, IRFluids.MOLTEN_STEEL, IRItems.STEEL_MOLD_WIRE);
+    }
+
     private void castingRecipes() {
         ingotCastingRecipe(IRFluids.MOLTEN_ALUMINUM, IRItems.ALUMINUM_INGOT);
         ingotCastingRecipe(IRFluids.MOLTEN_COPPER, Items.COPPER_INGOT);
@@ -549,37 +562,46 @@ public class IRRecipeProvider extends RecipeProvider {
         plateCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_PLATE);
     }
 
+    private void moldCastingRecipe(TagKey<Item> moldIngredientTag, PDLFluid fluid, ItemLike resultMoldItem) {
+        irRecipe(new BasinMoldCastingRecipe(
+                Ingredient.of(moldIngredientTag),
+                FluidIngredientWithAmount.of(fluid.toStack(333)),
+                new ItemStack(resultMoldItem.asItem()),
+                200
+        ));
+    }
+
     private void rodCastingRecipe(PDLFluid fluid, ItemLike resultIngotItem) {
-        irRecipe(new CrucibleCastingRecipe(
-                fluid.toStack(111),
-                IRItems.CLAY_MOLD_ROD.get(),
+        irRecipe(new BasinCastingRecipe(
+                Ingredient.of(IRTags.Items.MOLDS_ROD),
+                FluidIngredientWithAmount.of(fluid.toStack(111)),
                 new ItemStack(resultIngotItem.asItem(), 4),
                 200
         ));
     }
 
     private void wireCastingRecipe(PDLFluid fluid, ItemLike resultIngotItem) {
-        irRecipe(new CrucibleCastingRecipe(
-                fluid.toStack(37),
-                IRItems.CLAY_MOLD_WIRE.get(),
+        irRecipe(new BasinCastingRecipe(
+                Ingredient.of(IRTags.Items.MOLDS_WIRE),
+                FluidIngredientWithAmount.of(fluid.toStack(37)),
                 new ItemStack(resultIngotItem.asItem(), 3),
                 200
         ));
     }
 
     private void ingotCastingRecipe(PDLFluid fluid, ItemLike resultIngotItem) {
-        irRecipe(new CrucibleCastingRecipe(
-                fluid.toStack(111),
-                IRItems.CLAY_MOLD_INGOT.get(),
+        irRecipe(new BasinCastingRecipe(
+                Ingredient.of(IRTags.Items.MOLDS_INGOT),
+                FluidIngredientWithAmount.of(fluid.toStack(111)),
                 resultIngotItem.asItem().getDefaultInstance(),
                 200
         ));
     }
 
     private void plateCastingRecipe(PDLFluid fluid, ItemLike resultPlateItem) {
-        irRecipe(new CrucibleCastingRecipe(
-                fluid.toStack(111),
-                IRItems.CLAY_MOLD_PLATE.get(),
+        irRecipe(new BasinCastingRecipe(
+                Ingredient.of(IRTags.Items.MOLDS_PLATE),
+                FluidIngredientWithAmount.of(fluid.toStack(111)),
                 resultPlateItem.asItem().getDefaultInstance(),
                 200
         ));

@@ -39,12 +39,18 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.flag.FeatureFlag;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -58,6 +64,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -86,6 +93,7 @@ public final class IndustrialReforged {
         modEventBus.addListener(this::onRegister);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::registerPayloads);
+        modEventBus.addListener(this::addFeaturePacks);
 
         NeoForge.EVENT_BUS.addListener(this::onDatapackReload);
 
@@ -109,10 +117,14 @@ public final class IndustrialReforged {
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
     }
 
+    private void addFeaturePacks(AddPackFindersEvent event) {
+        event.addPackFinders(rl("data/indref/datapacks/ir_wip_features"), PackType.SERVER_DATA, Component.literal("Industrial Reforged: WIP Content"), PackSource.FEATURE, false, Pack.Position.TOP);
+    }
+
     private void onDatapackReload(OnDatapackSyncEvent event) {
         Stream<ServerPlayer> relevantPlayers = event.getRelevantPlayers();
         relevantPlayers.forEach(player -> {
-            Optional<HolderSet.Named<Item>> named = BuiltInRegistries.ITEM.getTag(IRTags.Items.MOLDS);
+            Optional<HolderSet.Named<Item>> named = BuiltInRegistries.ITEM.getTag(IRTags.Items.CLAY_MOLDS);
             named.ifPresent(holders -> {
                 List<Item> list = holders.stream().map(Holder::value).toList();
                 PacketDistributor.sendToPlayer(player, new SyncCastingMoldsPayload(list));

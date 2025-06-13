@@ -133,11 +133,6 @@ public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlo
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int slotId) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     public boolean stillValid(@NotNull Player player) {
         return stillValid(access, player, IRBlocks.CRAFTING_STATION.get());
     }

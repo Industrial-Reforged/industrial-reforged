@@ -1,0 +1,15 @@
+{
+  "type": "indref:basin_casting",
+  "duration": 200,
+  "fluid": {
+    "amount": 111,
+    "fluid": "indref:molten_nickel"
+  },
+  "mold_item": {
+    "tag": "indref:molds/ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "indref:nickel_ingot"
+  }
+}

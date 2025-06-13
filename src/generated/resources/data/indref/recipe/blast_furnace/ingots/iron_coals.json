@@ -4,7 +4,7 @@
   "heat": 180,
   "ingredients": [
     {
-      "count": 2,
+      "amount": 2,
       "tag": "c:ingots/iron"
     },
     {

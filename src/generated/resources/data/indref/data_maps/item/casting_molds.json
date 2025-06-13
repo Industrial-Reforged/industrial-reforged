@@ -15,6 +15,22 @@
     "indref:clay_mold_wire": {
       "capacity": 37,
       "consume_cast": true
+    },
+    "indref:steel_mold_ingot": {
+      "capacity": 111,
+      "consume_cast": false
+    },
+    "indref:steel_mold_plate": {
+      "capacity": 111,
+      "consume_cast": false
+    },
+    "indref:steel_mold_rod": {
+      "capacity": 111,
+      "consume_cast": false
+    },
+    "indref:steel_mold_wire": {
+      "capacity": 37,
+      "consume_cast": false
     }
   }
 }

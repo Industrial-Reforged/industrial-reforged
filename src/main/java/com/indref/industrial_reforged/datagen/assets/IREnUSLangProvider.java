@@ -99,6 +99,10 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.CLAY_MOLD_PLATE, "Clay Mold Plate");
         addItem(IRItems.CLAY_MOLD_WIRE, "Clay Mold Wire");
         addItem(IRItems.CLAY_MOLD_ROD, "Clay Mold Rod");
+        addItem(IRItems.STEEL_MOLD_INGOT, "Steel Mold Ingot");
+        addItem(IRItems.STEEL_MOLD_PLATE, "Steel Mold Plate");
+        addItem(IRItems.STEEL_MOLD_WIRE, "Steel Mold Wire");
+        addItem(IRItems.STEEL_MOLD_ROD, "Steel Mold Rod");
         addItem(IRItems.STICKY_RESIN, "Sticky Resin");
         addItem(IRItems.RUBBER, "Rubber");
         addItem(IRItems.PLANT_BALL, "Plant Ball");
@@ -195,6 +199,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.BLAST_FURNACE_FAUCET, "Blast Furnace Faucet");
         addBlock(IRBlocks.BLAST_FURNACE_CASTING_BASIN, "Blast Furnace Casting Basin");
 
+        addBlock(IRBlocks.WOODEN_CASTING_BASIN, "Wooden Casting Basin");
+
         addBlock(IRBlocks.RUBBER_TREE_LOG, "Rubber Tree Log");
         addBlock(IRBlocks.RUBBER_TREE_WOOD, "Rubber Tree Wood");
         addBlock(IRBlocks.STRIPPED_RUBBER_TREE_LOG, "Rubber Tree Stripped Log");
@@ -250,7 +256,7 @@ public class IREnUSLangProvider extends LanguageProvider {
     }
 
     private void addEnergyTier(Supplier<EnergyTier> key, String val) {
-        add("energy_tier." + IndustrialReforged.MODID + "." + IRRegistries.ENERGY_TIER.getKey(key.get()), val);
+        add("energy_tier." + IndustrialReforged.MODID + "." + IRRegistries.ENERGY_TIER.getKey(key.get()).getPath(), val);
     }
 
     private void addTooltip(String key, String val) {

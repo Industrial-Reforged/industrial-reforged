@@ -2,7 +2,7 @@
   "type": "indref:centrifuge",
   "duration": 200,
   "energy": 100,
-  "ingredient": {
+  "fluidIngredient": {
     "item": "indref:sticky_resin"
   },
   "result_fluid": {},

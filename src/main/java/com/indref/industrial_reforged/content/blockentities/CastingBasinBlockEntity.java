@@ -2,11 +2,13 @@ package com.indref.industrial_reforged.content.blockentities;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
+import com.indref.industrial_reforged.content.recipes.BasinCastingRecipe;
+import com.indref.industrial_reforged.content.recipes.BasinMoldCastingRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.recipes.CrucibleCastingRecipe;
-import com.indref.industrial_reforged.util.recipes.recipeInputs.CrucibleCastingRecipeInput;
+import com.indref.industrial_reforged.content.recipes.recipeInputs.BasinCastingRecipeInput;
+import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.portingdeadmods.portingdeadlibs.api.capabilities.DynamicFluidTank;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
@@ -16,18 +18,23 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class CastingBasinBlockEntity extends IRContainerBlockEntity {
@@ -37,7 +44,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     public int maxDuration;
 
     private ResourceLocation recipeId;
-    private RecipeHolder<CrucibleCastingRecipe> recipe;
+    private RecipeHolder<BasinCastingRecipe> recipe;
     private FluidStack rememberedFluid;
 
     public CastingBasinBlockEntity(BlockPos pos, BlockState state) {
@@ -45,10 +52,20 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         addItemHandler(
                 2,
                 slot -> slot == 0 ? 1 : 64,
-                (slot, item) -> slot == 0 && getMold(item.getItem()) != null
+                (slot, item) -> slot == 0 && (getMold(item.getItem()) != null || isMoldIngredient(item))
         );
         addFluidTank(0);
         this.rememberedFluid = FluidStack.EMPTY;
+    }
+
+    public static boolean isMoldIngredient(ItemStack item) {
+        Map<ResourceKey<Item>, TagKey<Item>> dataMap = BuiltInRegistries.ITEM.getDataMap(IRDataMaps.MOLD_INGREDIENTS);
+        for (Map.Entry<ResourceKey<Item>, TagKey<Item>> entry : dataMap.entrySet()) {
+            if (item.is(entry.getValue())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -60,6 +77,11 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
             DynamicFluidTank fluidTank = getFluidTank();
             if (moldValue != null) {
                 fluidTank.setCapacity(moldValue.capacity());
+                int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
+                this.rememberedFluid = this.rememberedFluid.copyWithAmount(this.rememberedFluid.getAmount() - filled);
+                update();
+            } else if (isMoldIngredient(getItemHandler().getStackInSlot(CAST_SLOT))) {
+                fluidTank.setCapacity(333);
                 int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
                 this.rememberedFluid = this.rememberedFluid.copyWithAmount(this.rememberedFluid.getAmount() - filled);
                 update();
@@ -120,18 +142,20 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         ItemStackHandler itemHandler = getItemStackHandler();
 
         if (this.recipe != null) {
-            Item moldItem = this.recipe.value().moldItem();
-            ItemStack resultItem1 = this.recipe.value().resultStack().copy();
+            boolean moldCastingRecipe = this.recipe.value() instanceof BasinMoldCastingRecipe;
 
-            fluidTank.drain(this.recipe.value().fluidStack().getAmount(), IFluidHandler.FluidAction.EXECUTE);
+            FluidIngredientWithAmount fluidIngredient = this.recipe.value().fluidIngredient();
+            ItemStack resultItem = this.recipe.value().resultStack().copy();
+
+            fluidTank.drain(fluidIngredient.amount(), IFluidHandler.FluidAction.EXECUTE);
 
             // this.recipe is null from here on
-            CastingMoldValue moldValue = getMold(moldItem);
-            if (moldValue.consumeCast()) {
+            CastingMoldValue moldValue = getMold(itemHandler.getStackInSlot(CAST_SLOT).getItem());
+            if (moldValue != null && moldValue.consumeCast()) {
                 itemHandler.setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
             }
 
-            forceInsertItem(1, resultItem1, false);
+            forceInsertItem(1, resultItem, false);
             resetProgress();
         }
     }
@@ -162,7 +186,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     }
 
     public void updateRecipe(int fluidAmount) {
-        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = getCurrentRecipe(fluidAmount);
+        Optional<RecipeHolder<BasinCastingRecipe>> recipe = getCurrentRecipe(fluidAmount);
 
         boolean canInsert = recipe.filter(crucibleCastingRecipe ->
                 canInsertIntoOutput(crucibleCastingRecipe.value().getResultItem(level.registryAccess()))).isPresent();
@@ -174,11 +198,11 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         }
     }
 
-    private Optional<RecipeHolder<CrucibleCastingRecipe>> getCurrentRecipe(int fluidAmount) {
+    private Optional<RecipeHolder<BasinCastingRecipe>> getCurrentRecipe(int fluidAmount) {
         ItemStack moltItem = this.getItemHandler().getStackInSlot(CAST_SLOT);
 
-        Optional<RecipeHolder<CrucibleCastingRecipe>> recipe = this.level.getRecipeManager()
-                .getRecipeFor(CrucibleCastingRecipe.TYPE, new CrucibleCastingRecipeInput(moltItem, getFluidTank().getFluidInTank(0).copyWithAmount(fluidAmount)), level);
+        Optional<RecipeHolder<BasinCastingRecipe>> recipe = this.level.getRecipeManager()
+                .getRecipeFor(BasinCastingRecipe.TYPE, new BasinCastingRecipeInput(moltItem, getFluidTank().getFluidInTank(0).copyWithAmount(fluidAmount)), level);
 
         if (recipe.isEmpty()) return Optional.empty();
 
@@ -191,7 +215,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         return forceInsertItem(1, outputItem, true).isEmpty();
     }
 
-    public CrucibleCastingRecipe getRecipe() {
+    public BasinCastingRecipe getRecipe() {
         return this.recipe != null ? this.recipe.value() : null;
     }
 
@@ -217,7 +241,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     public void onLoad() {
         super.onLoad();
 
-        this.recipe = this.recipeId != null ? (RecipeHolder<CrucibleCastingRecipe>) level.getRecipeManager().byKey(this.recipeId).orElse(null) : null;
+        this.recipe = this.recipeId != null ? (RecipeHolder<BasinCastingRecipe>) level.getRecipeManager().byKey(this.recipeId).orElse(null) : null;
     }
 
     @Override
