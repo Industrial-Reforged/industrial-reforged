@@ -1,0 +1,15 @@
+{
+  "type": "indref:basin_casting",
+  "duration": 200,
+  "fluid": {
+    "amount": 100,
+    "fluid": "indref:epoxy_resin"
+  },
+  "mold_item": {
+    "tag": "indref:molds/plate"
+  },
+  "result": {
+    "count": 1,
+    "id": "indref:circuit_board"
+  }
+}

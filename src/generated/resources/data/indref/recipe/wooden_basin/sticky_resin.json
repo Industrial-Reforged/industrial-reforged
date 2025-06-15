@@ -1,0 +1,16 @@
+{
+  "type": "indref:wooden_basin",
+  "duration": 400,
+  "fluid_ingredient": {
+    "amount": 200,
+    "fluid": "indref:bio_mass"
+  },
+  "ingredient": {
+    "amount": 3,
+    "item": "indref:sticky_resin"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "indref:epoxy_resin"
+  }
+}
