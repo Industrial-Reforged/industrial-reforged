@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -69,11 +68,16 @@ public class IRRecipeProvider extends RecipeProvider {
         crucibleSmeltingRecipes();
         castingRecipes();
         moldCastingRecipes();
+        woodenBasinRecipes();
         centrifugeRecipes();
 
         // Compacting recipes
         rawOreToBlockRecipes();
         ingotToBlockRecipes();
+    }
+
+    private void woodenBasinRecipes() {
+        irRecipe(new WoodenBasinRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN.get(), 3), FluidIngredientWithAmount.of(IRFluids.BIO_MASS.toStack(200)), IRFluids.EPOXY_RESIN.toStack(200), 400));
     }
 
     private void multiblockRecipes() {
@@ -91,7 +95,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_blast_furnace_brick", has(IRBlocks.BLAST_FURNACE_BRICKS.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.WOODEN_CASTING_BASIN.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.WOODEN_BASIN.get())
                 .pattern("# #")
                 .pattern("###")
                 .define('#', ItemTags.PLANKS)
@@ -230,13 +234,6 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('R', IRItems.STEEL_ROD.get())
                 .define('S', CTags.Items.STEEL_INGOT)
                 .unlockedBy("has_copper_wire", has(IRItems.COPPER_WIRE.get()))
-                .save(output);
-
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CIRCUIT_BOARD.get(), 2)
-                .requires(CTags.Items.RUBBER)
-                .requires(CTags.Items.RUBBER)
-                .requires(IRItems.PLANT_MASS, 3)
-                .unlockedBy("has_rubber", has(CTags.Items.RUBBER))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.BASIC_CIRCUIT.get())
@@ -560,6 +557,12 @@ public class IRRecipeProvider extends RecipeProvider {
         plateCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_PLATE);
+
+        irRecipe(new BasinCastingRecipe(Ingredient.of(IRTags.Items.MOLDS_PLATE),
+                FluidIngredientWithAmount.of(IRFluids.EPOXY_RESIN.getStillFluid(), 100),
+                IRItems.CIRCUIT_BOARD.toStack(),
+                200
+        ));
     }
 
     private void moldCastingRecipe(TagKey<Item> moldIngredientTag, PDLFluid fluid, ItemLike resultMoldItem) {

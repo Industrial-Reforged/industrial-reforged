@@ -2,7 +2,7 @@
   "type": "indref:centrifuge",
   "duration": 200,
   "energy": 100,
-  "fluidIngredient": {
+  "ingredient": {
     "item": "minecraft:clay"
   },
   "result_fluid": {

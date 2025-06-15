@@ -5,10 +5,10 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
-public record BasinCastingRecipeInput(ItemStack catalystItem, FluidStack fluidStack) implements RecipeInput {
+public record ItemFluidRecipeInput(ItemStack itemStack, FluidStack fluidStack) implements RecipeInput {
     @Override
     public @NotNull ItemStack getItem(int i) {
-        return i == 0 ? catalystItem : ItemStack.EMPTY;
+        return i == 0 ? itemStack : ItemStack.EMPTY;
     }
 
     @Override

@@ -3,10 +3,7 @@ package com.indref.industrial_reforged.compat.jei;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
-import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
-import com.indref.industrial_reforged.content.recipes.BasinCastingRecipe;
-import com.indref.industrial_reforged.content.recipes.CrucibleSmeltingRecipe;
+import com.indref.industrial_reforged.content.recipes.*;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -28,7 +25,9 @@ import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @JeiPlugin
 public class IRJeiPlugin implements IModPlugin {
@@ -58,6 +57,8 @@ public class IRJeiPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new CrucibleSmeltingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CastingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new MoldCastingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new WoodenBasinCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CentrifugeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new BlastFurnaceCategory(registration.getJeiHelpers().getGuiHelper()));
     }
@@ -70,9 +71,29 @@ public class IRJeiPlugin implements IModPlugin {
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(CrucibleSmeltingCategory.RECIPE_TYPE, crucibleSmeltingRecipes);
 
-        List<BasinCastingRecipe> castingRecipes = recipeManager.getAllRecipesFor(BasinCastingRecipe.TYPE)
+        Stream<BasinCastingRecipe> castingRecipes = recipeManager.getAllRecipesFor(BasinCastingRecipe.TYPE)
+                .stream().map(RecipeHolder::value);
+        List<BasinCastingRecipe> castingRecipes1 = new ArrayList<>();
+        castingRecipes.forEach(recipe -> {
+            if (!(recipe instanceof BasinMoldCastingRecipe)) {
+                castingRecipes1.add(recipe);
+            }
+        });
+        registration.addRecipes(CastingCategory.RECIPE_TYPE, castingRecipes1);
+
+        Stream<BasinCastingRecipe> moldCastingRecipes = recipeManager.getAllRecipesFor(BasinCastingRecipe.TYPE)
+                .stream().map(RecipeHolder::value);
+        List<BasinMoldCastingRecipe> moldCastingRecipes1 = new ArrayList<>();
+        moldCastingRecipes.forEach(recipe -> {
+            if (recipe instanceof BasinMoldCastingRecipe basinMoldCastingRecipe) {
+                moldCastingRecipes1.add(basinMoldCastingRecipe);
+            }
+        });
+        registration.addRecipes(MoldCastingCategory.RECIPE_TYPE, moldCastingRecipes1);
+
+        List<WoodenBasinRecipe> woodenBasinRecipes = recipeManager.getAllRecipesFor(WoodenBasinRecipe.TYPE)
                 .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(CastingCategory.RECIPE_TYPE, castingRecipes);
+        registration.addRecipes(WoodenBasinCategory.RECIPE_TYPE, woodenBasinRecipes);
 
         List<CentrifugeRecipe> centrifugingRecipes = recipeManager.getAllRecipesFor(CentrifugeRecipe.TYPE)
                 .stream().map(RecipeHolder::value).toList();
@@ -98,6 +119,14 @@ public class IRJeiPlugin implements IModPlugin {
                 CastingCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.BLAST_FURNACE_CASTING_BASIN.get()),
                 CastingCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.CERAMIC_CASTING_BASIN.get()),
+                MoldCastingCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.BLAST_FURNACE_CASTING_BASIN.get()),
+                MoldCastingCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(IRBlocks.WOODEN_BASIN.get()),
+                WoodenBasinCategory.RECIPE_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.CENTRIFUGE.get()),
                 CentrifugeCategory.RECIPE_TYPE);

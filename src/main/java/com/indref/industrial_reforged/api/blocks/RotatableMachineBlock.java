@@ -1,7 +1,7 @@
-package com.indref.industrial_reforged.api.blockentities;
+package com.indref.industrial_reforged.api.blocks;
 
+import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.util.BlockUtils;
-import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
 import com.portingdeadmods.portingdeadlibs.api.blocks.RotatableContainerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

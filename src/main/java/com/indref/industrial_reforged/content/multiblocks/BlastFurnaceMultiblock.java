@@ -114,13 +114,6 @@ public record BlastFurnaceMultiblock() implements Multiblock {
     }
 
     @Override
-    public void afterUnformBlock(Level level, BlockPos blockPos, BlockPos controllerPos, int layerIndex, int layoutIndex, HorizontalDirection direction, @Nullable Player player) {
-        if (blockPos.equals(controllerPos)) {
-            BlockUtils.dropCastingScraps(level, controllerPos);
-        }
-    }
-
-    @Override
     public boolean isFormed(Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
 

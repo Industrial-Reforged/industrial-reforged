@@ -12,6 +12,7 @@ import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.client.renderer.blockentity.CastingBasinRenderer;
 import com.indref.industrial_reforged.client.renderer.blockentity.CrucibleRenderer;
 import com.indref.industrial_reforged.client.renderer.blockentity.FaucetRenderer;
+import com.indref.industrial_reforged.client.renderer.blockentity.WoodenBasinRenderer;
 import com.indref.industrial_reforged.client.renderer.item.BlastFurnaceItemRenderer;
 import com.indref.industrial_reforged.client.renderer.item.CrucibleItemRenderer;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
@@ -103,6 +104,8 @@ public final class IndustrialReforgedClient {
         ItemProperties.register(IRItems.ADVANCED_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
         ItemProperties.register(IRItems.BASIC_DRILL.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
         ItemProperties.register(IRItems.ADVANCED_DRILL.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
+        // IMPORTANT: WE DONT USE CLAMPED ITEM PROPERTY FUNCTION HERE CUZ IT MEANS PROPERTIES CANT GO ABOVE 1
+        ItemProperties.register(IRItems.JETPACK.get(), IRItemProperties.JETPACK_STAGE_KEY, IRItemProperties::getJetpackStage);
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof BatteryItem) {
                 ItemProperties.register(item, IRItemProperties.BATTERY_STAGE_KEY, IRItemProperties::getBatteryStage);
@@ -197,6 +200,8 @@ public final class IndustrialReforgedClient {
         }
         event.register(new DynamicFluidContainerModel.Colors(), IRFluids.BIO_MASS.getDeferredBucket());
         event.register(new DynamicFluidContainerModel.Colors(), IRFluids.METHANE.getDeferredBucket());
+        event.register(new DynamicFluidContainerModel.Colors(), IRFluids.EPOXY_RESIN.getDeferredBucket());
+        event.register(new DynamicFluidContainerModel.Colors(), IRFluids.STICKY_RESIN.getDeferredBucket());
         event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
         event.register((itemstack, index) -> {
             SingleFluidStack fluidStack = itemstack.get(IRDataComponents.SINGLE_FLUID);
@@ -208,6 +213,7 @@ public final class IndustrialReforgedClient {
     private void registerBERenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(IRBlockEntityTypes.CRUCIBLE.get(), CrucibleRenderer::new);
         event.registerBlockEntityRenderer(IRBlockEntityTypes.CASTING_BASIN.get(), CastingBasinRenderer::new);
+        event.registerBlockEntityRenderer(IRBlockEntityTypes.WOODEN_BASIN.get(), WoodenBasinRenderer::new);
         event.registerBlockEntityRenderer(IRBlockEntityTypes.FAUCET.get(), FaucetRenderer::new);
     }
 

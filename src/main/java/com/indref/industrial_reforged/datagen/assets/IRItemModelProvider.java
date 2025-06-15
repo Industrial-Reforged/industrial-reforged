@@ -57,6 +57,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.BASIC_CIRCUIT);
         basicItem(IRItems.ADVANCED_CIRCUIT);
         basicItem(IRItems.ULTIMATE_CIRCUIT);
+        basicItem(IRItems.OVERCLOCK_UPGRADE);
         basicItem(IRItems.ANTENNA);
         basicItem(IRItems.CLAY_MOLD_BLANK);
         basicItem(IRItems.CLAY_MOLD_INGOT);
@@ -71,6 +72,8 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRFluids.OIL.getDeferredBucket());
         bucket(IRFluids.BIO_MASS.getStillFluid());
         bucket(IRFluids.METHANE.getStillFluid());
+        bucket(IRFluids.EPOXY_RESIN.getStillFluid());
+        bucket(IRFluids.STICKY_RESIN.getStillFluid());
         basicItem(IRItems.PLANT_BALL);
         basicItem(IRItems.COAL_DUST);
         basicItem(IRItems.CARBON_PLATE);
@@ -107,6 +110,9 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.HAZMAT_CHESTPLATE);
         basicItem(IRItems.HAZMAT_LEGGINGS);
         basicItem(IRItems.HAZMAT_BOOTS);
+
+        overrideItemModel(6, basicItem(IRItems.JETPACK, extend(itemTexture(IRItems.JETPACK), "_0")), IRItemProperties.JETPACK_STAGE_KEY,
+                i -> basicItem(IRItems.JETPACK, "_" + i));
 
         batteryModel(IRItems.BASIC_BATTERY.get());
         batteryModel(IRItems.ADVANCED_BATTERY.get());

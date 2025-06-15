@@ -88,7 +88,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         castingBasin(IRBlocks.CERAMIC_CASTING_BASIN, blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()));
         castingBasin(IRBlocks.BLAST_FURNACE_CASTING_BASIN, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
-        castingBasin(IRBlocks.WOODEN_CASTING_BASIN, modLoc("block/wooden_basin_texture"));
+        castingBasin(IRBlocks.WOODEN_BASIN, modLoc("block/wooden_basin_texture"));
 
         faucet(IRBlocks.BLAST_FURNACE_FAUCET, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 
@@ -192,8 +192,8 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 blockTexture(IRBlocks.RUBBER_TREE_PLANKS.get(), "tree"));
     }
 
-    private void castingBasin(DeferredBlock<CastingBasinBlock> block, ResourceLocation texture) {
-        simpleBlock(block.get(), models().withExistingParent(name(block.get()), modLoc("block/casting_basin_base"))
+    private void castingBasin(DeferredBlock<? extends Block> block, ResourceLocation texture) {
+        horizontalBlock(block.get(), models().withExistingParent(name(block.get()), modLoc("block/casting_basin_base"))
                 .texture("texture", texture));
     }
 

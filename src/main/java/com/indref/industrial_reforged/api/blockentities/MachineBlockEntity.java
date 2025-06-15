@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,9 +17,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MachineBlockEntity extends IRContainerBlockEntity {
+public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity {
     private @Nullable ChargingSlot batterySlot;
     private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
+    private boolean removedUsingWrench;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -102,4 +104,15 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity {
         }
     }
 
+    @Override
+    public void beforeRemoveByWrench(Player player) {
+        this.removedUsingWrench = true;
+    }
+
+    @Override
+    public void drop() {
+        if (!this.removedUsingWrench) {
+            super.drop();
+        }
+    }
 }

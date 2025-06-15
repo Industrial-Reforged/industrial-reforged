@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.blocks.generators;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.RotatableMachineBlock;
+import com.indref.industrial_reforged.api.blocks.RotatableMachineBlock;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.tools.ElectricChainsawItem;
 import com.indref.industrial_reforged.content.items.tools.ElectricDrillItem;
@@ -19,8 +20,8 @@ import javax.annotation.Nullable;
 
 public final class IRItemProperties {
     public static final ResourceLocation ACTIVE_KEY = IndustrialReforged.rl("active");
-    public static final ResourceLocation TEMPERATURE_KEY = IndustrialReforged.rl("temperature");
     public static final ResourceLocation BATTERY_STAGE_KEY = IndustrialReforged.rl("battery_stage");
+    public static final ResourceLocation JETPACK_STAGE_KEY = IndustrialReforged.rl("jetpack_stage");
 
     public static float isActive(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
         return stack.getOrDefault(IRDataComponents.ACTIVE, false) ? 1 : 0;
@@ -48,7 +49,7 @@ public final class IRItemProperties {
         return ((BatteryItem) stack.getItem()).getBatteryStage(stack);
     }
 
-    public static float getTemperature(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-        return stack.getOrDefault(IRDataComponents.THERMOMETER_STAGE, 0);
+    public static float getJetpackStage(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+        return ((JetpackItem) stack.getItem()).getJetpackStage(stack);
     }
 }

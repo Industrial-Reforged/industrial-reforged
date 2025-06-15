@@ -14,6 +14,7 @@ public final class IRRecipes {
         SERIALIZERS.register(CrucibleSmeltingRecipe.NAME, () -> CrucibleSmeltingRecipe.SERIALIZER);
         SERIALIZERS.register(BasinCastingRecipe.NAME, () -> BasinCastingRecipe.SERIALIZER);
         SERIALIZERS.register(BasinMoldCastingRecipe.NAME, () -> BasinMoldCastingRecipe.SERIALIZER);
+        SERIALIZERS.register(WoodenBasinRecipe.NAME, () -> WoodenBasinRecipe.SERIALIZER);
         SERIALIZERS.register(BlastFurnaceRecipe.NAME, () -> BlastFurnaceRecipe.SERIALIZER);
         SERIALIZERS.register(CentrifugeRecipe.NAME, () -> CentrifugeRecipe.SERIALIZER);
     }

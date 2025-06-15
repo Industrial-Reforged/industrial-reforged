@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.recipes;
 
 import com.indref.industrial_reforged.data.IRDataMaps;
-import com.indref.industrial_reforged.content.recipes.recipeInputs.BasinCastingRecipeInput;
+import com.indref.industrial_reforged.content.recipes.recipeInputs.ItemFluidRecipeInput;
 import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import com.portingdeadmods.portingdeadlibs.api.recipes.PDLRecipe;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class BasinCastingRecipe implements PDLRecipe<BasinCastingRecipeInput> {
+public class BasinCastingRecipe implements PDLRecipe<ItemFluidRecipeInput> {
     public static final String NAME = "basin_casting";
     public static final RecipeType<BasinCastingRecipe> TYPE = RecipeUtils.newRecipeType(NAME);
     public static final RecipeSerializer<BasinCastingRecipe> SERIALIZER =
@@ -36,9 +36,9 @@ public class BasinCastingRecipe implements PDLRecipe<BasinCastingRecipeInput> {
     }
 
     @Override
-    public boolean matches(BasinCastingRecipeInput recipeInput, Level level) {
-        return ingredient.test(recipeInput.catalystItem())
-                && RegistryUtils.holder(BuiltInRegistries.ITEM, recipeInput.catalystItem().getItem()).getData(IRDataMaps.CASTING_MOLDS) != null
+    public boolean matches(ItemFluidRecipeInput recipeInput, Level level) {
+        return ingredient.test(recipeInput.itemStack())
+                && RegistryUtils.holder(BuiltInRegistries.ITEM, recipeInput.itemStack().getItem()).getData(IRDataMaps.CASTING_MOLDS) != null
                 && this.fluidIngredient().test(recipeInput.fluidStack());
     }
 

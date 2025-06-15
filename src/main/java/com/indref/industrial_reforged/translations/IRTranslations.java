@@ -77,6 +77,7 @@ public final class IRTranslations {
         public static final TranslatableConstant BLAST_FURNACE = create("blast_furnace", "Blast Furnace");
         public static final TranslatableConstant CENTRIFUGE = create("centrifuge", "Centrifuge");
         public static final TranslatableConstant CASTING = create("casting", "Casting");
+        public static final TranslatableConstant MOLD_CASTING = create("mold_casting", "Mold Casting");
         public static final TranslatableConstant ENERGY_USAGE = create("energy.usage", "%s/t: %d");
         public static final TranslatableConstant ITEM_CONSUMED = create("item.consumed", "Item is consumed");
 

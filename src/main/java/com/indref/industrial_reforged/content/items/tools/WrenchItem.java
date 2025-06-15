@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.items.tools;
 
+import com.indref.industrial_reforged.api.blockentities.WrenchListenerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.CustomWrenchableBlock;
 import com.indref.industrial_reforged.tags.IRTags;
 import net.minecraft.core.BlockPos;
@@ -54,6 +55,9 @@ public class WrenchItem extends Item {
 
             if (wrenchableBlock.hasBlockEntity()) {
                 BlockEntity blockEntity = level.getBlockEntity(clickPos);
+                if (blockEntity instanceof WrenchListenerBlockEntity wrenchListenerBlockEntity) {
+                    wrenchListenerBlockEntity.beforeRemoveByWrench(player);
+                }
                 blockEntity.saveToItem(dropItemStack, level.registryAccess());
             }
 

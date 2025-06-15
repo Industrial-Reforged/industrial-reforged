@@ -44,7 +44,6 @@ public class HeatBarWidget extends AbstractWidget {
 
     @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-
     }
 
     @Override

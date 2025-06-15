@@ -10,7 +10,6 @@ import com.indref.industrial_reforged.registries.IRTabs;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -74,6 +73,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addFluidType(IRFluids.OIL.getFluidType(), "Oil");
         addFluidType(IRFluids.BIO_MASS.getFluidType(), "Bio Mass");
         addFluidType(IRFluids.METHANE.getFluidType(), "Methane");
+        addFluidType(IRFluids.EPOXY_RESIN.getFluidType(), "Epoxy Resin");
+        addFluidType(IRFluids.STICKY_RESIN.getFluidType(), "Sticky Resin");
 
         addFluidType(IRFluids.MOLTEN_COPPER, "Molten Copper");
         addFluidType(IRFluids.MOLTEN_NICKEL, "Molten Nickel");
@@ -114,6 +115,9 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.ADVANCED_CIRCUIT, "Advanced Circuit");
         addItem(IRItems.ULTIMATE_CIRCUIT, "Ultimate Circuit");
         addItem(IRItems.CIRCUIT_BOARD, "Circuit Board");
+
+        addItem(IRItems.OVERCLOCK_UPGRADE, "Overclock Upgrade");
+
         addItem(IRItems.ELECTRIC_MOTOR, "Electric Motor");
         addItem(IRItems.ANTENNA, "Antenna");
         addItem(IRItems.SANDY_BRICK, "Sandy Brick");
@@ -144,6 +148,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRFluids.OIL.getDeferredBucket(), "Oil Bucket");
         addItem(IRFluids.BIO_MASS.getDeferredBucket(), "Bio Mass Bucket");
         addItem(IRFluids.METHANE.getDeferredBucket(), "Methane Bucket");
+        addItem(IRFluids.EPOXY_RESIN.getDeferredBucket(), "Epoxy Resin Bucket");
+        addItem(IRFluids.STICKY_RESIN.getDeferredBucket(), "Sticky Resin Bucket");
 
         addItem(IRFluids.MOLTEN_COPPER.getDeferredBucket(), "Molten Copper Bucket");
         addItem(IRFluids.MOLTEN_NICKEL.getDeferredBucket(), "Molten Nickel Bucket");
@@ -161,6 +167,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.ELECTRIC_HOE, "Electric Hoe");
         addItem(IRItems.ELECTRIC_TREE_TAP, "Electric Tree Tap");
         addItem(IRItems.ROCK_CUTTER, "Rock Cutter");
+
+        addItem(IRItems.JETPACK, "Jetpack");
 
         addItem(IRItems.HAZMAT_HELMET, "Hazmat Helmet");
         addItem(IRItems.HAZMAT_CHESTPLATE, "Hazmat Chestplate");
@@ -199,7 +207,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.BLAST_FURNACE_FAUCET, "Blast Furnace Faucet");
         addBlock(IRBlocks.BLAST_FURNACE_CASTING_BASIN, "Blast Furnace Casting Basin");
 
-        addBlock(IRBlocks.WOODEN_CASTING_BASIN, "Wooden Casting Basin");
+        addBlock(IRBlocks.WOODEN_BASIN, "Wooden Basin");
 
         addBlock(IRBlocks.RUBBER_TREE_LOG, "Rubber Tree Log");
         addBlock(IRBlocks.RUBBER_TREE_WOOD, "Rubber Tree Wood");

@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-13T23:05:21.060441421	Loot Tables
+// 1.21.1	2025-06-15T22:40:58.271142941	Loot Tables
 247264bc26773fb3e253e6c2f9bbcd11e39daab8 data/indref/loot_table/blocks/aluminum_block.json
 30b46342ea38fb9d16bacdc6081f6e748404199c data/indref/loot_table/blocks/basic_generator.json
 12b3fe9eb29c730c49154c7870959f136fd1c906 data/indref/loot_table/blocks/basic_machine_frame.json
@@ -71,5 +71,5 @@ e016b02bed78d00217a1c21e6a655022fbe63509 data/indref/loot_table/blocks/tin_ore.j
 21ee4d9af5c800755dfea677d45fe3c6083792a0 data/indref/loot_table/blocks/titanium_block.json
 e9da7fc381a654e67275eb118d7eaf64a9254578 data/indref/loot_table/blocks/uranium_block.json
 eadcb97deae5f4aa773a7fee7d94b54606c0eeef data/indref/loot_table/blocks/uranium_ore.json
-dffca24c2bed24b5ea3ec1a72f126cb02bec8e84 data/indref/loot_table/blocks/wooden_casting_basin.json
+ff855a16add5a46495248ad2008abb6e73e47583 data/indref/loot_table/blocks/wooden_basin.json
 10af7f6277496a95d68e6cd12d9d5af661975f8f data/indref/loot_table/blocks/wooden_scaffolding.json

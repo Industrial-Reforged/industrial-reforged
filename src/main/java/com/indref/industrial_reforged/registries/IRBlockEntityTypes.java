@@ -73,6 +73,10 @@ public final class IRBlockEntityTypes {
             BLOCK_ENTITIES.register("casting_basin", () ->
                     BlockEntityType.Builder.of(CastingBasinBlockEntity::new,
                             getCastingBasinBlocks()).build(null));
+    public static final Supplier<BlockEntityType<WoodenBasinBlockEntity>> WOODEN_BASIN =
+            BLOCK_ENTITIES.register("wooden_basin", () ->
+                    BlockEntityType.Builder.of(WoodenBasinBlockEntity::new,
+                            IRBlocks.WOODEN_BASIN.get()).build(null));
     public static final Supplier<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
             BLOCK_ENTITIES.register("blast_furnace", () ->
                     BlockEntityType.Builder.of(BlastFurnaceBlockEntity::new,

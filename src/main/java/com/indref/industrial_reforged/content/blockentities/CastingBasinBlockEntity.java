@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.content.recipes.BasinMoldCastingRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.recipes.recipeInputs.BasinCastingRecipeInput;
+import com.indref.industrial_reforged.content.recipes.recipeInputs.ItemFluidRecipeInput;
 import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.portingdeadmods.portingdeadlibs.api.capabilities.DynamicFluidTank;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -23,14 +23,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -142,8 +140,6 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         ItemStackHandler itemHandler = getItemStackHandler();
 
         if (this.recipe != null) {
-            boolean moldCastingRecipe = this.recipe.value() instanceof BasinMoldCastingRecipe;
-
             FluidIngredientWithAmount fluidIngredient = this.recipe.value().fluidIngredient();
             ItemStack resultItem = this.recipe.value().resultStack().copy();
 
@@ -202,7 +198,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         ItemStack moltItem = this.getItemHandler().getStackInSlot(CAST_SLOT);
 
         Optional<RecipeHolder<BasinCastingRecipe>> recipe = this.level.getRecipeManager()
-                .getRecipeFor(BasinCastingRecipe.TYPE, new BasinCastingRecipeInput(moltItem, getFluidTank().getFluidInTank(0).copyWithAmount(fluidAmount)), level);
+                .getRecipeFor(BasinCastingRecipe.TYPE, new ItemFluidRecipeInput(moltItem, getFluidTank().getFluidInTank(0).copyWithAmount(fluidAmount)), level);
 
         if (recipe.isEmpty()) return Optional.empty();
 

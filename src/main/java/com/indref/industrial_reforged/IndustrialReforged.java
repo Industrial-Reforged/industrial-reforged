@@ -113,6 +113,7 @@ public final class IndustrialReforged {
         IRNetworks.NETWORKS.register(modEventBus);
         IREnergyTiers.ENERGY_TIERS.register(modEventBus);
         IRArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
+        IRUpgrades.UPGRADES.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
     }
@@ -134,6 +135,7 @@ public final class IndustrialReforged {
 
     private void registerRegistries(NewRegistryEvent event) {
         event.register(IRRegistries.ENERGY_TIER);
+        event.register(IRRegistries.UPGRADE);
         event.register(IRRegistries.NETWORK);
     }
 

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items.misc;
+package com.indref.industrial_reforged.content.items;
 
 import com.indref.industrial_reforged.content.blocks.MiningPipeBlock;
 import net.minecraft.ChatFormatting;

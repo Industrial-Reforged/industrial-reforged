@@ -14,6 +14,7 @@ import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -209,8 +210,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     }
 
     public void setBlockActive(boolean value) {
-        for (Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
-            BlockPos pos = worldPosition.relative(dir);
+        for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(worldPosition)) {
             BlockState blockState = level.getBlockState(pos);
             if (blockState.hasProperty(IFireboxMultiblock.ACTIVE)) {
                 level.setBlockAndUpdate(pos, blockState.setValue(IFireboxMultiblock.ACTIVE, value));

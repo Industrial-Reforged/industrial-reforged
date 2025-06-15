@@ -2,9 +2,12 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.items.UpgradeItem;
+import com.indref.industrial_reforged.content.items.SimpleUpgradeItem;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
-import com.indref.industrial_reforged.content.items.misc.CastingScrapsItem;
-import com.indref.industrial_reforged.content.items.misc.FertilizerItem;
+import com.indref.industrial_reforged.content.items.CastingScrapsItem;
+import com.indref.industrial_reforged.content.items.FertilizerItem;
+import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.storage.FluidCellItem;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
@@ -84,6 +87,9 @@ public final class IRItems {
     public static final DeferredItem<Item> ADVANCED_CIRCUIT = circuitItem("advanced_circuit", true);
     public static final DeferredItem<Item> ULTIMATE_CIRCUIT = circuitItem("ultimate_circuit", true);
 
+    // Upgrades
+    public static final DeferredItem<SimpleUpgradeItem> OVERCLOCK_UPGRADE = upgradeItem("overclock_upgrade", () -> new SimpleUpgradeItem(new Item.Properties(), IRUpgrades.OVERCLOCK_UPGRADE));
+
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",
             () -> new HazmatSuiteItem(ArmorItem.Type.BOOTS, new Item.Properties()), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
@@ -93,6 +99,8 @@ public final class IRItems {
             () -> new HazmatSuiteItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().requiredFeatures(WIP_FLAG)), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_HELMET = registerItem("hazmat_helmet",
             () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties().requiredFeatures(WIP_FLAG)), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
+    public static final DeferredItem<JetpackItem> JETPACK = registerItem("jetpack",
+            () -> new JetpackItem(new Item.Properties(), ArmorMaterials.IRON, IREnergyTiers.MEDIUM), calculateTabPosition(ItemTabOrdering.BASIC_ELECTRIC_ARMOR));
 
     // primitive components
     public static final DeferredItem<Item> STICKY_RESIN = primitiveComponent("sticky_resin");
@@ -178,6 +186,10 @@ public final class IRItems {
 
     static DeferredItem<Item> circuitItem(String name, boolean wip) {
         return registerStandardItem(name, calculateTabPosition(ItemTabOrdering.CIRCUITS), wip);
+    }
+
+    static <T extends Item & UpgradeItem> DeferredItem<T> upgradeItem(String name, Supplier<T> itemSupplier) {
+        return registerItem(name, itemSupplier, calculateTabPosition(ItemTabOrdering.UPGRADES));
     }
 
     static <T extends Item> DeferredItem<T> miscItem(String name, Function<Item.Properties, T> itemConstructor) {

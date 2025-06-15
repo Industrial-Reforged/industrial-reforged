@@ -9,11 +9,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CoilBlock extends RotatedPillarBlock {
     public CoilBlock(Properties properties) {
-        super(properties.noCollission());
-    }
-
-    @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return super.getCollisionShape(state, level, pos, context);
+        super(properties);
     }
 }

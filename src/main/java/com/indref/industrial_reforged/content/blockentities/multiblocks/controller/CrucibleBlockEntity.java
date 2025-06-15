@@ -340,12 +340,14 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     private void meltEntities(List<LivingEntity> entities) {
         // TODO: Use actual values
         if (getHeatStorage().getHeatStored() > 100) {
-            for (LivingEntity entity : entities) {
-                if (getHeatStorage().getHeatStored() > 100) {
-                    entity.hurt(level.damageSources().lava(), 7);
-                    getHeatStorage().drain(12, false);
-                } else {
-                    return;
+            if (level.getGameTime() % 25 == 0) {
+                for (LivingEntity entity : entities) {
+                    if (getHeatStorage().getHeatStored() > 100) {
+                        entity.hurt(level.damageSources().lava(), 7);
+                        getHeatStorage().drain(12, false);
+                    } else {
+                        return;
+                    }
                 }
             }
         }
@@ -487,25 +489,6 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
         return new CrucibleMenu(containerId, inventory, this);
-    }
-
-    // TODO: Refactor these two methods using FluidHandler extract methods
-    private boolean canInsertFluidIntoOutput(Fluid fluid) {
-        if (getFluidTank().isEmpty()) return false;
-
-        FluidStack fluidStack = getFluidTank().getFluidInTank(0);
-        return fluidStack.isEmpty() || fluidStack.getFluid().equals(fluid);
-    }
-
-    private boolean canInsertAmountIntoOutput(int count) {
-        if (getFluidTank().isEmpty()) return false;
-
-        for (int i = 0; i < getFluidTank().getTanks(); i++) {
-            FluidStack fluidStack = getFluidTank().getFluidInTank(i);
-            if (fluidStack.getAmount() + count <= getFluidTank().getTankCapacity(i))
-                return true;
-        }
-        return false;
     }
 
     @Override

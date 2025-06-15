@@ -2,7 +2,7 @@
   "type": "indref:centrifuge",
   "duration": 200,
   "energy": 100,
-  "fluidIngredient": {
+  "ingredient": {
     "amount": 16,
     "item": "minecraft:soul_sand"
   },

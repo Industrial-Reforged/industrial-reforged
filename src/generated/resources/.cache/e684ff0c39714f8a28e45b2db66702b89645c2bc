@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-13T23:05:21.047753418	Item Models: indref
+// 1.21.1	2025-06-15T22:40:58.260642672	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -69,6 +69,7 @@ f0b1860428f27476fe7abe457e390a47c55ee86a assets/indref/models/item/drain.json
 1c2bdf327a8d9261e057d850f57209c262d7277c assets/indref/models/item/electric_hoe.json
 64dca56289be895561d2ff72a8cae658b9715cbb assets/indref/models/item/electric_motor.json
 b9186e61952305a23ff76d42b7ac16b02e96c527 assets/indref/models/item/electric_tree_tap.json
+d17d5b7f179075d5ec64ed1e024ff8a33163f091 assets/indref/models/item/epoxy_resin_bucket.json
 3af50307b172a480cd27e2655efb729fa857a183 assets/indref/models/item/fertilizer.json
 774908e5bfad201c5f888db9095848ac8bbc006b assets/indref/models/item/fluid_cell.json
 405b32354edc5c6f4f98867a3730e738f2f55e58 assets/indref/models/item/gold_cable.json
@@ -84,6 +85,13 @@ b501b9cb79adde65dea00abeaf6bde03bc201c94 assets/indref/models/item/iridium_ore.j
 91bc35232af207094764e67702e3458b959d0572 assets/indref/models/item/iron_fence.json
 884573fa8ca989862a1318196bbacf30946ce794 assets/indref/models/item/iron_plate.json
 8a5d6c788b2066b3bde3214b5ac245062133b2ff assets/indref/models/item/iron_rod.json
+499130969f04055a9aa1e39dfe294b969eb284c2 assets/indref/models/item/jetpack.json
+f203bc76e1f0763ae1eb0dce1d038aa8d31f5a4d assets/indref/models/item/jetpack_0.json
+28e7833ee7cde69c7de82a8350c4301ae2067e3d assets/indref/models/item/jetpack_1.json
+3dd9a5262f2a38aba8a00de8d78f9e6481f5b8f8 assets/indref/models/item/jetpack_2.json
+307515c06f4cd4978a16de85b63520065c101652 assets/indref/models/item/jetpack_3.json
+d40bf71a0b1b687babb9a703b7cf2573197e95f2 assets/indref/models/item/jetpack_4.json
+8242c51a3032f223b78fbab6a64f6388910a9265 assets/indref/models/item/jetpack_5.json
 55123fce61a5af3bbe8b69def3316087c8e75948 assets/indref/models/item/lead_block.json
 bdcc51256c3f1c33907e967e4c310b44a15fdfa7 assets/indref/models/item/lead_ingot.json
 7528ae349c9d6f7094360614b934205ea9e06105 assets/indref/models/item/lead_ore.json
@@ -102,6 +110,7 @@ aa2590929c4b324a619fa2115c1e3a0d2230148a assets/indref/models/item/nickel_block.
 bdc030641dd7ef9d4bdb312e287dcdefc451d18c assets/indref/models/item/nickel_ingot.json
 6eb1cc151c41d4633ba9336ae83403a5a35c64a6 assets/indref/models/item/nickel_ore.json
 c69bfaf2341359085c00ec050be6607b0e4cf8c4 assets/indref/models/item/oil_bucket.json
+b6ef0883b49e2bcd08b5570f8cec61f2b887ba8f assets/indref/models/item/overclock_upgrade.json
 b419666f2dd811e6741f5fad51f88a6cf9b32de1 assets/indref/models/item/plant_ball.json
 1496f821e9bf49709cfe533b1f169de7c7894330 assets/indref/models/item/plant_mass.json
 a9d3f81090b3e0c43daee081d2a4c468b53e13f1 assets/indref/models/item/raw_bauxite.json
@@ -149,6 +158,7 @@ c8d46b6cc53dcfbfee6717e262db4ee59b7b8205 assets/indref/models/item/steel_mold_wi
 fbbbce99db5d114f8ef94c59ca2d9124d6d30163 assets/indref/models/item/steel_rod.json
 b50ecc9aa7ab1bb7a7208881c8c9dbae79ff72a8 assets/indref/models/item/steel_wire.json
 bd310326f974ced4aa3b514962a338074a84c66b assets/indref/models/item/sticky_resin.json
+1b3b40c38470b9c5e1479dc4bb65419913129db2 assets/indref/models/item/sticky_resin_bucket.json
 05bbae36dc427bd59dbb26f0fe84ca9c29452ee6 assets/indref/models/item/stripped_rubber_tree_log.json
 620c959eb7d8ccb2a1cd1dc714fedff4e3884cb8 assets/indref/models/item/stripped_rubber_tree_wood.json
 35a38e22a1795635d360c6ad506af5e91558543d assets/indref/models/item/terracotta_brick.json
@@ -178,6 +188,6 @@ d53b27513da89806b1f5e15e6b7320bdadd06f4f assets/indref/models/item/ultimate_batt
 102d86ad7029cbbb7c1b1e69f85355bc51beaaee assets/indref/models/item/uranium_block.json
 5db48cace9829c208e0e34e7e925b22427c0161d assets/indref/models/item/uranium_ingot.json
 88845440414ad24920cef0607a34ef417429eb88 assets/indref/models/item/uranium_ore.json
-bb5cd9582c45c6778bdf00a17aa5ad2a4842b1f0 assets/indref/models/item/wooden_casting_basin.json
+fbc5db3c7fb67f5ee2e97a04abec4ba33c9fc437 assets/indref/models/item/wooden_basin.json
 ad13d8a9ecd29aa5beb5bfc074546573c3c2d3db assets/indref/models/item/wooden_scaffolding.json
 d191fc76dd049b1a4fc1d062b3a7837ccd6d79aa assets/indref/models/item/wrench.json

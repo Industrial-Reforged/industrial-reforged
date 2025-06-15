@@ -1,7 +1,7 @@
-package com.indref.industrial_reforged.api.items;
+package com.indref.industrial_reforged.api.items.reactor;
 
+import com.indref.industrial_reforged.api.items.MultiBarItem;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
-import com.indref.industrial_reforged.util.items.ItemUtils;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public abstract class BaseFuelRodItem extends Item implements MultiBarItem {
-    public BaseFuelRodItem(Properties properties) {
+public abstract class FuelRodItem extends Item implements MultiBarItem {
+    public FuelRodItem(Properties properties) {
         super(properties);
     }
 

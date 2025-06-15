@@ -84,29 +84,6 @@ public final class IRRecipeSerializer {
         );
     }
 
-    protected static final class Centrifuge {
-        static final MapCodec<CentrifugeRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                IngredientWithCount.CODEC.fieldOf("fluidIngredient").forGetter(CentrifugeRecipe::ingredient),
-                ItemStack.CODEC.listOf().fieldOf("results").forGetter(CentrifugeRecipe::results),
-                FluidStack.OPTIONAL_CODEC.fieldOf("result_fluid").forGetter(CentrifugeRecipe::resultFluid),
-                Codec.INT.fieldOf("duration").forGetter(CentrifugeRecipe::duration),
-                Codec.INT.fieldOf("energy").forGetter(CentrifugeRecipe::energy)
-        ).apply(builder, CentrifugeRecipe::new));
-        static final StreamCodec<RegistryFriendlyByteBuf, CentrifugeRecipe> STREAM_CODEC = StreamCodec.composite(
-                IngredientWithCount.STREAM_CODEC,
-                CentrifugeRecipe::ingredient,
-                ItemStack.LIST_STREAM_CODEC,
-                CentrifugeRecipe::results,
-                FluidStack.OPTIONAL_STREAM_CODEC,
-                CentrifugeRecipe::resultFluid,
-                ByteBufCodecs.INT,
-                CentrifugeRecipe::duration,
-                ByteBufCodecs.INT,
-                CentrifugeRecipe::energy,
-                CentrifugeRecipe::new
-        );
-    }
-
     protected static final class BlastFurnace {
         static final MapCodec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
                 IngredientWithCount.CODEC.listOf().fieldOf("ingredients").forGetter(BlastFurnaceRecipe::ingredients),

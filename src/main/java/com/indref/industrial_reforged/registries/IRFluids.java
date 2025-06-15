@@ -11,6 +11,8 @@ public final class IRFluids {
     public static final OilFluid OIL = HELPER.registerFluid(new OilFluid("oil"));
     public static final BioMassFluid BIO_MASS = HELPER.registerFluid(new BioMassFluid("bio_mass"));
     public static final MethaneFluid METHANE = HELPER.registerFluid(new MethaneFluid("methane"));
+    public static final StickyResinFluid STICKY_RESIN = HELPER.registerFluid(new StickyResinFluid("sticky_resin"));
+    public static final EpoxyResinFluid EPOXY_RESIN = HELPER.registerFluid(new EpoxyResinFluid("epoxy_resin"));
     public static final MoltenMetalFluid MOLTEN_ALUMINUM = HELPER.registerFluid(new MoltenMetalFluid("molten_aluminum",
             new Vec3i(226, 232, 242)));
     public static final MoltenMetalFluid MOLTEN_STEEL = HELPER.registerFluid(new MoltenMetalFluid("molten_steel",

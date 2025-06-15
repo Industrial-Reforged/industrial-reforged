@@ -101,7 +101,7 @@ public final class IRConfig {
 
     // Block Heat Production
     private static final ModConfigSpec.DoubleValue SMALL_FIREBOX_PRODUCTION =
-            heatProduction("small_firebox", "Small Firebox", 0.85);
+            heatProduction("small_firebox", "Small Firebox", 2.45);
 
     private static final ModConfigSpec.DoubleValue FIREBOX_PRODUCTION =
             heatProduction("firebox", "Firebox", 0.85);

@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items.misc;
+package com.indref.industrial_reforged.content.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

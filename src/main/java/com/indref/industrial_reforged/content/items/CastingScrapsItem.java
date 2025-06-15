@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.items.misc;
+package com.indref.industrial_reforged.content.items;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.translations.IRTranslations;
@@ -8,10 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.List;
 

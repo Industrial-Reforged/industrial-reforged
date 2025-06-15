@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.content.recipes.recipeInputs.BasinCastingRecipeInput;
+import com.indref.industrial_reforged.content.recipes.recipeInputs.ItemFluidRecipeInput;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
@@ -25,11 +25,11 @@ public class BasinMoldCastingRecipe extends BasinCastingRecipe {
     }
 
     @Override
-    public boolean matches(BasinCastingRecipeInput recipeInput, Level level) {
-        if (!ingredient().test(recipeInput.catalystItem())) return false;
+    public boolean matches(ItemFluidRecipeInput recipeInput, Level level) {
+        if (!ingredient().test(recipeInput.itemStack())) return false;
         TagKey<Item> data = RegistryUtils.holder(BuiltInRegistries.ITEM, resultStack().getItem()).getData(IRDataMaps.MOLD_INGREDIENTS);
         if (data != null) {
-            return recipeInput.catalystItem().is(data)
+            return recipeInput.itemStack().is(data)
                     && this.fluidIngredient().test(recipeInput.fluidStack());
         }
         return false;

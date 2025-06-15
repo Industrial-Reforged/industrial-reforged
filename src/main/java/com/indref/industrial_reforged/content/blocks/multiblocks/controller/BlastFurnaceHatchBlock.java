@@ -59,6 +59,7 @@ public class BlastFurnaceHatchBlock extends RotatableContainerBlock implements C
                     BlockPos actualBlockEntityPos = blastFurnaceBlockEntity.getActualBlockEntityPos();
                     if (actualBlockEntityPos != null) {
                         MultiblockHelper.unform(IRMultiblocks.BLAST_FURNACE.get(), actualBlockEntityPos, level);
+                        BlockUtils.dropCastingScraps(level, blockPos);
                     }
                 }
             }
