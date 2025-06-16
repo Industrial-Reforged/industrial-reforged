@@ -32,6 +32,11 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity {
     }
 
     @Override
+    public boolean supportsUpgrades() {
+        return false;
+    }
+
+    @Override
     public void commonTick() {
         super.commonTick();
 

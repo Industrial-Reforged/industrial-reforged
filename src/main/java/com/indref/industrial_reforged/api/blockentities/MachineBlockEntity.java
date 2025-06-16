@@ -3,6 +3,8 @@ package com.indref.industrial_reforged.api.blockentities;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
+import com.indref.industrial_reforged.api.upgrade.Upgrade;
+import com.indref.industrial_reforged.registries.IRUpgrades;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -11,20 +13,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity {
     private @Nullable ChargingSlot batterySlot;
     private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
     private boolean removedUsingWrench;
+    private final Set<Upgrade> defaultSupportedUpgrades;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.caches = new ArrayList<>();
+        this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCK_UPGRADE.get());
     }
 
     public void addBatterySlot(ChargingSlot chargingSlot) {
@@ -107,6 +111,12 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     @Override
     public void beforeRemoveByWrench(Player player) {
         this.removedUsingWrench = true;
+    }
+
+    public abstract boolean supportsUpgrades();
+
+    public Set<Upgrade> getSupportedUpgrades() {
+        return this.defaultSupportedUpgrades;
     }
 
     @Override

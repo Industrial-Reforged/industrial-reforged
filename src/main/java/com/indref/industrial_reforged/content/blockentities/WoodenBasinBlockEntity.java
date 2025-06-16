@@ -13,16 +13,22 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.Map;
 import java.util.Optional;
@@ -96,6 +102,27 @@ public class WoodenBasinBlockEntity extends IRContainerBlockEntity {
     @Override
     public void commonTick() {
         super.commonTick();
+
+        if (this.level.isClientSide() && this.recipe != null) {
+            FluidStack fluidStack = this.getFluidHandler().getFluidInTank(0);
+            if (!fluidStack.isEmpty() && level.getGameTime() % 10 == 0) {
+                IClientFluidTypeExtensions clientFluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+                int tintColor = clientFluidTypeExtensions.getTintColor();
+
+                double x = this.worldPosition.getX() + (this.level.random.nextDouble() - 0.5) / 2 + 0.5;
+                double y = this.worldPosition.getY() + ((float) 8 / 16);
+                double z = this.worldPosition.getZ() + (this.level.random.nextDouble() - 0.5) / 2 + 0.5;
+
+                double velocityX = (this.level.random.nextDouble() - 0) * 0.06;
+                double velocityY = 0.05 + this.level.random.nextDouble() * 2;
+                double velocityZ = (this.level.random.nextDouble() - 0) * 0.06;
+
+                float r = FastColor.ARGB32.red(tintColor) / 255f - 0.2f;
+                float g = FastColor.ARGB32.green(tintColor) / 255f - 0.2f;
+                float b = FastColor.ARGB32.blue(tintColor) / 255f - 0.2f;
+                this.level.addParticle(new DustParticleOptions(new Vector3f(r, g, b), 1), x, y, z, velocityX, velocityY, velocityZ);
+            }
+        }
 
         if (this.recipe != null) {
             this.duration++;

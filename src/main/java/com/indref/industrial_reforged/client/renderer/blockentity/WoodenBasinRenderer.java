@@ -4,25 +4,21 @@ import com.indref.industrial_reforged.content.blockentities.WoodenBasinBlockEnti
 import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
 import com.indref.industrial_reforged.content.recipes.WoodenBasinRecipe;
 import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -30,6 +26,8 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.joml.Matrix4f;
+
+import java.util.Random;
 
 import static net.minecraft.client.renderer.LightTexture.FULL_BRIGHT;
 
@@ -75,20 +73,75 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
 
         int alpha = 1;
 
-        renderItem(ingredientItem, blockEntity, poseStack, multiBufferSource, itemRenderer);
+        float baseFluidHeight = 0.025f; // default when no fluid
+        float surfaceHeight = baseFluidHeight;
+        float floatOffset = 0;
 
-        if (!inputFluidStack.isEmpty()) {
-            int fluidCapacity = fluidHandler.getTankCapacity(0);
-            float fillPercentage = Math.min(1, (float) inputFluidStack.getAmount() / fluidCapacity) / 2;
-
-            renderFluid(poseStack, multiBufferSource, inputFluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
-        }
+// --- Fluid Height Calculation ---
 
         if (!resultFluid.isEmpty()) {
-            int fluidCapacity = fluidHandler.getTankCapacity(1);
-            float fillPercentage = Math.min(1, (float) resultFluid.getAmount() / fluidCapacity) / 2;
+            int capacity = fluidHandler.getTankCapacity(1);
+            float fillRatio = Math.min(1f, (float) fluidHandler.getFluidInTank(1).getAmount() / capacity);
+            surfaceHeight = (2f / 16f) + (fillRatio * (7f / 16f));
 
-            renderFluid(poseStack, multiBufferSource, resultFluid, alpha, fillPercentage, combinedLight, resultFluidOpactiy);
+            renderFluid(blockEntity, poseStack, multiBufferSource, resultFluid, alpha, fillRatio, combinedLight, resultFluidOpactiy);
+        }
+
+        if (!inputFluidStack.isEmpty()) {
+            int capacity = fluidHandler.getTankCapacity(0);
+            float fillRatio = Math.min(1f, (float) inputFluidStack.getAmount() / capacity);
+            surfaceHeight = (2f / 16f) + (fillRatio * (7f / 16f));
+
+            renderFluid(blockEntity, poseStack, multiBufferSource, inputFluidStack, alpha, fillRatio, combinedLight, fluidOpacity);
+        }
+
+// --- Floating Offset (sine wave) ---
+        if (!inputFluidStack.isEmpty() || !resultFluid.isEmpty()) {
+            float time = (blockEntity.getLevel().getGameTime() + v) % 360;
+            floatOffset = (float) Math.sin(time * 0.1f) * 0.015f;
+            surfaceHeight = Math.max(baseFluidHeight / 2, surfaceHeight - 7f / 16f);
+        } else {
+            surfaceHeight -= 2f / 16f;
+        }
+
+// --- Item Rendering ---
+        if (!ingredientItem.isEmpty()) {
+            int maxItems = 3;
+            int itemCount = ingredientItem.getCount();
+            int stackSize = Math.max(ingredientItem.getMaxStackSize(), 16);
+            int renderedItems = Math.max(1, (int) Math.min(((double) itemCount / stackSize + 0.3) * 3, maxItems));
+
+            Random rand = new Random(blockEntity.getBlockPos().asLong()); // consistent randomness
+
+            for (int i = 0; i < renderedItems; i++) {
+                poseStack.pushPose();
+                {
+                    // Base position
+                    poseStack.translate(0.5, 0.5, 0.5);
+                    poseStack.mulPose(Axis.XN.rotationDegrees(2));
+                    poseStack.mulPose(Axis.ZN.rotationDegrees(2));
+                    poseStack.scale(0.85f, 0.85f, 0.85f);
+                    poseStack.translate(-0.5, -0.5, -0.5);
+
+                    // Y translation with item "submersion"
+                    float submergeOffset = i * 0.075f; // deeper per item
+                    float y = surfaceHeight + floatOffset + submergeOffset;
+                    poseStack.translate(0.05, y, 0);
+
+                    // Directional offset
+                    if (direction == Direction.WEST) {
+                        poseStack.translate(-0.125, 0, 0);
+                    } else if (direction == Direction.SOUTH) {
+                        poseStack.translate(-0.045, 0, 0);
+                    }
+
+                    // Random jitter
+                    poseStack.translate((rand.nextFloat() - 0.5f) / 8f, 0, (rand.nextFloat() - 0.5f) / 8f);
+
+                    renderItem(ingredientItem, blockEntity, poseStack, multiBufferSource, itemRenderer);
+                }
+                poseStack.popPose();
+            }
         }
 
 
@@ -97,7 +150,7 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
     private void renderItem(ItemStack item, WoodenBasinBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, ItemRenderer itemRenderer) {
         poseStack.pushPose();
         {
-            poseStack.translate(0.5f, 0.24f, 0.5f);
+            poseStack.translate(0.5f, 0.18f, 0.5f);
             poseStack.scale(0.78f, 0.78f, 0.78f);
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
 
@@ -109,13 +162,7 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
         poseStack.popPose();
     }
 
-    private int getLightLevel(Level level, BlockPos pos) {
-        int bLight = level.getBrightness(LightLayer.BLOCK, pos);
-        int sLight = level.getBrightness(LightLayer.SKY, pos);
-        return LightTexture.pack(bLight, sLight);
-    }
-
-    private static void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float heightPercentage, int combinedLight, int opacity) {
+    private static void renderFluid(WoodenBasinBlockEntity be, PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float heightPercentage, int combinedLight, int opacity) {
         VertexConsumer vertexBuilder = bufferSource.getBuffer(IRRenderTypes.FLUID);
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidTypeExtensions.getStillTexture(fluidStack));
@@ -131,21 +178,24 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
         float green = (color >> 8 & 255) / 255f;
         float blue = (color & 255) / 255f;
 
-        renderQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+        renderQuads(be, poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
     }
 
-    private static void renderQuads(Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float heightPercentage, int light) {
-        float height = (2f / 16f) + (heightPercentage * (7f / 16f));
+    private static void renderQuads(WoodenBasinBlockEntity be, Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float heightPercentage, int light) {
+        float height = (2f / 16f) + (heightPercentage * (7f / 16f)) / 2;
         float minU = sprite.getU(SIDE_MARGIN), maxU = sprite.getU((1 - SIDE_MARGIN));
-        float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
+        int blockLight = be.getLevel().getBrightness(LightLayer.BLOCK, be.getBlockPos()); // 0–15
+        int skyLight = be.getLevel().getBrightness(LightLayer.SKY, be.getBlockPos());     // 0–15
 
+        int u = blockLight * 16;
+        int v = skyLight * 16;
         // top
-        minV = sprite.getV(SIDE_MARGIN);
-        maxV = sprite.getV(1 - SIDE_MARGIN);
-        buffer.addVertex(matrix, SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setLight(light).setNormal(0, 1, 0);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setLight(light).setNormal(0, 1, 0);
+        float minV = sprite.getV(SIDE_MARGIN);
+        float maxV = sprite.getV(1 - SIDE_MARGIN);
+        buffer.addVertex(matrix, SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
 
     }
 }

@@ -69,9 +69,15 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         return maxBurnTime;
     }
 
+    // TODO: Create config for this
     @Override
     public int getGenerationAmount() {
         return 10;
+    }
+
+    @Override
+    public boolean supportsUpgrades() {
+        return false;
     }
 
     @Override

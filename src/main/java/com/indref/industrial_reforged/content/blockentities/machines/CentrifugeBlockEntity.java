@@ -55,6 +55,11 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                 || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
     }
 
+    @Override
+    public boolean supportsUpgrades() {
+        return true;
+    }
+
     public int getProgress() {
         return duration;
     }

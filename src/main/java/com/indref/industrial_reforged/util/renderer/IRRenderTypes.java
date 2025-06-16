@@ -10,18 +10,16 @@ public class IRRenderTypes extends RenderStateShard {
     public static final RenderType TEST_RENDER_TYPE;
     public static final RenderType FLUID = RenderType.create(
             "mod_fluid",
-            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+            DefaultVertexFormat.BLOCK,
             VertexFormat.Mode.QUADS,
             256,
             false,
             true,
             RenderType.CompositeState.builder()
-                    .setShaderState(RenderType.POSITION_COLOR_TEX_LIGHTMAP_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(InventoryMenu.BLOCK_ATLAS, false, false))
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+                    .setShaderState(RENDERTYPE_TRANSLUCENT_SHADER)
+                    .setTextureState(BLOCK_SHEET_MIPPED)
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setLightmapState(LIGHTMAP)
                     .createCompositeState(true)
     );
 
