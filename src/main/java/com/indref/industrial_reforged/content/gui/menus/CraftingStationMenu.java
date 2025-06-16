@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.content.blockentities.CraftingStationBlock
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.craftingStation.ItemhandlerCraftingContainer;
 import com.indref.industrial_reforged.util.recipes.craftingStation.SmartItemHandlerSlot;
+import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class CraftingStationMenu extends MachineContainerMenu<CraftingStationBlockEntity> {
+public class CraftingStationMenu extends PDLAbstractContainerMenu<CraftingStationBlockEntity> {
     public static final int BLUEPRINT_SLOT = 28;
 
     private final ItemhandlerCraftingContainer craftSlots;

@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.blockentities.RedstoneBlockEntity;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
@@ -116,7 +117,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.ULTIMATE_CIRCUIT, "Ultimate Circuit");
         addItem(IRItems.CIRCUIT_BOARD, "Circuit Board");
 
-        addItem(IRItems.OVERCLOCK_UPGRADE, "Overclock Upgrade");
+        addItem(IRItems.OVERCLOCKER_UPGRADE, "Overclocker Upgrade");
 
         addItem(IRItems.ELECTRIC_MOTOR, "Electric Motor");
         addItem(IRItems.ANTENNA, "Antenna");
@@ -224,6 +225,15 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.RUBBER_TREE_BUTTON, "Rubber Tree Button");
         addBlock(IRBlocks.RUBBER_TREE_SLAB, "Rubber Tree Slab");
         addBlock(IRBlocks.RUBBER_TREE_STAIRS, "Rubber Tree Stairs");
+
+        addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.IGNORED, "Ignored");
+        addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.LOW_SIGNAL, "Low Signal");
+        addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.HIGH_SIGNAL, "High Signal");
+
+    }
+
+    private void addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType signalType, String translation) {
+        add("redstone_signal_type."+IndustrialReforged.MODID+"."+signalType.getSerializedName(), translation);
     }
 
     private void addMetals(String key, String val) {

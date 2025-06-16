@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "indref:block/blast_furnace_casting_basin",
+      "y": 90
+    },
+    "facing=north": {
       "model": "indref:block/blast_furnace_casting_basin"
+    },
+    "facing=south": {
+      "model": "indref:block/blast_furnace_casting_basin",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indref:block/blast_furnace_casting_basin",
+      "y": 270
     }
   }
 }

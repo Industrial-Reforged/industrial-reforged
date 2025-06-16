@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "indref:block/wooden_basin",
+      "y": 90
+    },
+    "facing=north": {
       "model": "indref:block/wooden_basin"
+    },
+    "facing=south": {
+      "model": "indref:block/wooden_basin",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indref:block/wooden_basin",
+      "y": 270
     }
   }
 }

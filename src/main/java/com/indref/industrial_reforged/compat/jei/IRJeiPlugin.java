@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.compat.jei;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.client.screen.CentrifugeScreen;
 import com.indref.industrial_reforged.content.recipes.*;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlocks;
@@ -11,10 +12,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.ingredients.subtypes.UidContext;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -133,5 +131,10 @@ public class IRJeiPlugin implements IModPlugin {
 
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.BLAST_FURNACE_CONTROLLER.get()),
                 BlastFurnaceCategory.RECIPE_TYPE);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addGenericGuiContainerHandler(CentrifugeScreen.class, new WidgetBounds());
     }
 }

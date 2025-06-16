@@ -2,11 +2,17 @@ package com.indref.industrial_reforged.api.blockentities;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.item.UpgradeItemHandler;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.upgrade.Upgrade;
 import com.indref.industrial_reforged.registries.IRUpgrades;
+import com.indref.industrial_reforged.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,18 +23,36 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity {
+public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity, RedstoneBlockEntity, UpgradeBlockEntity {
     private @Nullable ChargingSlot batterySlot;
     private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
     private boolean removedUsingWrench;
+    private final UpgradeItemHandler upgradeItemHandler;
     private final Set<Upgrade> defaultSupportedUpgrades;
+    private RedstoneSignalType redstoneSignalType;
+    private int redstoneSignalStrength;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.caches = new ArrayList<>();
-        this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCK_UPGRADE.get());
+        this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE.get());
+        if (this.supportsUpgrades()) {
+            this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades);
+        } else {
+            this.upgradeItemHandler = null;
+        }
+        this.redstoneSignalType = RedstoneSignalType.IGNORED;
+    }
+
+    public void setRedstoneSignalStrength(int redstoneSignalStrength) {
+        this.redstoneSignalStrength = redstoneSignalStrength;
+    }
+
+    public int getRedstoneSignalStrength() {
+        return redstoneSignalStrength;
     }
 
     public void addBatterySlot(ChargingSlot chargingSlot) {
@@ -94,6 +118,11 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     }
 
     @Override
+    public UpgradeItemHandler getUpgradeItemHandler() {
+        return upgradeItemHandler;
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
 
@@ -123,6 +152,45 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     public void drop() {
         if (!this.removedUsingWrench) {
             super.drop();
+        } else {
+            this.removedUsingWrench = false;
         }
+    }
+
+    @Override
+    public int emitRedstoneLevel() {
+        return 0;
+    }
+
+    @Override
+    public RedstoneSignalType getRedstoneSignalType() {
+        return redstoneSignalType;
+    }
+
+    @Override
+    public void setRedstoneSignalType(RedstoneSignalType redstoneSignalType) {
+        this.redstoneSignalType = redstoneSignalType;
+        update();
+    }
+
+    @Override
+    protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadData(tag, provider);
+        if (this.upgradeItemHandler != null)
+            this.upgradeItemHandler.deserializeNBT(provider, tag.getCompound("upgrade_item_handler"));
+        this.redstoneSignalStrength = tag.getInt("signal_strength");
+        this.redstoneSignalType = RedstoneSignalType.CODEC.decode(NbtOps.INSTANCE, tag.get("redstone_signal")).result().orElse(com.mojang.datafixers.util.Pair.of(RedstoneSignalType.IGNORED, new CompoundTag())).getFirst();
+    }
+
+    @Override
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
+        if (this.upgradeItemHandler != null)
+            tag.put("upgrade_item_handler", this.upgradeItemHandler.serializeNBT(provider));
+        tag.putInt("signal_strength", this.redstoneSignalStrength);
+        Optional<Tag> tag1 = RedstoneSignalType.CODEC.encodeStart(NbtOps.INSTANCE, this.redstoneSignalType).result();
+        tag1.ifPresent(value -> {
+            tag.put("redstone_signal", value);
+        });
     }
 }

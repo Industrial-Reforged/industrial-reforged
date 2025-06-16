@@ -88,7 +88,7 @@ public final class IRItems {
     public static final DeferredItem<Item> ULTIMATE_CIRCUIT = circuitItem("ultimate_circuit", true);
 
     // Upgrades
-    public static final DeferredItem<SimpleUpgradeItem> OVERCLOCK_UPGRADE = upgradeItem("overclock_upgrade", () -> new SimpleUpgradeItem(new Item.Properties(), IRUpgrades.OVERCLOCK_UPGRADE));
+    public static final DeferredItem<SimpleUpgradeItem> OVERCLOCKER_UPGRADE = upgradeItem("overclocker_upgrade", () -> new SimpleUpgradeItem(new Item.Properties(), IRUpgrades.OVERCLOCKER_UPGRADE));
 
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",

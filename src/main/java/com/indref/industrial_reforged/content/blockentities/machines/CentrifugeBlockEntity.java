@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
+import com.indref.industrial_reforged.api.blockentities.RedstoneBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
@@ -35,6 +36,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -181,15 +183,14 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        checkRecipe();
+    public int emitRedstoneLevel() {
+        return ItemHandlerHelper.calcRedstoneFromInventory(this.getItemHandler());
     }
 
     @Override
-    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveData(tag, provider);
-        tag.putInt("duration", duration);
+    public void onLoad() {
+        super.onLoad();
+        checkRecipe();
     }
 
     @Override
@@ -214,4 +215,11 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         super.loadData(tag, provider);
         this.duration = tag.getInt("duration");
     }
+
+    @Override
+    protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveData(tag, provider);
+        tag.putInt("duration", duration);
+    }
+
 }

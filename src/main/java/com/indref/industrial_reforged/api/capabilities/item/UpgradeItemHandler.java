@@ -23,4 +23,9 @@ public class UpgradeItemHandler extends ItemStackHandler {
     public boolean isItemValid(int slot, ItemStack stack) {
         return stack.getItem() instanceof UpgradeItem upgradeItem && this.supportedUpgrades.contains(upgradeItem.getUpgrade());
     }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return 4;
+    }
 }

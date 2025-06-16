@@ -10,6 +10,6 @@ import java.util.function.Supplier;
 public final class IRUpgrades {
     public static final DeferredRegister<Upgrade> UPGRADES = DeferredRegister.create(IRRegistries.UPGRADE, IndustrialReforged.MODID);
 
-    public static final Supplier<Upgrade> OVERCLOCK_UPGRADE = UPGRADES.register("overclock", () -> new Upgrade() {
+    public static final Supplier<Upgrade> OVERCLOCKER_UPGRADE = UPGRADES.register("overclocker", () -> new Upgrade() {
     });
 }

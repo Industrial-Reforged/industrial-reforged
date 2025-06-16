@@ -17,7 +17,18 @@ public abstract class MachineBlock extends ContainerBlock {
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
 
-        BlockUtils.getBE(level, pos, MachineBlockEntity.class).initCapCache();
+        MachineBlockEntity be = BlockUtils.getBE(level, pos, MachineBlockEntity.class);
+        be.initCapCache();
+        be.setRedstoneSignalStrength(level.getBestNeighborSignal(pos));
     }
 
+    @Override
+    protected boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return BlockUtils.getBE(level, pos, MachineBlockEntity.class).emitRedstoneLevel();
+    }
 }

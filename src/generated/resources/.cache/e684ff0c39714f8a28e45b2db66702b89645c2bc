@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-15T22:40:58.260642672	Item Models: indref
+// 1.21.1	2025-06-16T17:51:12.432092635	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -110,7 +110,7 @@ aa2590929c4b324a619fa2115c1e3a0d2230148a assets/indref/models/item/nickel_block.
 bdc030641dd7ef9d4bdb312e287dcdefc451d18c assets/indref/models/item/nickel_ingot.json
 6eb1cc151c41d4633ba9336ae83403a5a35c64a6 assets/indref/models/item/nickel_ore.json
 c69bfaf2341359085c00ec050be6607b0e4cf8c4 assets/indref/models/item/oil_bucket.json
-b6ef0883b49e2bcd08b5570f8cec61f2b887ba8f assets/indref/models/item/overclock_upgrade.json
+e2122e2c8f556b9d7b7083ab9c9b5f76dbb1dd02 assets/indref/models/item/overclocker_upgrade.json
 b419666f2dd811e6741f5fad51f88a6cf9b32de1 assets/indref/models/item/plant_ball.json
 1496f821e9bf49709cfe533b1f169de7c7894330 assets/indref/models/item/plant_mass.json
 a9d3f81090b3e0c43daee081d2a4c468b53e13f1 assets/indref/models/item/raw_bauxite.json

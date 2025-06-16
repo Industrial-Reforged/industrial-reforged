@@ -9,6 +9,7 @@ import com.portingdeadmods.portingdeadlibs.utils.capabilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -66,6 +67,26 @@ public final class BlockUtils {
                     }
                 }
             }
+        }
+    }
+
+    public static int calcRedstoneFromTank(IFluidHandler fluidHandler) {
+        if (fluidHandler == null) {
+            return 0;
+        } else {
+            int fluidsFound = 0;
+            float proportion = 0.0F;
+
+            for(int j = 0; j < fluidHandler.getTanks(); ++j) {
+                FluidStack fluidStack = fluidHandler.getFluidInTank(j);
+                if (!fluidStack.isEmpty()) {
+                    proportion += (float)fluidStack.getAmount() / (float)fluidHandler.getTankCapacity(j);
+                    ++fluidsFound;
+                }
+            }
+
+            proportion /= (float)fluidHandler.getTanks();
+            return Mth.floor(proportion * 14.0F) + (fluidsFound > 0 ? 1 : 0);
         }
     }
 

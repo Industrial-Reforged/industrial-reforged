@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +13,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class BlastFurnaceMenu extends MachineContainerMenu<BlastFurnaceBlockEntity> {
+public class BlastFurnaceMenu extends PDLAbstractContainerMenu<BlastFurnaceBlockEntity> {
 
     public BlastFurnaceMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv, (BlastFurnaceBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));

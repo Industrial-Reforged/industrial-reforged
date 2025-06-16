@@ -1,10 +1,10 @@
 package com.indref.industrial_reforged.content.gui.menus;
 
-import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class CrucibleMenu extends MachineContainerMenu<CrucibleBlockEntity> {
+public class CrucibleMenu extends PDLAbstractContainerMenu<CrucibleBlockEntity> {
     private final Level level;
 
     public CrucibleMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
