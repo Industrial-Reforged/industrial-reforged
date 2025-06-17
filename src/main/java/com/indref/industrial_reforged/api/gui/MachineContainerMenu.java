@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.api.gui;
 
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
+import com.indref.industrial_reforged.api.gui.slots.SlotAccessor;
 import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
@@ -21,9 +22,9 @@ public abstract class MachineContainerMenu<T extends MachineBlockEntity> extends
         this.upgradeSlots = new ArrayList<>();
         if (blockEntity.supportsUpgrades()) {
             for (int i = 0; i < blockEntity.getUpgradeItemHandler().getSlots(); i++) {
-                UpgradeSlot slot = new UpgradeSlot(blockEntity.getUpgradeItemHandler(), i, 179, 56 + i * 20);
+                UpgradeSlot slot = new UpgradeSlot(blockEntity.getUpgradeItemHandler(), i, 179, 51 + i * 20);
                 slot.setActive(false);
-                addSlot(slot);
+                this.addSlot(slot);
                 this.upgradeSlots.add(slot);
             }
         }
@@ -39,6 +40,14 @@ public abstract class MachineContainerMenu<T extends MachineBlockEntity> extends
             machineBlockEntity.addBatterySlot(chargingSlot);
         }
         return super.addSlot(slot);
+    }
+
+    public void setUpgradeSlotPositions(int startY) {
+        List<UpgradeSlot> upgradeSlots = this.getUpgradeSlots();
+        for (int i = 0; i < upgradeSlots.size(); i++) {
+            UpgradeSlot upgradeSlot = upgradeSlots.get(i);
+            ((SlotAccessor) upgradeSlot).setY(startY + i * 20);
+        }
     }
 
 }

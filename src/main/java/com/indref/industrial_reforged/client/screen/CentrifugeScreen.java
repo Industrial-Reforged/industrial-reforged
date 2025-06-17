@@ -2,29 +2,27 @@ package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.api.client.screen.MachineScreen;
+import com.indref.industrial_reforged.api.client.widget.PanelWidget;
+import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
 import com.indref.industrial_reforged.client.widgets.*;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
-import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
+import com.indref.industrial_reforged.networking.UpgradeWidgetSetSlotPositionsPayload;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu> {
+public class CentrifugeScreen extends MachineScreen<CentrifugeMenu> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/centrifuge.png");
     private static final ResourceLocation PROGRESS_SPRITE =
             ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "container/centrifuge/progress_arrows");
-
-    private RedstoneWidget redstoneWidget;
-    private UpgradeWidget upgradeWidget;
 
     public CentrifugeScreen(CentrifugeMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
@@ -44,23 +42,14 @@ public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu>
         );
         addRenderableOnly(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 4));
 
-        MachineWidgetContext context = new MachineWidgetContext(this.menu, this::onWidgetResize);
-        this.redstoneWidget = new RedstoneWidget(menu.blockEntity, this.leftPos + this.imageWidth, this.topPos + 2, 32, 32, context);
-        this.redstoneWidget.visitWidgets(this::addRenderableWidget);
+        addPanelWidget(new RedstonePanelWidget(this.leftPos + this.imageWidth, this.topPos + 2));
+        addPanelWidget(new UpgradePanelWidget(this.leftPos + this.imageWidth, this.topPos + 2 + 24 + 2));
 
-        this.upgradeWidget = new UpgradeWidget(menu.blockEntity, this.leftPos + this.imageWidth, this.topPos + 2 + 24 + 2, 32, 32, context);
-        this.upgradeWidget.visitWidgets(this::addRenderableWidget);
-    }
+        PacketDistributor.sendToServer(new UpgradeWidgetSetSlotPositionsPayload(51));
+        this.menu.setUpgradeSlotPositions(51);
 
-    private void onWidgetResize(PanelWidget widget) {
-        PanelWidget otherWidget = widget instanceof RedstoneWidget ? this.upgradeWidget : this.redstoneWidget;
-        int y = 0;
-        if (widget.getY() < otherWidget.getY()) {
-            y = (otherWidget instanceof RedstoneWidget ? RedstoneWidget.WIDGET_OPEN_HEIGHT : UpgradeWidget.WIDGET_OPEN_HEIGHT) / 2 * (widget.isOpen() ? 1 : -1);
-        }
-        if (widget.isOpen()) {
-            otherWidget.setPosition(otherWidget.getX(), otherWidget.getY() + y);
-            otherWidget.visitWidgets(this::addRenderableWidget);
+        for (UpgradeSlot upgradeSlot : this.menu.getUpgradeSlots()) {
+            upgradeSlot.setActive(false);
         }
     }
 
@@ -101,10 +90,7 @@ public class CentrifugeScreen extends PDLAbstractContainerScreen<CentrifugeMenu>
     }
 
     public List<Rect2i> getBounds() {
-        List<Rect2i> rects = new ArrayList<>();
-        rects.add(this.redstoneWidget.getBounds());
-        rects.add(this.upgradeWidget.getBounds());
-        return rects;
+        return this.panelWidgets.stream().map(PanelWidget::getBounds).toList();
     }
 
 }

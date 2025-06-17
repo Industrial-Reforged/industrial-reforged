@@ -251,6 +251,7 @@ public final class IndustrialReforged {
         registrar.playToServer(EmptyCruciblePayload.TYPE, EmptyCruciblePayload.STREAM_CODEC, EmptyCruciblePayload::handle);
         registrar.playToServer(RedstoneSignalTypeSyncPayload.TYPE, RedstoneSignalTypeSyncPayload.STREAM_CODEC, RedstoneSignalTypeSyncPayload::handle);
         registrar.playToServer(UpgradeWidgetOpenClosePayload.TYPE, UpgradeWidgetOpenClosePayload.STREAM_CODEC, UpgradeWidgetOpenClosePayload::handle);
+        registrar.playToServer(UpgradeWidgetSetSlotPositionsPayload.TYPE, UpgradeWidgetSetSlotPositionsPayload.STREAM_CODEC, UpgradeWidgetSetSlotPositionsPayload::handle);
 
         registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, CrucibleControllerPayload::handle);
         registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, CrucibleMeltingProgressPayload::handle);

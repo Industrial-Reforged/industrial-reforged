@@ -1,48 +1,41 @@
 package com.indref.industrial_reforged.client.widgets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.RedstoneBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.UpgradeBlockEntity;
-import com.indref.industrial_reforged.api.blocks.MachineBlock;
-import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
+import com.indref.industrial_reforged.api.client.widget.PanelWidget;
 import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
 import com.indref.industrial_reforged.networking.UpgradeWidgetOpenClosePayload;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
+import com.indref.industrial_reforged.networking.UpgradeWidgetSetSlotPositionsPayload;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.function.Consumer;
-
-public class UpgradeWidget extends PanelWidget {
+public class UpgradePanelWidget extends PanelWidget {
     public static final ResourceLocation WIDGET_SPRITE = IndustrialReforged.rl("widget/widget_upgrade_right");
     public static final ResourceLocation WIDGET_OPEN_SPRITE = IndustrialReforged.rl("widget/upgrade_widget_open");
     public static final int WIDGET_WIDTH = 32, WIDGET_HEIGHT = 32;
-    public static final int WIDGET_OPEN_WIDTH = 48, WIDGET_OPEN_HEIGHT = 112;
+    public static final int WIDGET_OPEN_WIDTH = 32, WIDGET_OPEN_HEIGHT = 112;
 
-    private final UpgradeBlockEntity upgradeBlockEntity;
+    private UpgradeBlockEntity upgradeBlockEntity;
 
-    public UpgradeWidget(UpgradeBlockEntity blockEntity, int x, int y, int width, int height, MachineWidgetContext context) {
-        super(x, y, width, height, context);
+    public UpgradePanelWidget(int x, int y) {
+        super(x, y, WIDGET_OPEN_WIDTH - 8, WIDGET_OPEN_HEIGHT - 8, WIDGET_WIDTH - 8, WIDGET_HEIGHT - 8);
         this.open = false;
-        this.upgradeBlockEntity = blockEntity;
+    }
+
+    @Override
+    public void setContext(MachineWidgetContext context) {
+        super.setContext(context);
+        this.upgradeBlockEntity = context.menu().blockEntity;
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         boolean isHovered = mouseX >= this.getX()
                 && mouseY >= this.getY()
-                && mouseX < this.getX() + WIDGET_WIDTH
-                && mouseY < this.getY() + WIDGET_HEIGHT;
+                && mouseX < this.getX() + this.getClosedWidth()
+                && mouseY < this.getY() + (this.getClosedHeight() - 4);
 
         if (isHovered) {
             this.open = !this.open;
@@ -83,10 +76,21 @@ public class UpgradeWidget extends PanelWidget {
     }
 
     @Override
+    public void onWidgetResized(PanelWidget resizedWidget) {
+        super.onWidgetResized(resizedWidget);
+
+        if (resizedWidget.isOpen()) {
+            PacketDistributor.sendToServer(new UpgradeWidgetSetSlotPositionsPayload(27 + resizedWidget.getOpenHeight()));
+            this.context.menu().setUpgradeSlotPositions(27 + resizedWidget.getOpenHeight());
+        } else {
+            PacketDistributor.sendToServer(new UpgradeWidgetSetSlotPositionsPayload(51));
+            this.context.menu().setUpgradeSlotPositions(51);
+        }
+
+    }
+
+    @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
     }
 
-    public Rect2i getBounds() {
-        return new Rect2i(getX(), getY(), this.getWidth(), this.getHeight());
-    }
 }

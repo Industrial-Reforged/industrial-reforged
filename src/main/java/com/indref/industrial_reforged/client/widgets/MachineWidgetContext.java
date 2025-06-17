@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.client.widgets;
 
+import com.indref.industrial_reforged.api.client.widget.PanelWidget;
 import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
-import net.minecraft.client.gui.components.AbstractWidget;
 
 import java.util.function.Consumer;
 
