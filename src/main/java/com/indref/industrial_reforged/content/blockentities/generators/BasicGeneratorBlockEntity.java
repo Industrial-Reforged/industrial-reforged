@@ -38,6 +38,7 @@ import java.util.Map;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
+// TODO: Redstone controls
 public class BasicGeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, GeneratorBlockEntity {
     private int burnTime;
     private int maxBurnTime;

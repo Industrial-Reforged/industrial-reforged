@@ -2,9 +2,7 @@ package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
-import com.indref.industrial_reforged.util.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
-import com.indref.industrial_reforged.util.items.ItemUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

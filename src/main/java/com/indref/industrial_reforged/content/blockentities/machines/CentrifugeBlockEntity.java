@@ -44,6 +44,7 @@ import java.util.*;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
+// TODO: Redstone control, manual fluid insertion, extraction
 public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuProvider {
     private @Nullable CentrifugeRecipe recipe;
 

@@ -1,9 +1,7 @@
 package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.util.TooltipUtils;
-import com.indref.industrial_reforged.util.items.ItemBarUtils;
-import com.indref.industrial_reforged.util.items.ItemUtils;
+import com.indref.industrial_reforged.util.items.TooltipUtils;
 import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.network.chat.Component;

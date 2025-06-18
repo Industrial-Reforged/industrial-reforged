@@ -40,7 +40,14 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         this.caches = new ArrayList<>();
         this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE.get());
         if (this.supportsUpgrades()) {
-            this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades);
+            this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades){
+                @Override
+                protected void onContentsChanged(int slot) {
+                    super.onContentsChanged(slot);
+
+                    update();
+                }
+            };
         } else {
             this.upgradeItemHandler = null;
         }

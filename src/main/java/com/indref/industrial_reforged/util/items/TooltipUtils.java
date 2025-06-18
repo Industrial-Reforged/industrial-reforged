@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.util;
+package com.indref.industrial_reforged.util.items;
 
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -6,13 +6,11 @@ import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.translations.IRTranslations;
-import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
 import com.portingdeadmods.portingdeadlibs.utils.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 

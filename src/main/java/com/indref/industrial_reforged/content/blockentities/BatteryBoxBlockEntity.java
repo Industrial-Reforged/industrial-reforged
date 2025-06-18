@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+// TODO: GUI & Redstone
 public class BatteryBoxBlockEntity extends MachineBlockEntity {
     private final Map<Direction, Pair<IOAction, int[]>> sidedInteractions;
 
