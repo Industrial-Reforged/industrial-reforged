@@ -199,7 +199,7 @@ public final class IndustrialReforged {
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof IEnergyItem energyItem)
                 event.registerItem(IRCapabilities.EnergyStorage.ITEM,
-                        (stack, ctx) -> new ItemEnergyWrapper(stack, energyItem.getEnergyTier(), energyItem.getDefaultEnergyCapacity()), item);
+                        (stack, ctx) -> new ItemEnergyWrapper(stack, energyItem::getEnergyTier, energyItem.getDefaultEnergyCapacity()), item);
 
             if (item instanceof IHeatItem heatItem)
                 event.registerItem(IRCapabilities.HeatStorage.ITEM,

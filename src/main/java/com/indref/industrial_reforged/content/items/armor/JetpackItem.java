@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.content.items.armor;
 
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
@@ -32,15 +33,18 @@ public class JetpackItem extends ArmorItem implements IEnergyItem {
         return ((float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity()) * (STAGES - 1);
     }
 
-    // TODO: Create config
-    @Override
-    public int getDefaultEnergyCapacity() {
-        return 4000;
+    public int getEnergyUsage(ItemStack itemStack) {
+        return IRConfig.jetpackEnergyUsage;
     }
 
     @Override
-    public Supplier<EnergyTier> getEnergyTier() {
-        return energyTierSupplier;
+    public int getDefaultEnergyCapacity() {
+        return IRConfig.jetpackCapacity;
+    }
+
+    @Override
+    public EnergyTier getEnergyTier() {
+        return energyTierSupplier.get();
     }
 
     @Override
@@ -59,18 +63,9 @@ public class JetpackItem extends ArmorItem implements IEnergyItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity p_344979_) {
-        return 1;
-    }
-
-    @Override
-    public int getMaxStackSize(ItemStack stack) {
-        return 1;
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, ctx, tooltip, flag);
         TooltipUtils.addEnergyTooltip(tooltip, stack);
     }
+
 }

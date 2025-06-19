@@ -35,7 +35,7 @@ public class CentrifugeScreen extends MachineScreen<CentrifugeMenu> {
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
         EnergyBarWidget energyBarWidget = addRenderableOnly(
-                new EnergyBarWidget(this.leftPos + 10, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
+                new EnergyBarWidget(this.leftPos + 11, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
         );
         addRenderableWidget(
                 new FluidTankWidget(this.leftPos + 142, this.topPos + 24, FluidTankWidget.TankVariants.SMALL, menu.blockEntity)
@@ -87,10 +87,6 @@ public class CentrifugeScreen extends MachineScreen<CentrifugeMenu> {
         renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-    }
-
-    public List<Rect2i> getBounds() {
-        return this.panelWidgets.stream().map(PanelWidget::getBounds).toList();
     }
 
 }

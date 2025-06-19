@@ -44,7 +44,7 @@ import java.util.*;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-// TODO: Redstone control, manual fluid insertion, extraction
+// TODO: manual fluid insertion, extraction
 public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuProvider {
     private @Nullable CentrifugeRecipe recipe;
 
@@ -116,37 +116,41 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     public void commonTick() {
         super.commonTick();
 
-        if (recipe != null) {
-            int energy = 1;
-            int maxDuration = recipe.duration();
-            IItemHandler itemHandler = getItemHandler();
-            IEnergyStorage energyStorage = getEuStorage();
+        if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
+            if (recipe != null) {
+                int energy = 1;
+                int maxDuration = recipe.duration();
+                IItemHandler itemHandler = getItemHandler();
+                IEnergyStorage energyStorage = getEuStorage();
 
-            List<ItemStack> results = recipe.results();
-            IngredientWithCount ingredient = recipe.ingredient();
-            setActive(true);
+                List<ItemStack> results = recipe.results();
+                IngredientWithCount ingredient = recipe.ingredient();
+                setActive(true);
 
-            if (this.duration >= maxDuration) {
-                for (ItemStack result : results) {
-                    ItemStack toInsert = result.copy();
-                    for (int j = 0; j < getItemHandler().getSlots(); j++) {
-                        toInsert = forceInsertItem(j, toInsert, false);
-                        if (toInsert.isEmpty()) {
-                            break;
+                if (this.duration >= maxDuration) {
+                    for (ItemStack result : results) {
+                        ItemStack toInsert = result.copy();
+                        for (int j = 0; j < getItemHandler().getSlots(); j++) {
+                            toInsert = forceInsertItem(j, toInsert, false);
+                            if (toInsert.isEmpty()) {
+                                break;
+                            }
                         }
                     }
+                    getFluidHandler().fill(recipe.resultFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
+                    itemHandler.extractItem(0, ingredient.count(), false);
+                    resetRecipe();
+                } else {
+                    if (!level.isClientSide()) {
+                        energyStorage.tryDrainEnergy(energy, false);
+                        this.duration++;
+                    }
                 }
-                getFluidHandler().fill(recipe.resultFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
-                itemHandler.extractItem(0, ingredient.count(), false);
-                resetRecipe();
             } else {
-                if (!level.isClientSide()) {
-                    energyStorage.tryDrainEnergy(energy, false);
-                    this.duration++;
-                }
+                resetRecipe();
             }
         } else {
-            resetRecipe();
+            setActive(false);
         }
     }
 

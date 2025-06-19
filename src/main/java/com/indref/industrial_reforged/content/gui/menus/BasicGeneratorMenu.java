@@ -24,11 +24,11 @@ public class BasicGeneratorMenu extends MachineContainerMenu<BasicGeneratorBlock
 
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
 
-        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 53));
-        this.addSlot(new ChargingSlot(itemHandler, 1, ChargingSlot.ChargeMode.CHARGE, 9, 67));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 54));
+        this.addSlot(new ChargingSlot(itemHandler, 1, ChargingSlot.ChargeMode.CHARGE, 9, 68));
 
-        addPlayerInventory(inv, 83 + 20);
-        addPlayerHotbar(inv, 141 + 20);
+        addPlayerInventory(inv, 83 + 21);
+        addPlayerHotbar(inv, 141 + 21);
     }
 
     @Override

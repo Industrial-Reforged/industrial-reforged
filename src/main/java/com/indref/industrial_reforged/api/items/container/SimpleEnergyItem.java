@@ -62,7 +62,7 @@ public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     }
 
     @Override
-    public Supplier<EnergyTier> getEnergyTier() {
-        return energyTier;
+    public EnergyTier getEnergyTier() {
+        return energyTier.get();
     }
 }

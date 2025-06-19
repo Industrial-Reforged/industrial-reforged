@@ -52,13 +52,13 @@ public class BatteryItem extends SimpleEnergyItem {
                     IEnergyStorage energyStorage = getEnergyCap(itemStack);
                     if (energyStorage != null) {
                         // TODO: Possibly round robin this?
-                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().get().maxOutput(), false);
+                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().maxOutput(), false);
                         energyStorage.tryFillEnergy(drained, false);
                     } else {
                         net.neoforged.neoforge.energy.@Nullable IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (feEnergyStorage == null) continue;
 
-                        feEnergyStorage.receiveEnergy(getEnergyTier().get().maxOutput(), false);
+                        feEnergyStorage.receiveEnergy(getEnergyTier().maxOutput(), false);
                     }
                 }
             }

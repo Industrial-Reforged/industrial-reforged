@@ -90,8 +90,8 @@ public class NanoSaberItem extends ElectricSwordItem {
     }
 
     @Override
-    public Supplier<EnergyTier> getEnergyTier() {
-        return energyTier;
+    public EnergyTier getEnergyTier() {
+        return energyTier.get();
     }
 
     @Override

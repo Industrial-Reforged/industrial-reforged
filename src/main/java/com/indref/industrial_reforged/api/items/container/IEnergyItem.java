@@ -22,5 +22,5 @@ public interface IEnergyItem {
 
     int getDefaultEnergyCapacity();
 
-    Supplier<EnergyTier> getEnergyTier();
+    EnergyTier getEnergyTier();
 }

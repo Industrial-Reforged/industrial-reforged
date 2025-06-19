@@ -147,7 +147,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public Supplier<EnergyTier> getEnergyTier() {
-        return energyTier;
+    public EnergyTier getEnergyTier() {
+        return energyTier.get();
     }
 }

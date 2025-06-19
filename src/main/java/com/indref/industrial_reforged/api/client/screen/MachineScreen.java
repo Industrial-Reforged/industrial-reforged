@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.client.widgets.MachineWidgetContext;
 import com.indref.industrial_reforged.api.client.widget.PanelWidget;
 import com.indref.industrial_reforged.networking.UpgradeWidgetSetSlotPositionsPayload;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -41,6 +42,10 @@ public abstract class MachineScreen<T extends MachineContainerMenu<?>> extends P
             }
             widget1.onWidgetResized(widget);
         }
+    }
+
+    public List<Rect2i> getBounds() {
+        return this.panelWidgets.stream().map(PanelWidget::getBounds).toList();
     }
 
 }

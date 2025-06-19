@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +39,6 @@ import java.util.Map;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-// TODO: Redstone controls
 public class BasicGeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, GeneratorBlockEntity {
     private int burnTime;
     private int maxBurnTime;
@@ -70,10 +70,14 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         return maxBurnTime;
     }
 
-    // TODO: Create config for this
+    @Override
+    public int emitRedstoneLevel() {
+        return ItemHandlerHelper.calcRedstoneFromInventory(this.getItemHandler());
+    }
+
     @Override
     public int getGenerationAmount() {
-        return 10;
+        return IRConfig.basicGeneratorEnergyProduction;
     }
 
     @Override
@@ -108,8 +112,8 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     @Override
     public void commonTick() {
         super.commonTick();
-        IEnergyStorage energyStorage = getEuStorage();
-        if (energyStorage != null) {
+        if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
+            IEnergyStorage energyStorage = getEuStorage();
             if (this.burnTime > 0) {
                 if (!level.isClientSide()) {
                     int filled = energyStorage.tryFillEnergy(getGenerationAmount(), remove);
@@ -129,6 +133,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
                     this.maxBurnTime = burnTime;
                     itemHandler.extractItem(0, 1, false);
                 }
+
             }
         }
 

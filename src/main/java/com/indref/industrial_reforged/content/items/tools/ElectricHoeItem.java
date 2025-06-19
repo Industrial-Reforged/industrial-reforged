@@ -98,8 +98,8 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem, ElectricToo
     }
 
     @Override
-    public Supplier<EnergyTier> getEnergyTier() {
-        return energyTier;
+    public EnergyTier getEnergyTier() {
+        return energyTier.get();
     }
 
     @Override

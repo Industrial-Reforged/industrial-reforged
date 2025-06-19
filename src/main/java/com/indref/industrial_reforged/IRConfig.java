@@ -17,6 +17,9 @@ public final class IRConfig {
     private static final ModConfigSpec.IntValue BATTERY_BOX_ENERGY_CAPACITY =
             blockEnergyCapacity("battery_box", "Battery Box", 4_000);
 
+    private static final ModConfigSpec.IntValue BASIC_GENERATOR_ENERGY_PRODUCTION =
+            blockEnergyProduction("basic_generator", "Basic Generator", 4_000);
+
     // Block Fluid Capacity
     private static final ModConfigSpec.IntValue CRUCIBLE_FLUID_CAPACITY =
             blockFluidCapacity("crucible", "Crucible", 9_000);
@@ -45,6 +48,8 @@ public final class IRConfig {
     // MEDIUM
     private static final ModConfigSpec.IntValue SCANNER_ENERGY_CAPACITY =
             itemEnergyCapacity("scanner", "Scanner", 16_000);
+    private static final ModConfigSpec.IntValue JETPACK_ENERGY_CAPACITY =
+            itemEnergyCapacity("jetpack", "Jetpack", 16_000);
 
     // HIGH
     private static final ModConfigSpec.IntValue NANO_SABER_ENERGY_CAPACITY =
@@ -76,6 +81,8 @@ public final class IRConfig {
     // MEDIUM
     private static final ModConfigSpec.IntValue SCANNER_ENERGY_USAGE =
             itemEnergyUsage("scanner", "Scanner", 32);
+    private static final ModConfigSpec.IntValue JETPACK_ENERGY_USAGE =
+            itemEnergyUsage("jetpack", "Jetpack", 32);
 
     // HIGH
     private static final ModConfigSpec.IntValue NANO_SABER_ENERGY_USAGE =
@@ -135,6 +142,8 @@ public final class IRConfig {
     public static int centrifugeEnergyCapacity;
     public static int batteryBoxEnergyCapacity;
 
+    public static int basicGeneratorEnergyProduction;
+
     public static int crucibleFluidCapacity;
     public static int blastFurnaceFluidCapacity;
     public static int drainFluidCapacity;
@@ -157,6 +166,7 @@ public final class IRConfig {
     public static int advancedChainsawCapacity;
     public static int advancedBatteryCapacity;
     public static int ultimateBatteryCapacity;
+    public static int jetpackCapacity;
 
     public static int basicDrillEnergyUsage;
     public static int basicChainsawEnergyUsage;
@@ -167,6 +177,7 @@ public final class IRConfig {
     public static int nanoSaberEnergyUsage;
     public static int advancedDrillEnergyUsage;
     public static int advancedChainsawEnergyUsage;
+    public static int jetpackEnergyUsage;
 
     public static int fluidCellCapacity;
 
@@ -192,6 +203,8 @@ public final class IRConfig {
         centrifugeEnergyCapacity = CENTRIFUGE_ENERGY_CAPACITY.getAsInt();
         batteryBoxEnergyCapacity = BATTERY_BOX_ENERGY_CAPACITY.getAsInt();
 
+        basicGeneratorEnergyProduction = BASIC_GENERATOR_ENERGY_PRODUCTION.getAsInt();
+
         crucibleFluidCapacity = CRUCIBLE_FLUID_CAPACITY.getAsInt();
         blastFurnaceFluidCapacity = BLAST_FURNACE_FLUID_CAPACITY.getAsInt();
         drainFluidCapacity = DRAIN_FLUID_CAPACITY.getAsInt();
@@ -200,7 +213,7 @@ public final class IRConfig {
         smallFireboxHeatCapacity = (float) SMALL_FIREBOX_HEAT_CAPACITY.getAsDouble();
         fireboxHeatCapacity = (float) FIREBOX_HEAT_CAPACITY.getAsDouble();
         crucibleHeatCapacity = (float) CRUCIBLE_HEAT_CAPACITY.getAsDouble();
-        blastFurnaceHeatCapacity = (float) CRUCIBLE_HEAT_CAPACITY.getAsDouble();
+        blastFurnaceHeatCapacity = (float) BLAST_FURNACE_HEAT_CAPACITY.getAsDouble();
 
         basicDrillCapacity = BASIC_DRILL_ENERGY_CAPACITY.getAsInt();
         basicChainsawCapacity = BASIC_CHAINSAW_ENERGY_CAPACITY.getAsInt();
@@ -214,6 +227,7 @@ public final class IRConfig {
         advancedChainsawCapacity = ADVANCED_CHAINSAW_ENERGY_CAPACITY.getAsInt();
         advancedBatteryCapacity = ADVANCED_BATTERY_ENERGY_CAPACITY.getAsInt();
         ultimateBatteryCapacity = ULTIMATE_BATTERY_ENERGY_CAPACITY.getAsInt();
+        jetpackCapacity = JETPACK_ENERGY_CAPACITY.getAsInt();
 
         basicDrillEnergyUsage = BASIC_DRILL_ENERGY_USAGE.getAsInt();
         basicChainsawEnergyUsage = BASIC_CHAINSAW_ENERGY_USAGE.getAsInt();
@@ -224,6 +238,7 @@ public final class IRConfig {
         nanoSaberEnergyUsage = NANO_SABER_ENERGY_USAGE.getAsInt();
         advancedDrillEnergyUsage = ADVANCED_DRILL_ENERGY_USAGE.getAsInt();
         advancedChainsawEnergyUsage = ADVANCED_CHAINSAW_ENERGY_USAGE.getAsInt();
+        jetpackEnergyUsage = JETPACK_ENERGY_USAGE.getAsInt();
 
         fluidCellCapacity = FLUID_CELL_FLUID_CAPACITY.getAsInt();
 
@@ -258,6 +273,12 @@ public final class IRConfig {
         return BUILDER
                 .comment("The " + name + "'s energy capacity")
                 .defineInRange("blocks.energy.capacity." + blockId, defaultCapacity, 0, Integer.MAX_VALUE);
+    }
+
+    private static ModConfigSpec.IntValue blockEnergyProduction(String blockId, String name, int defaultEnergyProduction) {
+        return BUILDER
+                .comment("The " + name + "'s energy production per tick")
+                .defineInRange("blocks.energy.production." + blockId, defaultEnergyProduction, 0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.IntValue blockFluidCapacity(String blockId, String name, int defaultCapacity) {
