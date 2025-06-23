@@ -115,10 +115,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
         if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
             if (recipe != null) {
-                int energy = 1;
                 int maxProgress = recipe.duration();
                 IItemHandler itemHandler = getItemHandler();
-                IEnergyStorage energyStorage = getEuStorage();
 
                 List<ItemStack> results = recipe.results();
                 IngredientWithCount ingredient = recipe.ingredient();
@@ -139,7 +137,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                     resetRecipe();
                 } else {
                     if (!level.isClientSide()) {
-                        energyStorage.tryDrainEnergy(energy, false);
+                        this.useEnergy();
                         this.increaseProgress();
                     }
                 }

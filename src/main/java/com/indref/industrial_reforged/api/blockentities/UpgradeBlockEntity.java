@@ -13,6 +13,8 @@ public interface UpgradeBlockEntity {
 
     boolean hasUpgrade(Supplier<Upgrade> upgrade);
 
+    int getUpgradeAmount(Supplier<Upgrade> upgrade);
+
     void onUpgradeAdded(Supplier<Upgrade> upgrade);
 
     void onUpgradeRemoved(Supplier<Upgrade> upgrade);

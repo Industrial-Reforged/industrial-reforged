@@ -61,7 +61,7 @@ public class CentrifugeScreen extends MachineScreen<CentrifugeMenu> {
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
         super.renderBg(guiGraphics, delta, mouseX, mouseY);
-        float progress = ((float) this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress());
+        float progress = this.menu.blockEntity.getProgress() / this.menu.blockEntity.getMaxProgress();
         int textureSize = 48;
         int xOffset = 64;
         int yOffset = 25;

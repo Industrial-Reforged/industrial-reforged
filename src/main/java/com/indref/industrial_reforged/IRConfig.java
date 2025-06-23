@@ -136,6 +136,14 @@ public final class IRConfig {
     private static final ModConfigSpec.BooleanValue DRILL_ITEM_ANIMATION =
             itemAnimation("drill", "Drill", true);
 
+    // UPGRADES
+    private static final ModConfigSpec.DoubleValue OVERCLOCKER_UPGRADE_SPEED = BUILDER
+            .comment("How much the overclocker upgrade speeds up a machine. For example 0.1 = 10%")
+            .defineInRange("upgrade.overclocker.speed", 0.25, 0, 10);
+    private static final ModConfigSpec.DoubleValue OVERCLOCKER_UPGRADE_ENERGY = BUILDER
+            .comment("How much more energy a machine with the overclocker upgrade consumes. For example 0.1 = 10%")
+            .defineInRange("upgrade.overclocker.energy", 0.25, 0, 10);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     public static int basicGeneratorEnergyCapacity;
@@ -194,6 +202,9 @@ public final class IRConfig {
 
     public static float nanoSaberAttackSpeed;
     public static int nanoSaberAttackDamage;
+
+    public static float overclockerUpgradeSpeed;
+    public static float overclockerUpgradeEnergy;
 
     @SubscribeEvent
     public static void onConfigReload(ModConfigEvent event) {
@@ -255,6 +266,9 @@ public final class IRConfig {
 
         nanoSaberAttackDamage = NANO_SABER_ATTACK_DAMAGE.getAsInt();
         nanoSaberAttackSpeed = (float) NANO_SABER_ATTACK_SPEED.getAsDouble();
+
+        overclockerUpgradeEnergy = (float) OVERCLOCKER_UPGRADE_ENERGY.getAsDouble();
+        overclockerUpgradeSpeed = (float) OVERCLOCKER_UPGRADE_SPEED.getAsDouble();
     }
 
     private static ModConfigSpec.DoubleValue heatProduction(String blockId, String name, double heatProduction) {
@@ -290,7 +304,7 @@ public final class IRConfig {
     private static ModConfigSpec.DoubleValue blockHeatCapacity(String blockId, String name, double defaultCapacity) {
         return BUILDER
                 .comment("The " + name + "'s heat capacity")
-                .defineInRange("blocks.heat.capacity" + blockId, defaultCapacity, 0, Integer.MAX_VALUE);
+                .defineInRange("blocks.heat.capacity." + blockId, defaultCapacity, 0, Integer.MAX_VALUE);
     }
 
     private static ModConfigSpec.IntValue itemEnergyUsage(String itemId, String name, int defaultUsage) {

@@ -1,13 +1,13 @@
 package com.indref.industrial_reforged.api.blockentities;
 
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.item.UpgradeItemHandler;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
+import com.indref.industrial_reforged.api.items.UpgradeItem;
 import com.indref.industrial_reforged.api.upgrade.Upgrade;
 import com.indref.industrial_reforged.registries.IRUpgrades;
-import com.indref.industrial_reforged.util.BlockUtils;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,13 +39,14 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     private int redstoneSignalStrength;
     protected float progress;
     private float progressIncrement;
+    private float energyDecrement;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.caches = new ArrayList<>();
         this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE);
         if (this.supportsUpgrades()) {
-            this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades){
+            this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades) {
                 @Override
                 protected void onContentsChanged(int slot) {
                     super.onContentsChanged(slot);
@@ -160,9 +162,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
     @Override
     public void onUpgradeAdded(Supplier<Upgrade> upgrade) {
-        if (upgrade == IRUpgrades.OVERCLOCKER_UPGRADE) {
-            IndustrialReforged.LOGGER.debug("Haaaai");
-        }
+        upgrade.get().init(this);
     }
 
     @Override
@@ -170,15 +170,57 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
     }
 
+    public void setEnergyDecrement(float energyDecrement) {
+        this.energyDecrement = energyDecrement;
+    }
+
+    public void setProgressIncrement(float progressIncrement) {
+        this.progressIncrement = progressIncrement;
+    }
+
+    @Override
+    public int getUpgradeAmount(Supplier<Upgrade> upgrade) {
+        int amount = 0;
+        Upgrade upgradeInstance = upgrade.get();
+        Item upgradeItem = upgradeInstance.getUpgradeItem().asItem();
+
+        for (int i = 0; i < this.getUpgradeItemHandler().getSlots(); i++) {
+            ItemStack stackInSlot = this.getUpgradeItemHandler().getStackInSlot(i);
+            if (stackInSlot.is(upgradeItem)) {
+                amount += stackInSlot.getCount();
+            }
+        }
+
+        return amount;
+    }
+
+
     @Override
     public void onLoad() {
         super.onLoad();
 
         initCapCache();
+
+        if (this.supportsUpgrades()) {
+            for (int i = 0; i < this.getUpgradeItemHandler().getSlots(); i++) {
+                if (!this.getUpgradeItemHandler().getStackInSlot(i).isEmpty()) {
+                    UpgradeItem item = ((UpgradeItem) this.getUpgradeItemHandler().getStackInSlot(i).getItem());
+                    Supplier<Upgrade> upgrade = item.getUpgrade();
+                    if (this.hasUpgrade(upgrade)) {
+                        upgrade.get().init(this);
+                    }
+                }
+            }
+        }
+
     }
 
     public void increaseProgress() {
         this.progress += this.progressIncrement;
+    }
+
+    public void useEnergy() {
+        this.getEuStorage().tryDrainEnergy((int) this.energyDecrement, false);
     }
 
     public void initCapCache() {
@@ -231,7 +273,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         if (this.upgradeItemHandler != null)
             this.upgradeItemHandler.deserializeNBT(provider, tag.getCompound("upgrade_item_handler"));
         this.redstoneSignalStrength = tag.getInt("signal_strength");
-        this.redstoneSignalType = RedstoneSignalType.CODEC.decode(NbtOps.INSTANCE, tag.get("redstone_signal")).result().orElse(com.mojang.datafixers.util.Pair.of(RedstoneSignalType.IGNORED, new CompoundTag())).getFirst();
+        this.redstoneSignalType = RedstoneSignalType.CODEC.decode(NbtOps.INSTANCE, tag.get("redstone_signal")).result().orElse(Pair.of(RedstoneSignalType.IGNORED, new CompoundTag())).getFirst();
     }
 
     @Override
@@ -245,4 +287,5 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
             tag.put("redstone_signal", value);
         });
     }
+
 }
