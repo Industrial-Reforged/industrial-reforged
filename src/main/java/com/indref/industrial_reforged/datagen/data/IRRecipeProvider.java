@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.content.recipes.*;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
@@ -672,7 +673,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_aluminum_ingot", has(CTags.Items.ALUMINUM_INGOT))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.BASIC_GENERATOR.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRMachines.BASIC_GENERATOR.getBlock())
                 .pattern("B")
                 .pattern("M")
                 .pattern("F")
@@ -682,7 +683,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_machine_frame", has(IRBlocks.BASIC_MACHINE_FRAME.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.CENTRIFUGE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRMachines.CENTRIFUGE.getBlock())
                 .pattern("###")
                 .pattern("RBR")
                 .pattern("#M#")

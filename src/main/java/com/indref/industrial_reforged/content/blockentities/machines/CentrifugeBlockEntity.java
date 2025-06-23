@@ -2,15 +2,13 @@ package com.indref.industrial_reforged.content.blockentities.machines;
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
-import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.RedstoneBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
@@ -27,7 +25,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -48,10 +45,8 @@ import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuProvider {
     private @Nullable CentrifugeRecipe recipe;
 
-    private int duration;
-
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(IRBlockEntityTypes.CENTRIFUGE.get(), p_155229_, p_155230_);
+        super(IRMachines.CENTRIFUGE.getBlockEntityType(), p_155229_, p_155230_);
         addEuStorage(IREnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
         addFluidTank(IRConfig.centrifugeFluidCapacity);
         addItemHandler(6, ((slot, itemStack) -> slot == 0
@@ -63,11 +58,11 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         return true;
     }
 
-    public int getProgress() {
-        return duration;
+    public float getProgress() {
+        return this.progress;
     }
 
-    public int getMaxProgress() {
+    public float getMaxProgress() {
         return recipe != null ? recipe.duration() : 0;
     }
 
@@ -79,7 +74,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new CentrifugeMenu(i, inventory, this, new SimpleContainerData(6));
+        return new CentrifugeMenu(i, inventory, this);
     }
 
     @Override
@@ -91,7 +86,9 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     @Override
     public void onEuChanged(int oldAmount) {
         super.onEuChanged(oldAmount);
-        //IndustrialReforged.LOGGER.debug("Old: {}, amount: {}", oldAmount, getEuStorage().getEnergyStored());
+        if (getEnergyStorage() != null && getEnergyStorage().getEnergyStored() <= 0) {
+            setActive(false);
+        }
     }
 
     private void checkRecipe() {
@@ -119,7 +116,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
             if (recipe != null) {
                 int energy = 1;
-                int maxDuration = recipe.duration();
+                int maxProgress = recipe.duration();
                 IItemHandler itemHandler = getItemHandler();
                 IEnergyStorage energyStorage = getEuStorage();
 
@@ -127,7 +124,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                 IngredientWithCount ingredient = recipe.ingredient();
                 setActive(true);
 
-                if (this.duration >= maxDuration) {
+                if (this.progress >= maxProgress) {
                     for (ItemStack result : results) {
                         ItemStack toInsert = result.copy();
                         for (int j = 0; j < getItemHandler().getSlots(); j++) {
@@ -143,19 +140,19 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                 } else {
                     if (!level.isClientSide()) {
                         energyStorage.tryDrainEnergy(energy, false);
-                        this.duration++;
+                        this.increaseProgress();
                     }
                 }
             } else {
-                resetRecipe();
+                this.resetRecipe();
             }
         } else {
-            setActive(false);
+            this.setActive(false);
         }
     }
 
     private void resetRecipe() {
-        this.duration = 0;
+        this.progress = 0;
         setActive(false);
     }
 
@@ -195,7 +192,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     @Override
     public void onLoad() {
         super.onLoad();
-        checkRecipe();
+
+        this.checkRecipe();
     }
 
     @Override
@@ -218,13 +216,13 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadData(tag, provider);
-        this.duration = tag.getInt("duration");
+        this.progress = tag.getFloat("progress");
     }
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         super.saveData(tag, provider);
-        tag.putInt("duration", duration);
+        tag.putFloat("progress", this.progress);
     }
 
 }

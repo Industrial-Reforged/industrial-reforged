@@ -3,9 +3,9 @@ package com.indref.industrial_reforged.content.blocks.generators;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.RotatableMachineBlock;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.DisplayUtils;
 import com.mojang.serialization.MapCodec;
@@ -65,7 +65,7 @@ public class BasicGeneratorBlock extends RotatableMachineBlock implements Displa
 
     @Override
     public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
-        return IRBlockEntityTypes.BASIC_GENERATOR.get();
+        return IRMachines.BASIC_GENERATOR.getBlockEntityType();
     }
 
     @Override

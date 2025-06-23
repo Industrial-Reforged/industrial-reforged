@@ -2,7 +2,6 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricDiggerItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;

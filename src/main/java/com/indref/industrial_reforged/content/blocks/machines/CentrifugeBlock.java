@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.content.blocks.machines;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.MachineBlock;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -33,7 +33,7 @@ public class CentrifugeBlock extends MachineBlock {
 
     @Override
     public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
-        return IRBlockEntityTypes.CENTRIFUGE.get();
+        return IRMachines.CENTRIFUGE.getBlockEntityType();
     }
 
     @Override

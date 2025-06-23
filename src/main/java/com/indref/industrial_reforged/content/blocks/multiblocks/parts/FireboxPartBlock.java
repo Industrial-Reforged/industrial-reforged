@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks.multiblocks.parts;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
 import com.indref.industrial_reforged.content.multiblocks.FireboxMultiblock;
+import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.registries.IRMultiblocks;
@@ -23,6 +24,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -61,6 +63,11 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
         return new FireboxPartBlockEntity(p_153215_, p_153216_);
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getValue(SmallFireboxMultiblock.ACTIVE) && state.getValue(SmallFireboxMultiblock.FORMED) ? 10 : 0;
     }
 
     @Override

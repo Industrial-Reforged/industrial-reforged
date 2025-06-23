@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.content.recipes.*;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRMachines;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -108,7 +109,7 @@ public class IRJeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.FIREBOX_CONTROLLER.get()),
                 RecipeTypes.FUELING);
-        registration.addRecipeCatalyst(new ItemStack(IRBlocks.BASIC_GENERATOR.get()),
+        registration.addRecipeCatalyst(new ItemStack(IRMachines.BASIC_GENERATOR.getBlockItem()),
                 RecipeTypes.FUELING);
 
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get()),
@@ -127,7 +128,7 @@ public class IRJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.WOODEN_BASIN.get()),
                 WoodenBasinCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(IRBlocks.CENTRIFUGE.get()),
+        registration.addRecipeCatalyst(new ItemStack(IRMachines.CENTRIFUGE.getBlock()),
                 CentrifugeCategory.RECIPE_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.BLAST_FURNACE_CONTROLLER.get()),

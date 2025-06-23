@@ -5,6 +5,7 @@ import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.tags.ModdedTags;
@@ -19,7 +20,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -283,8 +283,8 @@ public class IRTagsProvider {
                     IRBlocks.RUBBER_TREE_RESIN_HOLE.get()
             );
             tag(IRTags.Blocks.WRENCHABLE,
-                    IRBlocks.BASIC_GENERATOR.get(),
-                    IRBlocks.CENTRIFUGE.get(),
+                    IRMachines.BASIC_GENERATOR.getBlock(),
+                    IRMachines.CENTRIFUGE.getBlock(),
                     IRBlocks.BATTERY_BOX.get(),
                     IRBlocks.TIN_CABLE.get(),
                     IRBlocks.COPPER_CABLE.get(),
@@ -326,8 +326,8 @@ public class IRTagsProvider {
             );
 
             tag(BlockTags.NEEDS_STONE_TOOL,
-                    IRBlocks.BASIC_GENERATOR.get(),
-                    IRBlocks.CENTRIFUGE.get()
+                    IRMachines.BASIC_GENERATOR.getBlock(),
+                    IRMachines.CENTRIFUGE.getBlock()
             );
 
             tag(BlockTags.NEEDS_IRON_TOOL,

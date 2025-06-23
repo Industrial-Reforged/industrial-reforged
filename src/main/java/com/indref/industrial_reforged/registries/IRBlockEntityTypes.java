@@ -49,18 +49,18 @@ public final class IRBlockEntityTypes {
     public static final Supplier<BlockEntityType<FaucetBlockEntity>> FAUCET =
             BLOCK_ENTITIES.register("faucet", () ->
                     BlockEntityType.Builder.of(FaucetBlockEntity::new, getFaucetBlocks()).build(null));
-    public static final Supplier<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE =
-            BLOCK_ENTITIES.register("centrifuge", () ->
-                    BlockEntityType.Builder.of(CentrifugeBlockEntity::new,
-                            IRBlocks.CENTRIFUGE.get()).build(null));
+    //public static final Supplier<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE =
+    //        BLOCK_ENTITIES.register("centrifuge", () ->
+    //                BlockEntityType.Builder.of(CentrifugeBlockEntity::new,
+    //                        IRBlocks.CENTRIFUGE.get()).build(null));
     public static final Supplier<BlockEntityType<DrainBlockEntity>> DRAIN =
             BLOCK_ENTITIES.register("drain", () ->
                     BlockEntityType.Builder.of(DrainBlockEntity::new,
                             IRBlocks.DRAIN.get()).build(null));
-    public static final Supplier<BlockEntityType<BasicGeneratorBlockEntity>> BASIC_GENERATOR =
-            BLOCK_ENTITIES.register("basic_generator", () ->
-                    BlockEntityType.Builder.of(BasicGeneratorBlockEntity::new,
-                            IRBlocks.BASIC_GENERATOR.get()).build(null));
+    //public static final Supplier<BlockEntityType<BasicGeneratorBlockEntity>> BASIC_GENERATOR =
+    //        BLOCK_ENTITIES.register("basic_generator", () ->
+    //                BlockEntityType.Builder.of(BasicGeneratorBlockEntity::new,
+    //                        IRBlocks.BASIC_GENERATOR.get()).build(null));
     public static final Supplier<BlockEntityType<BatteryBoxBlockEntity>> BATTERY_BOX =
             BLOCK_ENTITIES.register("battery_box", () ->
                     BlockEntityType.Builder.of(BatteryBoxBlockEntity::new,

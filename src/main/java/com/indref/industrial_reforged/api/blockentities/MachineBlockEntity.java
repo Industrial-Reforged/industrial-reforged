@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.api.blockentities;
 
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.capabilities.item.UpgradeItemHandler;
@@ -25,20 +26,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity, RedstoneBlockEntity, UpgradeBlockEntity {
     private @Nullable ChargingSlot batterySlot;
     private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
     private boolean removedUsingWrench;
     private final UpgradeItemHandler upgradeItemHandler;
-    private final Set<Upgrade> defaultSupportedUpgrades;
+    private final Set<Supplier<Upgrade>> defaultSupportedUpgrades;
     private RedstoneSignalType redstoneSignalType;
     private int redstoneSignalStrength;
+    protected float progress;
+    private float progressIncrement;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.caches = new ArrayList<>();
-        this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE.get());
+        this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE);
         if (this.supportsUpgrades()) {
             this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades){
                 @Override
@@ -47,11 +51,26 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
                     update();
                 }
+
+                @Override
+                public void onUpgradeAdded(Supplier<Upgrade> upgrade) {
+                    super.onUpgradeAdded(upgrade);
+
+                    MachineBlockEntity.this.onUpgradeAdded(upgrade);
+                }
+
+                @Override
+                public void onUpgradeRemoved(Supplier<Upgrade> upgrade) {
+                    super.onUpgradeRemoved(upgrade);
+
+                    MachineBlockEntity.this.onUpgradeRemoved(upgrade);
+                }
             };
         } else {
             this.upgradeItemHandler = null;
         }
         this.redstoneSignalType = RedstoneSignalType.IGNORED;
+        this.progressIncrement = 1;
     }
 
     public void setRedstoneSignalStrength(int redstoneSignalStrength) {
@@ -130,10 +149,36 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     }
 
     @Override
+    public boolean hasUpgrade(Supplier<Upgrade> upgrade) {
+        for (int i = 0; i < this.getUpgradeItemHandler().getSlots(); i++) {
+            if (this.getUpgradeItemHandler().getStackInSlot(i).is(upgrade.get().getUpgradeItem().asItem())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onUpgradeAdded(Supplier<Upgrade> upgrade) {
+        if (upgrade == IRUpgrades.OVERCLOCKER_UPGRADE) {
+            IndustrialReforged.LOGGER.debug("Haaaai");
+        }
+    }
+
+    @Override
+    public void onUpgradeRemoved(Supplier<Upgrade> upgrade) {
+
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
 
         initCapCache();
+    }
+
+    public void increaseProgress() {
+        this.progress += this.progressIncrement;
     }
 
     public void initCapCache() {
@@ -151,7 +196,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
     public abstract boolean supportsUpgrades();
 
-    public Set<Upgrade> getSupportedUpgrades() {
+    public Set<Supplier<Upgrade>> getSupportedUpgrades() {
         return this.defaultSupportedUpgrades;
     }
 

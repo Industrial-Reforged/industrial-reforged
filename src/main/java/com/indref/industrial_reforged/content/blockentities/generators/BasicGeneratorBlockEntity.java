@@ -6,9 +6,9 @@ import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
@@ -43,8 +43,8 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     private int burnTime;
     private int maxBurnTime;
 
-    public BasicGeneratorBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(IRBlockEntityTypes.BASIC_GENERATOR.get(), p_155229_, p_155230_);
+    public BasicGeneratorBlockEntity(BlockPos pos, BlockState state) {
+        super(IRMachines.BASIC_GENERATOR.getBlockEntityType(), pos, state);
         addItemHandler(2, (slot, item) -> {
             boolean canInsertFuel = slot == 0 && item.getBurnTime(RecipeType.SMELTING) > 0;
             boolean canInsertBattery = slot == 1 && item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null;

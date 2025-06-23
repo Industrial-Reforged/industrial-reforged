@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.content.gui.menus;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
-import com.indref.industrial_reforged.registries.IRBlocks;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.network.FriendlyByteBuf;
@@ -34,7 +34,7 @@ public class BasicGeneratorMenu extends MachineContainerMenu<BasicGeneratorBlock
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()),
-                player, IRBlocks.BASIC_GENERATOR.get());
+                player, IRMachines.BASIC_GENERATOR.getBlock());
     }
 
     @Override

@@ -15,7 +15,7 @@ public class SimpleUpgradeItem extends Item implements UpgradeItem {
     }
 
     @Override
-    public Upgrade getUpgrade() {
-        return this.upgradeSupplier.get();
+    public Supplier<Upgrade> getUpgrade() {
+        return this.upgradeSupplier;
     }
 }

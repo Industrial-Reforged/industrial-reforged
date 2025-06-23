@@ -4,11 +4,7 @@ import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.RedstoneBlockEntity;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.registries.IRBlocks;
-import com.indref.industrial_reforged.registries.IRFluids;
-import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.registries.IRTabs;
-import com.indref.industrial_reforged.registries.IREnergyTiers;
+import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Registry;
@@ -17,6 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -178,8 +175,8 @@ public class IREnUSLangProvider extends LanguageProvider {
     }
 
     private void addBlocks() {
-        addBlock(IRBlocks.BASIC_GENERATOR, "Basic Generator");
-        addBlock(IRBlocks.CENTRIFUGE, "Centrifuge");
+        addBlock(IRMachines.BASIC_GENERATOR.getBlock(), "Basic Generator");
+        addBlock(IRMachines.CENTRIFUGE.getBlock(), "Centrifuge");
         addBlock(IRBlocks.BATTERY_BOX, "Battery Box");
 
         addBlock(IRBlocks.DRAIN, "Drain");
@@ -230,6 +227,10 @@ public class IREnUSLangProvider extends LanguageProvider {
         addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.LOW_SIGNAL, "Low Signal");
         addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType.HIGH_SIGNAL, "High Signal");
 
+    }
+
+    public void addBlock(Block key, String name) {
+        this.add((Block)key, name);
     }
 
     private void addRedstoneSignalType(RedstoneBlockEntity.RedstoneSignalType signalType, String translation) {

@@ -35,7 +35,7 @@ public enum BlockTabOrdering implements TabOrdering {
 
     @Override
     public TriConsumer<CreativeModeTab.ItemDisplayParameters, CreativeModeTab.Output, ItemLike> tabAppendFunction() {
-        return null;
+        return (params, output, item) -> output.accept(item);
     }
 
     public int getPriority() {

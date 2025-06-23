@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.datagen.assets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
 import com.indref.industrial_reforged.content.blocks.machines.primitive.FaucetBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
@@ -34,13 +35,13 @@ public class IRBlockStateProvider extends BlockStateProvider {
         metalStorageBlocks();
         oreBlocks();
 
-        blockModel(IRBlocks.BASIC_GENERATOR)
+        blockModel(IRMachines.BASIC_GENERATOR.getBlock())
                 .front(this::machineTexture, "_front")
                 .horizontalFacing()
                 .active()
                 .create();
 
-        blockModel(IRBlocks.CENTRIFUGE)
+        blockModel(IRMachines.CENTRIFUGE.getBlock())
                 .top(this::machineTexture, "_top")
                 .sides(this::machineTexture, "_side")
                 .active()
@@ -122,7 +123,11 @@ public class IRBlockStateProvider extends BlockStateProvider {
                 blockTexture(end.get())));
     }
 
-    private ModelBuilder blockModel(DeferredBlock<?> block) {
+    private ModelBuilder blockModel(Supplier<? extends Block> block) {
+        return new ModelBuilder(block.get());
+    }
+
+    private ModelBuilder blockModel(Block block) {
         return new ModelBuilder(block);
     }
 
@@ -334,8 +339,8 @@ public class IRBlockStateProvider extends BlockStateProvider {
         private ResourceLocation defaultTexture;
         private ResourceLocation particle;
 
-        public ModelBuilder(DeferredBlock<?> block) {
-            this.block = block.get();
+        public ModelBuilder(Block block) {
+            this.block = block;
             this.defaultTexture = blockTexture(IRBlocks.BASIC_MACHINE_FRAME.get());
         }
 

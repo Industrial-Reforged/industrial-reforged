@@ -98,6 +98,7 @@ public final class IndustrialReforged {
         NeoForge.EVENT_BUS.addListener(this::onDatapackReload);
 
         IRFluids.HELPER.register(modEventBus);
+        IRMachines.HELPER.register(modEventBus);
         IRItems.ITEMS.register(modEventBus);
         IRBlocks.BLOCKS.register(modEventBus);
         IRMultiblocks.MULTIBLOCKS.register(modEventBus);

@@ -89,8 +89,31 @@ public final class IRTabs {
             .title(IRTranslations.Tabs.BLOCKS.component())
             .icon(() -> new ItemStack(IRBlocks.BASIC_MACHINE_FRAME.get()))
             .displayItems((parameters, output) -> {
-                for (DeferredItem<?> block : IRBlocks.TAB_BLOCKS) {
-                    output.accept(block);
+                Map<TabOrdering, Map<Integer, Supplier<? extends Block>>> sortedItems = IRBlocks.TAB_BLOCKS.entrySet()
+                        .stream()
+                        .filter(e -> !e.getKey().isNone())
+                        .sorted(Comparator.comparingInt(entry -> entry.getKey().getPriority()))
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                e -> e.getValue().entrySet()
+                                        .stream()
+                                        .sorted(Map.Entry.comparingByKey())
+                                        .collect(Collectors.toMap(
+                                                Map.Entry::getKey,
+                                                Map.Entry::getValue,
+                                                (a, b) -> a,
+                                                LinkedHashMap::new
+                                        )),
+                                (a, b) -> a,
+                                LinkedHashMap::new
+                        ));
+                for (Map.Entry<TabOrdering, Map<Integer, Supplier<? extends Block>>> entry : sortedItems.entrySet()) {
+                    TabOrdering ordering = entry.getKey();
+                    for (Supplier<? extends Block> block : entry.getValue().values()) {
+                        if (!ordering.isNone()) {
+                            ordering.tabAppendFunction().accept(parameters, output, block.get().asItem());
+                        }
+                    }
                 }
             }).build());
 }
