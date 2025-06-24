@@ -8,6 +8,7 @@ import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
 import com.indref.industrial_reforged.client.transportation.ClientNodes;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
+import com.indref.industrial_reforged.networking.UpdateInputPayload;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.portingdeadmods.portingdeadlibs.api.client.renderers.multiblocks.MultiblockPreviewRenderer;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
@@ -23,10 +24,12 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Vector3f;
 import org.lwjgl.system.linux.liburing.IOURingRecvmsgOut;
 
@@ -35,6 +38,49 @@ import java.util.Collections;
 @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public final class ClientEvents {
     public static FluidStack playerInCrucibleFluid = null;
+    private static boolean up = false;
+    private static boolean down = false;
+    private static boolean forwards = false;
+    private static boolean backwards = false;
+    private static boolean left = false;
+    private static boolean right = false;
+    private static boolean sprint = false;
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Pre event) {
+        var mc = Minecraft.getInstance();
+        var settings = mc.options;
+
+        if (mc.getConnection() == null)
+            return;
+
+        boolean upNow = settings.keyJump.isDown();
+        boolean downNow = settings.keyShift.isDown();
+        boolean forwardsNow = settings.keyUp.isDown();
+        boolean backwardsNow = settings.keyDown.isDown();
+        boolean leftNow = settings.keyLeft.isDown();
+        boolean rightNow = settings.keyRight.isDown();
+        boolean sprintNow = settings.keySprint.isDown();
+
+        if (upNow != up || downNow != down || forwardsNow != forwards || backwardsNow != backwards || leftNow != left || rightNow != right || sprintNow != sprint) {
+            up = upNow;
+            down = downNow;
+            forwards = forwardsNow;
+            backwards = backwardsNow;
+            left = leftNow;
+            right = rightNow;
+            sprint = sprintNow;
+
+            update(up, down, forwards, backwards, left, right, sprint);
+        }
+    }
+
+    private static void update(boolean up, boolean down, boolean forwards, boolean backwards, boolean left, boolean right, boolean sprint) {
+        var player = Minecraft.getInstance().player;
+
+        PacketDistributor.sendToServer(new UpdateInputPayload(up, down, forwards, backwards, left, right, sprint));
+        InputHandler.update(player, up, down, forwards, backwards, left, right, sprint);
+    }
 
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {

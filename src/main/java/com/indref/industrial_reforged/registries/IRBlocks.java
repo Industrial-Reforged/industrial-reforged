@@ -93,10 +93,6 @@ public final class IRBlocks {
     // MACHINES
     public static final DeferredBlock<Block> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.BASIC_MACHINES));
-    //public static final DeferredBlock<CentrifugeBlock> CENTRIFUGE = pickaxeMineable(registerBlockAndItem("centrifuge",
-    //        () -> new CentrifugeBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
-    //public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR = pickaxeMineable(registerBlockAndItem("basic_generator",
-    //        () -> new BasicGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(BASIC_MACHINE_FRAME.get()))));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = pickaxeMineable(registerBlockAndItem("battery_box",
             () -> new BatteryBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), BlockTabOrdering.BASIC_MACHINES, false));
     public static final BlockBehaviour.Properties DEFAULT_BLOCK_PROPERTIES = BlockBehaviour.Properties.of()
@@ -113,7 +109,7 @@ public final class IRBlocks {
     public static final DeferredBlock<CableBlock> STEEL_CABLE = pickaxeMineable(registerBlockAndItem("steel_cable",
             () -> new CableBlock(DEFAULT_BLOCK_PROPERTIES, 6, IREnergyTiers.EXTREME), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<FenceBlock> IRON_FENCE = pickaxeMineable(registerBlockAndItem("iron_fence",
-            () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.MISC_BLOCKS, true));
+            () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.MISC_BLOCKS, false));
     public static final DeferredBlock<WoodenScaffoldingBlock> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",
             () -> new WoodenScaffoldingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion()), BlockTabOrdering.MISC_BLOCKS));
 
@@ -125,9 +121,9 @@ public final class IRBlocks {
     public static final DeferredBlock<RubberTreeLeavesBlock> RUBBER_TREE_LEAVES = woodBlock("rubber_tree_leaves", RubberTreeLeavesBlock::new, true, false);
     public static final DeferredBlock<RubberTreeResinHoleBlock> RUBBER_TREE_RESIN_HOLE = woodBlock("rubber_tree_resin_hole", RubberTreeResinHoleBlock::new, BlockTabOrdering.NONE, false, false);
     public static final DeferredBlock<SaplingBlock> RUBBER_TREE_SAPLING = woodBlock("rubber_tree_sapling",
-            () -> new SaplingBlock(IRTreeGrowers.RUBBER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)), true, false);
+            () -> new SaplingBlock(IRTreeGrowers.RUBBER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)), false, true);
     public static final DeferredBlock<ButtonBlock> RUBBER_TREE_BUTTON = woodBlock("rubber_tree_button",
-            () -> new ButtonBlock(RUBBER_SET_TYPE, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)), true, false);
+            () -> new ButtonBlock(RUBBER_SET_TYPE, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)), false, true);
     public static final DeferredBlock<Block> RUBBER_TREE_PLANKS = woodBlock("rubber_tree_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
     public static final DeferredBlock<StairBlock> RUBBER_TREE_STAIRS = woodBlock("rubber_tree_stairs",
@@ -137,9 +133,9 @@ public final class IRBlocks {
     public static final DeferredBlock<PressurePlateBlock> RUBBER_TREE_PRESSURE_PLATE = woodBlock("rubber_tree_pressure_plate",
             () -> new PressurePlateBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)));
     public static final DeferredBlock<FenceBlock> RUBBER_TREE_FENCE = woodBlock("rubber_tree_fence",
-            () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)), true, false);
+            () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)), false, true);
     public static final DeferredBlock<TrapDoorBlock> RUBBER_TREE_TRAPDOOR = woodBlock("rubber_tree_trapdoor",
-            () -> new TrapDoorBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)), true, false);
+            () -> new TrapDoorBlock(RUBBER_SET_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)), false, true);
     public static final DeferredBlock<FenceGateBlock> RUBBER_TREE_FENCE_GATE = woodBlock("rubber_tree_fence_gate",
             () -> new FenceGateBlock(RUBBER_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)));
     public static final DeferredBlock<SlabBlock> RUBBER_TREE_SLAB = woodBlock("rubber_tree_slab",

@@ -31,6 +31,7 @@ public final class MachineRegistrationHelper {
     public <T extends IRMachine> T registerMachine(T machine) {
         this.machines.add(machine);
         IRBlocks.putTabBlock(BlockTabOrdering.BASIC_MACHINES, machine.blockSupplier);
+        IRItems.BLOCK_ITEMS.add(machine.blockItemSupplier);
         return machine;
     }
 

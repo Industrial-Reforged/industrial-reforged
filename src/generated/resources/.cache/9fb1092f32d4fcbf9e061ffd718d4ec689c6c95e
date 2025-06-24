@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-15T18:04:49.661290817	Recipes
+// 1.21.1	2025-06-24T21:27:04.440200723	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -57,6 +57,7 @@ bff7b4f70003b6dcd2604cccc7791281be3ac982 data/indref/advancement/recipes/misc/ir
 03ffa35ac18e5926b70085ce0bb9353d9bdaa189 data/indref/advancement/recipes/misc/iron_rod.json
 3e795cea1a5266f0c4d0bf6cb6428fab4df32cb5 data/indref/advancement/recipes/misc/lead_ingot.json
 83912e68568232eb34ba29c75e841799d79ce190 data/indref/advancement/recipes/misc/nickel_ingot.json
+340924493d2a2789b83319c8462857ab80b2279a data/indref/advancement/recipes/misc/overclocker_upgrade.json
 0483de7b346dcf0c6992a4fcf571544c91abc7cb data/indref/advancement/recipes/misc/plant_ball_from_leaves.json
 a4b7e4173c46b49278e351b54b0381c77d9b94e2 data/indref/advancement/recipes/misc/plant_ball_from_sapling.json
 e6aff38601fe7b4746a933be41238571b622a037 data/indref/advancement/recipes/misc/plant_ball_from_sugar_cane.json
@@ -74,7 +75,6 @@ b9f85b23b42d7f950c8bda326df3343ad66cb833 data/indref/advancement/recipes/misc/st
 9d848bed2ea9046d9f3e11ea0dbd6a21c92500d2 data/indref/advancement/recipes/misc/terracotta_brick.json
 f7169cd668ddb428df1e465bc630a63ea62ed0af data/indref/advancement/recipes/misc/tin_ingot.json
 4c191a752a46d3476a99c82acecd78a850002b5b data/indref/advancement/recipes/misc/titanium_ingot.json
-56aee18198f39986539477c8aae67f426e746540 data/indref/advancement/recipes/misc/uncraft_clay_mold.json
 3750fa985922984b9ee26e721dddf205c9de6498 data/indref/advancement/recipes/misc/uranium_ingot.json
 16642cad55b2e4a493197803ee1401ab6542e6ab data/indref/advancement/recipes/redstone/rubber_tree_button.json
 8cbeabf2f29c9c3ba9940ef851e9793e84fbf20b data/indref/advancement/recipes/redstone/rubber_tree_door.json
@@ -92,6 +92,7 @@ ca5eecb409d178c6938a417a6ef9cee6fcf50ada data/indref/advancement/recipes/tools/h
 8973a13216b604dd7bea31bc066d9e4d01f2938f data/indref/advancement/recipes/tools/hazmat_chestplate.json
 d9e78271e89ef22578b0a93b67fdcee142468333 data/indref/advancement/recipes/tools/hazmat_helmet.json
 792df011cabc24b7d61d39293adde14ce74ff484 data/indref/advancement/recipes/tools/hazmat_leggings.json
+fbcbbf0ea17e7f33ac53b5bf38d00b8246b299bb data/indref/advancement/recipes/tools/jetpack.json
 6f2fea1ccc8b50595f4ad882ac69ed073db8a8aa data/indref/advancement/recipes/tools/rock_cutter.json
 0cbd3050722c2ae2e60f770cfdf9bb8db348166c data/indref/advancement/recipes/tools/scanner.json
 f55142f25cd50df3ae63b78e260c522ce76213f5 data/indref/advancement/recipes/tools/toolbox.json
@@ -146,7 +147,7 @@ a57110a13b6eb349721969eb1ab2199a6b998aaa data/indref/recipe/blast_furnace/ingots
 72792fa697c5979ef9aaf09fce4507be8c9efd25 data/indref/recipe/centrifuge/plant_ball_to_plant_mass.json
 d300c5700d1431fc634b05b2313dd21f8c197a47 data/indref/recipe/centrifuge/rubber_tree_log_to_rubber.json
 b3efef73368ae4419cb7d5fd8864c955c0893123 data/indref/recipe/centrifuge/soul_sand_to_sand.json
-427aeb6cd940a4fcc8fed122049cc9b304d099dc data/indref/recipe/centrifuge/sticky_resin_to_rubber.json
+627c4378940ed34e553e2a5e22e17899e4078771 data/indref/recipe/centrifuge/sticky_resin_to_rubber.json
 63cfe467bab209e41e42173fb9df9cf3eb9cb927 data/indref/recipe/ceramic_casting_basin.json
 f2acf99b85d1311f90d646932484e9b5485f9415 data/indref/recipe/chromium_block.json
 b64df3811cd2c318edce2612e28f0a8be63153fb data/indref/recipe/chromium_ingot.json
@@ -211,10 +212,12 @@ db9c604c41e5991685a296a5e58a6dcf78f2efd3 data/indref/recipe/electric_tree_tap.js
 a43db2c5703ee4b0a2ac9812f7f6e2df255d3b3e data/indref/recipe/iridium_ingot.json
 99b36b972dfb30109fffe5d05a7edc64c2df80d7 data/indref/recipe/iron_fence.json
 20dd2e40ff6ff1d2f260efa3c03013257dc4c1bd data/indref/recipe/iron_rod.json
+d83cb094264548337a9714ac5a494df91254f415 data/indref/recipe/jetpack.json
 3ec50c4ee328a030679416be7410e14d4738d0c7 data/indref/recipe/lead_block.json
 e24fca1c74ceda1b7700aa31187e3d7f0951d7d4 data/indref/recipe/lead_ingot.json
 8b32f486020483e21f455cd1a15702f8c98c9be9 data/indref/recipe/nickel_block.json
 9e462af765d69ea46c76077577a711736abc6255 data/indref/recipe/nickel_ingot.json
+42bb63e08181202782645bffe6610aaa38b82ae0 data/indref/recipe/overclocker_upgrade.json
 2f4c0b0a489911ad371caf8227d0dd3b785b16e2 data/indref/recipe/plant_ball_from_leaves.json
 db3930b68e024b6afeea4e4654029a3e615b07e4 data/indref/recipe/plant_ball_from_sapling.json
 48e3551bda5dbf5af787f22fc1540b63aeebeb3b data/indref/recipe/plant_ball_from_sugar_cane.json
@@ -263,7 +266,6 @@ e5b151d5b687034fcc498cb34c34bd767becaf28 data/indref/recipe/tin_block.json
 46d5127a735cf8880403bf8b27af38d0ab1ae7be data/indref/recipe/titanium_ingot.json
 8ab9b9b1a502d7b7b44f68006df6bcd9f809fab6 data/indref/recipe/toolbox.json
 624864a84194cc3c841a8f6aa2e2226292534e51 data/indref/recipe/tree_tap.json
-afb2d6d4913cc90c9ba557790006855666587fe9 data/indref/recipe/uncraft_clay_mold.json
 04a6976ab1e12d27d06d469114d23d936803324c data/indref/recipe/uranium_block.json
 e41b994a1fc8cf0c9b667bdeb46e6a039c8dfd2d data/indref/recipe/uranium_ingot.json
 7eca36305c39ab6b348285685c8ce9584d0de496 data/indref/recipe/wooden_basin.json

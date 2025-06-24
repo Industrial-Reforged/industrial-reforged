@@ -34,7 +34,7 @@ import static com.indref.industrial_reforged.IRFeatureFlags.WIP_FLAG;
 
 public final class IRItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IndustrialReforged.MODID);
-    public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
+    public static final List<Supplier<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
     public static final Map<TabOrdering, Map<Integer, DeferredItem<?>>> TAB_ITEMS = new HashMap<>();
     public static final Map<DeferredItem<?>, CastingMoldValue> MOLD_ITEMS = new LinkedHashMap<>();
 

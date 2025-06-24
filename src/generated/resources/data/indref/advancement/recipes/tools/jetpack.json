@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item": {
+    "has_circuit": {
       "conditions": {
         "items": [
           {
-            "items": "#indref:clay_molds"
+            "items": "indref:basic_circuit"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "indref:uncraft_clay_mold"
+        "recipe": "indref:jetpack"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item"
+      "has_circuit"
     ]
   ],
   "rewards": {
     "recipes": [
-      "indref:uncraft_clay_mold"
+      "indref:jetpack"
     ]
   }
 }

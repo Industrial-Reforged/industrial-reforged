@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class IRItemModelProvider extends ItemModelProvider {
 
@@ -225,7 +226,7 @@ public class IRItemModelProvider extends ItemModelProvider {
     }
 
     private void blockItems() {
-        for (DeferredItem<BlockItem> blockItem : IRItems.BLOCK_ITEMS) {
+        for (Supplier<BlockItem> blockItem : IRItems.BLOCK_ITEMS) {
             parentItemBlock(blockItem.get());
         }
     }

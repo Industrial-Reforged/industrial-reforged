@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:plates/aluminum"
+    },
+    "C": {
+      "item": "indref:basic_circuit"
+    },
+    "W": {
+      "type": "neoforge:components",
+      "components": {
+        "indref:fluid": {
+          "amount": 4000,
+          "id": "minecraft:water"
+        }
+      },
+      "items": "indref:fluid_cell"
+    }
+  },
+  "pattern": [
+    " W ",
+    "ACA",
+    " W "
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:overclocker_upgrade"
+  }
+}

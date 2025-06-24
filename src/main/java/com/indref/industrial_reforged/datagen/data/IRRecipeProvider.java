@@ -1,9 +1,11 @@
 package com.indref.industrial_reforged.datagen.data;
 
 import com.google.common.collect.ImmutableList;
+import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.fluids.MoltenMetalFluid;
 import com.indref.industrial_reforged.content.recipes.*;
+import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -14,6 +16,7 @@ import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +31,9 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -60,9 +65,11 @@ public class IRRecipeProvider extends RecipeProvider {
         cableRecipes();
         machineCraftingRecipes();
         multiblockRecipes();
+        armorRecipes();
 
         storageItemRecipes();
 
+        upgradeRecipes();
         miscRecipes();
 
         blastFurnaceRecipes();
@@ -181,6 +188,22 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('S', IRItems.SANDY_BRICK)
                 .define('B', IRItems.RAW_BAUXITE)
                 .unlockedBy("has_terracotta", has(Items.TERRACOTTA))
+                .save(output);
+    }
+
+    private void upgradeRecipes() {
+        // TODO: Custom recipe for this
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.OVERCLOCKER_UPGRADE)
+                .pattern(" W ")
+                .pattern("ACA")
+                .pattern(" W ")
+                .define('W', DataComponentIngredient.of(false, DataComponentPredicate.builder()
+                        .expect(IRDataComponents.FLUID.get(), SimpleFluidContent.copyOf(new FluidStack(Fluids.WATER, 4000)))
+                        .build(), IRItems.FLUID_CELL.get()))
+                .define('A', CTags.Items.ALUMINUM_PLATE)
+                .define('C', IRItems.BASIC_CIRCUIT.get())
+                .unlockedBy("has_item", has(IRItems.BASIC_CIRCUIT))
                 .save(output);
     }
 
@@ -413,6 +436,9 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_circuit", has(IRItems.BASIC_CIRCUIT.get()))
                 .save(output);
 
+    }
+
+    private void armorRecipes() {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.HAZMAT_HELMET.get())
                 .pattern("WWW")
                 .pattern("WGW")
@@ -450,6 +476,18 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('R', IRItems.RUBBER)
                 .unlockedBy("has_rubber", has(IRItems.RUBBER.get()))
                 .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.JETPACK.get())
+                .pattern("PCP")
+                .pattern("PBP")
+                .pattern("R R")
+                .define('P', CTags.Items.STEEL_PLATE)
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .define('C', IRItems.BASIC_CIRCUIT)
+                .define('B', IRItems.BASIC_BATTERY)
+                .unlockedBy("has_circuit", has(IRItems.BASIC_CIRCUIT.get()))
+                .save(output);
+
     }
 
     private void crucibleSmeltingRecipes() {

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "indref:basic_battery"
+    },
+    "C": {
+      "item": "indref:basic_circuit"
+    },
+    "P": {
+      "tag": "c:plates/steel"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "PBP",
+    "R R"
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:jetpack"
+  }
+}

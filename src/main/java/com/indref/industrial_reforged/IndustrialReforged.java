@@ -15,6 +15,7 @@ import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
 import com.indref.industrial_reforged.data.IRAttachmentTypes;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.IRDataMaps;
+import com.indref.industrial_reforged.events.InputHandler;
 import com.indref.industrial_reforged.networking.*;
 import com.indref.industrial_reforged.networking.crucible.CrucibleControllerPayload;
 import com.indref.industrial_reforged.networking.crucible.CrucibleMeltingProgressPayload;
@@ -25,7 +26,6 @@ import com.indref.industrial_reforged.networking.molds.SyncCastingMoldsPayload;
 import com.indref.industrial_reforged.networking.transportation.*;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.tags.IRTags;
-import com.indref.industrial_reforged.util.Utils;
 import com.mojang.logging.LogUtils;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
 import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
@@ -40,17 +40,12 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.flag.FeatureFlag;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -65,7 +60,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -96,6 +90,7 @@ public final class IndustrialReforged {
         modEventBus.addListener(this::addFeaturePacks);
 
         NeoForge.EVENT_BUS.addListener(this::onDatapackReload);
+        NeoForge.EVENT_BUS.register(new InputHandler());
 
         IRFluids.HELPER.register(modEventBus);
         IRMachines.HELPER.register(modEventBus);
@@ -253,6 +248,7 @@ public final class IndustrialReforged {
         registrar.playToServer(RedstoneSignalTypeSyncPayload.TYPE, RedstoneSignalTypeSyncPayload.STREAM_CODEC, RedstoneSignalTypeSyncPayload::handle);
         registrar.playToServer(UpgradeWidgetOpenClosePayload.TYPE, UpgradeWidgetOpenClosePayload.STREAM_CODEC, UpgradeWidgetOpenClosePayload::handle);
         registrar.playToServer(UpgradeWidgetSetSlotPositionsPayload.TYPE, UpgradeWidgetSetSlotPositionsPayload.STREAM_CODEC, UpgradeWidgetSetSlotPositionsPayload::handle);
+        registrar.playToServer(UpdateInputPayload.TYPE, UpdateInputPayload.STREAM_CODEC, UpdateInputPayload::handle);
 
         registrar.playToClient(CrucibleControllerPayload.TYPE, CrucibleControllerPayload.STREAM_CODEC, CrucibleControllerPayload::handle);
         registrar.playToClient(CrucibleMeltingProgressPayload.TYPE, CrucibleMeltingProgressPayload.STREAM_CODEC, CrucibleMeltingProgressPayload::handle);
