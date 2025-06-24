@@ -39,7 +39,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     private int redstoneSignalStrength;
     protected float progress;
     private float progressIncrement;
-    private float energyDecrement;
+    private float energyUsage;
 
     public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -73,6 +73,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         }
         this.redstoneSignalType = RedstoneSignalType.IGNORED;
         this.progressIncrement = 1;
+        this.energyUsage = this.getBaseEnergyUsage();
     }
 
     public void setRedstoneSignalStrength(int redstoneSignalStrength) {
@@ -167,11 +168,11 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
     @Override
     public void onUpgradeRemoved(Supplier<Upgrade> upgrade) {
-
+        upgrade.get().init(this);
     }
 
-    public void setEnergyDecrement(float energyDecrement) {
-        this.energyDecrement = energyDecrement;
+    public void setEnergyUsage(float energyUsage) {
+        this.energyUsage = energyUsage;
     }
 
     public void setProgressIncrement(float progressIncrement) {
@@ -201,6 +202,14 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
         initCapCache();
 
+        initUpgrades();
+
+    }
+
+    protected void initUpgrades() {
+        this.setProgressIncrement(1);
+        this.setEnergyUsage(this.getBaseEnergyUsage());
+
         if (this.supportsUpgrades()) {
             for (int i = 0; i < this.getUpgradeItemHandler().getSlots(); i++) {
                 if (!this.getUpgradeItemHandler().getStackInSlot(i).isEmpty()) {
@@ -212,15 +221,23 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
                 }
             }
         }
-
     }
 
     public void increaseProgress() {
         this.progress += this.progressIncrement;
+        this.setChanged();
     }
 
     public void useEnergy() {
-        this.getEuStorage().tryDrainEnergy((int) this.energyDecrement, false);
+        this.getEuStorage().tryDrainEnergyRaw((int) this.energyUsage, false);
+    }
+
+    public boolean hasEnoughEnergy() {
+        return this.getEuStorage().getEnergyStored() - this.energyUsage >= 0;
+    }
+
+    public float getBaseEnergyUsage() {
+        return 0;
     }
 
     public void initCapCache() {

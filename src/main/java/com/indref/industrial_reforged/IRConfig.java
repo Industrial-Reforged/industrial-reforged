@@ -139,10 +139,10 @@ public final class IRConfig {
     // UPGRADES
     private static final ModConfigSpec.DoubleValue OVERCLOCKER_UPGRADE_SPEED = BUILDER
             .comment("How much the overclocker upgrade speeds up a machine. For example 0.1 = 10%")
-            .defineInRange("upgrade.overclocker.speed", 0.25, 0, 10);
+            .defineInRange("upgrade.overclocker.speed", 0.45, 0, 10);
     private static final ModConfigSpec.DoubleValue OVERCLOCKER_UPGRADE_ENERGY = BUILDER
             .comment("How much more energy a machine with the overclocker upgrade consumes. For example 0.1 = 10%")
-            .defineInRange("upgrade.overclocker.energy", 0.25, 0, 10);
+            .defineInRange("upgrade.overclocker.energy", 0.6, 0, 10);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
@@ -97,16 +96,19 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         if (currentRecipe.isPresent()) {
             CentrifugeRecipe centrifugeRecipe = currentRecipe.get();
             List<ItemStack> results = centrifugeRecipe.results();
-            int energy = centrifugeRecipe.energy();
 
-            if (canInsertItems(results)
-                    && getEuStorage().getEnergyStored() - energy >= 0
-                    && forceFillTank(centrifugeRecipe.resultFluid().copy(), IFluidHandler.FluidAction.SIMULATE) == centrifugeRecipe.resultFluid().getAmount()) {
+            if (canInsertItems(results) && forceFillTank(centrifugeRecipe.resultFluid().copy(), IFluidHandler.FluidAction.SIMULATE) == centrifugeRecipe.resultFluid().getAmount()) {
                 this.recipe = centrifugeRecipe;
+                this.initUpgrades();
             }
         } else {
             this.recipe = null;
         }
+    }
+
+    @Override
+    public float getBaseEnergyUsage() {
+        return this.recipe != null ? this.recipe.energy() : 0;
     }
 
     @Override
@@ -122,24 +124,28 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                 IngredientWithCount ingredient = recipe.ingredient();
                 setActive(true);
 
-                if (this.progress >= maxProgress) {
-                    for (ItemStack result : results) {
-                        ItemStack toInsert = result.copy();
-                        for (int j = 0; j < getItemHandler().getSlots(); j++) {
-                            toInsert = forceInsertItem(j, toInsert, false);
-                            if (toInsert.isEmpty()) {
-                                break;
+                if (this.hasEnoughEnergy()) {
+                    if (this.progress >= maxProgress) {
+                        for (ItemStack result : results) {
+                            ItemStack toInsert = result.copy();
+                            for (int j = 0; j < getItemHandler().getSlots(); j++) {
+                                toInsert = forceInsertItem(j, toInsert, false);
+                                if (toInsert.isEmpty()) {
+                                    break;
+                                }
                             }
                         }
+                        getFluidHandler().fill(recipe.resultFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
+                        itemHandler.extractItem(0, ingredient.count(), false);
+                        resetRecipe();
+                    } else {
+                        if (!level.isClientSide()) {
+                            this.useEnergy();
+                            this.increaseProgress();
+                        }
                     }
-                    getFluidHandler().fill(recipe.resultFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
-                    itemHandler.extractItem(0, ingredient.count(), false);
-                    resetRecipe();
                 } else {
-                    if (!level.isClientSide()) {
-                        this.useEnergy();
-                        this.increaseProgress();
-                    }
+                    this.resetRecipe();
                 }
             } else {
                 this.resetRecipe();

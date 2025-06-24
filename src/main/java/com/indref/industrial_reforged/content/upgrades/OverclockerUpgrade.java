@@ -23,7 +23,7 @@ public class OverclockerUpgrade implements Upgrade {
             machineBE.setProgressIncrement((float) Math.pow(speedMultiplier, overclockerCount));
 
             double energyMultiplier = 1 + IRConfig.overclockerUpgradeEnergy;
-            machineBE.setEnergyDecrement((float) Math.pow(energyMultiplier, overclockerCount));
+            machineBE.setEnergyUsage((float) (machineBE.getBaseEnergyUsage() * Math.pow(energyMultiplier, overclockerCount)));
         }
     }
 }

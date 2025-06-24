@@ -256,11 +256,6 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_wooden_rods", has(Tags.Items.RODS_WOODEN))
                 .save(output);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CLAY_MOLD_BLANK)
-                .requires(IRTags.Items.CLAY_MOLDS)
-                .unlockedBy("has_item", has(IRTags.Items.CLAY_MOLDS))
-                .save(output, IndustrialReforged.rl("uncraft_clay_mold"));
-
         plantBallRecipes();
 
 //        stonecutterResultFromBase(output, RecipeCategory.BUILDING_BLOCKS, IRBlocks.REFRACTORY_BRICK, IRBlocks.REFRACTORY_STONE);
@@ -612,7 +607,7 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void centrifugeRecipes() {
-        centrifugeRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN), 200, 100,
+        centrifugeRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN), 200, 1,
                 asStack(IRItems.RUBBER, 3));
         centrifugeRecipe(IngredientWithCount.of(IRBlocks.RUBBER_TREE_LOG, 16), IRFluids.METHANE.toStack(333), 200, 100,
                 asStack(IRItems.RUBBER, 6), asStack(IRItems.COAL_DUST, 2));

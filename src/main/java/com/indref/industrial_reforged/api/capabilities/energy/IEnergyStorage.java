@@ -31,6 +31,18 @@ public interface IEnergyStorage {
         return energyExtracted;
     }
 
+    default int tryDrainEnergyRaw(int value, boolean simulate) {
+        if (!canDrainEnergy() || value <= 0) {
+            return 0;
+        }
+
+        int energyExtracted = Math.min(getEnergyStored(), value);
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() - energyExtracted);
+        }
+        return energyExtracted;
+    }
+
     /**
      * Adds energy to the storage. Returns the amount of energy that was accepted.
      *
