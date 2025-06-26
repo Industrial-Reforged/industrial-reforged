@@ -2,13 +2,18 @@ package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
+import com.indref.industrial_reforged.client.sounds.JetpackSound;
 import com.indref.industrial_reforged.client.transportation.ClientNodes;
+import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentBlueprint;
 import com.indref.industrial_reforged.networking.UpdateInputPayload;
+import com.indref.industrial_reforged.util.VecHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.portingdeadmods.portingdeadlibs.api.client.renderers.multiblocks.MultiblockPreviewRenderer;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
@@ -16,9 +21,15 @@ import com.portingdeadmods.portingdeadlibs.api.utils.HorizontalDirection;
 import com.portingdeadmods.portingdeadlibs.utils.MultiblockHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.ParticleStatus;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -34,6 +45,7 @@ import org.joml.Vector3f;
 import org.lwjgl.system.linux.liburing.IOURingRecvmsgOut;
 
 import java.util.Collections;
+import java.util.concurrent.ThreadLocalRandom;
 
 @EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public final class ClientEvents {
@@ -73,13 +85,69 @@ public final class ClientEvents {
 
             update(up, down, forwards, backwards, left, right, sprint);
         }
+
+        renderParticles();
     }
 
     private static void update(boolean up, boolean down, boolean forwards, boolean backwards, boolean left, boolean right, boolean sprint) {
-        var player = Minecraft.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
 
         PacketDistributor.sendToServer(new UpdateInputPayload(up, down, forwards, backwards, left, right, sprint));
         InputHandler.update(player, up, down, forwards, backwards, left, right, sprint);
+    }
+
+    private static void renderParticles() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && mc.level != null && !mc.isPaused()) {
+            ItemStack chest = mc.player.getItemBySlot(EquipmentSlot.CHEST);
+            Item item = chest.getItem();
+
+            if (!chest.isEmpty() && item instanceof JetpackItem && isFlying(mc.player)) {
+                if (mc.options.particles().get() != ParticleStatus.MINIMAL) {
+                    var playerPos = mc.player.position().add(0, 1.5, 0);
+
+                    float random = (ThreadLocalRandom.current().nextFloat() - 0.5F) * 0.1F;
+                    double[] sneakBonus = mc.player.isCrouching() ? new double[] { -0.30, -0.10 } : new double[] { 0, 0 };
+
+                    var vLeft = VecHelper.rotate(new Vec3(-0.18, -0.90 + sneakBonus[1], -0.30 + sneakBonus[0]), mc.player.yBodyRot, 0, 0);
+                    var vRight = VecHelper.rotate(new Vec3(0.18, -0.90 + sneakBonus[1], -0.30 + sneakBonus[0]), mc.player.yBodyRot, 0, 0);
+
+                    double speedSide = 0.14D;
+                    var v = playerPos.add(vLeft).add(mc.player.getDeltaMovement().scale(speedSide));
+                    mc.particleEngine.createParticle(ParticleTypes.FLAME, v.x, v.y, v.z, random, -0.2D, random);
+                    mc.particleEngine.createParticle(ParticleTypes.SMOKE, v.x, v.y, v.z, random, -0.2D, random);
+
+                    v = playerPos.add(vRight).add(mc.player.getDeltaMovement().scale(speedSide));
+                    mc.particleEngine.createParticle(ParticleTypes.FLAME, v.x, v.y, v.z, random, -0.2D, random);
+                    mc.particleEngine.createParticle(ParticleTypes.SMOKE, v.x, v.y, v.z, random, -0.2D, random);
+                }
+
+                if (!JetpackSound.playing(mc.player.getId())) {
+                    mc.getSoundManager().play(new JetpackSound(mc.player));
+                }
+            }
+        }
+    }
+
+    public static boolean isFlying(Player player) {
+        if (player.isSpectator())
+            return false;
+
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.CHEST);
+
+        if (!stack.isEmpty()/* && isEngineOn(stack)*/) {
+            IEnergyStorage energy = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+
+            if (energy.getEnergyStored() > 0 || player.isCreative()) {
+                if (false /*isHovering(stack)*/) {
+                    return !player.onGround();
+                }
+
+                return InputHandler.isHoldingUp(player);
+            }
+        }
+
+        return false;
     }
 
     @SubscribeEvent

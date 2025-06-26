@@ -14,6 +14,7 @@ public final class IRSoundEvents {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, IndustrialReforged.MODID);
 
     public static final Supplier<SoundEvent> HAMMERING = registerSoundEvent("hammering");
+    public static final Supplier<SoundEvent> JETPACK = registerSoundEvent("jetpack");
 
     private static Supplier<SoundEvent> registerSoundEvent(String name){
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, name)));

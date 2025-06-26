@@ -5,5 +5,12 @@
     "sounds": [
       "indref:hammering"
     ]
+  },
+  "jetpack": {
+    "category": "players",
+    "subtitle": "indref.jetpack",
+    "sounds": [
+      "indref:jetpack"
+    ]
   }
 }
