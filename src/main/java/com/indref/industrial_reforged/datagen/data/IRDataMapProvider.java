@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.datagen.data;
 
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
+import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.CTags;
 import net.minecraft.core.HolderLookup;
@@ -36,6 +37,9 @@ public class IRDataMapProvider extends DataMapProvider {
         moldIngredient(IRItems.STEEL_MOLD_ROD, Tags.Items.RODS);
 
         furnaceFuel(IRItems.COAL_DUST, 1600);
+        furnaceFuel(IRItems.TREE_TAP, 200);
+        furnaceFuel(IRBlocks.WOODEN_SCAFFOLDING, 500);
+        furnaceFuel(IRBlocks.WOODEN_BASIN, 500);
     }
 
     private void moldItem(Item moldItem, int capacity, boolean consumeCast) {

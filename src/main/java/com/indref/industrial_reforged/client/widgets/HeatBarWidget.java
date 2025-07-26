@@ -22,7 +22,7 @@ public class HeatBarWidget extends AbstractWidget {
     private final IHeatStorage heatStorage;
 
     public HeatBarWidget(IHeatStorage heatStorage, int x, int y) {
-        super(x, y, 96, 8, CommonComponents.EMPTY);
+        super(x, y, 80, 8, CommonComponents.EMPTY);
         this.heatStorage = heatStorage;
     }
 

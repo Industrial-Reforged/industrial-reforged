@@ -1,11 +1,13 @@
 package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.content.blockentities.WoodenBasinBlockEntity;
 import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
 import com.indref.industrial_reforged.content.recipes.BasinCastingRecipe;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.renderer.CastingItemRenderTypeBuffer;
+import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -25,6 +27,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -34,8 +37,6 @@ import org.joml.Matrix4f;
 
 public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlockEntity> {
     private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f;
-    public static final float MIN_Y = 2.1f / 16f;
-    public static final float MAX_Y = 0.4f - MIN_Y;
 
     public CastingBasinRenderer(BlockEntityRendererProvider.Context ignored) {
     }
@@ -46,6 +47,7 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         IItemHandler itemHandler = blockEntity.getItemHandler();
         BasinCastingRecipe recipe = blockEntity.getRecipe();
         ItemStack moldItem = itemHandler.getStackInSlot(0);
+        // TODO: Cache both CastingBasinBE methods
         CastingMoldValue mold = CastingBasinBlockEntity.getMold(moldItem.getItem());
         ItemStack resultItem = recipe != null
                 && ((mold != null
@@ -76,7 +78,7 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         renderItem(moldItem, blockEntity, poseStack, multiBufferSource, 0, fluidOpacity, itemRenderer);
         renderItem(resultItem, blockEntity, poseStack, multiBufferSource, itemOpacity, fluidOpacity, itemRenderer);
 
-        IFluidHandler fluidHandler = CapabilityUtils.fluidHandlerCapability(blockEntity);
+        IFluidHandler fluidHandler = blockEntity.getFluidHandler();
         if (fluidHandler != null) {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             int fluidCapacity = fluidHandler.getTankCapacity(0);
@@ -89,15 +91,13 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
                 }
             }
 
-
             float fillPercentage = Math.min(1, (float) fluidStack.getAmount() / fluidCapacity) / 2;
 
-            if (fluidStack.getFluid().getFluidType().isLighterThanAir())
-                renderFluid(poseStack, multiBufferSource, fluidStack, fillPercentage, 1, combinedLight, fluidOpacity);
-            else
-                renderFluid(poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
-
+            poseStack.translate(0, -1, 0);
+            poseStack.translate(0, (2 / 16f) * 5.5 - 0.01f, 0);
+            renderFluid(blockEntity, poseStack, multiBufferSource, fluidStack, alpha, fillPercentage, combinedLight, fluidOpacity);
         }
+
     }
 
     private void renderItem(ItemStack item, CastingBasinBlockEntity castingTableBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int itemOpacity, int fluidOpacity, ItemRenderer itemRenderer) {
@@ -130,8 +130,8 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         return LightTexture.pack(bLight, sLight);
     }
 
-    private static void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float heightPercentage, int combinedLight, int opacity) {
-        VertexConsumer vertexBuilder = bufferSource.getBuffer(RenderType.translucent());
+    private static void renderFluid(BlockEntity be, PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float fluidHeight, int combinedLight, int opacity) {
+        VertexConsumer vertexBuilder = bufferSource.getBuffer(IRRenderTypes.FLUID);
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidTypeExtensions.getStillTexture(fluidStack));
         int color = fluidTypeExtensions.getTintColor();
@@ -146,41 +146,22 @@ public class CastingBasinRenderer implements BlockEntityRenderer<CastingBasinBlo
         float green = (color >> 8 & 255) / 255f;
         float blue = (color & 255) / 255f;
 
-        renderQuads(poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+        renderQuads(be, poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, fluidHeight, combinedLight);
     }
 
-    private static void renderQuads(Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float heightPercentage, int light) {
-        float height = MIN_Y + (MAX_Y - MIN_Y) * heightPercentage;
+    private static void renderQuads(BlockEntity be, Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float height, int light) {
         float minU = sprite.getU(SIDE_MARGIN), maxU = sprite.getU((1 - SIDE_MARGIN));
-        float minV = sprite.getV(MIN_Y), maxV = sprite.getV(height);
-        // min z
-        buffer.addVertex(matrix, SIDE_MARGIN, MIN_Y, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setLight(light).setNormal(0, 0, -1);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, MIN_Y, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setLight(light).setNormal(0, 0, -1);
-        // max z
-        buffer.addVertex(matrix, SIDE_MARGIN, MIN_Y, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setLight(light).setNormal(0, 0, 1);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, MIN_Y, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setLight(light).setNormal(0, 0, 1);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setLight(light).setNormal(0, 0, 1);
-        buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setLight(light).setNormal(0, 0, 1);
-        // min x
-        buffer.addVertex(matrix, SIDE_MARGIN, MIN_Y, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, SIDE_MARGIN, MIN_Y, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setLight(light).setNormal(-1, 0, 0);
-        buffer.addVertex(matrix, SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setLight(light).setNormal(-1, 0, 0);
-        // max x
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, MIN_Y, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setLight(light).setNormal(1, 0, 0);
-        buffer.addVertex(matrix, 1 - SIDE_MARGIN, MIN_Y, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setLight(light).setNormal(1, 0, 0);
+        int blockLight = be.getLevel().getBrightness(LightLayer.BLOCK, be.getBlockPos()); // 0–15
+        int skyLight = be.getLevel().getBrightness(LightLayer.SKY, be.getBlockPos());     // 0–15
+
+        int u = blockLight * 16;
+        int v = skyLight * 16;
         // top
-        if (heightPercentage < 1) {
-            minV = sprite.getV(SIDE_MARGIN);
-            maxV = sprite.getV(1 - SIDE_MARGIN);
-            buffer.addVertex(matrix, SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setLight(light).setNormal(0, 1, 0);
-            buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setLight(light).setNormal(0, 1, 0);
-            buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setLight(light).setNormal(0, 1, 0);
-            buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setLight(light).setNormal(0, 1, 0);
-        }
+        float minV = sprite.getV(SIDE_MARGIN);
+        float maxV = sprite.getV(1 - SIDE_MARGIN);
+        buffer.addVertex(matrix, SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, minV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
+        buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
     }
 }

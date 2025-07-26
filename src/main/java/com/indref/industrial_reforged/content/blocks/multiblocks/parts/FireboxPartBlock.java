@@ -56,18 +56,18 @@ public class FireboxPartBlock extends BaseEntityBlock implements DisplayBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(FireboxPartBlock::new);
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return new FireboxPartBlockEntity(p_153215_, p_153216_);
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new FireboxPartBlockEntity(pos, state);
     }
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.getValue(SmallFireboxMultiblock.ACTIVE) && state.getValue(SmallFireboxMultiblock.FORMED) ? 10 : 0;
+        return state.getValue(FireboxMultiblock.ACTIVE) ? 10 : 0;
     }
 
     @Override

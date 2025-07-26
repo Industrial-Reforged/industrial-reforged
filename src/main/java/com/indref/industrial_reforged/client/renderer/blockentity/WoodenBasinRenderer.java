@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.content.blockentities.WoodenBasinBlockEntity;
 import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.WoodenBasinBlock;
 import com.indref.industrial_reforged.content.recipes.WoodenBasinRecipe;
 import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,8 +34,6 @@ import static net.minecraft.client.renderer.LightTexture.FULL_BRIGHT;
 
 public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlockEntity> {
     private static final float SIDE_MARGIN = (float) CastingBasinBlock.SHAPE.min(Direction.Axis.X) + 0.1f;
-    public static final float MIN_Y = 2.1f / 16f;
-    public static final float MAX_Y = 0.4f - MIN_Y;
 
     public WoodenBasinRenderer(BlockEntityRendererProvider.Context ignored) {
     }
@@ -67,84 +66,100 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
         }
 
         Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-        poseStack.translate(.5f, .5f, .5f);
-        poseStack.mulPose(Axis.YN.rotationDegrees(direction.toYRot()));
-        poseStack.translate(-.5f, -.5f, -.5f);
+        poseStack.pushPose();
+        {
+            poseStack.translate(.5f, .5f, .5f);
+            poseStack.mulPose(Axis.YN.rotationDegrees(direction.toYRot()));
+            poseStack.translate(-.5f, -.5f, -.5f);
 
-        int alpha = 1;
+            int alpha = 1;
 
-        float baseFluidHeight = 0.025f; // default when no fluid
-        float surfaceHeight = baseFluidHeight;
-        float floatOffset = 0;
+            float baseFluidHeight = 0.025f; // default when no fluid
+            float surfaceHeight = baseFluidHeight;
+            float floatOffset = 0;
 
-// --- Fluid Height Calculation ---
+            FluidStack renderedFluid = getRenderedFluid(blockEntity);
+            float fluidHeight = getFluidHeight(blockEntity);
 
-        if (!resultFluid.isEmpty()) {
-            int capacity = fluidHandler.getTankCapacity(1);
-            float fillRatio = Math.min(1f, (float) fluidHandler.getFluidInTank(1).getAmount() / capacity);
-            surfaceHeight = (2f / 16f) + (fillRatio * (7f / 16f));
-
-            renderFluid(blockEntity, poseStack, multiBufferSource, resultFluid, alpha, fillRatio, combinedLight, resultFluidOpactiy);
-        }
-
-        if (!inputFluidStack.isEmpty()) {
-            int capacity = fluidHandler.getTankCapacity(0);
-            float fillRatio = Math.min(1f, (float) inputFluidStack.getAmount() / capacity);
-            surfaceHeight = (2f / 16f) + (fillRatio * (7f / 16f));
-
-            renderFluid(blockEntity, poseStack, multiBufferSource, inputFluidStack, alpha, fillRatio, combinedLight, fluidOpacity);
-        }
-
-// --- Floating Offset (sine wave) ---
-        if (!inputFluidStack.isEmpty() || !resultFluid.isEmpty()) {
-            float time = (blockEntity.getLevel().getGameTime() + v) % 360;
-            floatOffset = (float) Math.sin(time * 0.1f) * 0.015f;
-            surfaceHeight = Math.max(baseFluidHeight / 2, surfaceHeight - 7f / 16f);
-        } else {
-            surfaceHeight -= 2f / 16f;
-        }
-
-// --- Item Rendering ---
-        if (!ingredientItem.isEmpty()) {
-            int maxItems = 3;
-            int itemCount = ingredientItem.getCount();
-            int stackSize = Math.max(ingredientItem.getMaxStackSize(), 16);
-            int renderedItems = Math.max(1, (int) Math.min(((double) itemCount / stackSize + 0.3) * 3, maxItems));
-
-            Random rand = new Random(blockEntity.getBlockPos().asLong()); // consistent randomness
-
-            for (int i = 0; i < renderedItems; i++) {
+            if (!renderedFluid.isEmpty()) {
                 poseStack.pushPose();
                 {
-                    // Base position
-                    poseStack.translate(0.5, 0.5, 0.5);
-                    poseStack.mulPose(Axis.XN.rotationDegrees(2));
-                    poseStack.mulPose(Axis.ZN.rotationDegrees(2));
-                    poseStack.scale(0.85f, 0.85f, 0.85f);
-                    poseStack.translate(-0.5, -0.5, -0.5);
-
-                    // Y translation with item "submersion"
-                    float submergeOffset = i * 0.075f; // deeper per item
-                    float y = surfaceHeight + floatOffset + submergeOffset;
-                    poseStack.translate(0.05, y, 0);
-
-                    // Directional offset
-                    if (direction == Direction.WEST) {
-                        poseStack.translate(-0.125, 0, 0);
-                    } else if (direction == Direction.SOUTH) {
-                        poseStack.translate(-0.045, 0, 0);
-                    }
-
-                    // Random jitter
-                    poseStack.translate((rand.nextFloat() - 0.5f) / 8f, 0, (rand.nextFloat() - 0.5f) / 8f);
-
-                    renderItem(ingredientItem, blockEntity, poseStack, multiBufferSource, itemRenderer);
+                    poseStack.translate(0, (2 / 16f) - 0.01f, 0);
+                    renderFluid(blockEntity, poseStack, multiBufferSource, renderedFluid, alpha, fluidHeight, combinedLight, fluidOpacity);
                 }
                 poseStack.popPose();
             }
+
+// --- Floating Offset (sine wave) ---
+            if (!inputFluidStack.isEmpty() || !resultFluid.isEmpty()) {
+                float time = (blockEntity.getLevel().getGameTime() + v) % 360;
+                floatOffset = (float) Math.sin(time * 0.1f) * 0.015f;
+                surfaceHeight = Math.max(baseFluidHeight / 2, surfaceHeight - 7f / 16f);
+            } else {
+                surfaceHeight -= 2f / 16f;
+            }
+
+// --- Item Rendering ---
+            if (!ingredientItem.isEmpty()) {
+                int maxItems = 3;
+                int itemCount = ingredientItem.getCount();
+                int stackSize = Math.max(ingredientItem.getMaxStackSize(), 16);
+                int renderedItems = Math.max(1, (int) Math.min(((double) itemCount / stackSize + 0.3) * 3, maxItems));
+
+                Random rand = new Random(blockEntity.getBlockPos().asLong()); // consistent randomness
+
+                for (int i = 0; i < renderedItems; i++) {
+                    poseStack.pushPose();
+                    {
+                        // Base position
+                        poseStack.translate(0.5, 0.5, 0.5);
+                        poseStack.mulPose(Axis.XN.rotationDegrees(2));
+                        poseStack.mulPose(Axis.ZN.rotationDegrees(2));
+                        poseStack.scale(0.85f, 0.85f, 0.85f);
+                        poseStack.translate(-0.5, -0.5, -0.5);
+
+                        // Y translation with item "submersion"
+                        float submergeOffset = i * 0.075f; // deeper per item
+                        float y = surfaceHeight + floatOffset + submergeOffset;
+                        poseStack.translate(0.05, y, 0);
+
+                        // Directional offset
+                        if (direction == Direction.WEST) {
+                            poseStack.translate(-0.125, 0, 0);
+                        } else if (direction == Direction.SOUTH) {
+                            poseStack.translate(-0.045, 0, 0);
+                        }
+
+                        // Random jitter
+                        poseStack.translate((rand.nextFloat() - 0.5f) / 8f, 0, (rand.nextFloat() - 0.5f) / 8f);
+
+                        renderItem(ingredientItem, blockEntity, poseStack, multiBufferSource, itemRenderer);
+                    }
+                    poseStack.popPose();
+                }
+            }
         }
+        poseStack.popPose();
+    }
 
+    private float getFluidHeight(WoodenBasinBlockEntity be) {
+        FluidStack renderedFluid = getRenderedFluid(be);
 
+        int tankCapacity = be.getFluidHandler().getTankCapacity(0);
+
+        return ((float) renderedFluid.getAmount() / tankCapacity) * (4f / 16f);
+    }
+
+    private FluidStack getRenderedFluid(WoodenBasinBlockEntity be) {
+        IFluidHandler fluidHandler = be.getFluidHandler();
+        WoodenBasinRecipe recipe = be.getRecipe();
+
+        FluidStack inputFluidStack = fluidHandler.getFluidInTank(0);
+        FluidStack resultFluid = recipe != null ? recipe.resultFluid().copyWithAmount(fluidHandler.getFluidInTank(1).getAmount()) : fluidHandler.getFluidInTank(1);
+        if (inputFluidStack.getAmount() > resultFluid.getAmount()) {
+            return inputFluidStack;
+        }
+        return resultFluid;
     }
 
     private void renderItem(ItemStack item, WoodenBasinBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, ItemRenderer itemRenderer) {
@@ -162,7 +177,7 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
         poseStack.popPose();
     }
 
-    private static void renderFluid(WoodenBasinBlockEntity be, PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float heightPercentage, int combinedLight, int opacity) {
+    private static void renderFluid(WoodenBasinBlockEntity be, PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float alpha, float fluidHeight, int combinedLight, int opacity) {
         VertexConsumer vertexBuilder = bufferSource.getBuffer(IRRenderTypes.FLUID);
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidTypeExtensions.getStillTexture(fluidStack));
@@ -178,11 +193,10 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
         float green = (color >> 8 & 255) / 255f;
         float blue = (color & 255) / 255f;
 
-        renderQuads(be, poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, heightPercentage, combinedLight);
+        renderQuads(be, poseStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, fluidHeight, combinedLight);
     }
 
-    private static void renderQuads(WoodenBasinBlockEntity be, Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float heightPercentage, int light) {
-        float height = (2f / 16f) + (heightPercentage * (7f / 16f)) / 2;
+    private static void renderQuads(WoodenBasinBlockEntity be, Matrix4f matrix, VertexConsumer buffer, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float height, int light) {
         float minU = sprite.getU(SIDE_MARGIN), maxU = sprite.getU((1 - SIDE_MARGIN));
         int blockLight = be.getLevel().getBrightness(LightLayer.BLOCK, be.getBlockPos()); // 0–15
         int skyLight = be.getLevel().getBrightness(LightLayer.SKY, be.getBlockPos());     // 0–15
@@ -196,6 +210,6 @@ public class WoodenBasinRenderer implements BlockEntityRenderer<WoodenBasinBlock
         buffer.addVertex(matrix, SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(minU, maxV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
         buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, 1 - SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, maxV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
         buffer.addVertex(matrix, 1 - SIDE_MARGIN, height, SIDE_MARGIN).setColor(r, g, b, alpha).setUv(maxU, minV).setUv1(u, v).setLight(light).setNormal(0, 1, 0);
-
     }
+
 }

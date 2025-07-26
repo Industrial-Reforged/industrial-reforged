@@ -258,7 +258,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
             IRClientUtils.setPlayerInCrucible(containsPlayer ? getFluidHandler().getFluidInTank(0) : null);
 
             if (getFluidHandler().getFluidInTank(0).getAmount() > 0 && level.random.nextInt(0, 170) == 10) {
-                level.playLocalSound(worldPosition, SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 1.75F, 0.75F, true);
+                level.playLocalSound(worldPosition, SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.25F, 0.75F, true);
             }
 
         }
