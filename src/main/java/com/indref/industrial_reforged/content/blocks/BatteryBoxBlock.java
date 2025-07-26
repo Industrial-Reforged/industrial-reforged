@@ -76,6 +76,6 @@ public class BatteryBoxBlock extends MachineBlock implements DisplayBlock {
 
     @Override
     public List<ItemLike> getCompatibleItems() {
-        return List.of(IRItems.SCANNER.get());
+        return List.of(/*IRItems.SCANNER.get()*/);
     }
 }

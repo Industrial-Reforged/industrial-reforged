@@ -30,6 +30,13 @@ public final class IRArmorMaterials {
         p_323378_.put(ArmorItem.Type.BODY, 5);
     }), 9, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(IRItems.RUBBER.get()));
 
+    public static final Holder<ArmorMaterial> JETPACK = register("jetpack", Util.make(new EnumMap<>(ArmorItem.Type.class), (protection) -> {
+        protection.put(ArmorItem.Type.HELMET, 0);
+        protection.put(ArmorItem.Type.CHESTPLATE, 1);
+        protection.put(ArmorItem.Type.LEGGINGS, 0);
+        protection.put(ArmorItem.Type.BOOTS, 0);
+    }), 15, SoundEvents.ARMOR_EQUIP_DIAMOND, 0.0F, 0.0F, () -> Ingredient.EMPTY);
+
     public static final Holder<ArmorMaterial> NANO = register("nano", Util.make(new EnumMap<>(ArmorItem.Type.class), (protection) -> {
         protection.put(ArmorItem.Type.HELMET, 1);
         protection.put(ArmorItem.Type.CHESTPLATE, 1);

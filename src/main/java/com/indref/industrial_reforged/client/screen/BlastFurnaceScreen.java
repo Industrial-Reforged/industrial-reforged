@@ -27,7 +27,7 @@ public class BlastFurnaceScreen extends PDLAbstractContainerScreen<BlastFurnaceM
     protected void init() {
         super.init();
         FluidTankWidget fluidTankWidget = new ClearableFluidTankWidget(this.leftPos + 97, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, this.getMenu().blockEntity);
-        HeatBarWidget heatDisplayWidget = new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos, this.topPos + 61);
+        HeatBarWidget heatDisplayWidget = new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 5, this.topPos + 61);
 
         addRenderableWidget(fluidTankWidget);
         addRenderableWidget(heatDisplayWidget);

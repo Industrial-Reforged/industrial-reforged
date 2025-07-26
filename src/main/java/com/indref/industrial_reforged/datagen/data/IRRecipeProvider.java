@@ -76,16 +76,11 @@ public class IRRecipeProvider extends RecipeProvider {
         crucibleSmeltingRecipes();
         castingRecipes();
         moldCastingRecipes();
-        woodenBasinRecipes();
         centrifugeRecipes();
 
         // Compacting recipes
         rawOreToBlockRecipes();
         ingotToBlockRecipes();
-    }
-
-    private void woodenBasinRecipes() {
-        irRecipe(new WoodenBasinRecipe(IngredientWithCount.of(IRItems.STICKY_RESIN.get(), 3), FluidIngredientWithAmount.of(IRFluids.BIO_MASS.toStack(200)), IRFluids.EPOXY_RESIN.toStack(200), 400));
     }
 
     private void multiblockRecipes() {
@@ -101,13 +96,6 @@ public class IRRecipeProvider extends RecipeProvider {
                 .pattern("###")
                 .define('#', IRBlocks.BLAST_FURNACE_BRICKS.get())
                 .unlockedBy("has_blast_furnace_brick", has(IRBlocks.BLAST_FURNACE_BRICKS.get()))
-                .save(output);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.WOODEN_BASIN.get())
-                .pattern("# #")
-                .pattern("###")
-                .define('#', ItemTags.PLANKS)
-                .unlockedBy("has_planks", has(ItemTags.PLANKS))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.BLAST_FURNACE_FAUCET.get())
@@ -270,6 +258,12 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_copper_cable", has(IRBlocks.COPPER_CABLE))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.CIRCUIT_BOARD.get())
+                .requires(IRItems.PLANT_MASS, 3)
+                .requires(IRItems.RUBBER, 2)
+                .unlockedBy("has_plant_ball", has(IRItems.PLANT_MASS))
+                .save(output);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IRBlocks.WOODEN_SCAFFOLDING.get(), 6)
                 .pattern("PPP")
                 .pattern("# #")
@@ -425,16 +419,16 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_battery", has(IRItems.ADVANCED_BATTERY.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.SCANNER.get())
-                .pattern("A  ")
-                .pattern("#G#")
-                .pattern("#C#")
-                .define('A', IRItems.ANTENNA)
-                .define('G', Tags.Items.GLASS_PANES)
-                .define('C', IRItems.BASIC_CIRCUIT)
-                .define('#', CTags.Items.STEEL_PLATE)
-                .unlockedBy("has_circuit", has(IRItems.BASIC_CIRCUIT.get()))
-                .save(output);
+        //ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, IRItems.SCANNER.get())
+        //        .pattern("A  ")
+        //        .pattern("#G#")
+        //        .pattern("#C#")
+        //        .define('A', IRItems.ANTENNA)
+        //        .define('G', Tags.Items.GLASS_PANES)
+        //        .define('C', IRItems.BASIC_CIRCUIT)
+        //        .define('#', CTags.Items.STEEL_PLATE)
+        //        .unlockedBy("has_circuit", has(IRItems.BASIC_CIRCUIT.get()))
+        //        .save(output);
 
     }
 
@@ -591,12 +585,6 @@ public class IRRecipeProvider extends RecipeProvider {
         plateCastingRecipe(IRFluids.MOLTEN_COPPER, IRItems.COPPER_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_STEEL, IRItems.STEEL_PLATE);
         plateCastingRecipe(IRFluids.MOLTEN_TIN, IRItems.TIN_PLATE);
-
-        irRecipe(new BasinCastingRecipe(Ingredient.of(IRTags.Items.MOLDS_PLATE),
-                FluidIngredientWithAmount.of(IRFluids.EPOXY_RESIN.getStillFluid(), 100),
-                IRItems.CIRCUIT_BOARD.toStack(),
-                200
-        ));
     }
 
     private void moldCastingRecipe(TagKey<Item> moldIngredientTag, PDLFluid fluid, ItemLike resultMoldItem) {

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_circuit": {
+    "has_plant_ball": {
       "conditions": {
         "items": [
           {
-            "items": "indref:basic_circuit"
+            "items": "indref:plant_mass"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "indref:scanner"
+        "recipe": "indref:circuit_board"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_circuit"
+      "has_plant_ball"
     ]
   ],
   "rewards": {
     "recipes": [
-      "indref:scanner"
+      "indref:circuit_board"
     ]
   }
 }

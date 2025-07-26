@@ -106,6 +106,6 @@ public class BasicGeneratorBlock extends RotatableMachineBlock implements Displa
 
     @Override
     public @Nullable List<ItemLike> getCompatibleItems() {
-        return List.of(IRItems.SCANNER.get());
+        return List.of(/*IRItems.SCANNER.get()*/);
     }
 }

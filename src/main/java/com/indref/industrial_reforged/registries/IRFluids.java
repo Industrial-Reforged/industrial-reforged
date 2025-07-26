@@ -12,7 +12,6 @@ public final class IRFluids {
     public static final BioMassFluid BIO_MASS = HELPER.registerFluid(new BioMassFluid("bio_mass"));
     public static final MethaneFluid METHANE = HELPER.registerFluid(new MethaneFluid("methane"));
     public static final StickyResinFluid STICKY_RESIN = HELPER.registerFluid(new StickyResinFluid("sticky_resin"));
-    public static final EpoxyResinFluid EPOXY_RESIN = HELPER.registerFluid(new EpoxyResinFluid("epoxy_resin"));
     public static final MoltenMetalFluid MOLTEN_ALUMINUM = HELPER.registerFluid(new MoltenMetalFluid("molten_aluminum",
             new Vec3i(226, 232, 242)));
     public static final MoltenMetalFluid MOLTEN_STEEL = HELPER.registerFluid(new MoltenMetalFluid("molten_steel",
@@ -28,5 +27,5 @@ public final class IRFluids {
     public static final MoltenMetalFluid MOLTEN_GOLD = HELPER.registerFluid(new MoltenMetalFluid("molten_gold",
             new Vec3i(255, 225, 109), FluidTemplates.MOLTEN_GOLD));
     public static final MoltenMetalFluid MOLTEN_LEAD = HELPER.registerFluid(new MoltenMetalFluid("molten_lead",
-            new Vec3i(71, 72, 100), FluidTemplates.MOLTEN_LEAD));
+            new Vec3i(71, 72, 100)));
 }

@@ -2,6 +2,12 @@
   "values": {
     "indref:coal_dust": {
       "burn_time": 1600
+    },
+    "indref:tree_tap": {
+      "burn_time": 200
+    },
+    "indref:wooden_scaffolding": {
+      "burn_time": 500
     }
   }
 }

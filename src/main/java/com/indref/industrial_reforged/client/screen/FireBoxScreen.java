@@ -33,7 +33,7 @@ public class FireBoxScreen extends PDLAbstractContainerScreen<FireBoxMenu> {
     @Override
     protected void init() {
         super.init();
-        addRenderableWidget(new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + (this.imageWidth - 96) / 2, this.topPos + 22));
+        addRenderableWidget(new HeatBarWidget(menu.blockEntity.getHeatStorage(), (this.width - 80) / 2, this.topPos + 22));
     }
 
     @Override

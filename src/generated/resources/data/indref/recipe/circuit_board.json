@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "indref:plant_mass"
+    },
+    {
+      "item": "indref:plant_mass"
+    },
+    {
+      "item": "indref:plant_mass"
+    },
+    {
+      "item": "indref:rubber"
+    },
+    {
+      "item": "indref:rubber"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "indref:circuit_board"
+  }
+}

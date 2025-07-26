@@ -1,5 +1,0 @@
-{
-  "parent": "neoforge:item/bucket_drip",
-  "fluid": "indref:epoxy_resin",
-  "loader": "neoforge:fluid_container"
-}

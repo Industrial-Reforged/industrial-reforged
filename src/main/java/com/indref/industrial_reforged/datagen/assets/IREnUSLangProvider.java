@@ -71,7 +71,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addFluidType(IRFluids.OIL.getFluidType(), "Oil");
         addFluidType(IRFluids.BIO_MASS.getFluidType(), "Bio Mass");
         addFluidType(IRFluids.METHANE.getFluidType(), "Methane");
-        addFluidType(IRFluids.EPOXY_RESIN.getFluidType(), "Epoxy Resin");
         addFluidType(IRFluids.STICKY_RESIN.getFluidType(), "Sticky Resin");
 
         addFluidType(IRFluids.MOLTEN_COPPER, "Molten Copper");
@@ -88,7 +87,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.FLUID_CELL, "Fluid Cell");
         addItem(IRItems.HAMMER, "Hammer");
         addItem(IRItems.WRENCH, "Wrench");
-        addItem(IRItems.SCANNER, "Scanner");
+        //addItem(IRItems.SCANNER, "Scanner");
         //addItem(IRItems.THERMOMETER, "Thermometer");
         addItem(IRItems.NANO_SABER, "Nano Saber");
         addItem(IRItems.TOOLBOX, "Toolbox");
@@ -146,7 +145,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRFluids.OIL.getDeferredBucket(), "Oil Bucket");
         addItem(IRFluids.BIO_MASS.getDeferredBucket(), "Bio Mass Bucket");
         addItem(IRFluids.METHANE.getDeferredBucket(), "Methane Bucket");
-        addItem(IRFluids.EPOXY_RESIN.getDeferredBucket(), "Epoxy Resin Bucket");
         addItem(IRFluids.STICKY_RESIN.getDeferredBucket(), "Sticky Resin Bucket");
 
         addItem(IRFluids.MOLTEN_COPPER.getDeferredBucket(), "Molten Copper Bucket");
@@ -204,8 +202,6 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRBlocks.BLAST_FURNACE_HATCH, "Blast Furnace Hatch");
         addBlock(IRBlocks.BLAST_FURNACE_FAUCET, "Blast Furnace Faucet");
         addBlock(IRBlocks.BLAST_FURNACE_CASTING_BASIN, "Blast Furnace Casting Basin");
-
-        addBlock(IRBlocks.WOODEN_BASIN, "Wooden Basin");
 
         addBlock(IRBlocks.RUBBER_TREE_LOG, "Rubber Tree Log");
         addBlock(IRBlocks.RUBBER_TREE_WOOD, "Rubber Tree Wood");

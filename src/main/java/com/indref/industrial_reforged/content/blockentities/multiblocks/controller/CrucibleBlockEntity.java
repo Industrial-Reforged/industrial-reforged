@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.blockentities.multiblocks.control
 
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
+import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
@@ -9,6 +10,7 @@ import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.content.blocks.machines.primitive.CastingBasinBlock;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.networking.BasinFluidChangedPayload;
@@ -62,6 +64,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.apache.logging.log4j.util.Cast;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,9 +79,11 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     private MultiblockData multiblockData;
 
+    // Variable to detect if casting mold has changed
     private Item expectedCast;
     // Block that can be filled when turning crucible
     public BlockCapabilityCache<IFluidHandler, Direction> basinFluidHandlerCache;
+    public BlockCapabilityCache<IItemHandler, Direction> basinItemHandlerCache;
     // Recipe cache
     private final Int2ObjectMap<CrucibleSmeltingRecipe> recipeCache;
 
@@ -206,6 +211,14 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
                     () -> !this.isRemoved(),
                     this::onInvalidateCaps
             );
+            this.basinItemHandlerCache = BlockCapabilityCache.create(
+                    Capabilities.ItemHandler.BLOCK,
+                    serverLevel,
+                    getBasinPos(),
+                    null,
+                    () -> !this.isRemoved(),
+                    this::onInvalidateCaps
+            );
         }
     }
 
@@ -223,6 +236,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         return IRTranslations.Menus.CRUCIBLE.component();
     }
 
+    // TODO: When basin is broken, crucible doesnt reset
     public void commonTick() {
         getHeatStorage().setLastHeatStored(getHeatStorage().getHeatStored());
 
@@ -281,7 +295,8 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
                     if (!castingMold.is(this.expectedCast)) {
                         CastingMoldValue mold = CastingBasinBlockEntity.getMold(castingMold.getItem());
                         if (mold != null) {
-                            this.maxTurnTime = mold.capacity();
+                            this.maxTurnTime = (mold.capacity() - getFluidHandler().getFluidInTank(0).getAmount()) / CASTING_SPEED;
+                            IndustrialReforged.LOGGER.debug("Max turn time: {}", this.maxTurnTime);
                             this.expectedCast = castingMold.getItem();
                         } else {
                             this.maxTurnTime = 0;
@@ -319,12 +334,14 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         }
     }
 
+    // TODO: Invalidate basin after taking out mold
     private void fillBlock() {
         if (!level.isClientSide()) {
             if (turnedOver && inUse == 0 && basinFluidHandlerCache != null) {
                 IFluidHandler fluidHandler = basinFluidHandlerCache.getCapability();
+                IItemHandler itemHandler = basinItemHandlerCache.getCapability();
 
-                if (fluidHandler != null) {
+                if (fluidHandler != null && CastingBasinBlockEntity.getMold(itemHandler.getStackInSlot(CastingBasinBlockEntity.CAST_SLOT).getItem()) != null) {
                     FluidStack drained = getFluidHandler().drain(CASTING_SPEED, IFluidHandler.FluidAction.EXECUTE);
                     int filled = fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                     int remaining = drained.getAmount() - filled;

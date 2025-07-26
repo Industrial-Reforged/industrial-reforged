@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-13T21:04:31.763074537	Tags for minecraft:item mod id vanilla
+// 1.21.1	2025-07-26T17:53:35.93443895	Tags for minecraft:item mod id vanilla
 bf4207125fec838572bf88021bbbaeb2269993f9 data/c/tags/item/bricks.json
 46e09b502aa621977af19701a8c5fb1a89b6b010 data/c/tags/item/ingots.json
 c8c3d716e2183bb41aa5183c3e3db4a2e4ad079f data/c/tags/item/ingots/aluminum.json
@@ -52,7 +52,7 @@ ba4f664761fc06f11aa98bdbfb6f4d7300a6371a data/c/tags/item/storage_blocks/steel.j
 46fd52b3f0a3a1b902edc906ed56c4c184cf9e0e data/c/tags/item/storage_blocks/tin.json
 824a488a50b696cd30504e06ccada17376b7de3d data/c/tags/item/storage_blocks/titanium.json
 dde8ce543b3c601a52f16ea4aad07cef90c865d7 data/c/tags/item/storage_blocks/uranium.json
-7e7f464e853acd16314f76597ab6f24bf7c1dd71 data/c/tags/item/tools.json
+84c8265bcf5a5091dc3a857ffee67a36dbe95555 data/c/tags/item/tools.json
 9d15fdcfb63962dfcdf18a753893bc9336f0ff4c data/c/tags/item/wires.json
 fdf91c0433c86adc6df9017d13f369e89d8a3445 data/c/tags/item/wires/copper.json
 22c461a7e1752abfee34b69d75418282155c1772 data/c/tags/item/wires/gold.json

@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.networking.crucible;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -26,8 +27,8 @@ public record EmptyCruciblePayload(BlockPos pos) implements CustomPacketPayload 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             Level level = context.player().level();
-            if (level.getBlockEntity(pos) instanceof CrucibleBlockEntity be) {
-                IFluidHandler tank = be.getFluidHandler();
+            IFluidHandler tank = CapabilityUtils.fluidHandlerCapability(level.getBlockEntity(pos));
+            if (tank != null) {
                 tank.drain(tank.getFluidInTank(0), IFluidHandler.FluidAction.EXECUTE);
             }
         }).exceptionally(err -> {

@@ -89,7 +89,6 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         castingBasin(IRBlocks.CERAMIC_CASTING_BASIN, blockTexture(IRBlocks.TERRACOTTA_BRICKS.get()));
         castingBasin(IRBlocks.BLAST_FURNACE_CASTING_BASIN, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
-        castingBasin(IRBlocks.WOODEN_BASIN, modLoc("block/wooden_basin_texture"));
 
         faucet(IRBlocks.BLAST_FURNACE_FAUCET, blockTexture(IRBlocks.BLAST_FURNACE_BRICKS.get()));
 

@@ -27,8 +27,8 @@ public class ClearableFluidTankWidget extends FluidTankWidget {
 
     @Override
     public List<Component> getFluidTooltip() {
-        List<Component> fluidTooltip = super.getFluidTooltip();
-        if (CrucibleScreen.hasShiftDown() && !fluidHandler.getFluidInTank(0).isEmpty()) {
+        List<Component> fluidTooltip = List.of(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY.component(this.fluidHandler.getFluidInTank(0).getAmount(), this.fluidHandler.getTankCapacity(0)).append(" ").append(IRTranslations.General.FLUID_UNIT.component()));
+        if (Screen.hasShiftDown() && !fluidHandler.getFluidInTank(0).isEmpty()) {
             fluidTooltip.add(IRTranslations.Tooltip.EMPTY_FLUID.component().withStyle(ChatFormatting.YELLOW));
         }
         return fluidTooltip;
@@ -38,8 +38,8 @@ public class ClearableFluidTankWidget extends FluidTankWidget {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (Screen.hasAltDown() && Screen.hasShiftDown()) {
             PacketDistributor.sendToServer(new EmptyCruciblePayload(this.pos));
-            IndustrialReforged.LOGGER.debug("Clickeddd");
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
+
 }

@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.api.blocks.misc.CustomFaucetInteractBlock;
 import com.indref.industrial_reforged.content.blockentities.FaucetBlockEntity;
+import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -53,7 +54,7 @@ public class FaucetRenderer implements BlockEntityRenderer<FaucetBlockEntity> {
 
     private static void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float belowMaxY, int combinedLight) {
         float alpha = 1;
-        VertexConsumer vertexBuilder = bufferSource.getBuffer(RenderType.translucent());
+        VertexConsumer vertexBuilder = bufferSource.getBuffer(IRRenderTypes.FLUID);
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidTypeExtensions.getFlowingTexture(fluidStack));
         int color = fluidTypeExtensions.getTintColor();

@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.client.renderer.blockentity;
 
 import com.indref.industrial_reforged.client.model.CrucibleModel;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.CrucibleBlockEntity;
+import com.indref.industrial_reforged.util.renderer.IRRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -108,7 +109,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<CrucibleBlockEntity
     }
 
     private void renderFluid(PoseStack poseStack, MultiBufferSource bufferSource, FluidStack fluidStack, float heightPercentage, int combinedLight, FluidPart renderPart) {
-        VertexConsumer vertexBuilder = bufferSource.getBuffer(RenderType.translucent());
+        VertexConsumer vertexBuilder = bufferSource.getBuffer(IRRenderTypes.FLUID);
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidTypeExtensions.getStillTexture(fluidStack));
         int color = fluidTypeExtensions.getTintColor();

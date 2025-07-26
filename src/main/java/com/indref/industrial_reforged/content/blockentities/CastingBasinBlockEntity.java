@@ -76,12 +76,14 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
             if (moldValue != null) {
                 fluidTank.setCapacity(moldValue.capacity());
                 int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
-                this.rememberedFluid = this.rememberedFluid.copyWithAmount(this.rememberedFluid.getAmount() - filled);
+                int amount = this.rememberedFluid.getAmount() - filled;
+                this.rememberedFluid = amount == 0 ? FluidStack.EMPTY : this.rememberedFluid.copyWithAmount(amount);
                 update();
             } else if (isMoldIngredient(getItemHandler().getStackInSlot(CAST_SLOT))) {
                 fluidTank.setCapacity(333);
                 int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
-                this.rememberedFluid = this.rememberedFluid.copyWithAmount(this.rememberedFluid.getAmount() - filled);
+                int amount = this.rememberedFluid.getAmount() - filled;
+                this.rememberedFluid = amount == 0 ? FluidStack.EMPTY : this.rememberedFluid.copyWithAmount(amount);
                 update();
             } else {
                 FluidStack fluid = fluidTank.getFluid();

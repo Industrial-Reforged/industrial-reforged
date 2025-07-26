@@ -39,7 +39,6 @@ public class IRDataMapProvider extends DataMapProvider {
         furnaceFuel(IRItems.COAL_DUST, 1600);
         furnaceFuel(IRItems.TREE_TAP, 200);
         furnaceFuel(IRBlocks.WOODEN_SCAFFOLDING, 500);
-        furnaceFuel(IRBlocks.WOODEN_BASIN, 500);
     }
 
     private void moldItem(Item moldItem, int capacity, boolean consumeCast) {

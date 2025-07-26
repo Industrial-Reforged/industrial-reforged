@@ -2,7 +2,6 @@
   "values": [
     "indref:hammer",
     "indref:wrench",
-    "indref:tree_tap",
-    "indref:scanner"
+    "indref:tree_tap"
   ]
 }

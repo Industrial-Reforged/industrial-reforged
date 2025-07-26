@@ -50,8 +50,8 @@ public class IRTagsProvider {
             tag(Tags.Items.TOOLS,
                     IRItems.HAMMER,
                     IRItems.WRENCH,
-                    IRItems.TREE_TAP,
-                    IRItems.SCANNER
+                    IRItems.TREE_TAP
+                    //IRItems.SCANNER
             );
             tag(IRTags.Items.RUBBER_LOGS,
                     IRBlocks.RUBBER_TREE_LOG,

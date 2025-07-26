@@ -73,7 +73,6 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRFluids.OIL.getDeferredBucket());
         bucket(IRFluids.BIO_MASS.getStillFluid());
         bucket(IRFluids.METHANE.getStillFluid());
-        bucket(IRFluids.EPOXY_RESIN.getStillFluid());
         bucket(IRFluids.STICKY_RESIN.getStillFluid());
         basicItem(IRItems.PLANT_BALL);
         basicItem(IRItems.COAL_DUST);
@@ -85,7 +84,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.STICKY_RESIN);
         basicItem(IRItems.CIRCUIT_BOARD);
 
-        basicItem(IRItems.SCANNER);
+        //basicItem(IRItems.SCANNER);
         handheldItem(IRItems.ELECTRIC_HOE);
         handheldItem(IRItems.ELECTRIC_TREE_TAP);
         handheldItem(IRItems.BASIC_DRILL);

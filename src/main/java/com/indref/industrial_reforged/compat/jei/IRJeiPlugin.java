@@ -58,7 +58,6 @@ public class IRJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new CrucibleSmeltingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CastingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new MoldCastingCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new WoodenBasinCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CentrifugeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new BlastFurnaceCategory(registration.getJeiHelpers().getGuiHelper()));
     }
@@ -91,10 +90,6 @@ public class IRJeiPlugin implements IModPlugin {
         });
         registration.addRecipes(MoldCastingCategory.RECIPE_TYPE, moldCastingRecipes1);
 
-        List<WoodenBasinRecipe> woodenBasinRecipes = recipeManager.getAllRecipesFor(WoodenBasinRecipe.TYPE)
-                .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(WoodenBasinCategory.RECIPE_TYPE, woodenBasinRecipes);
-
         List<CentrifugeRecipe> centrifugingRecipes = recipeManager.getAllRecipesFor(CentrifugeRecipe.TYPE)
                 .stream().map(RecipeHolder::value).toList();
         registration.addRecipes(CentrifugeCategory.RECIPE_TYPE, centrifugingRecipes);
@@ -124,9 +119,6 @@ public class IRJeiPlugin implements IModPlugin {
                 MoldCastingCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(IRBlocks.BLAST_FURNACE_CASTING_BASIN.get()),
                 MoldCastingCategory.RECIPE_TYPE);
-
-        registration.addRecipeCatalyst(new ItemStack(IRBlocks.WOODEN_BASIN.get()),
-                WoodenBasinCategory.RECIPE_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(IRMachines.CENTRIFUGE.getBlock()),
                 CentrifugeCategory.RECIPE_TYPE);

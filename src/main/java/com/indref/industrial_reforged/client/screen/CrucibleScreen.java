@@ -24,7 +24,7 @@ public class CrucibleScreen extends PDLAbstractContainerScreen<CrucibleMenu> {
         super.init();
 
         addRenderableWidget(new ClearableFluidTankWidget(leftPos + 98, this.topPos + 17, FluidTankWidget.TankVariants.LARGE, menu.blockEntity));
-        addRenderableWidget(new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 89, this.topPos + 74));
+        addRenderableWidget(new HeatBarWidget(menu.blockEntity.getHeatStorage(), this.leftPos + 89, this.topPos + 73));
     }
 
 

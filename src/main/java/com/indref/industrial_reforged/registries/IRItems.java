@@ -64,8 +64,8 @@ public final class IRItems {
     public static final DeferredItem<ElectricChainsawItem> ADVANCED_CHAINSAW = electricToolItem("advanced_chainsaw",
             () -> new ElectricChainsawItem(new Item.Properties().requiredFeatures(WIP_FLAG), 7, -2.8F, Tiers.DIAMOND, IREnergyTiers.HIGH, () -> IRConfig.advancedChainsawEnergyUsage, () -> IRConfig.advancedChainsawCapacity));
     // medium
-    public static final DeferredItem<ScannerItem> SCANNER = electricToolItem("scanner",
-            () -> new ScannerItem(new Item.Properties(), IREnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
+    //public static final DeferredItem<ScannerItem> SCANNER = electricToolItem("scanner",
+    //        () -> new ScannerItem(new Item.Properties(), IREnergyTiers.MEDIUM, () -> IRConfig.scannerEnergyUsage, () -> IRConfig.scannerCapacity));
     // high
     public static final DeferredItem<NanoSaberItem> NANO_SABER = electricToolItem("nano_saber",
             () -> new NanoSaberItem(new Item.Properties().requiredFeatures(WIP_FLAG), Tiers.DIAMOND, -1, -3F, IREnergyTiers.HIGH, () -> IRConfig.nanoSaberEnergyUsage, () -> IRConfig.nanoSaberCapacity));
@@ -100,7 +100,7 @@ public final class IRItems {
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_HELMET = registerItem("hazmat_helmet",
             () -> new HazmatSuiteItem(ArmorItem.Type.HELMET, new Item.Properties().requiredFeatures(WIP_FLAG)), calculateTabPosition(ItemTabOrdering.REGULAR_ARMOR));
     public static final DeferredItem<JetpackItem> JETPACK = registerItem("jetpack",
-            () -> new JetpackItem(new Item.Properties(), ArmorMaterials.IRON, IREnergyTiers.MEDIUM), calculateTabPosition(ItemTabOrdering.BASIC_ELECTRIC_ARMOR));
+            () -> new JetpackItem(new Item.Properties(), IRArmorMaterials.JETPACK, IREnergyTiers.MEDIUM), calculateTabPosition(ItemTabOrdering.BASIC_ELECTRIC_ARMOR));
 
     // primitive components
     public static final DeferredItem<Item> STICKY_RESIN = primitiveComponent("sticky_resin");

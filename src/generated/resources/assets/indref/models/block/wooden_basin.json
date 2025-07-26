@@ -1,6 +1,0 @@
-{
-  "parent": "indref:block/casting_basin_base",
-  "textures": {
-    "texture": "indref:block/wooden_basin_texture"
-  }
-}
