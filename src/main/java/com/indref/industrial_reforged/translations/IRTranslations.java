@@ -122,6 +122,7 @@ public final class IRTranslations {
     public static void init() {
         General.init();
         Tabs.init();
+        Messages.init();
         Tooltip.init();
         Menus.init();
         Jei.init();
@@ -139,6 +140,23 @@ public final class IRTranslations {
 
         private static TranslatableConstant create(String key) {
             return new TranslatableConstant(key, "creative_tab");
+        }
+
+        private static void init() {
+        }
+    }
+
+    public static final class Messages {
+        public static final TranslatableConstant GUIDE_ME_MISSING = create("guide_me_missing", "GuideME must be installed to access the guide book!");
+
+        private static TranslatableConstant create(String key, String defaultValue) {
+            TranslatableConstant constant = create(key);
+            TRANSLATIONS.put(constant.key(), defaultValue);
+            return constant;
+        }
+
+        private static TranslatableConstant create(String key) {
+            return new TranslatableConstant(key, "message");
         }
 
         private static void init() {

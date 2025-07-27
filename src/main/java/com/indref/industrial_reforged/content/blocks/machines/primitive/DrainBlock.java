@@ -45,10 +45,11 @@ public class DrainBlock extends RotatableContainerBlock {
             IFluidHandler fluidTank = blockEntity.getFluidHandler();
             Fluid fluid = fluidTank.getFluidInTank(0).getFluid();
             int fluidAmount = fluidTank.getFluidInTank(0).getAmount();
-            player.sendSystemMessage(fluidTank.getFluidInTank(0).getHoverName().copy()
+            player.displayClientMessage(fluidTank.getFluidInTank(0).getHoverName().copy()
                     .append(", ")
                     .append(IRTranslations.Tooltip.FLUID_AMOUNT_WITH_CAPACITY.component(fluidAmount, fluidTank.getTankCapacity(0)))
-                    .append(IRTranslations.General.ENERGY_UNIT.component()));
+                    .append(" ")
+                    .append(IRTranslations.General.FLUID_UNIT.component()), true);
         }
         return InteractionResult.SUCCESS;
     }

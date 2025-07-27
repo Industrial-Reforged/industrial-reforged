@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-26T17:53:35.957934043	Recipes
+// 1.21.1	2025-07-27T12:26:03.793431399	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -53,6 +53,7 @@ ea367424e2a9ad5ecc21bc7e1433a8d5d03c0cc1 data/indref/advancement/recipes/misc/ci
 08356f795aa047ef8267043ae15c2097d16202ea data/indref/advancement/recipes/misc/clay_mold.json
 cf7b5c77a264acb6a6ec0f939a38d73aaa419d61 data/indref/advancement/recipes/misc/electric_motor.json
 1c53b713c68cf9cfa5b628e4c1ff5f8916b6e2ef data/indref/advancement/recipes/misc/fluid_cell.json
+7804c8920855b3aba50b30b7551c1b0e4c3ca2ad data/indref/advancement/recipes/misc/guide.json
 bff7b4f70003b6dcd2604cccc7791281be3ac982 data/indref/advancement/recipes/misc/iridium_ingot.json
 03ffa35ac18e5926b70085ce0bb9353d9bdaa189 data/indref/advancement/recipes/misc/iron_rod.json
 3e795cea1a5266f0c4d0bf6cb6428fab4df32cb5 data/indref/advancement/recipes/misc/lead_ingot.json
@@ -202,6 +203,7 @@ d04dfb3e3a1e32f32852169dcc71a7f5fbe23210 data/indref/recipe/drain.json
 db9c604c41e5991685a296a5e58a6dcf78f2efd3 data/indref/recipe/electric_tree_tap.json
 534eb3734cb3c81d7ad2920b70c84aad8c8f22eb data/indref/recipe/fluid_cell.json
 2f6209641a0501019d9f22bd10654ee88a87c3ce data/indref/recipe/gold_cable.json
+c951fde75ee0d30acf0f71416366a21bc37d8d51 data/indref/recipe/guide.json
 6ddfc1749b8f9db2e69210eef5cb859d10fa664c data/indref/recipe/hammer.json
 603eb86c3a7a6f5e7ab667a4b198afbc00a44828 data/indref/recipe/hazmat_boots.json
 8c81dd87f5f5db97f8d7ca0b04656086b9a0e2d5 data/indref/recipe/hazmat_chestplate.json

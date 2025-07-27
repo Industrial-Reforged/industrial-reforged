@@ -9,6 +9,7 @@ import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
+import com.indref.industrial_reforged.compat.guideme.IRGuide;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.BlastFurnacePartBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.part.CruciblePartBlockEntity;
 import com.indref.industrial_reforged.content.items.storage.ToolboxItem;
@@ -26,6 +27,7 @@ import com.indref.industrial_reforged.networking.molds.SyncCastingMoldsPayload;
 import com.indref.industrial_reforged.networking.transportation.*;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.tags.IRTags;
+import com.indref.industrial_reforged.util.CompatUtils;
 import com.mojang.logging.LogUtils;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
 import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
@@ -33,6 +35,7 @@ import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.CapabilityRegistrationHelper;
+import guideme.Guide;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -54,6 +57,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -112,6 +116,11 @@ public final class IndustrialReforged {
         IRUpgrades.UPGRADES.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
+
+        if (CompatUtils.isGuideMELoaded()) {
+            IRGuide.init();
+        }
+
     }
 
     private void addFeaturePacks(AddPackFindersEvent event) {

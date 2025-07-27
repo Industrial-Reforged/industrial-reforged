@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.registries;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.items.UpgradeItem;
+import com.indref.industrial_reforged.content.items.GuideItem;
 import com.indref.industrial_reforged.content.items.SimpleUpgradeItem;
 import com.indref.industrial_reforged.content.items.armor.HazmatSuiteItem;
 import com.indref.industrial_reforged.content.items.CastingScrapsItem;
@@ -23,6 +24,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -89,6 +91,9 @@ public final class IRItems {
 
     // Upgrades
     public static final DeferredItem<SimpleUpgradeItem> OVERCLOCKER_UPGRADE = upgradeItem("overclocker_upgrade", () -> new SimpleUpgradeItem(new Item.Properties(), IRUpgrades.OVERCLOCKER_UPGRADE));
+
+    // Guide book
+    public static final DeferredItem<GuideItem> GUIDE = guideItem("guide", GuideItem::new);;
 
     // armor
     public static final DeferredItem<HazmatSuiteItem> HAZMAT_BOOTS = registerItem("hazmat_boots",
@@ -190,6 +195,11 @@ public final class IRItems {
 
     static <T extends Item & UpgradeItem> DeferredItem<T> upgradeItem(String name, Supplier<T> itemSupplier) {
         return registerItem(name, itemSupplier, calculateTabPosition(ItemTabOrdering.UPGRADES));
+    }
+
+    static <T extends Item> DeferredItem<T> guideItem(String name, Function<Item.Properties, T> itemConstructor) {
+        boolean guideMeLoaded = ModList.get().isLoaded("guideme");
+        return registerItem(name, () -> itemConstructor.apply(new Item.Properties()), guideMeLoaded ? calculateTabPosition(ItemTabOrdering.BASIC_ELECTRIC_TOOLS) : ItemTabOrdering.noPosition());
     }
 
     static <T extends Item> DeferredItem<T> miscItem(String name, Function<Item.Properties, T> itemConstructor) {

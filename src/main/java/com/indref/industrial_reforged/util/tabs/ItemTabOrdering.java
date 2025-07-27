@@ -113,9 +113,11 @@ public enum ItemTabOrdering implements TabOrdering {
         output.accept(stack.copy());
 
         IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
-        energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
+        if (energyStorage != null) {
+            energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
+            output.accept(stack);
+        }
 
-        output.accept(stack);
     }
 
     private static void addFluidCellItems(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output, ItemLike item) {

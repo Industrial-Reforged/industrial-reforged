@@ -27,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
@@ -271,6 +272,13 @@ public class IRRecipeProvider extends RecipeProvider {
                 .define('#', Tags.Items.RODS_WOODEN)
                 .define('P', ItemTags.PLANKS)
                 .unlockedBy("has_wooden_rods", has(Tags.Items.RODS_WOODEN))
+                .save(output);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, IRItems.GUIDE.get())
+                .requires(Tags.Items.DUSTS_REDSTONE)
+                .requires(Tags.Items.INGOTS_IRON)
+                .requires(Items.PAPER)
+                .unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
                 .save(output);
 
         plantBallRecipes();

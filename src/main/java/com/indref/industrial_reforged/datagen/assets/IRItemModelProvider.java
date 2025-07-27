@@ -24,7 +24,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -84,7 +83,7 @@ public class IRItemModelProvider extends ItemModelProvider {
         basicItem(IRItems.STICKY_RESIN);
         basicItem(IRItems.CIRCUIT_BOARD);
 
-        //basicItem(IRItems.SCANNER);
+        basicItem(IRItems.GUIDE);
         handheldItem(IRItems.ELECTRIC_HOE);
         handheldItem(IRItems.ELECTRIC_TREE_TAP);
         handheldItem(IRItems.BASIC_DRILL);

@@ -25,7 +25,7 @@ public class IRDataMapProvider extends DataMapProvider {
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         for (Map.Entry<DeferredItem<?>, CastingMoldValue> item : IRItems.MOLD_ITEMS.entrySet()) {
             CastingMoldValue value = item.getValue();
             moldItem(item.getKey().get(), value.capacity(), value.consumeCast());

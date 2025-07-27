@@ -47,7 +47,7 @@ import org.lwjgl.system.linux.liburing.IOURingRecvmsgOut;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
-@EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = IndustrialReforged.MODID, value = Dist.CLIENT)
 public final class ClientEvents {
     public static FluidStack playerInCrucibleFluid = null;
     private static boolean up = false;

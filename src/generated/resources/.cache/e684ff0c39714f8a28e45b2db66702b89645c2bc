@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-26T17:53:35.926690043	Item Models: indref
+// 1.21.1	2025-07-27T12:26:03.781878543	Item Models: indref
 23281d5f69e347aa46a4831238ec7ece7de37706 assets/indref/models/item/advanced_battery.json
 459b06e6cc6ccb70e6f1488188c3b0c7570c9dd7 assets/indref/models/item/advanced_battery_0.json
 afa941fa93123773c9f53632fa95ce9c16c4a1d1 assets/indref/models/item/advanced_battery_1.json
@@ -73,6 +73,7 @@ b9186e61952305a23ff76d42b7ac16b02e96c527 assets/indref/models/item/electric_tree
 774908e5bfad201c5f888db9095848ac8bbc006b assets/indref/models/item/fluid_cell.json
 405b32354edc5c6f4f98867a3730e738f2f55e58 assets/indref/models/item/gold_cable.json
 2626caccc3ad881cf245b74a6627e2a69a6d9b28 assets/indref/models/item/gold_wire.json
+5bbc129e0711fbe93fd3ba12e62c6403cd2a11ef assets/indref/models/item/guide.json
 1e19e5a248036e941c27c2a40d423d8a36b561c1 assets/indref/models/item/hammer.json
 b5eff4334dd8fc2294b05277a41eac35431de20b assets/indref/models/item/hazmat_boots.json
 70635743a8be135fcb304d2aa7c1eb6d518970a9 assets/indref/models/item/hazmat_chestplate.json

@@ -21,7 +21,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
-@EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = IndustrialReforged.MODID)
 public final class CrucibleEvents {
     @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Pre event) {

@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-26T12:13:48.637214295	Block States: indref
+// 1.21.1	2025-07-27T16:42:47.436110717	Block States: indref
 24e4a6f633f363cf013a5f463365ab82bc3277e6 assets/indref/blockstates/aluminum_block.json
 b269694801416e295b87a1190e8aabbc2733f47c assets/indref/blockstates/basic_generator.json
 d6d272b93d842f79c610e2da12bfef08d91063f6 assets/indref/blockstates/bauxite_ore.json
@@ -10,6 +10,7 @@ d7029279a1067e266ca30335903899ab69ee7107 assets/indref/blockstates/blast_furnace
 ffb3b28edc08cd3d01be9926b44248d0ca6eb5fa assets/indref/blockstates/blast_furnace_part.json
 1178b47900680945ddb3ab906e5d75a7965a6bc2 assets/indref/blockstates/centrifuge.json
 b95c5ae35094d44cd578dd904b32433a9761224a assets/indref/blockstates/ceramic_casting_basin.json
+3dff9e1ec59415779195d2abfa9f07bc17b428a1 assets/indref/blockstates/ceramic_crucible_controller.json
 3852a0bedf83de36846bc8498288366dea418c87 assets/indref/blockstates/chromium_block.json
 df520f8fbb33b92336de02e52b10cacf57a5351e assets/indref/blockstates/chromium_ore.json
 3201dac8070136037f32d4328846c28f462e7015 assets/indref/blockstates/coil.json

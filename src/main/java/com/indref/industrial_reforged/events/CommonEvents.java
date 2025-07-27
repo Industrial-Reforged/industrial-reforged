@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = IndustrialReforged.MODID)
 public final class CommonEvents {
     @SubscribeEvent
     public static void onLivingFall(LivingFallEvent event) {

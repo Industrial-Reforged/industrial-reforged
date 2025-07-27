@@ -73,6 +73,9 @@ neoForge {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
 
             logLevel = org.slf4j.event.Level.DEBUG
+
+            systemProperty 'guideme.indref.guide.sources', file("src/main/resources/assets/indref/ir_guidebook/").absolutePath
+            systemProperty 'guideme.indref.guide.sourcesNamespace', "${mod_id}"
         }
     }
 
@@ -94,6 +97,9 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
 
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+    compileOnly "org.appliedenergistics:guideme:${guideme_version}:api"
+    runtimeOnly "org.appliedenergistics:guideme:${guideme_version}"
 
     implementation "curse.maven:porting-dead-libs-1173919:${pdl_version}"
 }

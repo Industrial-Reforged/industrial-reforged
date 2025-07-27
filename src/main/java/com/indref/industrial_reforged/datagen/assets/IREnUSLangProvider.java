@@ -113,6 +113,8 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.ULTIMATE_CIRCUIT, "Ultimate Circuit");
         addItem(IRItems.CIRCUIT_BOARD, "Circuit Board");
 
+        addItem(IRItems.GUIDE, "Guide");
+
         addItem(IRItems.OVERCLOCKER_UPGRADE, "Overclocker Upgrade");
 
         addItem(IRItems.ELECTRIC_MOTOR, "Electric Motor");

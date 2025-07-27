@@ -94,6 +94,8 @@ public class IRBlockStateProvider extends BlockStateProvider {
 
         coilBlock(IRBlocks.COIL.get());
 
+        existingModel(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER.get(), Blocks.AIR);
+
         for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
             existingModel(fluid.block.get(), Blocks.AIR);
         }

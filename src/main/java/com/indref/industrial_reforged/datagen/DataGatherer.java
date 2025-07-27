@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = IndustrialReforged.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IndustrialReforged.MODID)
 public class DataGatherer {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
