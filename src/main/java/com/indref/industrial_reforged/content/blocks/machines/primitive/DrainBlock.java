@@ -43,7 +43,6 @@ public class DrainBlock extends RotatableContainerBlock {
         if (!level.isClientSide()) {
             DrainBlockEntity blockEntity = (DrainBlockEntity) level.getBlockEntity(blockPos);
             IFluidHandler fluidTank = blockEntity.getFluidHandler();
-            Fluid fluid = fluidTank.getFluidInTank(0).getFluid();
             int fluidAmount = fluidTank.getFluidInTank(0).getAmount();
             player.displayClientMessage(fluidTank.getFluidInTank(0).getHoverName().copy()
                     .append(", ")
