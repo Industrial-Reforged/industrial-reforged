@@ -21,7 +21,7 @@ navigation:
 - **Static Size**
 
 The refractory firebox or just firebox is the first multiblock that you will build in Industrial Reforged.
-It is built as shown above and consists of a <ItemImage id="indref:coil" scale="0.6" /> copper coil and <ItemImage id="indref:refractory_brick" scale="0.6" />  8 refractory bricks.
+It is built as shown above and consists of a <ItemImage id="indref:coil" scale="0.6" /> **Copper Coil** and <ItemImage id="indref:refractory_brick" scale="0.6" /> **8 Refractory Bricks**.
 To assemble the multiblock, click on the block highlighted with a green box (the copper coil) using a <ItemImage id="indref:hammer" scale="0.6" /> [Hammer](./tools.md#hammer).
 
 The firebox can be used to burn any furnace fuel to produce heat.
@@ -55,4 +55,4 @@ The first use for the firebox is heating the <ItemImage id="indref:ceramic_cruci
 The small firebox is rather inefficient and expensive for heating the crucible.
 However, when used for heating the <ItemImage id="indref:blast_furnace_controller" scale="0.6" /> [Blast Furnace](./blast_furnace.md) it is a lot more efficient that the regular firebox.
 
-The multiblock is built with <ItemImage id="indref:small_firebox_hatch" scale="0.6" /> 4 small firebox hatches and assembled by clicking on any of them using a <ItemImage id="indref:hammer" scale="0.6" /> [Hammer](./tools.md#hammer).
+The multiblock is built with <ItemImage id="indref:small_firebox_hatch" scale="0.6" /> **4 Small Firebox Hatches** and assembled by clicking on any of them using a <ItemImage id="indref:hammer" scale="0.6" /> [Hammer](./tools.md#hammer).
