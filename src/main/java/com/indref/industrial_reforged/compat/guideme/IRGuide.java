@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.compat.guideme;
 import com.indref.industrial_reforged.IndustrialReforged;
 import guideme.Guide;
 import guideme.GuidesCommon;
+import guideme.scene.annotation.SceneAnnotation;
 import guideme.scene.element.SceneElementTagCompiler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
