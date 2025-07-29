@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.gui.menus;
+package com.indref.industrial_reforged.content.menus;
 
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
@@ -25,10 +25,10 @@ public class CrucibleMenu extends PDLAbstractContainerMenu<CrucibleBlockEntity> 
         checkContainerSize(inv, 1);
         this.level = inv.player.level();
 
-        IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);
+        IItemHandler itemHandler = entity.getItemHandler();
 
         int x = 26;
-        int y = 18;
+        int y = 19;
         int index = 0;
         for (int yIndex = 0; yIndex < 3; yIndex++) {
             for (int xIndex = 0; xIndex < 3; xIndex++) {
@@ -37,8 +37,8 @@ public class CrucibleMenu extends PDLAbstractContainerMenu<CrucibleBlockEntity> 
             }
         }
 
-        addPlayerHotbar(inv);
-        addPlayerInventory(inv);
+        addPlayerHotbar(inv, 142);
+        addPlayerInventory(inv, 84);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.items.UpgradeItem;
 import com.indref.industrial_reforged.api.upgrade.Upgrade;
 import com.indref.industrial_reforged.registries.IRUpgrades;
+import com.indref.industrial_reforged.util.machine.IRMachine;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +16,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -41,8 +45,8 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     private float progressIncrement;
     private float energyUsage;
 
-    public MachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
-        super(blockEntityType, blockPos, blockState);
+    public MachineBlockEntity(BlockEntityType<? extends MachineBlockEntity> entityType, BlockPos blockPos, BlockState blockState) {
+        super(entityType, blockPos, blockState);
         this.caches = new ArrayList<>();
         this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE);
         if (this.supportsUpgrades()) {
@@ -282,6 +286,10 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     public void setRedstoneSignalType(RedstoneSignalType redstoneSignalType) {
         this.redstoneSignalType = redstoneSignalType;
         update();
+    }
+
+    private <T extends MachineBlockEntity> T selfBE() {
+        return (T) this;
     }
 
     @Override

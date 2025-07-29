@@ -6,7 +6,7 @@ import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
+import com.indref.industrial_reforged.content.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.registries.IRNetworks;

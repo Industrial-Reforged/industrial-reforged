@@ -1,5 +1,6 @@
-package com.indref.industrial_reforged.content.gui.menus;
+package com.indref.industrial_reforged.content.menus;
 
+import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRMachines;
@@ -21,7 +22,7 @@ public class CentrifugeMenu extends MachineContainerMenu<CentrifugeBlockEntity> 
     }
 
     public CentrifugeMenu(int containerId, Inventory inv, CentrifugeBlockEntity blockEntity) {
-        super(IRMenuTypes.CENTRIFUGE_MENU.get(), containerId, inv, blockEntity);
+        super(IRMachines.CENTRIFUGE.getMenuType(), containerId, inv, blockEntity);
         this.access = ContainerLevelAccess.create(inv.player.level(), blockEntity.getBlockPos());
         addPlayerInventory(inv, 83 + 20);
         addPlayerHotbar(inv, 141 + 20);

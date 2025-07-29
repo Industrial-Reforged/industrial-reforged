@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.util;
 
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -77,16 +78,24 @@ public final class BlockUtils {
             int fluidsFound = 0;
             float proportion = 0.0F;
 
-            for(int j = 0; j < fluidHandler.getTanks(); ++j) {
+            for (int j = 0; j < fluidHandler.getTanks(); ++j) {
                 FluidStack fluidStack = fluidHandler.getFluidInTank(j);
                 if (!fluidStack.isEmpty()) {
-                    proportion += (float)fluidStack.getAmount() / (float)fluidHandler.getTankCapacity(j);
+                    proportion += (float) fluidStack.getAmount() / (float) fluidHandler.getTankCapacity(j);
                     ++fluidsFound;
                 }
             }
 
-            proportion /= (float)fluidHandler.getTanks();
+            proportion /= (float) fluidHandler.getTanks();
             return Mth.floor(proportion * 14.0F) + (fluidsFound > 0 ? 1 : 0);
+        }
+    }
+
+    public static int calcRedstoneFromEnergy(IEnergyStorage energyStorage) {
+        if (energyStorage == null) {
+            return 0;
+        } else {
+            return Mth.floor(((float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity()) * 14.0F) + (energyStorage.getEnergyStored() > 0 ? 1 : 0);
         }
     }
 

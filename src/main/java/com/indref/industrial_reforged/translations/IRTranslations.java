@@ -104,6 +104,7 @@ public final class IRTranslations {
         public static final TranslatableConstant BASIC_GENERATOR = create("basic_generator", "Basic Generator");
         public static final TranslatableConstant CENTRIFUGE = create("centrifuge", "Centrifuge");
         public static final TranslatableConstant BLUEPRINT = create("blueprint", "Blueprint");
+        public static final TranslatableConstant BATTERY_BOX = create("battery_box", "Battery Box");
 
         private static TranslatableConstant create(String key, String defaultValue) {
             TranslatableConstant constant = create(key);

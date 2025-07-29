@@ -3,21 +3,17 @@ package com.indref.industrial_reforged.client.screen;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
 import com.indref.industrial_reforged.api.client.screen.MachineScreen;
-import com.indref.industrial_reforged.api.client.widget.PanelWidget;
 import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
 import com.indref.industrial_reforged.client.widgets.*;
-import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
+import com.indref.industrial_reforged.content.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.networking.UpgradeWidgetSetSlotPositionsPayload;
 import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class CentrifugeScreen extends MachineScreen<CentrifugeMenu> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(IndustrialReforged.MODID, "textures/gui/centrifuge.png");

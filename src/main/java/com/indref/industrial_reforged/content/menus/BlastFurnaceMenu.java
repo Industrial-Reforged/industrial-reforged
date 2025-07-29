@@ -1,6 +1,5 @@
-package com.indref.industrial_reforged.content.gui.menus;
+package com.indref.industrial_reforged.content.menus;
 
-import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.BlastFurnaceBlockEntity;

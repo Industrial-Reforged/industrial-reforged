@@ -7,7 +7,7 @@ import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
-import com.indref.industrial_reforged.content.gui.menus.BlastFurnaceMenu;
+import com.indref.industrial_reforged.content.menus.BlastFurnaceMenu;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.content.recipes.recipeInputs.ItemRecipeInput;

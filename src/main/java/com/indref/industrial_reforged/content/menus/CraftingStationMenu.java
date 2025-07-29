@@ -1,10 +1,8 @@
-package com.indref.industrial_reforged.content.gui.menus;
+package com.indref.industrial_reforged.content.menus;
 
-import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRMenuTypes;
 import com.indref.industrial_reforged.content.blockentities.CraftingStationBlockEntity;
-import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.recipes.craftingStation.ItemhandlerCraftingContainer;
 import com.indref.industrial_reforged.util.recipes.craftingStation.SmartItemHandlerSlot;
 import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;

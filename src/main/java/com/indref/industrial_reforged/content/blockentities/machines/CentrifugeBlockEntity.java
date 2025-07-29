@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
-import com.indref.industrial_reforged.content.gui.menus.CentrifugeMenu;
+import com.indref.industrial_reforged.content.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.translations.IRTranslations;

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.client.screen.BasicGeneratorScreen;
+import com.indref.industrial_reforged.client.screen.BatteryBoxScreen;
 import com.indref.industrial_reforged.client.screen.CentrifugeScreen;
 import com.indref.industrial_reforged.content.recipes.*;
 import com.indref.industrial_reforged.data.IRDataComponents;
@@ -131,5 +132,6 @@ public class IRJeiPlugin implements IModPlugin {
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addGenericGuiContainerHandler(CentrifugeScreen.class, new WidgetBounds());
         registration.addGenericGuiContainerHandler(BasicGeneratorScreen.class, new WidgetBounds());
+        registration.addGenericGuiContainerHandler(BatteryBoxScreen.class, new WidgetBounds());
     }
 }

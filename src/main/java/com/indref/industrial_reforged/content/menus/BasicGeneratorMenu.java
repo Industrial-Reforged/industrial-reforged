@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.gui.menus;
+package com.indref.industrial_reforged.content.menus;
 
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
@@ -19,7 +19,7 @@ public class BasicGeneratorMenu extends MachineContainerMenu<BasicGeneratorBlock
     }
 
     public BasicGeneratorMenu(int pContainerId, Inventory inv, BasicGeneratorBlockEntity entity) {
-        super(IRMenuTypes.BASIC_GENERATOR_MENU.get(), pContainerId, inv, entity);
+        super(IRMachines.BASIC_GENERATOR.getMenuType(), pContainerId, inv, entity);
         checkContainerSize(inv, 2);
 
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(entity);

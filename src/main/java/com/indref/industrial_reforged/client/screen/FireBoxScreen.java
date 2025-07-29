@@ -2,18 +2,14 @@ package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
-import com.indref.industrial_reforged.content.blockentities.multiblocks.controller.FireboxBlockEntity;
-import com.indref.industrial_reforged.content.gui.menus.FireBoxMenu;
+import com.indref.industrial_reforged.content.menus.FireBoxMenu;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.vehicle.Minecart;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector2i;
 
 public class FireBoxScreen extends PDLAbstractContainerScreen<FireBoxMenu> {
     private static final ResourceLocation TEXTURE =

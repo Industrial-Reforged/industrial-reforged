@@ -6,6 +6,7 @@ import com.indref.industrial_reforged.api.gui.slots.SlotAccessor;
 import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.*;
 import net.neoforged.neoforge.items.SlotItemHandler;

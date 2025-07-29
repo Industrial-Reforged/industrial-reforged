@@ -176,10 +176,11 @@ public final class IndustrialReforgedClient {
     private void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
         event.register(IRMenuTypes.CRUCIBLE_MENU.get(), CrucibleScreen::new);
-        event.register(IRMenuTypes.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
+        event.register(IRMachines.CENTRIFUGE.getMenuType(), CentrifugeScreen::new);
+        event.register(IRMachines.BASIC_GENERATOR.getMenuType(), BasicGeneratorScreen::new);
         event.register(IRMenuTypes.BLAST_FURNACE_MENU.get(), BlastFurnaceScreen::new);
         event.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
-        event.register(IRMenuTypes.BASIC_GENERATOR_MENU.get(), BasicGeneratorScreen::new);
+        event.register(IRMenuTypes.BATTERY_BOX_MENU.get(), BatteryBoxScreen::new);
     }
 
     private void registerItemDecorations(RegisterItemDecorationsEvent event) {

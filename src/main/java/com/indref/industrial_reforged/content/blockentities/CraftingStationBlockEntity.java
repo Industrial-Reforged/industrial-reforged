@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.content.blockentities;
 import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.gui.menus.CraftingStationMenu;
+import com.indref.industrial_reforged.content.menus.CraftingStationMenu;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;

@@ -5,9 +5,8 @@ import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWra
 import com.indref.industrial_reforged.api.client.screen.MachineScreen;
 import com.indref.industrial_reforged.client.widgets.EnergyBarWidget;
 import com.indref.industrial_reforged.client.widgets.RedstonePanelWidget;
-import com.indref.industrial_reforged.content.gui.menus.BasicGeneratorMenu;
+import com.indref.industrial_reforged.content.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.client.widgets.BatterySlotWidget;
-import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +30,9 @@ public class BasicGeneratorScreen extends MachineScreen<BasicGeneratorMenu> {
 
     @Override
     protected void init() {
-        this.imageHeight = 185;
+        super.init();
+
+        this.imageHeight = 186;
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         EnergyBarWidget energyBarWidget = addRenderableOnly(
