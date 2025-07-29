@@ -12,7 +12,7 @@ navigation:
 
 <ItemImage id="indref:tree_tap" scale="2" />
 
-The tree tap is the cheapest tool and can be used to harvest [Sticky Resin](./rubber.md) from rubber trees by right-clicking on logs with a resin spot.
+The tree tap is the cheapest tool and can be used to harvest <ItemImage id="indref:sticky_resin" scale="0.6" /> [Sticky Resin](./rubber.md) from rubber trees by right-clicking on logs with a resin spot.
 
 ## Hammer
 
@@ -32,14 +32,14 @@ If a machine is shift-clicked with a wrench, it can be picked up and will save i
 <ItemImage id="indref:hazmat_boots" scale="2" />
 
 The Hazmat Boots are part of the full hazmat set coming soomTM.
-They provide complete fall damage resistance, which makes them extremely useful throughout the game, especially when using the [Jetpack](../electric_age/jetpack.md).
+They provide complete fall damage resistance, which makes them extremely useful throughout the game, especially when using the <ItemImage id="indref:jetpack" scale="0.6" /> [Jetpack](../electric_age/jetpack.md).
 
 ## Fluid Cells
 
 <ItemImage id="indref:fluid_cell" scale="2" />
 
 The fluid cell is a simple fluid container that works like a bucket but can hold more than a 1000 mb.
-It is also used in some crafting recipes like overclockers.
+It is also used in some crafting recipes like <ItemImage id="indref:overclocker_upgrade" scale="0.6" /> [Overclockers](../electric_age/upgrades.md#overclocker).
 
 ## Toolbox
 

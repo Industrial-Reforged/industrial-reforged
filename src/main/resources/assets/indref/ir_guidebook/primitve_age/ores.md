@@ -28,8 +28,10 @@ Iron, Copper and Redstone are some of the most important resources for both prim
 
 Bauxite, Tin and Lead are the most important ores from this mod during the early and midgame.
 
+<br/>
+
 **Bauxite** is used for bricks and **aluminum** production in particular.
 
-**Tin** is an important resource used for [Fluid Cells](./tools.md#fluid-cells) and cables as well as many other electric and reactor components.
+**Tin** is an important resource used for <ItemImage id="indref:fluid_cell" scale="0.6" /> [Fluid Cells](./tools.md#fluid-cells) and cables as well as many other electric and reactor components.
 
-**Lead** is used for [Batteries](../electric_age/batteries.md) and the [Hazmat Suit](./tools.md#hazmat-boots)
+**Lead** is used for <ItemImage id="indref:basic_battery" scale="0.6" /> [Batteries](../electric_age/batteries.md) and the <ItemImage id="indref:hazmat_chestplate" scale="0.6" /> [Hazmat Suit](./tools.md#hazmat-boots)

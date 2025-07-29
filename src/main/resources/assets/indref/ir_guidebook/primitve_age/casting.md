@@ -5,3 +5,5 @@ navigation:
   parent: indref:primitive_age.md
   position: 5
 ---
+
+# Casting
