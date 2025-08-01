@@ -153,7 +153,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
         //renderMultiblockPreview(event);
-        //renderNetworkNodes(event);
+        renderNetworkNodes(event);
     }
 
     @SubscribeEvent

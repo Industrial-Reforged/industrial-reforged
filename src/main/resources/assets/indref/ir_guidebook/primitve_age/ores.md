@@ -4,6 +4,13 @@ navigation:
   icon: "indref:bauxite_ore"
   parent: indref:primitive_age.md
   position: -1
+item_ids:
+  - indref:bauxite_ore
+  - indref:deepslate_bauxite_ore
+  - indref:tin_ore
+  - indref:deepslate_tin_ore
+  - indref:lead_ore
+  - indref:deepslate_lead_ore
 ---
 
 # Primitive Ores

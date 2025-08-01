@@ -4,12 +4,9 @@ import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.gui.slots.SlotAccessor;
 import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
-import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.gui.menus.PDLAbstractContainerMenu;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.*;
-import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,7 +35,7 @@ public abstract class MachineContainerMenu<T extends MachineBlockEntity> extends
     @Override
     protected @NotNull Slot addSlot(@NotNull Slot slot) {
         if (slot instanceof ChargingSlot chargingSlot && this.blockEntity instanceof MachineBlockEntity machineBlockEntity) {
-            machineBlockEntity.addBatterySlot(chargingSlot);
+            machineBlockEntity.addChargingSlot(chargingSlot);
         }
         return super.addSlot(slot);
     }

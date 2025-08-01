@@ -7,7 +7,6 @@ import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.items.UpgradeItem;
 import com.indref.industrial_reforged.api.upgrade.Upgrade;
 import com.indref.industrial_reforged.registries.IRUpgrades;
-import com.indref.industrial_reforged.util.machine.IRMachine;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,16 +15,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +29,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity, RedstoneBlockEntity, UpgradeBlockEntity {
-    private @Nullable ChargingSlot batterySlot;
+    private final List<ChargingSlot> chargingSlots;
     private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
     private boolean removedUsingWrench;
     private final UpgradeItemHandler upgradeItemHandler;
@@ -49,6 +44,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         super(entityType, blockPos, blockState);
         this.caches = new ArrayList<>();
         this.defaultSupportedUpgrades = Set.of(IRUpgrades.OVERCLOCKER_UPGRADE);
+        this.chargingSlots = new ArrayList<>();
         if (this.supportsUpgrades()) {
             this.upgradeItemHandler = new UpgradeItemHandler(this.defaultSupportedUpgrades) {
                 @Override
@@ -88,15 +84,17 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         return redstoneSignalStrength;
     }
 
-    public void addBatterySlot(ChargingSlot chargingSlot) {
-        this.batterySlot = chargingSlot;
+    public void addChargingSlot(ChargingSlot chargingSlot) {
+        this.chargingSlots.add(chargingSlot);
     }
 
     @Override
     public void commonTick() {
         super.commonTick();
-        if (this.batterySlot != null) {
-            tickBatterySlot();
+        for (ChargingSlot chargingSlot : this.chargingSlots) {
+            if (chargingSlot.getItem().isEmpty()) continue;
+
+            tickChargingSlot(chargingSlot);
         }
 
         if (spreadEnergy() && !level.isClientSide()) {
@@ -127,12 +125,12 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         return amountPerBlock;
     }
 
-    private void tickBatterySlot() {
-        ItemStack itemStack = this.batterySlot.getItem();
-        IEnergyStorage energyStorage = getEuStorage();
+    private void tickChargingSlot(ChargingSlot slot) {
+        ItemStack itemStack = slot.getItem();
+        IEnergyStorage energyStorage = this.getEuStorage();
         IEnergyStorage itemEnergyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (itemEnergyStorage != null && !level.isClientSide()) {
-            if (batterySlot.getMode() == ChargingSlot.ChargeMode.CHARGE) {
+            if (slot.getMode() == ChargingSlot.ChargeMode.CHARGE) {
                 int filled = itemEnergyStorage.tryFillEnergy(Math.min(itemEnergyStorage.getMaxInput(), energyStorage.getMaxOutput()), true);
                 int drained = energyStorage.tryDrainEnergy(filled, true);
                 int newFilled = itemEnergyStorage.tryFillEnergy(drained, false);

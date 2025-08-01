@@ -28,10 +28,10 @@ public class BatteryBoxScreen extends MachineScreen<BatteryBoxMenu> {
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         EnergyBarWidget energyBarWidget = addRenderableOnly(
-                new EnergyBarWidget(this.leftPos + (this.imageWidth - 12) / 2, this.topPos + 17, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
+                new EnergyBarWidget(this.leftPos + (this.imageWidth - 12) / 2, this.topPos + 28, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
         );
         addPanelWidget(new RedstonePanelWidget(this.leftPos + this.imageWidth, this.topPos + 2));
-        addRenderableOnly(new BatterySlotWidget(this.leftPos + (this.imageWidth - 16) / 2, this.topPos + 14 + energyBarWidget.getHeight() + 5));
+        //addRenderableOnly(new BatterySlotWidget(this.leftPos + (this.imageWidth - 16) / 2, this.topPos + 14 + energyBarWidget.getHeight() + 5));
 
     }
 

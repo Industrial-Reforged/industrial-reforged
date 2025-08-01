@@ -8,7 +8,10 @@ import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.SidedHeatHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.portingdeadmods.portingdeadlibs.PortingDeadLibs;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
+import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -17,11 +20,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
@@ -148,6 +155,45 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
         if (filled > 0)
             onFluidChanged();
         return filled;
+    }
+
+    @Override
+    public <T> T getHandlerOnSide(BlockCapability<T, @Nullable Direction> capability, SidedHandlerSupplier<T> handlerSupplier, Direction direction, T baseHandler) {
+        if (direction == null) {
+            return baseHandler;
+        } else {
+            Map<Direction, Pair<IOAction, int[]>> ioPorts = this.getSidedInteractions(capability);
+            if (ioPorts.containsKey(direction)) {
+                if (direction == Direction.UP || direction == Direction.DOWN) {
+                    return handlerSupplier.get(baseHandler, ioPorts.get(direction));
+                }
+
+                if (this.getBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                    Direction localDir = this.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+                    return this.getCapOnSide(handlerSupplier, direction, baseHandler, ioPorts, localDir);
+                }
+
+                if (this.getBlockState().hasProperty(BlockStateProperties.FACING)) {
+                    Direction localDir = this.getBlockState().getValue(BlockStateProperties.FACING);
+                    return this.getCapOnSide(handlerSupplier, direction, baseHandler, ioPorts, localDir);
+                }
+
+                PortingDeadLibs.LOGGER.warn("Sided io for non facing block");
+            }
+
+            return null;
+        }
+    }
+
+    // TODO: Rewrite caps on side
+    private <T> @Nullable T getCapOnSide(SidedHandlerSupplier<T> handlerSupplier, Direction direction, T baseHandler, Map<Direction, Pair<IOAction, int[]>> ioPorts, Direction localDir) {
+        return switch (localDir) {
+            case NORTH -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getOpposite()));
+            case EAST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getClockWise()));
+            case WEST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getCounterClockWise()));
+            case null -> null;
+            default -> handlerSupplier.get(baseHandler, ioPorts.get(direction));
+        };
     }
 
     // FIXME: when facing up or down we just return null

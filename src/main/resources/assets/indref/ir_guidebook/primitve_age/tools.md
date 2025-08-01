@@ -4,6 +4,13 @@ navigation:
   icon: "indref:toolbox"
   parent: indref:primitive_age.md
   position: 0
+item_ids:
+  - indref:hammer
+  - indref:wrench
+  - indref:tree_tap
+  - indref:hazmat_boots
+  - indref:fluid_cell
+  - indref:toolbox
 ---
 
 # Primitive Tools

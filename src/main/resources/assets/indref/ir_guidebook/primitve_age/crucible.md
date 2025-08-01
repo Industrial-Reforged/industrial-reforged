@@ -41,6 +41,8 @@ This is indicated by a small vertical orange bar on the item.
 Items can also be inserted by throwing them into the crucible from the top.
 Just be careful that they don't despawn.
 
+**WARNING** - Standing in the crucible will burn the player or any living entities
+
 Once the crucible has filled with molten metal, it can be cast out into a casting basin.
 To turn the crucible, power the crucible by supplying a redstone signal to the bottom of the crucible, for example through a <ItemImage id="minecraft:lever" scale="0.6" /> **Lever**.
 

@@ -2,15 +2,18 @@ package com.indref.industrial_reforged.content.blockentities;
 
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
 import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
 import com.indref.industrial_reforged.content.menus.BatteryBoxMenu;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
+import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.SidedCapUtils;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,6 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,13 +33,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO: GUI & Redstone
 public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuProvider {
     private final Map<Direction, Pair<IOAction, int[]>> sidedInteractions;
 
     public BatteryBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.BATTERY_BOX.get(), blockPos, blockState);
         addEuStorage(IREnergyTiers.LOW, IRConfig.batteryBoxEnergyCapacity);
+        addItemHandler(2, (slot, item) -> item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null);
 
         this.sidedInteractions = new HashMap<>();
         onBlockUpdated();
@@ -55,16 +59,12 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
     public void commonTick() {
         super.commonTick();
 
-        // FIXME: Reenable this
 //        if (!level.isClientSide()) {
-//            IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
+//            IEnergyStorage thisEnergyStorage = this.getEuStorage();
 //            if (level instanceof ServerLevel serverLevel) {
-//                EnergyNetsSavedData energyNets = EnergyNetUtils.getEnergyNets(serverLevel);
-//                Optional<EnergyNet> enet = energyNets.getEnets().getNetwork(worldPosition);
-//                if (enet.isPresent()) {
-//                    int filled = enet.get().distributeEnergy(Math.min(thisEnergyStorage.getEnergyTier().get().defaultCapacity(), thisEnergyStorage.getEnergyStored()));
-//                    thisEnergyStorage.tryDrainEnergy(filled, false);
-//                }
+//                int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
+//                int remainder = IRNetworks.ENERGY_NETWORK.get().transport(serverLevel, this.worldPosition, min, this.getBlockState().getValue(BlockStateProperties.FACING));
+//                thisEnergyStorage.tryDrainEnergy(min - remainder, false);
 //            }
 //        }
     }
@@ -73,7 +73,7 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
         for (Direction direction : Direction.values()) {
             this.sidedInteractions.put(direction, Pair.of(IOAction.INSERT, new int[]{0}));
         }
-        this.sidedInteractions.put(getBlockState().getValue(BatteryBoxBlock.FACING), Pair.of(IOAction.EXTRACT, new int[]{0}));
+        this.sidedInteractions.put(getBlockState().getValue(BatteryBoxBlock.FACING).getOpposite(), Pair.of(IOAction.EXTRACT, new int[]{0}));
         if (this.level != null) {
             this.invalidateCapabilities();
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
@@ -90,6 +90,12 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
     @Override
     public <T> Map<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> blockCapability) {
         return this.sidedInteractions;
+    }
+
+    @Override
+    public IEnergyStorage getEuHandlerOnSide(Direction direction) {
+        IEnergyStorage euHandlerOnSide = super.getEuHandlerOnSide(direction);
+        return euHandlerOnSide;
     }
 
     @Override
