@@ -100,11 +100,11 @@ public class TransportNetwork<T> {
 
     }
 
-    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead, @Nullable BlockPos interactorPos, @Nullable Direction interactorConnection) {
+    public void addNodeAndUpdate(ServerLevel level, BlockPos pos, Direction[] connections, boolean dead, Collection<BlockPos> interactorPositions, Collection<Direction> interactorConnections) {
         NetworkNode<T> node = this.createNode(pos);
         node.setDead(dead);
-        node.setInteractorConnection(interactorConnection);
-        if (interactorPos != null) {
+        node.getInteractorConnections().addAll(interactorConnections);
+        for (BlockPos interactorPos : interactorPositions) {
             this.addInteractor(level, interactorPos);
         }
         this.addNode(level, pos, node);
@@ -143,8 +143,8 @@ public class TransportNetwork<T> {
             }
         }
 
-        if (node.getInteractorConnection() != null) {
-            BlockPos relative = pos.relative(node.getInteractorConnection());
+        for (Direction interactorDirection : node.getInteractorConnections()) {
+            BlockPos relative = pos.relative(interactorDirection);
             this.removeInteractor(serverLevel, relative);
             if (this.isSynced()) {
                 PacketDistributor.sendToAllPlayers(new RemoveInteractorPayload(this, relative));
@@ -365,11 +365,13 @@ public class TransportNetwork<T> {
     // Since caches are saved, recalculating them should not be necessary. The only issue is that resource transfer would not be instant in larger nets
 
     private void traverse(ServerLevel level, NetworkNode<T> node, NetworkRoute<T> route, List<NetworkRoute<T>> cache) {
+        // Expand route by adding current node
         route.getPath().add(node);
 
+        // Find next nodes that still need to be traversed
 
         Map<Direction, NetworkNode<T>> next = node.getNext();
-        //T value = node.getTransporting().removeValue();
+        /*T value = node.getTransporting().removeValue();*/
         List<NetworkNode<T>> nextNodes = new ArrayList<>(6);
         for (NetworkNode<T> nextNode : next.values()) {
             if (!route.getPath().contains(nextNode)) {
@@ -379,31 +381,36 @@ public class TransportNetwork<T> {
             }
         }
 
-        //List<T> split = this.getTransportingHandler().split(value, nextNodes.size() + node.getInteractorConnectionsAmount());
-        //int i = 0;
+        // Traverse next nodes and calculate physical distances
+
+        /*List<T> split = this.getTransportingHandler().split(value, nextNodes.size() + node.getInteractorConnectionsAmount());
+        int i = 0;*/
         for (NetworkNode<T> nextNode : nextNodes) {
             NetworkRoute<T> nextRoute = new NetworkRoute<>(route.getOriginPos(), new HashSet<>(route.getPath()));
-            int distance = Math.abs(vecEliminateZero(nextNode.getPos().subtract(node.getPos())));
+            int distance = Math.abs(vec3EliminateZeros(nextNode.getPos().subtract(node.getPos())));
             nextRoute.setPhysicalDistance(route.getPhysicalDistance() + distance);
             //nextNode.getTransporting().setValue(split.get(i));
             traverse(level, nextNode, nextRoute, cache);
             //i++;
         }
 
-        Direction interactorConnection = node.getInteractorConnection();
-        if (interactorConnection != null) {
-            BlockPos interactorPos = node.getPos().relative(interactorConnection);
+        // Add all routes with interactor connections to the cache
+
+        Set<Direction> interactorConnections = node.getInteractorConnections();
+        for (Direction direction : interactorConnections) {
+            BlockPos interactorPos = node.getPos().relative(direction);
             if (!interactorPos.equals(route.getOriginPos())) {
-                route.setInteractorDest(interactorPos);
-                route.setInteractorDirection(interactorConnection);
-                cache.add(route);
+                NetworkRoute<T> routeCopy = route.copy();
+                routeCopy.setInteractorDest(interactorPos);
+                routeCopy.setInteractorDirection(direction);
+                cache.add(routeCopy);
             }
-            //this.getTransportingHandler().receive(level, interactorPos, interactorConnection, split.getLast());
+            //this.getTransportingHandler().receive(level, interactorPos, interactorConnections, split.getLast());
         }
 
     }
 
-    private int vecEliminateZero(Vec3i vec) {
+    private int vec3EliminateZeros(Vec3i vec) {
         if (vec.getX() != 0) return vec.getX();
         if (vec.getY() != 0) return vec.getY();
         if (vec.getZ() != 0) return vec.getZ();

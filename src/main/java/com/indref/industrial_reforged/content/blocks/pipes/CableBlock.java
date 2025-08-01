@@ -19,8 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class CableBlock extends PipeBlock {
@@ -40,18 +39,18 @@ public class CableBlock extends PipeBlock {
             int connectionsAmount = 0;
             boolean[] connections = new boolean[6];
             Direction[] directions = new Direction[6];
-            BlockPos interactor = null;
-            Direction interactorConnection = null;
+            Set<BlockPos> interactors = new HashSet<>();
+            Set<Direction> interactorConnections = new HashSet<>();
 
             for (Direction dir : Direction.values()) {
-                boolean value = state.getValue(CONNECTION[dir.get3DDataValue()]);
-                connections[dir.get3DDataValue()] = value;
-                if (value) {
+                boolean connected = state.getValue(CONNECTION[dir.get3DDataValue()]);
+                connections[dir.get3DDataValue()] = connected;
+                if (connected) {
                     directions[dir.get3DDataValue()] = dir;
                     connectionsAmount++;
                     if (IRNetworks.ENERGY_NETWORK.get().checkForInteractorAt(serverLevel, pos, dir)) {
-                        interactor = pos.relative(dir);
-                        interactorConnection = dir;
+                        interactors.add(pos.relative(dir));
+                        interactorConnections.add(dir);
                     }
                 } else {
                     directions[dir.get3DDataValue()] = null;
@@ -78,13 +77,13 @@ public class CableBlock extends PipeBlock {
                     }
                 }
 
-                if (interactor != null) {
-                    IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, false, interactor, interactorConnection);
+                if (!interactors.isEmpty()) {
+                    IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, false, interactors, interactorConnections);
                 } else if (direction0 != null && direction1 != null) {
                     IRNetworks.ENERGY_NETWORK.get().addConnection(serverLevel, pos, direction0, direction1);
                 }
             } else {
-                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1, interactor, interactorConnection);
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, pos, directions, connectionsAmount == 1, interactors, interactorConnections);
             }
 
         }
@@ -114,7 +113,7 @@ public class CableBlock extends PipeBlock {
                     }
                 }
 
-                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, blockPos, directions, connectionsAmount == 1, facingBlockPos, facingDirection);
+                IRNetworks.ENERGY_NETWORK.get().addNodeAndUpdate(serverLevel, blockPos, directions, connectionsAmount == 1, Collections.singleton(facingBlockPos), Collections.singleton(facingDirection));
             }
         }
         return super.updateShape(blockState, facingDirection, facingBlockState, level, blockPos, facingBlockPos);

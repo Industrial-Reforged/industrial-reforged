@@ -27,22 +27,23 @@ public class NetworkNode<T> {
     private Map<Direction, BlockPos> uninitializedNext;
     private final Transporting<T> transporting;
     private boolean dead;
-    private Optional<Direction> interactorConnection;
+    private final Set<Direction> interactorConnections;
 
     public NetworkNode(TransportNetwork<T> network, BlockPos pos) {
         this.network = network;
         this.pos = pos;
         this.next = new ConcurrentHashMap<>();
         this.transporting = new Transporting<>(network);
+        this.interactorConnections = new HashSet<>();
     }
 
-    public NetworkNode(TransportNetwork<?> network, BlockPos pos, Map<Direction, BlockPos> next, Transporting<T> transporting, boolean dead, Optional<Direction> interactorConnection) {
+    public NetworkNode(TransportNetwork<?> network, BlockPos pos, Map<Direction, BlockPos> next, Transporting<T> transporting, boolean dead, Set<Direction> interactorConnections) {
         this.network = (TransportNetwork<T>) network;
         this.pos = pos;
         this.uninitializedNext = next;
         this.transporting = transporting;
         this.dead = dead;
-        this.interactorConnection = interactorConnection;
+        this.interactorConnections = interactorConnections;
     }
 
     public void initialize(Map<BlockPos, ? extends NetworkNode<?>> nodes) {
@@ -105,8 +106,8 @@ public class NetworkNode<T> {
         this.dead = dead;
     }
 
-    public void setInteractorConnection(Direction interactorConnection) {
-        this.interactorConnection = Optional.ofNullable(interactorConnection);
+    public void addInteractorConnection(Direction interactorConnection) {
+        this.interactorConnections.add(interactorConnection);
     }
 
     public Map<Direction, NetworkNode<T>> getNext() {
@@ -118,7 +119,7 @@ public class NetworkNode<T> {
     }
 
     public int getInteractorConnectionsAmount() {
-        return interactorConnection != null ? 1 : 0;
+        return interactorConnections.size();
     }
 
     public Transporting<T> getTransporting() {
@@ -133,8 +134,8 @@ public class NetworkNode<T> {
         return dead;
     }
 
-    public Direction getInteractorConnection() {
-        return interactorConnection.orElse(null);
+    public Set<Direction> getInteractorConnections() {
+        return this.interactorConnections;
     }
 
     public List<NetworkRoute<T>> getCachesReferencingThis(ServerLevel serverLevel) {
@@ -165,12 +166,12 @@ public class NetworkNode<T> {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof NetworkNode<?> that)) return false;
-        return dead == that.dead && Objects.equals(network, that.network) && Objects.equals(pos, that.pos) && Objects.equals(next, that.next) && Objects.equals(uninitializedNext, that.uninitializedNext) && Objects.equals(transporting, that.transporting) && interactorConnection == that.interactorConnection;
+        return dead == that.dead && Objects.equals(network, that.network) && Objects.equals(pos, that.pos) && Objects.equals(next, that.next) && Objects.equals(uninitializedNext, that.uninitializedNext) && Objects.equals(transporting, that.transporting) && interactorConnections == that.interactorConnections;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(network, pos, transporting, dead, interactorConnection);
+        return Objects.hash(network, pos, transporting, dead, interactorConnections);
     }
 
     public static <T> Codec<NetworkNode<T>> codec(TransportNetwork<T> network) {
@@ -180,24 +181,24 @@ public class NetworkNode<T> {
                 Codec.unboundedMap(StringRepresentable.fromEnum(Direction::values), BlockPos.CODEC).fieldOf("next").forGetter(NetworkNode::getNextAsPos),
                 Transporting.codec(network.codec()).fieldOf("transporting").forGetter(NetworkNode::getTransporting),
                 Codec.BOOL.fieldOf("dead").forGetter(NetworkNode::isDead),
-                Direction.CODEC.optionalFieldOf("interactor").forGetter(node -> node.interactorConnection)
+                CodecUtils.set(Direction.CODEC).fieldOf("interactor").forGetter(NetworkNode::getInteractorConnections)
         ).apply(inst, NetworkNode::new));
     }
 
     public static <T> StreamCodec<RegistryFriendlyByteBuf, NetworkNode<T>> streamCodec(TransportNetwork<T> network) {
         return StreamCodec.composite(
                 CodecUtils.registryStreamCodec(IRRegistries.NETWORK),
-                tNetworkNode1 -> tNetworkNode1.getNetwork(),
+                NetworkNode::getNetwork,
                 BlockPos.STREAM_CODEC,
                 NetworkNode::getPos,
                 ByteBufCodecs.map(HashMap::new, CodecUtils.enumStreamCodec(Direction.class), BlockPos.STREAM_CODEC),
-                tNetworkNode -> tNetworkNode.getNextAsPos(),
+                NetworkNode::getNextAsPos,
                 Transporting.streamCodec(network.streamCodec()),
                 NetworkNode::getTransporting,
                 ByteBufCodecs.BOOL,
                 NetworkNode::isDead,
-                ByteBufCodecs.optional(Direction.STREAM_CODEC),
-                node -> node.interactorConnection,
+                ByteBufCodecs.collection(HashSet::new, Direction.STREAM_CODEC),
+                NetworkNode::getInteractorConnections,
                 NetworkNode::new
         );
     }

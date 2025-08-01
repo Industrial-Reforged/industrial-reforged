@@ -55,16 +55,18 @@ public final class NetworkNodeRenderer {
             } else if (node.isDead()) {
                 r = 255;
                 g = 0;
-            } else if (node.getInteractorConnection() != null) {
+            } else if (node.getInteractorConnections() != null) {
                 r = 255;
                 g = 0;
                 b = 255;
             }
 
-            if (node.getInteractorConnection() == null) {
+            if (node.getInteractorConnections() == null) {
                 renderCube(consumer, poseStack.last().pose(), r, g, b, 70);
             } else {
-                renderLine(poseStack, node.getInteractorConnection(), consumer, r, g, b, 70);
+                for (Direction connectionDirection : node.getInteractorConnections()) {
+                    renderLine(poseStack, connectionDirection, consumer, r, g, b, 70);
+                }
             }
 
             VertexConsumer consumer2 = bufferSource.getBuffer(IRRenderTypes.TEST_RENDER_TYPE);

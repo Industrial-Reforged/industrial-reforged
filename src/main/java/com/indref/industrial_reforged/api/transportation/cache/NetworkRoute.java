@@ -8,6 +8,7 @@ import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -72,6 +73,10 @@ public class NetworkRoute<T> {
 
     public boolean isValid() {
         return valid;
+    }
+
+    public NetworkRoute<T> copy() {
+        return new NetworkRoute<>(this.originPos, new HashSet<>(this.path));
     }
 
     @Override
