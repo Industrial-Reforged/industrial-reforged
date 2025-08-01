@@ -4,12 +4,11 @@ import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
 
-public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier) implements IEnergyStorage {
+public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier) implements IEnergyHandler {
     public ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier, int initialCapacity) {
         this(itemStack, energyTier);
         this.setEnergyCapacity(initialCapacity);
@@ -24,7 +23,7 @@ public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energy
     }
 
     @Override
-    public void onEnergyChanged(int oldAmount) {
+    public void onChanged(int oldAmount) {
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {
             energyItem.onEnergyChanged(itemStack, oldAmount);
         }
@@ -45,7 +44,7 @@ public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energy
     public void setEnergyStored(int value) {
         int energyStored = getEnergyStored();
         itemStack.set(IRDataComponents.ENERGY, new ComponentEuStorage(value, getEnergyCapacity()));
-        onEnergyChanged(energyStored);
+        onChanged(energyStored);
     }
 
     @Override

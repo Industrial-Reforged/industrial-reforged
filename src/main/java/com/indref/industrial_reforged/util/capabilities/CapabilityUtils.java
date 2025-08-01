@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.util.capabilities;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -15,7 +15,7 @@ public final class CapabilityUtils {
         return blockEntity.getLevel().getCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
     }
 
-    public static @Nullable IEnergyStorage energyStorageCapability(BlockEntity blockEntity) {
+    public static @Nullable IEnergyHandler energyStorageCapability(BlockEntity blockEntity) {
         return blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity);
     }
 

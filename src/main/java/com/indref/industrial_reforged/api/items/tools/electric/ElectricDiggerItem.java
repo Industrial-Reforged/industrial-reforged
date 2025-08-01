@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.items.tools.electric;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
@@ -55,7 +55,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public void initEnergyStorage(IEnergyStorage energyStorage, ItemStack itemStack) {
+    public void initEnergyStorage(IEnergyHandler energyStorage, ItemStack itemStack) {
         if (energyStorage.getEnergyStored() == 0) {
             itemStack.remove(DataComponents.TOOL);
         } else {
@@ -65,7 +65,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
 
     @Override
     public void onEnergyChanged(ItemStack itemStack, int oldAmount) {
-        IEnergyStorage energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        IEnergyHandler energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
 
         itemStack.set(DataComponents.ATTRIBUTE_MODIFIERS, DiggerItem.createAttributes(
                 tier,
@@ -86,9 +86,9 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     public boolean mineBlock(ItemStack stack, Level p_41417_, BlockState p_41418_, BlockPos p_41419_, LivingEntity entity) {
         Player player = entity instanceof Player player0 ? player0 : null;
         if (canWork(stack, player)) {
-            IEnergyStorage energyStorage = getEnergyCap(stack);
+            IEnergyHandler energyStorage = getEnergyCap(stack);
             int energyUsage = getEnergyUsage(stack, player);
-            energyStorage.tryDrainEnergy(energyUsage, false);
+            energyStorage.drainEnergy(energyUsage, false);
         }
         return true;
     }
@@ -97,9 +97,9 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     public boolean hurtEnemy(ItemStack stack, LivingEntity p_40995_, LivingEntity entity) {
         Player player = entity instanceof Player player0 ? player0 : null;
         if (canWork(stack, player)) {
-            IEnergyStorage energyStorage = getEnergyCap(stack);
+            IEnergyHandler energyStorage = getEnergyCap(stack);
             int energyUsage = (int) (getEnergyUsage(stack, player) * 1.5f);
-            energyStorage.tryDrainEnergy(energyUsage, false);
+            energyStorage.drainEnergy(energyUsage, false);
         }
         return true;
     }

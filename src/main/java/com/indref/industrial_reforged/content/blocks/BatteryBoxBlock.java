@@ -46,15 +46,6 @@ public class BatteryBoxBlock extends MachineBlock implements DisplayBlock {
     }
 
     @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-
-        if (oldState.is(state.getBlock())) {
-            BlockUtils.getBE(level, pos, BatteryBoxBlockEntity.class).onBlockUpdated();
-        }
-    }
-
-    @Override
     public boolean tickingEnabled() {
         return true;
     }

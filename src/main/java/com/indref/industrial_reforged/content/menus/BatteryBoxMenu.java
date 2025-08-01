@@ -19,7 +19,7 @@ public class BatteryBoxMenu extends MachineContainerMenu<BatteryBoxBlockEntity> 
 
         IItemHandler itemHandler = blockEntity.getItemHandler();
         addSlot(new ChargingSlot(itemHandler, 0, ChargingSlot.ChargeMode.DECHARGE, 39, 43));
-        addSlot(new ChargingSlot(itemHandler, 1, ChargingSlot.ChargeMode.CHARGE, 176 - 36 - 18, 43));
+        addSlot(new ChargingSlot(itemHandler, 1, ChargingSlot.ChargeMode.CHARGE, 176 - 36 - 19, 43));
         addPlayerInventory(inv, 83 + 21);
         addPlayerHotbar(inv, 141 + 21);
 

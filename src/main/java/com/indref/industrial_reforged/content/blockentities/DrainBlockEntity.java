@@ -41,17 +41,4 @@ public class DrainBlockEntity extends IRContainerBlockEntity {
         }
     }
 
-    @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == Capabilities.FluidHandler.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.NORTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.DOWN, Pair.of(IOAction.EXTRACT, new int[]{0})
-            );
-        }
-        return ImmutableMap.of();
-    }
 }

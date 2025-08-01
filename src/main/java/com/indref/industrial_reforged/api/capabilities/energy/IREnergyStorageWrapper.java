@@ -3,9 +3,9 @@ package com.indref.industrial_reforged.api.capabilities.energy;
 import com.portingdeadmods.portingdeadlibs.api.capabilities.EnergyStorageWrapper;
 
 public class IREnergyStorageWrapper implements EnergyStorageWrapper {
-    private final IEnergyStorage energyStorage;
+    private final IEnergyHandler energyStorage;
 
-    public IREnergyStorageWrapper(IEnergyStorage energyStorage) {
+    public IREnergyStorageWrapper(IEnergyHandler energyStorage) {
         this.energyStorage = energyStorage;
     }
 

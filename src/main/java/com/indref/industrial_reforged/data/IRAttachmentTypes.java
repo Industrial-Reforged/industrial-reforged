@@ -9,7 +9,4 @@ import java.util.function.Supplier;
 
 public final class IRAttachmentTypes {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, IndustrialReforged.MODID);
-
-    public static final Supplier<AttachmentType<Boolean>> IN_CRUCIBLE = ATTACHMENTS.register("in_crucible",
-            () -> AttachmentType.builder(() -> false).build());
 }

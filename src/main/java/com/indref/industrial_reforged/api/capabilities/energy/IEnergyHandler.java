@@ -1,15 +1,14 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 
 import java.util.function.Supplier;
 
-public interface IEnergyStorage {
+public interface IEnergyHandler {
     Supplier<EnergyTier> getEnergyTier();
 
-    default void onEnergyChanged(int oldAmount) {
+    default void onChanged(int oldAmount) {
     }
 
     /**
@@ -17,30 +16,30 @@ public interface IEnergyStorage {
      *
      * @param value    The amount of energy being drained.
      * @param simulate whether the draining should only be simulated
-     * @return Amount of energy that was extracted from the storage.
+     * @return Amount of energy that was drained from the storage.
      */
-    default int tryDrainEnergy(int value, boolean simulate) {
+    default int drainEnergy(int value, boolean simulate) {
         if (!canDrainEnergy() || value <= 0) {
             return 0;
         }
 
-        int energyExtracted = Math.min(getEnergyStored(), Math.min(getMaxOutput(), value));
+        int energyDrained = Math.min(getEnergyStored(), Math.min(getMaxOutput(), value));
         if (!simulate) {
-            setEnergyStored(getEnergyStored() - energyExtracted);
+            setEnergyStored(getEnergyStored() - energyDrained);
         }
-        return energyExtracted;
+        return energyDrained;
     }
 
-    default int tryDrainEnergyRaw(int value, boolean simulate) {
+    default int forceDrainEnergy(int value, boolean simulate) {
         if (!canDrainEnergy() || value <= 0) {
             return 0;
         }
 
-        int energyExtracted = Math.min(getEnergyStored(), value);
+        int energyDrained = Math.min(getEnergyStored(), value);
         if (!simulate) {
-            setEnergyStored(getEnergyStored() - energyExtracted);
+            setEnergyStored(getEnergyStored() - energyDrained);
         }
-        return energyExtracted;
+        return energyDrained;
     }
 
     /**
@@ -50,16 +49,28 @@ public interface IEnergyStorage {
      * @param simulate whether the filling should only be simulated
      * @return Amount of energy that was accepted by the storage.
      */
-    default int tryFillEnergy(int value, boolean simulate) {
+    default int fillEnergy(int value, boolean simulate) {
         if (!canFillEnergy() || value <= 0) {
             return 0;
         }
 
-        int energyReceived = Mth.clamp(getEnergyCapacity() - getEnergyStored(), 0, Math.min(getMaxInput(), value));
+        int energyFilled = Mth.clamp(getEnergyCapacity() - getEnergyStored(), 0, value);
         if (!simulate) {
-            setEnergyStored(getEnergyStored() + energyReceived);
+            setEnergyStored(getEnergyStored() + energyFilled);
         }
-        return energyReceived;
+        return energyFilled;
+    }
+
+    default int forceFillEnergy(int value, boolean simulate) {
+        if (!canFillEnergy() || value <= 0) {
+            return 0;
+        }
+
+        int energyFilled = Mth.clamp(getEnergyCapacity() - getEnergyStored(), 0, Math.min(getMaxInput(), value));
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() + energyFilled);
+        }
+        return energyFilled;
     }
 
     /**
@@ -101,4 +112,19 @@ public interface IEnergyStorage {
     default boolean canDrainEnergy() {
         return getMaxOutput() > 0;
     }
+
+    interface NoDrain extends IEnergyHandler {
+        @Override
+        default int drainEnergy(int value, boolean simulate) {
+            return 0;
+        }
+    }
+
+    interface NoFill extends IEnergyHandler {
+        @Override
+        default int fillEnergy(int value, boolean simulate) {
+            return 0;
+        }
+    }
+
 }

@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.events;
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
@@ -42,7 +42,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Vector3f;
-import org.lwjgl.system.linux.liburing.IOURingRecvmsgOut;
 
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
@@ -136,7 +135,7 @@ public final class ClientEvents {
         ItemStack stack = player.getItemBySlot(EquipmentSlot.CHEST);
 
         if (!stack.isEmpty()/* && isEngineOn(stack)*/) {
-            IEnergyStorage energy = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+            IEnergyHandler energy = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
 
             if (energy.getEnergyStored() > 0 || player.isCreative()) {
                 if (false /*isHovering(stack)*/) {

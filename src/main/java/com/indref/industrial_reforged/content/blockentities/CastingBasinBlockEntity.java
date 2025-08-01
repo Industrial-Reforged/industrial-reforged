@@ -218,24 +218,6 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == Capabilities.FluidHandler.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.UP, Pair.of(IOAction.INSERT, new int[]{0})
-            );
-        } else if (capability == Capabilities.ItemHandler.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.DOWN, Pair.of(IOAction.EXTRACT, new int[]{1}),
-                    Direction.NORTH, Pair.of(IOAction.BOTH, new int[]{0}),
-                    Direction.EAST, Pair.of(IOAction.BOTH, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOAction.BOTH, new int[]{0}),
-                    Direction.WEST, Pair.of(IOAction.BOTH, new int[]{0})
-            );
-        }
-        return ImmutableMap.of();
-    }
-
-    @Override
     public void onLoad() {
         super.onLoad();
 

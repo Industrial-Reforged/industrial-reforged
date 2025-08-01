@@ -1,9 +1,8 @@
 package com.indref.industrial_reforged.api.items.tools.electric;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +24,7 @@ public interface ElectricToolItem {
     }
 
     default boolean canWork(ItemStack stack, @Nullable Entity entity) {
-        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        IEnergyHandler energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (energyStorage != null && requireEnergyToWork(stack, entity)) {
             return energyStorage.getEnergyStored() >= getEnergyUsage(stack, entity);
         }
@@ -37,9 +36,9 @@ public interface ElectricToolItem {
     }
 
     default void consumeEnergy(ItemStack stack, @Nullable Entity entity) {
-        IEnergyStorage energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        IEnergyHandler energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (requireEnergyToWork(stack, entity) && canWork(stack, entity)) {
-            energyStorage.tryDrainEnergy(getEnergyUsage(stack, entity), false);
+            energyStorage.drainEnergy(getEnergyUsage(stack, entity), false);
         }
     }
 

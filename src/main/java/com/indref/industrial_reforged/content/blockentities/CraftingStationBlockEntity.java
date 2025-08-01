@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 public class CraftingStationBlockEntity extends IRContainerBlockEntity implements MenuProvider {
     public CraftingStationBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRBlockEntityTypes.CRAFTING_STATION.get(), p_155229_, p_155230_);
-        addItemHandler(29);
+        addItemHandler(27);
     }
 
     @Override
@@ -36,8 +36,4 @@ public class CraftingStationBlockEntity extends IRContainerBlockEntity implement
         return new CraftingStationMenu(containerId, inventory, this);
     }
 
-    @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        return ImmutableMap.of();
-    }
 }

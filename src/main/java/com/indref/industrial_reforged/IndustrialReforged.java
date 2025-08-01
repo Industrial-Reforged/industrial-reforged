@@ -227,12 +227,12 @@ public final class IndustrialReforged {
         for (DeferredHolder<BlockEntityType<?>, ? extends BlockEntityType<?>> be : IRBlockEntityTypes.BLOCK_ENTITIES.getEntries()) {
             Block validBlock = be.get().getValidBlocks().stream().iterator().next();
             BlockEntity testBE = be.get().create(BlockPos.ZERO, validBlock.defaultBlockState());
-            if (testBE instanceof IRContainerBlockEntity machineBE) {
-                if (machineBE.getHeatStorage() != null) {
+            if (testBE instanceof IRContainerBlockEntity containerBlockEntity) {
+                if (containerBlockEntity.getHeatStorage() != null) {
                     event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getHeatHandlerOnSide);
                 }
 
-                if (machineBE.getEuStorage() != null) {
+                if (containerBlockEntity.getEuStorage() != null) {
                     event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getEuHandlerOnSide);
                 }
             }

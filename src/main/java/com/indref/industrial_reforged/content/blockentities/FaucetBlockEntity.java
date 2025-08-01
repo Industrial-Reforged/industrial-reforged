@@ -125,11 +125,6 @@ public class FaucetBlockEntity extends IRContainerBlockEntity implements Powerab
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        return ImmutableMap.of();
-    }
-
-    @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadData(tag, provider);
 

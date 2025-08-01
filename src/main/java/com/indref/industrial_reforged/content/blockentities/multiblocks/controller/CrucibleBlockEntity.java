@@ -406,16 +406,6 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         initCapCache();
     }
 
-    @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == IRCapabilities.HeatStorage.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.DOWN, Pair.of(IOAction.INSERT, new int[]{0})
-            );
-        }
-        return ImmutableMap.of();
-    }
-
     private List<ItemEntity> getItemsInside() {
         AABB area = AABB.move(worldPosition);
         return level != null ? level.getEntitiesOfClass(ItemEntity.class, area) : Collections.emptyList();

@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.capabilities;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 public final class IRCapabilities {
     public static final class EnergyStorage {
-        public static final BlockCapability<IEnergyStorage, @Nullable Direction> BLOCK = BlockCapability.createSided(create("energy"), IEnergyStorage.class);
-        public static final EntityCapability<IEnergyStorage, @Nullable Direction> ENTITY = EntityCapability.createSided(create("energy"), IEnergyStorage.class);
-        public static final ItemCapability<IEnergyStorage, Void> ITEM = ItemCapability.createVoid(create("energy"), IEnergyStorage.class);
+        public static final BlockCapability<IEnergyHandler, @Nullable Direction> BLOCK = BlockCapability.createSided(create("energy"), IEnergyHandler.class);
+        public static final EntityCapability<IEnergyHandler, @Nullable Direction> ENTITY = EntityCapability.createSided(create("energy"), IEnergyHandler.class);
+        public static final ItemCapability<IEnergyHandler, Void> ITEM = ItemCapability.createVoid(create("energy"), IEnergyHandler.class);
 
         private EnergyStorage() {
         }

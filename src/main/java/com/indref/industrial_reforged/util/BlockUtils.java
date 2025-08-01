@@ -1,15 +1,12 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRItems;
-import com.indref.industrial_reforged.tags.CTags;
 import com.indref.industrial_reforged.tags.IRTags;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
@@ -91,7 +88,7 @@ public final class BlockUtils {
         }
     }
 
-    public static int calcRedstoneFromEnergy(IEnergyStorage energyStorage) {
+    public static int calcRedstoneFromEnergy(IEnergyHandler energyStorage) {
         if (energyStorage == null) {
             return 0;
         } else {

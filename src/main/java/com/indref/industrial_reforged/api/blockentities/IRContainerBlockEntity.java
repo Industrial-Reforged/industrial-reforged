@@ -1,27 +1,24 @@
 package com.indref.industrial_reforged.api.blockentities;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
-import com.indref.industrial_reforged.api.capabilities.energy.SidedEnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.OnChangedListener;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
-import com.indref.industrial_reforged.api.capabilities.heat.SidedHeatHandler;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.portingdeadmods.portingdeadlibs.PortingDeadLibs;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -29,25 +26,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
-    private EnergyStorage euStorage;
+    private IEnergyHandler euStorage;
     private HeatStorage heatStorage;
 
     public IRContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
-    protected final void addEuStorage(Supplier<EnergyTier> energyTier, int energyCapacity) {
-        this.euStorage = new EnergyStorage(energyTier) {
-            @Override
-            public void onEnergyChanged(int oldAmount) {
-                update();
-                IRContainerBlockEntity.this.onEuChanged(oldAmount);
-            }
-        };
-        this.euStorage.setEnergyCapacity(energyCapacity);
+    protected final <T extends IEnergyHandler & OnChangedListener> void addEuStorage(Function<Supplier<EnergyTier>, T> energyHandlerConstructor, Supplier<EnergyTier> energyTier, int energyCapacity) {
+        T storage = energyHandlerConstructor.apply(energyTier);
+        storage.setOnChangedFunction(oldAmount -> {
+            this.update();
+            this.onEuChanged(oldAmount);
+        });
+        storage.setEnergyCapacity(energyCapacity);
+        this.euStorage = storage;
     }
 
     protected final void addHeatStorage(float heatCapacity) {
@@ -64,11 +61,7 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
         };
     }
 
-    public IEnergyStorage getEuStorage() {
-        return this.euStorage;
-    }
-
-    protected EnergyStorage getEuStorageImpl() {
+    public IEnergyHandler getEuStorage() {
         return this.euStorage;
     }
 
@@ -158,51 +151,37 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
     }
 
     @Override
-    public <T> T getHandlerOnSide(BlockCapability<T, @Nullable Direction> capability, SidedHandlerSupplier<T> handlerSupplier, Direction direction, T baseHandler) {
-        if (direction == null) {
-            return baseHandler;
-        } else {
-            Map<Direction, Pair<IOAction, int[]>> ioPorts = this.getSidedInteractions(capability);
-            if (ioPorts.containsKey(direction)) {
-                if (direction == Direction.UP || direction == Direction.DOWN) {
-                    return handlerSupplier.get(baseHandler, ioPorts.get(direction));
-                }
-
-                if (this.getBlockState().hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-                    Direction localDir = this.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-                    return this.getCapOnSide(handlerSupplier, direction, baseHandler, ioPorts, localDir);
-                }
-
-                if (this.getBlockState().hasProperty(BlockStateProperties.FACING)) {
-                    Direction localDir = this.getBlockState().getValue(BlockStateProperties.FACING);
-                    return this.getCapOnSide(handlerSupplier, direction, baseHandler, ioPorts, localDir);
-                }
-
-                PortingDeadLibs.LOGGER.warn("Sided io for non facing block");
-            }
-
-            return null;
-        }
-    }
-
-    // TODO: Rewrite caps on side
-    private <T> @Nullable T getCapOnSide(SidedHandlerSupplier<T> handlerSupplier, Direction direction, T baseHandler, Map<Direction, Pair<IOAction, int[]>> ioPorts, Direction localDir) {
-        return switch (localDir) {
-            case NORTH -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getOpposite()));
-            case EAST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getClockWise()));
-            case WEST -> handlerSupplier.get(baseHandler, ioPorts.get(direction.getCounterClockWise()));
-            case null -> null;
-            default -> handlerSupplier.get(baseHandler, ioPorts.get(direction));
-        };
+    public final <T> T getHandlerOnSide(BlockCapability<T, @Nullable Direction> capability, SidedHandlerSupplier<T> handlerSupplier, Direction direction, T baseHandler) {
+        return null;
     }
 
     // FIXME: when facing up or down we just return null
-    public IEnergyStorage getEuHandlerOnSide(Direction direction) {
-        return getHandlerOnSide(IRCapabilities.EnergyStorage.BLOCK, SidedEnergyHandler::new, direction, getEuStorage());
+    public IEnergyHandler getEuHandlerOnSide(Direction direction) {
+        return this.getEuStorage();
     }
 
     public IHeatStorage getHeatHandlerOnSide(Direction direction) {
-        return getHandlerOnSide(IRCapabilities.HeatStorage.BLOCK, SidedHeatHandler::new, direction, getHeatStorage());
+        return this.getHeatStorage();
+    }
+
+    @Override
+    public IItemHandler getItemHandlerOnSide(Direction direction) {
+        return this.getItemHandler();
+    }
+
+    @Override
+    public IFluidHandler getFluidHandlerOnSide(Direction direction) {
+        return this.getFluidHandler();
+    }
+
+    @Override
+    public IEnergyStorage getEnergyStorageOnSide(Direction direction) {
+        return null;
+    }
+
+    @Override
+    public <T> Map<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> blockCapability) {
+        return null;
     }
 
     public List<ItemStack> getNonEmptyStacks() {
@@ -211,16 +190,18 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
 
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
-        if (getEuStorage() != null)
-            tag.put("eu_storage", this.getEuStorageImpl().serializeNBT(provider));
+        if (getEuStorage() instanceof INBTSerializable<?> serializableEuStorage)
+            tag.put("eu_storage", serializableEuStorage.serializeNBT(provider));
         if (getHeatStorage() != null)
             tag.put("heat_storage", this.getHeatStorageImpl().serializeNBT(provider));
     }
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
-        if (getEuStorageImpl() != null)
-            this.getEuStorageImpl().deserializeNBT(provider, tag.getCompound("eu_storage"));
+        if (getEuStorage() instanceof INBTSerializable<?> serializableEuStorage) {
+            Tag storage = tag.get("eu_storage");
+            ((INBTSerializable<Tag>) serializableEuStorage).deserializeNBT(provider, storage);
+        }
         if (getHeatStorageImpl() != null)
             this.getHeatStorageImpl().deserializeNBT(provider, tag.getCompound("heat_storage"));
     }

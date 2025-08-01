@@ -108,19 +108,6 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     }
 
     @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == Capabilities.ItemHandler.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.NORTH, Pair.of(IOAction.INSERT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOAction.INSERT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOAction.INSERT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOAction.INSERT, new int[]{0})
-            );
-        }
-        return ImmutableMap.of();
-    }
-
-    @Override
     public @NotNull Component getDisplayName() {
         return IRTranslations.Menus.FIREBOX.component();
     }

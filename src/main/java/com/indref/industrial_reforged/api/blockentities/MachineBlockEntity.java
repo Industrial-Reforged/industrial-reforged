@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.blockentities;
 
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.item.UpgradeItemHandler;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.items.UpgradeItem;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 
 public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity, RedstoneBlockEntity, UpgradeBlockEntity {
     private final List<ChargingSlot> chargingSlots;
-    private final List<BlockCapabilityCache<IEnergyStorage, Direction>> caches;
+    private final List<BlockCapabilityCache<IEnergyHandler, Direction>> caches;
     private boolean removedUsingWrench;
     private final UpgradeItemHandler upgradeItemHandler;
     private final Set<Supplier<Upgrade>> defaultSupportedUpgrades;
@@ -99,11 +99,11 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
         if (spreadEnergy() && !level.isClientSide()) {
             int amountPerBlock = getAmountPerBlock();
-            for (BlockCapabilityCache<IEnergyStorage, Direction> cache : this.caches) {
-                IEnergyStorage energyStorage = cache.getCapability();
+            for (BlockCapabilityCache<IEnergyHandler, Direction> cache : this.caches) {
+                IEnergyHandler energyStorage = cache.getCapability();
                 if (energyStorage != null) {
-                    int filled = energyStorage.tryFillEnergy(amountPerBlock, false);
-                    getEuStorage().tryDrainEnergy(filled, false);
+                    int filled = energyStorage.fillEnergy(amountPerBlock, false);
+                    getEuStorage().drainEnergy(filled, false);
                 }
             }
         }
@@ -111,7 +111,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
     private int getAmountPerBlock() {
         int blocks = 0;
-        for (BlockCapabilityCache<IEnergyStorage, Direction> cache : this.caches) {
+        for (BlockCapabilityCache<IEnergyHandler, Direction> cache : this.caches) {
             if (cache.getCapability() != null) {
                 blocks++;
             }
@@ -127,19 +127,19 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
 
     private void tickChargingSlot(ChargingSlot slot) {
         ItemStack itemStack = slot.getItem();
-        IEnergyStorage energyStorage = this.getEuStorage();
-        IEnergyStorage itemEnergyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        IEnergyHandler energyStorage = this.getEuStorage();
+        IEnergyHandler itemEnergyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (itemEnergyStorage != null && !level.isClientSide()) {
             if (slot.getMode() == ChargingSlot.ChargeMode.CHARGE) {
-                int filled = itemEnergyStorage.tryFillEnergy(Math.min(itemEnergyStorage.getMaxInput(), energyStorage.getMaxOutput()), true);
-                int drained = energyStorage.tryDrainEnergy(filled, true);
-                int newFilled = itemEnergyStorage.tryFillEnergy(drained, false);
-                energyStorage.tryDrainEnergy(newFilled, false);
+                int filled = itemEnergyStorage.fillEnergy(Math.min(itemEnergyStorage.getMaxInput(), energyStorage.getMaxOutput()), true);
+                int drained = energyStorage.forceDrainEnergy(filled, true);
+                int newFilled = itemEnergyStorage.fillEnergy(drained, false);
+                energyStorage.forceDrainEnergy(newFilled, false);
             } else {
-                int drained = itemEnergyStorage.tryDrainEnergy(Math.min(itemEnergyStorage.getMaxOutput(), energyStorage.getMaxInput()), true);
-                int filled = energyStorage.tryFillEnergy(drained, true);
-                int newDrained = itemEnergyStorage.tryDrainEnergy(filled, false);
-                energyStorage.tryFillEnergy(newDrained, false);
+                int drained = itemEnergyStorage.drainEnergy(Math.min(itemEnergyStorage.getMaxOutput(), energyStorage.getMaxInput()), true);
+                int filled = energyStorage.fillEnergy(drained, true);
+                int newDrained = itemEnergyStorage.drainEnergy(filled, false);
+                energyStorage.fillEnergy(newDrained, false);
             }
         }
     }
@@ -231,7 +231,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     }
 
     public void useEnergy() {
-        this.getEuStorage().tryDrainEnergyRaw((int) this.energyUsage, false);
+        this.getEuStorage().forceDrainEnergy((int) this.energyUsage, false);
     }
 
     public boolean hasEnoughEnergy() {

@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged.content.items.storage;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +34,7 @@ public class BatteryItem extends SimpleEnergyItem {
     }
 
     public float getBatteryStage(ItemStack itemStack) {
-        IEnergyStorage energyStorage = getEnergyCap(itemStack);
+        IEnergyHandler energyStorage = getEnergyCap(itemStack);
         return ((float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity()) * (this.stages - 1);
     }
 
@@ -49,11 +48,11 @@ public class BatteryItem extends SimpleEnergyItem {
         if (pEntity instanceof Player player && pStack.getOrDefault(IRDataComponents.ACTIVE, false)) {
             for (ItemStack itemStack : player.getInventory().items) {
                 if (pLevel.getGameTime() % 3 == 0) {
-                    IEnergyStorage energyStorage = getEnergyCap(itemStack);
+                    IEnergyHandler energyStorage = getEnergyCap(itemStack);
                     if (energyStorage != null) {
                         // TODO: Possibly round robin this?
-                        int drained = energyStorage.tryDrainEnergy(getEnergyTier().maxOutput(), false);
-                        energyStorage.tryFillEnergy(drained, false);
+                        int drained = energyStorage.drainEnergy(getEnergyTier().maxOutput(), false);
+                        energyStorage.fillEnergy(drained, false);
                     } else {
                         net.neoforged.neoforge.energy.@Nullable IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (feEnergyStorage == null) continue;

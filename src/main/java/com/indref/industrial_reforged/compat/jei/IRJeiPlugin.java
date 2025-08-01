@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.compat.jei;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.client.screen.BasicGeneratorScreen;
 import com.indref.industrial_reforged.client.screen.BatteryBoxScreen;
 import com.indref.industrial_reforged.client.screen.CentrifugeScreen;
@@ -40,7 +40,7 @@ public class IRJeiPlugin implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         for (Item item : BuiltInRegistries.ITEM) {
-            IEnergyStorage energyStorage = item.getDefaultInstance().getCapability(IRCapabilities.EnergyStorage.ITEM);
+            IEnergyHandler energyStorage = item.getDefaultInstance().getCapability(IRCapabilities.EnergyStorage.ITEM);
             if (energyStorage != null) {
                 registration.registerSubtypeInterpreter(item, (IRSubTypeInterpreter<ItemStack>) (ingredient, context) -> context == UidContext.Ingredient ? ingredient.get(IRDataComponents.ENERGY) : null);
             }

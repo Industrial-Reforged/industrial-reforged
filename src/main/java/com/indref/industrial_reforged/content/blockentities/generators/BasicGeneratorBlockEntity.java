@@ -5,7 +5,8 @@ import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.content.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.registries.IRMachines;
@@ -45,12 +46,12 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
 
     public BasicGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(IRMachines.BASIC_GENERATOR.getBlockEntityType(), pos, state);
+        addEuStorage(EnergyHandler.NoFill::new, IREnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
         addItemHandler(2, (slot, item) -> {
             boolean canInsertFuel = slot == 0 && item.getBurnTime(RecipeType.SMELTING) > 0;
             boolean canInsertBattery = slot == 1 && item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null;
             return canInsertFuel || canInsertBattery;
         });
-        addEuStorage(IREnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
     }
 
     @Override
@@ -100,23 +101,13 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     }
 
     @Override
-    public <T> Map<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == Capabilities.ItemHandler.BLOCK) {
-            return SidedCapUtils.allInsert(0);
-        } else if (capability == IRCapabilities.EnergyStorage.BLOCK) {
-            return SidedCapUtils.allExtract(0);
-        }
-        return ImmutableMap.of();
-    }
-
-    @Override
     public void commonTick() {
         super.commonTick();
         if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
-            IEnergyStorage energyStorage = getEuStorage();
+            IEnergyHandler energyStorage = getEuStorage();
             if (this.burnTime > 0) {
                 if (!level.isClientSide()) {
-                    int filled = energyStorage.tryFillEnergy(getGenerationAmount(), remove);
+                    int filled = energyStorage.forceFillEnergy(getGenerationAmount(), remove);
                     if (filled > 0) {
                         this.burnTime--;
                     }
@@ -138,11 +129,11 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         }
 
         if (!level.isClientSide()) {
-            IEnergyStorage thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
+            IEnergyHandler thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
             if (level instanceof ServerLevel serverLevel) {
                 int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
                 int remainder = IRNetworks.ENERGY_NETWORK.get().transport(serverLevel, this.worldPosition, min);
-                thisEnergyStorage.tryDrainEnergy(min - remainder, false);
+                thisEnergyStorage.drainEnergy(min - remainder, false);
             }
         }
     }

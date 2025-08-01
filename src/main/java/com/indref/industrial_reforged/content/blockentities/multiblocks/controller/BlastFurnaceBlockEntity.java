@@ -153,25 +153,6 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
         return super.getItemHandlerOnSide(direction);
     }
 
-    @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == Capabilities.ItemHandler.BLOCK) {
-            return ImmutableMap.of(Direction.UP, Pair.of(IOAction.INSERT, new int[]{0, 1}));
-        } else if (capability == Capabilities.FluidHandler.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.NORTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.EAST, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.SOUTH, Pair.of(IOAction.EXTRACT, new int[]{0}),
-                    Direction.WEST, Pair.of(IOAction.EXTRACT, new int[]{0})
-            );
-        } else if (capability == IRCapabilities.HeatStorage.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.DOWN, Pair.of(IOAction.INSERT, new int[]{0})
-            );
-        }
-        return ImmutableMap.of();
-    }
-
     private boolean isMainController() {
         return worldPosition.equals(mainControllerPos);
     }

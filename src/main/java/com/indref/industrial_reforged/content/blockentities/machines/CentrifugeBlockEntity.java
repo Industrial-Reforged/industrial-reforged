@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
@@ -46,7 +47,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRMachines.CENTRIFUGE.getBlockEntityType(), p_155229_, p_155230_);
-        addEuStorage(IREnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
+        addEuStorage(EnergyHandler.NoDrain::new, IREnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
         addFluidTank(IRConfig.centrifugeFluidCapacity);
         addItemHandler(6, ((slot, itemStack) -> slot == 0
                 || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
@@ -198,23 +199,6 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         super.onLoad();
 
         this.checkRecipe();
-    }
-
-    @Override
-    public <T> ImmutableMap<Direction, Pair<IOAction, int[]>> getSidedInteractions(BlockCapability<T, @Nullable Direction> capability) {
-        if (capability == Capabilities.ItemHandler.BLOCK) {
-            return ImmutableMap.of(
-                    Direction.UP, Pair.of(IOAction.INSERT, new int[]{0}),
-                    Direction.NORTH, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4}),
-                    Direction.EAST, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4}),
-                    Direction.SOUTH, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4}),
-                    Direction.WEST, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4}),
-                    Direction.DOWN, Pair.of(IOAction.EXTRACT, new int[]{1, 2, 3, 4})
-            );
-        } else if (capability == IRCapabilities.EnergyStorage.BLOCK) {
-            return SidedCapUtils.allInsert(0);
-        }
-        return ImmutableMap.of();
     }
 
     @Override

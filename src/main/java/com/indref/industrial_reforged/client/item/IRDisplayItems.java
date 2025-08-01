@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.client.item;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.util.IRHooks;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ public final class IRDisplayItems {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         BlockState blockstate = level.getBlockState(blockPos);
         if (blockEntity != null) {
-            IEnergyStorage energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+            IEnergyHandler energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
             if (energyStorage != null) {
                 List<Component> components = new ArrayList<>();
                 List<ItemLike> compatibleItems = new ArrayList<>();

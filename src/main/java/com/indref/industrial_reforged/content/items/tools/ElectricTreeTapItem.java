@@ -1,13 +1,12 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricToolItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -49,7 +48,7 @@ public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToo
         BlockPos blockPos = useOnContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack itemInHand = useOnContext.getItemInHand();
-        IEnergyStorage energyStorage = getEnergyCap(itemInHand);
+        IEnergyHandler energyStorage = getEnergyCap(itemInHand);
 
         if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
             Player player = useOnContext.getPlayer();

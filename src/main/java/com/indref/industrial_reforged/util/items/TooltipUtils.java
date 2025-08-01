@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.util.items;
 
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.translations.IRTranslations;
@@ -19,7 +19,7 @@ import java.util.List;
 public final class TooltipUtils {
 
     public static void addEnergyTooltip(List<Component> tooltip, ItemStack itemStack) {
-        IEnergyStorage energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        IEnergyHandler energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
         if (energyStorage != null) {
             tooltip.add(
                     IRTranslations.Tooltip.ENERGY_STORED.component()

@@ -1,8 +1,7 @@
 package com.indref.industrial_reforged.content.items.armor;
 
 import com.indref.industrial_reforged.IRConfig;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.data.IRDataComponents;
@@ -15,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -37,7 +35,7 @@ public class JetpackItem extends ArmorItem implements IEnergyItem {
     }
 
     public float getJetpackStage(ItemStack stack) {
-        IEnergyStorage energyStorage = getEnergyCap(stack);
+        IEnergyHandler energyStorage = getEnergyCap(stack);
         return ((float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity()) * (STAGES - 1);
     }
 
@@ -87,7 +85,7 @@ public class JetpackItem extends ArmorItem implements IEnergyItem {
                     var energy = getEnergyCap(stack);
 
                     if (!player.isCreative()) {
-                        energy.tryDrainEnergy((int) usage, false);
+                        energy.drainEnergy((int) usage, false);
                     }
 
                     if (hover && player.isFallFlying()) {
