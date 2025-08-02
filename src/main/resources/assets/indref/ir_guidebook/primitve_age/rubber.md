@@ -22,7 +22,7 @@ item_ids:
 
 Rubber Trees generate in most biomes like plains, forests, taigas...
 Most of the rubber trees you will find will have one or more logs with a resin spot on them.
-This spot can be harvested using a <ItemImage id="indref:tree_tap" scale="0.6" /> [Tree Tap](./tools.md#tree-tap) which will give you up to <ItemImage id="indref:sticky_resin" scale="0.6" /> **3 Sticky Resin**.
+This spot can be harvested using a <ItemImage id="indref:tree_tap" scale="0.6" /> <ItemLink id="indref:tree_tap" /> which will give you up to <ItemImage id="indref:sticky_resin" scale="0.6" /> **3 Sticky Resin**.
 After a resin spot is depleted, it takes some time till the resin regenerates.
 If the log with the resin spot is broken however, it will lose the resin spot and will just be a regular log.
 

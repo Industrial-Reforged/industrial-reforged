@@ -4,6 +4,10 @@ navigation:
   icon: "indref:ceramic_crucible_controller"
   parent: indref:primitive_age.md
   position: 4
+item_ids:
+  - indref:terracotta_bricks
+  - indref:terracotta_brick_slab
+  - indref:iron_fence
 ---
 
 # Ceramic Crucible

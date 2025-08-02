@@ -19,7 +19,7 @@ navigation:
 In the primitive age, there are two different casting basins.
 The blast furnace and the ceramic casting basin.
 The difference between them is purely visual.
-By right-clicking with <ItemImage id="indref:terracotta_bricks" scale="0.6" /> **Terracotta Bricks** or <ItemImage id="indref:blast_furnace_bricks" scale="0.6" /> **Blast Furnace Bricks** you can switch between the two blocks.
+By right-clicking with <ItemImage id="indref:terracotta_bricks" scale="0.6" /> <ItemLink id="indref:terracotta_bricks" /> or <ItemImage id="indref:blast_furnace_bricks" scale="0.6" /> **Blast Furnace Bricks** you can switch between the two blocks.
 
 When using a <ItemImage id="indref:blast_furnace_faucet" scale="0.6" /> **Faucet** to cast, the casting basin needs to be placed one block below the faucet.
 
@@ -27,6 +27,9 @@ When casting with a block/multiblock like the <ItemImage id="indref:ceramic_cruc
 
 ## Casting Molds
 
-These have their own section!
+In order to actually cast items, you need to put a [Casting Mold](./molds.md) into the basin.
+These can either be inserted manually or using a hopper/item pipe.
+
+The different types of molds and how to obtain them is explained in their [Own Entry](./molds.md)
 
 ## Faucet

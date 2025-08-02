@@ -19,7 +19,7 @@ item_ids:
 
 <ItemImage id="indref:tree_tap" scale="2" />
 
-The tree tap is the cheapest tool and can be used to harvest <ItemImage id="indref:sticky_resin" scale="0.6" /> [Sticky Resin](./rubber.md) from rubber trees by right-clicking on logs with a resin spot.
+The tree tap is the cheapest tool and can be used to harvest <ItemImage id="indref:sticky_resin" scale="0.6" /> <ItemLink id="indref:sticky_resin" /> from rubber trees by right-clicking on logs with a resin spot.
 
 ## Hammer
 

@@ -11,6 +11,9 @@ item_ids:
   - indref:deepslate_tin_ore
   - indref:lead_ore
   - indref:deepslate_lead_ore
+  - indref:raw_lead
+  - indref:raw_bauxite
+  - indref:raw_tin
 ---
 
 # Primitive Ores
@@ -35,10 +38,16 @@ Iron, Copper and Redstone are some of the most important resources for both prim
 
 Bauxite, Tin and Lead are the most important ores from this mod during the early and midgame.
 
+Breaking these ores with regular tools or fortune tools will drop raw ores.
+Breaking them with silk touch will drop the ores themselves.
+Just like vanilla.
+
+(Raw) Ores can be smelted in the regular furnace or the <ItemImage id="indref:ceramic_crucible_controller" scale="0.6" /> [Crucible](./crucible.md) for better yields.
+
 <br/>
 
 **Bauxite** is used for bricks and **aluminum** production in particular.
 
-**Tin** is an important resource used for <ItemImage id="indref:fluid_cell" scale="0.6" /> [Fluid Cells](./tools.md#fluid-cells) and cables as well as many other electric and reactor components.
+**Tin** is an important resource used for <ItemImage id="indref:fluid_cell" scale="0.6" /> <ItemLink id="indref:fluid_cell" /> and cables as well as many other electric and reactor components.
 
 **Lead** is used for <ItemImage id="indref:basic_battery" scale="0.6" /> [Batteries](../electric_age/batteries.md) and the <ItemImage id="indref:hazmat_chestplate" scale="0.6" /> [Hazmat Suit](./tools.md#hazmat-boots)

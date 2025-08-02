@@ -4,6 +4,11 @@ navigation:
   icon: "indref:firebox_controller"
   parent: indref:primitive_age.md
   position: 3
+item_ids:
+  - indref:firebox_controller
+  - indref:refractory_brick
+  - indref:coil
+  - indref:small_firebox_hatch
 ---
 
 # Firebox

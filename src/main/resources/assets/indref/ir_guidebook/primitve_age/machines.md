@@ -4,6 +4,9 @@ navigation:
   icon: "indref:crafting_station"
   parent: indref:primitive_age.md
   position: 2
+item_ids:
+  - indref:crafting_station
+  - indref:drain
 ---
 
 # Primitive Machines
