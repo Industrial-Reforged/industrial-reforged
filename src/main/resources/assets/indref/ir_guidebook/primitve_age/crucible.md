@@ -8,6 +8,7 @@ item_ids:
   - indref:terracotta_bricks
   - indref:terracotta_brick_slab
   - indref:iron_fence
+  - indref:ceramic_crucible_controller
 ---
 
 # Ceramic Crucible

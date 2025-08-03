@@ -51,6 +51,8 @@ import java.util.List;
  * is the actual blockentity that handles the
  * logic and the others just point to that block.
  */
+
+// TODO: Make blast furnace produce slag
 public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements MenuProvider, FakeBlockEntity, SavesControllerPosBlockEntity, MultiblockEntity {
     private BlockPos mainControllerPos;
     private float duration;
