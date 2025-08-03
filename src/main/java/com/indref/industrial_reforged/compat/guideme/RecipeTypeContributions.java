@@ -1,5 +1,6 @@
 package com.indref.industrial_reforged.compat.guideme;
 
+import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;

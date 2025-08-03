@@ -179,6 +179,16 @@ public class IREnUSLangProvider extends LanguageProvider {
         addBlock(IRMachines.CENTRIFUGE.getBlock(), "Centrifuge");
         addBlock(IRBlocks.BATTERY_BOX, "Battery Box");
 
+        // Multiblock controllers
+        addBlock(IRBlocks.BLAST_FURNACE_CONTROLLER, "Blast Furnace");
+        addBlock(IRBlocks.CERAMIC_CRUCIBLE_CONTROLLER, "Ceramic Crucible");
+        addBlock(IRBlocks.FIREBOX_CONTROLLER, "Firebox");
+
+        // Multiblock parts
+        addBlock(IRBlocks.CERAMIC_CRUCIBLE_PART, "Crucible Part");
+        addBlock(IRBlocks.BLAST_FURNACE_PART, "Blast Furnace Part");
+        addBlock(IRBlocks.FIREBOX_PART, "Firebox Part");
+
         addBlock(IRBlocks.DRAIN, "Drain");
         addBlock(IRBlocks.CRAFTING_STATION, "Crafting Station");
 

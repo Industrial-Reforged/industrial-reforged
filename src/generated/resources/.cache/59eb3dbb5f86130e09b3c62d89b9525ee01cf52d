@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-02T17:05:09.436272577	Loot Tables
+// 1.21.1	2025-08-03T11:26:38.661387629	Loot Tables
 247264bc26773fb3e253e6c2f9bbcd11e39daab8 data/indref/loot_table/blocks/aluminum_block.json
 12b3fe9eb29c730c49154c7870959f136fd1c906 data/indref/loot_table/blocks/basic_machine_frame.json
 e178dc48fd5c1351211a296d5e57ea6d0b118e45 data/indref/loot_table/blocks/battery_box.json
@@ -10,7 +10,7 @@ e4e73e5ffe666253bebb888e6cec4674cc90f293 data/indref/loot_table/blocks/blast_fur
 528d4b974c880ce07096a2c376c526105fca6304 data/indref/loot_table/blocks/blast_furnace_part.json
 f199541d1fcfba3ff3f6f1799e8b5d0acdb3834f data/indref/loot_table/blocks/ceramic_casting_basin.json
 2ba5e8677961fd13e0bcd43dfd348112d3dc6bb1 data/indref/loot_table/blocks/ceramic_crucible_controller.json
-274261936bfcdd9c99270e2410a5ab98747d085d data/indref/loot_table/blocks/ceramic_crucible_wall.json
+00b0aa28895371186fc581c096c3f1d0665ba603 data/indref/loot_table/blocks/ceramic_crucible_wall.json
 62cf1cb2db54d304c349132172c7482e8f727bd1 data/indref/loot_table/blocks/chromium_block.json
 2b816aa6a1803025e3f5cc125a74a806f1cdfb44 data/indref/loot_table/blocks/chromium_ore.json
 3d627cb4c4ab4f21acc234bfb74d99cd5f24639c data/indref/loot_table/blocks/coil.json
@@ -70,4 +70,7 @@ e016b02bed78d00217a1c21e6a655022fbe63509 data/indref/loot_table/blocks/tin_ore.j
 e9da7fc381a654e67275eb118d7eaf64a9254578 data/indref/loot_table/blocks/uranium_block.json
 eadcb97deae5f4aa773a7fee7d94b54606c0eeef data/indref/loot_table/blocks/uranium_ore.json
 10af7f6277496a95d68e6cd12d9d5af661975f8f data/indref/loot_table/blocks/wooden_scaffolding.json
-ffe0ebc94bf84d5abe11407c9e56e1616b2b6031 data/indref/loot_table/chests/dungeon.json
+ac9aaaf2011c577d4ad5bd58756d77ceac7006ff data/indref/loot_table/chests/dungeon.json
+23dc574103670b57e42fcf6319f859b9723e9935 data/indref/loot_table/chests/village/village_mason.json
+0744dc5e16c9c03360075b7a871bfce1bf3ff34e data/indref/loot_table/chests/village/village_plains_house.json
+c7338c82957ff799811ef3e542ee308815b0cbf7 data/indref/loot_table/chests/village/village_weaponsmith.json

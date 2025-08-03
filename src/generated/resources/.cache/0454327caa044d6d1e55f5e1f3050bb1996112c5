@@ -1,3 +1,6 @@
-// 1.21.1	2025-08-02T16:11:01.525092239	Global Loot Modifiers : indref
+// 1.21.1	2025-08-02T17:43:35.955910918	Global Loot Modifiers : indref
 77d2411d57a3811a098690d02ca4e5288a9a9acd data/indref/loot_modifiers/dungeon_chest_modifier.json
-4d1455ddb457ac70792fb8d4d98c2f4a43524ef7 data/neoforge/loot_modifiers/global_loot_modifiers.json
+02c8968c7cdee0968b2d06dbe30bda2a60b55977 data/indref/loot_modifiers/village_mason_chest_modifier.json
+0c4ffe116184ae5682af02ab5d3f103484fcb0b2 data/indref/loot_modifiers/village_plains_chest_modifier.json
+9a25b11a81edf6d70caecc80e377a59b6dd48d54 data/indref/loot_modifiers/village_weaponsmith_chest_modifier.json
+223e954d705eebbcd6f5169039003cc7e98ac45a data/neoforge/loot_modifiers/global_loot_modifiers.json

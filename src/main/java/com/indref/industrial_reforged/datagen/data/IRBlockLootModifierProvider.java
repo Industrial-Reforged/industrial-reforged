@@ -25,5 +25,17 @@ public class IRBlockLootModifierProvider extends GlobalLootModifierProvider {
                 LootTableIdCondition.builder(ResourceLocation.withDefaultNamespace("chests/simple_dungeon")).build(),
                 LootItemRandomChanceCondition.randomChance(1.0f).build()
         }, IRLootTables.DUNGEON));
+        add("village_plains_chest_modifier", new AddTableLootModifier(new LootItemCondition[]{
+                LootTableIdCondition.builder(ResourceLocation.withDefaultNamespace("chests/village/village_plains_house")).build(),
+                LootItemRandomChanceCondition.randomChance(1.0f).build()
+        }, IRLootTables.VILLAGE_PLAINS));
+        add("village_weaponsmith_chest_modifier", new AddTableLootModifier(new LootItemCondition[]{
+                LootTableIdCondition.builder(ResourceLocation.withDefaultNamespace("chests/village/village_weaponsmith")).build(),
+                LootItemRandomChanceCondition.randomChance(1.0f).build()
+        }, IRLootTables.VILLAGE_BLACK_SMITH));
+        add("village_mason_chest_modifier", new AddTableLootModifier(new LootItemCondition[]{
+                LootTableIdCondition.builder(ResourceLocation.withDefaultNamespace("chests/village/village_mason")).build(),
+                LootItemRandomChanceCondition.randomChance(1.0f).build()
+        }, IRLootTables.VILLAGE_MASON));
     }
 }

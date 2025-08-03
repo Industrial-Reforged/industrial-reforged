@@ -8,11 +8,11 @@
           "type": "minecraft:item",
           "conditions": [
             {
-              "chance": 0.35,
+              "chance": 0.45,
               "condition": "minecraft:random_chance"
             }
           ],
-          "name": "indref:guide"
+          "name": "indref:toolbox"
         }
       ],
       "rolls": 1.0
@@ -46,47 +46,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 0.0
+                "max": 3.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "indref:tin_ingot"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 0.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "indref:aluminum_plate"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "indref:circuit_board"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 0.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "indref:copper_wire"
+          "name": "indref:aluminum_ingot"
         },
         {
           "type": "minecraft:item",
@@ -96,38 +62,22 @@
               "condition": "minecraft:random_chance"
             }
           ],
-          "name": "indref:basic_battery"
+          "name": "indref:steel_mold_ingot"
         },
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.25,
-              "condition": "minecraft:random_chance"
-            }
-          ],
-          "name": "indref:electric_motor"
-        },
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.35,
-              "condition": "minecraft:random_chance"
-            }
-          ],
           "functions": [
             {
-              "components": {
-                "indref:fluid": {
-                  "amount": 2000,
-                  "id": "minecraft:water"
-                }
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
               },
-              "function": "minecraft:set_components"
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "indref:fluid_cell"
+          "name": "indref:coal_dust"
         },
         {
           "type": "minecraft:item",
@@ -140,15 +90,36 @@
           "functions": [
             {
               "components": {
-                "indref:fluid": {
-                  "amount": 500,
+                "indref:single_fluid": {
+                  "amount": 1000,
+                  "id": "indref:molten_copper"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "indref:casting_scraps"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.35,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "functions": [
+            {
+              "components": {
+                "indref:single_fluid": {
+                  "amount": 1000,
                   "id": "indref:molten_aluminum"
                 }
               },
               "function": "minecraft:set_components"
             }
           ],
-          "name": "indref:fluid_cell"
+          "name": "indref:casting_scraps"
         },
         {
           "type": "minecraft:item",
@@ -161,15 +132,15 @@
           "functions": [
             {
               "components": {
-                "indref:fluid": {
-                  "amount": 800,
-                  "id": "indref:molten_tin"
+                "indref:single_fluid": {
+                  "amount": 300,
+                  "id": "indref:molten_steel"
                 }
               },
               "function": "minecraft:set_components"
             }
           ],
-          "name": "indref:fluid_cell"
+          "name": "indref:casting_scraps"
         }
       ],
       "rolls": {
@@ -179,5 +150,5 @@
       }
     }
   ],
-  "random_sequence": "indref:chests/dungeon"
+  "random_sequence": "indref:chests/village/village_weaponsmith"
 }

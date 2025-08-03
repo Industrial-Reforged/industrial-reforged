@@ -1,6 +1,9 @@
 {
   "entries": [
-    "indref:dungeon_chest_modifier"
+    "indref:dungeon_chest_modifier",
+    "indref:village_plains_chest_modifier",
+    "indref:village_weaponsmith_chest_modifier",
+    "indref:village_mason_chest_modifier"
   ],
   "replace": false
 }
