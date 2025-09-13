@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks.generators;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.RotatableMachineBlock;
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.registries.IRMachines;
@@ -33,12 +34,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
-public class BasicGeneratorBlock extends RotatableMachineBlock implements DisplayBlock {
-    public BasicGeneratorBlock(Properties properties) {
-        super(properties);
+public class BasicGeneratorBlock extends RotatableMachineBlock {
+    public BasicGeneratorBlock(Properties properties, Supplier<EnergyTier> energyTier) {
+        super(properties, energyTier);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
     }
 
@@ -49,13 +51,7 @@ public class BasicGeneratorBlock extends RotatableMachineBlock implements Displa
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(BasicGeneratorBlock::new);
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return new BasicGeneratorBlockEntity(p_153215_, p_153216_);
+        return simpleCodec(props -> new BasicGeneratorBlock(props, this.energyTier));
     }
 
     @Override
@@ -66,12 +62,6 @@ public class BasicGeneratorBlock extends RotatableMachineBlock implements Displa
     @Override
     public BlockEntityType<? extends IRContainerBlockEntity> getBlockEntityType() {
         return IRMachines.BASIC_GENERATOR.getBlockEntityType();
-    }
-
-    @Override
-    protected @NotNull InteractionResult useWithoutItem(BlockState p_60503_, Level level, BlockPos blockPos, Player player, BlockHitResult p_60508_) {
-        player.openMenu((BasicGeneratorBlockEntity) level.getBlockEntity(blockPos), blockPos);
-        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -99,13 +89,4 @@ public class BasicGeneratorBlock extends RotatableMachineBlock implements Displa
         }
     }
 
-    @Override
-    public void displayOverlay(List<Component> displayText, Player player, Level level, ItemStack itemStack, BlockPos scannedBlockPos, BlockState scannedBlock) {
-        DisplayUtils.displayEnergyInfo(displayText, scannedBlock, scannedBlockPos, level);
-    }
-
-    @Override
-    public @Nullable List<ItemLike> getCompatibleItems() {
-        return List.of(/*IRItems.SCANNER.get()*/);
-    }
 }

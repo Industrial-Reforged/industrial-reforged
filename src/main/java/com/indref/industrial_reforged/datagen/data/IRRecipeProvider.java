@@ -181,8 +181,6 @@ public class IRRecipeProvider extends RecipeProvider {
     }
 
     private void upgradeRecipes() {
-        // TODO: Custom recipe for this
-
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, IRItems.OVERCLOCKER_UPGRADE)
                 .pattern(" W ")
                 .pattern("ACA")
@@ -192,7 +190,7 @@ public class IRRecipeProvider extends RecipeProvider {
                         .build(), IRItems.FLUID_CELL.get()))
                 .define('A', CTags.Items.ALUMINUM_PLATE)
                 .define('C', IRItems.BASIC_CIRCUIT.get())
-                .unlockedBy("has_item", has(IRItems.BASIC_CIRCUIT))
+                .unlockedBy("has_circuit", has(IRItems.BASIC_CIRCUIT))
                 .save(output);
     }
 

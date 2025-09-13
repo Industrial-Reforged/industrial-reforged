@@ -1,16 +1,24 @@
 package com.indref.industrial_reforged.content.blocks.pipes;
 
+import com.indref.industrial_reforged.IRRegistries;
+import com.indref.industrial_reforged.api.blocks.EnergyTierBlock;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
 import com.indref.industrial_reforged.client.transportation.ClientNodes;
 import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
+import com.indref.industrial_reforged.util.items.TooltipUtils;
+import com.portingdeadmods.portingdeadlibs.utils.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class CableBlock extends PipeBlock {
+public class CableBlock extends PipeBlock implements EnergyTierBlock {
     private final Supplier<EnergyTier> energyTier;
 
     public CableBlock(Properties properties, int width, Supplier<EnergyTier> energyTier) {
@@ -153,19 +161,27 @@ public class CableBlock extends PipeBlock {
         return directions;
     }
 
-    public Supplier<EnergyTier> getEnergyTier() {
-        return this.energyTier;
+    public EnergyTier getEnergyTier() {
+        return this.energyTier.get();
     }
 
     @Override
     public boolean canConnectToPipe(BlockState connectTo) {
-        return connectTo.getBlock() instanceof CableBlock;
+        return connectTo.getBlock() instanceof CableBlock cableBlock && cableBlock.getEnergyTier() == this.getEnergyTier();
     }
 
     @Override
     public boolean canConnectTo(BlockEntity connectTo) {
         return CapabilityUtils.energyStorageCapability(connectTo) != null
                 || CapabilityUtils.blockEntityCapability(Capabilities.EnergyStorage.BLOCK, connectTo) != null;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+
+        TooltipUtils.addEnergyTierTooltip(tooltipComponents, this.getEnergyTier());
+
     }
 
 }

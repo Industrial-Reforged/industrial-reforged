@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.blocks.machines;
 
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.MachineBlock;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -12,12 +13,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
 public class CentrifugeBlock extends MachineBlock {
 
-    public CentrifugeBlock(Properties properties) {
-        super(properties);
+    public CentrifugeBlock(Properties properties, Supplier<EnergyTier> energyTier) {
+        super(properties, energyTier);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
     }
 
@@ -38,6 +41,6 @@ public class CentrifugeBlock extends MachineBlock {
 
     @Override
     protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(CentrifugeBlock::new);
+        return machineBlockCodec(CentrifugeBlock::new);
     }
 }

@@ -155,7 +155,6 @@ public abstract class IRContainerBlockEntity extends ContainerBlockEntity {
         return null;
     }
 
-    // FIXME: when facing up or down we just return null
     public IEnergyHandler getEuHandlerOnSide(Direction direction) {
         return this.getEuStorage();
     }

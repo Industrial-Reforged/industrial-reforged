@@ -5,7 +5,6 @@ import com.indref.industrial_reforged.api.items.container.SimpleFluidItem;
 import com.indref.industrial_reforged.api.items.tools.ClientDisplayItem;
 import com.indref.industrial_reforged.client.hud.CastingMoldSelectionOverlay;
 import com.indref.industrial_reforged.client.hud.ScannerInfoOverlay;
-import com.indref.industrial_reforged.client.item.IRDisplayItems;
 import com.indref.industrial_reforged.client.item.IRItemProperties;
 import com.indref.industrial_reforged.client.model.BlastFurnaceItemModel;
 import com.indref.industrial_reforged.client.model.CrucibleModel;

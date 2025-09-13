@@ -17,7 +17,6 @@ import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBl
 import com.indref.industrial_reforged.content.multiblocks.tiers.CrucibleTiers;
 import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.tabs.BlockTabOrdering;
-import com.indref.industrial_reforged.util.tabs.ItemTabOrdering;
 import com.indref.industrial_reforged.util.tabs.TabOrdering;
 import com.indref.industrial_reforged.util.tabs.TabPosition;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -93,20 +92,20 @@ public final class IRBlocks {
     public static final DeferredBlock<Block> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.BASIC_MACHINES));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = pickaxeMineable(registerBlockAndItem("battery_box",
-            () -> new BatteryBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), BlockTabOrdering.BASIC_MACHINES, false));
-    public static final BlockBehaviour.Properties DEFAULT_BLOCK_PROPERTIES = BlockBehaviour.Properties.of()
+            () -> new BatteryBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS), IREnergyTiers.LOW), BlockTabOrdering.BASIC_MACHINES, false));
+    public static final BlockBehaviour.Properties CABLE_BLOCK_PROPS = BlockBehaviour.Properties.of()
             .sound(SoundType.WOOL)
             .mapColor(MapColor.COLOR_BLACK)
             .strength(0.8f);
     // CABLES
     public static final DeferredBlock<CableBlock> TIN_CABLE = pickaxeMineable(registerBlockAndItem("tin_cable",
-            () -> new CableBlock(DEFAULT_BLOCK_PROPERTIES, 6, IREnergyTiers.LOW), BlockTabOrdering.CABLES, false));
+            () -> new CableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.LOW), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<CableBlock> COPPER_CABLE = pickaxeMineable(registerBlockAndItem("copper_cable",
-            () -> new CableBlock(DEFAULT_BLOCK_PROPERTIES, 6, IREnergyTiers.MEDIUM), BlockTabOrdering.CABLES, false));
+            () -> new CableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.MEDIUM), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<CableBlock> GOLD_CABLE = pickaxeMineable(registerBlockAndItem("gold_cable",
-            () -> new CableBlock(DEFAULT_BLOCK_PROPERTIES, 6, IREnergyTiers.HIGH), BlockTabOrdering.CABLES, false));
+            () -> new CableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.HIGH), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<CableBlock> STEEL_CABLE = pickaxeMineable(registerBlockAndItem("steel_cable",
-            () -> new CableBlock(DEFAULT_BLOCK_PROPERTIES, 6, IREnergyTiers.EXTREME), BlockTabOrdering.CABLES, false));
+            () -> new CableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.EXTREME), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<FenceBlock> IRON_FENCE = pickaxeMineable(registerBlockAndItem("iron_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.MISC_BLOCKS, false));
     public static final DeferredBlock<WoodenScaffoldingBlock> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",

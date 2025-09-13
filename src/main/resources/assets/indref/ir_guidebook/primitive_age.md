@@ -5,8 +5,6 @@ navigation:
   position: 1
 ---
 
-# The Primitve Age
-
-You have discovered that steam can be converted to a new energy. With this innovation, machines can be much more complex and run much faster. Welcome to the **Electric Age**!
+# The Primitive Age
 
 <SubPages />

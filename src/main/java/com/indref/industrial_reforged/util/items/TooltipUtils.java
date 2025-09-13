@@ -31,12 +31,16 @@ public final class TooltipUtils {
                                     .withColor(FastColor.ARGB32.color(255, 245, 192, 89)))
             );
             EnergyTier tier = energyStorage.getEnergyTier().get();
-            tooltip.add(
-                    IRTranslations.Tooltip.ENERGY_TIER.component()
-                            .withStyle(ChatFormatting.GRAY)
-                            .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withColor(tier.color()))
-            );
+            addEnergyTierTooltip(tooltip, tier);
         }
+    }
+
+    public static void addEnergyTierTooltip(List<Component> tooltip, EnergyTier tier) {
+        tooltip.add(
+                IRTranslations.Tooltip.ENERGY_TIER.component()
+                        .withStyle(ChatFormatting.GRAY)
+                        .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withColor(tier.color()))
+        );
     }
 
     public static void addFluidToolTip(List<Component> tooltip, ItemStack itemStack) {

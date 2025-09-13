@@ -12,11 +12,12 @@ import com.indref.industrial_reforged.util.machine.MachineRegistrationHelper;
 
 public final class IRMachines {
     public static final MachineRegistrationHelper HELPER = new MachineRegistrationHelper(IRBlocks.BLOCKS, IRItems.ITEMS, IRBlockEntityTypes.BLOCK_ENTITIES, IRMenuTypes.MENUS);
-    public static final IRMachine BASIC_GENERATOR = HELPER.registerMachine("basic_generator", IRMachine.builder()
+
+    public static final IRMachine BASIC_GENERATOR = HELPER.registerMachine("basic_generator", IRMachine.builder(IREnergyTiers.LOW)
             .block(BasicGeneratorBlock::new)
             .blockEntity(BasicGeneratorBlockEntity::new)
             .menu(BasicGeneratorMenu::new));
-    public static final IRMachine CENTRIFUGE = HELPER.registerMachine("centrifuge", IRMachine.builder()
+    public static final IRMachine CENTRIFUGE = HELPER.registerMachine("centrifuge", IRMachine.builder(IREnergyTiers.LOW)
             .block(CentrifugeBlock::new)
             .blockEntity(CentrifugeBlockEntity::new)
             .menu(CentrifugeMenu::new));

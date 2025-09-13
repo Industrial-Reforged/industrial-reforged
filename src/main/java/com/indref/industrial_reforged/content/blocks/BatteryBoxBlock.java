@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.content.blocks;
 
 import com.indref.industrial_reforged.api.blocks.DisplayBlock;
 import com.indref.industrial_reforged.api.blocks.MachineBlock;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.content.blockentities.BatteryBoxBlockEntity;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IRItems;
@@ -23,15 +24,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-public class BatteryBoxBlock extends MachineBlock implements DisplayBlock {
+public class BatteryBoxBlock extends MachineBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    public BatteryBoxBlock(Properties properties) {
-        super(properties);
+    public BatteryBoxBlock(Properties properties, Supplier<EnergyTier> energyTier) {
+        super(properties, energyTier);
     }
 
     @Override
@@ -56,17 +59,8 @@ public class BatteryBoxBlock extends MachineBlock implements DisplayBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(BatteryBoxBlock::new);
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return machineBlockCodec(BatteryBoxBlock::new);
     }
 
-    @Override
-    public void displayOverlay(List<Component> displayText, Player player, Level level, ItemStack itemStack, BlockPos scannedBlockPos, BlockState scannedBlock) {
-        DisplayUtils.displayEnergyInfo(displayText, scannedBlock, scannedBlockPos, level);
-    }
-
-    @Override
-    public List<ItemLike> getCompatibleItems() {
-        return List.of(/*IRItems.SCANNER.get()*/);
-    }
 }

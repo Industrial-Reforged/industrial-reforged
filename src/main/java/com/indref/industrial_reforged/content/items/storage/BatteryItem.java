@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -46,15 +47,15 @@ public class BatteryItem extends SimpleEnergyItem {
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && pStack.getOrDefault(IRDataComponents.ACTIVE, false)) {
+            IEnergyHandler batteryHandler = getEnergyCap(pStack);
             for (ItemStack itemStack : player.getInventory().items) {
                 if (pLevel.getGameTime() % 3 == 0) {
                     IEnergyHandler energyStorage = getEnergyCap(itemStack);
-                    if (energyStorage != null) {
-                        // TODO: Possibly round robin this?
-                        int drained = energyStorage.drainEnergy(getEnergyTier().maxOutput(), false);
+                    if (energyStorage != null && !pStack.equals(itemStack)) {
+                        int drained = batteryHandler.drainEnergy(getEnergyTier().maxOutput(), false);
                         energyStorage.fillEnergy(drained, false);
                     } else {
-                        net.neoforged.neoforge.energy.@Nullable IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
+                        IEnergyStorage feEnergyStorage = itemStack.getCapability(Capabilities.EnergyStorage.ITEM);
                         if (feEnergyStorage == null) continue;
 
                         feEnergyStorage.receiveEnergy(getEnergyTier().maxOutput(), false);
