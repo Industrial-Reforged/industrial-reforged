@@ -7,6 +7,7 @@ import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRFluids;
 import com.indref.industrial_reforged.registries.IRItems;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -43,10 +44,10 @@ public class IRItemModelProvider extends ItemModelProvider {
         parentItemBlock(IRBlocks.RUBBER_TREE_BUTTON.get().asItem(), "_inventory");
         parentItemBlock(IRBlocks.RUBBER_TREE_FENCE.get().asItem(), "_inventory");
         parentItemBlock(IRBlocks.RUBBER_TREE_TRAPDOOR.get().asItem(), "_bottom");
-        getBuilder(name(IRBlocks.BATTERY_BOX))
+        getBuilder(name(IRMachines.BATTERY_BOX.getBlock()))
                 .parent(new ModelFile.UncheckedModelFile(IndustrialReforged.rl("block/battery_box")))
-                .texture("up", machineTexture(IRBlocks.BATTERY_BOX.get(), ""))
-                .texture("north", machineTexture(IRBlocks.BATTERY_BOX.get(), "_top"));
+                .texture("up", machineTexture(IRMachines.BATTERY_BOX.getBlock(), ""))
+                .texture("north", machineTexture(IRMachines.BATTERY_BOX.getBlock(), "_top"));
 
         for (PDLFluid fluid : IRFluids.HELPER.getFluids()) {
             if (fluid instanceof MoltenMetalFluid) {

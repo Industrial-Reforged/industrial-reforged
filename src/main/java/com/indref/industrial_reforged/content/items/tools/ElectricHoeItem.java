@@ -4,7 +4,7 @@ import com.indref.industrial_reforged.api.items.tools.electric.ElectricToolItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.util.items.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
 import com.mojang.datafixers.util.Pair;
@@ -32,11 +32,11 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ElectricHoeItem extends HoeItem implements IEnergyItem, ElectricToolItem {
-    private final Supplier<EnergyTier> energyTier;
+    private final Supplier<EnergyTierImpl> energyTier;
     private final IntSupplier energyUsage;
     private final IntSupplier defaultEnergyCapacity;
 
-    public ElectricHoeItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricHoeItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(tier, properties.stacksTo(1)
                 .attributes(HoeItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
                 .component(IRDataComponents.ENERGY, new ComponentEuStorage(defaultEnergyCapacity.getAsInt())));
@@ -50,7 +50,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem, ElectricToo
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return defaultEnergyCapacity.getAsInt();
     }
 
@@ -98,7 +98,7 @@ public class ElectricHoeItem extends HoeItem implements IEnergyItem, ElectricToo
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public EnergyTierImpl getEnergyTier() {
         return energyTier.get();
     }
 

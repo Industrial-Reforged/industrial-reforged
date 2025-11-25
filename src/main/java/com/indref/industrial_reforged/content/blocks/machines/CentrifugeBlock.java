@@ -3,6 +3,7 @@ package com.indref.industrial_reforged.content.blocks.machines;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.api.blocks.MachineBlock;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -19,7 +20,7 @@ import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
 public class CentrifugeBlock extends MachineBlock {
 
-    public CentrifugeBlock(Properties properties, Supplier<EnergyTier> energyTier) {
+    public CentrifugeBlock(Properties properties, Supplier<? extends EnergyTier> energyTier) {
         super(properties, energyTier);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
     }

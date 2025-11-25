@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.container.SimpleHeatItem;
 import com.indref.industrial_reforged.translations.IRTranslations;
@@ -37,7 +37,7 @@ public class ThermometerItem extends SimpleHeatItem {
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int p_41407_, boolean p_41408_) {
         if (!(entity instanceof Player player)) return;
         BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
-        IHeatStorage heatStorage = getHeatCap(itemStack);
+        HeatStorage heatStorage = getHeatCap(itemStack);
 
         if (result.getType() != HitResult.Type.MISS) {
             BlockPos blockPos = result.getBlockPos();
@@ -48,7 +48,7 @@ public class ThermometerItem extends SimpleHeatItem {
                 }
             }
             if (blockEntity != null) {
-                IHeatStorage blockHeatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
+                HeatStorage blockHeatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
                 if (blockHeatStorage != null) {
                     heatStorage.setHeatStored(Math.min(heatStorage.getHeatStored() + 16, blockHeatStorage.getHeatStored()));
                 } else {
@@ -74,13 +74,13 @@ public class ThermometerItem extends SimpleHeatItem {
     }
 
     @Override
-    public float getDefaultHeatCapacity() {
+    public float getDefaultCapacity() {
         return 7000;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag p_41424_) {
-        IHeatStorage heatStorage = getHeatCap(stack);
+        HeatStorage heatStorage = getHeatCap(stack);
         tooltip.add(IRTranslations.Tooltip.HEAT_AMOUNT.component(heatStorage.getHeatStored(), heatStorage.getHeatCapacity())
                 .withStyle(ChatFormatting.GRAY));
     }

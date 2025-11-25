@@ -1,0 +1,91 @@
+package com.indref.industrial_reforged.impl.heat;
+
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.NotNull;
+
+public class HeatStorageImpl implements HeatStorage, INBTSerializable<CompoundTag> {
+    public static final HeatStorageImpl EMPTY = new HeatStorageImpl(0, 0, 0);
+
+    private float heatStored;
+    private float lastHeatStored;
+    private float heatCapacity;
+
+    private final float maxInput;
+    private final float maxOutput;
+
+    public HeatStorageImpl(float heatCapacity) {
+        this(heatCapacity, 5, 5);
+    }
+
+    public HeatStorageImpl(float heatCapacity, float maxInput, float maxOutput) {
+        this.heatCapacity = heatCapacity;
+        this.maxInput = maxInput;
+        this.maxOutput = maxOutput;
+    }
+
+    @Override
+    public float getHeatStored() {
+        return this.heatStored;
+    }
+
+    @Override
+    public void setHeatStored(float value) {
+        if (this.heatStored != value) {
+            float oldAmount = this.heatStored;
+            this.heatStored = value;
+            setLastHeatStored(oldAmount);
+            onHeatChanged(oldAmount);
+        }
+    }
+
+    @Override
+    public float getLastHeatStored() {
+        return this.lastHeatStored;
+    }
+
+    @Override
+    public void setLastHeatStored(float value) {
+        this.lastHeatStored = value;
+    }
+
+    @Override
+    public float getHeatCapacity() {
+        return this.heatCapacity;
+    }
+
+    @Override
+    public void setHeatCapacity(float value) {
+        if (this.heatCapacity != value) {
+            this.heatCapacity = value;
+        }
+    }
+
+    @Override
+    public float getMaxInput() {
+        return this.maxInput;
+    }
+
+    @Override
+    public float getMaxOutput() {
+        return this.maxOutput;
+    }
+
+    @Override
+    public @NotNull CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+        CompoundTag tag = new CompoundTag();
+        tag.putFloat("heat_stored", this.heatStored);
+        tag.putFloat("last_heat_stored", this.lastHeatStored);
+        tag.putFloat("heat_capacity", this.heatCapacity);
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag tag) {
+        this.heatStored = tag.getFloat("heat_stored");
+        this.lastHeatStored = tag.getFloat("last_heat_stored");
+        this.heatCapacity = tag.getFloat("heat_capacity");
+    }
+}

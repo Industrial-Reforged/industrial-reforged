@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.content.items.tools;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricToolItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.registries.IRBlocks;
 import com.indref.industrial_reforged.registries.IRItems;
 import net.minecraft.core.BlockPos;
@@ -27,7 +27,7 @@ public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToo
     private final IntSupplier energyUsage;
     private final IntSupplier energyCapacity;
 
-    public ElectricTreeTapItem(Properties properties, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricTreeTapItem(Properties properties, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, energyTier, defaultEnergyCapacity);
         this.energyUsage = energyUsage;
         this.energyCapacity = defaultEnergyCapacity;
@@ -38,7 +38,7 @@ public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToo
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return this.energyCapacity.getAsInt();
     }
 
@@ -48,7 +48,7 @@ public class ElectricTreeTapItem extends SimpleEnergyItem implements ElectricToo
         BlockPos blockPos = useOnContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack itemInHand = useOnContext.getItemInHand();
-        IEnergyHandler energyStorage = getEnergyCap(itemInHand);
+        EnergyHandler energyStorage = getEnergyCap(itemInHand);
 
         if (blockState.is(IRBlocks.RUBBER_TREE_RESIN_HOLE.get()) && blockState.getValue(RESIN)) {
             Player player = useOnContext.getPlayer();

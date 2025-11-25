@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.RedstoneBlockEntity;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
@@ -93,14 +94,14 @@ public class IREnUSLangProvider extends LanguageProvider {
         addItem(IRItems.TOOLBOX, "Toolbox");
         addItem(IRItems.FERTILIZER, "Fertilizer");
         addItem(IRItems.CLAY_MOLD_BLANK, "Clay Mold");
-        addItem(IRItems.CLAY_MOLD_INGOT, "Clay Mold Ingot");
-        addItem(IRItems.CLAY_MOLD_PLATE, "Clay Mold Plate");
-        addItem(IRItems.CLAY_MOLD_WIRE, "Clay Mold Wire");
-        addItem(IRItems.CLAY_MOLD_ROD, "Clay Mold Rod");
-        addItem(IRItems.STEEL_MOLD_INGOT, "Steel Mold Ingot");
-        addItem(IRItems.STEEL_MOLD_PLATE, "Steel Mold Plate");
-        addItem(IRItems.STEEL_MOLD_WIRE, "Steel Mold Wire");
-        addItem(IRItems.STEEL_MOLD_ROD, "Steel Mold Rod");
+        addItem(IRItems.CLAY_MOLD_INGOT, "Ingot Clay Mold");
+        addItem(IRItems.CLAY_MOLD_PLATE, "Plate Clay Mold");
+        addItem(IRItems.CLAY_MOLD_WIRE, "Wire Clay Mold");
+        addItem(IRItems.CLAY_MOLD_ROD, "Rod Clay Mold");
+        addItem(IRItems.STEEL_MOLD_INGOT, "Ingot Steel Mold");
+        addItem(IRItems.STEEL_MOLD_PLATE, "Plate Steel Mold");
+        addItem(IRItems.STEEL_MOLD_WIRE, "Wire Steel Mold");
+        addItem(IRItems.STEEL_MOLD_ROD, "Rod Steel Mold");
         addItem(IRItems.STICKY_RESIN, "Sticky Resin");
         addItem(IRItems.RUBBER, "Rubber");
         addItem(IRItems.PLANT_BALL, "Plant Ball");
@@ -177,7 +178,7 @@ public class IREnUSLangProvider extends LanguageProvider {
     private void addBlocks() {
         addBlock(IRMachines.BASIC_GENERATOR.getBlock(), "Basic Generator");
         addBlock(IRMachines.CENTRIFUGE.getBlock(), "Centrifuge");
-        addBlock(IRBlocks.BATTERY_BOX, "Battery Box");
+        addBlock(IRMachines.BATTERY_BOX.getBlock(), "Battery Box");
 
         // Multiblock controllers
         addBlock(IRBlocks.BLAST_FURNACE_CONTROLLER, "Blast Furnace");
@@ -282,7 +283,7 @@ public class IREnUSLangProvider extends LanguageProvider {
         add("title." + IndustrialReforged.MODID + "." + key, val);
     }
 
-    private void addEnergyTier(Supplier<EnergyTier> key, String val) {
+    private void addEnergyTier(Supplier<? extends EnergyTier> key, String val) {
         add("energy_tier." + IndustrialReforged.MODID + "." + IRRegistries.ENERGY_TIER.getKey(key.get()).getPath(), val);
     }
 

@@ -4,6 +4,7 @@ import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.blocks.MachineBlock;
 import com.indref.industrial_reforged.api.gui.MachineContainerMenu;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -21,7 +22,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public record IRMachine(String name, Supplier<EnergyTier> energyTierSupplier,
+public record IRMachine(String name, Supplier<? extends EnergyTier> energyTierSupplier,
                         Supplier<? extends MachineBlock> blockSupplier, Supplier<BlockItem> blockItemSupplier,
                         Supplier<BlockEntityType<? extends MachineBlockEntity>> blockEntityTypeSupplier,
                         @Nullable Supplier<MenuType<? extends MachineContainerMenu<?>>> menuTypeSupplier) {
@@ -47,20 +48,20 @@ public record IRMachine(String name, Supplier<EnergyTier> energyTierSupplier,
         return menuTypeSupplier != null ? ((MenuType<T>) menuTypeSupplier.get()) : null;
     }
 
-    public static Builder builder(Supplier<EnergyTier> energyTierSupplier) {
+    public static Builder builder(Supplier<EnergyTierImpl> energyTierSupplier) {
         return new Builder(energyTierSupplier);
     }
 
     public static class Builder {
-        private BiFunction<BlockBehaviour.Properties, Supplier<EnergyTier>, ? extends MachineBlock> blockFactory;
+        private BiFunction<BlockBehaviour.Properties, Supplier<? extends EnergyTier>, ? extends MachineBlock> blockFactory;
         private BlockBehaviour.Properties blockProperties;
         private Supplier<? extends BlockItem> blockItemSupplier;
         private IContainerFactory<? extends MachineContainerMenu<?>> menuSupplier;
         private AltContainerFactory<?, ?> secondMenuSupplier;
         private BlockEntityType.BlockEntitySupplier<? extends MachineBlockEntity> blockEntitySupplier;
-        private final Supplier<EnergyTier> energyTierSupplier;
+        private final Supplier<? extends EnergyTier> energyTierSupplier;
 
-        private Builder(Supplier<EnergyTier> energyTierSupplier) {
+        private Builder(Supplier<? extends EnergyTier> energyTierSupplier) {
             this.energyTierSupplier = energyTierSupplier;
         }
 
@@ -69,13 +70,13 @@ public record IRMachine(String name, Supplier<EnergyTier> energyTierSupplier,
             return this;
         }
 
-        public Builder block(BiFunction<BlockBehaviour.Properties, Supplier<EnergyTier>, ? extends MachineBlock> blockFactory, BlockBehaviour.Properties properties) {
+        public Builder block(BiFunction<BlockBehaviour.Properties, Supplier<? extends EnergyTier>, ? extends MachineBlock> blockFactory, BlockBehaviour.Properties properties) {
             this.blockFactory = blockFactory;
             this.blockProperties = properties;
             return this;
         }
 
-        public Builder block(BiFunction<BlockBehaviour.Properties, Supplier<EnergyTier>, ? extends MachineBlock> blockFactory) {
+        public Builder block(BiFunction<BlockBehaviour.Properties, Supplier<? extends EnergyTier>, ? extends MachineBlock> blockFactory) {
             return this.block(blockFactory, DEFAULT_BLOCK_PROPERTIES);
         }
 

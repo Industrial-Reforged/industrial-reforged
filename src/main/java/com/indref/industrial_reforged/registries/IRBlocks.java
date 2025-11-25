@@ -10,15 +10,17 @@ import com.indref.industrial_reforged.content.blocks.multiblocks.controller.Smal
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.BlastFurnacePartBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.CruciblePartBlock;
 import com.indref.industrial_reforged.content.blocks.multiblocks.parts.FireboxPartBlock;
+import com.indref.industrial_reforged.content.blocks.pipes.BurntCableBlock;
 import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLeavesBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeLogBlock;
 import com.indref.industrial_reforged.content.blocks.trees.RubberTreeResinHoleBlock;
-import com.indref.industrial_reforged.content.multiblocks.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
+import com.indref.industrial_reforged.impl.tiers.CrucibleTiers;
+import com.indref.industrial_reforged.impl.tiers.FireboxTiers;
 import com.indref.industrial_reforged.util.tabs.BlockTabOrdering;
 import com.indref.industrial_reforged.util.tabs.TabOrdering;
 import com.indref.industrial_reforged.util.tabs.TabPosition;
+import io.netty.util.Attribute;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -91,8 +93,6 @@ public final class IRBlocks {
     // MACHINES
     public static final DeferredBlock<Block> BASIC_MACHINE_FRAME = pickaxeMineable(registerBlockAndItem("basic_machine_frame",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.BASIC_MACHINES));
-    public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = pickaxeMineable(registerBlockAndItem("battery_box",
-            () -> new BatteryBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS), IREnergyTiers.LOW), BlockTabOrdering.BASIC_MACHINES, false));
     public static final BlockBehaviour.Properties CABLE_BLOCK_PROPS = BlockBehaviour.Properties.of()
             .sound(SoundType.WOOL)
             .mapColor(MapColor.COLOR_BLACK)
@@ -106,6 +106,8 @@ public final class IRBlocks {
             () -> new CableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.HIGH), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<CableBlock> STEEL_CABLE = pickaxeMineable(registerBlockAndItem("steel_cable",
             () -> new CableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.EXTREME), BlockTabOrdering.CABLES, false));
+    public static final DeferredBlock<CableBlock> BURNT_CABLE = pickaxeMineable(registerBlockAndItem("burnt_cable",
+            () -> new BurntCableBlock(CABLE_BLOCK_PROPS, 6, IREnergyTiers.NONE), BlockTabOrdering.CABLES, false));
     public static final DeferredBlock<FenceBlock> IRON_FENCE = pickaxeMineable(registerBlockAndItem("iron_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), BlockTabOrdering.MISC_BLOCKS, false));
     public static final DeferredBlock<WoodenScaffoldingBlock> WOODEN_SCAFFOLDING = axeMineable(registerBlockAndItem("wooden_scaffolding",

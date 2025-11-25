@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BatteryBoxMenu extends MachineContainerMenu<BatteryBoxBlockEntity> {
     public BatteryBoxMenu(int containerId, @NotNull Inventory inv, @NotNull BatteryBoxBlockEntity blockEntity) {
-        super(IRMenuTypes.BATTERY_BOX_MENU.get(), containerId, inv, blockEntity);
+        super(IRMachines.BATTERY_BOX.getMenuType(), containerId, inv, blockEntity);
 
         IItemHandler itemHandler = blockEntity.getItemHandler();
         addSlot(new ChargingSlot(itemHandler, 0, ChargingSlot.ChargeMode.DECHARGE, 39, 43));

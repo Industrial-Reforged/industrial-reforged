@@ -1,90 +1,62 @@
 package com.indref.industrial_reforged.api.capabilities.heat;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Mth;
 
-public class HeatStorage implements IHeatStorage, INBTSerializable<CompoundTag> {
-    public static final HeatStorage EMPTY = new HeatStorage(0, 0, 0);
-
-    private float heatStored;
-    private float lastHeatStored;
-    private float heatCapacity;
-
-    private final float maxInput;
-    private final float maxOutput;
-
-    public HeatStorage(float heatCapacity) {
-        this(heatCapacity, 5, 5);
+public interface HeatStorage {
+    default void onHeatChanged(float oldAmount) {
     }
 
-    public HeatStorage(float heatCapacity, float maxInput, float maxOutput) {
-        this.heatCapacity = heatCapacity;
-        this.maxInput = maxInput;
-        this.maxOutput = maxOutput;
-    }
+    float getHeatStored();
 
-    @Override
-    public float getHeatStored() {
-        return this.heatStored;
-    }
+    void setHeatStored(float value);
 
-    @Override
-    public void setHeatStored(float value) {
-        if (this.heatStored != value) {
-            float oldAmount = this.heatStored;
-            this.heatStored = value;
-            setLastHeatStored(oldAmount);
-            onHeatChanged(oldAmount);
+    float getLastHeatStored();
+
+    void setLastHeatStored(float value);
+
+    float getHeatCapacity();
+
+    void setHeatCapacity(float value);
+
+    /**
+     * @return The heat that was extracted
+     */
+    default float drain(float value, boolean simulate) {
+        if (!canDrain() || value <= 0) {
+            return 0;
         }
-    }
 
-    @Override
-    public float getLastHeatStored() {
-        return this.lastHeatStored;
-    }
-
-    @Override
-    public void setLastHeatStored(float value) {
-        this.lastHeatStored = value;
-    }
-
-    @Override
-    public float getHeatCapacity() {
-        return this.heatCapacity;
-    }
-
-    @Override
-    public void setHeatCapacity(float value) {
-        if (this.heatCapacity != value) {
-            this.heatCapacity = value;
+        float heatExtracted = Math.min(getHeatStored(), Math.min(getMaxOutput(), value));
+        if (!simulate) {
+            setHeatStored(getHeatStored() - heatExtracted);
         }
+        return heatExtracted;
     }
 
-    @Override
-    public float getMaxInput() {
-        return this.maxInput;
+    /**
+     * @return The heat that was actually filled
+     */
+    default float fill(float value, boolean simulate) {
+        if (!canFill() || value <= 0) {
+            return 0;
+        }
+
+        float heatReceived = Mth.clamp(getHeatCapacity() - getHeatStored(), 0, Math.min(getMaxInput(), value));
+        if (!simulate) {
+            setHeatStored(getHeatStored() + heatReceived);
+        }
+        return heatReceived;
     }
 
-    @Override
-    public float getMaxOutput() {
-        return this.maxOutput;
+    float getMaxInput();
+
+    float getMaxOutput();
+
+    default boolean canFill() {
+        return getMaxInput() > 0;
     }
 
-    @Override
-    public @NotNull CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
-        CompoundTag tag = new CompoundTag();
-        tag.putFloat("heat_stored", this.heatStored);
-        tag.putFloat("last_heat_stored", this.lastHeatStored);
-        tag.putFloat("heat_capacity", this.heatCapacity);
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag tag) {
-        this.heatStored = tag.getFloat("heat_stored");
-        this.lastHeatStored = tag.getFloat("last_heat_stored");
-        this.heatCapacity = tag.getFloat("heat_capacity");
+    default boolean canDrain() {
+        return getMaxOutput() > 0;
     }
 }

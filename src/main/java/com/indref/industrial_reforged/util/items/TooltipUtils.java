@@ -1,10 +1,11 @@
 package com.indref.industrial_reforged.util.items;
 
 import com.indref.industrial_reforged.IRRegistries;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.utils.Utils;
 import net.minecraft.ChatFormatting;
@@ -19,7 +20,7 @@ import java.util.List;
 public final class TooltipUtils {
 
     public static void addEnergyTooltip(List<Component> tooltip, ItemStack itemStack) {
-        IEnergyHandler energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        EnergyHandler energyStorage = itemStack.getCapability(IRCapabilities.ENERGY_ITEM);
         if (energyStorage != null) {
             tooltip.add(
                     IRTranslations.Tooltip.ENERGY_STORED.component()
@@ -36,11 +37,13 @@ public final class TooltipUtils {
     }
 
     public static void addEnergyTierTooltip(List<Component> tooltip, EnergyTier tier) {
-        tooltip.add(
-                IRTranslations.Tooltip.ENERGY_TIER.component()
-                        .withStyle(ChatFormatting.GRAY)
-                        .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withColor(tier.color()))
-        );
+        if (tier != null) {
+            tooltip.add(
+                    IRTranslations.Tooltip.ENERGY_TIER.component()
+                            .withStyle(ChatFormatting.GRAY)
+                            .append(Utils.registryTranslation(IRRegistries.ENERGY_TIER, tier).copy().withColor(tier.color()))
+            );
+        }
     }
 
     public static void addFluidToolTip(List<Component> tooltip, ItemStack itemStack) {
@@ -62,7 +65,7 @@ public final class TooltipUtils {
     }
 
     public static void addHeatToolTip(List<Component> tooltip, ItemStack itemStack) {
-        IHeatStorage heatStorage = itemStack.getCapability(IRCapabilities.HeatStorage.ITEM);
+        HeatStorage heatStorage = itemStack.getCapability(IRCapabilities.HEAT_ITEM);
 
         if (heatStorage != null) {
             tooltip.add(

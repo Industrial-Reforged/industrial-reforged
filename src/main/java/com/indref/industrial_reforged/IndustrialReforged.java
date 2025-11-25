@@ -2,9 +2,9 @@ package com.indref.industrial_reforged;
 
 import com.google.common.base.Preconditions;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.ItemEnergyWrapper;
-import com.indref.industrial_reforged.api.capabilities.heat.ItemHeatWrapper;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.impl.energy.ItemEnergyHandlerWrapper;
+import com.indref.industrial_reforged.impl.heat.ItemHeatStorageWrapper;
 import com.indref.industrial_reforged.api.items.bundles.AdvancedBundleContents;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
@@ -30,12 +30,12 @@ import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.util.CompatUtils;
 import com.mojang.logging.LogUtils;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
+import com.portingdeadmods.portingdeadlibs.api.config.PDLConfigHelper;
 import com.portingdeadmods.portingdeadlibs.api.items.IFluidItem;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockDefinition;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockLayer;
 import com.portingdeadmods.portingdeadlibs.utils.capabilities.CapabilityRegistrationHelper;
-import guideme.Guide;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -57,7 +57,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -115,7 +114,7 @@ public final class IndustrialReforged {
         IRArmorMaterials.ARMOR_MATERIALS.register(modEventBus);
         IRUpgrades.UPGRADES.register(modEventBus);
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, IRConfig.SPEC);
+        PDLConfigHelper.registerConfig(IRConfig.class, ModConfig.Type.COMMON, modContainer);
 
         if (CompatUtils.isGuideMELoaded()) {
             IRGuide.init();
@@ -203,12 +202,12 @@ public final class IndustrialReforged {
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof IEnergyItem energyItem)
-                event.registerItem(IRCapabilities.EnergyStorage.ITEM,
-                        (stack, ctx) -> new ItemEnergyWrapper(stack, energyItem::getEnergyTier, energyItem.getDefaultEnergyCapacity()), item);
+                event.registerItem(IRCapabilities.ENERGY_ITEM,
+                        (stack, ctx) -> new ItemEnergyHandlerWrapper(stack, energyItem::getEnergyTier, energyItem.getDefaultCapacity()), item);
 
             if (item instanceof IHeatItem heatItem)
-                event.registerItem(IRCapabilities.HeatStorage.ITEM,
-                        (stack, ctx) -> new ItemHeatWrapper(stack, heatItem.getDefaultHeatCapacity()), item);
+                event.registerItem(IRCapabilities.HEAT_ITEM,
+                        (stack, ctx) -> new ItemHeatStorageWrapper(stack, heatItem.getDefaultCapacity()), item);
 
             if (item instanceof IFluidItem fluidItem)
                 event.registerItem(Capabilities.FluidHandler.ITEM,
@@ -229,20 +228,20 @@ public final class IndustrialReforged {
             BlockEntity testBE = be.get().create(BlockPos.ZERO, validBlock.defaultBlockState());
             if (testBE instanceof IRContainerBlockEntity containerBlockEntity) {
                 if (containerBlockEntity.getHeatStorage() != null) {
-                    event.registerBlockEntity(IRCapabilities.HeatStorage.BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getHeatHandlerOnSide);
+                    event.registerBlockEntity(IRCapabilities.HEAT_BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getHeatHandlerOnSide);
                 }
 
                 if (containerBlockEntity.getEuStorage() != null) {
-                    event.registerBlockEntity(IRCapabilities.EnergyStorage.BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getEuHandlerOnSide);
+                    event.registerBlockEntity(IRCapabilities.ENERGY_BLOCK, (BlockEntityType<IRContainerBlockEntity>) be.get(), IRContainerBlockEntity::getEuHandlerOnSide);
                 }
             }
             CapabilityRegistrationHelper.registerBECaps(event, IRBlockEntityTypes.BLOCK_ENTITIES);
         }
 
-        registerMBPartCaps(event);
+        this.registerMBPartCaps(event);
     }
 
-    private static void registerMBPartCaps(RegisterCapabilitiesEvent event) {
+    private void registerMBPartCaps(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE_PART.get(), BlastFurnacePartBlockEntity::exposeItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, IRBlockEntityTypes.BLAST_FURNACE_PART.get(), BlastFurnacePartBlockEntity::exposeFluidHandler);
 

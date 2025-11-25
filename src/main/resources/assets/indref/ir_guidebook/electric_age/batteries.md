@@ -1,9 +1,11 @@
 ---
 navigation:
-  title: "Basic Battery"
+  title: "Batteries"
   icon: "indref:basic_battery"
   parent: indref:electric_age.md
-  position: 1
+  position: 2
 item_ids:
   - indref:basic_battery
 ---
+
+# Batteries

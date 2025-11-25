@@ -1,10 +1,13 @@
 package com.indref.industrial_reforged.registries;
 
+import com.indref.industrial_reforged.content.blockentities.BatteryBoxBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.generators.BasicGeneratorBlockEntity;
 import com.indref.industrial_reforged.content.blockentities.machines.CentrifugeBlockEntity;
+import com.indref.industrial_reforged.content.blocks.BatteryBoxBlock;
 import com.indref.industrial_reforged.content.blocks.generators.BasicGeneratorBlock;
 import com.indref.industrial_reforged.content.blocks.machines.CentrifugeBlock;
 import com.indref.industrial_reforged.content.menus.BasicGeneratorMenu;
+import com.indref.industrial_reforged.content.menus.BatteryBoxMenu;
 import com.indref.industrial_reforged.content.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.util.machine.AltContainerFactory;
 import com.indref.industrial_reforged.util.machine.IRMachine;
@@ -21,4 +24,8 @@ public final class IRMachines {
             .block(CentrifugeBlock::new)
             .blockEntity(CentrifugeBlockEntity::new)
             .menu(CentrifugeMenu::new));
+    public static final IRMachine BATTERY_BOX = HELPER.registerMachine("battery_box", IRMachine.builder(IREnergyTiers.LOW)
+            .block(BatteryBoxBlock::new)
+            .blockEntity(BatteryBoxBlockEntity::new)
+            .menu(BatteryBoxMenu::new));
 }

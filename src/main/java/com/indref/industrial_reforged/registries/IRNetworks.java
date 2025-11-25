@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.api.transportation.TransferSpeed;
@@ -22,7 +22,7 @@ public final class IRNetworks {
                     .lossPerBlock((level, node) -> 0.5F)
                     .transferSpeed(TransferSpeed::instant)
                     .interactorCheck((level, nodePos, direction) ->
-                            level.getCapability(IRCapabilities.EnergyStorage.BLOCK, nodePos.relative(direction), direction) != null
+                            level.getCapability(IRCapabilities.ENERGY_BLOCK, nodePos.relative(direction), direction) != null
                     )
                     .build());
 }

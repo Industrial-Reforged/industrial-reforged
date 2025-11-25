@@ -1,21 +1,19 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
-import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.tiers.FireboxTier;
 import com.indref.industrial_reforged.content.multiblocks.IFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.menus.FireBoxMenu;
-import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
+import com.indref.industrial_reforged.impl.tiers.FireboxTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
-import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
-import it.unimi.dsi.fastutil.Pair;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -33,9 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,11 +48,13 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     protected MultiblockData multiblockData;
     private final FireboxTier fireboxTier;
 
-    private final Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
+    private final Map<BlockPos, BlockCapabilityCache<HeatStorage, Direction>> aboveBlockCapCache;
 
     public FireboxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, FireboxTier fireboxTier, float heatCapacity) {
         super(blockEntityType, blockPos, blockState);
-        addItemHandler(1, (slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0);
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .validator((slot, itemStack) -> itemStack.getBurnTime(RecipeType.SMELTING) > 0)
+                .onChange(this::onItemsChanged));
         addHeatStorage(heatCapacity, 10, fireboxTier.getMaxHeatOutput());
         this.fireboxTier = fireboxTier;
         this.multiblockData = MultiblockData.EMPTY;
@@ -74,7 +72,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
                     worldPosition.north().east(), worldPosition.north().west(), worldPosition.south().east(), worldPosition.south().west()};
             for (BlockPos pos : offsets) {
                 BlockPos above = pos.above();
-                this.aboveBlockCapCache.put(above, BlockCapabilityCache.create(IRCapabilities.HeatStorage.BLOCK, serverLevel, above, Direction.DOWN));
+                this.aboveBlockCapCache.put(above, BlockCapabilityCache.create(IRCapabilities.HEAT_BLOCK, serverLevel, above, Direction.DOWN));
             }
         }
         super.onLoad();
@@ -85,15 +83,16 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     }
 
     public float getHeatDecay() {
-        return IRConfig.fireboxHeatDecay;
+        return (float) IRConfig.fireboxHeatDecay;
     }
 
     public float getProductionAmount() {
-        return IRConfig.fireboxHeatProduction;
+        return (float) IRConfig.fireboxHeatProduction;
     }
 
-    @Override
     public void onItemsChanged(int slot) {
+        this.updateData();
+
         IItemHandler itemHandler = getItemHandler();
         if (itemHandler != null) {
             ItemStack stack = itemHandler.getStackInSlot(slot);
@@ -151,10 +150,10 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
     protected void tickIO() {
         if (!level.isClientSide()) {
             // Only export heat to block directly above
-            for (Map.Entry<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> entry : aboveBlockCapCache.entrySet()) {
-                IHeatStorage aboveHeatStorage = entry.getValue().getCapability();
+            for (Map.Entry<BlockPos, BlockCapabilityCache<HeatStorage, Direction>> entry : aboveBlockCapCache.entrySet()) {
+                HeatStorage aboveHeatStorage = entry.getValue().getCapability();
                 if (aboveHeatStorage != null && level != null) {
-                    IHeatStorage thisHeatStorage = getHeatStorage();
+                    HeatStorage thisHeatStorage = getHeatStorage();
                     float deltaT = (float) ((thisHeatStorage.getHeatStored() - aboveHeatStorage.getHeatStored()) * 0.1); // Spread factor
                     aboveHeatStorage.fill(deltaT, false);
                     thisHeatStorage.drain(deltaT, false);
@@ -165,7 +164,7 @@ public class FireboxBlockEntity extends IRContainerBlockEntity implements MenuPr
 
     protected void tickRecipe() {
         IItemHandler itemHandler = getItemHandler();
-        IHeatStorage heatStorage = getHeatStorage();
+        HeatStorage heatStorage = getHeatStorage();
         if (this.burnTime > 0) {
             burnTime--;
             if (!level.isClientSide()) {

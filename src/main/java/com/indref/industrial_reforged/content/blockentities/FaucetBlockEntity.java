@@ -86,8 +86,8 @@ public class FaucetBlockEntity extends IRContainerBlockEntity implements Powerab
     }
 
     @Override
-    public void commonTick() {
-        super.commonTick();
+    public void tick() {
+        super.tick();
 
         if (isPowered() && level instanceof ServerLevel serverLevel) {
             ChunkPos pos = new ChunkPos(worldPosition);

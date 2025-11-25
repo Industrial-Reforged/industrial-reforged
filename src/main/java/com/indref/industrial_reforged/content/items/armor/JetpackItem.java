@@ -1,9 +1,9 @@
 package com.indref.industrial_reforged.content.items.armor;
 
 import com.indref.industrial_reforged.IRConfig;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.events.InputHandler;
@@ -27,15 +27,15 @@ import java.util.function.Supplier;
 
 public class JetpackItem extends ArmorItem implements IEnergyItem {
     private static final int STAGES = 6;
-    private final Supplier<EnergyTier> energyTierSupplier;
+    private final Supplier<EnergyTierImpl> energyTierSupplier;
 
-    public JetpackItem(Properties properties, Holder<ArmorMaterial> material, Supplier<EnergyTier> energyTierSupplier) {
+    public JetpackItem(Properties properties, Holder<ArmorMaterial> material, Supplier<EnergyTierImpl> energyTierSupplier) {
         super(material, Type.CHESTPLATE, properties.stacksTo(1).durability(0).component(IRDataComponents.ENERGY, ComponentEuStorage.EMPTY));
         this.energyTierSupplier = energyTierSupplier;
     }
 
     public float getJetpackStage(ItemStack stack) {
-        IEnergyHandler energyStorage = getEnergyCap(stack);
+        EnergyHandler energyStorage = getEnergyCap(stack);
         return ((float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity()) * (STAGES - 1);
     }
 
@@ -44,12 +44,12 @@ public class JetpackItem extends ArmorItem implements IEnergyItem {
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return IRConfig.jetpackCapacity;
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public EnergyTierImpl getEnergyTier() {
         return energyTierSupplier.get();
     }
 

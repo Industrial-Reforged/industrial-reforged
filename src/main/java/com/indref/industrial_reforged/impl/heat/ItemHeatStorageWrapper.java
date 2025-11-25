@@ -1,13 +1,13 @@
-package com.indref.industrial_reforged.api.capabilities.heat;
+package com.indref.industrial_reforged.impl.heat;
 
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.items.container.IHeatItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
-import com.indref.industrial_reforged.data.components.ComponentHeatStorage;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStorage {
-    public ItemHeatWrapper(@NotNull ItemStack itemStack, float initialCapacity) {
+public record ItemHeatStorageWrapper(@NotNull ItemStack itemStack) implements HeatStorage {
+    public ItemHeatStorageWrapper(@NotNull ItemStack itemStack, float initialCapacity) {
         this(itemStack);
         this.setHeatCapacity(initialCapacity);
     }
@@ -21,32 +21,32 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public float getHeatStored() {
-        ComponentHeatStorage componentHeatStorage = getHeatStorage();
+        com.indref.industrial_reforged.data.components.ComponentHeatStorage componentHeatStorage = getHeatStorage();
         return componentHeatStorage.heatStored();
     }
 
     @Override
     public void setHeatStored(float value) {
         float heatStored = getHeatStored();
-        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(value, getLastHeatStored(), getHeatCapacity()));
+        itemStack.set(IRDataComponents.HEAT, new com.indref.industrial_reforged.data.components.ComponentHeatStorage(value, getLastHeatStored(), getHeatCapacity()));
         setLastHeatStored(heatStored);
         onHeatChanged(heatStored);
     }
 
     @Override
     public float getLastHeatStored() {
-        ComponentHeatStorage componentHeatStorage = getHeatStorage();
+        com.indref.industrial_reforged.data.components.ComponentHeatStorage componentHeatStorage = getHeatStorage();
         return componentHeatStorage.lastHeatStored();
     }
 
     @Override
     public void setLastHeatStored(float value) {
-        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), value, getHeatCapacity()));
+        itemStack.set(IRDataComponents.HEAT, new com.indref.industrial_reforged.data.components.ComponentHeatStorage(getHeatStored(), value, getHeatCapacity()));
     }
 
     @Override
     public float getHeatCapacity() {
-        ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+        com.indref.industrial_reforged.data.components.ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
         if (componentHeatStorage != null)
             return componentHeatStorage.heatCapacity();
         else
@@ -57,7 +57,7 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
 
     @Override
     public void setHeatCapacity(float value) {
-        itemStack.set(IRDataComponents.HEAT, new ComponentHeatStorage(getHeatStored(), getLastHeatStored(), value));
+        itemStack.set(IRDataComponents.HEAT, new com.indref.industrial_reforged.data.components.ComponentHeatStorage(getHeatStored(), getLastHeatStored(), value));
     }
 
     @Override
@@ -70,8 +70,8 @@ public record ItemHeatWrapper(@NotNull ItemStack itemStack) implements IHeatStor
         return 100;
     }
 
-    private ComponentHeatStorage getHeatStorage() {
-        ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
+    private com.indref.industrial_reforged.data.components.ComponentHeatStorage getHeatStorage() {
+        com.indref.industrial_reforged.data.components.ComponentHeatStorage componentHeatStorage = itemStack.get(IRDataComponents.HEAT);
         if (componentHeatStorage != null)
             return componentHeatStorage;
         else

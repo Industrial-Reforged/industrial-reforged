@@ -285,7 +285,7 @@ public class IRTagsProvider {
             tag(IRTags.Blocks.WRENCHABLE,
                     IRMachines.BASIC_GENERATOR.getBlock(),
                     IRMachines.CENTRIFUGE.getBlock(),
-                    IRBlocks.BATTERY_BOX.get(),
+                    IRMachines.BATTERY_BOX.getBlock(),
                     IRBlocks.TIN_CABLE.get(),
                     IRBlocks.COPPER_CABLE.get(),
                     IRBlocks.GOLD_CABLE.get(),

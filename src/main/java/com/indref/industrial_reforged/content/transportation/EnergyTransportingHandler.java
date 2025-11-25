@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.transportation;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.transportation.TransportingHandler;
 import com.indref.industrial_reforged.util.Utils;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -53,7 +53,7 @@ public class EnergyTransportingHandler implements TransportingHandler<Integer> {
 
     @Override
     public Integer receive(ServerLevel level, BlockPos interactorPos, Direction direction, Integer value) {
-        IEnergyHandler energyStorage = level.getCapability(IRCapabilities.EnergyStorage.BLOCK, interactorPos, direction);
+        EnergyHandler energyStorage = level.getCapability(IRCapabilities.ENERGY_BLOCK, interactorPos, direction);
         if (energyStorage != null) {
             int filled = energyStorage.fillEnergy(value, false);
             return Math.max(value - filled, this.defaultValue());

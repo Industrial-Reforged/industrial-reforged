@@ -1,23 +1,24 @@
-package com.indref.industrial_reforged.api.capabilities.energy;
+package com.indref.industrial_reforged.impl.energy;
 
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 
 import java.util.function.Supplier;
 
 public class EnergyHandlerWrapper {
-    protected final IEnergyHandler handler;
+    protected final EnergyHandler handler;
 
-    public EnergyHandlerWrapper(IEnergyHandler handler) {
+    public EnergyHandlerWrapper(EnergyHandler handler) {
         this.handler = handler;
     }
 
-    public static final class NoDrain extends EnergyHandlerWrapper implements IEnergyHandler.NoDrain {
-        public NoDrain(IEnergyHandler handler) {
+    public static final class NoDrain extends EnergyHandlerWrapper implements EnergyHandler.NoDrain {
+        public NoDrain(EnergyHandler handler) {
             super(handler);
         }
 
         @Override
-        public Supplier<EnergyTier> getEnergyTier() {
+        public Supplier<EnergyTierImpl> getEnergyTier() {
             return this.handler.getEnergyTier();
         }
 
@@ -42,13 +43,13 @@ public class EnergyHandlerWrapper {
         }
     }
 
-    public static final class NoFill extends EnergyHandlerWrapper implements IEnergyHandler.NoFill {
-        public NoFill(IEnergyHandler handler) {
+    public static final class NoFill extends EnergyHandlerWrapper implements EnergyHandler.NoFill {
+        public NoFill(EnergyHandler handler) {
             super(handler);
         }
 
         @Override
-        public Supplier<EnergyTier> getEnergyTier() {
+        public Supplier<EnergyTierImpl> getEnergyTier() {
             return this.handler.getEnergyTier();
         }
 

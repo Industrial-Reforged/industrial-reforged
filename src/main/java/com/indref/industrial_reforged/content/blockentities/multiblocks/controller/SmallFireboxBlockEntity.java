@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
 import com.indref.industrial_reforged.IRConfig;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.content.multiblocks.SmallFireboxMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
-import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
+import com.indref.industrial_reforged.impl.tiers.FireboxTiers;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeBlockEntity, SavesControllerPosBlockEntity {
     private BlockPos mainControllerPos;
-    private final Map<BlockPos, BlockCapabilityCache<IHeatStorage, Direction>> aboveBlockCapCache;
+    private final Map<BlockPos, BlockCapabilityCache<HeatStorage, Direction>> aboveBlockCapCache;
 
     public SmallFireboxBlockEntity(BlockPos pos, BlockState state) {
         super(IRBlockEntityTypes.SMALL_FIREBOX.get(), pos, state, FireboxTiers.SMALL, IRConfig.smallFireboxHeatCapacity);
@@ -46,7 +46,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
             for (BlockPos pos : BlockUtils.getBlocksAroundSelf3x3(worldPosition)) {
                 if (level.getBlockEntity(pos) instanceof SmallFireboxBlockEntity be && worldPosition.equals(be.getActualBlockEntityPos())) {
                     this.aboveBlockCapCache.put(pos.above(), BlockCapabilityCache.create(
-                            IRCapabilities.HeatStorage.BLOCK,
+                            IRCapabilities.HEAT_BLOCK,
                             serverLevel,
                             pos.above(),
                             Direction.DOWN,
@@ -56,7 +56,7 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
                 }
             }
             this.aboveBlockCapCache.put(worldPosition.above(), BlockCapabilityCache.create(
-                    IRCapabilities.HeatStorage.BLOCK,
+                    IRCapabilities.HEAT_BLOCK,
                     serverLevel,
                     worldPosition.above(),
                     Direction.DOWN,
@@ -92,9 +92,9 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
             // Only export heat to block directly above
             if (aboveBlockCapCache != null) {
                 for (BlockPos pos : aboveBlockCapCache.keySet()) {
-                    IHeatStorage aboveHeatStorage = aboveBlockCapCache.get(pos).getCapability();
+                    HeatStorage aboveHeatStorage = aboveBlockCapCache.get(pos).getCapability();
                     if (aboveHeatStorage != null && level != null) {
-                        IHeatStorage thisHeatStorage = getHeatStorage();
+                        HeatStorage thisHeatStorage = getHeatStorage();
                         float deltaT = (float) ((thisHeatStorage.getHeatStored() - aboveHeatStorage.getHeatStored()) * 0.1); // Spread factor
                         aboveHeatStorage.fill(deltaT, false);
                         thisHeatStorage.drain(deltaT, false);
@@ -105,11 +105,11 @@ public class SmallFireboxBlockEntity extends FireboxBlockEntity implements FakeB
     }
 
     public float getHeatDecay() {
-        return IRConfig.smallFireboxHeatDecay;
+        return (float) IRConfig.smallFireboxHeatDecay;
     }
 
     public float getProductionAmount() {
-        return IRConfig.smallFireboxHeatProduction;
+        return (float) IRConfig.smallFireboxHeatProduction;
     }
 
     @Override

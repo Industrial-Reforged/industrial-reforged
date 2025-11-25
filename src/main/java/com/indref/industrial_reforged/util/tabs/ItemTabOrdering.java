@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.util.tabs;
 
 import com.indref.industrial_reforged.IRConfig;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.content.items.tools.RockCutterItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import net.minecraft.core.Holder;
@@ -102,7 +102,7 @@ public enum ItemTabOrdering implements TabOrdering {
 
         output.accept(stack);
         ItemStack energyStack = stack.copy();
-        IEnergyHandler energyStorage = energyStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        EnergyHandler energyStorage = energyStack.getCapability(IRCapabilities.ENERGY_ITEM);
         energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
 
         output.accept(energyStack);
@@ -112,7 +112,7 @@ public enum ItemTabOrdering implements TabOrdering {
         ItemStack stack = new ItemStack(item.asItem());
         output.accept(stack.copy());
 
-        IEnergyHandler energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        EnergyHandler energyStorage = stack.getCapability(IRCapabilities.ENERGY_ITEM);
         if (energyStorage != null) {
             energyStorage.setEnergyStored(energyStorage.getEnergyCapacity());
             output.accept(stack);

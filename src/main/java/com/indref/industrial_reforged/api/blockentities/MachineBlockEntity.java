@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.api.blockentities;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.capabilities.item.UpgradeItemHandler;
 import com.indref.industrial_reforged.api.gui.slots.ChargingSlot;
 import com.indref.industrial_reforged.api.items.UpgradeItem;
@@ -21,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ import java.util.function.Supplier;
 
 public abstract class MachineBlockEntity extends IRContainerBlockEntity implements WrenchListenerBlockEntity, RedstoneBlockEntity, UpgradeBlockEntity {
     private final List<ChargingSlot> chargingSlots;
-    private final List<BlockCapabilityCache<IEnergyHandler, Direction>> caches;
+    private final List<BlockCapabilityCache<EnergyHandler, Direction>> caches;
     private boolean removedUsingWrench;
     private final UpgradeItemHandler upgradeItemHandler;
     private final Set<Supplier<Upgrade>> defaultSupportedUpgrades;
@@ -51,7 +53,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
                 protected void onContentsChanged(int slot) {
                     super.onContentsChanged(slot);
 
-                    update();
+                    MachineBlockEntity.this.updateData();
                 }
 
                 @Override
@@ -68,6 +70,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
                     MachineBlockEntity.this.onUpgradeRemoved(upgrade);
                 }
             };
+            addHandler(Capabilities.ItemHandler.BLOCK, this.upgradeItemHandler);
         } else {
             this.upgradeItemHandler = null;
         }
@@ -89,18 +92,20 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     }
 
     @Override
-    public void commonTick() {
-        super.commonTick();
+    public void tick() {
+        super.tick();
+
         for (ChargingSlot chargingSlot : this.chargingSlots) {
             if (chargingSlot.getItem().isEmpty()) continue;
 
-            tickChargingSlot(chargingSlot);
+            this.tickChargingSlot(chargingSlot);
         }
 
-        if (spreadEnergy() && !level.isClientSide()) {
-            int amountPerBlock = getAmountPerBlock();
-            for (BlockCapabilityCache<IEnergyHandler, Direction> cache : this.caches) {
-                IEnergyHandler energyStorage = cache.getCapability();
+        if (this.shouldSpreadEnergy() && !level.isClientSide()) {
+            int amountPerBlock = this.getAmountPerBlock();
+
+            for (BlockCapabilityCache<EnergyHandler, Direction> cache : this.caches) {
+                EnergyHandler energyStorage = cache.getCapability();
                 if (energyStorage != null) {
                     int filled = energyStorage.fillEnergy(amountPerBlock, false);
                     getEuStorage().drainEnergy(filled, false);
@@ -109,9 +114,9 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         }
     }
 
-    private int getAmountPerBlock() {
+    protected int getAmountPerBlock() {
         int blocks = 0;
-        for (BlockCapabilityCache<IEnergyHandler, Direction> cache : this.caches) {
+        for (BlockCapabilityCache<EnergyHandler, Direction> cache : this.caches) {
             if (cache.getCapability() != null) {
                 blocks++;
             }
@@ -125,10 +130,10 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         return amountPerBlock;
     }
 
-    private void tickChargingSlot(ChargingSlot slot) {
+    protected void tickChargingSlot(ChargingSlot slot) {
         ItemStack itemStack = slot.getItem();
-        IEnergyHandler energyStorage = this.getEuStorage();
-        IEnergyHandler itemEnergyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        EnergyHandler energyStorage = this.getEuStorage();
+        EnergyHandler itemEnergyStorage = itemStack.getCapability(IRCapabilities.ENERGY_ITEM);
         if (itemEnergyStorage != null && !level.isClientSide()) {
             if (slot.getMode() == ChargingSlot.ChargeMode.CHARGE) {
                 int filled = itemEnergyStorage.fillEnergy(Math.min(itemEnergyStorage.getMaxInput(), energyStorage.getMaxOutput()), true);
@@ -144,7 +149,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
         }
     }
 
-    public boolean spreadEnergy() {
+    public boolean shouldSpreadEnergy() {
         return false;
     }
 
@@ -245,7 +250,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     public void initCapCache() {
         if (level instanceof ServerLevel serverLevel) {
             for (Direction direction : Direction.values()) {
-                this.caches.add(BlockCapabilityCache.create(IRCapabilities.EnergyStorage.BLOCK, serverLevel, worldPosition.relative(direction), direction));
+                this.caches.add(BlockCapabilityCache.create(IRCapabilities.ENERGY_BLOCK, serverLevel, worldPosition.relative(direction), direction));
             }
         }
     }
@@ -262,9 +267,9 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     }
 
     @Override
-    public void drop() {
+    public void dropItems(IItemHandler handler) {
         if (!this.removedUsingWrench) {
-            super.drop();
+            super.dropItems(handler);
         } else {
             this.removedUsingWrench = false;
         }
@@ -283,18 +288,13 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     @Override
     public void setRedstoneSignalType(RedstoneSignalType redstoneSignalType) {
         this.redstoneSignalType = redstoneSignalType;
-        update();
-    }
-
-    private <T extends MachineBlockEntity> T selfBE() {
-        return (T) this;
+        this.updateData();
     }
 
     @Override
     protected void loadData(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadData(tag, provider);
-        if (this.upgradeItemHandler != null)
-            this.upgradeItemHandler.deserializeNBT(provider, tag.getCompound("upgrade_item_handler"));
+
         this.redstoneSignalStrength = tag.getInt("signal_strength");
         this.redstoneSignalType = RedstoneSignalType.CODEC.decode(NbtOps.INSTANCE, tag.get("redstone_signal")).result().orElse(Pair.of(RedstoneSignalType.IGNORED, new CompoundTag())).getFirst();
     }
@@ -302,8 +302,7 @@ public abstract class MachineBlockEntity extends IRContainerBlockEntity implemen
     @Override
     protected void saveData(CompoundTag tag, HolderLookup.Provider provider) {
         super.saveData(tag, provider);
-        if (this.upgradeItemHandler != null)
-            tag.put("upgrade_item_handler", this.upgradeItemHandler.serializeNBT(provider));
+
         tag.putInt("signal_strength", this.redstoneSignalStrength);
         Optional<Tag> tag1 = RedstoneSignalType.CODEC.encodeStart(NbtOps.INSTANCE, this.redstoneSignalType).result();
         tag1.ifPresent(value -> {

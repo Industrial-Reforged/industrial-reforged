@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.client.screen.CrucibleScreen;
 import com.indref.industrial_reforged.networking.crucible.EmptyCruciblePayload;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.ContainerBlockEntity;
-import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
+import com.portingdeadmods.portingdeadlibs.client.screens.widgets.FluidTankWidget;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;

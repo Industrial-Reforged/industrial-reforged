@@ -1,13 +1,13 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.impl.energy.IRGenericEnergyWrapper;
 import com.indref.industrial_reforged.api.client.screen.MachineScreen;
 import com.indref.industrial_reforged.api.gui.slots.UpgradeSlot;
 import com.indref.industrial_reforged.client.widgets.*;
 import com.indref.industrial_reforged.content.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.networking.UpgradeWidgetSetSlotPositionsPayload;
-import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
+import com.portingdeadmods.portingdeadlibs.client.screens.widgets.FluidTankWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class CentrifugeScreen extends MachineScreen<CentrifugeMenu> {
         this.imageHeight = 185;
         this.inventoryLabelY = this.imageHeight - 94;
         EnergyBarWidget energyBarWidget = addRenderableOnly(
-                new EnergyBarWidget(this.leftPos + 11, this.topPos + 16, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
+                new EnergyBarWidget(this.leftPos + 11, this.topPos + 16, new IRGenericEnergyWrapper(menu.blockEntity.getEuStorage()), true)
         );
         addRenderableWidget(
                 new FluidTankWidget(this.leftPos + 142, this.topPos + 24, FluidTankWidget.TankVariants.SMALL, menu.blockEntity)

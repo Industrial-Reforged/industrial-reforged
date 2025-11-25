@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricDiggerItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class ElectricChainsawItem extends ElectricDiggerItem {
 
-    public ElectricChainsawItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricChainsawItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_AXE, energyTier, energyUsage, defaultEnergyCapacity);
     }
 

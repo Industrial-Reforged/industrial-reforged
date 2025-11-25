@@ -3,13 +3,13 @@ package com.indref.industrial_reforged.api.blocks;
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.util.BlockUtils;
 import com.indref.industrial_reforged.util.items.TooltipUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.portingdeadmods.portingdeadlibs.api.blocks.ContainerBlock;
-import com.portingdeadmods.portingdeadlibs.utils.codec.CodecUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -25,9 +25,9 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public abstract class MachineBlock extends ContainerBlock implements EnergyTierBlock {
-    protected final Supplier<EnergyTier> energyTier;
+    protected final Supplier<? extends EnergyTier> energyTier;
 
-    public MachineBlock(Properties properties, Supplier<EnergyTier> energyTier) {
+    public MachineBlock(Properties properties, Supplier<? extends EnergyTier> energyTier) {
         super(properties);
         this.energyTier = energyTier;
     }
@@ -63,11 +63,11 @@ public abstract class MachineBlock extends ContainerBlock implements EnergyTierB
 
     }
 
-    protected <T extends MachineBlock> MapCodec<T> machineBlockCodec(BiFunction<BlockBehaviour.Properties, Supplier<EnergyTier>, T> factory) {
+    protected <T extends MachineBlock> MapCodec<T> machineBlockCodec(BiFunction<BlockBehaviour.Properties, Supplier<? extends EnergyTier>, T> factory) {
         return RecordCodecBuilder.mapCodec(inst -> inst.group(
                 propertiesCodec(),
-                Codec.unit(() -> this.energyTier).fieldOf("energy_tier").forGetter(m -> m.energyTier)
-        ).apply(inst, factory));
+                IRRegistries.ENERGY_TIER.byNameCodec().fieldOf("energy_tier").forGetter(m -> m.energyTier.get())
+        ).apply(inst, (p, e) -> factory.apply(p, () -> e)));
     }
 
 }

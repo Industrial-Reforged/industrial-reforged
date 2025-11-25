@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricDiggerItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
@@ -19,13 +19,13 @@ import java.util.function.Supplier;
 public class RockCutterItem extends ElectricDiggerItem {
     private final IntSupplier energyCapacity;
 
-    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public RockCutterItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(properties, attackSpeed, baseAttackDamage, tier, BlockTags.MINEABLE_WITH_PICKAXE, energyTier, energyUsage, defaultEnergyCapacity);
         this.energyCapacity = defaultEnergyCapacity;
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return this.energyCapacity.getAsInt();
     }
 

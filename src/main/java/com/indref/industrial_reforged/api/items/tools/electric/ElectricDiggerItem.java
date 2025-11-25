@@ -1,11 +1,11 @@
 package com.indref.industrial_reforged.api.items.tools.electric;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.util.items.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
 import net.minecraft.core.BlockPos;
@@ -36,11 +36,11 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     private final Tier tier;
     @org.jetbrains.annotations.NotNull
     private final TagKey<Block> blocks;
-    protected final Supplier<EnergyTier> energyTier;
+    protected final Supplier<EnergyTierImpl> energyTier;
     private final IntSupplier energyUsage;
     private final IntSupplier defaultEnergyCapacity;
 
-    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ElectricDiggerItem(Properties properties, float attackSpeed, float baseAttackDamage, Tier tier, TagKey<Block> blocks, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(tier, blocks, properties
                 .durability(0)
                 .attributes(DiggerItem.createAttributes(tier, baseAttackDamage, attackSpeed))
@@ -55,7 +55,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public void initEnergyStorage(IEnergyHandler energyStorage, ItemStack itemStack) {
+    public void initEnergyStorage(EnergyHandler energyStorage, ItemStack itemStack) {
         if (energyStorage.getEnergyStored() == 0) {
             itemStack.remove(DataComponents.TOOL);
         } else {
@@ -65,7 +65,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
 
     @Override
     public void onEnergyChanged(ItemStack itemStack, int oldAmount) {
-        IEnergyHandler energyStorage = itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        EnergyHandler energyStorage = itemStack.getCapability(IRCapabilities.ENERGY_ITEM);
 
         itemStack.set(DataComponents.ATTRIBUTE_MODIFIERS, DiggerItem.createAttributes(
                 tier,
@@ -86,7 +86,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     public boolean mineBlock(ItemStack stack, Level p_41417_, BlockState p_41418_, BlockPos p_41419_, LivingEntity entity) {
         Player player = entity instanceof Player player0 ? player0 : null;
         if (canWork(stack, player)) {
-            IEnergyHandler energyStorage = getEnergyCap(stack);
+            EnergyHandler energyStorage = getEnergyCap(stack);
             int energyUsage = getEnergyUsage(stack, player);
             energyStorage.drainEnergy(energyUsage, false);
         }
@@ -97,7 +97,7 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     public boolean hurtEnemy(ItemStack stack, LivingEntity p_40995_, LivingEntity entity) {
         Player player = entity instanceof Player player0 ? player0 : null;
         if (canWork(stack, player)) {
-            IEnergyHandler energyStorage = getEnergyCap(stack);
+            EnergyHandler energyStorage = getEnergyCap(stack);
             int energyUsage = (int) (getEnergyUsage(stack, player) * 1.5f);
             energyStorage.drainEnergy(energyUsage, false);
         }
@@ -142,12 +142,12 @@ public abstract class ElectricDiggerItem extends DiggerItem implements IEnergyIt
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return this.defaultEnergyCapacity.getAsInt();
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public EnergyTierImpl getEnergyTier() {
         return energyTier.get();
     }
 }

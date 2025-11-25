@@ -1,27 +1,23 @@
 package com.indref.industrial_reforged.client.widgets;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class HeatBarWidget extends AbstractWidget {
     public static final ResourceLocation HEAT_BAR_SPRITE = IndustrialReforged.rl("heat_bar");
     public static final ResourceLocation HEAT_BAR_EMPTY_SPRITE = IndustrialReforged.rl("heat_bar_empty");
 
-    private final IHeatStorage heatStorage;
+    private final HeatStorage heatStorage;
 
-    public HeatBarWidget(IHeatStorage heatStorage, int x, int y) {
+    public HeatBarWidget(HeatStorage heatStorage, int x, int y) {
         super(x, y, 80, 8, CommonComponents.EMPTY);
         this.heatStorage = heatStorage;
     }

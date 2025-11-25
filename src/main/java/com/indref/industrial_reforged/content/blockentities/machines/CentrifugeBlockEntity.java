@@ -1,23 +1,19 @@
 package com.indref.industrial_reforged.content.blockentities.machines;
 
-import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.impl.energy.EnergyHandlerImpl;
 import com.indref.industrial_reforged.content.recipes.CentrifugeRecipe;
 import com.indref.industrial_reforged.content.menus.CentrifugeMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
-import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
-import com.portingdeadmods.portingdeadlibs.utils.capabilities.SidedCapUtils;
-import it.unimi.dsi.fastutil.Pair;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,10 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,10 +42,22 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
 
     public CentrifugeBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(IRMachines.CENTRIFUGE.getBlockEntityType(), p_155229_, p_155230_);
-        addEuStorage(EnergyHandler.NoDrain::new, IREnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
-        addFluidTank(IRConfig.centrifugeFluidCapacity);
-        addItemHandler(6, ((slot, itemStack) -> slot == 0
-                || (slot == 5 && itemStack.getCapability(IRCapabilities.EnergyStorage.ITEM) != null)));
+        addEuStorage(EnergyHandlerImpl.NoDrain::new, IREnergyTiers.LOW, IRConfig.centrifugeEnergyCapacity);
+        addFluidHandler(HandlerUtils::newFluidTank, builder -> builder
+                .onChange(this::onFluidChanged)
+                .slotLimit(tank -> IRConfig.centrifugeFluidCapacity));
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .onChange(this::onItemsChanged)
+                .slots(6)
+                .validator((slot, item) -> switch (slot) {
+                    case 0 -> true;
+                    case 5 -> item.getCapability(IRCapabilities.ENERGY_ITEM) != null;
+                    default -> false;
+                }));
+    }
+
+    private void onFluidChanged(int slot) {
+        this.updateData();
     }
 
     @Override
@@ -77,9 +84,9 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
         return new CentrifugeMenu(i, inventory, this);
     }
 
-    @Override
     protected void onItemsChanged(int slot) {
-        super.onItemsChanged(slot);
+        this.updateData();
+
         checkRecipe();
     }
 
@@ -98,7 +105,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
             CentrifugeRecipe centrifugeRecipe = currentRecipe.get();
             List<ItemStack> results = centrifugeRecipe.results();
 
-            if (canInsertItems(results) && forceFillTank(centrifugeRecipe.resultFluid().copy(), IFluidHandler.FluidAction.SIMULATE) == centrifugeRecipe.resultFluid().getAmount()) {
+            int filled = forceFillTank(this.getFluidHandler(), centrifugeRecipe.resultFluid().copy(), IFluidHandler.FluidAction.SIMULATE, this::onFluidChanged);
+            if (canInsertItems(results) && filled == centrifugeRecipe.resultFluid().getAmount()) {
                 this.recipe = centrifugeRecipe;
                 this.initUpgrades();
             }
@@ -113,8 +121,8 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
-    public void commonTick() {
-        super.commonTick();
+    public void tick() {
+        super.tick();
 
         if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
             if (recipe != null) {
@@ -130,7 +138,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity implements MenuPro
                         for (ItemStack result : results) {
                             ItemStack toInsert = result.copy();
                             for (int j = 0; j < getItemHandler().getSlots(); j++) {
-                                toInsert = forceInsertItem(j, toInsert, false);
+                                toInsert = forceInsertItem(((IItemHandlerModifiable) this.getItemHandler()), j, toInsert, false, this::onItemsChanged);
                                 if (toInsert.isEmpty()) {
                                     break;
                                 }

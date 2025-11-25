@@ -2,15 +2,9 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.api.items.container.SimpleEnergyItem;
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricToolItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import net.minecraft.core.Holder;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntSupplier;
@@ -19,7 +13,7 @@ import java.util.function.Supplier;
 public class ScannerItem extends SimpleEnergyItem implements ElectricToolItem {
     private final IntSupplier energyUsage;
 
-    public ScannerItem(Properties p_41383_, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
+    public ScannerItem(Properties p_41383_, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier defaultEnergyCapacity) {
         super(p_41383_, energyTier, defaultEnergyCapacity);
         this.energyUsage = energyUsage;
     }

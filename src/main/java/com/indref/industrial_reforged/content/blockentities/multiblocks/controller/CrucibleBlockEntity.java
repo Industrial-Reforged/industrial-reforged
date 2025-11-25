@@ -1,12 +1,10 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
-import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.api.blockentities.PowerableBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.api.tiers.CrucibleTier;
 import com.indref.industrial_reforged.client.renderer.item.bar.CrucibleProgressRenderer;
 import com.indref.industrial_reforged.content.blockentities.CastingBasinBlockEntity;
@@ -25,8 +23,7 @@ import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.items.ItemUtils;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
-import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
-import it.unimi.dsi.fastutil.Pair;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -53,13 +50,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -99,8 +94,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         this.tier = ((CrucibleControllerBlock) blockState.getBlock()).getTier();
         this.multiblockData = MultiblockData.EMPTY;
         this.recipeCache = new Int2ObjectOpenHashMap<>(SLOTS);
-        addItemHandler(9, 1);
-        addFluidTank(IRConfig.crucibleFluidCapacity);
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .onChange(this::onItemsChanged)
+                .slotLimit(tank -> 1));
+        addFluidHandler(HandlerUtils::newFluidTank, builder -> builder
+                .onChange(this::onFluidChanged)
+                .slotLimit(tank -> IRConfig.crucibleFluidCapacity));
         addHeatStorage(IRConfig.crucibleHeatCapacity);
     }
 
@@ -165,7 +164,6 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     }
 
     @SuppressWarnings("OptionalIsPresent")
-    @Override
     protected void onItemsChanged(int slot) {
         Optional<CrucibleSmeltingRecipe> _recipe = getRecipeForCache(slot);
         if (_recipe.isPresent()) {
@@ -173,8 +171,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         }
     }
 
-    @Override
-    public void onFluidChanged() {
+    public void onFluidChanged(int tank) {
         for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
             Optional<CrucibleSmeltingRecipe> _recipe = getRecipeForCache(slot);
             if (_recipe.isPresent()) {
@@ -241,7 +238,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
         for (int slot = 0; slot < getItemHandler().getSlots(); slot++) {
             CrucibleSmeltingRecipe recipe = getCurrentRecipe(slot);
             if (!getItemHandler().getStackInSlot(slot).isEmpty()) {
-                int increased = hasRecipe(slot, recipe, getFluidTank().getFluid().getAmount() + totalIncreasedAmount);
+                int increased = hasRecipe(slot, recipe, this.getFluidHandler().getFluidInTank(0).getAmount() + totalIncreasedAmount);
                 if (increased != -1) {
                     totalIncreasedAmount += increased;
                     increaseCraftingProgress(slot, recipe);
@@ -320,7 +317,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     }
 
     public float getHeatDecay() {
-        return IRConfig.crucibleHeatDecay;
+        return (float) IRConfig.crucibleHeatDecay;
     }
 
     protected void tickHeat() {
@@ -341,7 +338,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
                     FluidStack drained = getFluidHandler().drain(CASTING_SPEED, IFluidHandler.FluidAction.EXECUTE);
                     int filled = fluidHandler.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                     int remaining = drained.getAmount() - filled;
-                    getFluidTank().fill(getFluidTank().getFluidInTank(0).copyWithAmount(remaining), IFluidHandler.FluidAction.EXECUTE);
+                    this.getFluidHandler().fill(this.getFluidHandler().getFluidInTank(0).copyWithAmount(remaining), IFluidHandler.FluidAction.EXECUTE);
                     PacketDistributor.sendToAllPlayers(
                             new BasinFluidChangedPayload(getBasinPos(), fluidHandler.getFluidInTank(0).getAmount())
                     );
@@ -367,12 +364,12 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
     }
 
     private void suckInItems(List<ItemEntity> items) {
-        ItemStackHandler handler = getItemStackHandler();
+        IItemHandler handler = this.getItemHandler();
         for (ItemEntity itemEntity : items) {
             ItemStack itemStack = itemEntity.getItem();
             for (int i = 0; i < handler.getSlots(); i++) {
                 if (handler.getStackInSlot(i).isEmpty()) {
-                    handler.setStackInSlot(i, itemStack.copyWithCount(1));
+                    handler.insertItem(i, itemStack.copyWithCount(1), false);
                     itemStack.shrink(1);
                 }
             }
@@ -437,7 +434,7 @@ public class CrucibleBlockEntity extends IRContainerBlockEntity implements MenuP
 
     private void increaseCraftingProgress(int slot, CrucibleSmeltingRecipe recipe) {
         IItemHandler itemStackHandler = getItemHandler();
-        IHeatStorage heatStorage = getHeatStorage();
+        HeatStorage heatStorage = getHeatStorage();
 
         if (itemStackHandler == null || heatStorage == null) return;
 

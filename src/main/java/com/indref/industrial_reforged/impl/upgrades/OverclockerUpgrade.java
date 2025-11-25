@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.content.upgrades;
+package com.indref.industrial_reforged.impl.upgrades;
 
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;

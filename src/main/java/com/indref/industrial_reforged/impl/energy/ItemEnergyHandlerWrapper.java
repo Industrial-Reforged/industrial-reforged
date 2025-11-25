@@ -1,15 +1,16 @@
-package com.indref.industrial_reforged.api.capabilities.energy;
+package com.indref.industrial_reforged.impl.energy;
 
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
 
-public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier) implements IEnergyHandler {
-    public ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energyTier, int initialCapacity) {
+public record ItemEnergyHandlerWrapper(ItemStack itemStack, Supplier<EnergyTierImpl> energyTier) implements EnergyHandler {
+    public ItemEnergyHandlerWrapper(ItemStack itemStack, Supplier<EnergyTierImpl> energyTier, int initialCapacity) {
         this(itemStack, energyTier);
         this.setEnergyCapacity(initialCapacity);
         if (itemStack.getItem() instanceof IEnergyItem energyItem) {
@@ -18,7 +19,7 @@ public record ItemEnergyWrapper(ItemStack itemStack, Supplier<EnergyTier> energy
     }
 
     @Override
-    public Supplier<EnergyTier> getEnergyTier() {
+    public Supplier<EnergyTierImpl> getEnergyTier() {
         return energyTier;
     }
 

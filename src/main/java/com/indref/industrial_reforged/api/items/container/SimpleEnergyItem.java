@@ -2,7 +2,7 @@ package com.indref.industrial_reforged.api.items.container;
 
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.util.items.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
 import net.minecraft.network.chat.Component;
@@ -17,16 +17,16 @@ import java.util.function.Supplier;
 
 public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     protected final IntSupplier defaultEnergyCapacity;
-    private final Supplier<EnergyTier> energyTier;
+    private final Supplier<EnergyTierImpl> energyTier;
 
-    public SimpleEnergyItem(Properties properties, Supplier<EnergyTier> energyTier, IntSupplier defaultEnergyCapacity) {
+    public SimpleEnergyItem(Properties properties, Supplier<EnergyTierImpl> energyTier, IntSupplier defaultEnergyCapacity) {
         super(properties.stacksTo(1).component(IRDataComponents.ENERGY.get(), new ComponentEuStorage(defaultEnergyCapacity.getAsInt())));
         this.defaultEnergyCapacity = defaultEnergyCapacity;
         this.energyTier = energyTier;
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return defaultEnergyCapacity.getAsInt();
     }
 
@@ -62,7 +62,7 @@ public abstract class SimpleEnergyItem extends Item implements IEnergyItem {
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public EnergyTierImpl getEnergyTier() {
         return energyTier.get();
     }
 }

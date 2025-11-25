@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.client.item;
 
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.content.items.armor.JetpackItem;
 import com.indref.industrial_reforged.content.items.storage.BatteryItem;
 import com.indref.industrial_reforged.content.items.tools.ElectricChainsawItem;
@@ -28,7 +28,7 @@ public final class IRItemProperties {
     public static float isItemHeld(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
         if (entity != null) {
             ItemStack mainHandItem = entity.getMainHandItem();
-            @Nullable IEnergyHandler capability = mainHandItem.getCapability(IRCapabilities.EnergyStorage.ITEM);
+            @Nullable EnergyHandler capability = mainHandItem.getCapability(IRCapabilities.ENERGY_ITEM);
             boolean runAnimation = true;
             if (stack.getItem() instanceof ElectricChainsawItem) {
                 runAnimation = IRConfig.chainsawItemAnimation;

@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.registries.IRItems;
 import com.indref.industrial_reforged.tags.IRTags;
@@ -88,7 +88,7 @@ public final class BlockUtils {
         }
     }
 
-    public static int calcRedstoneFromEnergy(IEnergyHandler energyStorage) {
+    public static int calcRedstoneFromEnergy(EnergyHandler energyStorage) {
         if (energyStorage == null) {
             return 0;
         } else {

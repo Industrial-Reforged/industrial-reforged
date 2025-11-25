@@ -1,20 +1,20 @@
 package com.indref.industrial_reforged.util.items;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
 
 public final class ItemBarUtils {
     public static int energyBarWidth(ItemStack stack) {
-        IEnergyHandler energyStorage = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+        EnergyHandler energyStorage = stack.getCapability(IRCapabilities.ENERGY_ITEM);
         float ratio = (float) energyStorage.getEnergyStored() / energyStorage.getEnergyCapacity();
         return Math.round(13.0F - ((1 - ratio) * 13.0F));
     }
 
     public static int heatBarWidth(ItemStack stack) {
-        IHeatStorage heatStorage = stack.getCapability(IRCapabilities.HeatStorage.ITEM);
+        HeatStorage heatStorage = stack.getCapability(IRCapabilities.HEAT_ITEM);
         if (heatStorage != null) {
             float ratio = heatStorage.getHeatStored() / heatStorage.getHeatCapacity();
             return Math.round(13.0F - ((1 - ratio) * 13.0F));

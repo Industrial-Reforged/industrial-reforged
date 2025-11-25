@@ -1,13 +1,9 @@
 package com.indref.industrial_reforged.registries;
 
-import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
-import com.indref.industrial_reforged.api.blockentities.UpgradeBlockEntity;
-import com.indref.industrial_reforged.api.items.UpgradeItem;
 import com.indref.industrial_reforged.api.upgrade.Upgrade;
-import com.indref.industrial_reforged.content.upgrades.OverclockerUpgrade;
+import com.indref.industrial_reforged.impl.upgrades.OverclockerUpgrade;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;

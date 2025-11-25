@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.client.screen;
 
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.energy.IREnergyStorageWrapper;
+import com.indref.industrial_reforged.impl.energy.IRGenericEnergyWrapper;
 import com.indref.industrial_reforged.api.client.screen.MachineScreen;
 import com.indref.industrial_reforged.client.widgets.EnergyBarWidget;
 import com.indref.industrial_reforged.client.widgets.RedstonePanelWidget;
@@ -36,7 +36,7 @@ public class BasicGeneratorScreen extends MachineScreen<BasicGeneratorMenu> {
         this.inventoryLabelY = this.imageHeight - 94;
         super.init();
         EnergyBarWidget energyBarWidget = addRenderableOnly(
-                new EnergyBarWidget(this.leftPos + 11, this.topPos + 17, new IREnergyStorageWrapper(menu.blockEntity.getEuStorage()), true)
+                new EnergyBarWidget(this.leftPos + 11, this.topPos + 17, new IRGenericEnergyWrapper(menu.blockEntity.getEuStorage()), true)
         );
         addPanelWidget(new RedstonePanelWidget(this.leftPos + this.imageWidth, this.topPos + 2));
         addRenderableOnly(new BatterySlotWidget(this.leftPos + 8, this.topPos + 14 + energyBarWidget.getHeight() + 5));

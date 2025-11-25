@@ -7,3 +7,5 @@ navigation:
 item_ids:
   - indref:basic_generator
 ---
+
+# Basic Generator

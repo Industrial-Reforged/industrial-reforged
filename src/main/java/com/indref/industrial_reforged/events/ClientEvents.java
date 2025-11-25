@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.events;
 
 import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.transportation.NetworkNode;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
@@ -135,7 +135,7 @@ public final class ClientEvents {
         ItemStack stack = player.getItemBySlot(EquipmentSlot.CHEST);
 
         if (!stack.isEmpty()/* && isEngineOn(stack)*/) {
-            IEnergyHandler energy = stack.getCapability(IRCapabilities.EnergyStorage.ITEM);
+            EnergyHandler energy = stack.getCapability(IRCapabilities.ENERGY_ITEM);
 
             if (energy.getEnergyStored() > 0 || player.isCreative()) {
                 if (false /*isHovering(stack)*/) {
@@ -152,7 +152,7 @@ public final class ClientEvents {
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
         //renderMultiblockPreview(event);
-        renderNetworkNodes(event);
+        //renderNetworkNodes(event);
     }
 
     @SubscribeEvent

@@ -1,9 +1,7 @@
 package com.indref.industrial_reforged.content.blockentities.multiblocks.controller;
 
-import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
 import com.indref.industrial_reforged.content.multiblocks.BlastFurnaceMultiblock;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.BlastFurnaceRecipe;
@@ -15,9 +13,8 @@ import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.FakeBlo
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.MultiblockEntity;
 import com.portingdeadmods.portingdeadlibs.api.blockentities.multiblocks.SavesControllerPosBlockEntity;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.MultiblockData;
-import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import com.portingdeadmods.portingdeadlibs.utils.BlockUtils;
-import it.unimi.dsi.fastutil.Pair;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -32,8 +29,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -62,22 +57,24 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
 
     public BlastFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(IRBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState);
-        addItemHandler(2);
-        addFluidTank(IRConfig.blastFurnaceFluidCapacity);
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .onChange(this::onItemsChanged)
+                .slots(2));
+        addFluidHandler(HandlerUtils::newFluidTank, builder -> builder
+                .onChange(this::onFluidChanged)
+                .slotLimit(tank -> IRConfig.blastFurnaceFluidCapacity));
         addHeatStorage(IRConfig.blastFurnaceHeatCapacity);
         this.multiblockData = MultiblockData.EMPTY;
     }
 
-    @Override
     protected void onItemsChanged(int slot) {
-        super.onItemsChanged(slot);
+        this.updateData();
 
         this.recipe = getRecipeForCache();
     }
 
-    @Override
-    public void onFluidChanged() {
-        super.onFluidChanged();
+    public void onFluidChanged(int tank) {
+        this.updateData();
 
         this.recipe = getRecipeForCache();
     }
@@ -90,7 +87,8 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     }
 
     private BlastFurnaceRecipe getRecipeForCache() {
-        BlastFurnaceRecipe blastFurnaceRecipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(getNonEmptyStacks()), level)
+        List<ItemStack> items = this.getNonEmptyStacks(this.getItemHandler());
+        BlastFurnaceRecipe blastFurnaceRecipe = level.getRecipeManager().getRecipeFor(BlastFurnaceRecipe.TYPE, new ItemRecipeInput(items), level)
                 .map(RecipeHolder::value)
                 .orElse(null);
         if (blastFurnaceRecipe != null) {
@@ -224,7 +222,7 @@ public class BlastFurnaceBlockEntity extends IRContainerBlockEntity implements M
     }
 
     public float getHeatDecay() {
-        return IRConfig.blastFurnaceHeatDecay;
+        return (float) IRConfig.blastFurnaceHeatDecay;
     }
 
     protected void tickHeat() {

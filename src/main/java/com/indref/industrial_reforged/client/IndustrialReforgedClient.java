@@ -24,6 +24,7 @@ import com.indref.industrial_reforged.registries.*;
 import com.indref.industrial_reforged.tags.IRTags;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.SingleFluidStack;
+import com.portingdeadmods.portingdeadlibs.api.config.PDLConfigHelper;
 import com.portingdeadmods.portingdeadlibs.api.fluids.PDLFluid;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -78,7 +79,7 @@ public final class IndustrialReforgedClient {
         NeoForge.EVENT_BUS.addListener(this::onRightClick);
         NeoForge.EVENT_BUS.addListener(this::appendTooltip);
 
-        modContainer.registerConfig(ModConfig.Type.CLIENT, IRClientConfig.SPEC);
+        PDLConfigHelper.registerConfig(IRClientConfig.class, ModConfig.Type.CLIENT, modContainer);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
@@ -86,8 +87,8 @@ public final class IndustrialReforgedClient {
 
     private void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            registerItemProperties();
-            registerDisplayItems();
+            IndustrialReforgedClient.registerItemProperties();
+            IndustrialReforgedClient.registerDisplayItems();
         });
     }
 
@@ -96,6 +97,7 @@ public final class IndustrialReforgedClient {
         // DISPLAY_ITEMS.put(IRItems.THERMOMETER.get(), IRDisplayItems::thermometer);
     }
 
+    @SuppressWarnings("deprecation")
     private static void registerItemProperties() {
         ItemProperties.register(IRItems.NANO_SABER.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isActive);
         ItemProperties.register(IRItems.BASIC_CHAINSAW.get(), IRItemProperties.ACTIVE_KEY, (ClampedItemPropertyFunction) IRItemProperties::isItemHeld);
@@ -175,11 +177,12 @@ public final class IndustrialReforgedClient {
     private void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(IRMenuTypes.FIREBOX_MENU.get(), FireBoxScreen::new);
         event.register(IRMenuTypes.CRUCIBLE_MENU.get(), CrucibleScreen::new);
-        event.register(IRMachines.CENTRIFUGE.getMenuType(), CentrifugeScreen::new);
-        event.register(IRMachines.BASIC_GENERATOR.getMenuType(), BasicGeneratorScreen::new);
         event.register(IRMenuTypes.BLAST_FURNACE_MENU.get(), BlastFurnaceScreen::new);
         event.register(IRMenuTypes.CRAFTING_STATION_MENU.get(), CraftingStationScreen::new);
-        event.register(IRMenuTypes.BATTERY_BOX_MENU.get(), BatteryBoxScreen::new);
+
+        event.register(IRMachines.CENTRIFUGE.getMenuType(), CentrifugeScreen::new);
+        event.register(IRMachines.BASIC_GENERATOR.getMenuType(), BasicGeneratorScreen::new);
+        event.register(IRMachines.BATTERY_BOX.getMenuType(), BatteryBoxScreen::new);
     }
 
     private void registerItemDecorations(RegisterItemDecorationsEvent event) {
@@ -203,8 +206,8 @@ public final class IndustrialReforgedClient {
         event.register(new DynamicFluidContainerModel.Colors(), IRFluids.STICKY_RESIN.getDeferredBucket());
         event.register((itemstack, index) -> index == 0 ? FastColor.ARGB32.color(255, itemstack.get(DataComponents.DYED_COLOR).rgb()) : -1, IRItems.TOOLBOX);
         event.register((itemstack, index) -> {
-            SingleFluidStack fluidStack = itemstack.get(IRDataComponents.SINGLE_FLUID);
-            int color = IClientFluidTypeExtensions.of(fluidStack.fluidStack().getFluid()).getTintColor();
+            SingleFluidStack singleFluidContent = itemstack.get(IRDataComponents.SINGLE_FLUID);
+            int color = IClientFluidTypeExtensions.of(singleFluidContent.fluidStack().getFluid()).getTintColor();
             return index == 0 ? color : -1;
         }, IRItems.CASTING_SCRAPS);
     }

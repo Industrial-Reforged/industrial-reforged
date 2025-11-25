@@ -5,3 +5,5 @@ navigation:
   parent: indref:electric_age.md
   position: 5
 ---
+
+# Electric Tools

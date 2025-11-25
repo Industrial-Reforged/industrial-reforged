@@ -1,20 +1,17 @@
 package com.indref.industrial_reforged.content.blockentities;
 
-import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.api.blockentities.IRContainerBlockEntity;
 import com.indref.industrial_reforged.content.recipes.BasinCastingRecipe;
-import com.indref.industrial_reforged.content.recipes.BasinMoldCastingRecipe;
 import com.indref.industrial_reforged.data.IRDataMaps;
 import com.indref.industrial_reforged.data.maps.CastingMoldValue;
 import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.content.recipes.recipeInputs.ItemFluidRecipeInput;
+import com.indref.industrial_reforged.util.IRHandlerUtils;
 import com.indref.industrial_reforged.util.recipes.FluidIngredientWithAmount;
 import com.portingdeadmods.portingdeadlibs.api.capabilities.DynamicFluidTank;
-import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
 import com.portingdeadmods.portingdeadlibs.utils.RegistryUtils;
-import it.unimi.dsi.fastutil.Pair;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -25,10 +22,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,12 +43,15 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
 
     public CastingBasinBlockEntity(BlockPos pos, BlockState state) {
         super(IRBlockEntityTypes.CASTING_BASIN.get(), pos, state);
-        addItemHandler(
-                2,
-                slot -> slot == 0 ? 1 : 64,
-                (slot, item) -> slot == 0 && (getMold(item.getItem()) != null || isMoldIngredient(item))
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .slots(2)
+                .slotLimit(slot -> slot == 0 ? 1 : 64)
+                .onChange(this::onItemsChanged)
+                .validator((slot, item) -> slot == 0 && (getMold(item.getItem()) != null || isMoldIngredient(item)))
         );
-        addFluidTank(0);
+        addFluidHandler(IRHandlerUtils::newDynamicFluidTank, builder -> builder
+                .slotLimit($ -> 0)
+                .onChange(this::onFluidChanged));
         this.rememberedFluid = FluidStack.EMPTY;
     }
 
@@ -66,25 +65,25 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         return false;
     }
 
-    @Override
     protected void onItemsChanged(int slot) {
-        super.onItemsChanged(slot);
-        updateRecipe(true);
+        this.updateData();
+        this.updateRecipe(true);
+        
         if (slot == 0) {
             CastingMoldValue moldValue = getMold(getItemHandler().getStackInSlot(slot).getItem());
-            DynamicFluidTank fluidTank = getFluidTank();
+            DynamicFluidTank fluidTank = ((DynamicFluidTank) getFluidHandler());
             if (moldValue != null) {
                 fluidTank.setCapacity(moldValue.capacity());
                 int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
                 int amount = this.rememberedFluid.getAmount() - filled;
                 this.rememberedFluid = amount == 0 ? FluidStack.EMPTY : this.rememberedFluid.copyWithAmount(amount);
-                update();
+                this.updateData();
             } else if (isMoldIngredient(getItemHandler().getStackInSlot(CAST_SLOT))) {
                 fluidTank.setCapacity(333);
                 int filled = fluidTank.fill(this.rememberedFluid, IFluidHandler.FluidAction.EXECUTE);
                 int amount = this.rememberedFluid.getAmount() - filled;
                 this.rememberedFluid = amount == 0 ? FluidStack.EMPTY : this.rememberedFluid.copyWithAmount(amount);
-                update();
+                this.updateData();
             } else {
                 FluidStack fluid = fluidTank.getFluid();
                 if (fluid.is(this.rememberedFluid.getFluid())) {
@@ -93,7 +92,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
                     this.rememberedFluid = fluid.copy();
                 }
                 fluidTank.setCapacity(0);
-                update();
+                this.updateData();
             }
         }
     }
@@ -107,16 +106,17 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     }
 
     public boolean hasMoldAndNotFull() {
-        return !getItemHandler().getStackInSlot(0).isEmpty() && getItemHandler().getStackInSlot(1).isEmpty() && getFluidTank().getFluidAmount() < getFluidTank().getCapacity();
+        DynamicFluidTank tank = ((DynamicFluidTank) this.getFluidHandler());
+        return !getItemHandler().getStackInSlot(0).isEmpty() && getItemHandler().getStackInSlot(1).isEmpty() && tank.getFluidAmount() < tank.getCapacity();
     }
 
     public static @Nullable CastingMoldValue getMold(Item item) {
         return RegistryUtils.holder(BuiltInRegistries.ITEM, item).getData(IRDataMaps.CASTING_MOLDS);
     }
 
-    @Override
-    public void onFluidChanged() {
-        super.onFluidChanged();
+    public void onFluidChanged(int tank) {
+        this.updateData();
+        
         updateRecipe(false);
     }
 
@@ -138,8 +138,8 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     }
 
     public void castItem() {
-        DynamicFluidTank fluidTank = getFluidTank();
-        ItemStackHandler itemHandler = getItemStackHandler();
+        DynamicFluidTank fluidTank = ((DynamicFluidTank) getFluidHandler());
+        ItemStackHandler itemHandler = ((ItemStackHandler) getItemHandler());
 
         if (this.recipe != null) {
             FluidIngredientWithAmount fluidIngredient = this.recipe.value().fluidIngredient();
@@ -153,7 +153,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
                 itemHandler.setStackInSlot(CAST_SLOT, ItemStack.EMPTY);
             }
 
-            forceInsertItem(1, resultItem, false);
+            forceInsertItem(((IItemHandlerModifiable) this.getItemHandler()), 1, resultItem, false, this::onItemsChanged);
             resetProgress();
         }
     }
@@ -180,7 +180,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     }
 
     public void updateRecipe(boolean itemsChanged) {
-        updateRecipe(getFluidTank().getFluidAmount());
+        updateRecipe(((DynamicFluidTank) getFluidHandler()).getFluidAmount());
     }
 
     public void updateRecipe(int fluidAmount) {
@@ -200,7 +200,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
         ItemStack moltItem = this.getItemHandler().getStackInSlot(CAST_SLOT);
 
         Optional<RecipeHolder<BasinCastingRecipe>> recipe = this.level.getRecipeManager()
-                .getRecipeFor(BasinCastingRecipe.TYPE, new ItemFluidRecipeInput(moltItem, getFluidTank().getFluidInTank(0).copyWithAmount(fluidAmount)), level);
+                .getRecipeFor(BasinCastingRecipe.TYPE, new ItemFluidRecipeInput(moltItem, ((DynamicFluidTank) getFluidHandler()).getFluidInTank(0).copyWithAmount(fluidAmount)), level);
 
         if (recipe.isEmpty()) return Optional.empty();
 
@@ -210,7 +210,7 @@ public class CastingBasinBlockEntity extends IRContainerBlockEntity {
     }
 
     private boolean canInsertIntoOutput(ItemStack outputItem) {
-        return forceInsertItem(1, outputItem, true).isEmpty();
+        return forceInsertItem(((IItemHandlerModifiable) this.getItemHandler()), 1, outputItem, true, this::onItemsChanged).isEmpty();
     }
 
     public BasinCastingRecipe getRecipe() {

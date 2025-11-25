@@ -1,23 +1,19 @@
 package com.indref.industrial_reforged.content.blockentities.generators;
 
-import com.google.common.collect.ImmutableMap;
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.GeneratorBlockEntity;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.impl.energy.EnergyHandlerImpl;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
 import com.indref.industrial_reforged.content.menus.BasicGeneratorMenu;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
 import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
-import com.portingdeadmods.portingdeadlibs.api.utils.IOAction;
-import com.portingdeadmods.portingdeadlibs.utils.capabilities.SidedCapUtils;
-import it.unimi.dsi.fastutil.Pair;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,14 +25,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapability;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 import static com.indref.industrial_reforged.util.Utils.ACTIVE;
 
@@ -46,16 +38,18 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
 
     public BasicGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(IRMachines.BASIC_GENERATOR.getBlockEntityType(), pos, state);
-        addEuStorage(EnergyHandler.NoFill::new, IREnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
-        addItemHandler(2, (slot, item) -> {
-            boolean canInsertFuel = slot == 0 && item.getBurnTime(RecipeType.SMELTING) > 0;
-            boolean canInsertBattery = slot == 1 && item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null;
-            return canInsertFuel || canInsertBattery;
-        });
+        addEuStorage(EnergyHandlerImpl.NoFill::new, IREnergyTiers.LOW, IRConfig.basicGeneratorEnergyCapacity);
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .slots(2)
+                .validator((slot, item) -> switch (slot) {
+                    case 0 -> item.getBurnTime(RecipeType.SMELTING) > 0;
+                    case 1 -> item.getCapability(IRCapabilities.ENERGY_ITEM) != null;
+                    default -> throw new IllegalArgumentException("Non existent slot " + slot + "on Basic Generator");
+                }));
     }
 
     @Override
-    public boolean spreadEnergy() {
+    public boolean shouldSpreadEnergy() {
         return true;
     }
 
@@ -86,8 +80,9 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         return false;
     }
 
-    @Override
     public void onItemsChanged(int slot) {
+        this.updateData();
+
         IItemHandler itemHandler = CapabilityUtils.itemHandlerCapability(this);
         if (itemHandler != null) {
             ItemStack stack = itemHandler.getStackInSlot(slot);
@@ -101,10 +96,11 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
     }
 
     @Override
-    public void commonTick() {
-        super.commonTick();
+    public void tick() {
+        super.tick();
+
         if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
-            IEnergyHandler energyStorage = getEuStorage();
+            EnergyHandler energyStorage = getEuStorage();
             if (this.burnTime > 0) {
                 if (!level.isClientSide()) {
                     int filled = energyStorage.forceFillEnergy(getGenerationAmount(), remove);
@@ -129,7 +125,7 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         }
 
         if (!level.isClientSide()) {
-            IEnergyHandler thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
+            EnergyHandler thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
             if (level instanceof ServerLevel serverLevel) {
                 int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
                 int remainder = IRNetworks.ENERGY_NETWORK.get().transport(serverLevel, this.worldPosition, min);

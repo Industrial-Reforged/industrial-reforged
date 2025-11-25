@@ -721,7 +721,7 @@ public class IRRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_machine_frame", has(IRBlocks.BASIC_MACHINE_FRAME.get()))
                 .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRBlocks.BATTERY_BOX.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IRMachines.BATTERY_BOX.getBlockItem())
                 .pattern("#C#")
                 .pattern("BBB")
                 .pattern("###")

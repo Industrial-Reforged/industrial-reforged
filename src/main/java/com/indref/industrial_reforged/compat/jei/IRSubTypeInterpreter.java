@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface IRSubTypeInterpreter<T> extends ISubtypeInterpreter<T> {
     @Override
-    default @NotNull String getLegacyStringSubtypeInfo(T ingredient, UidContext context) {
+    default @NotNull String getLegacyStringSubtypeInfo(@NotNull T ingredient, @NotNull UidContext context) {
         return "";
     }
 }

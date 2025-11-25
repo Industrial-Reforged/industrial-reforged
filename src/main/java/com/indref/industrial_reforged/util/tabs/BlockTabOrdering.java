@@ -25,7 +25,7 @@ public enum BlockTabOrdering implements TabOrdering {
     }
 
     BlockTabOrdering() {
-        this.priority = ordinal();
+        this.priority = this.ordinal();
     }
 
     @Override

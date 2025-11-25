@@ -2,17 +2,18 @@ package com.indref.industrial_reforged.content.blockentities;
 
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.api.blockentities.MachineBlockEntity;
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
-import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandlerWrapper;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.impl.energy.EnergyHandlerImpl;
+import com.indref.industrial_reforged.impl.energy.EnergyHandlerWrapper;
 import com.indref.industrial_reforged.content.blocks.pipes.CableBlock;
 import com.indref.industrial_reforged.content.menus.BatteryBoxMenu;
-import com.indref.industrial_reforged.registries.IRBlockEntityTypes;
 import com.indref.industrial_reforged.registries.IREnergyTiers;
+import com.indref.industrial_reforged.registries.IRMachines;
 import com.indref.industrial_reforged.registries.IRNetworks;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.BlockUtils;
+import com.portingdeadmods.portingdeadlibs.utils.capabilities.HandlerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -30,11 +31,18 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
     private final EnergyHandlerWrapper.NoFill outputEnergyHandler;
 
     public BatteryBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(IRBlockEntityTypes.BATTERY_BOX.get(), blockPos, blockState);
-        addEuStorage(EnergyHandler.NoDrain::new, IREnergyTiers.LOW, IRConfig.batteryBoxEnergyCapacity);
-        addItemHandler(2, (slot, item) -> item.getCapability(IRCapabilities.EnergyStorage.ITEM) != null);
+        super(IRMachines.BATTERY_BOX.getBlockEntityType(), blockPos, blockState);
+        addEuStorage(EnergyHandlerImpl.NoDrain::new, IREnergyTiers.LOW, IRConfig.batteryBoxEnergyCapacity);
+        addItemHandler(HandlerUtils::newItemStackHandler, builder -> builder
+                .slots(2)
+                .validator((slot, item) -> item.getCapability(IRCapabilities.ENERGY_ITEM) != null)
+                .onChange(this::onItemsChanged));
 
         this.outputEnergyHandler = new EnergyHandlerWrapper.NoFill(this.getEuStorage());
+    }
+
+    private void onItemsChanged(int slot) {
+        this.updateData();
     }
 
     @Override
@@ -48,12 +56,12 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
-    public void commonTick() {
-        super.commonTick();
+    public void tick() {
+        super.tick();
 
         if (!level.isClientSide()) {
             if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
-                IEnergyHandler thisEnergyStorage = this.getEuStorage();
+                EnergyHandler thisEnergyStorage = this.getEuStorage();
                 if (level instanceof ServerLevel serverLevel) {
                     int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
                     Direction outputDirection = getOutputDirection();
@@ -71,7 +79,7 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
     }
 
     @Override
-    public IEnergyHandler getEuHandlerOnSide(Direction direction) {
+    public EnergyHandler getEuHandlerOnSide(Direction direction) {
         Direction facing = getOutputDirection();
         if (facing.getOpposite() == direction) {
             return this.outputEnergyHandler;

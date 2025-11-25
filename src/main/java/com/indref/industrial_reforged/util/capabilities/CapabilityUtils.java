@@ -1,8 +1,8 @@
 package com.indref.industrial_reforged.util.capabilities;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -15,12 +15,12 @@ public final class CapabilityUtils {
         return blockEntity.getLevel().getCapability(cap, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
     }
 
-    public static @Nullable IEnergyHandler energyStorageCapability(BlockEntity blockEntity) {
-        return blockEntityCapability(IRCapabilities.EnergyStorage.BLOCK, blockEntity);
+    public static @Nullable EnergyHandler energyStorageCapability(BlockEntity blockEntity) {
+        return blockEntityCapability(IRCapabilities.ENERGY_BLOCK, blockEntity);
     }
 
-    public static @Nullable IHeatStorage heatStorageCapability(BlockEntity blockEntity) {
-        return blockEntityCapability(IRCapabilities.HeatStorage.BLOCK, blockEntity);
+    public static @Nullable HeatStorage heatStorageCapability(BlockEntity blockEntity) {
+        return blockEntityCapability(IRCapabilities.HEAT_BLOCK, blockEntity);
     }
 
     public static @Nullable IItemHandler itemHandlerCapability(BlockEntity blockEntity) {

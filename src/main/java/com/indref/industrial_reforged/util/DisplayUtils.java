@@ -1,7 +1,7 @@
 package com.indref.industrial_reforged.util;
 
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import net.minecraft.ChatFormatting;
@@ -17,7 +17,7 @@ import java.util.List;
 public final class DisplayUtils {
     public static void displayEnergyInfo(List<Component> displayText, BlockState scannedBlock, BlockPos blockPos, Level level) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        IEnergyHandler energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
+        EnergyHandler energyStorage = CapabilityUtils.energyStorageCapability(blockEntity);
 
         if (energyStorage == null) return;
 
@@ -35,7 +35,7 @@ public final class DisplayUtils {
 
     public static void displayHeatInfo(List<Component> displayText, BlockState scannedBlock, BlockPos scannedBlockPos, Level level) {
         BlockEntity blockEntity = level.getBlockEntity(scannedBlockPos);
-        IHeatStorage heatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
+        HeatStorage heatStorage = CapabilityUtils.heatStorageCapability(blockEntity);
 
         if (heatStorage == null) return;
 

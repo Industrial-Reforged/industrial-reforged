@@ -74,6 +74,7 @@ public class IRBlockStateProvider extends BlockStateProvider {
         cableBlock(IRBlocks.COPPER_CABLE.get());
         cableBlock(IRBlocks.GOLD_CABLE.get());
         cableBlock(IRBlocks.STEEL_CABLE.get());
+        cableBlock(IRBlocks.BURNT_CABLE.get());
 
         simpleBlock(IRBlocks.BLAST_FURNACE_BRICKS.get());
 

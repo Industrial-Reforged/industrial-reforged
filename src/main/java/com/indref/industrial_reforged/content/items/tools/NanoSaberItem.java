@@ -2,10 +2,10 @@ package com.indref.industrial_reforged.content.items.tools;
 
 import com.indref.industrial_reforged.IRConfig;
 import com.indref.industrial_reforged.IndustrialReforged;
-import com.indref.industrial_reforged.api.capabilities.energy.IEnergyHandler;
+import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.api.items.tools.electric.ElectricSwordItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.translations.IRTranslations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -30,7 +30,7 @@ import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 public class NanoSaberItem extends ElectricSwordItem {
-    public NanoSaberItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
+    public NanoSaberItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
         super(properties.component(IRDataComponents.ACTIVE, false), tier, baseAttackDamage, baseAttackSpeed, energyTier, energyUsage, energyCapacity);
     }
 
@@ -53,7 +53,7 @@ public class NanoSaberItem extends ElectricSwordItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
-        IEnergyHandler energyStorage = getEnergyCap(stack);
+        EnergyHandler energyStorage = getEnergyCap(stack);
         if (player.isShiftKeyDown() && energyStorage.getEnergyStored() > 0) {
             stack.set(IRDataComponents.ACTIVE, !stack.getOrDefault(IRDataComponents.ACTIVE, false));
             stack.set(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(stack));
@@ -69,7 +69,7 @@ public class NanoSaberItem extends ElectricSwordItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean b) {
-        IEnergyHandler energyStorage = getEnergyCap(stack);
+        EnergyHandler energyStorage = getEnergyCap(stack);
         if (stack.getOrDefault(IRDataComponents.ACTIVE, false)) {
             if (level.getGameTime() % 20 == 0) {
                 int drained = energyStorage.drainEnergy(getEnergyUsage(stack, entity), false);
@@ -87,7 +87,7 @@ public class NanoSaberItem extends ElectricSwordItem {
     }
 
     @Override
-    public EnergyTier getEnergyTier() {
+    public EnergyTierImpl getEnergyTier() {
         return energyTier.get();
     }
 

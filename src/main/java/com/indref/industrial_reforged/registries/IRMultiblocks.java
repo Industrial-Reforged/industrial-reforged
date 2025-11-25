@@ -2,8 +2,8 @@ package com.indref.industrial_reforged.registries;
 
 import com.indref.industrial_reforged.IndustrialReforged;
 import com.indref.industrial_reforged.content.multiblocks.*;
-import com.indref.industrial_reforged.content.multiblocks.tiers.CrucibleTiers;
-import com.indref.industrial_reforged.content.multiblocks.tiers.FireboxTiers;
+import com.indref.industrial_reforged.impl.tiers.CrucibleTiers;
+import com.indref.industrial_reforged.impl.tiers.FireboxTiers;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
 import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.neoforged.neoforge.registries.DeferredHolder;

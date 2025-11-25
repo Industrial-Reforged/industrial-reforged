@@ -48,4 +48,4 @@ Then pour <ItemImage id="indref:molten_steel_bucket" scale="0.6" /> **Molten Ste
 - Any Wires -> <ItemImage id="indref:steel_mold_wire" scale="0.6" /> **Steel Mold Wire**
 - Any Rods -> <ItemImage id="indref:steel_mold_rod" scale="0.6" /> **Steel Mold Rod**
 
-Since these **Steel Molds** are unbreakable it is recommended to replace all **Clay Molds** with them.
+Since these **Steel Molds** are unbreakable it is recommended to use these instead of your old **Clay Molds**.

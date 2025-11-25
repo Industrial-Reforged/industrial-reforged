@@ -1,6 +1,6 @@
 package com.indref.industrial_reforged.content.recipes;
 
-import com.indref.industrial_reforged.api.recipes.SimpleRecipeSerializer;
+import com.indref.industrial_reforged.util.recipes.SimpleRecipeSerializer;
 import com.indref.industrial_reforged.util.recipes.IngredientWithCount;
 import com.indref.industrial_reforged.util.recipes.RecipeUtils;
 import com.mojang.serialization.Codec;

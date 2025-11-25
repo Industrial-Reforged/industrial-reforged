@@ -1,106 +1,131 @@
 package com.indref.industrial_reforged.api.capabilities.energy;
 
-import com.indref.industrial_reforged.api.capabilities.OnChangedListener;
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
-import com.indref.industrial_reforged.registries.IREnergyTiers;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.NotNull;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
+import net.minecraft.util.Mth;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class EnergyHandler implements IEnergyHandler, INBTSerializable<CompoundTag>, OnChangedListener {
-    public static final EnergyHandler EMPTY = new EnergyHandler(IREnergyTiers.NONE);
+public interface EnergyHandler {
+    Supplier<EnergyTier> getEnergyTier();
 
-    private final Supplier<EnergyTier> energyTier;
-    private int energyStored;
-    private int energyCapacity;
-
-    private Consumer<Integer> onChangedFunction = oldAmount -> {};
-
-    public EnergyHandler(Supplier<EnergyTier> energyTier) {
-        this.energyTier = energyTier;
+    default void onChanged(int oldAmount) {
     }
 
-    @Override
-    public void setOnChangedFunction(Consumer<Integer> onChangedFunction) {
-        this.onChangedFunction = onChangedFunction;
-    }
-
-    @Override
-    public void onChanged(int oldAmount) {
-        this.onChangedFunction.accept(oldAmount);
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return this.energyStored;
-    }
-
-    @Override
-    public void setEnergyStored(int value) {
-        if (this.energyStored != value) {
-            int stored = energyStored;
-            this.energyStored = value;
-            onChanged(stored);
-        }
-    }
-
-    @Override
-    public int getEnergyCapacity() {
-        return this.energyCapacity;
-    }
-
-    @Override
-    public void setEnergyCapacity(int value) {
-        if (this.energyCapacity != value) {
-            this.energyCapacity = value;
-        }
-    }
-
-    @Override
-    public Supplier<EnergyTier> getEnergyTier() {
-        return energyTier;
-    }
-
-    @Override
-    public @NotNull CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("energy_stored", this.energyStored);
-        tag.putInt("energy_capacity", this.energyCapacity);
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-        this.energyStored = tag.getInt("energy_stored");
-        this.energyCapacity = tag.getInt("energy_capacity");
-    }
-
-    public static class NoDrain extends EnergyHandler implements IEnergyHandler.NoDrain {
-        public NoDrain(Supplier<EnergyTier> energyTier) {
-            super(energyTier);
+    /**
+     * Removes energy from the storage. Returns the amount of energy that was removed.
+     *
+     * @param value    The amount of energy being drained.
+     * @param simulate whether the draining should only be simulated
+     * @return Amount of energy that was drained from the storage.
+     */
+    default int drainEnergy(int value, boolean simulate) {
+        if (!canDrainEnergy() || value <= 0) {
+            return 0;
         }
 
+        int energyDrained = Math.min(getEnergyStored(), Math.min(getMaxOutput(), value));
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() - energyDrained);
+        }
+        return energyDrained;
+    }
+
+    default int forceDrainEnergy(int value, boolean simulate) {
+        if (!canDrainEnergy() || value <= 0) {
+            return 0;
+        }
+
+        int energyDrained = Math.min(getEnergyStored(), value);
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() - energyDrained);
+        }
+        return energyDrained;
+    }
+
+    /**
+     * Adds energy to the storage. Returns the amount of energy that was accepted.
+     *
+     * @param value    The amount of energy being filled.
+     * @param simulate whether the filling should only be simulated
+     * @return Amount of energy that was accepted by the storage.
+     */
+    default int fillEnergy(int value, boolean simulate) {
+        if (!canFillEnergy() || value <= 0) {
+            return 0;
+        }
+
+        int energyFilled = Mth.clamp(getEnergyCapacity() - getEnergyStored(), 0, value);
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() + energyFilled);
+        }
+        return energyFilled;
+    }
+
+    default int forceFillEnergy(int value, boolean simulate) {
+        if (!canFillEnergy() || value <= 0) {
+            return 0;
+        }
+
+        int energyFilled = Mth.clamp(getEnergyCapacity() - getEnergyStored(), 0, Math.min(getMaxInput(), value));
+        if (!simulate) {
+            setEnergyStored(getEnergyStored() + energyFilled);
+        }
+        return energyFilled;
+    }
+
+    /**
+     * @return the amount of energy currently stored
+     */
+    int getEnergyStored();
+
+    /**
+     * Sets the energy currently stored to the provided amount
+     *
+     * @param value the new amount of energy
+     */
+    void setEnergyStored(int value);
+
+    /**
+     * @return the maximum amount of energy that can be stored
+     */
+    int getEnergyCapacity();
+
+    /**
+     * Sets the maximum amount of energy that can be stored to the provided value
+     *
+     * @param value the new maximum amount of energy that can be stored
+     */
+    void setEnergyCapacity(int value);
+
+    default int getMaxInput() {
+        return getEnergyTier().get().maxInput();
+    }
+
+    default int getMaxOutput() {
+        return getEnergyTier().get().maxOutput();
+    }
+
+    default boolean canFillEnergy() {
+        return getMaxInput() > 0;
+    }
+
+    default boolean canDrainEnergy() {
+        return getMaxOutput() > 0;
+    }
+
+    interface NoDrain extends EnergyHandler {
         @Override
-        public int drainEnergy(int value, boolean simulate) {
-            return IEnergyHandler.NoDrain.super.drainEnergy(value, simulate);
+        default int drainEnergy(int value, boolean simulate) {
+            return 0;
         }
-
     }
 
-    public static class NoFill extends EnergyHandler implements IEnergyHandler.NoFill {
-        public NoFill(Supplier<EnergyTier> energyTier) {
-            super(energyTier);
-        }
-
+    interface NoFill extends EnergyHandler {
         @Override
-        public int drainEnergy(int value, boolean simulate) {
-            return IEnergyHandler.NoFill.super.drainEnergy(value, simulate);
+        default int fillEnergy(int value, boolean simulate) {
+            return 0;
         }
-
     }
 
 }

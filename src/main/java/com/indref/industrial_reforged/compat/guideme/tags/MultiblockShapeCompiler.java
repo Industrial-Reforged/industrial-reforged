@@ -1,4 +1,4 @@
-package com.indref.industrial_reforged.compat.guideme;
+package com.indref.industrial_reforged.compat.guideme.tags;
 
 import com.indref.industrial_reforged.registries.IRMultiblocks;
 import com.portingdeadmods.portingdeadlibs.PDLRegistries;
@@ -15,7 +15,6 @@ import guideme.libs.mdast.mdx.model.MdxJsxElementFields;
 import guideme.scene.GuidebookScene;
 import guideme.scene.annotation.InWorldBoxAnnotation;
 import guideme.scene.element.SceneElementTagCompiler;
-import guideme.scene.level.GuidebookLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;

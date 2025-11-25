@@ -30,6 +30,6 @@ When casting with a block/multiblock like the <ItemImage id="indref:ceramic_cruc
 In order to actually cast items, you need to put a [Casting Mold](./molds.md) into the basin.
 These can either be inserted manually or using a hopper/item pipe.
 
-The different types of molds and how to obtain them is explained in their [Own Entry](./molds.md)
+The different types of molds and how to obtain them is explained on a dedicated [Molds Page](./molds.md)
 
 ## Faucet

@@ -5,7 +5,7 @@ import com.indref.industrial_reforged.client.widgets.ClearableFluidTankWidget;
 import com.indref.industrial_reforged.client.widgets.HeatBarWidget;
 import com.indref.industrial_reforged.content.menus.CrucibleMenu;
 import com.portingdeadmods.portingdeadlibs.api.client.screens.PDLAbstractContainerScreen;
-import com.portingdeadmods.portingdeadlibs.impl.client.screens.widgets.FluidTankWidget;
+import com.portingdeadmods.portingdeadlibs.client.screens.widgets.FluidTankWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

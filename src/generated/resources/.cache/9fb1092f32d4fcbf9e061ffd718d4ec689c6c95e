@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-27T12:26:03.793431399	Recipes
+// 1.21.1	2025-11-24T15:14:23.819058195	Recipes
 716130bd22644bf02c3129a64ff141f54f726c66 data/indref/advancement/recipes/building_blocks/aluminum_block.json
 a34eb1a48041c5fcc2692f7d60039538e1e08260 data/indref/advancement/recipes/building_blocks/blast_furnace_bricks.json
 bffda77b23adba9fa0427e57bd9e3decf4594f58 data/indref/advancement/recipes/building_blocks/chromium_block.json
@@ -58,7 +58,7 @@ bff7b4f70003b6dcd2604cccc7791281be3ac982 data/indref/advancement/recipes/misc/ir
 03ffa35ac18e5926b70085ce0bb9353d9bdaa189 data/indref/advancement/recipes/misc/iron_rod.json
 3e795cea1a5266f0c4d0bf6cb6428fab4df32cb5 data/indref/advancement/recipes/misc/lead_ingot.json
 83912e68568232eb34ba29c75e841799d79ce190 data/indref/advancement/recipes/misc/nickel_ingot.json
-340924493d2a2789b83319c8462857ab80b2279a data/indref/advancement/recipes/misc/overclocker_upgrade.json
+893e109cc00ff56ad1fc177c8f1f1d8664bed50d data/indref/advancement/recipes/misc/overclocker_upgrade.json
 0483de7b346dcf0c6992a4fcf571544c91abc7cb data/indref/advancement/recipes/misc/plant_ball_from_leaves.json
 a4b7e4173c46b49278e351b54b0381c77d9b94e2 data/indref/advancement/recipes/misc/plant_ball_from_sapling.json
 e6aff38601fe7b4746a933be41238571b622a037 data/indref/advancement/recipes/misc/plant_ball_from_sugar_cane.json

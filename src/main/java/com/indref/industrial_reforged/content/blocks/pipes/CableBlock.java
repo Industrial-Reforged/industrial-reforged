@@ -1,15 +1,14 @@
 package com.indref.industrial_reforged.content.blocks.pipes;
 
-import com.indref.industrial_reforged.IRRegistries;
 import com.indref.industrial_reforged.api.blocks.EnergyTierBlock;
 import com.indref.industrial_reforged.api.blocks.transfer.PipeBlock;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.client.renderer.debug.NetworkNodeRenderer;
 import com.indref.industrial_reforged.client.transportation.ClientNodes;
 import com.indref.industrial_reforged.registries.IRNetworks;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.util.capabilities.CapabilityUtils;
 import com.indref.industrial_reforged.util.items.TooltipUtils;
-import com.portingdeadmods.portingdeadlibs.utils.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -31,9 +30,9 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public class CableBlock extends PipeBlock implements EnergyTierBlock {
-    private final Supplier<EnergyTier> energyTier;
+    private final Supplier<? extends EnergyTier> energyTier;
 
-    public CableBlock(Properties properties, int width, Supplier<EnergyTier> energyTier) {
+    public CableBlock(Properties properties, int width, Supplier<? extends EnergyTier> energyTier) {
         super(properties, width);
         this.energyTier = energyTier;
     }
@@ -161,6 +160,7 @@ public class CableBlock extends PipeBlock implements EnergyTierBlock {
         return directions;
     }
 
+    @Override
     public EnergyTier getEnergyTier() {
         return this.energyTier.get();
     }

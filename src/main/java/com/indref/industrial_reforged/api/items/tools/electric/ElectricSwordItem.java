@@ -3,7 +3,7 @@ package com.indref.industrial_reforged.api.items.tools.electric;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
-import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.util.items.TooltipUtils;
 import com.indref.industrial_reforged.util.items.ItemBarUtils;
 import net.minecraft.network.chat.Component;
@@ -20,11 +20,11 @@ import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem, ElectricToolItem {
-    protected final Supplier<EnergyTier> energyTier;
+    protected final Supplier<EnergyTierImpl> energyTier;
     private final IntSupplier energyUsage;
     private final IntSupplier energyCapacity;
 
-    public ElectricSwordItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTier> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
+    public ElectricSwordItem(Properties properties, Tier tier, int baseAttackDamage, float baseAttackSpeed, Supplier<EnergyTierImpl> energyTier, IntSupplier energyUsage, IntSupplier energyCapacity) {
         super(tier, properties
                 .attributes(SwordItem.createAttributes(tier, baseAttackDamage, baseAttackSpeed))
                 .component(IRDataComponents.ENERGY, new ComponentEuStorage(0, energyCapacity.getAsInt())));
@@ -38,7 +38,7 @@ public abstract class ElectricSwordItem extends SwordItem implements IEnergyItem
     }
 
     @Override
-    public int getDefaultEnergyCapacity() {
+    public int getDefaultCapacity() {
         return energyCapacity.getAsInt();
     }
 

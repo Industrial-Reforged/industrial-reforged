@@ -1,16 +1,16 @@
 package com.indref.industrial_reforged.api.items.container;
 
-import com.indref.industrial_reforged.api.capabilities.IRCapabilities;
-import com.indref.industrial_reforged.api.capabilities.heat.IHeatStorage;
+import com.indref.industrial_reforged.capabilites.IRCapabilities;
+import com.indref.industrial_reforged.api.capabilities.heat.HeatStorage;
 import net.minecraft.world.item.ItemStack;
 
 public interface IHeatItem {
-    default IHeatStorage getHeatCap(ItemStack itemStack) {
-        return itemStack.getCapability(IRCapabilities.HeatStorage.ITEM);
+    default HeatStorage getHeatCap(ItemStack itemStack) {
+        return itemStack.getCapability(IRCapabilities.HEAT_ITEM);
     }
 
     default void onHeatChanged(ItemStack itemStack, float oldAmount) {
     }
 
-    float getDefaultHeatCapacity();
+    float getDefaultCapacity();
 }

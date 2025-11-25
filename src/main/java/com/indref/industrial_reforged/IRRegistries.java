@@ -1,12 +1,11 @@
 package com.indref.industrial_reforged;
 
 import com.indref.industrial_reforged.api.tiers.EnergyTier;
+import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 import com.indref.industrial_reforged.api.transportation.TransportNetwork;
 import com.indref.industrial_reforged.api.upgrade.Upgrade;
-import com.portingdeadmods.portingdeadlibs.api.multiblocks.Multiblock;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
 public final class IRRegistries {

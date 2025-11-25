@@ -22,6 +22,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven { url 'https://jitpack.io' }
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
@@ -101,7 +102,7 @@ dependencies {
     compileOnly "org.appliedenergistics:guideme:${guideme_version}:api"
     runtimeOnly "org.appliedenergistics:guideme:${guideme_version}"
 
-    implementation "curse.maven:porting-dead-libs-1173919:${pdl_version}"
+    implementation "com.github.Porting-Dead-Mods:Porting-Dead-Libs:${pdl_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
