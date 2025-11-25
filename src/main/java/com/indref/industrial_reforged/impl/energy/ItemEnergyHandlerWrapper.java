@@ -2,6 +2,7 @@ package com.indref.industrial_reforged.impl.energy;
 
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
 import com.indref.industrial_reforged.api.items.container.IEnergyItem;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.data.IRDataComponents;
 import com.indref.industrial_reforged.data.components.ComponentEuStorage;
 import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
@@ -19,8 +20,8 @@ public record ItemEnergyHandlerWrapper(ItemStack itemStack, Supplier<EnergyTierI
     }
 
     @Override
-    public Supplier<EnergyTierImpl> getEnergyTier() {
-        return energyTier;
+    public EnergyTier getEnergyTier() {
+        return energyTier.get();
     }
 
     @Override

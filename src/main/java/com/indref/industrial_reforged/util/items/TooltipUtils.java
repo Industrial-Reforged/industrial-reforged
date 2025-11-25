@@ -31,7 +31,7 @@ public final class TooltipUtils {
                             .append(IRTranslations.General.ENERGY_UNIT.component()
                                     .withColor(FastColor.ARGB32.color(255, 245, 192, 89)))
             );
-            EnergyTier tier = energyStorage.getEnergyTier().get();
+            EnergyTier tier = energyStorage.getEnergyTier();
             addEnergyTierTooltip(tooltip, tier);
         }
     }

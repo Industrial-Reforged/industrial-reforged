@@ -7,7 +7,7 @@ import net.minecraft.util.Mth;
 import java.util.function.Supplier;
 
 public interface EnergyHandler {
-    Supplier<EnergyTier> getEnergyTier();
+    EnergyTier getEnergyTier();
 
     default void onChanged(int oldAmount) {
     }
@@ -99,11 +99,11 @@ public interface EnergyHandler {
     void setEnergyCapacity(int value);
 
     default int getMaxInput() {
-        return getEnergyTier().get().maxInput();
+        return getEnergyTier().maxInput();
     }
 
     default int getMaxOutput() {
-        return getEnergyTier().get().maxOutput();
+        return getEnergyTier().maxOutput();
     }
 
     default boolean canFillEnergy() {

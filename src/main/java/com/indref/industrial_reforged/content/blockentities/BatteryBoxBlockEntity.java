@@ -63,7 +63,7 @@ public class BatteryBoxBlockEntity extends MachineBlockEntity implements MenuPro
             if (this.getRedstoneSignalType().isActive(this.getRedstoneSignalStrength())) {
                 EnergyHandler thisEnergyStorage = this.getEuStorage();
                 if (level instanceof ServerLevel serverLevel) {
-                    int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
+                    int min = Math.min(thisEnergyStorage.getEnergyTier().maxOutput(), thisEnergyStorage.getEnergyStored());
                     Direction outputDirection = getOutputDirection();
                     if (level.getBlockState(worldPosition.relative(outputDirection)).getBlock() instanceof CableBlock) {
                         int remainder = IRNetworks.ENERGY_NETWORK.get().transport(serverLevel, this.worldPosition, min, outputDirection);

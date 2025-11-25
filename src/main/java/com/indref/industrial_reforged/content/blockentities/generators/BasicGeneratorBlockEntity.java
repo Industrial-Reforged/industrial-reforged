@@ -125,9 +125,9 @@ public class BasicGeneratorBlockEntity extends MachineBlockEntity implements Men
         }
 
         if (!level.isClientSide()) {
-            EnergyHandler thisEnergyStorage = CapabilityUtils.energyStorageCapability(this);
+            EnergyHandler thisEnergyStorage = this.getEuStorage();
             if (level instanceof ServerLevel serverLevel) {
-                int min = Math.min(thisEnergyStorage.getEnergyTier().get().maxOutput(), thisEnergyStorage.getEnergyStored());
+                int min = Math.min(thisEnergyStorage.getEnergyTier().maxOutput(), thisEnergyStorage.getEnergyStored());
                 int remainder = IRNetworks.ENERGY_NETWORK.get().transport(serverLevel, this.worldPosition, min);
                 thisEnergyStorage.drainEnergy(min - remainder, false);
             }

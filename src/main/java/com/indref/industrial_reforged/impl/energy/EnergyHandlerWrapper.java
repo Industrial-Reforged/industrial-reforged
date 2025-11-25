@@ -1,6 +1,7 @@
 package com.indref.industrial_reforged.impl.energy;
 
 import com.indref.industrial_reforged.api.capabilities.energy.EnergyHandler;
+import com.indref.industrial_reforged.api.tiers.EnergyTier;
 import com.indref.industrial_reforged.impl.tiers.EnergyTierImpl;
 
 import java.util.function.Supplier;
@@ -18,7 +19,7 @@ public class EnergyHandlerWrapper {
         }
 
         @Override
-        public Supplier<EnergyTierImpl> getEnergyTier() {
+        public EnergyTier getEnergyTier() {
             return this.handler.getEnergyTier();
         }
 
@@ -49,7 +50,7 @@ public class EnergyHandlerWrapper {
         }
 
         @Override
-        public Supplier<EnergyTierImpl> getEnergyTier() {
+        public EnergyTier getEnergyTier() {
             return this.handler.getEnergyTier();
         }
 
